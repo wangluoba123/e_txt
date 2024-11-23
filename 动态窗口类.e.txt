@@ -1,0 +1,286 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 AppName, "“HelloWin”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 0 系统核心支持库
+
+
+
+
+数据类型 RECT, , 矩形
+    .成员 Left, 整数型, , , 
+    .成员 Top, 整数型, , , 
+    .成员 Right, 整数型, , , 
+    .成员 Bottom, 整数型, , , 
+
+数据类型 MSG, , 消息结构
+    .成员 hwnd, 整数型, , , 检索消息的窗口句柄
+    .成员 message, 整数型, , , 代表一个消息的消息质
+    .成员 wParam, 整数型, , , 消息附加信息的字参数
+    .成员 lParam, 整数型, , , 消息附加信息的长字参数
+    .成员 time, 整数型, , , 消息入队时间
+    .成员 x, 整数型, , , 消息发送时鼠标的位置 point.x
+    .成员 y, 整数型, , , 消息发送时鼠标的位置 point.y
+
+数据类型 PaintStruct, , 
+    .成员 hdc, 整数型, , , 
+    .成员 fErase, 整数型, , , 
+    .成员 Left, 整数型, , , 
+    .成员 Top, 整数型, , , 
+    .成员 Right, 整数型, , , 
+    .成员 Bottom, 整数型, , , 
+    .成员 fRestore, 整数型, , , 
+    .成员 fIncUpdate, 整数型, , , 
+    .成员 rgbReserved, 字节型, , "32", 
+
+数据类型 WNDCLASS, , 窗口类
+    .成员 style, 整数型, , , 窗口的样式
+    .成员 lpfnwndproc, 子程序指针, , , 指向窗口函数的指针
+    .成员 cbClsextra, 整数型, , , 分配在窗口类结构后的字节数
+    .成员 cbWndExtra, 整数型, , , 分配在窗口实例后的字节数
+    .成员 hInstance, 整数型, , , 定义窗口类的应用程序的实例句柄
+    .成员 hIcon, 整数型, , , 窗口类的图标
+    .成员 hCursor, 整数型, , , 窗口类的光标
+    .成员 hbrBackground, 整数型, , , 窗口类的背景刷
+    .成员 lpszMenuName, 文本型, , , 窗口类的菜单资源名
+    .成员 lpszClassName, 文本型, , , 窗口类名
+
+
+.DLL命令 PlaySound, 整数型, "winmm.dll", "PlaySoundA", , 
+    .参数 lpszName, 文本型, , 
+    .参数 hModule, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+
+.DLL命令 BeginPaint, 整数型, "user32.dll", "BeginPaint", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpPaint, PaintStruct, 传址, 
+
+.DLL命令 GetClientRect, 整数型, "user32.dll", "GetClientRect", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpRect, RECT, 传址, 
+
+.DLL命令 DrawText, 整数型, "user32.dll", "DrawTextA", , 
+    .参数 hdc, 整数型, , 
+    .参数 lpStr, 文本型, , 
+    .参数 nCount, 整数型, , 
+    .参数 lpRect, RECT, 传址, 
+    .参数 wFormat, 整数型, , 
+
+.DLL命令 EndPaint, 整数型, "user32.dll", "EndPaint", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpPaint, PaintStruct, 传址, 
+
+.DLL命令 PostQuitMessage, 空白型, "user32.dll", "PostQuitMessage", , 
+    .参数 nExitCode, 整数型, , 
+
+.DLL命令 DefWindowProc, 整数型, "user32.dll", "DefWindowProcA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 LoadIcon, 整数型, "user32.dll", "LoadIconA", , 加载一个窗口图标
+    .参数 hInstance, 整数型, , 图标资源所在的模块句柄
+    .参数 lpIconName, 整数型, , 图标资源名或系统预定义的图标标识名
+
+.DLL命令 LoadCursor, 整数型, "user32.dll", "LoadCursorA", , 加载一个窗口光标
+    .参数 hInstance, 整数型, , 光标资源所在的模块句柄
+    .参数 lpIconName, 整数型, , 图标资源名或系统预定义的光标标识名
+
+.DLL命令 GetStockObject, 整数型, "gdi32.dll", "GetStockObject", , 获取系统提供的背景刷
+    .参数 nIndex, 整数型, , 背景刷标示名
+
+.DLL命令 RegisterClass, 整数型, "user32.dll", "RegisterClassA", , 注册窗口类
+    .参数 Class, WNDCLASS, 传址, 窗口的类结构
+
+.DLL命令 CreateWindow, 整数型, "user32.dll", "CreateWindowExA", , 
+    .参数 dwExStyle, 整数型, , 
+    .参数 lpClassName, 文本型, , 窗口实例的类的名字
+    .参数 lpWindowName, 文本型, , 窗口标题名
+    .参数 dwStyle, 整数型, , 新创建的窗口的样式
+    .参数 X, 整数型, , 窗口左上角的横坐标
+    .参数 Y, 整数型, , 窗口左上角的纵坐标
+    .参数 nWidth, 整数型, , 窗口的宽度
+    .参数 nHeight, 整数型, , 窗口的高度
+    .参数 hWndParent, 整数型, , 该窗口的父窗口的句柄
+    .参数 hMenu, 整数型, , 窗口主菜单句柄
+    .参数 hInstance, 整数型, , 创建窗口的应用程序当前句柄
+    .参数 lpParam, 文本型, , 指向一个传递给窗口的参数值的指针
+
+.DLL命令 ShowWindow, 整数型, "user32.dll", "ShowWindow", , 
+    .参数 hwnd, 整数型, , 
+    .参数 nCmdShow, 整数型, , 
+
+.DLL命令 UpdateWindow, 整数型, "user32.dll", "UpdateWindow", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 GetMessage, 整数型, "user32.dll", "GetMessageA", , 
+    .参数 lpMsg, MSG, 传址, 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsgFilterMin, 整数型, , 
+    .参数 wMsgFilterMax, 整数型, , 
+
+.DLL命令 TranslateMessage, 整数型, "user32.dll", "TranslateMessage", , 
+    .参数 lpMsg, MSG, 传址, 
+
+.DLL命令 DispatchMessage, 整数型, "user32.dll", "DispatchMessageA", , 
+    .参数 lpMsg, MSG, 传址, 
+
+.DLL命令 MessageBox, 整数型, "user32.dll", "MessageBoxA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpText, 文本型, , 
+    .参数 lpCaption, 文本型, , 
+    .参数 wType, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 
+WinMain (1)
+返回 (0)
+
+.子程序 WndProc, 整数型, , 窗口回调函数
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 hdc, 整数型, , , 设备内容句柄
+.局部变量 Rect, RECT, , , 客户区域范围
+.局部变量 PS, PaintStruct, , , 
+
+.判断开始 (等于 (Msg, 1)) ' 区分不同的消息
+    PlaySound (“HelloWin.Wav”, 0, 131073) ' 调用playsound播放声音
+    返回 (0)
+.判断 (等于 (Msg, 15))
+    赋值 (hdc, BeginPaint (hWnd, PS)) ' 开始绘制(使整个区域有效并返回设备内容句柄)
+    GetClientRect (hWnd, Rect) ' 取得当前窗体客户区范围,并在中间绘制文字
+    DrawText (hdc, “Hello, Windows 98!”, -1, Rect, 37) ' 在窗口中输出“Hello, Windows 98!”
+    EndPaint (hWnd, PS) ' 结束绘制(释放设备内容句柄)
+    返回 (0)
+.判断 (等于 (Msg, 2))
+    PostQuitMessage (0) ' 调用PostQuitMessage发出WM_QUIT消息
+    返回 (0)
+.默认
+    返回 (DefWindowProc (hWnd, Msg, wParam, lParam)) ' 默认时采用系统消息默认处理函数
+.判断结束
+
+
+.子程序 WinMain, 整数型, , WinMain函数
+.参数 hInstance, 整数型, 可空, 
+.参数 hPrevInstance, 整数型, 可空, 
+.参数 szCmdLine, 文本型, 参考 可空, 
+.参数 nCmdShow, 整数型, 可空, 
+
+.局部变量 hWnd, 整数型, , , 
+.局部变量 Msg, MSG, , , 
+.局部变量 WndClass, WNDCLASS, , , 
+
+赋值 (WndClass.style, 3)
+赋值 (WndClass.lpfnwndproc, &WndProc) ' 发生调用
+赋值 (WndClass.cbClsextra, 0)
+赋值 (WndClass.cbWndExtra, 0)
+赋值 (WndClass.hInstance, hInstance)
+赋值 (WndClass.hIcon, LoadIcon (0, 32512))
+赋值 (WndClass.hCursor, LoadCursor (0, 32512))
+赋值 (WndClass.hbrBackground, GetStockObject (0))
+赋值 (WndClass.lpszMenuName, “”)
+赋值 (WndClass.lpszClassName, #AppName) ' 以上为初始化窗口类
+.如果真 (等于 (RegisterClass (WndClass), 0)) ' 窗口类注册
+    MessageBox (0, “This program requires Windows NT!”, #AppName, 16)
+    信息框 (“This program requires Windows NT!”, 16, #AppName) ' 如果注册失败弹出提示
+    返回 (0)
+.如果真结束
+赋值 (hWnd, CreateWindow (0, #AppName, “The Hello Program”, 13565952, 2147483648, 2147483648, 2147483648, 2147483648, 0, 0, hInstance, “”)) ' 创建窗口
+ShowWindow (hWnd, nCmdShow) ' 显示窗口
+UpdateWindow (hWnd) ' 绘制用户区
+.判断循环首 (不等于 (GetMessage (Msg, 0, 0, 0), 0)) ' 消息循环
+    TranslateMessage (Msg)
+    DispatchMessage (Msg)
+.判断循环尾 ()
+返回 (Msg.wParam) ' 消息循环结束即程序终止时将信息返回系统
+
+.类模块 动态窗口, , , 动态生成一个窗口
+
+.程序集变量 左边, 整数型, , , 
+.程序集变量 顶边, 整数型, , , 
+.程序集变量 宽度, 整数型, , , 
+.程序集变量 高度, 整数型, , , 
+.程序集变量 可视, 逻辑型, , , 
+.程序集变量 禁止, 逻辑型, , , 
+.程序集变量 标题, 文本型, , , 
+.程序集变量 边框, 整数型, , , 
+.程序集变量 底色, 整数型, , , 
+.程序集变量 底图, 字节集, , , 
+.程序集变量 底图方式, 整数型, , , 
+.程序集变量 背景音乐, 字节集, , , 
+.程序集变量 播放次数, 整数型, , , 
+.程序集变量 控制按钮, 逻辑型, , , 
+.程序集变量 最大化按钮, 逻辑型, , , 
+.程序集变量 最小化按钮, 逻辑型, , , 
+.程序集变量 位置, 整数型, , , 
+.程序集变量 可否移动, 逻辑型, , , 
+.程序集变量 图标, 字节集, , , 
+.程序集变量 回车下移焦点, 逻辑型, , , 
+.程序集变量 Esc键关闭, 逻辑型, , , 
+.程序集变量 F1键打开帮助, 逻辑型, , , 
+.程序集变量 帮助文件名, 文本型, , , 
+.程序集变量 帮助标志值, 整数型, , , 
+.程序集变量 在任务条中显示, 逻辑型, , , 
+.程序集变量 随意移动, 逻辑型, , , 
+.程序集变量 外形, 整数型, , , 
+.程序集变量 总在最前, 逻辑型, , , 
+.程序集变量 保持标题栏激活, 逻辑型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 创建, 整数型, 公开, 创建一个窗口，如果成功则返回新创建窗口的句柄，如果失败则返回0
+
+
+.子程序 销毁, 整数型, , 
+
+
+.子程序 移动, 空白型, , 
+.参数 左边, 整数型, , 
+.参数 顶边, 整数型, 可空, 
+.参数 宽度, 整数型, 可空, 
+.参数 高度, 整数型, 可空, 
+
+
+
+.子程序 取窗口句柄, 整数型, , '返回当前窗口句柄
+
+
+.子程序 获取焦点, 空白型, , 
+
+
+.子程序 可有焦点, 逻辑型, , 
+
+
+.子程序 取用户区宽度, 整数型, , 
+
+
+.子程序 取用户区高度, 整数型, , 
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

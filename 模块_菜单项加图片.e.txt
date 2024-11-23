@@ -1,0 +1,109 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：模块_菜单项加图片
+ ' 程序描述：在菜单中用位图代替标准的复选符号（√）。
+本模块win9x,winme下能用，2000,nt,xp中未测试
+ ' 程序作者：银戒指软件工作室
+ ' 邮政编码：200011
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：eathe@etang.com
+ ' 主页地址：http://SnaKeBabys.yeah.net
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 2 0 系统核心支持库
+
+
+
+
+
+.常量 MF_BITMAP, "4", , 
+.常量 LR_LOADFROMFILE, "16", , 
+.常量 SM_CXMENUCHECK, "71", , 
+.常量 SM_CYMENUCHECK, "72", , 
+
+
+数据类型 MENUITEMINFO, , 
+    .成员 cbSize, 整数型, , , 
+    .成员 fMask, 整数型, , , 
+    .成员 fType, 整数型, , , 
+    .成员 fState, 整数型, , , 
+    .成员 wID, 整数型, , , 
+    .成员 hSubMenu, 整数型, , , 
+    .成员 hbmpChecked, 整数型, , , 
+    .成员 hbmpUnchecked, 整数型, , , 
+    .成员 dwItemData, 整数型, , , 
+    .成员 dwTypeData, 文本型, , , 
+    .成员 cch, 整数型, , , 
+
+
+.DLL命令 GetMenu, 整数型, "", "GetMenu", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 GetSubMenu, 整数型, "", "GetSubMenu", , 
+    .参数 hMenu, 整数型, , 
+    .参数 nPos, 整数型, , 
+
+.DLL命令 GetMenuItemID, 整数型, "", "GetMenuItemID", , 
+    .参数 hMenu, 整数型, , 
+    .参数 nPos, 整数型, , 
+
+.DLL命令 SetMenuItemBitmaps, 整数型, "", "SetMenuItemBitmaps", , 
+    .参数 hMenu, 整数型, , 
+    .参数 nPosition, 整数型, , 
+    .参数 wFlags, 整数型, , 
+    .参数 hBitmapUnchecked, 整数型, , 
+    .参数 hBitmapChecked, 整数型, , 
+
+.DLL命令 GetSystemMetrics, 整数型, "", "GetSystemMetrics", , 
+    .参数 nIndex, 整数型, , 
+
+.DLL命令 LoadImage, 整数型, "", "LoadImageA", , 
+    .参数 hInst, 整数型, , 
+    .参数 lpsz, 文本型, , 
+    .参数 un1, 整数型, , 
+    .参数 n1, 整数型, , 
+    .参数 n2, 整数型, , 
+    .参数 un2, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在模块初始化代码执行完毕后调用模块测试代码
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的参数及返回值类型。
+
+
+.程序集 _接口程序集, , , 在本程序集中定义的子程序可被模块外部程序访问，注意如果不存在本程序集就不能作为易模块编译。
+
+.子程序 菜单项位图, 空白型, , 图片只能为位图,如果图片和模块不在同一目录，请用完整路径
+.参数 窗口名称, 窗口, , 菜单所在窗口的名称，不是窗口的标题
+.参数 未复选图片名称, 文本型, 可空, 未复选时的图片路径名称，如果不用，请不要填
+.参数 复选图片名称, 文本型, 可空, 复选(√)时的图片路径名称，如果不用，请不要填
+.参数 菜单位置, 整数型, , 从左边数起，第一个菜单的编号为0
+.参数 菜单条目位置, 整数型, , 第一个条目的编号为0
+
+.局部变量 hMenu, 整数型, , , 
+.局部变量 hSubMenu, 整数型, , , 
+.局部变量 hID, 整数型, , , 
+.局部变量 hbitmapn, 整数型, , , 
+.局部变量 hbitmapf, 整数型, , , 
+.局部变量 MenuSize, 整数型, , , 
+
+赋值 (MenuSize, GetSystemMetrics (#SM_CYMENUCHECK))
+赋值 (hbitmapn, 选择 (等于 (是否为空 (未复选图片名称), 真), 0, LoadImage (0, 未复选图片名称, 0, GetSystemMetrics (#SM_CXMENUCHECK), MenuSize, #LR_LOADFROMFILE)))
+赋值 (hbitmapf, 选择 (等于 (是否为空 (复选图片名称), 真), 0, LoadImage (0, 复选图片名称, 0, GetSystemMetrics (#SM_CXMENUCHECK), MenuSize, #LR_LOADFROMFILE)))
+赋值 (hMenu, GetMenu (窗口名称.取窗口句柄 ()))
+赋值 (hSubMenu, GetSubMenu (hMenu, 菜单位置))
+赋值 (hID, GetMenuItemID (hSubMenu, 菜单条目位置))
+SetMenuItemBitmaps (hMenu, hID, #MF_BITMAP, hbitmapn, hbitmapf)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

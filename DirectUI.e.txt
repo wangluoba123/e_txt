@@ -1,0 +1,1366 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：闪电易DirectUI界面库
+ ' 程序描述：闪电易DirectUI界面库
+@备注:
+闪电易DirectUI界面库
+注：创建控件后返回的均为控件ID
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 SRCCOPY, "13369376", , 
+.常量 SRCINVERT, "6684742", , 
+.常量 SRCAND, "8913094", , 
+.常量 SRCPAINT, "15597702", , 
+.常量 HALFTONE, "4", , 
+.常量 GWL_WNDPROC, "-4", , 
+.常量 正常, "1", , 
+.常量 点燃, "2", , 
+.常量 按下, "3", , 
+.常量 禁止, "4", , 
+.常量 WM_PAINT, "15", , 
+.常量 WM_MOUSEMOVE, "512", , 
+.常量 WM_LBUTTONDOWN, "513", , 
+.常量 WM_LBUTTONDBLCLK, "515", , 
+.常量 WM_LBUTTONUP, "514", , 
+.常量 BI_RGB, "0", , 
+.常量 DIB_RGB_COLORS, "0", , 
+.常量 RDH_RECTANGLES, "1", , 
+.常量 MAXLONG, "2147483647", , 
+.常量 RGN_OR, "2", , 
+.常量 WM_NCCALCSIZE, "131", , 
+.常量 WM_NCLBUTTONDOWN, "161", , 
+.常量 WM_DESTROY, "2", , 
+.常量 WM_SETICON, "128", , 
+.常量 WM_INITDIALOG, "272", , 
+.常量 WM_CLOSE, "16", , 
+.常量 WM_ERASEBKGND, "20", , 
+.常量 SW_SHOW, "5", , 
+.常量 SW_HIDE, "0", , 
+.常量 WM_SETCURSOR, "32", , 
+.常量 MB_YESNO, "4", , 
+.常量 MB_ICONQUESTION, "32", , 
+.常量 IDYES, "6", , 
+.常量 TRANSPARENT, "1", , 
+.常量 DEFAULT_GUI_FONT, "17", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 RECT, , 
+    .成员 left, 整数型, , , 
+    .成员 top, 整数型, , , 
+    .成员 right, 整数型, , , 
+    .成员 bottom, 整数型, , , 
+
+数据类型 坐标, , 
+    .成员 x, 整数型, , , 
+    .成员 y, 整数型, , , 
+
+数据类型 按钮属性, , 
+    .成员 父窗口, 整数型, , , 
+    .成员 矩形, RECT, , , 
+    .成员 事件, 子程序指针, , , 
+    .成员 状态, 整数型, , , 
+    .成员 按钮图片, 整数型, , "4", 
+    .成员 透明色, 整数型, , , 
+
+数据类型 进度条属性, , 
+    .成员 父窗口, 整数型, , , 
+    .成员 矩形, RECT, , , 
+    .成员 位置, 整数型, , , 
+    .成员 状态, 逻辑型, , , 
+    .成员 图片, 整数型, , "2", 
+
+数据类型 图片框属性, , 
+    .成员 父窗口, 整数型, , , 
+    .成员 矩形, RECT, , , 
+    .成员 状态, 逻辑型, , , 
+    .成员 图片, 整数型, , , 
+    .成员 透明色, 整数型, , , 
+
+数据类型 标签属性, , 
+    .成员 父窗口, 整数型, , , 
+    .成员 矩形, RECT, , , 
+    .成员 标题, 文本型, , , 
+    .成员 颜色, 整数型, , , 
+    .成员 状态, 逻辑型, , , 
+
+数据类型 BITMAP, , 
+    .成员 bmType, 整数型, , , 
+    .成员 bmWidth, 整数型, , , 
+    .成员 bmHeight, 整数型, , , 
+    .成员 bmWidthBytes, 整数型, , , 
+    .成员 bmPlanes, 短整数型, , , 
+    .成员 bmBitsPixel, 短整数型, , , 
+    .成员 bmBits, 整数型, , , 
+
+数据类型 PAINTSTRUCT, , 
+    .成员 hdc, 整数型, , , 
+    .成员 fErase, 逻辑型, , , 
+    .成员 rcPaint, RECT, , , 
+    .成员 fRestore, 逻辑型, , , 
+    .成员 fIncUpdate, 逻辑型, , , 
+    .成员 rgbReserved, 字节型, , "32", 
+
+数据类型 RGBQUAD, , 
+    .成员 rgbBlue, 字节型, , , 
+    .成员 rgbGreen, 字节型, , , 
+    .成员 rgbRed, 字节型, , , 
+    .成员 rgbReserved, 字节型, , , 
+
+数据类型 BITMAPINFOHEADER, , 
+    .成员 biSize, 整数型, , , 
+    .成员 biWidth, 整数型, , , 
+    .成员 biHeight, 整数型, , , 
+    .成员 biPlanes, 短整数型, , , 
+    .成员 biBitCount, 短整数型, , , 
+    .成员 biCompression, 整数型, , , 
+    .成员 biSizeImage, 整数型, , , 
+    .成员 biXPelsPerMeter, 整数型, , , 
+    .成员 biYPelsPerMeter, 整数型, , , 
+    .成员 biClrUsed, 整数型, , , 
+    .成员 biClrImportant, 整数型, , , 
+
+数据类型 RGNDATA, , 
+    .成员 rdh, RGNDATAHEADER, , , 
+    .成员 Buffer, RECT, , "1000", 
+
+数据类型 RGNDATAHEADER, , 
+    .成员 dwSize, 整数型, , , 
+    .成员 iType, 整数型, , , 
+    .成员 nCount, 整数型, , , 
+    .成员 nRgnSize, 整数型, , , 
+    .成员 rcBound, RECT, , , 
+
+数据类型 BITMAPINFO, , 
+    .成员 bmiHeader, BITMAPINFOHEADER, , , 
+    .成员 bmiColors, RGBQUAD, , , 
+
+数据类型 MODULEINFO, , 
+    .成员 lpBaseOfDll, 整数型, , , 
+    .成员 SizeOfImage, 整数型, , , 
+    .成员 EntryPoint, 整数型, , , 
+
+
+.DLL命令 FillRect, 整数型, "user32", "FillRect", , 用指定的刷子填充一个矩形　非零表示成功，零表示失败。会设置GetLastError
+    .参数 hdc, 整数型, , 设备场景的句柄
+    .参数 lpRect, RECT, , RECT，对填充区域进行描述的一个矩形，采用逻辑坐标
+    .参数 hBrush, 整数型, , 欲使用的刷子的句柄;  
+
+.DLL命令 CreateSolidBrush, 整数型, "gdi32", "CreateSolidBrush", , 用纯色创建一个刷子　如执行成功，返回新刷子的一个句柄；否则返回零
+    .参数 crColor, 整数型, , 数字的RGB彩色;  
+
+.DLL命令 GetProp, 整数型, "", "GetPropA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpString, 文本型, , 
+
+.DLL命令 SetProp, 整数型, "", "SetPropA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpString, 文本型, , 
+    .参数 hData, 整数型, , 
+
+.DLL命令 GetWindowLong, 整数型, "", "GetWindowLongA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+
+.DLL命令 SetWindowLong, 整数型, "", "SetWindowLongA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+    .参数 dwNewLong, 整数型, , 
+
+.DLL命令 CallWindowProc, 整数型, "", "CallWindowProcA", , 
+    .参数 lpPrevWndFunc, 整数型, , 
+    .参数 hWnd, 整数型, , 
+    .参数 Msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 DefWindowProc, 整数型, "", "DefWindowProcA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 Msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 BitBlt, 逻辑型, "", "", , 
+    .参数 hdcDest, 整数型, , 
+    .参数 nXDest, 整数型, , 
+    .参数 nYDest, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+    .参数 hdcSrc, 整数型, , 
+    .参数 nXSrc, 整数型, , 
+    .参数 nYSrc, 整数型, , 
+    .参数 dwRop, 整数型, , 
+
+.DLL命令 SetStretchBltMode, 整数型, "", "", , 
+    .参数 hDC, 整数型, , 
+    .参数 iStretchMode, 整数型, , 
+
+.DLL命令 StretchBlt, 整数型, "", "", , 
+    .参数 hdcDest, 整数型, , 
+    .参数 nXOriginDest, 整数型, , 
+    .参数 nYOriginDest, 整数型, , 
+    .参数 nWidthDest, 整数型, , 
+    .参数 nHeightDest, 整数型, , 
+    .参数 hdcSrc, 整数型, , 
+    .参数 nXOriginSrc, 整数型, , 
+    .参数 nYOriginSrc, 整数型, , 
+    .参数 nWidthSrc, 整数型, , 
+    .参数 nHeightSrc, 整数型, , 
+    .参数 dwRop, 整数型, , 
+
+.DLL命令 CreateCompatibleBitmap, 整数型, "", "", , 
+    .参数 hDC, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+
+.DLL命令 CreateBitmap, 整数型, "", "", , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+    .参数 cPlanes, 整数型, , 
+    .参数 cBitsPerPel, 整数型, , 
+    .参数 lpvBits, 整数型, , 
+
+.DLL命令 CreateCompatibleDC, 整数型, "", "", , 
+    .参数 hDC, 整数型, , 
+
+.DLL命令 SelectObject, 整数型, "", "", , 
+    .参数 hDC, 整数型, , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 SetBkColor, 整数型, "", "", , 
+    .参数 hdc, 整数型, , 
+    .参数 crColor, 整数型, , 
+
+.DLL命令 SetTextColor, 整数型, "", "", , 
+    .参数 hDC, 整数型, , 
+    .参数 colors, 整数型, , 
+
+.DLL命令 DeleteDC, 整数型, "", "", , 
+    .参数 hDC, 整数型, , 
+
+.DLL命令 DeleteObject, 整数型, "", "", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 GetObject, 整数型, "", "GetObjectA", , 
+    .参数 hObject, 整数型, , 
+    .参数 nCount, 整数型, , 
+    .参数 lpObject, BITMAP, , 
+
+.DLL命令 PtInRect, 逻辑型, "", "", , 
+    .参数 lprc, RECT, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+
+.DLL命令 GetDC, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 ReleaseDC, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 hDC, 整数型, , 
+
+.DLL命令 BeginPaint, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpPaint, PAINTSTRUCT, , 
+
+.DLL命令 EndPaint, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpPaint, PAINTSTRUCT, , 
+
+.DLL命令 SetWindowRgn, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 hRgn, 整数型, , 
+    .参数 bRedraw, 逻辑型, , 
+
+.DLL命令 CreateDIBSection, 整数型, "", "", , 
+    .参数 hDC, 整数型, , 
+    .参数 pbmi, BITMAPINFO, , 
+    .参数 iUsage, 整数型, , 
+    .参数 ppvBits, 整数型, 传址, 
+    .参数 hSection, 整数型, , 
+    .参数 dwOffset, 整数型, , 
+
+.DLL命令 SetRect, 整数型, "", "", , 
+    .参数 lprc, RECT, , 
+    .参数 xLeft, 整数型, , 
+    .参数 yTop, 整数型, , 
+    .参数 xRight, 整数型, , 
+    .参数 yBottom, 整数型, , 
+
+.DLL命令 ExtCreateRegion, 整数型, "", "", , 
+    .参数 lpXform, 整数型, , 
+    .参数 nCount, 整数型, , 
+    .参数 lpRgnData, RGNDATA, , 
+
+.DLL命令 CombineRgn, 整数型, "", "", , 
+    .参数 hDestRgn, 整数型, , 
+    .参数 hSrcRgn1, 整数型, , 
+    .参数 hSrcRgn2, 整数型, , 
+    .参数 nCombineMode, 整数型, , 
+
+.DLL命令 RtlMoveMemory_BYTE, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节型, 数组, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 lstrcpyn_INT, 整数型, "", "lstrcpynA", , 
+    .参数 lpString1, 整数型, 传址, 
+    .参数 lpString2, 整数型, 传址, 
+    .参数 iMaxLength, 整数型, , 
+
+.DLL命令 GetCursorPos, 整数型, "", "", , 
+    .参数 lpPoint, 坐标, , 
+
+.DLL命令 GetWindowRect, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 RECT, RECT, , 
+
+.DLL命令 SendMessage_RECT, 整数型, "", "SendMessageA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 Msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, RECT, , 
+
+.DLL命令 ShellExecute, 整数型, "", "ShellExecuteA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpOperation, 文本型, , 
+    .参数 lpFile, 文本型, , 
+    .参数 lpParameters, 文本型, , 
+    .参数 lpDirectory, 文本型, , 
+    .参数 nShowCmd, 整数型, , 
+
+.DLL命令 SetBkMode, 整数型, "", "", , 
+    .参数 hDC, 整数型, , 
+    .参数 nBkMode, 整数型, , 
+
+.DLL命令 GetStockObject, 整数型, "", "", , 
+    .参数 nIndex, 整数型, , 
+
+.DLL命令 DrawText, 整数型, "", "DrawTextA", , 
+    .参数 hdc, 整数型, , 
+    .参数 lpStr, 文本型, , 
+    .参数 nCount, 整数型, , 
+    .参数 lpRect, RECT, , 
+    .参数 wFormat, 整数型, , 
+
+.DLL命令 CreateRectRgn, 整数型, "", "", , 
+    .参数 nLeftRect, 整数型, , 
+    .参数 nTopRect, 整数型, , 
+    .参数 nRightRect, 整数型, , 
+    .参数 nBottomRect, 整数型, , 
+
+.DLL命令 InvalidateRect, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpRect, RECT, , 
+    .参数 bErase, 逻辑型, , 
+
+.DLL命令 CreateThread, 整数型, "", "", , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 子程序指针, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, 传址, 
+
+.DLL命令 lstrcpyn_字节集, 整数型, "", "lstrcpynA", , 
+    .参数 lpString1, 字节集, , 
+    .参数 lpString2, 字节集, , 
+    .参数 iMaxLength, 整数型, , 
+
+.DLL命令 lstrcpyn_整数, 整数型, "", "lstrcpynA", , 
+    .参数 lpString1, 整数型, 传址, 
+    .参数 lpString2, 整数型, 传址, 
+    .参数 iMaxLength, 整数型, , 
+
+.DLL命令 RtlMoveMemory_字节集, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 字节集, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 GetModuleHandle, 整数型, "", "GetModuleHandleA", , 
+    .参数 pModuleName, 文本型, , 
+
+.DLL命令 FreeLibrary, 整数型, "", "", , 
+    .参数 hLibModule, 整数型, , 
+
+.DLL命令 GetCurrentProcessId, 整数型, "", "", , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+.程序集 _接口程序集, , , 返回的均为控件ID
+
+.程序集变量 按钮数组, 按钮属性, , "0", 
+.程序集变量 进度条数组, 进度条属性, , "0", 
+.程序集变量 标签数组, 标签属性, , "0", 
+.程序集变量 图片框数组, 图片框属性, , "0", 
+.子程序 消息处理, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+.判断开始 (并且 (等于 (Msg, #WM_NCLBUTTONDOWN), 等于 (wParam, 2)))
+    返回 (On_WM_NCLBUTTONDOWN (hWnd, Msg, wParam, lParam))
+.判断 (等于 (Msg, #WM_PAINT))
+    On_WM_PAINT (hWnd)
+    返回 (0)
+.判断 (等于 (Msg, #WM_MOUSEMOVE))
+    On_WM_MOUSEMOVE (hWnd, lParam)
+.判断 (或者 (等于 (Msg, #WM_LBUTTONDOWN), 等于 (Msg, #WM_LBUTTONDBLCLK)))
+    On_WM_LBUTTONDOWN (hWnd, lParam)
+.判断 (等于 (Msg, #WM_LBUTTONUP))
+    On_WM_LBUTTONUP (hWnd, lParam)
+.判断 (等于 (Msg, #WM_DESTROY))
+    On_WM_DESTROY (hWnd)
+.判断 (等于 (Msg, #WM_ERASEBKGND))
+    返回 (0)
+.默认
+    
+.判断结束
+
+返回 (CallWinProc (hWnd, Msg, wParam, lParam))
+
+.子程序 回调, 整数型, , 
+.参数 指针, 整数型, , 
+.参数 按钮ID, 整数型, , 
+
+置入代码 ({ 201, 88, 135, 4, 36, 255, 224 })
+返回 (0)
+
+.子程序 创建按钮, 整数型, , 
+.参数 父窗口, 整数型, , 
+.参数 左边, 整数型, , 
+.参数 顶边, 整数型, , 
+.参数 事件, 子程序指针, , 
+.参数 正常图片, 字节集, , 
+.参数 点燃图片, 字节集, , 
+.参数 按下图片, 字节集, , 
+.参数 禁止图片, 字节集, , 
+.参数 透明色, 整数型, 可空, 
+
+.局部变量 数组索引, 整数型, , , 
+.局部变量 位图, 对象, , , 
+.局部变量 hBMP, 整数型, , , 
+.局部变量 BITMAP, BITMAP, , , 
+.局部变量 正常, 整数型, , , 
+.局部变量 点燃, 整数型, , , 
+.局部变量 按下, 整数型, , , 
+.局部变量 禁止, 整数型, , , 
+
+.如果真 (置窗口过程 (父窗口))
+    .如果真 (取反 (位图.创建图片对象 (正常图片)))
+        返回 (0)
+    .如果真结束
+    赋值 (正常, CreateCompatibleDC (0))
+    赋值 (hBMP, 位图.读数值属性 (“Handle”, ))
+    GetObject (hBMP, 24, BITMAP)
+    SelectObject (正常, hBMP)
+    位图.清除 ()
+    
+    .如果真 (取反 (位图.创建图片对象 (点燃图片)))
+        DeleteDC (正常)
+        返回 (0)
+    .如果真结束
+    赋值 (点燃, CreateCompatibleDC (0))
+    赋值 (hBMP, 位图.读数值属性 (“Handle”, ))
+    GetObject (hBMP, 24, BITMAP)
+    SelectObject (点燃, hBMP)
+    位图.清除 ()
+    
+    .如果真 (取反 (位图.创建图片对象 (按下图片)))
+        DeleteDC (正常)
+        DeleteDC (点燃)
+        返回 (0)
+    .如果真结束
+    赋值 (按下, CreateCompatibleDC (0))
+    赋值 (hBMP, 位图.读数值属性 (“Handle”, ))
+    GetObject (hBMP, 24, BITMAP)
+    SelectObject (按下, hBMP)
+    位图.清除 ()
+    
+    .如果真 (取反 (位图.创建图片对象 (禁止图片)))
+        DeleteDC (正常)
+        DeleteDC (点燃)
+        DeleteDC (按下)
+        返回 (0)
+    .如果真结束
+    赋值 (禁止, CreateCompatibleDC (0))
+    赋值 (hBMP, 位图.读数值属性 (“Handle”, ))
+    GetObject (hBMP, 24, BITMAP)
+    SelectObject (禁止, hBMP)
+    位图.清除 ()
+    
+    赋值 (数组索引, 相加 (取数组成员数 (按钮数组), 1))
+    重定义数组 (按钮数组, 真, 数组索引)
+    
+    赋值 (按钮数组 [数组索引], 按钮图片 [1], 正常)
+    赋值 (按钮数组 [数组索引], 按钮图片 [2], 点燃)
+    赋值 (按钮数组 [数组索引], 按钮图片 [3], 按下)
+    赋值 (按钮数组 [数组索引], 按钮图片 [4], 禁止)
+    赋值 (按钮数组 [数组索引], 透明色, 透明色)
+    
+    赋值 (按钮数组 [数组索引], 父窗口, 父窗口)
+    赋值 (按钮数组 [数组索引], 矩形.left, 左边)
+    赋值 (按钮数组 [数组索引], 矩形.top, 顶边)
+    赋值 (按钮数组 [数组索引], 矩形.right, 相加 (左边, BITMAP.bmWidth))
+    赋值 (按钮数组 [数组索引], 矩形.bottom, 相加 (顶边, BITMAP.bmHeight))
+    赋值 (按钮数组 [数组索引], 事件, 事件)
+    赋值 (按钮数组 [数组索引], 状态, #正常)
+    
+.如果真结束
+
+返回 (数组索引)
+
+.子程序 禁用按钮, 空白型, , 
+.参数 按钮ID, 整数型, , 
+.参数 状态, 逻辑型, , 
+
+.局部变量 hDC, 整数型, , , 
+
+赋值 (按钮数组 [按钮ID], 状态, 选择 (状态, #禁止, #正常))
+赋值 (hDC, GetDC (按钮数组 [按钮ID], 父窗口))
+绘图 (hDC, 按钮数组 [按钮ID], 矩形, 按钮数组 [按钮ID], 按钮图片 [按钮数组] [按钮ID], 状态, 按钮数组 [按钮ID], 透明色)
+ReleaseDC (按钮数组 [按钮ID], 父窗口, hDC)
+
+.子程序 创建进度条, 整数型, 公开, 
+.参数 父窗口, 整数型, , 
+.参数 左边, 整数型, , 
+.参数 顶边, 整数型, , 
+.参数 进度图片, 字节集, , 
+.参数 背景图片, 字节集, , 
+
+.局部变量 位图, 对象, , , 
+.局部变量 进度, 整数型, , , 
+.局部变量 背景, 整数型, , , 
+.局部变量 hBMP, 整数型, , , 
+.局部变量 BITMAP, BITMAP, , , 
+.局部变量 数组索引, 整数型, , , 
+
+.如果真 (置窗口过程 (父窗口))
+    .如果真 (取反 (位图.创建图片对象 (进度图片)))
+        返回 (0)
+    .如果真结束
+    赋值 (进度, CreateCompatibleDC (0))
+    赋值 (hBMP, 位图.读数值属性 (“Handle”, ))
+    GetObject (hBMP, 24, BITMAP)
+    SelectObject (进度, hBMP)
+    位图.清除 ()
+     ' 本源码来自易语言资源网(www.5A5X.com)
+    .如果真 (取反 (位图.创建图片对象 (背景图片)))
+        DeleteDC (进度)
+        返回 (0)
+    .如果真结束
+    赋值 (背景, CreateCompatibleDC (0))
+    赋值 (hBMP, 位图.读数值属性 (“Handle”, ))
+    GetObject (hBMP, 24, BITMAP)
+    SelectObject (背景, hBMP)
+    位图.清除 ()
+    
+    赋值 (数组索引, 相加 (取数组成员数 (进度条数组), 1))
+    重定义数组 (进度条数组, 真, 数组索引)
+    
+    赋值 (进度条数组 [数组索引], 图片 [1], 背景)
+    赋值 (进度条数组 [数组索引], 图片 [2], 进度)
+    赋值 (进度条数组 [数组索引], 父窗口, 父窗口)
+    赋值 (进度条数组 [数组索引], 矩形.left, 左边)
+    赋值 (进度条数组 [数组索引], 矩形.top, 顶边)
+    赋值 (进度条数组 [数组索引], 矩形.right, 相加 (左边, BITMAP.bmWidth))
+    赋值 (进度条数组 [数组索引], 矩形.bottom, 相加 (顶边, BITMAP.bmHeight))
+    赋值 (进度条数组 [数组索引], 状态, 真)
+    
+    
+.如果真结束
+
+返回 (数组索引)
+
+.子程序 创建图片框, 整数型, , 
+.参数 父窗口, 整数型, , 
+.参数 左边, 整数型, , 
+.参数 顶边, 整数型, , 
+.参数 图片, 字节集, , 
+.参数 透明色, 整数型, , 
+
+.局部变量 位图, 对象, , , 
+.局部变量 mDC, 整数型, , , 
+.局部变量 hBMP, 整数型, , , 
+.局部变量 BITMAP, BITMAP, , , 
+.局部变量 数组索引, 整数型, , , 
+
+.如果真 (置窗口过程 (父窗口))
+    .如果真 (取反 (位图.创建图片对象 (图片)))
+        返回 (0)
+    .如果真结束
+    赋值 (mDC, CreateCompatibleDC (0))
+    赋值 (hBMP, 位图.读数值属性 (“Handle”, ))
+    GetObject (hBMP, 24, BITMAP)
+    SelectObject (mDC, hBMP)
+    位图.清除 ()
+    
+    赋值 (数组索引, 相加 (取数组成员数 (图片框数组), 1))
+    重定义数组 (图片框数组, 真, 数组索引)
+    
+    赋值 (图片框数组 [数组索引], 父窗口, 父窗口)
+    赋值 (图片框数组 [数组索引], 矩形.left, 左边)
+    赋值 (图片框数组 [数组索引], 矩形.top, 顶边)
+    赋值 (图片框数组 [数组索引], 矩形.right, 相加 (左边, BITMAP.bmWidth))
+    赋值 (图片框数组 [数组索引], 矩形.bottom, 相加 (顶边, BITMAP.bmHeight))
+    赋值 (图片框数组 [数组索引], 图片, mDC)
+    赋值 (图片框数组 [数组索引], 状态, 真)
+.如果真结束
+
+返回 (数组索引)
+
+.子程序 销毁图片框, 空白型, , 
+.参数 ID, 整数型, , 
+
+赋值 (图片框数组 [ID], 状态, 假)
+赋值 (图片框数组 [ID], 父窗口, 0)
+DeleteDC (图片框数组 [ID], 图片)
+
+.子程序 置图片大小和位置, 空白型, , 
+.参数 ID, 整数型, , 
+.参数 左边, 整数型, , 
+.参数 顶边, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+
+.局部变量 目标场景, 整数型, , , 
+.局部变量 源场景, 整数型, , , 
+
+赋值 (目标场景, GetDC (图片框数组 [ID], 父窗口))
+赋值 (源场景, GetProp (图片框数组 [ID], 父窗口, “DirectUI.底图”))
+
+BitBlt (目标场景, 图片框数组 [ID], 矩形.left, 图片框数组 [ID], 矩形.top, 相减 (图片框数组 [ID], 矩形.right, 图片框数组 [ID], 矩形.left), 相减 (图片框数组 [ID], 矩形.bottom, 图片框数组 [ID], 矩形.top), 源场景, 图片框数组 [ID], 矩形.left, 图片框数组 [ID], 矩形.top, #SRCCOPY)
+
+赋值 (图片框数组 [ID], 矩形.left, 左边)
+赋值 (图片框数组 [ID], 矩形.top, 顶边)
+赋值 (图片框数组 [ID], 矩形.right, 相加 (左边, 宽度))
+赋值 (图片框数组 [ID], 矩形.bottom, 相加 (顶边, 高度))
+
+
+绘图 (目标场景, 图片框数组 [ID], 矩形, 图片框数组 [ID], 图片, 图片框数组 [ID], 透明色)
+ReleaseDC (进度条数组 [ID], 父窗口, 目标场景)
+
+.子程序 置进度, 空白型, , 
+.参数 ID, 整数型, , 
+.参数 新位置, 整数型, , 
+
+.局部变量 宽度, 整数型, , , 
+.局部变量 高度, 整数型, , , 
+.局部变量 目标场景, 整数型, , , 
+
+.如果真 (小于 (新位置, 0))
+    赋值 (新位置, 0)
+.如果真结束
+.如果真 (大于 (新位置, 100))
+    赋值 (新位置, 100)
+.如果真结束
+
+赋值 (宽度, 相减 (进度条数组 [ID], 矩形.right, 进度条数组 [ID], 矩形.left))
+赋值 (高度, 相减 (进度条数组 [ID], 矩形.bottom, 进度条数组 [ID], 矩形.top))
+
+赋值 (新位置, 取整 (相乘 (相除 (新位置, 100), 相减 (宽度, 2))))
+
+赋值 (目标场景, GetDC (进度条数组 [ID], 父窗口))
+
+.如果 (小于 (新位置, 进度条数组 [ID], 位置))
+    BitBlt (目标场景, 相加 (进度条数组 [ID], 矩形.left, 1, 新位置), 进度条数组 [ID], 矩形.top, 相减 (进度条数组 [ID], 位置, 新位置), 高度, 进度条数组 [ID], 图片 [1], 0, 0, #SRCCOPY)
+.否则
+    BitBlt (目标场景, 相加 (进度条数组 [ID], 矩形.left, 1, 进度条数组 [ID], 位置), 相加 (进度条数组 [ID], 矩形.top, 1), 相减 (新位置, 进度条数组 [ID], 位置), 相减 (高度, 1), 进度条数组 [ID], 图片 [2], 0, 0, #SRCCOPY)
+.如果结束
+
+
+ReleaseDC (进度条数组 [ID], 父窗口, 目标场景)
+赋值 (进度条数组 [ID], 位置, 新位置)
+
+.子程序 取进度, 整数型, , 
+.参数 ID, 整数型, , 
+
+返回 (进度条数组 [ID], 位置)
+
+.子程序 绘制所有进度条, 空白型, , 
+.参数 hWnd, 整数型, , 
+.参数 hDC, 整数型, , 
+
+.局部变量 数组索引, 整数型, , , 
+.局部变量 宽度, 整数型, , , 
+.局部变量 高度, 整数型, , , 
+
+
+.计次循环首 (取数组成员数 (进度条数组), 数组索引)
+    赋值 (宽度, 相减 (进度条数组 [数组索引], 矩形.right, 进度条数组 [数组索引], 矩形.left))
+    赋值 (高度, 相减 (进度条数组 [数组索引], 矩形.bottom, 进度条数组 [数组索引], 矩形.top))
+    
+    BitBlt (hDC, 进度条数组 [数组索引], 矩形.left, 进度条数组 [数组索引], 矩形.top, 宽度, 高度, 进度条数组 [数组索引], 图片 [1], 0, 0, #SRCCOPY)
+    
+    BitBlt (hDC, 相加 (进度条数组 [数组索引], 矩形.left, 1), 相加 (进度条数组 [数组索引], 矩形.top, 1), 进度条数组 [数组索引], 位置, 相减 (高度, 1), 进度条数组 [数组索引], 图片 [2], 0, 0, #SRCCOPY)
+    
+.计次循环尾 ()
+
+
+
+.子程序 置底图, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 图片, 字节集, , 
+
+.局部变量 位图, 对象, , , 
+.局部变量 mDC, 整数型, , , 
+.局部变量 BITMAP, BITMAP, , , 
+
+.如果真 (位图.创建图片对象 (图片))
+    置窗口过程 (窗口句柄)
+    
+    赋值 (mDC, CreateCompatibleDC (0))
+    SelectObject (mDC, 位图.读数值属性 (“Handle”, ))
+    GetObject (位图.读数值属性 (“Handle”, ), 24, BITMAP)
+    SetProp (窗口句柄, “DirectUI.底图”, mDC)
+    SetProp (窗口句柄, “DirectUI.底图.宽”, BITMAP.bmWidth)
+    SetProp (窗口句柄, “DirectUI.底图.高”, BITMAP.bmHeight)
+    位图.清除 ()
+.如果真结束
+
+
+.子程序 置外形, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 图片, 字节集, , 
+.参数 透明色, 整数型, , 
+
+.局部变量 位图, 对象, , , 
+.局部变量 hRGN, 整数型, , , 
+
+.如果真 (位图.创建图片对象 (图片))
+    赋值 (hRGN, BitmapToRegion (位图.读数值属性 (“Handle”, ), 透明色))
+    位图.清除 ()
+    SetWindowRgn (窗口句柄, hRGN, 真)
+    DeleteObject (hRGN)
+.如果真结束
+
+
+.子程序 创建标签, 整数型, , 
+.参数 父窗口, 整数型, , 
+.参数 左边, 整数型, , 
+.参数 顶边, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+.参数 标题, 文本型, , 
+.参数 标题颜色, 整数型, , 
+
+.局部变量 数组索引, 整数型, , , 
+
+.如果真 (置窗口过程 (父窗口))
+    赋值 (数组索引, 相加 (取数组成员数 (标签数组), 1))
+    重定义数组 (标签数组, 真, 数组索引)
+    
+    赋值 (标签数组 [数组索引], 标题, 标题)
+    赋值 (标签数组 [数组索引], 颜色, 标题颜色)
+    赋值 (标签数组 [数组索引], 父窗口, 父窗口)
+    赋值 (标签数组 [数组索引], 矩形.left, 左边)
+    赋值 (标签数组 [数组索引], 矩形.top, 顶边)
+    赋值 (标签数组 [数组索引], 矩形.right, 相加 (左边, 宽度))
+    赋值 (标签数组 [数组索引], 矩形.bottom, 相加 (顶边, 高度))
+    赋值 (标签数组 [数组索引], 状态, 真)
+    
+.如果真结束
+
+返回 (数组索引)
+
+.子程序 置标题, 空白型, , 
+.参数 ID, 整数型, , 
+.参数 标题, 文本型, , 
+.参数 颜色, 整数型, , 
+
+.局部变量 hDC, 整数型, , , 
+
+赋值 (标签数组 [ID], 标题, 标题)
+赋值 (标签数组 [ID], 颜色, 颜色)
+
+InvalidateRect (标签数组 [ID], 父窗口, 标签数组 [ID], 矩形, 真)
+
+赋值 (hDC, GetDC (标签数组 [ID], 父窗口))
+绘制标签 (ID, hDC)
+ReleaseDC (标签数组 [ID], 父窗口, hDC)
+
+.子程序 绘制底图, 空白型, , 
+.参数 hWnd, 整数型, , 
+.参数 hDC, 整数型, , 
+
+.局部变量 mDC, 整数型, , , 
+.局部变量 Width, 整数型, , , 
+.局部变量 Height, 整数型, , , 
+.局部变量 RECT, RECT, , , 
+
+赋值 (mDC, GetProp (hWnd, “DirectUI.底图”))
+.如果真 (不等于 (mDC, 0))
+    赋值 (Width, GetProp (hWnd, “DirectUI.底图.宽”))
+    赋值 (Height, GetProp (hWnd, “DirectUI.底图.高”))
+    SetRect (RECT, 0, 0, Width, Height)
+    绘图 (hDC, RECT, mDC)
+.如果真结束
+
+
+.子程序 置窗口过程, 逻辑型, , 
+.参数 句柄, 整数型, , 
+
+.局部变量 x, 整数型, , , 
+
+赋值 (x, GetProp (句柄, “DirectUI”))
+.如果真 (等于 (x, 0))
+    赋值 (x, GetWindowLong (句柄, #GWL_WNDPROC))
+    SetProp (句柄, “DirectUI”, x)
+    赋值 (x, SetWindowLong (句柄, #GWL_WNDPROC, 到整数 (&消息处理)))
+.如果真结束
+返回 (不等于 (x, 0))
+
+.子程序 绘图, 空白型, 公开, 
+.参数 目标场景, 整数型, , 
+.参数 目标矩形, RECT, , 
+.参数 源场景, 整数型, , 
+.参数 透明色, 整数型, 可空, 
+
+.局部变量 hImageBMP, 整数型, , , 
+.局部变量 hMaskBMP, 整数型, , , 
+.局部变量 hImageDC, 整数型, , , 
+.局部变量 hMaskDC, 整数型, , , 
+.局部变量 hOldImageBMP, 整数型, , , 
+.局部变量 hOldMaskBMP, 整数型, , , 
+.局部变量 目标, RECT, , , 
+
+赋值 (目标, 目标矩形)
+赋值 (目标.right, 相减 (目标.right, 目标.left))
+赋值 (目标.bottom, 相减 (目标.bottom, 目标.top))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+.如果 (是否为空 (透明色))
+    BitBlt (目标场景, 目标.left, 目标.top, 目标.right, 目标.bottom, 源场景, 0, 0, #SRCCOPY)
+.否则
+    赋值 (hImageBMP, CreateCompatibleBitmap (目标场景, 目标.right, 目标.bottom))
+    赋值 (hMaskBMP, CreateBitmap (目标.right, 目标.bottom, 1, 1, 0))
+    赋值 (hImageDC, CreateCompatibleDC (目标场景))
+    赋值 (hMaskDC, CreateCompatibleDC (目标场景))
+    赋值 (hOldImageBMP, SelectObject (hImageDC, hImageBMP))
+    赋值 (hOldMaskBMP, SelectObject (hMaskDC, hMaskBMP))
+    
+    
+    BitBlt (hImageDC, 0, 0, 目标.right, 目标.bottom, 源场景, 0, 0, #SRCCOPY)
+    
+    SetBkColor (hImageDC, 透明色)
+    BitBlt (hMaskDC, 0, 0, 目标.right, 目标.bottom, hImageDC, 0, 0, #SRCCOPY)
+    SetBkColor (hImageDC, #黑色)
+    SetTextColor (hImageDC, #白色)
+    BitBlt (hImageDC, 0, 0, 目标.right, 目标.bottom, hMaskDC, 0, 0, #SRCAND)
+    
+    SetBkColor (目标场景, #白色)
+    SetTextColor (目标场景, #黑色)
+    BitBlt (目标场景, 目标.left, 目标.top, 目标.right, 目标.bottom, hMaskDC, 0, 0, #SRCAND)
+    BitBlt (目标场景, 目标.left, 目标.top, 目标.right, 目标.bottom, hImageDC, 0, 0, #SRCPAINT)
+    SelectObject (hImageDC, hOldImageBMP)
+    DeleteDC (hImageDC)
+    SelectObject (hMaskDC, hOldMaskBMP)
+    DeleteDC (hMaskDC)
+    DeleteObject (hImageBMP)
+    DeleteObject (hMaskBMP)
+.如果结束
+
+
+
+.子程序 取高位, 整数型, , 
+.参数 数值, 整数型, , 
+
+返回 (位与 (数值, 65535))
+
+.子程序 取低位, 整数型, , 
+.参数 数值, 整数型, , 
+
+返回 (右移 (数值, 16))
+
+.子程序 取数组索引, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 数组索引, 整数型, , , 
+
+.计次循环首 (取数组成员数 (按钮数组), 数组索引)
+    .如果真 (等于 (按钮数组 [数组索引], 父窗口, hWnd))
+        .如果真 (PtInRect (按钮数组 [数组索引], 矩形, 取高位 (lParam), 取低位 (lParam)))
+            返回 (数组索引)
+        .如果真结束
+        
+    .如果真结束
+    
+.计次循环尾 ()
+返回 (0)
+
+
+.子程序 绘制所有按钮, 空白型, , 
+.参数 hWnd, 整数型, , 
+.参数 hDC, 整数型, , 
+
+.局部变量 数组索引, 整数型, , , 
+
+.计次循环首 (取数组成员数 (按钮数组), 数组索引)
+    .如果真 (等于 (按钮数组 [数组索引], 父窗口, hWnd))
+        绘图 (hDC, 按钮数组 [数组索引], 矩形, 按钮数组 [数组索引], 按钮图片 [按钮数组] [数组索引], 状态, 按钮数组 [数组索引], 透明色)
+    .如果真结束
+    
+.计次循环尾 ()
+
+
+.子程序 绘制所有图片, 空白型, , 
+.参数 hWnd, 整数型, , 
+.参数 hDC, 整数型, , 
+
+.局部变量 数组索引, 整数型, , , 
+
+.计次循环首 (取数组成员数 (图片框数组), 数组索引)
+    .如果真 (图片框数组 [数组索引], 状态)
+        .如果真 (等于 (图片框数组 [数组索引], 父窗口, hWnd))
+            绘图 (hDC, 图片框数组 [数组索引], 矩形, 图片框数组 [数组索引], 图片, 图片框数组 [数组索引], 透明色)
+        .如果真结束
+        
+    .如果真结束
+    
+.计次循环尾 ()
+
+.子程序 绘制所有标签, 空白型, , 
+.参数 hWnd, 整数型, , 
+.参数 hDC, 整数型, , 
+
+.局部变量 数组索引, 整数型, , , 
+
+.计次循环首 (取数组成员数 (标签数组), 数组索引)
+    .如果真 (并且 (等于 (标签数组 [数组索引], 父窗口, hWnd), 标签数组 [数组索引], 状态))
+        绘制标签 (数组索引, hDC)
+    .如果真结束
+    
+.计次循环尾 ()
+
+.子程序 绘制标签, 空白型, , 
+.参数 数组索引, 整数型, , 
+.参数 hDC, 整数型, , 
+
+SetTextColor (hDC, 标签数组 [数组索引], 颜色)
+SetBkMode (hDC, #TRANSPARENT)
+SelectObject (hDC, GetStockObject (#DEFAULT_GUI_FONT))
+DrawText (hDC, 标签数组 [数组索引], 标题, 取文本长度 (标签数组 [数组索引], 标题), 标签数组 [数组索引], 矩形, 53)
+
+.子程序 CallWinProc, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 窗口过程, 整数型, , , 
+
+赋值 (窗口过程, GetProp (hWnd, “DirectUI”))
+.如果 (等于 (窗口过程, 0))
+    返回 (DefWindowProc (hWnd, Msg, wParam, lParam))
+.否则
+    返回 (CallWindowProc (窗口过程, hWnd, Msg, wParam, lParam))
+.如果结束
+
+
+.子程序 On_WM_PAINT, 空白型, , 
+.参数 hWnd, 整数型, , 
+
+.局部变量 PS, PAINTSTRUCT, , , 
+.局部变量 hBrush, 整数型, , , 
+
+BeginPaint (hWnd, PS)
+赋值 (hBrush, CreateSolidBrush (14215660))
+FillRect (PS.hdc, PS.rcPaint, hBrush)
+DeleteObject (hBrush)
+绘制底图 (hWnd, PS.hdc)
+绘制所有按钮 (hWnd, PS.hdc)
+绘制所有进度条 (hWnd, PS.hdc)
+绘制所有标签 (hWnd, PS.hdc)
+绘制所有图片 (hWnd, PS.hdc)
+EndPaint (hWnd, PS)
+
+.子程序 On_WM_MOUSEMOVE, 空白型, , 
+.参数 hWnd, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 数组索引, 整数型, , , 
+.局部变量 hDC, 整数型, , , 
+.局部变量 i, 整数型, , , 
+
+赋值 (数组索引, 取数组索引 (hWnd, lParam))
+
+.如果真 (不等于 (数组索引, 0))
+    .如果真 (并且 (等于 (按钮数组 [数组索引], 状态, #正常), 不等于 (按钮数组 [数组索引], 状态, #禁止)))
+        赋值 (按钮数组 [数组索引], 状态, #点燃)
+        赋值 (hDC, GetDC (hWnd))
+        绘图 (hDC, 按钮数组 [数组索引], 矩形, 按钮数组 [数组索引], 按钮图片 [按钮数组] [数组索引], 状态, 按钮数组 [数组索引], 透明色)
+    .如果真结束
+    
+.如果真结束
+
+.计次循环首 (取数组成员数 (按钮数组), i)
+    .如果真 (等于 (按钮数组 [i], 父窗口, hWnd))
+        .如果真 (并且 (不等于 (按钮数组 [i], 状态, #正常), 不等于 (按钮数组 [i], 状态, #禁止), 不等于 (i, 数组索引)))
+            赋值 (按钮数组 [i], 状态, #正常)
+            .如果真 (等于 (hDC, 0))
+                赋值 (hDC, GetDC (hWnd))
+            .如果真结束
+            绘图 (hDC, 按钮数组 [i], 矩形, 按钮数组 [i], 按钮图片 [按钮数组] [i], 状态, 按钮数组 [i], 透明色)
+        .如果真结束
+        
+    .如果真结束
+    
+.计次循环尾 ()
+
+.如果真 (不等于 (hDC, 0))
+    ReleaseDC (hWnd, hDC)
+.如果真结束
+
+
+.子程序 On_WM_LBUTTONDOWN, 空白型, , 
+.参数 hWnd, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 数组索引, 整数型, , , 
+.局部变量 hDC, 整数型, , , 
+
+赋值 (数组索引, 取数组索引 (hWnd, lParam))
+
+.如果真 (不等于 (数组索引, 0))
+    .如果真 (等于 (按钮数组 [数组索引], 状态, #点燃))
+        赋值 (按钮数组 [数组索引], 状态, #按下)
+        赋值 (hDC, GetDC (hWnd))
+        绘图 (hDC, 按钮数组 [数组索引], 矩形, 按钮数组 [数组索引], 按钮图片 [按钮数组] [数组索引], 状态, 按钮数组 [数组索引], 透明色)
+        ReleaseDC (hWnd, hDC)
+    .如果真结束
+    
+.如果真结束
+
+
+.子程序 On_WM_LBUTTONUP, 空白型, , 
+.参数 hWnd, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 数组索引, 整数型, , , 
+.局部变量 hDC, 整数型, , , 
+
+
+赋值 (数组索引, 取数组索引 (hWnd, lParam))
+
+.如果真 (不等于 (数组索引, 0))
+    .如果真 (等于 (按钮数组 [数组索引], 状态, #按下))
+        赋值 (按钮数组 [数组索引], 状态, #点燃)
+        赋值 (hDC, GetDC (hWnd))
+        绘图 (hDC, 按钮数组 [数组索引], 矩形, 按钮数组 [数组索引], 按钮图片 [按钮数组] [数组索引], 状态, 按钮数组 [数组索引], 透明色)
+        ReleaseDC (hWnd, hDC)
+        .如果真 (不等于 (到整数 (按钮数组 [数组索引], 事件), 0))
+            回调 (到整数 (按钮数组 [数组索引], 事件), 数组索引)
+        .如果真结束
+        
+    .如果真结束
+    
+.如果真结束
+
+
+.子程序 On_WM_NCLBUTTONDOWN, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 数组索引, 整数型, , , 
+
+赋值 (数组索引, 取数组索引 (hWnd, 取坐标 (hWnd)))
+
+.如果真 (不等于 (数组索引, 0))
+    
+    .如果真 (等于 (按钮数组 [数组索引], 父窗口, hWnd))
+        .如果真 (不等于 (按钮数组 [数组索引], 状态, #禁止))
+            返回 (0)
+        .如果真结束
+        
+    .如果真结束
+    
+.如果真结束
+返回 (CallWinProc (hWnd, Msg, wParam, lParam))
+
+.子程序 On_WM_DESTROY, 空白型, , 
+.参数 hWnd, 整数型, , 
+
+.局部变量 x, 整数型, , , 
+
+赋值 (x, GetProp (hWnd, “DirectUI.底图”))
+.如果真 (不等于 (x, 0))
+    SetProp (hWnd, “DirectUI.底图”, 0)
+    DeleteDC (x)
+.如果真结束
+
+.计次循环首 (取数组成员数 (按钮数组), x)
+    .如果真 (等于 (按钮数组 [x], 父窗口, hWnd))
+        赋值 (按钮数组 [x], 父窗口, 0)
+        赋值 (按钮数组 [x], 状态, 0)
+        DeleteDC (按钮数组 [x], 按钮图片 [1])
+        DeleteDC (按钮数组 [x], 按钮图片 [2])
+        DeleteDC (按钮数组 [x], 按钮图片 [3])
+        DeleteDC (按钮数组 [x], 按钮图片 [4])
+    .如果真结束
+    
+.计次循环尾 ()
+.计次循环首 (取数组成员数 (进度条数组), x)
+    .如果真 (等于 (按钮数组 [x], 父窗口, hWnd))
+        赋值 (进度条数组 [x], 父窗口, 0)
+        赋值 (进度条数组 [x], 状态, 假)
+        赋值 (进度条数组 [x], 位置, 0)
+        
+        DeleteDC (进度条数组 [x], 图片 [1])
+        DeleteDC (进度条数组 [x], 图片 [2])
+    .如果真结束
+    
+.计次循环尾 ()
+
+.计次循环首 (取数组成员数 (图片框数组), x)
+    赋值 (图片框数组 [x], 父窗口, 0)
+    赋值 (图片框数组 [x], 状态, 假)
+    DeleteDC (图片框数组 [x], 图片)
+.计次循环尾 ()
+
+.子程序 取坐标, 整数型, , 
+.参数 hWnd, 整数型, , 
+
+.局部变量 矩形, RECT, , , 
+.局部变量 坐标, 坐标, 静态, , 
+
+GetCursorPos (坐标)
+GetWindowRect (hWnd, 矩形)
+SendMessage_RECT (hWnd, #WM_NCCALCSIZE, 0, 矩形)
+赋值 (坐标.x, 相减 (坐标.x, 矩形.left))
+赋值 (坐标.y, 相减 (坐标.y, 矩形.top))
+返回 (合并整数 (坐标.x, 坐标.y))
+
+.子程序 BitmapToRegion, 整数型, , 
+.参数 hBmp, 整数型, , 
+.参数 cTransparentColor, 整数型, , 
+.参数 cTolerance, 整数型, 可空, 
+
+.局部变量 hRgn, 整数型, , , 
+.局部变量 hMemDC, 整数型, , , 
+.局部变量 bm, BITMAP, , , 
+.局部变量 pbits32, 整数型, , , 
+.局部变量 hbm32, 整数型, , , 
+.局部变量 BITMAPINFO, BITMAPINFO, , , 
+.局部变量 holdBmp, 整数型, , , 
+.局部变量 hDC, 整数型, , , 
+.局部变量 bm32, BITMAP, , , 
+.局部变量 RGNDATA, RGNDATA, , , 
+.局部变量 lr, 字节型, , , 
+.局部变量 lg, 字节型, , , 
+.局部变量 lb, 字节型, , , 
+.局部变量 hr, 字节型, , , 
+.局部变量 hg, 字节型, , , 
+.局部变量 hb, 字节型, , , 
+.局部变量 p32, 整数型, , , 
+.局部变量 y, 整数型, , , 
+.局部变量 x, 整数型, , , 
+.局部变量 x0, 整数型, , , 
+.局部变量 p, 整数型, , , 
+.局部变量 b, 字节型, , "3", 
+.局部变量 h, 整数型, , , 
+
+
+.如果 (等于 (hBmp, 0))
+    返回 (0)
+.否则
+    .如果真 (是否为空 (cTolerance))
+        赋值 (cTolerance, 1052688)
+    .如果真结束
+    
+    赋值 (hMemDC, CreateCompatibleDC (0))
+    .如果真 (等于 (hMemDC, 0))
+        返回 (0)
+    .如果真结束
+    ' 本源码来自易语言资源网(www.5A5X.com)
+    GetObject (hBmp, 24, bm)
+    
+    赋值 (BITMAPINFO.bmiHeader.biSize, 40)
+    赋值 (BITMAPINFO.bmiHeader.biWidth, bm.bmWidth)
+    赋值 (BITMAPINFO.bmiHeader.biHeight, bm.bmHeight)
+    赋值 (BITMAPINFO.bmiHeader.biPlanes, 1)
+    赋值 (BITMAPINFO.bmiHeader.biBitCount, 32)
+    赋值 (BITMAPINFO.bmiHeader.biCompression, #BI_RGB)
+    
+    赋值 (hbm32, CreateDIBSection (hMemDC, BITMAPINFO, #DIB_RGB_COLORS, pbits32, 0, 0))
+    
+    .如果真 (等于 (hbm32, 0))
+        DeleteDC (hMemDC)
+        返回 (0)
+    .如果真结束
+    
+    赋值 (holdBmp, SelectObject (hMemDC, hbm32))
+    赋值 (hDC, CreateCompatibleDC (hMemDC))
+    
+    .如果真 (等于 (hDC, 0))
+        DeleteDC (hMemDC)
+        DeleteObject (hbm32)
+        返回 (0)
+    .如果真结束
+    
+    GetObject (hbm32, 24, bm32)
+    .判断循环首 (不等于 (求余数 (bm32.bmWidthBytes, 4), 0))
+        赋值 (bm32.bmWidthBytes, 相加 (bm32.bmWidthBytes, 1))
+    .判断循环尾 ()
+    
+    赋值 (holdBmp, SelectObject (hDC, hBmp))
+    BitBlt (hMemDC, 0, 0, bm.bmWidth, bm.bmHeight, hDC, 0, 0, #SRCCOPY)
+    
+    赋值 (RGNDATA.rdh.dwSize, 32)
+    赋值 (RGNDATA.rdh.iType, #RDH_RECTANGLES)
+    赋值 (RGNDATA.rdh.nCount, 1)
+    SetRect (RGNDATA.rdh.rcBound, #MAXLONG, #MAXLONG, 0, 0)
+    
+    GetRGBValue (整数指针 (cTransparentColor), b)
+    赋值 (lr, b [1])
+    赋值 (lg, b [2])
+    赋值 (lb, b [3])
+    
+    GetRGBValue (整数指针 (cTolerance), b)
+    赋值 (hr, min (255, 相加 (lr, b [1])))
+    赋值 (hg, min (255, 相加 (lg, b [2])))
+    赋值 (hb, min (255, 相加 (lb, b [3])))
+    
+    赋值 (p32, 相加 (bm32.bmBits, 相乘 (相减 (bm32.bmHeight, 1), bm32.bmWidthBytes)))
+    
+    .变量循环首 (0, 相减 (bm.bmHeight, 1), 1, y)
+        赋值 (x, 0)
+        .判断循环首 (小于 (x, bm.bmWidth))
+            赋值 (x0, x)
+            赋值 (p, 相加 (p32, 相乘 (x, 4)))
+            
+            .判断循环首 (小于 (x, bm.bmWidth))
+                GetRGBValue (p, b)
+                .如果真 (并且 (大于或等于 (b [1], lr), 小于或等于 (b [1], hr), 大于或等于 (b [2], lg), 小于或等于 (b [2], hg), 大于或等于 (b [3], lb), 小于或等于 (b [3], hb)))
+                    跳出循环 ()
+                .如果真结束
+                赋值 (p, 相加 (p, 相乘 (1, 4)))
+                赋值 (x, 相加 (x, 1))
+            .判断循环尾 ()
+            
+            .如果真 (大于 (x, x0))
+                
+                SetRect (RGNDATA.Buffer [RGNDATA].rdh.nCount, x0, y, x, 相加 (y, 1))
+                
+                .如果真 (小于 (x0, RGNDATA.rdh.rcBound.left))
+                    赋值 (RGNDATA.rdh.rcBound.left, x0)
+                .如果真结束
+                .如果真 (小于 (y, RGNDATA.rdh.rcBound.top))
+                    赋值 (RGNDATA.rdh.rcBound.top, y)
+                .如果真结束
+                .如果真 (大于 (x, RGNDATA.rdh.rcBound.right))
+                    赋值 (RGNDATA.rdh.rcBound.right, x)
+                .如果真结束
+                .如果真 (大于 (相加 (y, 1), RGNDATA.rdh.rcBound.bottom))
+                    赋值 (RGNDATA.rdh.rcBound.bottom, 相加 (y, 1))
+                .如果真结束
+                
+                
+                .如果真 (等于 (RGNDATA.rdh.nCount, 1000))
+                    赋值 (h, ExtCreateRegion (0, 相加 (32, 相乘 (16, 1000)), RGNDATA))
+                    .如果 (等于 (hRgn, 0))
+                        赋值 (hRgn, h)
+                    .否则
+                        CombineRgn (hRgn, hRgn, h, #RGN_OR)
+                        DeleteObject (h)
+                    .如果结束
+                    
+                    赋值 (RGNDATA.rdh.nCount, 0)
+                    SetRect (RGNDATA.rdh.rcBound, #MAXLONG, #MAXLONG, 0, 0)
+                    
+                .如果真结束
+                
+                赋值 (RGNDATA.rdh.nCount, 相加 (RGNDATA.rdh.nCount, 1))
+            .如果真结束
+            
+            
+            赋值 (x, 相加 (x, 1))
+        .判断循环尾 ()
+        
+        赋值 (p32, 相减 (p32, bm32.bmWidthBytes))
+    .变量循环尾 ()
+    
+    赋值 (h, ExtCreateRegion (0, 相加 (32, 相乘 (16, 1000)), RGNDATA))
+    .如果 (等于 (hRgn, 0))
+        赋值 (hRgn, h)
+    .否则
+        CombineRgn (hRgn, hRgn, h, #RGN_OR)
+        DeleteObject (h)
+    .如果结束
+    
+    SelectObject (hDC, holdBmp)
+    DeleteDC (hDC)
+    DeleteObject (SelectObject (hMemDC, holdBmp))
+    DeleteDC (hMemDC)
+    
+    返回 (hRgn)
+.如果结束
+
+
+
+.子程序 整数指针, 整数型, , 
+.参数 整数型变量, 整数型, 参考, 
+
+返回 (lstrcpyn_INT (整数型变量, 整数型变量, 0))
+
+.子程序 GetRGBValue, 空白型, , 
+.参数 rgb, 整数型, , 
+.参数 ret, 字节型, 数组, 
+
+RtlMoveMemory_BYTE (ret, rgb, 3)
+
+.子程序 min, 字节型, , 
+.参数 a, 整数型, , 
+.参数 b, 整数型, , 
+
+.如果 (小于 (a, b))
+    返回 (a)
+.否则
+    返回 (b)
+.如果结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

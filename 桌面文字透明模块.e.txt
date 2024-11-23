@@ -1,0 +1,143 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：透明桌面文字
+ ' 程序描述：
+ ' 程序作者：dingdongX
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+
+.DLL命令 SendMessage, 整数型, "", "SendMessageA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 RegCreateKey, 整数型, "advapi32.dll", "RegCreateKeyA", , 
+    .参数 hKey, 整数型, , 
+    .参数 lpSubKey, 文本型, , 
+    .参数 phkResult, 整数型, 传址, 
+
+.DLL命令 RegOpenKey, 整数型, "advapi32.dll", "RegOpenKeyA", , 
+    .参数 hKey, 整数型, , 
+    .参数 lpSubKey, 文本型, , 
+    .参数 phkResult, 整数型, 传址, 
+
+.DLL命令 RegQueryValueEx, 整数型, "advapi32.dll", "RegQueryValueExA", , 
+    .参数 hKey, 整数型, , 
+    .参数 lpValueName, 文本型, , 
+    .参数 lpReserved, 整数型, , 
+    .参数 lpType, 整数型, 传址, 
+    .参数 lpData, 字节集, 传址, 
+    .参数 lpcbData, 整数型, 传址, 
+
+.DLL命令 RegCloseKey, 整数型, "advapi32.dll", "RegCloseKey", , 
+    .参数 hKey, 整数型, , 
+
+.DLL命令 RegSetValueEx, 整数型, "advapi32.dll", "RegSetValueExA", , 
+    .参数 hKey, 整数型, , 
+    .参数 lpValueName, 文本型, , 
+    .参数 Reserved, 整数型, , 
+    .参数 dwType, 整数型, , 
+    .参数 lpData, 整数型, 传址, any
+    .参数 cbData, 整数型, , 
+
+.DLL命令 lstrlen_整数, 整数型, "kernel32", "lstrlenA", , 
+    .参数 lpString, 整数型, , 
+
+.DLL命令 lstrcpyn, 整数型, "kernel32", "lstrcpynA", , 
+    .参数 lpString1, 文本型, 传址, 
+    .参数 lpString2, 文本型, 传址, 
+    .参数 iMaxLength, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+ ' 调试输出 (透明桌面文字 (真))
+
+.子程序 透明桌面文字, 逻辑型, 公开, 
+.参数 是否透明, 逻辑型, , 
+
+.局部变量 ret, 逻辑型, , , 
+
+ ' HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
+.如果 (是否透明)
+    赋值 (ret, 写注册项 (#现行用户, “Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\ListviewShadow”, 1))
+    赋值 (ret, API_写整数注册表 (3, “Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced”, “ListviewShadow”, 1, 4))
+.否则
+     ' ret ＝ 写注册项 (#现行用户, “Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced\ListviewShadow”, 0)
+    赋值 (ret, API_写整数注册表 (3, “Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced”, “ListviewShadow”, 0, 4))
+.如果结束
+
+返回 (并且 (ret, 不等于 (SendMessage (65535, 26, 0, 0), 0)))
+
+.子程序 API_写整数注册表, 逻辑型, , 
+.参数 根类, 整数型, , hKey ,可以使用易语言常量 1、#根类,2、#现行设置,3、#现行用户, 4、#本地机器, 5、#所有用户,6、HKEY_PERFORMANCE_DATA,7、HKEY_DYN_DATA
+.参数 项名, 文本型, , lpSubKey
+.参数 数值名称, 文本型, , lpValueNam
+.参数 数值数据, 整数型, , lpData
+.参数 类型, 整数型, , dwType;REG_NONE = 0,REG_SZ = 1,REG_EXPAND_SZ = 2,REG_BINARY = 3,REG_DWORD = 4,REG_DWORD_LITTLE_ENDIAN = 4,REG_DWORD_BIG_ENDIAN = 5,REG_MULTI_SZ = 7
+
+.局部变量 hKey_hWnd, 整数型, , , 
+.局部变量 hKey, 整数型, , , 
+
+.判断开始 (等于 (根类, 1))
+    赋值 (hKey, 2147483648)
+.判断 (等于 (根类, 2))
+    赋值 (hKey, 2147483653)
+.判断 (等于 (根类, 3))
+    赋值 (hKey, 2147483649)
+.判断 (等于 (根类, 4))
+    赋值 (hKey, 2147483650)
+.判断 (等于 (根类, 5))
+    赋值 (hKey, 2147483651)
+.判断 (等于 (根类, 6))
+    赋值 (hKey, 2147483652)
+.判断 (等于 (根类, 7))
+    赋值 (hKey, 2147483654)
+.默认
+    返回 (假)
+.判断结束
+
+.判断开始 (不等于 (RegCreateKey (hKey, 项名, hKey_hWnd), 0))
+    
+.判断 (不等于 (RegCloseKey (hKey_hWnd), 0))
+    
+.判断 (不等于 (RegOpenKey (hKey, 项名, hKey_hWnd), 0))
+    
+.判断 (不等于 (RegSetValueEx (hKey_hWnd, 数值名称, 0, 类型, 数值数据, 4), 0))
+    
+.判断 (不等于 (RegCloseKey (hKey_hWnd), 0))
+    
+.默认
+    返回 (真)
+.判断结束
+
+返回 (假)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

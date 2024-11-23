@@ -1,0 +1,427 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：完成端口
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 Max_Buffer, "4096", , 
+.常量 GMEM_ZEROINIT, "64", , 
+.常量 FILE_SHARE_READ, "1", , 
+.常量 FILE_SHARE_WRITE, "2", , 
+.常量 GENERIC_READ, "2147483648", , 
+.常量 GENERIC_WRITE, "1073741824", , 
+.常量 OPEN_EXISTING, "3", , 
+.常量 INVALID_HANDLE_VALUE, "-1", , 
+.常量 FILE_LIST_DIRECTORY, "1", , 
+.常量 FILE_FLAG_BACKUP_SEMANTICS, "33554432", , 
+.常量 FILE_SHARE_DELETE, "4", , 
+.常量 , , , // 下面抄的...
+.常量 FILE_NOTIFY_CHANGE_FILE_NAME, "1", 公开, 下面是过滤器,文件被（建立，删除，重命名）
+.常量 FILE_NOTIFY_CHANGE_DIR_NAME, "2", 公开, 目录被（建立，删除，重命名）
+.常量 FILE_NOTIFY_CHANGE_ATTRIBUTES, "4", 公开, 
+.常量 FILE_NOTIFY_CHANGE_SIZE, "8", 公开, 文件大小被改变
+.常量 FILE_NOTIFY_CHANGE_LAST_WRITE, "16", 公开, 
+.常量 FILE_NOTIFY_CHANGE_LAST_ACCESS, "32", 公开, 
+.常量 FILE_NOTIFY_CHANGE_CREATION, "64", 公开, 
+.常量 FILE_NOTIFY_CHANGE_SECURITY, "256", 公开, 
+.常量 , , , 
+.常量 FILE_ACTION_ADDED, "1", 公开, 文件或文件夹被增加
+.常量 FILE_ACTION_REMOVED, "2", 公开, 文件或文件夹被删除
+.常量 FILE_ACTION_MODIFIED, "3", 公开, 文件或文件夹被改变
+.常量 FILE_ACTION_RENAMED_OLD_NAME, "4", 公开, 文件或文件夹改名（原名称）
+.常量 FILE_ACTION_RENAMED_NEW_NAME, "5", 公开, 文件或文件夹改名（新名称）
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 5 系统核心支持库
+
+
+
+
+数据类型 FILE_NOTIFY_INFORMATION, , 
+    .成员 NextEntryOffset, 空白型, , , 
+    .成员 Action, 空白型, , , 
+    .成员 FileNameLength, 空白型, , , 
+    .成员 lpFileName, 空白型, , , 
+
+数据类型 变更信息, 公开, 
+    .成员 文件名称, 文本型, , , 
+    .成员 变更类型, 整数型, , , 
+
+数据类型 WSADataType, , 
+    .成员 wVersion, 短整数型, , , Windows Sockets 版本信息。
+    .成员 wHighVersion, 短整数型, , , 通过加载库文件得到的最高的支持Winsock 的版本，它通常和wVersion值相同。
+    .成员 szDescription, 字节型, , "257", 长度257的文本，Windows Sockets 执行时的详细描述
+    .成员 szSystemStatus, 字节型, , "129", 长度129的文本，包含了相关的状态和配置的信息
+    .成员 iMaxSockets, 短整数型, , , 表示同时打开的socket最大数，为0表示没有限制。
+    .成员 iMaxUdpDg, 短整数型, , , 表示同时打开的数据报最大数，为0表示没有限制。
+    .成员 lpVendorInfo, 整数型, , , 厂商指定信息预留
+
+数据类型 sockaddr_in, , 
+    .成员 sin_family, 短整数型, , , 族
+    .成员 sin_port, 短整数型, , , 端口数值
+    .成员 sin_addr, 整数型, , , 整数型IP
+    .成员 sin_zero, 字节型, , "8", 0
+
+数据类型 地址信息, , 
+    .成员 地址, 文本型, , , 
+    .成员 端口, 整数型, , , 1-65535
+
+数据类型 fd_set, , 
+    .成员 fd_count, 整数型, , , 
+    .成员 fd_array, 整数型, , , 
+
+数据类型 HOSTENT, , 
+    .成员 hName, 整数型, , , 
+    .成员 hAliases, 整数型, , , 
+    .成员 hAddrType, 短整数型, , , 
+    .成员 hLength, 短整数型, , , 
+    .成员 hAddrList, 整数型, , , 
+
+数据类型 OVERLAPPED, , 
+    .成员 internal, 整数型, , , 
+    .成员 internalHigh, 整数型, , , 
+    .成员 offset, 整数型, , , 
+    .成员 OffsetHigh, 整数型, , , 
+    .成员 hEvent, 整数型, , , 
+
+数据类型 PER_IO_OPERATION_DATA, , 
+    .成员 Overlapped, OVERLAPPED, , , 
+    .成员 DataBuf, WSABUF, 传址, , 
+    .成员 Buffer, 字节集, 传址, , 
+    .成员 BytesSEND, 整数型, , , 
+    .成员 BytesRECV, 整数型, , , 
+
+数据类型 WSABUF, , 
+    .成员 len, 整数型, , , 
+    .成员 buf, 字节集, 传址, , 
+
+数据类型 PER_HANDLE_DATA, , 
+    .成员 Socket, 整数型, , , 
+
+数据类型 SYSTEM_INFO, , 
+    .成员 dwOemID, 空白型, , , 
+    .成员 dwPageSize, 空白型, , , 
+    .成员 lpMinimumApplicationAddress, 空白型, , , 
+    .成员 lpMaximumApplicationAddress, 空白型, , , 
+    .成员 dwActiveProcessorMask, 空白型, , , 
+    .成员 dwNumberOrfProcessors, 空白型, , , 
+    .成员 dwProcessorType, 空白型, , , 
+    .成员 dwAllocationGranularity, 空白型, , , 
+    .成员 wProcessorLevel, 空白型, , , 
+    .成员 wProcessorRevision, 空白型, , , 
+
+数据类型 目录信息, , 
+    .成员 目录URL, 文本型, , , 
+    .成员 处理函数, 子程序指针, , , 
+    .成员 监视类型, 整数型, , , 
+    .成员 监视子目录, 逻辑型, , , 
+    .成员 目录句柄, 整数型, , , 
+    .成员 OVERLAPPED, 整数型, , , 
+    .成员 info, 整数型, , , 
+    .成员 实际长, 整数型, , , 
+    .成员 变更时间, 日期时间型, , , 
+    .成员 延迟时间, 短整数型, , , 
+
+
+.DLL命令 _CloseHandle, 整数型, "", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 _CreateFile, 整数型, "", "CreateFileA", , 
+    .参数 lpFileName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwShareMode, 整数型, , 
+    .参数 lpSecurityAttributes, 整数型, , 
+    .参数 dwCreationDisposition, 整数型, , 
+    .参数 dwFlagsAndAttributes, 整数型, , 
+    .参数 hTemplateFile, 整数型, , 
+
+.DLL命令 GetVolumeNameForVolumeMountPoint, 空白型, "Kernel32.dll", "GetVolumeNameForVolumeMountPointA", , 
+    .参数 lpszFileName, 文本型, , 
+    .参数 lpszVolumePathName, 文本型, 传址, 
+    .参数 cchBufferLength, 整数型, , 
+
+.DLL命令 FindFirstVolumeMountPoint, 整数型, "Kernel32.dll", "FindFirstVolumeMountPointA", , 
+    .参数 扫描目录, 文本型, 传址, 
+    .参数 装在点, 文本型, 传址, 
+    .参数 长度, 整数型, , 
+
+.DLL命令 FindNextVolumeMountPoint, 逻辑型, "Kernel32.dll", "FindNextVolumeMountPointA", , 
+    .参数 寻找句柄, 整数型, , 
+    .参数 装在点, 文本型, 传址, 
+    .参数 长度, 整数型, , 
+
+.DLL命令 _CreateThread, 整数型, "", "CreateThread", , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 子程序指针, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, , 
+
+.DLL命令 _ReadDirectoryChangesW, 逻辑型, "", "ReadDirectoryChangesW", , 
+    .参数 hDirectory, 空白型, , 
+    .参数 lpBuffer, 整数型, , 
+    .参数 nBufferLength, 空白型, , 
+    .参数 bWatchSubtree, 逻辑型, , 
+    .参数 dwNotifyFilter, 空白型, , 
+    .参数 lpBytesReturned, 空白型, 传址, 
+    .参数 lpOverlapped, 整数型, , 
+    .参数 lpCompletionRoutine, 空白型, , 
+
+.DLL命令 _WideCharToMultiByte_Byte, 整数型, "", "WideCharToMultiByte", , 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpWideCharStr, 整数型, , 
+    .参数 cchWideChar, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpDefaultChar, 整数型, , 
+    .参数 lpUsedDefaultChar, 整数型, , 
+
+.DLL命令 _GlobalAlloc, 整数型, "", "GlobalAlloc", , 
+    .参数 wFlags, 整数型, , 
+    .参数 dwBytes, 整数型, , 
+
+.DLL命令 _GlobalFree, 整数型, "", "GlobalFree", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 CreateIoCompletionPort, 整数型, "Kernel32.dll", "CreateIoCompletionPort", , 
+    .参数 FileHandle, 整数型, , 
+    .参数 ExistingCompletionPort, 整数型, , 
+    .参数 CompletionKey, 整数型, , 
+    .参数 NumberOfConcurrentThreads, 整数型, , 
+
+.DLL命令 GetQueuedCompletionStatus, 逻辑型, "", "GetQueuedCompletionStatus", , 
+    .参数 CompletionPort, 整数型, , 
+    .参数 lpNumberOfBytesTransferred, 整数型, 传址, 
+    .参数 lpCompletionKey, 整数型, 传址, 
+    .参数 Overlapped, 整数型, 传址, 
+    .参数 dwMilliseconds, 整数型, , 
+
+.DLL命令 LPPER_HANDLE_DATA, 整数型, "", "lstrcpyn", , 
+    .参数 目的指针, 字节集, 传址, 
+    .参数 源指针, 字节集, 传址, 
+    .参数 复制长度, 整数型, , 0
+
+.DLL命令 GetLastError, 整数型, "Kernel32.dll", "GetLastError", , 
+
+.DLL命令 取内存变量地址3_, 整数型, "kernel32", "lstrcpynA", , 
+    .参数 数据1, 字节集, , lpString1
+    .参数 数据2, 字节集, , lpString2
+    .参数 数据长度, 整数型, , iMaxLength
+
+.程序集 程序集1, , , 
+
+.程序集变量 目录监视, 目录监视类, , , 
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+.局部变量 Id, 整数型, , , 
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+.局部变量 映射目录数组, 文本型, , "0", 
+.局部变量 I, 整数型, , , 
+.局部变量 aa, 整数型, , , 
+
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+目录监视.加入目录 (“D:\”, &处理函数, 1, 真)
+目录监视.开始监视 ()
+
+.子程序 处理函数, 空白型, , 
+.参数 BasePtr, 整数型, , 
+
+.局部变量 i, 整数型, , , 
+.局部变量 文件变更信息, 变更信息, , "0", 
+.局部变量 内存地址, 整数型, , , 
+.局部变量 索引值, 整数型, , , 
+
+赋值 (索引值, 目录监视.取得文件变更 (BasePtr, 文件变更信息))
+.计次循环首 (取数组成员数 (文件变更信息), i)
+    输出调试文本 (相加 (目录监视.取得监视目录 (索引值), 文件变更信息 [i], 文件名称, 到文本 (文件变更信息 [i], 变更类型)))
+.计次循环尾 ()
+
+.类模块 目录监视类, , , 
+
+.程序集变量 监控目录信息, 目录信息, , "0", 
+.程序集变量 接口锁, 逻辑型, , , 
+.程序集变量 完成端口句柄, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 加入目录, 整数型, 公开, 只能在启动监视前添加
+.参数 目录URL, 文本型, , 
+.参数 处理函数, 子程序指针, , 
+.参数 监视类型, 整数型, 可空, 
+.参数 监视子目录, 逻辑型, 可空, 
+.参数 延迟时间, 短整数型, 可空, 
+
+.局部变量 临时信息, 目录信息, , , 
+.局部变量 hFile, 整数型, , , 
+
+赋值 (临时信息.目录URL, 目录URL)
+赋值 (临时信息.处理函数, 处理函数)
+.如果 (是否为空 (监视类型))
+    赋值 (临时信息.监视类型, 位或 (#FILE_NOTIFY_CHANGE_FILE_NAME, #FILE_NOTIFY_CHANGE_DIR_NAME, #FILE_NOTIFY_CHANGE_ATTRIBUTES, #FILE_NOTIFY_CHANGE_SIZE, #FILE_NOTIFY_CHANGE_LAST_WRITE, #FILE_NOTIFY_CHANGE_LAST_ACCESS, #FILE_NOTIFY_CHANGE_CREATION, #FILE_NOTIFY_CHANGE_SECURITY))
+.否则
+    
+    赋值 (临时信息.监视类型, 监视类型)
+.如果结束
+.如果 (是否为空 (监视子目录))
+    赋值 (临时信息.监视子目录, 真)
+.否则
+    
+    赋值 (临时信息.监视子目录, 监视子目录)
+.如果结束
+.如果 (是否为空 (延迟时间))
+    赋值 (临时信息.延迟时间, 0)
+.否则
+    
+    赋值 (临时信息.延迟时间, 延迟时间)
+.如果结束
+赋值 (临时信息.变更时间, 增减时间 (取现行时间 (), 8, -3))
+赋值 (hFile, _CreateFile (目录URL, 1, 7, 0, 3, 1107296256, 0))
+.如果 (等于 (hFile, -1))
+    返回 (0)
+    
+.否则
+    
+    赋值 (临时信息.目录句柄, hFile)
+    加入成员 (监控目录信息, 临时信息)
+    返回 (hFile)
+.如果结束
+
+
+.子程序 开始监视, 空白型, 公开, 
+.局部变量 i, 整数型, , , 
+.局部变量 文件家个数, 整数型, , , 
+.局部变量 LPHandleData, 整数型, , , 
+.局部变量 局_dwBytesTransferred, 整数型, , , 
+.局部变量 LPerHandleData, 整数型, , , 
+.局部变量 LPerIoData, 整数型, , , 
+.局部变量 实际长, 整数型, , , 
+.局部变量 ID, 整数型, , , 
+.局部变量 传送参数, 整数型, , , 
+.局部变量 OVERLAPPED, 字节集, , , 
+
+赋值 (完成端口句柄, CreateIoCompletionPort (#INVALID_HANDLE_VALUE, 0, 0, 0))
+赋值 (文件家个数, 取数组成员数 (监控目录信息))
+.计次循环首 (文件家个数, i)
+    赋值 (监控目录信息 [i], 实际长, 0)
+    赋值 (监控目录信息 [i], info, _GlobalAlloc (#GMEM_ZEROINIT, 相加 (相乘 (4, 3), #Max_Buffer)))
+    赋值 (监控目录信息 [i], OVERLAPPED, _GlobalAlloc (#GMEM_ZEROINIT, 20))
+    CreateIoCompletionPort (监控目录信息 [i], 目录句柄, 完成端口句柄, 监控目录信息 [i], OVERLAPPED, 0)
+    _ReadDirectoryChangesW (监控目录信息 [i], 目录句柄, 监控目录信息 [i], info, #Max_Buffer, 监控目录信息 [i], 监视子目录, 监控目录信息 [i], 监视类型, 监控目录信息 [i], 实际长, 监控目录信息 [i], OVERLAPPED, 0)
+.计次循环尾 ()
+.判断循环首 (大于 (文件家个数, 0))
+    .如果 (GetQueuedCompletionStatus (完成端口句柄, 局_dwBytesTransferred, LPerHandleData, LPerIoData, -1))
+        .计次循环首 (文件家个数, i)
+            .如果真 (等于 (监控目录信息 [i], OVERLAPPED, LPerHandleData))
+                赋值 (传送参数, _GlobalAlloc (#GMEM_ZEROINIT, 8))
+                写到内存 (监控目录信息 [i], info, 传送参数, 4)
+                写到内存 (i, 相加 (传送参数, 4), 4)
+                _CloseHandle (_CreateThread (0, 0, 监控目录信息 [i], 处理函数, 传送参数, 0, 0))
+                赋值 (监控目录信息 [i], 实际长, 0)
+                赋值 (监控目录信息 [i], info, _GlobalAlloc (#GMEM_ZEROINIT, 相加 (相乘 (4, 3), #Max_Buffer)))
+                _ReadDirectoryChangesW (监控目录信息 [i], 目录句柄, 监控目录信息 [i], info, #Max_Buffer, 监控目录信息 [i], 监视子目录, 监控目录信息 [i], 监视类型, 监控目录信息 [i], 实际长, LPerHandleData, 0)
+            .如果真结束
+            
+        .计次循环尾 ()
+        
+    .否则
+        
+        跳出循环 ()
+    .如果结束
+    
+.判断循环尾 ()
+
+
+.子程序 是否可以忽略变化, 逻辑型, 公开, 
+.参数 索引值, 整数型, , 
+
+.如果 (大于或等于 (取时间间隔 (取现行时间 (), 监控目录信息 [索引值], 变更时间, 8), 监控目录信息 [索引值], 延迟时间))
+    赋值 (监控目录信息 [索引值], 变更时间, 取现行时间 ())
+    延时 (相乘 (监控目录信息 [索引值], 延迟时间, 1000))
+    返回 (假)
+.否则
+    
+    返回 (真)
+.如果结束
+
+
+.子程序 停止监视, 空白型, 公开, 
+.局部变量 i, 整数型, , , 
+
+_CloseHandle (完成端口句柄)
+.计次循环首 (取数组成员数 (监控目录信息), i)
+    _CloseHandle (监控目录信息 [i], 目录句柄)
+    _GlobalFree (监控目录信息 [i], OVERLAPPED)
+.计次循环尾 ()
+
+.子程序 取得监视目录, 文本型, 公开, 
+.参数 ID, 空白型, , 
+
+返回 (监控目录信息 [ID], 目录URL)
+
+.子程序 取得文件变更, 整数型, 公开, 
+.参数 BasePtr, 整数型, , 
+.参数 文件变更信息, 变更信息, 数组, 
+
+.局部变量 内存地址, 整数型, , , 
+.局部变量 info, FILE_NOTIFY_INFORMATION, , , 
+.局部变量 str1, 文本型, , , 
+.局部变量 临时更改, 变更信息, , , 
+.局部变量 变化信息地址, 整数型, , , 
+.局部变量 索引值, 整数型, , , 
+
+赋值 (索引值, 取字节集数据 (取字节集右边 (指针到字节集 (BasePtr, 8), 4), 3, ))
+赋值 (变化信息地址, 取字节集数据 (取字节集左边 (指针到字节集 (BasePtr, 8), 4), 3, ))
+赋值 (内存地址, 变化信息地址)
+清除数组 (文件变更信息)
+.循环判断首 ()
+    赋值 (info.NextEntryOffset, 取字节集数据 (指针到字节集 (相加 (内存地址, 0), 4), #整数型, ))
+    赋值 (info.Action, 取字节集数据 (指针到字节集 (相加 (内存地址, 4), 4), #整数型, ))
+    赋值 (info.FileNameLength, 取字节集数据 (指针到字节集 (相加 (内存地址, 8), 4), #整数型, ))
+    赋值 (info.lpFileName, 相加 (内存地址, 12))
+    赋值 (str1, UnicodeToAnsi_Ptr (info.lpFileName, 相除 (info.FileNameLength, 2)))
+    赋值 (临时更改.变更类型, info.Action)
+    赋值 (临时更改.文件名称, str1)
+    加入成员 (文件变更信息, 临时更改)
+    赋值 (内存地址, 相加 (内存地址, info.NextEntryOffset))
+.循环判断尾 (不等于 (info.NextEntryOffset, 0))
+_GlobalFree (BasePtr)
+_GlobalFree (变化信息地址)
+返回 (索引值)
+
+.子程序 UnicodeToAnsi_Ptr, 文本型, , 
+.参数 Ptr, 整数型, , 
+.参数 U长度, 空白型, 可空, 
+
+.局部变量 retLen, 空白型, , , 
+.局部变量 str, 文本型, , , 
+
+.如果真 (是否为空 (U长度))
+    赋值 (U长度, -1)
+.如果真结束
+赋值 (retLen, _WideCharToMultiByte_Byte (0, 0, Ptr, U长度, “”, 0, 0, 0))
+赋值 (str, 取空白文本 (retLen))
+赋值 (retLen, _WideCharToMultiByte_Byte (0, 0, Ptr, U长度, str, retLen, 0, 0))
+返回 (str)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,205 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 256
+    高度 = 257
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “BY：cnlong QQ:7678281”
+    帮助文件名 = “”
+
+
+
+.常量 SC_MANAGER_ALL_ACCESS, "983103", , 
+.常量 SERVICE_ALL_ACCESS, "983551", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' iext5 {E5000198-4471-40e2-92BC-D0BA075BDBB2} 2 0 扩展界面支持库五
+
+
+
+
+数据类型 SERVICE_DESCRIPTION, , 
+    .成员 lpDescription, 文本型, , , 
+
+数据类型 SERVICE_STATUS, , 
+    .成员 dwServiceType, 整数型, , , 
+    .成员 dwCurrentState, 整数型, , , 
+    .成员 dwControlsAccepted, 整数型, , , 
+    .成员 dwWin32ExitCode, 整数型, , , 
+    .成员 dwServiceSpecificExitCode, 整数型, , , 
+    .成员 dwCheckPoint, 整数型, , , 
+    .成员 dwWaitHint, 整数型, , , 
+
+
+.DLL命令 打开SC管理服务_, 整数型, "advapi32.dll", "OpenSCManagerA", , 
+    .参数 机器名称, 整数型, , 
+    .参数 数据库名, 整数型, , 
+    .参数 数据库, 整数型, , 
+
+.DLL命令 关闭SC服务管理句柄_, 整数型, "advapi32.dll", "CloseServiceHandle", , 
+    .参数 SC对象句柄, 整数型, , 
+
+.DLL命令 打开服务_, 整数型, "advapi32.dll", "OpenServiceA", , 
+    .参数 hSCManager, 整数型, , 
+    .参数 lpServiceName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+
+.DLL命令 查询服务状态_, 整数型, "advapi32.dll", "QueryServiceStatus", , 
+    .参数 hService, 整数型, , 
+    .参数 lpServiceStatus, SERVICE_STATUS, 传址, 
+
+.DLL命令 启动服务_, 整数型, "advapi32.dll", "StartServiceA", , 
+    .参数 服务句柄, 整数型, , 
+    .参数 dwNumServiceArgs, 整数型, , 
+    .参数 lpServiceArgVectors, 整数型, , 
+
+.DLL命令 锁定服务数据库_, 整数型, "advapi32.dll", "LockServiceDatabase", , 
+    .参数 hSCManager, 整数型, , 
+
+.DLL命令 更改服务配置_, 整数型, "ADVAPI32.DLL", "ChangeServiceConfig2A", , 
+    .参数 hService, 整数型, , 
+    .参数 dwInfoLevel, 整数型, , 
+    .参数 lpInfo, SERVICE_DESCRIPTION, , 
+
+.DLL命令 控制服务_, 整数型, "advapi32.dll", "ControlService", , 
+    .参数 服务句柄, 整数型, , 
+    .参数 dwControl, 整数型, , 
+    .参数 lpServiceStatus, 字节集, , 
+
+.DLL命令 读取服务配置_, 整数型, "advapi32.dll", "QueryServiceConfig2A", , 
+    .参数 hService, 整数型, , 
+    .参数 dwInfoLevel, 整数型, , 
+    .参数 lpBuffer, SERVICE_DESCRIPTION, , 
+    .参数 cbBufSize, 整数型, , 
+    .参数 pcbBytesNeeded, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 hSCManager, 整数型, , , 
+.局部变量 hService, 整数型, , , 
+.局部变量 STATUS, SERVICE_STATUS, , , 
+
+赋值 (hSCManager, 打开SC管理服务_ (0, 0, 2))
+赋值 (hService, 打开服务_ (hSCManager, .内容, #SERVICE_ALL_ACCESS))
+查询服务状态_ (hService, STATUS) ' 取服务状态
+.如果 (等于 (STATUS.dwCurrentState, 4)) ' 4表示已经启动 1表示未启动
+    赋值 (.内容, “服务已启动”)
+.否则
+    .如果 (并且 (不等于 (启动服务_ (hService, 0, 0), 0), 不等于 (STATUS.dwCurrentState, 4)))
+        赋值 (.内容, “启动成功”)
+    .否则
+        赋值 (.内容, “启动失败 可能被禁止启动或服务名称无效”)
+    .如果结束
+    
+.如果结束
+关闭SC服务管理句柄_ (hService)
+关闭SC服务管理句柄_ (hSCManager)
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+.局部变量 hSCManager, 整数型, , , 
+.局部变量 hService, 整数型, , , 
+.局部变量 STATUS, SERVICE_STATUS, , , 
+
+赋值 (hSCManager, 打开SC管理服务_ (0, 0, #SC_MANAGER_ALL_ACCESS))
+赋值 (hService, 打开服务_ (hSCManager, .内容, #SERVICE_ALL_ACCESS))
+查询服务状态_ (hService, STATUS) ' 取服务状态
+.如果 (等于 (STATUS.dwCurrentState, 1)) ' 4表示已经启动 1表示未启动
+    赋值 (.内容, “服务已停止”)
+.否则
+    .如果 (并且 (不等于 (控制服务_ (hService, 1, 取空白字节集 (28)), 0), 不等于 (STATUS.dwCurrentState, 1)))
+        赋值 (.内容, “停止成功”)
+    .否则
+        赋值 (.内容, “停止失败 可能被禁止启动或服务名称无效”)
+    .如果结束
+    
+.如果结束
+关闭SC服务管理句柄_ (hService)
+关闭SC服务管理句柄_ (hSCManager)
+
+
+.子程序 _按钮3_被单击, 空白型, , 
+.局部变量 SvcMgr, 整数型, , , 
+.局部变量 Svc, 整数型, , , 
+.局部变量 result, 整数型, , , 
+.局部变量 SERVICE, SERVICE_DESCRIPTION, , , 
+
+赋值 (SvcMgr, 打开SC管理服务_ (0, 0, #SC_MANAGER_ALL_ACCESS)) ' 983103
+.如果真 (不等于 (SvcMgr, 0))
+    赋值 (Svc, 打开服务_ (SvcMgr, .内容, #SERVICE_ALL_ACCESS)) ' 983551
+    .如果真 (不等于 (Svc, 0))
+        赋值 (.内容, 取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, .内容, “\Description”), ))
+        关闭SC服务管理句柄_ (Svc)
+    .如果真结束
+    关闭SC服务管理句柄_ (SvcMgr)
+.如果真结束
+
+
+.子程序 _按钮4_被单击, 空白型, , 
+.局部变量 SvcMgr, 空白型, , , 
+.局部变量 Svc, 空白型, , , 
+.局部变量 result, 空白型, , , 
+.局部变量 SERVICE, SERVICE_DESCRIPTION, , , 
+
+赋值 (SvcMgr, 打开SC管理服务_ (0, 0, #SC_MANAGER_ALL_ACCESS)) ' 983103
+.如果真 (不等于 (SvcMgr, 0))
+    赋值 (Svc, 打开服务_ (SvcMgr, .内容, #SERVICE_ALL_ACCESS)) ' 983551
+    .如果真 (不等于 (Svc, 0))
+        .如果 (不等于 (.内容, “”))
+            赋值 (SERVICE.lpDescription, .内容)
+            锁定服务数据库_ (Svc)
+            赋值 (result, 更改服务配置_ (Svc, 1, SERVICE)) ' SERVICE_CONFIG_DESCRIPTION
+        .否则
+            信息框 (“描述不能为空！”, 0, )
+        .如果结束
+        关闭SC服务管理句柄_ (Svc)
+    .如果真结束
+    关闭SC服务管理句柄_ (SvcMgr)
+.如果真结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

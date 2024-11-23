@@ -1,0 +1,234 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “[雷盟教你学E]操作系统版本号及IE版本号的获取”
+    帮助文件名 = “”
+
+
+
+.常量 VER_PLATFORM_WIN32s, "0", , Windows 3.x
+.常量 VER_PLATFORM_WIN32_WINDOWS, "1", , Windows 9.x
+.常量 VER_PLATFORM_WIN32_NT, "2", , Windows NT、2000、XP
+.常量 VER_NT_WORKSTATION, "0", , 工作站
+.常量 VER_NT_SERVER, "2", , 服务器
+.常量 VER_SUITE_DATACENTER, "128", , 数据处理
+.常量 VER_SUITE_ENTERPRISE, "1", , 企业版
+.常量 VER_SUITE_PERSONAL, "512", , 专业版、个人版
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 OSVERSIONINFOEX, , 版本信息;
+    .成员 dwOSVersionInfoSize, 整数型, , , 
+    .成员 dwMajorVersion, 整数型, , , 主版本号
+    .成员 dwMinorVersion, 整数型, , , 次版本号
+    .成员 dwBuildNumber, 整数型, , , 内部版本号
+    .成员 dwPlatformId, 整数型, , , 操作平台标识
+    .成员 szCSDVersion, 文本型, , "128", 
+    .成员 wServicePackMajor, 整数型, , , 
+    .成员 wServicePackMinor, 整数型, , , 
+    .成员 wSuiteMask, 整数型, , , 根据这个值可得到更具体的系统类型
+    .成员 wProductType, 字节型, , , 产品类型
+    .成员 wReserved, 字节型, , , 
+
+数据类型 DllVersionInfo, , 
+    .成员 cbSize, 整数型, , , 
+    .成员 dwMajorVersion, 整数型, , , 
+    .成员 dwMinorVersion, 整数型, , , 
+    .成员 dwBuildNumber, 整数型, , , 
+    .成员 dwPlatformId, 整数型, , , 
+
+
+.DLL命令 GetVersionEx, 整数型, "kernel32.dll", "GetVersionExA", , 在一个OSVERSIONINFO结构中载入与平台和操作系统有关的版本信息　非零表示成功，零表示失败
+    .参数 版本, OSVERSIONINFOEX, , OSVERSIONINFO，用于装载版本信息的结构。在正式调用函数之前，必须先将这个结构的dwOSVersionInfoSize字段设为结构的大小（148）
+
+
+.DLL命令 DllGetVersion, 整数型, "Shlwapi.dll", "DllGetVersion", , 
+    .参数 dwVersion, DllVersionInfo, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+赋值 (., 相加 (“您使用的操作系统类型及版本号为：”, #换行符, GetOSType ()))
+赋值 (., 相加 (“您使用的IE浏览器的版本号为：”, #换行符, GetIEVer ()))
+
+.子程序 GetIEVer, 文本型, , 
+.局部变量 IEVerInfo, DllVersionInfo, , , 
+.局部变量 GetIEVer, 文本型, , , 
+
+ ' ********************************
+ ' 获得IE的版本
+ ' ********************************
+赋值 (IEVerInfo.cbSize, 20) ' IEVerInfo
+DllGetVersion (IEVerInfo)
+赋值 (GetIEVer, 相加 (到文本 (IEVerInfo.dwMajorVersion), “.”, 到文本 (IEVerInfo.dwMinorVersion), “.”, 到文本 (IEVerInfo.dwBuildNumber)))
+返回 (GetIEVer)
+
+.子程序 GetOSType, 文本型, , 
+.局部变量 osvOSInfo, OSVERSIONINFOEX, , , 
+.局部变量 GetOSType, 文本型, , , 
+
+ ' ********************************
+ ' 1. 获得操作系统的类型
+ ' ********************************
+
+赋值 (osvOSInfo.dwOSVersionInfoSize, 148)
+
+.如果真 (不等于 (GetVersionEx (osvOSInfo), 1))
+    返回 (“”)
+.如果真结束
+
+.判断开始 (等于 (osvOSInfo.dwPlatformId, #VER_PLATFORM_WIN32s)) ' Win 3.x
+    赋值 (GetOSType, 相加 (“Windows 3.x”, “      ”, GetOSVerNumber (osvOSInfo)))
+.判断 (等于 (osvOSInfo.dwPlatformId, #VER_PLATFORM_WIN32_WINDOWS))
+    赋值 (GetOSType, 相加 (GetWin9xVer (osvOSInfo), “      ”, GetOSVerNumber (osvOSInfo)))
+.判断 (等于 (osvOSInfo.dwPlatformId, #VER_PLATFORM_WIN32_NT))
+    .判断开始 (或者 (等于 (osvOSInfo.dwMajorVersion, 3), 等于 (osvOSInfo.dwMajorVersion, 4)))
+        赋值 (GetOSType, 相加 (“Windows NT ”, GetOSVerNumber (osvOSInfo)))
+    .判断 (等于 (osvOSInfo.dwMajorVersion, 5))
+        赋值 (GetOSType, 相加 (GetWin2000XPVer (osvOSInfo), “      ”, GetOSVerNumber (osvOSInfo)))
+    .默认
+        
+    .判断结束
+    
+.默认
+    
+.判断结束
+返回 (GetOSType)
+
+.子程序 GetWin9xVer, 文本型, , 
+.参数 info, OSVERSIONINFOEX, , 
+
+.局部变量 GetOSCSDVer, 文本型, , , 
+.局部变量 I, 整数型, , , 
+.局部变量 结果, 逻辑型, , , 
+
+ ' *************************************
+ ' 2. 获得Win9x的类型
+ ' *************************************
+赋值 (结果, 假)
+.判断开始 (等于 (info.dwMinorVersion, 0))
+    数组排序 (info.szCSDVersion, )
+    .计次循环首 (取数组下标 (info.szCSDVersion, ), I)
+        .如果真 (等于 (到大写 (info.szCSDVersion [I]), “C”))
+            赋值 (结果, 真)
+            跳出循环 ()
+        .如果真结束
+        
+    .计次循环尾 ()
+    .如果 (结果)
+        赋值 (GetOSCSDVer, “Windows 95 OSR2”)
+    .否则
+        赋值 (GetOSCSDVer, “Windows 95”)
+    .如果结束
+    
+.判断 (等于 (info.dwMinorVersion, 10))
+    数组排序 (., )
+    .计次循环首 (取数组下标 (., ), )
+        .如果真 (等于 (到大写 (info.szCSDVersion [I]), “A”))
+            赋值 (真)
+            跳出循环 ()
+        .如果真结束
+        
+    .计次循环尾 ()
+    .如果 ()
+        赋值 (GetOSCSDVer, “Windows 98 Se”)
+    .否则
+        赋值 (GetOSCSDVer, “Windows 98”)
+    .如果结束
+    
+.默认
+    赋值 (GetOSCSDVer, “Windows Me”)
+.判断结束
+返回 (GetOSCSDVer)
+
+.子程序 GetWin2000XPVer, 文本型, , 
+.参数 info, OSVERSIONINFOEX, , 
+
+.局部变量 GetWin2000XPVer, 文本型, , , 
+
+ ' ********************************
+ ' 3. 获得Win2000、XP的类型
+ ' ********************************
+输出调试文本 (info.dwMinorVersion)
+
+输出调试文本 (info.wProductType)
+.如果 (等于 (info.dwMinorVersion, 0)) ' + Win 2000
+    .判断开始 (等于 (info.wProductType, #VER_NT_WORKSTATION)) ' ++ Win 2000 工作站
+        赋值 (GetWin2000XPVer, “Windows 2000 Professional”)
+    .判断 (等于 (info.wProductType, #VER_NT_SERVER)) ' ++ Win 2000 服务器
+        .判断开始 (等于 (info.wSuiteMask, #VER_SUITE_DATACENTER))
+            赋值 (GetWin2000XPVer, “Windows 2000 DataCenter Server”) ' +++ Win 2000 数据处理
+        .判断 (等于 (info.wSuiteMask, #VER_SUITE_ENTERPRISE))
+            赋值 (GetWin2000XPVer, “Windows 2000 Advanced Server”) ' +++ Win 2000 企业版
+        .默认
+            赋值 (GetWin2000XPVer, “Windows 2000 Server”) ' +++ Win 2000 服务器版
+        .判断结束
+        
+    .默认
+        
+    .判断结束
+    
+.否则
+    .如果 (等于 (., 1)) ' + Win XP or Win .NET
+        .如果 () ' ++ Win XP工作
+
+.子程序 GetOSVerNumber, 文本型, , 
+.参数 info, OSVERSIONINFOEX, , 
+
+.局部变量 GetOSVerNumber, 文本型, , , 
+
+ ' ********************************
+ ' 4. 获得操作系统的版本号
+ ' ********************************
+赋值 (GetOSVerNumber, 相加 (到文本 (info.dwMajorVersion), “.”, 到文本 (info.dwMinorVersion), “.”, 到文本 (info.dwBuildNumber)))
+返回 (GetOSVerNumber)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

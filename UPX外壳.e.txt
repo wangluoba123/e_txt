@@ -1,0 +1,313 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：xxx
+ ' 程序描述：
+ ' 程序作者：离不开电脑
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：lbkdn@163.com
+ ' 主页地址：http://56q.5d6d.com/
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 356
+    高度 = 270
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 假
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “UPX压缩工具”
+    帮助文件名 = “”
+
+
+
+.图片 upx, " ' 已保存到：D:\易语言学习\Data\UPX外壳.e\upx", , upx3.03w
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' edroptarget {9DA96BF9CEBD45c5BFCF94CBE61671F5} 2 0 拖放支持库
+
+
+
+
+数据类型 STARTUPINFO, , 
+    .成员 cb, 整数型, , , 
+    .成员 lpReserved, 文本型, , , 
+    .成员 lpDesktop, 文本型, , , 
+    .成员 lpTitle, 文本型, , , 
+    .成员 dwX, 整数型, , , 
+    .成员 dwY, 整数型, , , 
+    .成员 dwXSize, 整数型, , , 
+    .成员 dwYSize, 整数型, , , 
+    .成员 dwXCountChars, 整数型, , , 
+    .成员 dwYCountChars, 整数型, , , 
+    .成员 dwFillAttribute, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+    .成员 wShowWindow, 短整数型, , , 
+    .成员 cbReserved2, 短整数型, , , 
+    .成员 lpReserved2, 整数型, , , 
+    .成员 hStdInput, 整数型, , , 
+    .成员 hStdOutput, 整数型, , , 
+    .成员 hStdError, 整数型, , , 
+
+数据类型 SECURITY_ATTRIBUTES, , 
+    .成员 nLength, 整数型, , , 
+    .成员 lpSecurityDescriptor, 整数型, , , 
+    .成员 bInheritHandle, 逻辑型, , , 
+
+数据类型 PROCESS_INFORMATION, , 
+    .成员 hProcess, 整数型, , , 
+    .成员 hThread, 整数型, , , 
+    .成员 dwProcessId, 整数型, , , 
+    .成员 dwThreadId, 整数型, , , 
+
+
+.DLL命令 CreateProcess, 整数型, "", "CreateProcessA", , 
+    .参数 lpApplicationName, 文本型, , 
+    .参数 lpCommandLine, 文本型, , 
+    .参数 lpProcessAttributes, 整数型, , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 bInheritHandles, 逻辑型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpEnvironment, 整数型, , 
+    .参数 lpCurrentDriectory, 文本型, , 
+    .参数 lpStartupInfo, STARTUPINFO, 传址, 
+    .参数 lpProcessInformation, PROCESS_INFORMATION, 传址, 
+
+.DLL命令 CreatePipe, 整数型, "", "CreatePipe", , 
+    .参数 phReadPipe, 整数型, 传址, 
+    .参数 phWritePipe, 整数型, 传址, 
+    .参数 lpPipeAttributes, SECURITY_ATTRIBUTES, 传址, 
+    .参数 nSize, 整数型, , 
+
+.DLL命令 ReadFile, 整数型, "", "ReadFile", , 
+    .参数 hFile, 整数型, , 
+    .参数 lpBuffer, 字节集, 传址, 
+    .参数 nNumberOfBytesToRead, 整数型, , 
+    .参数 lpNumberOfBytesRead, 整数型, 传址, 
+    .参数 lpOverlapped, 整数型, , 
+
+.DLL命令 WriteFile, 整数型, "", "WriteFile", , 
+    .参数 hFile, 整数型, , 
+    .参数 lpBuffer, 字节集, 传址, 
+    .参数 nNumberOfBytesToRead, 整数型, , 
+    .参数 lpNumberOfBytesRead, 整数型, 传址, 
+    .参数 lpOverlapped, 整数型, , 
+
+.DLL命令 CloseHandle, 整数型, "", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 PeekNamedPipe, 整数型, "", "PeekNamedPipe", , 
+    .参数 hNamedPipe, 整数型, , 
+    .参数 lpBuffer, 整数型, , 
+    .参数 nBufferSize, 整数型, , 
+    .参数 lpBytesRead, 整数型, , 
+    .参数 lpTotalBytesAvail, 整数型, 传址, 
+    .参数 lpBytesLeftThisMessage, 整数型, , 
+
+.DLL命令 GetExitCodeProcess, 整数型, "", "GetExitCodeProcess", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpExitCode, 整数型, 传址, 
+
+.DLL命令 GetShortPathNameA, 整数型, "kernel32.dll", "GetShortPathNameA", , 返回装载到lpszShortPath缓冲区的字符数量。如lpszShortPath的长度不足，不能容下文件名，就返回需要的缓冲区长度
+    .参数 lpszLongPath, 文本型, , 指定欲获取短路径名的那个文件的名字。可以是个完整路径，或者由当前目录决定
+    .参数 lpszShortPath, 文本型, , 指定一个缓冲区，用于装载文件的短路径和文件名，需先分配空间。
+    .参数 cchBuffer, 整数型, , lpszShortPath缓冲区长度，请设置为260。
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 n, 整数型, , , 
+.局部变量 命令行, 文本型, , "0", 
+
+赋值 (.现行选中项, 1)
+_启动窗口.取窗口句柄 ().未知支持库函数_0 ()
+
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+.局部变量 UPX文件, 文本型, , , 
+
+赋值 (UPX文件, 相加 (取运行目录 (), “\upx.exe”))
+.如果真 (文件是否存在 (UPX文件)) ' 删除UPX文件
+    删除文件 (UPX文件)
+.如果真结束
+
+
+.子程序 _按钮_执行_被单击, 空白型, , 
+.局部变量 命令, 文本型, , , 
+.局部变量 选项, 文本型, , , 
+.局部变量 UPX文件, 文本型, , , 
+
+.如果真 (取反 (文件是否存在 (.内容))) ' 检测文件
+    信息框 (“请先打开文件”, 相加 (48, 4096), )
+    返回 ()
+.如果真结束
+赋值 (UPX文件, 相加 (取运行目录 (), “\upx.exe”))
+.如果真 (取反 (文件是否存在 (UPX文件))) ' 检测UPX文件
+    写到文件 (UPX文件, #upx)
+.如果真结束
+赋值 (选项, “--no-color -q ”)
+连续赋值 (真, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止)
+
+.如果真 (.选中) ' 备份
+    赋值 (选项, 相加 (选项, “-k ”))
+.如果真结束
+
+.如果 (.选中) ' 解压缩
+    赋值 (命令, “-d ”)
+.否则
+    .如果 (.选中) ' 压缩强度
+        赋值 (命令, 到文本 (“--best ”))
+    .否则
+        
+    .如果结束
+    
+.如果结束
+
+.判断开始 (等于 (.现行选中项, 1)) ' 额外数据
+    赋值 (选项, 相加 (选项, “--overlay=strip ”))
+.判断 (等于 (.现行选中项, 2))
+    赋值 (选项, 相加 (选项, “--overlay=skip ”))
+.默认
+    
+.判断结束
+.判断开始 (等于 (.现行选中项, 1)) ' 图标
+    赋值 (选项, 相加 (选项, “--compress-icons=1 ”))
+.判断 (等于 (.现行选中项, 2))
+    赋值 (选项, 相加 (选项, “--compress-icons=0 ”))
+.默认
+    
+.判断结束
+.如果真 (.选中)
+    赋值 (选项, 相加 (选项, “-f ”))
+.如果真结束
+.如果真 (.选中)
+    赋值 (选项, 相加 (选项, “--compress-exports=0 ”))
+.如果真结束
+.如果真 (.选中)
+    赋值 (选项, 相加 (选项, “--compress-resources=0 ”))
+.如果真结束
+.如果真 (.选中)
+    赋值 (选项, 相加 (选项, “--strip-relocs=0 ”))
+.如果真结束
+.如果真 (.选中)
+    赋值 (选项, 相加 (选项, “--all-methods ”))
+.如果真结束
+.如果真 (.选中)
+    赋值 (选项, 相加 (选项, “--all-filters ”))
+.如果真结束
+.如果真 (.选中)
+    赋值 (选项, 相加 (选项, “-f ”))
+.如果真结束
+取控制台程序返回 (取短路径 (UPX文件), 相加 (“ ”, 命令, 选项, 取短路径 (.内容)), )
+.如果真 (.选中)
+     ' 加密方法自己去找代码吧
+.如果真结束
+
+.如果真 (.选中)
+    销毁 ()
+.如果真结束
+
+
+.子程序 _拖放对象1_得到文件, 空白型, , 
+.参数 接收到的文件路径, 文本型, , 
+
+赋值 (.内容, 接收到的文件路径)
+
+.子程序 取短路径, 文本型, , 收缩路径，返回短路径。例如C:\Program Files\ 收缩后为 C:\PROGRA~1\
+.参数 路径, 文本型, , 指定欲获取短路径名的那个文件的名字。可以是个完整路径，或者由当前目录决定
+
+.局部变量 文本, 文本型, , , 
+.局部变量 长度, 整数型, , , 
+
+赋值 (长度, GetShortPathNameA (路径, “”, 0))
+赋值 (文本, 取空白文本 (长度))
+GetShortPathNameA (路径, 文本, 长度)
+返回 (文本)
+
+.子程序 取控制台程序返回, 空白型, , 取出一个控制台程序的返回信息
+.参数 执行程序名, 文本型, , 欲执行的程序
+.参数 参数, 文本型, 可空, 欲执行的参数
+.参数 编辑框, 编辑框, , 用于显示结果的编辑框
+
+.局部变量 SECURITY_ATTRIBUTES, SECURITY_ATTRIBUTES, , , 
+.局部变量 STARTUPINFO, STARTUPINFO, , , 
+.局部变量 PROCESS_INFORMATION, PROCESS_INFORMATION, , , 
+.局部变量 hRead, 整数型, , , 
+.局部变量 hWrite, 整数型, , , 
+.局部变量 临时字节集, 字节集, , , 
+.局部变量 临时文本, 文本型, , , 
+.局部变量 长度, 整数型, , , 
+.局部变量 EXIT, 整数型, , , 
+.局部变量 文件, 文本型, , , 
+
+赋值 (SECURITY_ATTRIBUTES.nLength, 12)
+赋值 (SECURITY_ATTRIBUTES.lpSecurityDescriptor, 0)
+赋值 (SECURITY_ATTRIBUTES.bInheritHandle, 真)
+CreatePipe (hRead, hWrite, SECURITY_ATTRIBUTES, 0)
+赋值 (STARTUPINFO.cb, 68)
+赋值 (STARTUPINFO.dwFlags, 位或 (1, 256))
+赋值 (STARTUPINFO.wShowWindow, 0)
+赋值 (STARTUPINFO.hStdOutput, hWrite)
+赋值 (STARTUPINFO.hStdError, hWrite)
+CreateProcess (执行程序名, 参数, 0, 0, 真, 0, 0, 取文本左边 (执行程序名, 倒找文本 (执行程序名, “\”, , 假)), STARTUPINFO, PROCESS_INFORMATION)
+CloseHandle (hWrite)
+赋值 (编辑框.是否允许多行, 真)
+.判断循环首 (不等于 (长度, -1)) ' 制造一个无限循环
+    PeekNamedPipe (hRead, 0, 0, 0, 长度, 0) ' 查看管道中是否有数据
+    .如果 (不等于 (长度, 0))
+        赋值 (临时字节集, 取空白字节集 (260))
+        ReadFile (hRead, 临时字节集, 260, 长度, 0) ' 从管道中读取数据
+        赋值 (临时字节集, 取字节集左边 (临时字节集, 长度))
+        赋值 (临时字节集, 子字节集替换 (临时字节集, { 10 }, { 13, 10 }, , ))
+        赋值 (临时文本, 取字节集数据 (临时字节集, #文本型, ))
+        .如果真 (大于 (相加 (取文本长度 (编辑框.内容), 取文本长度 (临时文本)), 30000))
+            赋值 (编辑框.内容, “”)
+        .如果真结束
+        编辑框.加入文本 (临时文本)
+    .否则
+        
+        GetExitCodeProcess (PROCESS_INFORMATION.hProcess, EXIT) ' 判断是已经退出
+        .如果真 (不等于 (EXIT, 259))
+            CloseHandle (hRead) ' 关闭管道
+            跳出循环 ()
+        .如果真结束
+        
+    .如果结束
+    处理事件 ()
+.判断循环尾 ()
+赋值 (文件, 取文本右边 (执行程序名, 4))
+文件更名 (文件, 相加 (文件, “.exe”))
+删除文件 (相加 (取运行目录 (), “\upx.exe”))
+连续赋值 (假, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

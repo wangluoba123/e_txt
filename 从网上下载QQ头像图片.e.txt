@@ -1,0 +1,1322 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 625
+    高度 = 468
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 0
+    底图方式 = 1
+    底色 = 16777215 '  0xFFFFFF
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 真
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 已保存到：D:\易语言学习\Data\从网上下载QQ头像图片.e\_启动窗口_图标.ico
+    背景音乐 =  ' 空
+    标题 = “QQ头像 V2.5”
+    帮助文件名 = “”
+
+
+
+.常量 表达式文本, "“<li class="item">.+?<div class=.+?<a href=.+?><img src="(http://.+?)"></a>.+?<h3>(.+?)</h3>.+?</li>”", , 
+.常量 下一页文本, "“<a href="/(search\.html\?p=.{1,40}&amp;sf=hc&amp;b=\d+)" title="next page"><strong>下一页</strong>.+?</a>”", , 
+.常量 上一页文本, "“<div id="pagenav"><a href="/(search\.html\?p=.{1,40}&amp;sf=hc&amp;b=\d+)" title="previous page">.+?<strong>上一页</strong></a>”", , 
+.常量 搞笑头像, "“QQ搞笑头像
+http://image.cn.yahoo.com/search.html?p=QQ%B8%E3%D0%A6&source=ysearch_img_head_morekw&sf=hc
+搞怪BT头像
+http://image.cn.yahoo.com/search.html?p=BT%CD%B7%CF%F1&source=ysearch_img_head_morekw&sf=hc
+搞笑彩信头像
+http://image.cn.yahoo.com/search.html?p=%B8%E3%D0%A6%B2%CA%D0%C5&source=ysearch_img_head_morekw&sf=hc
+搞笑动漫
+http://image.cn.yahoo.com/search.html?p=%B8%E3%D0%A6%B6%AF%C2%FE&source=ysearch_img_head_morekw&sf=hc
+搞笑动物头像
+http://image.cn.yahoo.com/search.html?p=%B8%E3%D0%A6%B6%AF%CE%EF&source=ysearch_img_head_morekw&sf=hc
+搞笑人物头像
+http://image.cn.yahoo.com/search.html?p=%B8%E3%D0%A6%C8%CB%CE%EF&source=ysearch_img_head_morekw&sf=hc
+搞笑文字
+http://image.cn.yahoo.com/search.html?p=%B8%E3%D0%A6%CE%C4%D7%D6&source=ysearch_img_head_morekw&sf=hc
+搞笑小孩
+http://image.cn.yahoo.com/search.html?p=%B8%E3%D0%A6%D0%A1%BA%A2&source=ysearch_img_head_morekw&sf=hc
+搞笑炸弹
+http://image.cn.yahoo.com/search.html?p=%D5%A8%B5%AF&source=ysearch_img_head_morekw&sf=hc
+搞笑猪合集
+http://image.cn.yahoo.com/search.html?p=%B8%E3%D0%A6%D6%ED&source=ysearch_img_head_morekw&sf=hc
+可爱小丫
+http://image.cn.yahoo.com/search.html?p=%D0%A1%D1%BE&source=ysearch_img_head_morekw&sf=hc
+论坛搞笑头像
+http://image.cn.yahoo.com/search.html?p=%C2%DB%CC%B3%B8%E3%D0%A6&source=ysearch_img_head_morekw&sf=hc
+唐伯虎
+http://image.cn.yahoo.com/search.html?p=%CC%C6%B2%AE%BB%A2&source=ysearch_img_head_morekw&sf=hc
+旺财狗
+http://image.cn.yahoo.com/search.html?p=%CD%FA%B2%C6%B9%B7&source=ysearch_img_head_morekw&sf=hc
+搞笑三毛头像
+http://image.cn.yahoo.com/search.html?p=%C8%FD%C3%AB&source=ysearch_img_head_morekw&sf=hc
+搞笑猪头
+http://image.cn.yahoo.com/search.html?p=%D6%ED%CD%B7&source=ysearch_img_head_morekw&sf=hc
+甜蜜爱情
+http://image.cn.yahoo.com/search.html?p=%B0%AE%C7%E9&source=ysearch_img_head_morekw&sf=hc
+洋葱头
+http://image.cn.yahoo.com/search.html?p=%D1%F3%B4%D0%CD%B7&source=ysearch_img_head_morekw&sf=hc
+招财童子
+http://image.cn.yahoo.com/search.html?p=%D5%D0%B2%C6&source=ysearch_img_head_morekw&sf=hc
+搞笑头像
+http://image.cn.yahoo.com/search.html?p=%B8%E3%D0%A6%CD%B7%CF%F1&source=ysearch_img_head_morekw&sf=hc
+绿豆蛙
+http://image.cn.yahoo.com/search.html?p=%C2%CC%B6%B9%CD%DC&source=ysearch_img_head_morekw&sf=hc
+可爱小鸡
+http://image.cn.yahoo.com/search.html?p=%BF%C9%B0%AE%D0%A1%BC%A6&source=ysearch_img_head_morekw&sf=hc
+范伟头像
+http://image.cn.yahoo.com/search.html?p=%B7%B6%CE%B0&source=ysearch_img_head_morekw&sf=hc
+卡通鱼
+http://image.cn.yahoo.com/search.html?p=%BF%A8%CD%A8%D3%E3&source=ysearch_img_head_morekw&sf=hc
+MAC风格头像
+http://image.cn.yahoo.com/search.html?p=MAC&source=ysearch_img_head_morekw&sf=hc
+卡通动物
+http://image.cn.yahoo.com/search.html?p=%BF%A8%CD%A8%B6%AF%CE%EF&source=ysearch_img_head_morekw&sf=hc
+三国人物
+http://image.cn.yahoo.com/search.html?p=%C8%FD%B9%FA%C8%CB%CE%EF&source=ysearch_img_head_morekw&sf=hc
+蜡笔小新
+http://image.cn.yahoo.com/search.html?p=%C0%AF%B1%CA%D0%A1%D0%C2&source=ysearch_img_head_morekw&sf=hc”", , 
+.常量 另类头像, "“古典美女
+http://image.cn.yahoo.com/search.html?p=%B9%C5%B5%E4%C3%C0%C5%AE&source=ysearch_img_head_morekw&sf=hc
+视频美女
+http://image.cn.yahoo.com/search.html?p=%CA%D3%C6%B5%C3%C0%C5%AE&source=ysearch_img_head_morekw&sf=hc
+个性头像
+http://image.cn.yahoo.com/search.html?p=%B8%F6%D0%D4%CD%B7%CF%F1&source=ysearch_img_head_morekw&sf=hc
+韩国插画头像
+http://image.cn.yahoo.com/search.html?p=%B2%E5%BB%AD&source=ysearch_img_head_morekw&sf=hc
+卡通CS头像
+http://image.cn.yahoo.com/search.html?p=CS&source=ysearch_img_head_morekw&sf=hc
+另类熊头像
+http://image.cn.yahoo.com/search.html?p=%D0%DC&source=ysearch_img_head_morekw&sf=hc
+情人节头像
+http://image.cn.yahoo.com/search.html?p=%C7%E9%C8%CB%BD%DA&source=ysearch_img_head_morekw&sf=hc
+三国人物
+http://image.cn.yahoo.com/search.html?p=%C8%FD%B9%FA%C8%CB%CE%EF&source=ysearch_img_head_morekw&sf=hc
+甜蜜爱情
+http://image.cn.yahoo.com/search.html?p=%B0%AE%C7%E9&source=ysearch_img_head_morekw&sf=hc
+圣诞节头像
+http://image.cn.yahoo.com/search.html?p=%CA%A5%B5%AE%BD%DA&source=ysearch_img_head_morekw&sf=hc
+情侣头像
+http://image.cn.yahoo.com/search.html?p=%C7%E9%C2%C2&source=ysearch_img_head_morekw&sf=hc
+文字头像
+http://image.cn.yahoo.com/search.html?p=%CE%C4%D7%D6&source=ysearch_img_head_morekw&sf=hc
+百家姓头像
+http://image.cn.yahoo.com/search.html?p=%D0%D5%CA%CF&source=ysearch_img_head_morekw&sf=hc
+可爱女生
+http://image.cn.yahoo.com/search.html?p=%BF%C9%B0%AE%C5%AE%C9%FA&source=ysearch_img_head_morekw&sf=hc
+蓝水晶头像
+http://image.cn.yahoo.com/search.html?p=%C0%B6%CB%AE%BE%A7&source=ysearch_img_head_morekw&sf=hc
+星座头像
+http://image.cn.yahoo.com/search.html?p=%D0%C7%D7%F9&source=ysearch_img_head_morekw&sf=hc
+NBA头像
+http://image.cn.yahoo.com/search.html?p=NBA&source=ysearch_img_head_morekw&sf=hc
+QQ秀头像
+http://image.cn.yahoo.com/search.html?p=QQ%D0%E3%CD%B7%CF%F1&source=ysearch_img_head_morekw&sf=hc
+QQ会员头像
+http://image.cn.yahoo.com/search.html?p=QQ%BB%E1%D4%B1%CD%B7%CF%F1&source=ysearch_img_head_morekw&sf=hc
+圣诞节
+http://image.cn.yahoo.com/search.html?p=%CA%A5%B5%AE%BD%DA&source=ysearch_img_head_morekw&sf=hc
+可爱便便
+http://image.cn.yahoo.com/search.html?p=%B1%E3%B1%E3&source=ysearch_img_head_morekw&sf=hc
+SD娃娃
+http://image.cn.yahoo.com/search.html?p=SD%CD%DE%CD%DE&source=ysearch_img_head_morekw&sf=hc
+个性脸谱头像
+http://image.cn.yahoo.com/search.html?p=%C1%B3%C6%D7&source=ysearch_img_head_morekw&sf=hc
+恐怖头像
+http://image.cn.yahoo.com/search.html?p=%BF%D6%B2%C0&source=ysearch_img_head_morekw&sf=hc
+昆虫
+http://image.cn.yahoo.com/search.html?p=%C0%A5%B3%E6&source=ysearch_img_head_morekw&sf=hc
+世界杯
+http://image.cn.yahoo.com/search.html?p=%CA%C0%BD%E7%B1%AD&source=ysearch_img_head_morekw&sf=hc
+水果头像
+http://image.cn.yahoo.com/search.html?p=%CB%AE%B9%FB&source=ysearch_img_head_morekw&sf=hc
+抽象头像
+http://image.cn.yahoo.com/search.html?p=%B3%E9%CF%F3&source=ysearch_img_head_morekw&sf=hc
+女生专用
+http://image.cn.yahoo.com/search.html?p=%C5%AE%C9%FA%D7%A8%D3%C3&source=ysearch_img_head_morekw&sf=hc
+论坛头像
+http://image.cn.yahoo.com/search.html?p=%C2%DB%CC%B3%CD%B7%CF%F1&source=ysearch_img_head_morekw&sf=hc
+春节头像
+http://image.cn.yahoo.com/search.html?p=%B4%BA%BD%DA&source=ysearch_img_head_morekw&sf=hc
+一月主流头像
+http://image.cn.yahoo.com/search.html?p=%D2%BB%D4%C2&source=ysearch_img_head_morekw&sf=hc
+二月主流头像
+http://image.cn.yahoo.com/search.html?p=%B6%FE%D4%C2&source=ysearch_img_head_morekw&sf=hc
+三月主流头像
+http://image.cn.yahoo.com/search.html?p=%C8%FD%D4%C2&source=ysearch_img_head_morekw&sf=hc
+四月主流头像
+http://image.cn.yahoo.com/search.html?p=%CB%C4%D4%C2&source=ysearch_img_head_morekw&sf=hc
+五月主流头像
+http://image.cn.yahoo.com/search.html?p=%CE%E5%D4%C2&source=ysearch_img_head_morekw&sf=hc
+六月主流头像
+http://image.cn.yahoo.com/search.html?p=%C1%F9%D4%C2&source=ysearch_img_head_morekw&sf=hc
+七月主流头像
+http://image.cn.yahoo.com/search.html?p=%C6%DF%D4%C2&source=ysearch_img_head_morekw&sf=hc
+八月主流头像
+http://image.cn.yahoo.com/search.html?p=%B0%CB%D4%C2&source=ysearch_img_head_morekw&sf=hc
+九月主流头像
+http://image.cn.yahoo.com/search.html?p=%BE%C5%D4%C2&source=ysearch_img_head_morekw&sf=hc
+十月主流头像
+http://image.cn.yahoo.com/search.html?p=%CA%AE%D4%C2&source=ysearch_img_head_morekw&sf=hc
+十一月主流头像
+http://image.cn.yahoo.com/search.html?p=%CA%AE%D2%BB%D4%C2&source=ysearch_img_head_morekw&sf=hc
+十二月主流头像
+http://image.cn.yahoo.com/search.html?p=%CA%AE%B6%FE%D4%C2&source=ysearch_img_head_morekw&sf=hc”", , 
+.常量 卡通头像, "“Sonic
+http://image.cn.yahoo.com/search.html?p=Sonic&source=ysearch_img_head_morekw&sf=hc
+kitty猫
+http://image.cn.yahoo.com/search.html?p=kitty%C3%A8&source=ysearch_img_head_morekw&sf=hc
+卡通帅哥
+http://image.cn.yahoo.com/search.html?p=%BF%A8%CD%A8%CB%A7%B8%E7&source=ysearch_img_head_morekw&sf=hc
+卡通美女
+http://image.cn.yahoo.com/search.html?p=%BF%A8%CD%A8%C3%C0%C5%AE&source=ysearch_img_head_morekw&sf=hc
+卡通动物
+http://image.cn.yahoo.com/search.html?p=%BF%A8%CD%A8%B6%AF%CE%EF&source=ysearch_img_head_morekw&sf=hc
+绿豆蛙
+http://image.cn.yahoo.com/search.html?p=%C2%CC%B6%B9%CD%DC&source=ysearch_img_head_morekw&sf=hc
+小破孩
+http://image.cn.yahoo.com/search.html?p=%D0%A1%C6%C6%BA%A2&source=ysearch_img_head_morekw&sf=hc
+水果篮子
+http://image.cn.yahoo.com/search.html?p=%CB%AE%B9%FB%C0%BA%D7%D3&source=ysearch_img_head_morekw&sf=hc
+七龙珠
+http://image.cn.yahoo.com/search.html?p=%C6%DF%C1%FA%D6%E9&source=ysearch_img_head_morekw&sf=hc
+海贼王
+http://image.cn.yahoo.com/search.html?p=%BA%A3%D4%F4%CD%F5&source=ysearch_img_head_morekw&sf=hc
+高达
+http://image.cn.yahoo.com/search.html?p=%B8%DF%B4%EF&source=ysearch_img_head_morekw&sf=hc
+钢炼
+http://image.cn.yahoo.com/search.html?p=%B8%D6%C1%B6&source=ysearch_img_head_morekw&sf=hc
+变形金刚
+http://image.cn.yahoo.com/search.html?p=%B1%E4%D0%CE%BD%F0%B8%D5&source=ysearch_img_head_morekw&sf=hc
+网球王子
+http://image.cn.yahoo.com/search.html?p=%CD%F8%C7%F2%CD%F5%D7%D3&source=ysearch_img_head_morekw&sf=hc
+犬夜叉
+http://image.cn.yahoo.com/search.html?p=%C8%AE%D2%B9%B2%E6&source=ysearch_img_head_morekw&sf=hc
+蜡笔小新
+http://image.cn.yahoo.com/search.html?p=%C0%AF%B1%CA%D0%A1%D0%C2&source=ysearch_img_head_morekw&sf=hc
+死神
+http://image.cn.yahoo.com/search.html?p=%CB%C0%C9%F1&source=ysearch_img_head_morekw&sf=hc
+流氓兔
+http://image.cn.yahoo.com/search.html?p=%C1%F7%C3%A5%CD%C3&source=ysearch_img_head_morekw&sf=hc
+机器猫
+http://image.cn.yahoo.com/search.html?p=%BB%FA%C6%F7%C3%A8&source=ysearch_img_head_morekw&sf=hc
+灌篮高手
+http://image.cn.yahoo.com/search.html?p=%B9%E0%C0%BA%B8%DF%CA%D6&source=ysearch_img_head_morekw&sf=hc
+浪客剑心
+http://image.cn.yahoo.com/search.html?p=%C0%CB%BF%CD%BD%A3%D0%C4&source=ysearch_img_head_morekw&sf=hc
+福娃
+http://image.cn.yahoo.com/search.html?p=%B8%A3%CD%DE&source=ysearch_img_head_morekw&sf=hc
+草莓100%
+http://image.cn.yahoo.com/search.html?p=%B2%DD%DD%AE100%25&source=ysearch_img_head_morekw&sf=hc
+圣斗士
+http://image.cn.yahoo.com/search.html?p=%CA%A5%B6%B7%CA%BF&source=ysearch_img_head_morekw&sf=hc
+魔力宝贝
+http://image.cn.yahoo.com/search.html?p=%C4%A7%C1%A6%B1%A6%B1%B4&source=ysearch_img_head_morekw&sf=hc
+街头霸王
+http://image.cn.yahoo.com/search.html?p=%BD%D6%B0%D4&source=ysearch_img_head_morekw&sf=hc
+火影忍者
+http://image.cn.yahoo.com/search.html?p=%BB%F0%D3%B0%C8%CC%D5%DF&source=ysearch_img_head_morekw&sf=hc
+头文字D
+http://image.cn.yahoo.com/search.html?p=%CD%B7%CE%C4%D7%D6D&source=ysearch_img_head_morekw&sf=hc
+钢之炼金术士
+http://image.cn.yahoo.com/search.html?p=%B8%D6%D6%AE%C1%B6%BD%F0%CA%F5%CA%BF&source=ysearch_img_head_morekw&sf=hc
+EVA
+http://image.cn.yahoo.com/search.html?p=EVA&source=ysearch_img_head_morekw&sf=hc
+棋魂
+http://image.cn.yahoo.com/search.html?p=%C6%E5%BB%EA&source=ysearch_img_head_morekw&sf=hc
+百变小樱
+http://image.cn.yahoo.com/search.html?p=%B0%D9%B1%E4%D0%A1%D3%A3&source=ysearch_img_head_morekw&sf=hc
+趴趴熊
+http://image.cn.yahoo.com/search.html?p=%C5%BF%C5%BF%D0%DC&source=ysearch_img_head_morekw&sf=hc
+猪头头像
+http://image.cn.yahoo.com/search.html?p=%D6%ED%CD%B7&source=ysearch_img_head_morekw&sf=hc
+史莱克
+http://image.cn.yahoo.com/search.html?p=%CA%B7%C0%B3%BF%CB&source=ysearch_img_head_morekw&sf=hc
+宠物狗
+http://image.cn.yahoo.com/search.html?p=%B3%E8%CE%EF%B9%B7&source=ysearch_img_head_morekw&sf=hc
+可爱兔子
+http://image.cn.yahoo.com/search.html?p=%CD%C3%D7%D3&source=ysearch_img_head_morekw&sf=hc
+情侣接吻
+http://image.cn.yahoo.com/search.html?p=%BD%D3%CE%C7&source=ysearch_img_head_morekw&sf=hc
+涕涕虫
+http://image.cn.yahoo.com/search.html?p=%CC%E9%CC%E9%B3%E6&source=ysearch_img_head_morekw&sf=hc”", , 
+.常量 游戏头像, "“Sonic
+http://image.cn.yahoo.com/search.html?p=Sonic&source=ysearch_img_head_morekw&sf=hc
+八神庵
+http://image.cn.yahoo.com/search.html?p=%B0%CB%C9%F1%E2%D6&source=ysearch_img_head_morekw&sf=hc
+剑侠情缘
+http://image.cn.yahoo.com/search.html?p=%BD%A3%CF%C0%C7%E9%D4%B5&source=ysearch_img_head_morekw&sf=hc
+天骄
+http://image.cn.yahoo.com/search.html?p=%CC%EC%BD%BE&source=ysearch_img_head_morekw&sf=hc
+仙境传说
+http://image.cn.yahoo.com/search.html?p=%CF%C9%BE%B3%B4%AB%CB%B5&source=ysearch_img_head_morekw&sf=hc
+热血街霸
+http://image.cn.yahoo.com/search.html?p=%BD%D6%B0%D4&source=ysearch_img_head_morekw&sf=hc
+梦幻西游
+http://image.cn.yahoo.com/search.html?p=%C3%CE%BB%C3%CE%F7%D3%CE&source=ysearch_img_head_morekw&sf=hc
+劲舞团
+http://image.cn.yahoo.com/search.html?p=%BE%A2%CE%E8%CD%C5&source=ysearch_img_head_morekw&sf=hc
+完美世界
+http://image.cn.yahoo.com/search.html?p=%CD%EA%C3%C0%CA%C0%BD%E7&source=ysearch_img_head_morekw&sf=hc
+魔兽世界
+http://image.cn.yahoo.com/search.html?p=%C4%A7%CA%DE%CA%C0%BD%E7&source=ysearch_img_head_morekw&sf=hc
+拳皇
+http://image.cn.yahoo.com/search.html?p=%C8%AD%BB%CA&source=ysearch_img_head_morekw&sf=hc
+最终幻想
+http://image.cn.yahoo.com/search.html?p=%D7%EE%D6%D5%BB%C3%CF%EB&source=ysearch_img_head_morekw&sf=hc
+大富翁
+http://image.cn.yahoo.com/search.html?p=%B4%F3%B8%BB%CE%CC&source=ysearch_img_head_morekw&sf=hc
+魔力宝贝
+http://image.cn.yahoo.com/search.html?p=%C4%A7%C1%A6%B1%A6%B1%B4&source=ysearch_img_head_morekw&sf=hc
+天堂
+http://image.cn.yahoo.com/search.html?p=%CC%EC%CC%C3&source=ysearch_img_head_morekw&sf=hc
+冒险岛
+http://image.cn.yahoo.com/search.html?p=%C3%B0%CF%D5%B5%BA&source=ysearch_img_head_morekw&sf=hc
+街头篮球
+http://image.cn.yahoo.com/search.html?p=%BD%D6%CD%B7%C0%BA%C7%F2&source=ysearch_img_head_morekw&sf=hc
+泡泡堂
+http://image.cn.yahoo.com/search.html?p=%C5%DD%C5%DD%CC%C3&source=ysearch_img_head_morekw&sf=hc
+侠盗猎车手
+http://image.cn.yahoo.com/search.html?p=%CF%C0%B5%C1%C1%D4%B3%B5%CA%D6&source=ysearch_img_head_morekw&sf=hc
+仙剑奇侠传
+http://image.cn.yahoo.com/search.html?p=%CF%C9%BD%A3%C6%E6%CF%C0%B4%AB&source=ysearch_img_head_morekw&sf=hc
+三国
+http://image.cn.yahoo.com/search.html?p=%C8%FD%B9%FA&source=ysearch_img_head_morekw&sf=hc
+反恐精英
+http://image.cn.yahoo.com/search.html?p=%B7%B4%BF%D6%BE%AB%D3%A2&source=ysearch_img_head_morekw&sf=hc
+博德之门
+http://image.cn.yahoo.com/search.html?p=%B2%A9%B5%C2%D6%AE%C3%C5&source=ysearch_img_head_morekw&sf=hc
+暗黑破坏神
+http://image.cn.yahoo.com/search.html?p=%B0%B5%BA%DA%C6%C6%BB%B5%C9%F1&source=ysearch_img_head_morekw&sf=hc
+命运
+http://image.cn.yahoo.com/search.html?p=%C3%FC%D4%CB&source=ysearch_img_head_morekw&sf=hc
+疯狂坦克
+http://image.cn.yahoo.com/search.html?p=%B7%E8%BF%F1%CC%B9%BF%CB&source=ysearch_img_head_morekw&sf=hc
+奇迹
+http://image.cn.yahoo.com/search.html?p=%C6%E6%BC%A3&source=ysearch_img_head_morekw&sf=hc
+梦幻国度
+http://image.cn.yahoo.com/search.html?p=%C3%CE%BB%C3%B9%FA%B6%C8&source=ysearch_img_head_morekw&sf=hc
+精灵
+http://image.cn.yahoo.com/search.html?p=%BE%AB%C1%E9&source=ysearch_img_head_morekw&sf=hc
+A3
+http://image.cn.yahoo.com/search.html?p=A3&source=ysearch_img_head_morekw&sf=hc
+QQ幻想
+http://image.cn.yahoo.com/search.html?p=QQ%BB%C3%CF%EB&source=ysearch_img_head_morekw&sf=hc
+飞飞
+http://image.cn.yahoo.com/search.html?p=%B7%C9%B7%C9&source=ysearch_img_head_morekw&sf=hc
+封神榜
+http://image.cn.yahoo.com/search.html?p=%B7%E2%C9%F1%B0%F1&source=ysearch_img_head_morekw&sf=hc
+大话西游
+http://image.cn.yahoo.com/search.html?p=%B4%F3%BB%B0%CE%F7%D3%CE&source=ysearch_img_head_morekw&sf=hc
+卡通游戏美女
+http://image.cn.yahoo.com/search.html?p=%D3%CE%CF%B7%BF%A8%CD%A8%C3%C0%C5%AE&source=ysearch_img_head_morekw&sf=hc
+KOF人物头像
+http://image.cn.yahoo.com/search.html?p=KOF&source=ysearch_img_head_morekw&sf=hc
+诛仙
+http://image.cn.yahoo.com/search.html?p=%D6%EF%CF%C9&source=ysearch_img_head_morekw&sf=hc
+三国策
+http://image.cn.yahoo.com/search.html?p=%C8%FD%B9%FA%B2%DF&source=ysearch_img_head_morekw&sf=hc
+传奇
+http://image.cn.yahoo.com/search.html?p=%B4%AB%C6%E6&source=ysearch_img_head_morekw&sf=hc
+龙骑士
+http://image.cn.yahoo.com/search.html?p=%C1%FA%C6%EF%CA%BF&source=ysearch_img_head_morekw&sf=hc
+奇迹世界
+http://image.cn.yahoo.com/search.html?p=%C6%E6%BC%A3%CA%C0%BD%E7&source=ysearch_img_head_morekw&sf=hc
+舞街区
+http://image.cn.yahoo.com/search.html?p=%CE%E8%BD%D6%C7%F8&source=ysearch_img_head_morekw&sf=hc
+三国群英传
+http://image.cn.yahoo.com/search.html?p=%C8%FD%B9%FA%C8%BA%D3%A2%B4%AB&source=ysearch_img_head_morekw&sf=hc
+激战
+http://image.cn.yahoo.com/search.html?p=%BC%A4%D5%BD&source=ysearch_img_head_morekw&sf=hc
+彩虹岛
+http://image.cn.yahoo.com/search.html?p=%B2%CA%BA%E7%B5%BA&source=ysearch_img_head_morekw&sf=hc
+战国
+http://image.cn.yahoo.com/search.html?p=%D5%BD%B9%FA&source=ysearch_img_head_morekw&sf=hc
+大话
+http://image.cn.yahoo.com/search.html?p=%B4%F3%BB%B0&source=ysearch_img_head_morekw&sf=hc
+极品飞车
+http://image.cn.yahoo.com/search.html?p=%BC%AB%C6%B7%B7%C9%B3%B5&source=ysearch_img_head_morekw&sf=hc
+跑跑卡丁车
+http://image.cn.yahoo.com/search.html?p=%C5%DC%C5%DC%BF%A8%B6%A1%B3%B5&source=ysearch_img_head_morekw&sf=hc
+魔域
+http://image.cn.yahoo.com/search.html?p=%C4%A7%D3%F2&source=ysearch_img_head_morekw&sf=hc
+黄易群侠传
+http://image.cn.yahoo.com/search.html?p=%BB%C6%D2%D7&source=ysearch_img_head_morekw&sf=hc
+指环王
+http://image.cn.yahoo.com/search.html?p=%D6%B8%BB%B7%CD%F5&source=ysearch_img_head_morekw&sf=hc
+灵游记
+http://image.cn.yahoo.com/search.html?p=%C1%E9%D3%CE%BC%C7&source=ysearch_img_head_morekw&sf=hc”", , 
+.常量 明星头像, "“陈冠希
+http://image.cn.yahoo.com/search.html?p=%B3%C2%B9%DA%CF%A3&source=ysearch_img_head_morekw&amp;sf=hc
+陈慧琳
+http://image.cn.yahoo.com/search.html?p=%B3%C2%BB%DB%C1%D5&source=ysearch_img_head_morekw&amp;sf=hc
+陈晓东
+http://image.cn.yahoo.com/search.html?p=%B3%C2%CF%FE%B6%AB&source=ysearch_img_head_morekw&sf=hc
+梁朝伟
+http://image.cn.yahoo.com/search.html?p=%C1%BA%B3%AF%CE%B0&source=ysearch_img_head_morekw&sf=hc
+陆毅
+http://image.cn.yahoo.com/search.html?p=%C2%BD%D2%E3&source=ysearch_img_head_morekw&sf=hc
+裴勇俊
+http://image.cn.yahoo.com/search.html?p=%C5%E1%D3%C2%BF%A1&source=ysearch_img_head_morekw&sf=hc
+舒淇
+http://image.cn.yahoo.com/search.html?p=%CA%E6%E4%BF&source=ysearch_img_head_morekw&sf=hc
+王心凌
+http://image.cn.yahoo.com/search.html?p=%CD%F5%D0%C4%C1%E8&source=ysearch_img_head_morekw&sf=hc
+章子怡
+http://image.cn.yahoo.com/search.html?p=%D5%C2%D7%D3%E2%F9&source=ysearch_img_head_morekw&sf=hc
+张靓颖
+http://image.cn.yahoo.com/search.html?p=%D5%C5%F6%A6%D3%B1&source=ysearch_img_head_morekw&sf=hc
+周杰伦
+http://image.cn.yahoo.com/search.html?p=%D6%DC%BD%DC%C2%D7&source=ysearch_img_head_morekw&sf=hc
+郑智化
+http://image.cn.yahoo.com/search.html?p=%D6%A3%D6%C7%BB%AF&source=ysearch_img_head_morekw&sf=hc
+谢霆锋
+http://image.cn.yahoo.com/search.html?p=%D0%BB%F6%AA%B7%E6&source=ysearch_img_head_morekw&sf=hc
+刘德华
+http://image.cn.yahoo.com/search.html?p=%C1%F5%B5%C2%BB%AA&source=ysearch_img_head_morekw&sf=hc
+古天乐
+http://image.cn.yahoo.com/search.html?p=%B9%C5%CC%EC%C0%D6&source=ysearch_img_head_morekw&sf=hc
+陈小春
+http://image.cn.yahoo.com/search.html?p=%B3%C2%D0%A1%B4%BA&source=ysearch_img_head_morekw&sf=hc
+王力宏
+http://image.cn.yahoo.com/search.html?p=%CD%F5%C1%A6%BA%EA&source=ysearch_img_head_morekw&sf=hc
+葛优
+http://image.cn.yahoo.com/search.html?p=%B8%F0%D3%C5&source=ysearch_img_head_morekw&sf=hc
+范伟
+http://image.cn.yahoo.com/search.html?p=%B7%B6%CE%B0&source=ysearch_img_head_morekw&sf=hc
+赵本山
+http://image.cn.yahoo.com/search.html?p=%D5%D4%B1%BE%C9%BD&source=ysearch_img_head_morekw&sf=hc
+苏有朋
+http://image.cn.yahoo.com/search.html?p=%CB%D5%D3%D0%C5%F3&source=ysearch_img_head_morekw&sf=hc
+潘玮柏
+http://image.cn.yahoo.com/search.html?p=%C5%CB%E7%E2%B0%D8&source=ysearch_img_head_morekw&sf=hc
+林志颖
+http://image.cn.yahoo.com/search.html?p=%C1%D6%D6%BE%D3%B1&source=ysearch_img_head_morekw&sf=hc
+林俊杰
+http://image.cn.yahoo.com/search.html?p=%C1%D6%BF%A1%BD%DC&source=ysearch_img_head_morekw&sf=hc
+郭品超
+http://image.cn.yahoo.com/search.html?p=%B9%F9%C6%B7%B3%AC&source=ysearch_img_head_morekw&sf=hc
+周星驰
+http://image.cn.yahoo.com/search.html?p=%D6%DC%D0%C7%B3%DB&source=ysearch_img_head_morekw&sf=hc
+黄圣依
+http://image.cn.yahoo.com/search.html?p=%BB%C6%CA%A5%D2%C0&source=ysearch_img_head_morekw&sf=hc
+周笔畅
+http://image.cn.yahoo.com/search.html?p=%D6%DC%B1%CA%B3%A9&source=ysearch_img_head_morekw&sf=hc
+李宇春
+http://image.cn.yahoo.com/search.html?p=%C0%EE%D3%EE%B4%BA&source=ysearch_img_head_morekw&sf=hc
+何洁
+http://image.cn.yahoo.com/search.html?p=%BA%CE%BD%E0&source=ysearch_img_head_morekw&sf=hc
+张含韵
+http://image.cn.yahoo.com/search.html?p=%D5%C5%BA%AC%D4%CF&source=ysearch_img_head_morekw&sf=hc
+刘亦菲
+http://image.cn.yahoo.com/search.html?p=%C1%F5%D2%E0%B7%C6&source=ysearch_img_head_morekw&sf=hc
+陈好
+http://image.cn.yahoo.com/search.html?p=%B3%C2%BA%C3&source=ysearch_img_head_morekw&sf=hc
+赵薇
+http://image.cn.yahoo.com/search.html?p=%D5%D4%DE%B1&source=ysearch_img_head_morekw&sf=hc
+孙燕姿
+http://image.cn.yahoo.com/search.html?p=%CB%EF%D1%E0%D7%CB&source=ysearch_img_head_morekw&sf=hc
+林志玲
+http://image.cn.yahoo.com/search.html?p=%C1%D6%D6%BE%C1%E1&source=ysearch_img_head_morekw&sf=hc
+林心如
+http://image.cn.yahoo.com/search.html?p=%C1%D6%D0%C4%C8%E7&source=ysearch_img_head_morekw&sf=hc
+张柏芝
+http://image.cn.yahoo.com/search.html?p=%D5%C5%B0%D8%D6%A5&source=ysearch_img_head_morekw&sf=hc
+王菲
+http://image.cn.yahoo.com/search.html?p=%CD%F5%B7%C6&source=ysearch_img_head_morekw&sf=hc
+容祖儿
+http://image.cn.yahoo.com/search.html?p=%C8%DD%D7%E6%B6%F9&source=ysearch_img_head_morekw&sf=hc
+梁咏琪
+http://image.cn.yahoo.com/search.html?p=%C1%BA%D3%BD%E7%F7&source=ysearch_img_head_morekw&sf=hc
+贾静雯
+http://image.cn.yahoo.com/search.html?p=%BC%D6%BE%B2%F6%A9&source=ysearch_img_head_morekw&sf=hc
+关心妍
+http://image.cn.yahoo.com/search.html?p=%B9%D8%D0%C4%E5%FB&source=ysearch_img_head_morekw&sf=hc
+蔡依林
+http://image.cn.yahoo.com/search.html?p=%B2%CC%D2%C0%C1%D6&source=ysearch_img_head_morekw&sf=hc
+Twins
+http://image.cn.yahoo.com/search.html?p=Twins&source=ysearch_img_head_morekw&sf=hc
+张韶涵
+http://image.cn.yahoo.com/search.html?p=%D5%C5%C9%D8%BA%AD&source=ysearch_img_head_morekw&sf=hc
+蔡琳
+http://image.cn.yahoo.com/search.html?p=%B2%CC%C1%D5&source=ysearch_img_head_morekw&sf=hc
+张娜拉
+http://image.cn.yahoo.com/search.html?p=%D5%C5%C4%C8%C0%AD&source=ysearch_img_head_morekw&sf=hc
+田中丽奈
+http://image.cn.yahoo.com/search.html?p=%CC%EF%D6%D0%C0%F6%C4%CE&source=ysearch_img_head_morekw&sf=hc
+金喜善
+http://image.cn.yahoo.com/search.html?p=%BD%F0%CF%B2%C9%C6&source=ysearch_img_head_morekw&sf=hc
+宋慧乔
+http://image.cn.yahoo.com/search.html?p=%CB%CE%BB%DB%C7%C7&source=ysearch_img_head_morekw&sf=hc
+深田恭子
+http://image.cn.yahoo.com/search.html?p=%C9%EE%CC%EF%B9%A7%D7%D3&source=ysearch_img_head_morekw&sf=hc
+滨崎步
+http://image.cn.yahoo.com/search.html?p=%B1%F5%C6%E9%B2%BD&source=ysearch_img_head_morekw&sf=hc
+铃木亚美
+http://image.cn.yahoo.com/search.html?p=%C1%E5%C4%BE%D1%C7%C3%C0&source=ysearch_img_head_morekw&sf=hc
+广末凉子
+http://image.cn.yahoo.com/search.html?p=%B9%E3%C4%A9%C1%B9%D7%D3&source=ysearch_img_head_morekw&sf=hc
+藤原纪香
+http://image.cn.yahoo.com/search.html?p=%CC%D9%D4%AD%BC%CD%CF%E3&source=ysearch_img_head_morekw&sf=hc
+酒井法子
+http://image.cn.yahoo.com/search.html?p=%BE%C6%BE%AE%B7%A8%D7%D3&source=ysearch_img_head_morekw&sf=hc
+仓木麻衣
+http://image.cn.yahoo.com/search.html?p=%B2%D6%C4%BE%C2%E9%D2%C2&source=ysearch_img_head_morekw&sf=hc
+全智贤
+http://image.cn.yahoo.com/search.html?p=%C8%AB%D6%C7%CF%CD&source=ysearch_img_head_morekw&sf=hc
+李英爱
+http://image.cn.yahoo.com/search.html?p=%C0%EE%D3%A2%B0%AE&source=ysearch_img_head_morekw&sf=hc
+周迅
+http://image.cn.yahoo.com/search.html?p=%D6%DC%D1%B8&source=ysearch_img_head_morekw&sf=hc
+徐静蕾
+http://image.cn.yahoo.com/search.html?p=%D0%EC%BE%B2%C0%D9&source=ysearch_img_head_morekw&sf=hc
+范冰冰
+http://image.cn.yahoo.com/search.html?p=%B7%B6%B1%F9%B1%F9&source=ysearch_img_head_morekw&sf=hc
+罗志祥
+http://image.cn.yahoo.com/search.html?p=%C2%DE%D6%BE%CF%E9&source=ysearch_img_head_morekw&sf=hc
+古巨基
+http://image.cn.yahoo.com/search.html?p=%B9%C5%BE%DE%BB%F9&source=ysearch_img_head_morekw&sf=hc
+成龙
+http://image.cn.yahoo.com/search.html?p=%B3%C9%C1%FA&source=ysearch_img_head_morekw&sf=hc
+杨千嬅
+http://image.cn.yahoo.com/search.html?p=%D1%EE%C7%A7%8B%C3&source=ysearch_img_head_morekw&sf=hc
+林熙蕾
+http://image.cn.yahoo.com/search.html?p=%C1%D6%CE%F5%C0%D9&source=ysearch_img_head_morekw&sf=hc
+周渝民
+http://image.cn.yahoo.com/search.html?p=%D6%DC%D3%E5%C3%F1&source=ysearch_img_head_morekw&sf=hc
+言承旭
+http://image.cn.yahoo.com/search.html?p=%D1%D4%B3%D0%D0%F1&source=ysearch_img_head_morekw&sf=hc
+萧亚轩
+http://image.cn.yahoo.com/search.html?p=%CF%F4%D1%C7%D0%F9&source=ysearch_img_head_morekw&sf=hc”", , 
+.常量 状态无数据, "0", , 
+.常量 状态正在下载, "1", , 
+.常量 状态下载失败, "2", , 
+.常量 状态正常数据, "3", , 
+.常量 保存到QQ表情网页数据, "“<script language="javascript">
+function AddEmotion(strUrl)
+{
+	try
+	{
+		var cpAdder = new ActiveXObject("QQCPHelper.CPAdder");
+	
+		if (strUrl != "")
+		{	
+				cpAdder.AddCustomEmotion(strUrl);
+		}
+	}
+	catch(e)
+	{
+		alert("您未安装QQ或者还未启动QQ，请先安装或启动QQ再导入表情图片");
+	}
+}
+AddEmotion("pic_url");
+</script>
+
+”", , 
+.图片 无数据图片, " ' 已保存到：D:\易语言学习\Data\从网上下载QQ头像图片.e\无数据图片", , 
+.图片 下载失败图片, " ' 已保存到：D:\易语言学习\Data\从网上下载QQ头像图片.e\下载失败图片", , 
+.图片 等待中图片, " ' 已保存到：D:\易语言学习\Data\从网上下载QQ头像图片.e\等待中图片", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 5 系统核心支持库
+ ' spec A512548E76954B6E92C21055517615B0 2 1 特殊功能支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 1 2 扩展界面支持库一
+ ' internet 707ca37322474f6ca841f0e224f4b620 1 0 互联网支持库
+ ' RegEx 684944CB04624eb7BD5412A519421D34 1 2 正则表达式支持库
+ ' EThread 5F99C1642A2F4e03850721B4F5D7C3F8 1 1 多线程支持库
+ ' HtmlView 5014D8FA6DCA40b68FA626D8183666EB 1 1 超文本浏览框支持库
+ ' eAPI F7FC1AE45C5C4758AF03EF19F18A395D 1 1 应用接口支持库
+ ' xplib 7F54B9CE8887428dBA9CEEB94CEF4C72 1 6 XP风格界面库
+
+
+
+
+数据类型 画格图片信息, , 
+    .成员 图片地址, 文本型, , , 
+    .成员 图片名称, 文本型, , , 
+    .成员 图片类型, 整数型, , , 
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 画格数组, 图片框, , "16", 
+.程序集变量 画格图片信息, 画格图片信息, , "16", 
+.程序集变量 画格状态, 整数型, , "16", 
+.程序集变量 列表页地址, 文本型, , , 
+.程序集变量 当前被选中画格号, 整数型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+调整界面 ()
+画格初始化 ()
+置无数据图片 ()
+排列所有画板 (110, 110, )
+未知支持库函数_0 (3)
+
+
+.子程序 画格初始化, 空白型, , 
+.局部变量 n, 整数型, , , 
+
+赋值 (画格数组 [1], )
+赋值 (画格数组 [2], )
+赋值 (画格数组 [3], )
+赋值 (画格数组 [4], )
+赋值 (画格数组 [5], )
+赋值 (画格数组 [6], )
+赋值 (画格数组 [7], )
+赋值 (画格数组 [8], )
+赋值 (画格数组 [9], )
+赋值 (画格数组 [10], )
+赋值 (画格数组 [11], )
+赋值 (画格数组 [12], )
+赋值 (画格数组 [13], )
+赋值 (画格数组 [14], )
+赋值 (画格数组 [15], )
+赋值 (画格数组 [16], )
+.计次循环首 (16, n)
+    赋值 (画格数组 [n], 背景颜色, #白色)
+    赋值 (画格数组 [n], 边框, 5)
+    赋值 (画格数组 [n], 显示方式, 2)
+.计次循环尾 ()
+赋值 (.左边, 相减 (画格数组 [1].左边, 4))
+赋值 (.顶边, 相减 (画格数组 [1].顶边, 4))
+
+
+.子程序 初始化画格图片信息数组, 空白型, , 
+.局部变量 n, 整数型, , , 
+
+.计次循环首 (16, n)
+    赋值 (画格图片信息 [n], 图片地址, “”)
+    赋值 (画格图片信息 [n], 图片名称, “”)
+    赋值 (画格图片信息 [n], 图片类型, 0)
+.计次循环尾 ()
+
+.子程序 排列所有画板, 空白型, , 
+.参数 展板宽度, 整数型, 可空, 
+.参数 展板高度, 整数型, 可空, 
+.参数 画格宽度, 整数型, 可空, 
+.参数 画格高度, 整数型, 可空, 
+.参数 向上移动距离, 整数型, 可空, 
+
+.局部变量 每行画格数, 整数型, , , 
+.局部变量 行数, 整数型, , , 
+.局部变量 画格边距, 整数型, , , 
+.局部变量 行数容器, 整数型, , , 
+.局部变量 列数容器, 整数型, , , 
+.局部变量 当前画格号, 整数型, , , 
+
+.如果真 (等于 (是否为空 (展板宽度), 真))
+    赋值 (展板宽度, .宽度)
+.如果真结束
+
+.如果真 (等于 (是否为空 (展板高度), 真))
+    赋值 (展板高度, .高度)
+.如果真结束
+
+.如果真 (等于 (是否为空 (画格宽度), 真))
+    赋值 (画格宽度, .宽度)
+.如果真结束
+
+.如果真 (等于 (是否为空 (画格高度), 真))
+    赋值 (画格高度, .高度)
+.如果真结束
+
+.如果真 (等于 (是否为空 (向上移动距离), 真))
+    赋值 (向上移动距离, 0)
+.如果真结束
+
+.如果真 (大于或等于 (相加 (画格宽度, 10), 展板宽度))
+    赋值 (画格宽度, 相减 (展板宽度, 10))
+.如果真结束
+
+赋值 (每行画格数, 整除 (相减 (展板宽度, 20), 画格宽度))
+调试输出 (相加 (“每行画格数：”, 到文本 (每行画格数)))
+赋值 (画格边距, 相除 (相减 (展板宽度, 相乘 (画格宽度, 每行画格数)), 相加 (每行画格数, 1)))
+调试输出 (相加 (“画格边距：”, 到文本 (画格边距)))
+赋值 (行数, 相加 (整除 (16, 每行画格数), 选择 (大于 (求余数 (16, 每行画格数), 0), 1, 0)))
+.计次循环首 (行数, 行数容器)
+    .计次循环首 (每行画格数, 列数容器)
+        赋值 (当前画格号, 相加 (相乘 (每行画格数, 相减 (行数容器, 1)), 列数容器))
+        .如果真 (大于 (当前画格号, 16))
+            跳出循环 ()
+        .如果真结束
+        调试输出 (相加 (“当前画格号：”, 到文本 (当前画格号)))
+        
+        赋值 (画格数组 [当前画格号], 宽度, 画格宽度)
+        赋值 (画格数组 [当前画格号], 高度, 画格高度)
+        赋值 (画格数组 [当前画格号], 左边, 相加 (相乘 (画格边距, 列数容器), 相乘 (画格宽度, 相减 (列数容器, 1))))
+        赋值 (画格数组 [当前画格号], 顶边, 相减 (相加 (相乘 (画格边距, 行数容器), 相乘 (画格高度, 相减 (行数容器, 1))), 向上移动距离))
+    .计次循环尾 ()
+.计次循环尾 ()
+
+赋值 (.最大位置, 相减 (相加 (相乘 (画格高度, 行数), 相乘 (画格边距, 相加 (行数, 1))), .高度))
+赋值 (.行改变值, 整除 (.最大位置, 15))
+.如果真 (小于 (.行改变值, 1))
+    赋值 (.行改变值, 1)
+.如果真结束
+
+调试输出 (.最大位置)
+
+.子程序 下载图片到画格线程, 空白型, , 用线程启动
+.参数 画格数, 整数型, , 
+
+.局部变量 图片数据, 字节集, , , 
+
+.如果 (等于 (画格图片信息 [画格数], 图片地址, “”))
+     ' 无图片地址
+    赋值 (画格数组 [画格数], 图片, #无数据图片)
+    赋值 (画格状态 [画格数], #状态无数据)
+    .如果真 (等于 (当前被选中画格号, 画格数))
+        赋值 (.标题, “<无图片>”)
+    .如果真结束
+    
+     ' 返回 ()
+.否则
+    
+     ' 画格数组 [画格数].图片 ＝ #等待中图片
+    赋值 (图片数据, 未知支持库函数_7 (画格图片信息 [画格数], 图片地址))
+    .如果 (小于 (取字节集长度 (图片数据), 10))
+         ' 下载图片数据失败
+        赋值 (画格数组 [画格数], 图片, #下载失败图片)
+        赋值 (画格状态 [画格数], #状态下载失败)
+        .如果真 (等于 (当前被选中画格号, 画格数))
+            赋值 (.标题, “<下载失败>”)
+        .如果真结束
+        
+    .否则
+        
+        赋值 (画格数组 [画格数], 图片, 图片数据)
+        赋值 (画格状态 [画格数], #状态正常数据)
+        .如果真 (等于 (当前被选中画格号, 画格数))
+            赋值 (.标题, 画格图片信息 [画格数], 图片名称)
+        .如果真结束
+        
+    .如果结束
+    
+.如果结束
+
+.如果真 (等于 (当前被选中画格号, 画格数))
+    赋值 (.图片, 画格数组 [画格数], 图片)
+.如果真结束
+
+.如果 (等于 (画格全部已就续 (), 真))
+    赋值 (.禁止, 假)
+    赋值 (.禁止, 选择 (等于 (.标记, “”), 真, 假))
+    赋值 (.禁止, 选择 (等于 (.标记, “”), 真, 假))
+    
+.否则
+    
+.如果结束
+
+
+
+.子程序 画格全部已就续, 逻辑型, , 
+.局部变量 n, 整数型, , , 
+
+.计次循环首 (16, n)
+    .如果真 (等于 (画格状态 [n], #状态正在下载))
+        返回 (假)
+    .如果真结束
+    
+.计次循环尾 ()
+返回 (真)
+
+.子程序 下载列表页并下载图片, 空白型, , 用线程启动
+.局部变量 列表页文本, 文本型, , , 
+.局部变量 表达式, 未知类型0x50001, , , 
+.局部变量 搜索结果, 未知类型0x50002, , "0", 
+.局部变量 单个结果, 未知类型0x50002, , , 
+.局部变量 n, 整数型, , , 
+
+.如果真 (等于 (列表页地址, “”))
+    置下载失败图片 ()
+    置下载失败状态 ()
+    .如果真 (并且 (大于或等于 (当前被选中画格号, 1), 小于或等于 (当前被选中画格号, 16)))
+        赋值 (.图片, #下载失败图片)
+        赋值 (.标题, “<下载失败>”)
+    .如果真结束
+    
+    赋值 (.禁止, 假)
+    信息框 (“列表页地址错误，下载失败，请选择下载！”, #警告图标, “列表页地址错误”)
+    返回 ()
+.如果真结束
+
+.如果真 (并且 (等于 (未知支持库函数_23 (), 假), 等于 (未知支持库函数_52 (), 假)))
+     ' 未与网络联接
+    置下载失败图片 ()
+    置下载失败状态 ()
+    .如果真 (并且 (大于或等于 (当前被选中画格号, 1), 小于或等于 (当前被选中画格号, 16)))
+        赋值 (.图片, #下载失败图片)
+        赋值 (.标题, “<下载失败>”)
+    .如果真结束
+    
+    赋值 (.禁止, 假)
+    信息框 (相加 (“无法连接网络，下载头像图片失败！”, #换行符, #换行符, “如果网络不通，或者防火墙阻止本程序访问网络，下载头像都会失败。”, #换行符, #换行符, “请确认电脑已经上网且防火墙未阻止本程序，然后再选择下载。”), #警告图标, “无可用的网络”)
+    返回 ()
+.如果真结束
+
+赋值 (列表页文本, 到文本 (未知支持库函数_7 (列表页地址)))
+.如果真 (等于 (表达式.未知支持库函数_3 (#表达式文本, 假), 假))
+    置下载失败图片 ()
+    置下载失败状态 ()
+    .如果真 (并且 (大于或等于 (当前被选中画格号, 1), 小于或等于 (当前被选中画格号, 16)))
+        赋值 (.图片, #下载失败图片)
+        赋值 (.标题, “<下载失败>”)
+    .如果真结束
+    
+    赋值 (.禁止, 假)
+    信息框 (“正则表达式创建失败，请重新下载！”, #警告图标, “正则表达式创建失败”)
+    返回 ()
+.如果真结束
+
+
+调试输出 (列表页文本)
+赋值 (搜索结果, 表达式.未知支持库函数_16 (列表页文本))
+调试输出 (相加 (“搜索结果数：”, 到文本 (取数组成员数 (搜索结果))))
+.计次循环首 (16, n)
+    赋值 (画格图片信息 [n], 图片地址, “”)
+    赋值 (画格图片信息 [n], 图片名称, “”)
+    赋值 (画格图片信息 [n], 图片类型, 0)
+    .如果真 (小于或等于 (n, 取数组成员数 (搜索结果)))
+        赋值 (画格图片信息 [n], 图片地址, 搜索结果.未知支持库函数_12 ( [n], 列表页文本, 1, ))
+        赋值 (画格图片信息 [n], 图片名称, 搜索结果.未知支持库函数_12 ( [n], 列表页文本, 2, ))
+        赋值 (画格图片信息 [n], 图片名称, 子文本替换 (画格图片信息 [n], 图片名称, “<strong>”, “”, , , 假))
+        赋值 (画格图片信息 [n], 图片名称, 子文本替换 (画格图片信息 [n], 图片名称, “</strong>”, “”, , , 假))
+        赋值 (画格图片信息 [n], 图片类型, 0)
+    .如果真结束
+    
+.计次循环尾 ()
+
+ ' 表达式.创建 (#下一页文本, 假)
+.如果 (等于 (表达式.未知支持库函数_3 (#下一页文本, 假), 假))
+    赋值 (.标记, “”)
+    赋值 (.禁止, 真)
+    
+.否则
+    
+    赋值 (单个结果, 表达式.未知支持库函数_7 (列表页文本, 1, ))
+    .如果 (等于 (单个结果.未知支持库函数_10 (), 假))
+        赋值 (.标记, 相加 (“http://image.cn.yahoo.com/”, 单个结果.未知支持库函数_12 (列表页文本, 1, )))
+        赋值 (.标记, 子文本替换 (.标记, “&amp;”, “&”, , , 假))
+    .否则
+         ' 信息框 (“下一页没找到”, 0, )
+        赋值 (.标记, “”)
+        赋值 (.禁止, 真)
+    .如果结束
+    
+.如果结束
+
+.如果 (等于 (表达式.未知支持库函数_3 (#上一页文本, 假), 假))
+    赋值 (.标记, “”)
+    赋值 (.禁止, 真)
+    
+.否则
+    
+    赋值 (单个结果, 表达式.未知支持库函数_7 (列表页文本, 1, ))
+    .如果 (等于 (单个结果.未知支持库函数_10 (), 假))
+        赋值 (.标记, 相加 (“http://image.cn.yahoo.com/”, 单个结果.未知支持库函数_12 (列表页文本, 1, )))
+        赋值 (.标记, 子文本替换 (.标记, “&amp;”, “&”, , , 假))
+    .否则
+         ' 信息框 (“上一页没找到”, 0, )
+        赋值 (.标记, “”)
+        赋值 (.禁止, 真)
+    .如果结束
+    
+.如果结束
+
+.计次循环首 (16, n)
+    未知支持库函数_0 (&下载图片到画格线程, n)
+.计次循环尾 ()
+
+
+.子程序 _纵向滚动条_位置被改变, 空白型, , 
+
+排列所有画板 (.位置)
+
+.如果 (并且 (大于 (到整数 (.标记), 0), 小于或等于 (到整数 (.标记), 16)))
+    赋值 (.顶边, 相减 (相加 (相减 (.顶边, .顶边), 画格数组 [到整数 (.标记)].顶边), 4))
+    赋值 (.顶边, 相减 (相加 (相减 (.顶边, .顶边), 画格数组 [到整数 (.标记)].顶边), 4))
+    赋值 (.左边, 相减 (画格数组 [到整数 (.标记)].左边, 4))
+    赋值 (.顶边, 相减 (画格数组 [到整数 (.标记)].顶边, 4))
+.否则
+    
+    赋值 (.顶边, 相减 (相加 (相减 (.顶边, .顶边), 画格数组 [1].顶边), 4))
+    赋值 (.顶边, 相减 (相加 (相减 (.顶边, .顶边), 画格数组 [1].顶边), 4))
+    赋值 (.左边, 相减 (画格数组 [1].左边, 4))
+    赋值 (.顶边, 相减 (画格数组 [1].顶边, 4))
+.如果结束
+
+
+.子程序 调整界面, 空白型, , 
+赋值 (.图片, _启动窗口.)
+赋值 (.宽度, _启动窗口.)
+赋值 (.高度, _启动窗口.)
+赋值 (.左边, 0)
+赋值 (.顶边, 0)
+赋值 (.高度, _启动窗口.)
+赋值 (.左边, 相减 (_启动窗口., 2))
+赋值 (.顶边, 0)
+赋值 (.宽度, _启动窗口.)
+赋值 (.顶边, 相减 (_启动窗口., 2))
+赋值 (.左边, 0)
+赋值 (.左边, 相减 (.宽度, 105))
+赋值 (.左边, 相减 (.宽度, 76))
+赋值 (.左边, 相减 (.宽度, 50))
+赋值 (.左边, 0)
+赋值 (.顶边, 0)
+赋值 (.高度, .高度)
+赋值 (.宽度, .宽度)
+赋值 (.内容, “”)
+ ' 标签图片名称.标题 ＝ “”
+
+.子程序 置等待中图片, 空白型, , 
+.局部变量 n, 整数型, , , 
+
+.计次循环首 (16, n)
+    赋值 (画格数组 [n], 图片, #等待中图片)
+.计次循环尾 ()
+
+.子程序 置等待中状态, 空白型, , 
+.局部变量 n, 整数型, , , 
+
+.计次循环首 (16, n)
+    赋值 (画格状态 [n], #状态正在下载)
+    赋值 (画格图片信息 [n], 图片名称, “<下载中…>”)
+.计次循环尾 ()
+
+.子程序 置无数据状态, 空白型, , 
+.局部变量 n, 整数型, , , 
+
+.计次循环首 (16, n)
+    赋值 (画格状态 [n], #状态无数据)
+.计次循环尾 ()
+
+
+.子程序 置下载失败状态, 空白型, , 
+.局部变量 n, 整数型, , , 
+
+.计次循环首 (16, n)
+    赋值 (画格状态 [n], #状态下载失败)
+    赋值 (画格图片信息 [n], 图片名称, “<下载失败>”)
+.计次循环尾 ()
+
+
+
+.子程序 置正常数据状态, 空白型, , 
+.局部变量 n, 整数型, , , 
+
+.计次循环首 (16, n)
+    赋值 (画格状态 [n], #状态正常数据)
+.计次循环尾 ()
+
+.子程序 置无数据图片, 空白型, , 
+.局部变量 n, 整数型, , , 
+
+.计次循环首 (16, n)
+    赋值 (画格数组 [n], 图片, #无数据图片)
+.计次循环尾 ()
+
+
+.子程序 置下载失败图片, 空白型, , 
+.局部变量 n, 整数型, , , 
+
+.计次循环首 (16, n)
+    赋值 (画格数组 [n], 图片, #下载失败图片)
+.计次循环尾 ()
+
+
+.子程序 _透明标签遮盖_鼠标位置被移动, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.局部变量 n, 整数型, , , 
+
+.计次循环首 (16, n)
+    .如果真 (并且 (大于或等于 (横向位置, 画格数组 [n], 左边), 小于或等于 (横向位置, 相加 (画格数组 [n], 左边, 画格数组 [n], 宽度)), 大于或等于 (纵向位置, 画格数组 [n], 顶边), 小于或等于 (纵向位置, 相加 (画格数组 [n], 顶边, 画格数组 [n], 高度))))
+        赋值 (.标题, 画格图片信息 [n], 图片名称)
+        赋值 (.宽度, 相减 (画格数组 [n], 宽度, 2))
+        赋值 (.左边, 相加 (画格数组 [n], 左边, 1))
+        赋值 (.顶边, 相减 (相加 (画格数组 [n], 顶边, 画格数组 [n], 高度), 13))
+        赋值 (.可视, 真)
+        赋值 (.宽度, 相加 (画格数组 [n], 宽度, 6))
+        赋值 (.高度, 相加 (画格数组 [n], 高度, 6))
+        赋值 (.左边, 相减 (画格数组 [n], 左边, 3))
+        赋值 (.顶边, 相减 (画格数组 [n], 顶边, 3))
+        赋值 (.可视, 真)
+        
+        返回 ()
+    .如果真结束
+    
+.计次循环尾 ()
+赋值 (.可视, 假)
+赋值 (.可视, 假)
+
+.子程序 _透明标签遮盖_鼠标左键被放开, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.局部变量 n, 整数型, , , 
+
+.计次循环首 (16, n)
+    
+    .如果真 (并且 (大于或等于 (横向位置, 画格数组 [n], 左边), 小于或等于 (横向位置, 相加 (画格数组 [n], 左边, 画格数组 [n], 宽度)), 大于或等于 (纵向位置, 画格数组 [n], 顶边), 小于或等于 (纵向位置, 相加 (画格数组 [n], 顶边, 画格数组 [n], 高度))))
+        赋值 (.可视, 假)
+        赋值 (.宽度, 相加 (画格数组 [n], 宽度, 8))
+        赋值 (.高度, 相加 (画格数组 [n], 高度, 8))
+        赋值 (.左边, 相减 (画格数组 [n], 左边, 4))
+        赋值 (.顶边, 相减 (画格数组 [n], 顶边, 4))
+        
+        赋值 (.可视, 真)
+        赋值 (.标记, 到文本 (n))
+        赋值 (.图片, 画格数组 [n], 图片)
+        赋值 (.标题, 选择 (等于 (画格图片信息 [n], 图片名称, “”), “<无图片>”, 画格图片信息 [n], 图片名称))
+        赋值 (当前被选中画格号, n)
+        .如果 (等于 (取字节集长度 (.图片), 0))
+            赋值 (.图片, #无数据图片)
+            赋值 (.标记, “”)
+        .否则
+            
+            赋值 (.标记, 画格图片信息 [n], 图片地址)
+            
+        .如果结束
+        
+        .如果真 (小于 (画格数组 [n], 顶边, 4))
+            赋值 (.位置, 相减 (相加 (.位置, 画格数组 [n], 顶边), 4))
+            .如果真 (小于 (.位置, 0))
+                赋值 (.位置, 0)
+            .如果真结束
+            _纵向滚动条_位置被改变 ()
+        .如果真结束
+        
+        .如果真 (大于 (相加 (画格数组 [n], 顶边, 画格数组 [n], 高度), 相减 (.高度, 8)))
+            赋值 (.位置, 相加 (相减 (相加 (.位置, 画格数组 [n], 顶边, 画格数组 [n], 高度), .高度), 8))
+            .如果真 (大于 (.位置, .最大位置))
+                赋值 (.位置, .最大位置)
+            .如果真结束
+            _纵向滚动条_位置被改变 ()
+        .如果真结束
+        
+        
+        返回 ()
+    .如果真结束
+    
+.计次循环尾 ()
+
+
+
+
+.子程序 _按钮下载头像_被单击, 空白型, , 
+.局部变量 t, 文本型, , , 
+
+.如果真 (小于 (.现行选中项, 1))
+    信息框 (“请选择头像类别！”, #信息图标, “请选择头像类别”)
+    获取焦点 ()
+    返回 ()
+.如果真结束
+
+.如果真 (小于 (.现行选中项, 1))
+    信息框 (“请选择小类别！”, #信息图标, “请选择小类别”)
+    获取焦点 ()
+    返回 ()
+.如果真结束
+
+赋值 (.禁止, 真)
+赋值 (.禁止, 真)
+赋值 (.禁止, 真)
+赋值 (当前被选中画格号, 0)
+赋值 (.可视, 假)
+赋值 (.左边, 相减 (画格数组 [1].左边, 4))
+赋值 (.顶边, 相减 (画格数组 [1].顶边, 4))
+赋值 (.图片, 取空白字节集 (0))
+赋值 (.标题, “<未选择>”)
+初始化画格图片信息数组 ()
+置等待中状态 ()
+置等待中图片 ()
+赋值 (t, .取项目文本 (.现行选中项))
+赋值 (列表页地址, 取文本右边 (t, 相减 (取文本长度 (t), 寻找文本 (t, “　　　　　　　　　”, , 真), 17)))
+未知支持库函数_0 (&下载列表页并下载图片, )
+
+
+.子程序 _组合框大类_列表项被选择, 空白型, , 
+.局部变量 t, 文本型, , "0", 
+.局部变量 n, 整数型, , , 
+
+.如果真 (小于 (.现行选中项, 1))
+    清空 ()
+    “...请选择小类别...”.加入项目 ()
+    赋值 (.现行选中项, 0)
+    获取焦点 ()
+    返回 ()
+.如果真结束
+
+.判断开始 (等于 (.取项目文本 (.现行选中项), “ 1.搞笑头像”))
+    清空 ()
+    “...请选择小类别...”.加入项目 ()
+    赋值 (t, 分割文本 (#搞笑头像, #换行符, ))
+    .计次循环首 (相除 (取数组成员数 (t), 2), n)
+        相加 (“ ”, 到文本 (n), “.”, t [相减 (相乘 (2, n), 1)], “　　　　　　　　　”, t [相乘 (2, n)]).加入项目 ()
+    .计次循环尾 ()
+    赋值 (.现行选中项, 0)
+.判断 (等于 (.取项目文本 (.现行选中项), “ .另类头像”))
+    清空 ()
+    “...请选择小类别...”.加入项目 ()
+    赋值 (t, 分割文本 (#另类头像, #换行符, ))
+    .计次循环首 (相除 (取数组成员数 (t), 2), n)
+        相加 (“ ”, 到文本 (n), “.”, t [相减 (相乘 (2, n), 1)], “　　　　　　　　　”, t [相乘 (2, n)]).加入项目 ()
+    .计次循环尾 ()
+    赋值 (.现行选中项, 0)
+.判断 (等于 (.取项目文本 (.现行选中项), “ 2.卡通头像”))
+    清空 ()
+    “...请选择小类别...”.加入项目 ()
+    赋值 (t, 分割文本 (#卡通头像, #换行符, ))
+    .计次循环首 (相除 (取数组成员数 (t), 2), n)
+        相加 (“ ”, 到文本 (n), “.”, t [相减 (相乘 (2, n), 1)], “　　　　　　　　　”, t [相乘 (2, n)]).加入项目 ()
+    .计次循环尾 ()
+    赋值 (.现行选中项, 0)
+.判断 (等于 (.取项目文本 (.现行选中项), “ 4.游戏头像”))
+    清空 ()
+    “...请选择小类别...”.加入项目 ()
+    赋值 (t, 分割文本 (#游戏头像, #换行符, ))
+    .计次循环首 (相除 (取数组成员数 (t), 2), n)
+        相加 (“ ”, 到文本 (n), “.”, t [相减 (相乘 (2, n), 1)], “　　　　　　　　　”, t [相乘 (2, n)]).加入项目 ()
+    .计次循环尾 ()
+    赋值 (.现行选中项, 0)
+.判断 (等于 (.取项目文本 (.现行选中项), “ 5.明星头像”))
+    清空 ()
+    “...请选择小类别...”.加入项目 ()
+    赋值 (t, 分割文本 (#明星头像, #换行符, ))
+    .计次循环首 (相除 (取数组成员数 (t), 2), n)
+        相加 (“ ”, 到文本 (n), “.”, t [相减 (相乘 (2, n), 1)], “　　　　　　　　　”, t [相乘 (2, n)]).加入项目 ()
+    .计次循环尾 ()
+    赋值 (.现行选中项, 0)
+.默认
+    
+.判断结束
+
+获取焦点 ()
+
+
+.子程序 _按钮下一页_被单击, 空白型, , 
+ ' 信息框 (按钮下一页.标记, 0, )
+赋值 (.禁止, 真)
+赋值 (.禁止, 真)
+赋值 (.禁止, 真)
+赋值 (当前被选中画格号, 0)
+赋值 (.可视, 假)
+赋值 (.左边, 相减 (画格数组 [1].左边, 4))
+赋值 (.顶边, 相减 (画格数组 [1].顶边, 4))
+赋值 (.图片, 取空白字节集 (0))
+赋值 (.标题, “<未选择>”)
+初始化画格图片信息数组 ()
+置等待中状态 ()
+置等待中图片 ()
+
+赋值 (列表页地址, .标记)
+未知支持库函数_0 (&下载列表页并下载图片, )
+
+
+.子程序 _图形按钮关闭_被单击, 空白型, , 
+结束 ()
+
+
+.子程序 _按钮上一页_被单击, 空白型, , 
+赋值 (.禁止, 真)
+赋值 (.禁止, 真)
+赋值 (.禁止, 真)
+赋值 (当前被选中画格号, 0)
+赋值 (.可视, 假)
+赋值 (.左边, 相减 (画格数组 [1].左边, 4))
+赋值 (.顶边, 相减 (画格数组 [1].顶边, 4))
+赋值 (.图片, 取空白字节集 (0))
+赋值 (.标题, “<未选择>”)
+初始化画格图片信息数组 ()
+置等待中状态 ()
+置等待中图片 ()
+
+赋值 (列表页地址, .标记)
+未知支持库函数_0 (&下载列表页并下载图片, )
+
+
+.子程序 _按钮添加到ＱＱ表情_被单击, 空白型, , 
+.局部变量 file, 文本型, , , 
+
+.如果真 (等于 (当前被选中画格号, 0))
+    信息框 (相加 (“出错啦，没有任何头像被选中哦:-(”, #换行符, #换行符, “先用鼠标点击选中你喜欢的头像，然后再点击【添加到QQ表情按钮】”), #信息图标, “没选中图像:-(”)
+    返回 ()
+.如果真结束
+
+.判断开始 (等于 (画格状态 [当前被选中画格号], #状态正在下载))
+    信息框 (相加 (“要保存的头像正在下载中哦”, #换行符, #换行符, “请等待下载完了再点击【添加到QQ表情按钮】吧:-)”), #信息图标, “正在下载中哦:-)”)
+    返回 ()
+    
+.判断 (等于 (画格状态 [当前被选中画格号], #状态下载失败))
+    信息框 (相加 (“要保存的头像下载失败啦:-(”, #换行符, #换行符, “请尝试重新下载一遍再点击【添加到QQ表情按钮】吧:-)”), #信息图标, “下载失败啦:-(”)
+    返回 ()
+    
+.判断 (等于 (画格状态 [当前被选中画格号], #状态无数据))
+    信息框 (相加 (“选中的头像框中还没有任何可用的头像哦:-(”, #换行符, #换行符, “请先下载头像再点击【添加到QQ表情按钮】吧:-)”), #信息图标, “没有头像哦:-(”)
+    返回 ()
+.判断 (等于 (画格状态 [当前被选中画格号], #状态正常数据))
+    
+    赋值 (file, 取临时文件名 ())
+    
+    写到文件 (file, 到字节集 (子文本替换 (#保存到QQ表情网页数据, “pic_url”, .标记, , , 假)))
+    file.未知支持库函数_1 ()
+    
+.默认
+    
+.判断结束
+
+
+
+
+
+
+.子程序 _按钮保存到本地文件_被单击, 空白型, , 
+.局部变量 file, 文本型, , , 
+.局部变量 表达式, 未知类型0x50001, , , 
+.局部变量 表达式文本, 文本型, , , 
+
+.如果真 (等于 (当前被选中画格号, 0))
+    信息框 (相加 (“出错啦，没有任何头像被选中哦:-(”, #换行符, #换行符, “先用鼠标点击选中你喜欢的头像，然后再点击【保存头像到文件】按钮”), #信息图标, “没选中图像:-(”)
+    返回 ()
+.如果真结束
+
+.判断开始 (等于 (画格状态 [当前被选中画格号], #状态正在下载))
+    信息框 (相加 (“要保存的头像正在下载中哦”, #换行符, #换行符, “请等待下载完了再点击【保存头像到文件】按钮吧:-)”), #信息图标, “正在下载中哦:-)”)
+    返回 ()
+    
+.判断 (等于 (画格状态 [当前被选中画格号], #状态下载失败))
+    信息框 (相加 (“要保存的头像下载失败啦:-(”, #换行符, #换行符, “请尝试重新下载一遍再点击【保存头像到文件】按钮吧:-)”), #信息图标, “下载失败啦:-(”)
+    返回 ()
+    
+.判断 (等于 (画格状态 [当前被选中画格号], #状态无数据))
+    信息框 (相加 (“选中的头像框中还没有任何可用的头像哦:-(”, #换行符, #换行符, “请先下载头像再点击【保存头像到文件】按钮吧:-)”), #信息图标, “没有头像哦:-(”)
+    返回 ()
+    
+.判断 (等于 (画格状态 [当前被选中画格号], #状态正常数据))
+    
+     ' .如果真 (或者 (等于 (取字节集长度 (.图片), 1688), 等于 (取字节集长度 (.图片), 0)))
+         ' 信息框 (“请先选择要浏览的头像类别，下载后再选择保存！”, #信息图标, )
+         ' 返回 ()
+    .如果真结束
+    
+     ' .如果真 (等于 (.标记, “”))
+         ' 信息框 (“请先点击左边你要保存的图片然后再点保存按钮！”, #信息图标, )
+         ' 返回 ()
+    .如果真结束
+    
+     ' 通用对话框1.文件名 ＝ 取文本右边 (图片框缩略图.标记, 取文本长度 (图片框缩略图.标记) － 倒找文本 (图片框缩略图.标记, “/”, , 假))
+    赋值 (.文件名, 画格图片信息 [当前被选中画格号], 图片名称)
+    赋值 (.文件名, 子文本替换 (.文件名, “\”, “_”, , , 真))
+    赋值 (.文件名, 子文本替换 (.文件名, “/”, “_”, , , 真))
+    赋值 (.文件名, 子文本替换 (.文件名, “<”, “_”, , , 真))
+    赋值 (.文件名, 子文本替换 (.文件名, “>”, “_”, , , 真))
+    赋值 (.文件名, 子文本替换 (.文件名, “:”, “_”, , , 真))
+    赋值 (.文件名, 子文本替换 (.文件名, “*”, “_”, , , 真))
+    赋值 (.文件名, 子文本替换 (.文件名, “|”, “_”, , , 真))
+    赋值 (.文件名, 子文本替换 (.文件名, “?”, “_”, , , 真))
+    赋值 (.文件名, 子文本替换 (.文件名, “.”, “”, , , 真))
+    赋值 (.文件名, 子文本替换 (.文件名, #引号, “_”, , , 真))
+    赋值 (表达式文本, “(\.*)$”)
+    表达式.未知支持库函数_3 (表达式文本, 假)
+    赋值 (.文件名, 表达式.未知支持库函数_15 (.文件名, “”, 1, , 真, 真))
+     ' 信息框 (通用对话框1.文件名, 0, )
+    .如果 (打开 ())
+        赋值 (file, .文件名)
+        .如果 (不等于 (file, “”))
+            写到文件 (file, .图片)
+            信息框 (“头像已经成功保存啦:-)”, #信息图标, “成功保存啦:-)”)
+        .否则
+            
+        .如果结束
+        
+    .否则
+        
+    .如果结束
+    
+.默认
+    
+.判断结束
+
+
+.子程序 _组合框小类_列表项被选择, 空白型, , 
+获取焦点 ()
+
+
+.子程序 _标签图片名称_被双击, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+置剪辑板文本 (.标题)
+
+
+.子程序 _透明标签2_鼠标左键被放开, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+信息框 (“帮助”, 0, )
+
+
+.子程序 _透明标签3_鼠标左键被放开, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+信息框 (“软件更新”, 0, )
+
+
+.子程序 _透明标签4_鼠标左键被放开, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+信息框 (“关于本软件”, 0, )
+
+.子程序 _透明标签5_鼠标左键被放开, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+未知支持库函数_56 (“http://gongyi.qq.com/juanzeng/llj_dizhen.htm”)
+
+
+.子程序 _图形按钮最小化_被单击, 空白型, , 
+赋值 (_启动窗口., 2)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

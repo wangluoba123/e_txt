@@ -1,0 +1,366 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 194
+    高度 = 243
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “自绘列表框”
+    帮助文件名 = “”
+
+
+
+.常量 GWL_WNDPROC, "-4", , 
+.常量 WM_PAINT, "15", , 
+.常量 WM_DRAWITEM, "43", , 
+.常量 ODT_LISTBOX, "2", , 
+.图片 头像图标2, " ' 已保存到：D:\易语言学习\Data\仿QQ列表框.e\头像图标2", , 
+.图片 头像图标1, " ' 已保存到：D:\易语言学习\Data\仿QQ列表框.e\头像图标1", , 
+.图片 头像图标3, " ' 已保存到：D:\易语言学习\Data\仿QQ列表框.e\头像图标3", , 
+.图片 空间, " ' 已保存到：D:\易语言学习\Data\仿QQ列表框.e\空间", , 
+.常量 TRANSPARENT, "1", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+ ' 所需要的模块
+ ' 凌晨孤星_取图标句柄 C:\Documents and Settings\Administrator\桌面\凌晨孤星_取图标句柄.ec
+
+
+数据类型 PAINTSTRUCT, , 
+    .成员 hdc, 整数型, , , 
+    .成员 fErase, 整数型, , , 
+    .成员 rcPaint, RECT, , , 
+    .成员 fRestore, 整数型, , , 
+    .成员 fIncUpdate, 整数型, , , 
+    .成员 rgbReserved, 字节型, , "32", 
+
+数据类型 RECT, , 矩形;
+    .成员 Left, 整数型, , , 
+    .成员 Top, 整数型, , , 
+    .成员 Right, 整数型, , , 
+    .成员 Bottom, 整数型, , , 
+
+数据类型 DRAWITEMSTRUCT, , 
+    .成员 CtlType, 整数型, , , 控件类型
+    .成员 CtlID, 整数型, , , 控件ID
+    .成员 itemID, 整数型, , , 项目ID
+    .成员 itemAction, 整数型, , , 激活项目
+    .成员 itemState, 整数型, , , 项目状态
+    .成员 hwndItem, 整数型, , , 控件窗口句柄
+    .成员 hdc, 整数型, , , 设备场景
+    .成员 rcItem, RECT, , , 可能为 RECT 结构。
+    .成员 itemData, 整数型, , , 
+
+数据类型 LOGFONT, , 
+    .成员 nHeight, 整数型, , , 所创建字体的字符高度
+    .成员 nWidth, 整数型, , , 字体的字符平均宽度
+    .成员 nEscapement, 整数型, , , 字符输出方向与水平向右的方向所成角度，以0.1度为单位
+    .成员 nOrientation, 整数型, , , 字符与基线的角度，以0.1度为单位
+    .成员 nWeight, 整数型, , , 字符颜色的深浅度
+    .成员 bItalic, 字节型, , , 斜体属性标志(0:正常字体，非0:斜体)
+    .成员 bUnderline, 字节型, , , 下划线属性标志(0:无下划线，非0:有下划线)
+    .成员 cStrikeOut, 字节型, , , 删除线属性标志(0:无删除线，非0:有删除线) 
+    .成员 nCharSet, 字节型, , , 字符集标识0:ANSI字符集，1:系统缺省字符集
+    .成员 nOutPrecision, 字节型, , , 输出精度
+    .成员 nClipPrecision, 字节型, , , 剪切精度
+    .成员 nQuality, 字节型, , , 输出品质
+    .成员 nPitchAndFamily, 字节型, , , 字符间距
+    .成员 lpszFacename, 文本型, , , 现有系统TrueType字体名称
+
+
+.DLL命令 CallWindowProc, 整数型, "user32", "CallWindowProcA", , 将消息传答窗口函数　
+    .参数 lpPrevWndFunc, 整数型, , 
+    .参数 hwnd, 整数型, , 
+    .参数 msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 SetWindowLong, 整数型, "user32", "SetWindowLongA", , 在窗口结构中为指定的窗口设置信息　指定数据的前一个值
+    .参数 hwnd, 整数型, , 欲为其取得信息的窗口的句柄
+    .参数 nIndex, 整数型, , 请参考GetWindowLong函数的nIndex参数的说明
+    .参数 dwNewLong, 整数型, , 由nIndex指定的窗口信息的新值;
+
+.DLL命令 SendMessage, 整数型, "user32", "SendMessageA", , 调用一个窗口的窗口函数，将一条消息发给那个窗口。除非消息处理完毕，否则该函数不会返回。SendMessageBynum， ;    SendMessageByString是该函数的“类型安全”声明形式　由具体的消息决定
+    .参数 hwnd, 整数型, , 要接收消息的那个窗口的句柄
+    .参数 wMsg, 整数型, , 消息的标识符
+    .参数 wParam, 整数型, , 具体取决于消息
+    .参数 lParam, 整数型, , 具体取决于消息;
+
+.DLL命令 BeginPaint, 整数型, "user32", "BeginPaint", , 准备一个画图窗　
+    .参数 hwnd, 整数型, , 
+    .参数 lpPaint, PAINTSTRUCT, , 
+
+.DLL命令 CreateSolidBrush, 整数型, "gdi32", "CreateSolidBrush", , 用纯色创建一个刷子　如执行成功，返回新刷子的一个句柄；否则返回零
+    .参数 crColor, 整数型, , 数字的RGB彩色;  
+
+.DLL命令 FillRect, 整数型, "user32", "FillRect", , 用指定的刷子填充一个矩形　非零表示成功，零表示失败。会设置GetLastError
+    .参数 hdc, 整数型, , 设备场景的句柄
+    .参数 lpRect, RECT, , RECT，对填充区域进行描述的一个矩形，采用逻辑坐标
+    .参数 hBrush, 整数型, , 欲使用的刷子的句柄;  
+
+.DLL命令 EndPaint, 整数型, "user32", "EndPaint", , 在指定窗口中标记图画结尾标志　
+    .参数 hwnd, 整数型, , 
+    .参数 lpPaint, PAINTSTRUCT, , 
+
+.DLL命令 DeleteObject, 整数型, "gdi32", "DeleteObject", , 用这个函数删除GDI对象，比如画笔、刷子、字体、位图、区域以及调色板等等。对象使用的所有系统资源都会被释放　非零表示成功，零表示失败
+    .参数 hObject, 整数型, , 一个GDI对象的句柄;  
+
+.DLL命令 RtlMoveMemory, 空白型, "kernel32", "RtlMoveMemory", , 
+    .参数 Destination, DRAWITEMSTRUCT, 传址, Any型,根据需要可以设置成不同的类型
+    .参数 Source, 整数型, , Any型,根据需要可以设置成不同的类型
+    .参数 Length, 整数型, , 
+
+.DLL命令 DrawIconEx, 整数型, "", "DrawIconEx", , 
+    .参数 hdc, 空白型, , 
+    .参数 xLeft, 空白型, , 
+    .参数 yTop, 空白型, , 
+    .参数 hIcon, 空白型, , 
+    .参数 cxWidth, 空白型, , 
+    .参数 cyWidth, 空白型, , 
+    .参数 istepIfAniCur, 空白型, , 
+    .参数 hbrFlickerFreeDraw, 空白型, , 
+    .参数 diFlags, 空白型, , 
+
+.DLL命令 SetBkMode, 整数型, "gdi32.dll", "SetBkMode", , 
+    .参数 hdc, 整数型, , 
+    .参数 nBkMode, 整数型, , 
+
+.DLL命令 SetTextColor, 整数型, "gdi32", "", , 
+    .参数 hdc, 整数型, , 
+    .参数 crColor, 整数型, , 
+
+.DLL命令 TextOut, 整数型, "gdi32", "TextOutA", , 
+    .参数 hdc, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 lpString, 文本型, , 
+    .参数 nCount, 整数型, , 
+
+.DLL命令 SelectObject, 整数型, "", "SelectObject", , 
+    .参数 hdc, 整数型, , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 CreateFontA, 整数型, "", "CreateFontA", , 创建逻辑字体，执行成功则返回逻辑字体的句柄，零表示失败。会设置GetLastError
+    .参数 nHeight, 整数型, , 所创建字体的字符高度
+    .参数 nWidth, 整数型, , 字体的字符平均宽度
+    .参数 nEscapement, 整数型, , 字符输出方向与水平向右的方向所成角度，以0.1度为单位
+    .参数 nOrientation, 整数型, , 字符与基线的角度，以0.1度为单位
+    .参数 nWeight, 整数型, , 字符颜色的深浅度
+    .参数 bItalic, 字节型, , 斜体属性标志(0:正常字体，非0:斜体)
+    .参数 bUnderline, 字节型, , 下划线属性标志(0:无下划线，非0:有下划线)
+    .参数 cStrikeOut, 字节型, , 删除线属性标志(0:无删除线，非0:有删除线) 
+    .参数 nCharSet, 字节型, , 字符集标识0:ANSI字符集，1:系统缺省字符集
+    .参数 nOutPrecision, 字节型, , 输出精度
+    .参数 nClipPrecision, 字节型, , 剪切精度
+    .参数 nQuality, 字节型, , 输出品质
+    .参数 nPitchAndFamily, 字节型, , 字符间距
+    .参数 lpszFacename, 文本型, , 现有系统TrueType字体名称
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 hOldWndProc, 整数型, , , 上一个窗口函数
+.子程序 __启动窗口_创建完毕, 空白型, , 
+“abc”.加入项目 (0)
+“abc”.加入项目 (1)
+“abc”.加入项目 (2)
+赋值 (hOldWndProc, SetWindowLong (_启动窗口.取窗口句柄 (), #GWL_WNDPROC, 到数值 (&标签新窗口函数)))
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+
+.子程序 标签新窗口函数, 整数型, , 
+.参数 hwnd, 整数型, , 要接收消息的那个窗口的句柄
+.参数 wMsg, 整数型, , 消息的标识符
+.参数 wParam, 整数型, , 具体取决于消息
+.参数 lParam, 整数型, , 具体取决于消息;
+
+.局部变量 tItem, DRAWITEMSTRUCT, , , 
+.局部变量 hBrush, 整数型, , , 
+.局部变量 hIcon, 整数型, , , 
+.局部变量 hFont, 整数型, , , 
+.局部变量 hOldFont, 整数型, , , 
+
+.如果真 (等于 (wMsg, #WM_DRAWITEM))
+    RtlMoveMemory (tItem, lParam, 48) ' 复制内存，把lParam参数复制到自定义数据结构
+    .如果真 (等于 (tItem.CtlType, #ODT_LISTBOX)) ' 判断控件类型是否列表框
+        .如果真 (等于 (tItem.itemID, 0))
+            赋值 (hBrush, CreateSolidBrush (#白色)) ' 表项背景颜色
+            FillRect (tItem.hdc, tItem.rcItem, hBrush) ' 用指定的刷子填充一个矩形
+            DeleteObject (hBrush) ' 删除刚才创建的画刷句柄
+            赋值 (hIcon, 凌晨孤星_取图标句柄 (#头像图标1, 0))
+            DrawIconEx (tItem.hdc, 相加 (tItem.rcItem.Left, 5), 相加 (tItem.rcItem.Top, 5), hIcon, 40, 40, 0, 0, 位或 (0, 3))
+            
+            赋值 (hIcon, 凌晨孤星_取图标句柄 (#空间, 0))
+            DrawIconEx (tItem.hdc, 相加 (tItem.rcItem.Left, 39), 相加 (tItem.rcItem.Top, 17), hIcon, 20, 17, 0, 0, 位或 (0, 3))
+             ' 本源码来自易语言资源网(www.5A5X.com)
+            DeleteObject (hIcon) ' 删除图标句柄
+             ' -----------
+            赋值 (hFont, 创建字体 (12, 0, 0, 0, 假, 假, 假, 假, “宋体”))
+            赋值 (hOldFont, SelectObject (tItem.hdc, hFont)) ' 把字体选入设备场景
+            SetBkMode (tItem.hdc, #TRANSPARENT) ' 设置背景模式为透明
+            SetTextColor (tItem.hdc, #黑色) ' 第一行文字颜色
+            TextOut (tItem.hdc, 相加 (tItem.rcItem.Left, 44), 相加 (tItem.rcItem.Top, 5), “与V乱舞”, 取文本长度 (“与V乱舞”))
+            SetTextColor (tItem.hdc, #灰色) ' 第二行文字颜色
+            TextOut (tItem.hdc, 相加 (tItem.rcItem.Left, 63), 相加 (tItem.rcItem.Top, 20), “刚刚开通了空间，来”, 取文本长度 (“刚刚开通了空间，来”))
+            SelectObject (tItem.hdc, hOldFont) ' 把原来的字体选入设备场景
+            DeleteObject (hFont) ' 删除字体
+        .如果真结束
+        .如果真 (等于 (tItem.itemID, 1))
+            赋值 (hBrush, CreateSolidBrush (#白色)) ' 表项背景颜色
+            FillRect (tItem.hdc, tItem.rcItem, hBrush) ' 用指定的刷子填充一个矩形
+            DeleteObject (hBrush) ' 删除刚才创建的画刷句柄
+            赋值 (hIcon, 凌晨孤星_取图标句柄 (#头像图标2, 0))
+            DrawIconEx (tItem.hdc, 相加 (tItem.rcItem.Left, 5), 相加 (tItem.rcItem.Top, 5), hIcon, 40, 40, 0, 0, 位或 (0, 3))
+            
+            赋值 (hIcon, 凌晨孤星_取图标句柄 (#空间, 0))
+            DrawIconEx (tItem.hdc, 相加 (tItem.rcItem.Left, 41), 相加 (tItem.rcItem.Top, 17), hIcon, 20, 17, 0, 0, 位或 (0, 3))
+             ' 本源码来自易语言资源网(www.5A5X.com)
+            DeleteObject (hIcon) ' 删除图标句柄
+             ' -----------
+            赋值 (hFont, 创建字体 (12, 0, 0, 0, 假, 假, 假, 假, “宋体”))
+            赋值 (hOldFont, SelectObject (tItem.hdc, hFont)) ' 把字体选入设备场景
+            SetBkMode (tItem.hdc, #TRANSPARENT) ' 设置背景模式为透明
+            SetTextColor (tItem.hdc, #红色) ' 第一行文字颜色
+            TextOut (tItem.hdc, 相加 (tItem.rcItem.Left, 44), 相加 (tItem.rcItem.Top, 5), “SH`风尚”, 取文本长度 (“SH`风尚”))
+            SetTextColor (tItem.hdc, #灰色) ' 第二行文字颜色
+            TextOut (tItem.hdc, 相加 (tItem.rcItem.Left, 63), 相加 (tItem.rcItem.Top, 20), “XXOO:2010-2-1410”, 取文本长度 (“XXOO:2010-2-1410”))
+            SelectObject (tItem.hdc, hOldFont) ' 把原来的字体选入设备场景
+            DeleteObject (hFont) ' 删除字体
+        .如果真结束
+        .如果真 (等于 (tItem.itemID, 2))
+            赋值 (hBrush, CreateSolidBrush (#白色)) ' 表项背景颜色
+            FillRect (tItem.hdc, tItem.rcItem, hBrush) ' 用指定的刷子填充一个矩形
+            DeleteObject (hBrush) ' 删除刚才创建的画刷句柄
+            赋值 (hIcon, 凌晨孤星_取图标句柄 (#头像图标3, 0))
+            DrawIconEx (tItem.hdc, 相加 (tItem.rcItem.Left, 5), 相加 (tItem.rcItem.Top, 5), hIcon, 40, 40, 0, 0, 位或 (0, 3))
+             ' 本源码来自易语言资源网(www.5A5X.com)
+             ' hIcon ＝ 凌晨孤星_取图标句柄 (#空间, 0)
+             ' DrawIconEx (tItem.hdc, tItem.rcItem.Left ＋ 39, tItem.rcItem.Top ＋ 17, hIcon, 20, 17, 0, 0, 位或 (0, 3))
+            
+            DeleteObject (hIcon) ' 删除图标句柄
+             ' -----------
+            赋值 (hFont, 创建字体 (12, 0, 0, 0, 假, 假, 假, 假, “宋体”))
+            赋值 (hOldFont, SelectObject (tItem.hdc, hFont)) ' 把字体选入设备场景
+            SetBkMode (tItem.hdc, #TRANSPARENT) ' 设置背景模式为透明
+            SetTextColor (tItem.hdc, #黑色) ' 第一行文字颜色
+            TextOut (tItem.hdc, 相加 (tItem.rcItem.Left, 46), 相加 (tItem.rcItem.Top, 5), “哥只是个传说”, 取文本长度 (“哥只是个传说”))
+            SetTextColor (tItem.hdc, #灰色) ' 第二行文字颜色
+            TextOut (tItem.hdc, 相加 (tItem.rcItem.Left, 46), 相加 (tItem.rcItem.Top, 20), “我有麦粑我怕谁”, 取文本长度 (“我有麦粑我怕谁”))
+            SelectObject (tItem.hdc, hOldFont) ' 把原来的字体选入设备场景
+            DeleteObject (hFont) ' 删除字体
+        .如果真结束
+        
+        返回 (0) ' 我们已经画完了，直接返回0，这样系统就不会再次重绘。
+    .如果真结束
+     ' 本源码来自易语言资源网(www.5A5X.com)
+.如果真结束
+ ' 其他我们不需要处理的消息，交回给系统处理，并返回处理结果。
+返回 (CallWindowProc (hOldWndProc, hwnd, wMsg, wParam, lParam))
+
+.子程序 创建字体, 整数型, , By:近在眼前
+.参数 字体高度, 整数型, , 等于0为默认高度
+.参数 字体宽度, 整数型, , 等于0则使用可用的横纵比进行匹配
+.参数 行与水平角度, 整数型, , 以0.1度为单位,如:正时针旋转90度设为-900,逆时针旋转90度设为900
+.参数 基线与水平角度, 整数型, , 
+.参数 是否加粗, 逻辑型, , 假:正常字体，真:加粗
+.参数 是否是斜体, 逻辑型, , 假:正常字体，真:斜体
+.参数 是否加下划线, 逻辑型, , 假:无下划线，真:有下划线
+.参数 是否加删除线, 逻辑型, , 假:无删除线，真:有删除线
+.参数 字体名字符串, 文本型, , 现有系统TrueType字体名称,如“宋体”
+
+.局部变量 hFont, 整数型, , , 
+.局部变量 lpLogFont, LOGFONT, , , 
+
+赋值 (lpLogFont.nHeight, 字体高度) ' , 整数型, , , 所创建字体的字符高度
+赋值 (lpLogFont.nWidth, 字体宽度) ' , 整数型, , , 字体的字符平均宽度
+赋值 (lpLogFont.nEscapement, 行与水平角度) ' , 整数型, , , 字符输出方向与水平向右的方向所成角度，以0.1度为单位
+赋值 (lpLogFont.nOrientation, 基线与水平角度) ' , 整数型, , , 字符与基线的角度，以0.1度为单位
+赋值 (lpLogFont.nWeight, 选择 (是否加粗, 600, 400)) ' FW_NORMAL 字符颜色深浅度 , 整数型, , , 字符颜色的深浅度
+赋值 (lpLogFont.bItalic, 到字节 (是否是斜体)) ' , 字节型, , , 斜体属性标志(0:正常字体，非0:斜体)
+赋值 (lpLogFont.bUnderline, 到字节 (是否加下划线)) ' , 字节型, , , 下划线属性标志(0:无下划线，非0:有下划线)
+赋值 (lpLogFont.cStrikeOut, 到字节 (是否加删除线)) ' , 字节型, , , 删除线属性标志(0:无删除线，非0:有删除线)
+赋值 (lpLogFont.nCharSet, 1) ' 字符集标识 ＝ 1  ' 系统缺省字符集, 字节型, , , 字符集标识0:ANSI字符集，1:系统缺省字符集
+赋值 (lpLogFont.nOutPrecision, 2) ' 输出精度 ＝ 2  ' OUT_CHARACTER_PRECIS, 字节型, , , 输出精度
+赋值 (lpLogFont.nClipPrecision, 1) ' 剪切精度 ＝ 1  ' CLIP_CHARACTER_PRECIS, 字节型, , , 剪切精度
+赋值 (lpLogFont.nQuality, 0) ' 输出品质 ＝ 0  ' DEFAULT_QUALITY, 字节型, , , 输出品质
+赋值 (lpLogFont.nPitchAndFamily, 到字节 (左移 (3, 4))) ' 字符间距 ＝ 到字节 (左移 (3, 4))  ' FF_MODERN, 字节型, , , 字符间距
+赋值 (lpLogFont.lpszFacename, 字体名字符串) ' , 文本型, , , 现有系统TrueType字体名称
+ ' hFont ＝ CreateFontIndirectA (lpLogFont)'lpLogFont.lpszFacename 无法生效
+赋值 (hFont, CreateFontA (lpLogFont.nHeight, lpLogFont.nWidth, lpLogFont.nEscapement, lpLogFont.nOrientation, lpLogFont.nWeight, lpLogFont.bItalic, lpLogFont.bUnderline, lpLogFont.cStrikeOut, lpLogFont.nCharSet, lpLogFont.nOutPrecision, lpLogFont.nClipPrecision, lpLogFont.nQuality, lpLogFont.nPitchAndFamily, lpLogFont.lpszFacename))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+返回 (hFont)
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 凌晨孤星_取图标句柄, 整数型, , 
+.参数 图标数据, 字节集, , 图标文件信息
+.参数 图标索引, 整数型, , 从0开始
+.参数 图标宽度, 整数型, 参考 可空, 
+.参数 图标高度, 整数型, 参考 可空, 
+
+
+
+.子程序 凌晨孤星_取图标数量, 整数型, , 
+.参数 图标数据, 字节集, , 
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

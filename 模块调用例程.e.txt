@@ -1,0 +1,2225 @@
+ ' 文件类型：Windows控制台程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 250
+    高度 = 146
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “QQLogin”
+    帮助文件名 = “”
+
+
+
+.常量 JS格式化, "“function ysjs(str){return jsmin("",str,2)}
+String.prototype.has=function(c){return this.indexOf(c)>-1;};function jsmin(comment,input,level){if(input===undefined){input=comment;comment='';level=2;}else if(level===undefined||level<1||level>3){level=2;}if(comment.length>0){comment+='\n';}var a='',b='',EOF=-1,LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',DIGITS='0123456789',ALNUM=LETTERS+DIGITS+'_$\\',theLookahead=EOF;function isAlphanum(c){return c!=EOF&&(ALNUM.has(c)||c.charCodeAt(0)>126);}function get(){var c=theLookahead;if(get.i==get.l){return EOF;}theLookahead=EOF;if(c==EOF){c=input.charAt(get.i);++get.i;}if(c>=' '||c=='\n'){return c;}if(c=='\r'){return'\n';}return' ';}get.i=0;get.l=input.length;function peek(){theLookahead=get();return theLookahead;}function next(){var c=get();if(c=='/'){switch(peek()){case'/':for(;;){c=get();if(c<='\n'){return c;}}break;case'*':get();for(;;){switch(get()){case'*':if(peek()=='/'){get();return' ';}break;case EOF:throw'Error: Unterminated comment.';}}break;default:return c;}}return c;}function action(d){var r=[];if(d==1){r.push(a);}if(d<3){a=b;if(a=='\''||a=='"'){for(;;){r.push(a);a=get();if(a==b){break;}if(a<='\n'){throw'Error: unterminated string literal: '+a;}if(a=='\\'){r.push(a);a=get();}}}}b=next();if(b=='/'&&'(,=:[!&|'.has(a)){r.push(a);r.push(b);for(;;){a=get();if(a=='/'){break;}else if(a=='\\'){r.push(a);a=get();}else if(a<='\n'){throw'Error: unterminated Regular Expression literal';}r.push(a);}b=next();}return r.join('');}function m(){var r=[];a='\n';r.push(action(3));while(a!=EOF){switch(a){case' ':if(isAlphanum(b)){r.push(action(1));}else{r.push(action(2));}break;case'\n':switch(b){case'{':case'[':case'(':case'+':case'-':r.push(action(1));break;case' ':r.push(action(3));break;default:if(isAlphanum(b)){r.push(action(1));}else{if(level==1&&b!='\n'){r.push(action(1));}else{r.push(action(2));}}}break;default:switch(b){case' ':if(isAlphanum(a)){r.push(action(1));break;}r.push(action(3));break;case'\n':if(level==1&&a!='\n'){r.push(action(1));}else{switch(a){case'}':case']':case')':case'+':case'-':case'"':case'\'':if(level==3){r.push(action(3));}else{r.push(action(1));}break;default:if(isAlphanum(a)){r.push(action(1));}else{r.push(action(3));}}}break;default:r.push(action(1));break;}}}return r.join('');}jsmin.oldSize=input.length;ret=m(input);jsmin.newSize=ret.length;return comment+ret;}
+
+function js_beautify(js_source_text,options){var input,output,token_text,last_type,last_text,last_last_text,last_word,flags,flag_store,indent_string;var whitespace,wordchar,punct,parser_pos,line_starters,digits;var prefix,token_type,do_block_just_closed;var wanted_newline,just_added_newline,n_newlines;var preindent_string='';options=options?options:{};var opt_brace_style;if(options.space_after_anon_function!==undefined&&options.jslint_happy===undefined){options.jslint_happy=options.space_after_anon_function}if(options.braces_on_own_line!==undefined){opt_brace_style=options.braces_on_own_line?"expand":"collapse"}opt_brace_style=options.brace_style?options.brace_style:(opt_brace_style?opt_brace_style:"collapse");var opt_indent_size=options.indent_size?options.indent_size:4,opt_indent_char=options.indent_char?options.indent_char:' ',opt_preserve_newlines=typeof options.preserve_newlines==='undefined'?true:options.preserve_newlines,opt_break_chained_methods=typeof options.break_chained_methods==='undefined'?false:options.break_chained_methods,opt_max_preserve_newlines=typeof options.max_preserve_newlines==='undefined'?false:options.max_preserve_newlines,opt_jslint_happy=options.jslint_happy==='undefined'?false:options.jslint_happy,opt_keep_array_indentation=typeof options.keep_array_indentation==='undefined'?false:options.keep_array_indentation,opt_space_before_conditional=typeof options.space_before_conditional==='undefined'?true:options.space_before_conditional,opt_unescape_strings=typeof options.unescape_strings==='undefined'?false:options.unescape_strings;just_added_newline=false;var input_length=js_source_text.length;function trim_output(eat_newlines){eat_newlines=typeof eat_newlines==='undefined'?false:eat_newlines;while(output.length&&(output[output.length-1]===' '||output[output.length-1]===indent_string||output[output.length-1]===preindent_string||(eat_newlines&&(output[output.length-1]==='\n'||output[output.length-1]==='\r')))){output.pop()}}function trim(s){return s.replace(/^\s\s*|\s\s*$/,'')}function split_newlines(s){s=s.replace(/\x0d/g,'');var out=[],idx=s.indexOf("\n");while(idx!==-1){out.push(s.substring(0,idx));s=s.substring(idx+1);idx=s.indexOf("\n")}if(s.length){out.push(s)}return out}function force_newline(){var old_keep_array_indentation=opt_keep_array_indentation;opt_keep_array_indentation=false;print_newline();opt_keep_array_indentation=old_keep_array_indentation}function print_newline(ignore_repeated,reset_statement_flags){flags.eat_next_space=false;if(opt_keep_array_indentation&&is_array(flags.mode)){return}ignore_repeated=typeof ignore_repeated==='undefined'?true:ignore_repeated;reset_statement_flags=typeof reset_statement_flags==='undefined'?true:reset_statement_flags;if(reset_statement_flags){flags.if_line=false;flags.chain_extra_indentation=0}trim_output();if(!output.length){return}if(output[output.length-1]!=="\n"||!ignore_repeated){just_added_newline=true;output.push("\n")}if(preindent_string){output.push(preindent_string)}for(var i=0;i<flags.indentation_level+flags.chain_extra_indentation;i+=1){output.push(indent_string)}if(flags.var_line&&flags.var_line_reindented){output.push(indent_string)}}function print_single_space(){if(last_type==='TK_COMMENT'){return print_newline()}if(flags.eat_next_space){flags.eat_next_space=false;return}var last_output=' ';if(output.length){last_output=output[output.length-1]}if(last_output!==' '&&last_output!=='\n'&&last_output!==indent_string){output.push(' ')}}function print_token(){just_added_newline=false;flags.eat_next_space=false;output.push(token_text)}function indent(){flags.indentation_level+=1}function remove_indent(){if(output.length&&output[output.length-1]===indent_string){output.pop()}}function set_mode(mode){if(flags){flag_store.push(flags)}flags={previous_mode:flags?flags.mode:'BLOCK',mode:mode,var_line:false,var_line_tainted:false,var_line_reindented:false,in_html_comment:false,if_line:false,chain_extra_indentation:0,in_case_statement:false,in_case:false,case_body:false,eat_next_space:false,indentation_level:(flags?flags.indentation_level+((flags.var_line&&flags.var_line_reindented)?1:0):0),ternary_depth:0}}function is_array(mode){return mode==='[EXPRESSION]'||mode==='[INDENTED-EXPRESSION]'}function is_expression(mode){return in_array(mode,['[EXPRESSION]','(EXPRESSION)','(FOR-EXPRESSION)','(COND-EXPRESSION)'])}function restore_mode(){do_block_just_closed=flags.mode==='DO_BLOCK';if(flag_store.length>0){var mode=flags.mode;flags=flag_store.pop();flags.previous_mode=mode}}function all_lines_start_with(lines,c){for(var i=0;i<lines.length;i++){var line=trim(lines[i]);if(line.charAt(0)!==c){return false}}return true}function is_special_word(word){return in_array(word,['case','return','do','if','throw','else'])}function in_array(what,arr){for(var i=0;i<arr.length;i+=1){if(arr[i]===what){return true}}return false}function look_up(exclude){var local_pos=parser_pos;var c=input.charAt(local_pos);while(in_array(c,whitespace)&&c!==exclude){local_pos++;if(local_pos>=input_length){return 0}c=input.charAt(local_pos)}return c}function get_next_token(){var i;var resulting_string;n_newlines=0;if(parser_pos>=input_length){return['','TK_EOF']}wanted_newline=false;var c=input.charAt(parser_pos);parser_pos+=1;var keep_whitespace=opt_keep_array_indentation&&is_array(flags.mode);if(keep_whitespace){var whitespace_count=0;while(in_array(c,whitespace)){if(c==="\n"){trim_output();output.push("\n");just_added_newline=true;whitespace_count=0}else{if(c==='\t'){whitespace_count+=4}else if(c==='\r'){}else{whitespace_count+=1}}if(parser_pos>=input_length){return['','TK_EOF']}c=input.charAt(parser_pos);parser_pos+=1}if(just_added_newline){for(i=0;i<whitespace_count;i++){output.push(' ')}}}else{while(in_array(c,whitespace)){if(c==="\n"){n_newlines+=((opt_max_preserve_newlines)?(n_newlines<=opt_max_preserve_newlines)?1:0:1)}if(parser_pos>=input_length){return['','TK_EOF']}c=input.charAt(parser_pos);parser_pos+=1}if(opt_preserve_newlines){if(n_newlines>1){for(i=0;i<n_newlines;i+=1){print_newline(i===0);just_added_newline=true}}}wanted_newline=n_newlines>0}if(in_array(c,wordchar)){if(parser_pos<input_length){while(in_array(input.charAt(parser_pos),wordchar)){c+=input.charAt(parser_pos);parser_pos+=1;if(parser_pos===input_length){break}}}if(parser_pos!==input_length&&c.match(/^[0-9]+[Ee]$/)&&(input.charAt(parser_pos)==='-'||input.charAt(parser_pos)==='+')){var sign=input.charAt(parser_pos);parser_pos+=1;var t=get_next_token();c+=sign+t[0];return[c,'TK_WORD']}if(c==='in'){return[c,'TK_OPERATOR']}if(wanted_newline&&last_type!=='TK_OPERATOR'&&last_type!=='TK_EQUALS'&&!flags.if_line&&(opt_preserve_newlines||last_text!=='var')){print_newline()}return[c,'TK_WORD']}if(c==='('||c==='['){return[c,'TK_START_EXPR']}if(c===')'||c===']'){return[c,'TK_END_EXPR']}if(c==='{'){return[c,'TK_START_BLOCK']}if(c==='}'){return[c,'TK_END_BLOCK']}if(c===';'){return[c,'TK_SEMICOLON']}if(c==='/'){var comment='';var inline_comment=true;if(input.charAt(parser_pos)==='*'){parser_pos+=1;if(parser_pos<input_length){while(parser_pos<input_length&&!(input.charAt(parser_pos)==='*'&&input.charAt(parser_pos+1)&&input.charAt(parser_pos+1)==='/')){c=input.charAt(parser_pos);comment+=c;if(c==="\n"||c==="\r"){inline_comment=false}parser_pos+=1;if(parser_pos>=input_length){break}}}parser_pos+=2;if(inline_comment&&n_newlines===0){return['/*'+comment+'*/','TK_INLINE_COMMENT']}else{return['/*'+comment+'*/','TK_BLOCK_COMMENT']}}if(input.charAt(parser_pos)==='/'){comment=c;while(input.charAt(parser_pos)!=='\r'&&input.charAt(parser_pos)!=='\n'){comment+=input.charAt(parser_pos);parser_pos+=1;if(parser_pos>=input_length){break}}if(wanted_newline){print_newline()}return[comment,'TK_COMMENT']}}if(c==="'"||c==='"'||(c==='/'&&((last_type==='TK_WORD'&&is_special_word(last_text))||(last_text===')'&&in_array(flags.previous_mode,['(COND-EXPRESSION)','(FOR-EXPRESSION)']))||(last_type==='TK_COMMA'||last_type==='TK_COMMENT'||last_type==='TK_START_EXPR'||last_type==='TK_START_BLOCK'||last_type==='TK_END_BLOCK'||last_type==='TK_OPERATOR'||last_type==='TK_EQUALS'||last_type==='TK_EOF'||last_type==='TK_SEMICOLON')))){var sep=c;var esc=false;var esc1=0;var esc2=0;resulting_string=c;if(parser_pos<input_length){if(sep==='/'){var in_char_class=false;while(esc||in_char_class||input.charAt(parser_pos)!==sep){resulting_string+=input.charAt(parser_pos);if(!esc){esc=input.charAt(parser_pos)==='\\';if(input.charAt(parser_pos)==='['){in_char_class=true}else if(input.charAt(parser_pos)===']'){in_char_class=false}}else{esc=false}parser_pos+=1;if(parser_pos>=input_length){return[resulting_string,'TK_STRING']}}}else{while(esc||input.charAt(parser_pos)!==sep){resulting_string+=input.charAt(parser_pos);if(esc1&&esc1>=esc2){esc1=parseInt(resulting_string.substr(-esc2),16);if(esc1&&esc1>=0x20&&esc1<=0x7e){esc1=String.fromCharCode(esc1);resulting_string=resulting_string.substr(0,resulting_string.length-esc2-2)+(((esc1===sep)||(esc1==='\\'))?'\\':'')+esc1}esc1=0}if(esc1){esc1++}else if(!esc){esc=input.charAt(parser_pos)==='\\'}else{esc=false;if(opt_unescape_strings){if(input.charAt(parser_pos)==='x'){esc1++;esc2=2}else if(input.charAt(parser_pos)==='u'){esc1++;esc2=4}}}parser_pos+=1;if(parser_pos>=input_length){return[resulting_string,'TK_STRING']}}}}parser_pos+=1;resulting_string+=sep;if(sep==='/'){while(parser_pos<input_length&&in_array(input.charAt(parser_pos),wordchar)){resulting_string+=input.charAt(parser_pos);parser_pos+=1}}return[resulting_string,'TK_STRING']}if(c==='#'){if(output.length===0&&input.charAt(parser_pos)==='!'){resulting_string=c;while(parser_pos<input_length&&c!=='\n'){c=input.charAt(parser_pos);resulting_string+=c;parser_pos+=1}output.push(trim(resulting_string)+'\n');print_newline();return get_next_token()}var sharp='#';if(parser_pos<input_length&&in_array(input.charAt(parser_pos),digits)){do{c=input.charAt(parser_pos);sharp+=c;parser_pos+=1}while(parser_pos<input_length&&c!=='#'&&c!=='=');if(c==='#'){}else if(input.charAt(parser_pos)==='['&&input.charAt(parser_pos+1)===']'){sharp+='[]';parser_pos+=2}else if(input.charAt(parser_pos)==='{'&&input.charAt(parser_pos+1)==='}'){sharp+='{}';parser_pos+=2}return[sharp,'TK_WORD']}}if(c==='<'&&input.substring(parser_pos-1,parser_pos+3)==='<!--'){parser_pos+=3;c='<!--';while(input.charAt(parser_pos)!=='\n'&&parser_pos<input_length){c+=input.charAt(parser_pos);parser_pos++}flags.in_html_comment=true;return[c,'TK_COMMENT']}if(c==='-'&&flags.in_html_comment&&input.substring(parser_pos-1,parser_pos+2)==='-->'){flags.in_html_comment=false;parser_pos+=2;if(wanted_newline){print_newline()}return['-->','TK_COMMENT']}if(c==='.'){return[c,'TK_DOT']}if(in_array(c,punct)){while(parser_pos<input_length&&in_array(c+input.charAt(parser_pos),punct)){c+=input.charAt(parser_pos);parser_pos+=1;if(parser_pos>=input_length){break}}if(c===','){return[c,'TK_COMMA']}else if(c==='='){return[c,'TK_EQUALS']}else{return[c,'TK_OPERATOR']}}return[c,'TK_UNKNOWN']}indent_string='';while(opt_indent_size>0){indent_string+=opt_indent_char;opt_indent_size-=1}while(js_source_text&&(js_source_text.charAt(0)===' '||js_source_text.charAt(0)==='\t')){preindent_string+=js_source_text.charAt(0);js_source_text=js_source_text.substring(1)}input=js_source_text;last_word='';last_type='TK_START_EXPR';last_text='';last_last_text='';output=[];do_block_just_closed=false;whitespace="\n\r\t ".split('');wordchar='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_$'.split('');digits='0123456789'.split('');punct='+ - * / % & ++ -- = += -= *= /= %= == === != !== > < >= <= >> << >>> >>>= >>= <<= && &= | || ! !! , : ? ^ ^= |= ::';punct+=' <%= <% %> <?= <? ?>';punct=punct.split(' ');line_starters='continue,try,throw,return,var,if,switch,case,default,for,while,break,function'.split(',');flag_store=[];set_mode('BLOCK');parser_pos=0;while(true){var t=get_next_token();token_text=t[0];token_type=t[1];if(token_type==='TK_EOF'){break}switch(token_type){case'TK_START_EXPR':if(token_text==='['){if(last_type==='TK_WORD'||last_text===')'){if(in_array(last_text,line_starters)){print_single_space()}set_mode('(EXPRESSION)');print_token();break}if(flags.mode==='[EXPRESSION]'||flags.mode==='[INDENTED-EXPRESSION]'){if(last_last_text===']'&&last_text===','){if(flags.mode==='[EXPRESSION]'){flags.mode='[INDENTED-EXPRESSION]';if(!opt_keep_array_indentation){indent()}}set_mode('[EXPRESSION]');if(!opt_keep_array_indentation){print_newline()}}else if(last_text==='['){if(flags.mode==='[EXPRESSION]'){flags.mode='[INDENTED-EXPRESSION]';if(!opt_keep_array_indentation){indent()}}set_mode('[EXPRESSION]');if(!opt_keep_array_indentation){print_newline()}}else{set_mode('[EXPRESSION]')}}else{set_mode('[EXPRESSION]')}}else{if(last_word==='for'){set_mode('(FOR-EXPRESSION)')}else if(in_array(last_word,['if','while'])){set_mode('(COND-EXPRESSION)')}else{set_mode('(EXPRESSION)')}}if(last_text===';'||last_type==='TK_START_BLOCK'){print_newline()}else if(last_type==='TK_END_EXPR'||last_type==='TK_START_EXPR'||last_type==='TK_END_BLOCK'||last_text==='.'){if(wanted_newline){print_newline()}}else if(last_type!=='TK_WORD'&&last_type!=='TK_OPERATOR'){print_single_space()}else if(last_word==='function'||last_word==='typeof'){if(opt_jslint_happy){print_single_space()}}else if(in_array(last_text,line_starters)||last_text==='catch'){if(opt_space_before_conditional){print_single_space()}}print_token();break;case'TK_DOT':if(is_special_word(last_text)){print_single_space()}else if(last_text===')'){if(opt_break_chained_methods||wanted_newline){flags.chain_extra_indentation=1;print_newline(true,false)}}print_token();break;case'TK_END_EXPR':if(token_text===']'){if(opt_keep_array_indentation){if(last_text==='}'){remove_indent();print_token();restore_mode();break}}else{if(flags.mode==='[INDENTED-EXPRESSION]'){if(last_text===']'){restore_mode();print_newline();print_token();break}}}}restore_mode();print_token();break;case'TK_START_BLOCK':if(last_word==='do'){set_mode('DO_BLOCK')}else{set_mode('BLOCK')}if(opt_brace_style==="expand"||opt_brace_style==="expand-strict"){var empty_braces=false;if(opt_brace_style==="expand-strict"){empty_braces=(look_up()==='}');if(!empty_braces){print_newline(true)}}else{if(last_type!=='TK_OPERATOR'){if(last_text==='='||(is_special_word(last_text)&&last_text!=='else')){print_single_space()}else{print_newline(true)}}}print_token();if(!empty_braces){indent()}}else{if(last_type!=='TK_OPERATOR'&&last_type!=='TK_START_EXPR'){if(last_type==='TK_START_BLOCK'){print_newline()}else{print_single_space()}}else{if(is_array(flags.previous_mode)&&last_text===','){if(last_last_text==='}'){print_single_space()}else{print_newline()}}}indent();print_token()}break;case'TK_END_BLOCK':restore_mode();if(opt_brace_style==="expand"||opt_brace_style==="expand-strict"){if(last_text!=='{'){print_newline()}print_token()}else{if(last_type==='TK_START_BLOCK'){if(just_added_newline){remove_indent()}else{trim_output()}}else{if(is_array(flags.mode)&&opt_keep_array_indentation){opt_keep_array_indentation=false;print_newline();opt_keep_array_indentation=true}else{print_newline()}}print_token()}break;case'TK_WORD':if(do_block_just_closed){print_single_space();print_token();print_single_space();do_block_just_closed=false;break}prefix='NONE';if(token_text==='function'){if(flags.var_line&&last_type!=='TK_EQUALS'){flags.var_line_reindented=true}if((just_added_newline||last_text===';')&&last_text!=='{'&&last_type!=='TK_BLOCK_COMMENT'&&last_type!=='TK_COMMENT'){n_newlines=just_added_newline?n_newlines:0;if(!opt_preserve_newlines){n_newlines=1}for(var i=0;i<2-n_newlines;i++){print_newline(false)}}if(last_type==='TK_WORD'){if(last_text==='get'||last_text==='set'||last_text==='new'||last_text==='return'){print_single_space()}else{print_newline()}}else if(last_type==='TK_OPERATOR'||last_text==='='){print_single_space()}else if(is_expression(flags.mode)){}else{print_newline()}print_token();last_word=token_text;break}if(token_text==='case'||(token_text==='default'&&flags.in_case_statement)){print_newline();if(flags.case_body){flags.indentation_level--;flags.case_body=false;remove_indent()}print_token();flags.in_case=true;flags.in_case_statement=true;break}if(last_type==='TK_END_BLOCK'){if(!in_array(token_text.toLowerCase(),['else','catch','finally'])){prefix='NEWLINE'}else{if(opt_brace_style==="expand"||opt_brace_style==="end-expand"||opt_brace_style==="expand-strict"){prefix='NEWLINE'}else{prefix='SPACE';print_single_space()}}}else if(last_type==='TK_SEMICOLON'&&(flags.mode==='BLOCK'||flags.mode==='DO_BLOCK')){prefix='NEWLINE'}else if(last_type==='TK_SEMICOLON'&&is_expression(flags.mode)){prefix='SPACE'}else if(last_type==='TK_STRING'){prefix='NEWLINE'}else if(last_type==='TK_WORD'){if(last_text==='else'){trim_output(true)}prefix='SPACE'}else if(last_type==='TK_START_BLOCK'){prefix='NEWLINE'}else if(last_type==='TK_END_EXPR'){print_single_space();prefix='NEWLINE'}if(in_array(token_text,line_starters)&&last_text!==')'){if(last_text==='else'){prefix='SPACE'}else{prefix='NEWLINE'}}if(flags.if_line&&last_type==='TK_END_EXPR'){flags.if_line=false}if(in_array(token_text.toLowerCase(),['else','catch','finally'])){if(last_type!=='TK_END_BLOCK'||opt_brace_style==="expand"||opt_brace_style==="end-expand"||opt_brace_style==="expand-strict"){print_newline()}else{trim_output(true);print_single_space()}}else if(prefix==='NEWLINE'){if(is_special_word(last_text)){print_single_space()}else if(last_type!=='TK_END_EXPR'){if((last_type!=='TK_START_EXPR'||token_text!=='var')&&last_text!==':'){if(token_text==='if'&&last_word==='else'&&last_text!=='{'){print_single_space()}else{flags.var_line=false;flags.var_line_reindented=false;print_newline()}}}else if(in_array(token_text,line_starters)&&last_text!==')'){flags.var_line=false;flags.var_line_reindented=false;print_newline()}}else if(is_array(flags.mode)&&last_text===','&&last_last_text==='}'){print_newline()}else if(prefix==='SPACE'){print_single_space()}print_token();last_word=token_text;if(token_text==='var'){flags.var_line=true;flags.var_line_reindented=false;flags.var_line_tainted=false}if(token_text==='if'){flags.if_line=true}if(token_text==='else'){flags.if_line=false}break;case'TK_SEMICOLON':print_token();flags.var_line=false;flags.var_line_reindented=false;if(flags.mode==='OBJECT'){flags.mode='BLOCK'}break;case'TK_STRING':if(last_type==='TK_END_EXPR'&&in_array(flags.previous_mode,['(COND-EXPRESSION)','(FOR-EXPRESSION)'])){print_single_space()}else if(last_type==='TK_COMMENT'||last_type==='TK_STRING'||last_type==='TK_START_BLOCK'||last_type==='TK_END_BLOCK'||last_type==='TK_SEMICOLON'){print_newline()}else if(last_type==='TK_WORD'){print_single_space()}else{if(opt_preserve_newlines&&wanted_newline&&flags.mode!=='OBJECT'){print_newline();output.push(indent_string)}}print_token();break;case'TK_EQUALS':if(flags.var_line){flags.var_line_tainted=true}print_single_space();print_token();print_single_space();break;case'TK_COMMA':if(flags.var_line){if(is_expression(flags.mode)||last_type==='TK_END_BLOCK'){flags.var_line_tainted=false}if(flags.var_line_tainted){print_token();flags.var_line_reindented=true;flags.var_line_tainted=false;print_newline();break}else{flags.var_line_tainted=false}print_token();print_single_space();break}if(last_type==='TK_COMMENT'){print_newline()}if(last_type==='TK_END_BLOCK'&&flags.mode!=="(EXPRESSION)"){print_token();if(flags.mode==='OBJECT'&&last_text==='}'){print_newline()}else{print_single_space()}}else{if(flags.mode==='OBJECT'){print_token();print_newline()}else{print_token();print_single_space()}}break;case'TK_OPERATOR':var space_before=true;var space_after=true;if(is_special_word(last_text)){print_single_space();print_token();break}if(token_text==='*'&&last_type==='TK_DOT'&&!last_last_text.match(/^\d+$/)){print_token();break}if(token_text===':'&&flags.in_case){flags.case_body=true;indent();print_token();print_newline();flags.in_case=false;break}if(token_text==='::'){print_token();break}if(in_array(token_text,['--','++','!'])||(in_array(token_text,['-','+'])&&(in_array(last_type,['TK_START_BLOCK','TK_START_EXPR','TK_EQUALS','TK_OPERATOR'])||in_array(last_text,line_starters)||last_text==','))){space_before=false;space_after=false;if(last_text===';'&&is_expression(flags.mode)){space_before=true}if(last_type==='TK_WORD'&&in_array(last_text,line_starters)){space_before=true}if(flags.mode==='BLOCK'&&(last_text==='{'||last_text===';')){print_newline()}}else if(token_text===':'){if(flags.ternary_depth===0){if(flags.mode==='BLOCK'){flags.mode='OBJECT'}space_before=false}else{flags.ternary_depth-=1}}else if(token_text==='?'){flags.ternary_depth+=1}if(space_before){print_single_space()}print_token();if(space_after){print_single_space()}break;case'TK_BLOCK_COMMENT':var lines=split_newlines(token_text);var j;if(all_lines_start_with(lines.slice(1),'*')){print_newline();output.push(lines[0]);for(j=1;j<lines.length;j++){print_newline();output.push(' ');output.push(trim(lines[j]))}}else{if(lines.length>1){print_newline()}else{if(last_type==='TK_END_BLOCK'){print_newline()}else{print_single_space()}}for(j=0;j<lines.length;j++){output.push(lines[j]);output.push("\n")}}if(look_up('\n')!=='\n'){print_newline()}break;case'TK_INLINE_COMMENT':print_single_space();print_token();if(is_expression(flags.mode)){print_single_space()}else{force_newline()}break;case'TK_COMMENT':if(last_text===','&&!wanted_newline){trim_output(true)}if(last_type!=='TK_COMMENT'){if(wanted_newline){print_newline()}else{print_single_space()}}print_token();print_newline();break;case'TK_UNKNOWN':print_token();break}last_last_text=last_text;last_type=token_type;last_text=token_text}var sweet_code=preindent_string+output.join('').replace(/[\r\n ]+$/,'');return sweet_code}if(typeof exports!=="undefined"){exports.js_beautify=js_beautify}”", 隐藏, ysjs(code)、js_beautify(code)
+.常量 SW_SHOWDEFAULT, "10", 隐藏, 按默认状态显示
+.常量 SEE_MASK_FLAG_DDEWAIT, "256", 隐藏, 0x00000100
+.常量 json2, "“//  json2.js
+//  2016-10-28
+if (typeof JSON !== "object") {
+    JSON = {};
+}
+
+(function () {
+    "use strict";
+
+    var rx_one = /^[\],:{}\s]*$/;
+    var rx_two = /\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g;
+    var rx_three = /"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g;
+    var rx_four = /(?:^|:|,)(?:\s*\[)+/g;
+    var rx_escapable = /[\\"\u0000-\u001f\u007f-\u009f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
+    var rx_dangerous = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
+
+    function f(n) {
+        return n < 10
+            ? "0" + n
+            : n;
+    }
+
+    function this_value() {
+        return this.valueOf();
+    }
+
+    if (typeof Date.prototype.toJSON !== "function") {
+
+        Date.prototype.toJSON = function () {
+
+            return isFinite(this.valueOf())
+                ? this.getUTCFullYear() + "-" +
+                        f(this.getUTCMonth() + 1) + "-" +
+                        f(this.getUTCDate()) + "T" +
+                        f(this.getUTCHours()) + ":" +
+                        f(this.getUTCMinutes()) + ":" +
+                        f(this.getUTCSeconds()) + "Z"
+                : null;
+        };
+
+        Boolean.prototype.toJSON = this_value;
+        Number.prototype.toJSON = this_value;
+        String.prototype.toJSON = this_value;
+    }
+
+    var gap;
+    var indent;
+    var meta;
+    var rep;
+
+
+    function quote(string) {
+
+        rx_escapable.lastIndex = 0;
+        return rx_escapable.test(string)
+            ? "\"" + string.replace(rx_escapable, function (a) {
+                var c = meta[a];
+                return typeof c === "string"
+                    ? c
+                    : "\\u" + ("0000" + a.charCodeAt(0).toString(16)).slice(-4);
+            }) + "\""
+            : "\"" + string + "\"";
+    }
+
+
+    function str(key, holder) {
+        var i;
+        var k;
+        var v;
+        var length;
+        var mind = gap;
+        var partial;
+        var value = holder[key];
+
+        if (value && typeof value === "object" &&
+                typeof value.toJSON === "function") {
+            value = value.toJSON(key);
+        }
+
+        if (typeof rep === "function") {
+            value = rep.call(holder, key, value);
+        }
+
+       switch (typeof value) {
+        case "string":
+            return quote(value);
+
+        case "number":
+            return isFinite(value)
+                ? String(value)
+                : "null";
+        case "boolean":
+        case "null":
+            return String(value);
+        case "object":
+            if (!value) {
+                return "null";
+            }
+            gap += indent;
+            partial = [];
+            if (Object.prototype.toString.apply(value) === "[object Array]") {
+                length = value.length;
+                for (i = 0; i < length; i += 1) {
+                    partial[i] = str(i, value) || "null";
+                }
+                v = partial.length === 0
+                    ? "[]"
+                    : gap
+                        ? "[\n" + gap + partial.join(",\n" + gap) + "\n" + mind + "]"
+                        : "[" + partial.join(",") + "]";
+                gap = mind;
+                return v;
+            }
+            if (rep && typeof rep === "object") {
+                length = rep.length;
+                for (i = 0; i < length; i += 1) {
+                    if (typeof rep[i] === "string") {
+                        k = rep[i];
+                        v = str(k, value);
+                        if (v) {
+                            partial.push(quote(k) + (
+                                gap
+                                    ? ": "
+                                    : ":"
+                            ) + v);
+                        }
+                    }
+                }
+            } else {
+                for (k in value) {
+                    if (Object.prototype.hasOwnProperty.call(value, k)) {
+                        v = str(k, value);
+                        if (v) {
+                            partial.push(quote(k) + (
+                                gap
+                                    ? ": "
+                                    : ":"
+                            ) + v);
+                        }
+                    }
+                }
+            }
+            v = partial.length === 0
+                ? "{}"
+                : gap
+                    ? "{\n" + gap + partial.join(",\n" + gap) + "\n" + mind + "}"
+                    : "{" + partial.join(",") + "}";
+            gap = mind;
+            return v;
+        }
+    }
+    if (typeof JSON.stringify !== "function") {
+        meta = {    // table of character substitutions
+            "\b": "\\b",
+            "\t": "\\t",
+            "\n": "\\n",
+            "\f": "\\f",
+            "\r": "\\r",
+            "\"": "\\\"",
+            "\\": "\\\\"
+        };
+        JSON.stringify = function (value, replacer, space) {
+            var i;
+            gap = "";
+            indent = "";
+            if (typeof space === "number") {
+                for (i = 0; i < space; i += 1) {
+                    indent += " ";
+                }
+            } else if (typeof space === "string") {
+                indent = space;
+            }
+            rep = replacer;
+            if (replacer && typeof replacer !== "function" &&
+                    (typeof replacer !== "object" ||
+                    typeof replacer.length !== "number")) {
+                throw new Error("JSON.stringify");
+            }
+            return str("", {"": value});
+        };
+    }
+    if (typeof JSON.parse !== "function") {
+        JSON.parse = function (text, reviver) {
+            var j;
+
+            function walk(holder, key) {
+                var k;
+                var v;
+                var value = holder[key];
+                if (value && typeof value === "object") {
+                    for (k in value) {
+                        if (Object.prototype.hasOwnProperty.call(value, k)) {
+                            v = walk(value, k);
+                            if (v !== undefined) {
+                                value[k] = v;
+                            } else {
+                                delete value[k];
+                            }
+                        }
+                    }
+                }
+                return reviver.call(holder, key, value);
+            }
+            text = String(text);
+            rx_dangerous.lastIndex = 0;
+            if (rx_dangerous.test(text)) {
+                text = text.replace(rx_dangerous, function (a) {
+                    return "\\u" +
+                            ("0000" + a.charCodeAt(0).toString(16)).slice(-4);
+                });
+            }
+            if (
+                rx_one.test(
+                    text
+                        .replace(rx_two, "@")
+                        .replace(rx_three, "]")
+                        .replace(rx_four, "")
+                )
+            ) {
+                j = eval("(" + text + ")");
+                return (typeof reviver === "function")
+                    ? walk({"": j}, "")
+                    : j;
+            }
+            throw new SyntaxError("JSON.parse");
+        };
+    }
+}());”", 隐藏, JSON官方JavaScript脚本
+.常量 U码, "“function to16on(str){
+    var a = [],i = 0;
+    for (; 
+    i < str.length ;
+    ) a[i] = ("00" + str.charCodeAt(i ++).toString(16)).slice(-4);
+    return "\\u" + a.join("\\u");
+}
+function to16un(str) {
+    return unescape(str.replace(/\\/g, "%"));
+}
+function to10on(str){
+    var a = [], i = 0;
+    for (; 
+    i < str.length ;
+    ) a[i] = str.charCodeAt(i ++);
+    return "&#" + a.join(";&#") + ";";
+}
+function to10un(str){
+    return str.replace(/&#(x)?([^&]{1,5});?/g, function (a, b, c) {
+        return String.fromCharCode(parseInt(c,b?16:10));
+    });
+}”", 隐藏, U码转换，分别包含to16和to10
+.常量 ProtoUint, "0", 隐藏, 
+.常量 ProtoString, "2", 隐藏, 
+.常量 ProtoBytes, "2", 隐藏, 
+.常量 ProtoObject, "2", 隐藏, 
+.常量 ProtoFixed64, "1", 隐藏, 
+.常量 ProtoFixed32, "5", 隐藏, 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 7 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 2 0 扩展界面支持库一
+ ' spec A512548E76954B6E92C21055517615B0 3 1 特殊功能支持库
+ ' eCalc 306AA9E31B5940399723021A0D782077 2 3 数值计算支持库
+
+
+
+ ' 所需要的模块
+ ' 红尘丶自用 D:\易语言学习\2019.10.26 易语言备份\QQ项目\新QQ登录简写\红尘丶协议自用1.35.ec
+
+
+数据类型 JceMap, 公开, 
+    .成员 key_type, 字节型, , , 
+    .成员 key, 字节集, , , 
+    .成员 val_type, 字节型, , , 
+    .成员 val, 字节集, , , 
+
+数据类型 URL_COMPONENTS, 公开, 
+    .成员 dwStructSize, 整数型, , , 本结构长度，注：60
+    .成员 lpszScheme, 整数型, , , 协议类型
+    .成员 dwSchemeLength, 整数型, , , 协议类型缓冲区长度
+    .成员 nScheme, 整数型, , , 链接类型，1=http，2=https。（INTERNET_SCHEME_HTTP=1，INTERNET_SCHEME_HTTPS=2）
+    .成员 lpszHostName, 整数型, , , 主机域名(Host)
+    .成员 dwHostNameLength, 整数型, , , 主机域名缓冲区长度
+    .成员 nPort, 整数型, , , 端口
+    .成员 lpszUserName, 整数型, , , 帐号
+    .成员 dwUserNameLength, 整数型, , , 帐号缓冲区长度
+    .成员 lpszPassword, 整数型, , , 密码
+    .成员 dwPasswordLength, 整数型, , , 密码缓冲区长度
+    .成员 lpszUrlPath, 整数型, , , 路径(页面地址)
+    .成员 dwUrlPathLength, 整数型, , , 路径缓冲区长度
+    .成员 lpszExtraInfo, 整数型, , , 额外信息，比如“?”或“#”之后的参数字符串。
+    .成员 dwExtraInfoLength, 整数型, , , 额外信息长度
+
+数据类型 精易_进程信息列表, 公开, 
+    .成员 dwSize, 整数型, , , 1
+    .成员 cntUsage, 整数型, , , 2
+    .成员 进程ID, 整数型, , , 3
+    .成员 th32DefaultHeapID, 整数型, , , 4
+    .成员 th32ModuleID, 整数型, , , 5
+    .成员 cntThreads, 整数型, , , 6
+    .成员 th32ParentProcessID, 整数型, , , 7
+    .成员 pcPriClassBase, 整数型, , , 8
+    .成员 dwFlags, 整数型, , , 9
+    .成员 进程名称, 字节型, , "256", 10
+
+数据类型 精易_进程结构, 公开, 
+    .成员 进程句柄, 整数型, , , hProcess
+    .成员 线程句柄, 整数型, , , hThread
+    .成员 进程标识符, 整数型, , , dwProcessId
+    .成员 线程标识符, 整数型, , , dwThreadId
+
+数据类型 StartupInfo, 公开, 
+    .成员 cbSize, 整数型, , , 
+    .成员 lpReserved, 整数型, , , 
+    .成员 lpDesktop, 整数型, , , 
+    .成员 lpTitle, 整数型, , , 
+    .成员 dwX, 整数型, , , 
+    .成员 dwY, 整数型, , , 
+    .成员 dwXSize, 整数型, , , 
+    .成员 dwYSize, 整数型, , , 
+    .成员 dwXCountChars, 整数型, , , 
+    .成员 dwYCountChars, 整数型, , , 
+    .成员 dwFillAttribute, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+    .成员 wShowWindow, 长整数型, , , 
+    .成员 cbReserved2, 长整数型, , , 
+    .成员 lpReserved2, 整数型, , , 
+    .成员 hStdInput, 整数型, , , 
+    .成员 hStdOutput, 整数型, , , 
+    .成员 hStdError, 整数型, , , 
+
+数据类型 精易_时间, 公开, , SYSTEMTIME
+    .成员 年, 短整数型, , , wYear
+    .成员 月, 短整数型, , , wMonth
+    .成员 星期, 短整数型, , , 
+    .成员 日, 短整数型, , , wDay
+    .成员 时, 短整数型, , , wHour
+    .成员 分, 短整数型, , , wMinute
+    .成员 秒, 短整数型, , , wSecond
+    .成员 毫, 短整数型, , , wMilliseconds
+
+数据类型 ProtobufField, 公开, 
+    .成员 type, 整数型, , , 
+    .成员 id, 整数型, , , 
+    .成员 value, 字节集, , , 
+
+
+.DLL命令 CoInitialize, 空白型, "ole32.dll", "CoInitialize", 公开, 加载COM
+    .参数 pvReserved, 整数型, , 值为0
+
+.DLL命令 CoUninitialize, 空白型, "ole32.dll", "CoUninitialize", 公开, 卸载COM
+
+.DLL命令 InternetOpenA, 整数型, "wininet.dll", "InternetOpenA", 公开, Internet激活
+    .参数 句柄名称, 文本型, 传址, 
+    .参数 连接类型, 整数型, , 1直接连接;3代理连接
+    .参数 代理地址, 文本型, 传址, 
+    .参数 代理掩码, 文本型, 传址, 
+    .参数 dwFlags, 整数型, , 0
+
+.DLL命令 InternetCloseHandle, 逻辑型, "wininet.dll", "InternetCloseHandle", 公开, Internet关闭句柄
+    .参数 句柄, 整数型, , 
+
+.DLL命令 InternetConnectA, 整数型, "wininet.dll", "InternetConnectA", 公开, Internet建立连接
+    .参数 Internet句柄, 整数型, , 
+    .参数 域名, 文本型, 传址, 
+    .参数 服务器端口, 整数型, , 80HTTP;21FTP;
+    .参数 用户名, 文本型, 传址, 空
+    .参数 用户口令, 文本型, 传址, 空
+    .参数 服务类型, 整数型, , 1FTP;3HTTP
+    .参数 dwFlags, 整数型, , 0http;134217728被动FTP模式
+    .参数 dwContext, 整数型, , 0
+
+.DLL命令 HttpOpenRequestA, 整数型, "wininet.dll", "HttpOpenRequestA", 公开, Http创建请求
+    .参数 Internet连接句柄, 整数型, , 由Internet建立连接返回
+    .参数 访问方式, 文本型, 传址, "GET" or "POST"为空默认GET
+    .参数 页面路径, 文本型, 传址, 简短路径,不带域名
+    .参数 协议版本, 文本型, 传址, 为空默认HTTP/1.1
+    .参数 引用页, 文本型, 传址, 可为空
+    .参数 识别类型, 文本型, 传址, 可为空
+    .参数 dwFlags, 整数型, , 2147483648更新下载
+    .参数 dwContext, 整数型, , 0
+
+.DLL命令 HttpSendRequestA, 逻辑型, "wininet.dll", "HttpSendRequestA", 公开, Http发送请求
+    .参数 HTTP请求句柄, 整数型, , 
+    .参数 附加协议头, 文本型, 传址, 
+    .参数 附加协议头长度, 整数型, , 
+    .参数 提交信息, 文本型, 传址, 
+    .参数 提交信息长度, 整数型, , 
+
+.DLL命令 HttpSendRequestA_字节集, 逻辑型, "wininet.dll", "HttpSendRequestA", 公开, Http发送请求
+    .参数 HTTP请求句柄, 整数型, , 
+    .参数 附加协议头, 文本型, 传址, 
+    .参数 附加协议头长度, 整数型, , 
+    .参数 提交信息, 字节集, 传址, 
+    .参数 提交信息长度, 整数型, , 
+
+.DLL命令 InternetReadFile, 逻辑型, "wininet.dll", "InternetReadFile", 公开, Internet读文件
+    .参数 HTTP请求句柄, 整数型, , 
+    .参数 sBuffer, 字节集, 传址, 
+    .参数 lNumBytesToRead, 整数型, , 
+    .参数 lNumberOfBytesRead, 整数型, 传址, 
+
+.DLL命令 HttpQueryInfoA, 逻辑型, "wininet.dll", "HttpQueryInfoA", 公开, HTTP查询信息
+    .参数 Internet请求句柄, 整数型, , 
+    .参数 待查信息, 整数型, , 22返回所有信息;43SET_COOKIE;+2147483648返回文本
+    .参数 返回容器, 文本型, 传址, 
+    .参数 返回容器长度, 整数型, 传址, 
+    .参数 lpdwIndex, 整数型, , 
+
+.DLL命令 WinHttpCheckPlatform, 逻辑型, "Winhttp.dll", "WinHttpCheckPlatform", 公开, BOOL WinHttpCheckPlatform(void);
+
+.DLL命令 WinHttpCrackUrl, 逻辑型, "Winhttp.dll", "WinHttpCrackUrl", 公开, 
+    .参数 pwszUrl, 字节集, , 
+    .参数 dwUrlLength, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpUrlComponents, URL_COMPONENTS, , 
+
+.DLL命令 WinHttpOpen, 整数型, "Winhttp.dll", "WinHttpOpen", 公开, HINTERNET WINAPI WinHttpOpen
+    .参数 pwszUserAgent, 整数型, , __in_opt  LPCWSTR pwszUserAgent
+    .参数 dwAccessType, 整数型, , __in      DWORD dwAccessType
+    .参数 pwszProxyName, 字节集, , __in      LPCWSTR pwszProxyName
+    .参数 pwszProxyBypass, 整数型, , __in      LPCWSTR pwszProxyBypass
+    .参数 dwFlags, 整数型, , __in      DWORD dwFlags
+
+.DLL命令 WinHttpConnect, 整数型, "Winhttp.dll", "WinHttpConnect", 公开, HINTERNET WINAPI WinHttpConnect
+    .参数 hSession, 整数型, , __in        HINTERNET hSession
+    .参数 pswzServerName, 字节集, , __in        LPCWSTR pswzServerName
+    .参数 nServerPort, 整数型, , __in        INTERNET_PORT nServerPort
+    .参数 dwReserved, 整数型, , __reserved  DWORD dwReserved
+
+.DLL命令 WinHttpOpenRequest, 整数型, "Winhttp.dll", "WinHttpOpenRequest", 公开, HINTERNET WINAPI WinHttpOpenRequest
+    .参数 hConnect, 整数型, , __in  HINTERNET hConnect
+    .参数 pwszVerb, 字节集, , __in  LPCWSTR pwszVerb
+    .参数 pwszObjectName, 字节集, , __in  LPCWSTR pwszObjectName
+    .参数 pwszVersion, 整数型, , __in  LPCWSTR pwszVersion
+    .参数 pwszReferrer, 整数型, , __in  LPCWSTR pwszReferrer
+    .参数 ppwszAcceptTypes, 整数型, , __in  LPCWSTR *ppwszAcceptTypes
+    .参数 dwFlags, 整数型, , __in  DWORD dwFlags
+
+.DLL命令 WinHttpSetTimeouts, 逻辑型, "Winhttp.dll", "WinHttpSetTimeouts", 公开, BOOL WINAPI WinHttpSetTimeouts
+    .参数 hInternet, 整数型, , __in  HINTERNET hInternet
+    .参数 dwResolveTimeout, 整数型, , __in  int dwResolveTimeout
+    .参数 dwConnectTimeout, 整数型, , __in  int dwConnectTimeout
+    .参数 dwSendTimeout, 整数型, , __in  int dwSendTimeout
+    .参数 dwReceiveTimeout, 整数型, , __in  int dwReceiveTimeout
+
+.DLL命令 WinHttpCloseHandle, 逻辑型, "Winhttp.dll", "WinHttpCloseHandle", 公开, BOOL WINAPI WinHttpCloseHandle
+    .参数 hInternet, 整数型, , __in  HINTERNET hInternet
+
+.DLL命令 WinHttpSetOption, 逻辑型, "Winhttp.dll", "WinHttpSetOption", 公开, BOOL WINAPI WinHttpSetOption
+    .参数 hInternet, 整数型, , __in  HINTERNET hInternet
+    .参数 dwOption, 整数型, , __in  DWORD dwOption
+    .参数 lpBuffer, 整数型, 传址, __in  LPVOID lpBuffer
+    .参数 dwBufferLength, 整数型, , __in  DWORD dwBufferLength
+
+.DLL命令 WinHttpAddRequestHeaders, 逻辑型, "Winhttp.dll", "WinHttpAddRequestHeaders", 公开, BOOL WINAPI WinHttpAddRequestHeaders
+    .参数 hRequest, 整数型, , __in  HINTERNET hRequest
+    .参数 pwszHeaders, 字节集, , __in  LPCWSTR pwszHeaders
+    .参数 dwHeadersLength, 整数型, , __in  DWORD dwHeadersLength
+    .参数 dwModifiers, 整数型, , __in  DWORD dwModifiers
+
+.DLL命令 WinHttpSendRequest, 逻辑型, "Winhttp.dll", "WinHttpSendRequest", 公开, BOOL WINAPI WinHttpSendRequest
+    .参数 hRequest, 整数型, , __in      HINTERNET hRequest
+    .参数 pwszHeaders, 整数型, , __in_opt  LPCWSTR pwszHeaders
+    .参数 dwHeadersLength, 整数型, , __in      DWORD dwHeadersLength
+    .参数 lpOptional, 字节集, , __in_opt  LPVOID lpOptional
+    .参数 dwOptionalLength, 整数型, , __in      DWORD dwOptionalLength
+    .参数 dwTotalLength, 整数型, , __in      DWORD dwTotalLength
+    .参数 dwContext, 整数型, , __in      DWORD_PTR dwContext
+
+.DLL命令 WinHttpReceiveResponse, 逻辑型, "Winhttp.dll", "WinHttpReceiveResponse", 公开, BOOL WINAPI WinHttpReceiveResponse
+    .参数 hRequest, 整数型, , __in        HINTERNET hRequest
+    .参数 lpReserved, 整数型, , __reserved  LPVOID lpReserved
+
+.DLL命令 WinHttpQueryDataAvailable, 逻辑型, "Winhttp.dll", "WinHttpQueryDataAvailable", 公开, 查询是否有可读数据
+    .参数 hRequest, 整数型, , 请求句柄
+    .参数 lpdwNumberOfBytesAvailable, 整数型, 传址, 可读数据长度
+
+.DLL命令 WinHttpReadData, 逻辑型, "Winhttp.dll", "WinHttpReadData", 公开, BOOL WINAPI WinHttpReadData
+    .参数 hRequest, 整数型, , __in   HINTERNET hRequest
+    .参数 lpBuffer, 字节集, , __out  LPVOID lpBuffer
+    .参数 dwNumberOfBytesToRead, 整数型, , __in   DWORD dwNumberOfBytesToRead
+    .参数 lpdwNumberOfBytesRead, 整数型, 传址, __out  LPDWORD lpdwNumberOfBytesRead
+
+.DLL命令 WinHttpQueryHeaders, 逻辑型, "Winhttp.dll", "WinHttpQueryHeaders", 公开, BOOL WINAPI WinHttpQueryHeaders
+    .参数 hRequest, 整数型, , __in      HINTERNET hRequest
+    .参数 dwInfoLevel, 整数型, , __in      DWORD dwInfoLevel
+    .参数 pwszName, 整数型, , __in_opt  LPCWSTR pwszName
+    .参数 lpBuffer, 字节集, , __out     LPVOID lpBuffer
+    .参数 lpdwBufferLength, 整数型, 传址, __inout   LPDWORD lpdwBufferLength
+    .参数 lpdwIndex, 整数型, 传址, __inout   LPDWORD lpdwIndex
+
+.DLL命令 MultiByteToWideChar, 整数型, "", "MultiByteToWideChar", 公开, 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpWideCharStr, 字节集, , 
+    .参数 cchWideChar, 整数型, , 
+
+.DLL命令 WideCharToMultiByte, 整数型, "kernel32.dll", "WideCharToMultiByte", 公开, kernel32.dll 将通配符映像为多字节 _Unicode转Utf8
+    .参数 CodePage, 整数型, , 1
+    .参数 dwFlags, 整数型, , 
+    .参数 lpWideCharStr, 字节集, , 
+    .参数 cchWideChar, 整数型, , 
+    .参数 lpMultiByteStr, 字节集, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpDefaultChar, 整数型, , 
+    .参数 lpUsedDefaultChar, 逻辑型, , 
+
+.DLL命令 GetCurrentProcessId, 整数型, "kernel32.dll", "GetCurrentProcessId", 公开, 取自进程ID
+
+.DLL命令 CreateToolhelp32Snapshot, 整数型, "", "CreateToolhelp32Snapshot", 公开, 创建进程快照
+    .参数 falg, 整数型, , 
+    .参数 id, 整数型, , 
+
+.DLL命令 Process32First, 整数型, "", "Process32First", 公开, 取第一个进程
+    .参数 h, 整数型, , 
+    .参数 p, 精易_进程信息列表, , 
+
+.DLL命令 Process32Next, 整数型, "", "Process32Next", 公开, 取下一个进程
+    .参数 h, 整数型, , 
+    .参数 p, 精易_进程信息列表, , 
+
+.DLL命令 CloseHandle, 逻辑型, "kernel32", "CloseHandle", 公开, 
+    .参数 对象句柄, 整数型, , 欲关闭的一个对象的句柄;
+
+.DLL命令 FindWindowExA_文本, 整数型, "user32", "FindWindowExA", 公开, 
+    .参数 父窗口句柄, 整数型, , 
+    .参数 子窗口, 整数型, , 
+    .参数 类名, 文本型, , 
+    .参数 标题, 文本型, , 
+
+.DLL命令 IsWindow, 整数型, "user32", "IsWindow", 公开, 窗口_句柄是否有效  判断一个窗口句柄是否有效(非零表示成功，零表示失败)
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 IsWindowVisible, 逻辑型, "", "IsWindowVisible", 公开, 窗口_是否可见  判断窗口是否可见  返回真为可见，否则为不可见
+    .参数 hwnd, 整数型, , 要测试的那个窗口的句柄
+
+.DLL命令 GetWindowThreadProcessId, 整数型, "user32.dll", "GetWindowThreadProcessId", 公开, 线程_取ID
+    .参数 hwnd, 整数型, , 指定窗口句柄
+    .参数 进程标识符, 整数型, 传址, 用于装载进程ID的变量
+
+.DLL命令 GetWindowTextLength, 整数型, "user32", "GetWindowTextLengthA", 公开, 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 GetWindowTextA, 整数型, "", "GetWindowTextA", 公开, 窗口_取标题
+    .参数 hwnd, 整数型, , 
+    .参数 标题名, 文本型, 传址, 
+    .参数 长度, 整数型, , 
+
+.DLL命令 SetWindowTextA, 逻辑型, "user32", "SetWindowTextA", 公开, 窗口_置标题
+    .参数 hwnd, 整数型, , 
+    .参数 窗口标题, 文本型, , 
+
+.DLL命令 GetClassNameA, 整数型, "user32.dll", "GetClassNameA", 公开, 窗口_取类名 为指定的窗口取得类名　以字节数表示的类名长度；排除最后的空中止字符。零表示出错。会设置GetLastError
+    .参数 句柄, 整数型, , 欲获得类名的那个窗口的句柄
+    .参数 文本, 文本型, 传址, 随同类名载入的缓冲区。预先至少必须分配nMaxCount+1个字符
+    .参数 文本长度, 整数型, , 由lpClassName提供的缓冲区长度;
+
+.DLL命令 CreateProcessA, 整数型, "kernel32.dll", "CreateProcessA", 公开, 
+    .参数 lpApplicationName, 文本型, , 
+    .参数 lpCommandLine, 文本型, , 
+    .参数 lpProcessAttributes, 整数型, , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 bInheritHandles, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpEnvironment, 整数型, , 
+    .参数 lpCurrentDriectory, 文本型, , 
+    .参数 lpStartupInfo, StartupInfo, , 
+    .参数 lpProcessInformation, 精易_进程结构, , 
+
+.DLL命令 TerminateProcess, 整数型, "", "TerminateProcess", 公开, _进程终止
+    .参数 进程ID, 整数型, , 
+    .参数 a, 整数型, , 
+
+.DLL命令 OpenProcess, 整数型, "", "OpenProcess", 公开, 打开进程
+    .参数 进程对象, 整数型, , 
+    .参数 继承句柄, 整数型, , 
+    .参数 进程标识符, 整数型, , 
+
+.DLL命令 SendMessageA_文本, 整数型, "user32", "SendMessageA", 公开, 
+    .参数 hwnd, 整数型, , 
+    .参数 消息号, 整数型, , 消息的标识符
+    .参数 参数一, 整数型, , 具体取决于消息
+    .参数 参数二, 文本型, , 具体取决于消息
+
+.DLL命令 GetDateFormatA, 整数型, "kernel32.dll", "GetDateFormatA", 公开, 针对指定的“当地”格式，对一个系统日期进行格式化  格式化过后的字串的长度。
+    .参数 地方ID, 整数型, , Locale，用于决定格式的地方ID。lpFormat参数中指定的任何信息（倘若不是NULL）都优先于特定于地方的信息
+    .参数 标志, 整数型, , dwFlags，如指定了lpFormat，那么该参数应该为零。否则，可设为LOCALE_NOUSEROVERRIDE，强制使用系统地方参数——即使它们已由用户取代。
+    .参数 日期结构, 未知类型0x4101099B, , lpDate，包含了一个系统日期的结构
+    .参数 格式化, 文本型, , lpFormat，String，可设为NULL，使用特定于不同地方的值（用vbNullString传递一个NULL）。否则包含一个日期格式字串。
+    .参数 缓冲区文本, 文本型, , lpDateStr，指定一个缓冲区，用于容纳格式化过后的字串。注意事先对字串进行初始化
+    .参数 缓冲区文本长度, 整数型, , cchDate，缓冲区的长度。如为零，表示函数会返回需要缓冲区的大小;
+
+.DLL命令 GetTimeFormatA, 整数型, "kernel32.dll", "GetTimeFormatA", 公开, _系统置时间进行格式化 针对指定的“当地”格式，对一个系统时间进行格式化。
+    .参数 地方ID, 整数型, , Locale，用于决定格式的地方ID。lpFormat参数中指定的任何信息（倘若不是NULL）都优先于特定于地方的信息
+    .参数 标志, 整数型, , dwFlags，如指定了lpFormat，那么该参数应该为零。否则，可设为LOCALE_NOUSEROVERRIDE，强制使用系统地方参数
+    .参数 时间结构, 未知类型0x4101099B, , lpDate，SYSTEMTIME，用于包容系统时间的一个结构
+    .参数 格式化, 文本型, , lpFormat，String，可设为NULL，使用特定于不同地方的值（用vbNullString传递一个NULL）。
+    .参数 缓冲区文本, 文本型, , lpDateStr，指定一个缓冲区，用于容纳格式化过后的字串。注意事先对字串进行初始化
+    .参数 缓冲区文本长度, 整数型, , cchDate，缓冲区的长度。如为零，表示函数会返回需要缓冲区的大小;
+
+.DLL命令 VariantTimeToSystemTime_Date, 整数型, "oleaut32.dll", "VariantTimeToSystemTime", 公开, 
+    .参数 vtime, 日期时间型, , 
+    .参数 lpSystemTime, 未知类型0x4101099B, , 
+
+.DLL命令 PathIsDirectoryA, 整数型, "shlwapi.dll", "PathIsDirectoryA", 公开, 目录是否存在
+    .参数 lpszPath, 文本型, , 
+
+.DLL命令 GetLocalTime, 整数型, "kernel32", "GetLocalTime", 公开, ,
+    .参数 系统时间格式, 精易_时间, 传址, 
+
+.DLL命令 GetAdaptersInfo, 整数型, "IPHlpApi", "GetAdaptersInfo", 公开, 
+    .参数 IpAdapterInfo, 整数型, , 
+    .参数 pOutBufLen, 整数型, 传址, 
+
+.DLL命令 CopyMemory_ip_adapter_info, 整数型, "kernel32", "RtlMoveMemory", 公开, 
+    .参数 Destination, 未知类型0x4101099C, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 GlobalAlloc, 整数型, "kernel32", "GlobalAlloc", 公开, 在堆中分配内存
+    .参数 wFlags, 整数型, , 
+    .参数 dwBytes, 整数型, , 
+
+.DLL命令 GlobalFree, 整数型, "", "GlobalFree", 公开, 释放全局内存块
+    .参数 hMem, 整数型, , 
+
+.DLL命令 RasDialA, 整数型, "rasapi32.dll", "RasDialA", 公开, _ADSL拨号
+    .参数 lprasdialextensions, 整数型, , 拔号参数
+    .参数 lpszPhonebook, 整数型, , 电话本名称,0
+    .参数 lprasdialparamsa, 未知类型0x4101099D, , 拔号参数
+    .参数 dwNotifierType, 整数型, , 消息通知方式
+    .参数 lpvNotifier, 整数型, , 消息处理回调子程序
+    .参数 lphrasconn, 整数型, 传址, 返回的成功连接的连接句柄
+
+.DLL命令 RasHangUpA, 整数型, "rasapi32.dll", "RasHangUpA", 公开, RasApi32.DLL挂断当前拔号连接 0表示成功
+    .参数 hRasConn, 整数型, , 连接句柄
+
+.DLL命令 GlobalSize_取连接信息用结构, 整数型, "", "GlobalSize", 公开, kernel32.dll取结构尺寸
+    .参数 结构, 未知类型0x4101099E, 传址, 
+
+.DLL命令 RasEnumEntries, 整数型, "rasapi32.dll", "RasEnumEntriesA", 公开, rasapi32.dll 取连接信息结构,连接名称,数量等等
+    .参数 lpStrNull, 整数型, , 保留字段,必须为NIL
+    .参数 lpszphonebook, 整数型, , 电话本名称,在Win9X下无作用
+    .参数 lprasetryname, 未知类型0x4101099E, 传址 数组, RASENTRYNAME类型数组的指针
+    .参数 lpcb, 整数型, 传址, 接收拨号连接名称的缓冲区的大小
+    .参数 lpcentries, 整数型, 传址, 实际获得的拨号连接名称的数目
+
+.DLL命令 InternetGetConnectedStateEx, 整数型, "wininet.dll", "InternetGetConnectedStateEx", 公开, _取连接状态 wininet.dll
+    .参数 lpdwFlags, 整数型, 传址, 
+    .参数 lpszConnectionName, 文本型, 传址, 
+    .参数 dwNameLen, 整数型, , 
+    .参数 dwReserved, 整数型, , 
+
+.DLL命令 RasSetEntryPropertiesA, 整数型, "rasapi32.dll", "RasSetEntryPropertiesA", 公开, _创建新拨号连接 rasapi32.dll 0=建立成功,其他为失败
+    .参数 lpszPhonebook, 整数型, , 电话本名称,0
+    .参数 lpszEntry, 文本型, , 连接名称
+    .参数 lpRasEntry, 未知类型0x4101099F, , 
+    .参数 dwEntryInfoSize, 整数型, , 
+    .参数 lpbDeviceInfo, 整数型, , 
+    .参数 wDeviceInfoSize, 整数型, , 
+
+.DLL命令 RasSetCredentialsA, 整数型, "rasapi32.dll", "RasSetCredentialsA", 公开, _设置拨号连接 rasapi32.dll
+    .参数 lpszPhonebook, 整数型, , 电话本名称,0
+    .参数 lpszEntry, 文本型, , 连接名称
+    .参数 lpCredentials, 未知类型0x410109A0, , 
+    .参数 fClearCredentials, 整数型, , 
+
+.DLL命令 SHGetSpecialFolderPath, 逻辑型, "", "SHGetSpecialFolderPathA", 公开, 取系统目录
+    .参数 hwndOwner, 整数型, , 
+    .参数 lpszPath, 文本型, , 
+    .参数 nFolder, 整数型, , 
+    .参数 fCreate, 逻辑型, , 
+
+.DLL命令 RtlMoveMemory_字节型, 空白型, "", "RtlMoveMemory", 公开, 复制内存数据_MIB_IPFORWARDROW参数
+    .参数 Destination, 字节型, 数组, 目标地址
+    .参数 Source, 字节型, 数组, 要复制的数据MIB_IPFORWARDROW
+    .参数 Length, 整数型, , 长度
+
+.DLL命令 RasGetEntryDialParams, 整数型, "rasapi32.dll", "RasGetEntryDialParamsA", 公开, 
+    .参数 lpszPhoneBook, 文本型, 传址, 
+    .参数 lpDialParams, 未知类型0x4101099D, 传址, 未知类型：TRasDialParams。
+    .参数 lpfPassword, 逻辑型, 传址, 
+
+.DLL命令 GlobalSize_RASENTRY, 整数型, "kernel32.dll", "GlobalSize", 公开, 取结构尺寸
+    .参数 结构, 未知类型0x410109A1, 传址, 
+
+.DLL命令 GetPrivateProfileInt, 整数型, "kernel32", "GetPrivateProfileIntA", 公开, 读配置项数值
+    .参数 小节名, 字节集, , 
+    .参数 项目名, 文本型, , 
+    .参数 默认返回值, 整数型, , 
+    .参数 文件名, 文本型, ,   
+
+.DLL命令 RasEnumEntrie, 整数型, "rasapi32.dll", "RasEnumEntriesA", 公开, 
+    .参数 reserved, 整数型, , 
+    .参数 lpszPhoneBook, 整数型, , 
+    .参数 entrynamesArray, 未知类型0x4101099E, 传址, 未知类型：LPRasEntryNameA。
+    .参数 lpcb, 整数型, 传址, 
+    .参数 lpcEntries, 整数型, 传址, 
+
+.DLL命令 LsaFreeMemory, 整数型, "ADVAPI32.DLL", "LsaFreeMemory", 公开, 
+    .参数 Buffer, 字节集, 传址, 
+
+.DLL命令 LsaOpenPolicy, 整数型, "ADVAPI32.DLL", "LsaOpenPolicy", 公开, 
+    .参数 SystemName, 整数型, , 未知类型：PLSA_UNICODE_STRING。
+    .参数 ObjectAttributes, 未知类型0x410109A2, , 未知类型：PLSA_OBJECT_ATTRIBUTES。
+    .参数 DesiredAccess, 整数型, , 
+    .参数 PolicyHandle, 整数型, 传址, 未知类型：PLongWord。
+
+.DLL命令 LsaRetrievePrivateData, 整数型, "ADVAPI32.DLL", "LsaRetrievePrivateData", 公开, 
+    .参数 LSA_HANDLE, 整数型, , 
+    .参数 KeyName, 未知类型0x410109A3, , 未知类型：PLSA_UNICODE_STRING。
+    .参数 PrivateData, 整数型, 传址, 未知类型：PLSA_UNICODE_STRING。
+
+.DLL命令 LsaClose, 整数型, "ADVAPI32.DLL", "LsaClose", 公开, 
+    .参数 ObjectHandle, 整数型, , 
+
+.DLL命令 GetUserNameA, 整数型, "advapi32.dll", "GetUserNameA", 公开, 取出当前的用户名,TRUE（非零）表示成功，否则返回零。
+    .参数 字串缓冲区, 文本型, , lpBuffer，随同用户名载入的字串缓冲区
+    .参数 缓冲区长度, 整数型, 传址, nSize，缓冲区的长度。这个变量随同返回用户名的实际长度载入
+
+.DLL命令 LookupAccountName, 整数型, "advapi32.dll", "LookupAccountNameA", 公开, 把帐户名转为SID　
+    .参数 lpSystemName, 文本型, 传址, 
+    .参数 lpAccountName, 文本型, , 
+    .参数 Sid, 字节集, 传址, 
+    .参数 cbSid, 整数型, 传址, 
+    .参数 ReferencedDomainName, 文本型, , 
+    .参数 cbReferencedDomainName, 整数型, 传址, 
+    .参数 peUse, 整数型, 传址, 
+
+.DLL命令 IsValidSid, 整数型, "advapi32.dll", "IsValidSid", 公开, 使SID有效　
+    .参数 pSid, 整数型, , 
+
+.DLL命令 ConvertSidToStringSid, 整数型, "ADVAPI32.DLL", "ConvertSidToStringSidW", 公开, 　
+    .参数 Sid, 字节集, 传址, 
+    .参数 StringSid, 整数型, 传址, 
+
+.DLL命令 lstrlen, 整数型, "kernel32", "lstrlenW", 公开, 取字节长度　
+    .参数 lpString, 整数型, , 
+
+.DLL命令 RtlMoveMemory_整数型2, 空白型, "kernel32", "RtlMoveMemory", 公开, 公开
+    .参数 Destination, 整数型, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 lstrcpyn_字节集, 整数型, "kernel32.dll", "lstrcpyn", 公开, 字节集
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 SetWindowLongA, 整数型, "", "SetWindowLongA", 公开, 在窗口结构中为指定的窗口设置信息  指定数据的前一个值
+    .参数 hwnd, 整数型, , 句柄
+    .参数 nIndex, 整数型, , -16=样式，-20=扩展样式
+    .参数 dwNewLong, 整数型, , 新样式
+
+.DLL命令 SetWindowLongA1, 子程序指针, "", "SetWindowLongA", 公开, 在窗口结构中为指定的窗口设置信息  指定数据的前一个值
+    .参数 hwnd, 整数型, , 句柄
+    .参数 nIndex, 整数型, , -16=样式，-20=扩展样式
+    .参数 dwNewLong, 子程序指针, , 新样式
+
+.DLL命令 RegisterWindowMessageA, 整数型, "user32", "RegisterWindowMessageA", 公开, _获取消息编号  获取分配给一个字串标识符的消息编号　&C000 到 &FFFF之间的一个消息编号。零意味着出错
+    .参数 消息名称, 文本型, , 注册消息的名字;  
+
+.DLL命令 lstrcpynA_字节集, 整数型, "kernel32", "lstrcpynA", 公开, 
+    .参数 lpString1, 字节集, 传址, 
+    .参数 lpString2, 字节集, 传址, 
+    .参数 iMaxLength, 整数型, , 
+
+.DLL命令 SendMessageA_整数, 整数型, "user32", "SendMessageA", 公开, 
+    .参数 hwnd, 整数型, , 
+    .参数 消息号, 整数型, , 消息的标识符
+    .参数 参数一, 整数型, , 具体取决于消息
+    .参数 参数二, 整数型, , 具体取决于消息
+
+.DLL命令 ReadProcessMemory_字节集, 逻辑型, "", "ReadProcessMemory", 公开, 内存读字节集
+    .参数 hProcess, 整数型, , 
+    .参数 内存地址, 整数型, , 
+    .参数 数据指针, 字节集, 传址, 
+    .参数 数据长度, 整数型, , 
+    .参数 读取的长度, 整数型, 传址, 
+
+.DLL命令 WriteProcessMemory_字节集, 逻辑型, "kernel32.dll", "WriteProcessMemory", 公开, 
+    .参数 hProcess, 整数型, , 
+    .参数 内存地址, 整数型, , 
+    .参数 数据指针, 字节集, , 
+    .参数 数据长度, 整数型, , 
+    .参数 实际写出长度, 整数型, , 
+
+.DLL命令 CallWindowProcA, 整数型, "user32.dll", "CallWindowProcA", 公开, 
+    .参数 窗口程序指针, 整数型, , 
+    .参数 hwnd, 整数型, , 
+    .参数 消息值, 整数型, , 
+    .参数 参数1, 整数型, , 
+    .参数 参数2, 整数型, , 
+
+.窗口程序集 窗口程序集_启动窗口, , , 
+
+.程序集变量 Sdk, 未知类型0x49010029, , , 
+.程序集变量 State, 整数型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+
+
+.子程序 _按钮_登录_被单击, 空白型, , 
+.局部变量 IMEI_, 字节集, , , 
+
+赋值 (IMEI_, Guid算法 ())
+调试输出 (相加 (“IMEI_：”, Bin2HexTo (IMEI_)))
+
+赋值 (State, Sdk.未知函数_67174421 (.内容, .内容, IMEI_))
+Do_Login ()
+
+.子程序 _编辑框_验证码_内容被改变, 空白型, , 
+.局部变量 Code, 文本型, , , 
+
+.如果真 (小于 (取文本长度 (.内容), 4))
+    返回 ()
+.如果真结束
+赋值 (Code, 删首尾空 (.内容))
+赋值 (.内容, “”)
+赋值 (.图片, {  })
+赋值 (State, Sdk.未知函数_67174426 (Code))
+Do_Login ()
+
+.子程序 Do_Login, 空白型, , 
+.局部变量 A2, 字节集, , , 
+.局部变量 A4, 字节集, , , 
+.局部变量 Sessionkey, 字节集, , , 
+.局部变量 Skey, 字节集, , , 
+
+.判断开始 ()
+
+.子程序 _编辑框_QQ密码_内容被改变, 空白型, , 
+
+
+.类模块 _Pack, , , 
+
+.子程序 Empty, 空白型, , 清除
+
+
+.子程序 GetAll, 字节集, , 取全部数据
+
+
+.子程序 Len, 整数型, , 取长度
+
+
+.子程序 SetBin, 空白型, , 置字节集
+.参数 t, 字节集, , 
+
+
+
+.子程序 SetByte, 空白型, , 置字节
+.参数 b, 字节型, , 
+
+
+
+.子程序 SetData, 空白型, , 置类数据
+.参数 bin, 字节集, , 
+
+
+
+.子程序 SetHex, 空白型, , 置文本十六进制格式
+.参数 t, 文本型, , 
+
+
+
+.子程序 SetInt, 空白型, , 置整数
+.参数 int, 整数型, , 
+
+
+
+.子程序 SetShort, 空白型, , 置短整数
+.参数 short, 短整数型, , 
+
+
+
+.子程序 SetLong, 空白型, , 
+.参数 long, 长整数型, , 
+
+
+
+.子程序 SetUint, 空白型, , 
+.参数 uint, 整数型, , 
+
+
+
+.子程序 SetStr, 空白型, , 
+.参数 t, 文本型, , 
+
+
+
+.子程序 SetToken, 空白型, , 置令牌
+.参数 t, 字节集, , 
+
+
+
+.子程序 setUTF_8, 空白型, , 
+.参数 v, 文本型, , 
+
+
+
+.类模块 _Unpack, , , 
+
+.子程序 GetAll, 字节集, , 取所有数据
+.参数 忽略03, 逻辑型, 可空, 
+
+
+
+.子程序 GetAll_Hex, 文本型, , 取所有数据,十六进制展示
+
+
+.子程序 GetBin, 字节集, , 取字节集
+.参数 len, 整数型, , 
+
+
+
+.子程序 GetByte, 字节型, , 取字节
+
+
+.子程序 GetInt, 整数型, , 取整数
+
+
+.子程序 GetLong, 长整数型, , 
+
+
+.子程序 GetShort, 短整数型, , 取短整数
+
+
+.子程序 GetToken, 字节集, , 取令牌
+
+
+.子程序 GetUTF_8, 文本型, , 
+
+
+.子程序 Len, 整数型, , 取长度
+
+
+.子程序 SetData, 空白型, , 置数据
+.参数 b, 字节集, , 
+
+
+
+.子程序 SetData_Hex, 空白型, , 置数据_十六进制文本
+.参数 hex, 文本型, , 十六进制文本
+
+
+
+.类模块 QQTEA, , , 
+
+.子程序 解密, 字节集, , 
+.参数 加密内容, 字节集, , 带空格十六进制文本
+.参数 密钥, 字节集, , 带空格十六进制文本
+
+
+
+.子程序 加密, 字节集, , 
+.参数 加密内容, 字节集, , 带空格十六进制文本
+.参数 密钥, 字节集, , 带空格十六进制文本
+
+
+
+.类模块 JceOutputStream, , , 
+
+.子程序 clear, 空白型, , 
+
+
+.子程序 toByteArray, 字节集, , 
+
+
+.子程序 wrap, 空白型, , 
+.参数 bin, 字节集, , 
+
+
+
+.子程序 WriteObj, 空白型, , 
+.参数 p_type, 字节型, , 
+.参数 p_val, 字节集, , 
+.参数 p_tag, 整数型, , 
+
+
+
+.子程序 WriteByte, 空白型, , 
+.参数 p_val, 字节型, , 
+.参数 p_tag, 整数型, , 
+
+
+
+.子程序 WriteShort, 空白型, , 
+.参数 p_val, 短整数型, , 
+.参数 p_tag, 整数型, , 
+
+
+
+.子程序 WriteInt, 空白型, , 
+.参数 p_val, 整数型, , 
+.参数 p_tag, 整数型, , 
+
+
+
+.子程序 WriteLong, 空白型, , 
+.参数 p_val, 长整数型, , 
+.参数 p_tag, 整数型, , 
+
+
+
+.子程序 WriteByteString, 空白型, , 十六进制字节
+.参数 p_val, 文本型, , 
+.参数 p_tag, 整数型, , 
+
+
+
+.子程序 WriteStringByte, 空白型, , 
+.参数 p_val, 文本型, , 
+.参数 p_tag, 整数型, , 
+
+
+
+.子程序 WriteJceStruct, 空白型, , 
+.参数 p_val, 字节集, , 
+.参数 p_tag, 整数型, , 
+
+
+
+.子程序 WriteSimpleList, 空白型, , 
+.参数 p_val, 字节集, , 
+.参数 p_tag, 整数型, , 
+
+
+
+.子程序 WriteList, 空白型, , 
+.参数 p_val, 字节集, , 
+.参数 p_tag, 整数型, , 
+
+
+
+.子程序 WriteMap, 空白型, , 
+.参数 p_key, JceMap, 数组, 
+.参数 p_tag, 长整数型, , 
+
+
+
+.子程序 putHex, 空白型, , 
+.参数 hex, 文本型, , 
+
+
+
+.子程序 WriteStringByte_2, 空白型, , 
+.参数 p_val, 文本型, , 
+.参数 p_tag, 整数型, , 
+
+
+
+.类模块 JceInputStream, , , 
+
+.子程序 wrap, 空白型, , 
+.参数 bin, 字节集, , 
+
+
+
+.子程序 ReadByte, 字节型, , 
+.参数 p_tag, 整数型, , tag
+
+
+
+.子程序 ReadShort, 短整数型, , 
+.参数 p_tag, 整数型, , tag
+
+
+
+.子程序 ReadInt, 整数型, , 
+.参数 p_tag, 整数型, , tag
+
+
+
+.子程序 ReadLong, 长整数型, , 
+.参数 p_tag, 整数型, , tag
+
+
+
+.子程序 ReadString, 文本型, , 
+.参数 p_tag, 整数型, , tag
+
+
+
+.子程序 ReadSimpleList, 字节集, , 
+.参数 p_tag, 整数型, , tag
+
+
+
+.子程序 ReadList, 空白型, , 
+.参数 p_tag, 整数型, , tag
+.参数 ret_arr, 文本型, 数组, 
+
+
+
+.子程序 ReadType, 字节型, , 
+
+
+.子程序 ReadToTag, 字节型, , 返回type -1没找到
+.参数 p_tag, 整数型, , 
+
+
+
+.子程序 skipToEnd, 空白型, , 
+
+
+.子程序 ReadMap, 空白型, , 
+.参数 p_tag, 整数型, , tag
+.参数 p_val, JceMap, 数组, 
+
+
+
+.子程序 getAll, 字节集, , 返回剩余
+
+
+.类模块 正则表达式类, , , 
+
+.子程序 创建, 逻辑型, , 根据指定的正则表达式文本创建一个正则表达式对象。本对象中的原有内容将被释放
+.参数 正则表达式文本, 文本型, , 比如“易语言4\.0(模块|支持库)?”
+.参数 被搜索的文本, 文本型, , 
+.参数 是否区分大小写, 逻辑型, 可空, 可以留空,默认为假,不区分大小写; 真为区分大小写;本参数指定这个正则表达式在创建成功后进行匹配、搜索、替换时，是否区分大小写;
+.参数 是否匹配多行, 逻辑型, 可空, 可以留空,默认为真,允许匹配多行; 如果本成员值为真，字符“^”不仅匹配目标文本的开头，而且匹配目标文本中换行符（字符(10)，字符(13)或 #换行符）的后面；字符“$”不仅匹配目标文本的结尾，而且匹配目标文本中换行符的前面。否则字符“^”仅仅匹配目标文本的开头，“$”也仅仅匹配目标文本的结尾。
+.参数 是否全局匹配, 逻辑型, 可空, 可以留空，默认为真，全局匹配
+.参数 自动替换引号, 逻辑型, 可空, 可空。默认为不替换。说明：正则表达式文本为【formhash" value="7b4aa6c5】，这里面的引号处理起来很麻烦，直接把此参数设置为真，把"换成 #引号 再传进来就可以了，如：【formhash#引号 value=#引号7b4aa6c5】
+
+
+
+.子程序 查看, 空白型, ,  
+
+
+.子程序 取正则文本, 文本型, , 返回以文本形式表示的正则表达式。如果该对象尚未创建，则返回空文本。本命令为高级对象成员命令
+
+
+.子程序 替换, 文本型, , 替换在正则表达式查找中找到的文本
+.参数 用作替换的文本, 文本型, 可空, 用作替换的文本
+
+
+
+.子程序 取匹配数量, 整数型, , 取出该正则匹配到的数量
+
+
+.子程序 取匹配文本, 文本型, , 取出该正则匹配到的文本
+.参数 匹配索引, 整数型, , 索引值从1开始
+.参数 起始位置, 整数型, 参考 可空, 可以被省略，提供参数数据时只能提供变量。该命令调用成功后，本参数存放取得的子文本在整个被搜索文本中的起始位置
+
+
+
+.子程序 取子匹配文本, 文本型, , 取出该正则的子表达式匹配到的文本
+.参数 匹配索引, 整数型, , 索引值从1开始
+.参数 子表达式索引, 整数型, , 欲取其值的子表达式,该参数对应与正则表达式中的一个子表达式以圆括号"( )"为标记,索引从1开始
+.参数 起始位置, 整数型, 参考 可空, 可以被省略，提供参数数据时只能提供变量。该命令调用成功后，本参数存放取得的子文本在整个被搜索文本中的起始位置
+
+
+
+.子程序 取子匹配数量, 整数型, , 取出该正则的子表达式匹配到的数量
+
+
+.类模块 类_json, , , 
+
+.子程序 解析, 逻辑型, , 
+.参数 数据文本, 文本型, , json的文本数据
+
+
+
+.子程序 取数据文本, 文本型, , 
+
+
+.子程序 置属性, 空白型, , 
+.参数 名字, 文本型, , 支持a.b.c[0]
+.参数 值, 文本型, , 
+.参数 为对象, 逻辑型, 可空, 属性解析为json对象,数组
+
+
+
+.子程序 置属性对象, 空白型, , 属性解析为json对象,数组
+.参数 名字, 文本型, , 支持a.b.c[0]
+.参数 值, 文本型, , 
+
+
+
+.子程序 置属性数值, 空白型, , 
+.参数 名字, 文本型, , 支持a.b.c[0]
+.参数 值, 双精度小数型, , 
+
+
+
+.子程序 取属性数值, 双精度小数型, , 
+.参数 名字, 文本型, , 支持a.b.c[0]
+
+
+
+.子程序 取属性对象, 文本型, , 返回对象文本
+.参数 名字, 文本型, , 支持a.b.c[0]
+
+
+
+.子程序 取通用属性, 文本型, , 对于数字键名或者非正常变量字符（比如有空格），必须使用 aa[x]的方式。
+.参数 名字, 文本型, , 支持a.b.c[0]或者[0].a.b,键名为数值时a.b模式无效，必须使用a[20]模式。
+.参数 为对象, 逻辑型, 可空, 为真解析属性为 数值,json{},不然有转义"\"
+
+
+
+.子程序 取属性, 类_json, , 
+.参数 名字, 文本型, , 支持a.b.c[0]或者[0].a.b
+
+
+
+.子程序 成员数, 整数型, , 
+.参数 名字, 文本型, 可空, 支持a.b.c,根目录为空
+
+
+
+.子程序 加成员, 空白型, , 
+.参数 成员值, 文本型, , 对象
+.参数 名字, 文本型, 可空, 支持a.b.c
+.参数 为对象, 逻辑型, 可空, 数值,json节点
+
+
+
+.子程序 取成员, 类_json, , 
+.参数 索引, 整数型, , 
+.参数 名字, 文本型, 可空, 支持a.b.c,为空是根节点
+
+
+
+.子程序 取成员文本, 文本型, , 
+.参数 索引, 整数型, , 支持a.b.c
+.参数 名字, 文本型, 可空, 支持a.b.c,为空是根节点
+.参数 为对象, 逻辑型, 可空, 对象为真,否则返回obj,数值,json节点
+
+
+
+.子程序 置成员, 空白型, , 
+.参数 索引, 整数型, , 支持a.b.c
+.参数 成员值, 文本型, , 
+.参数 为对象, 逻辑型, 可空, 数值,json节点
+
+
+
+.子程序 删成员, 空白型, , 
+.参数 索引, 整数型, , 支持a.b.c
+
+
+
+.子程序 删属性, 空白型, , 
+.参数 名字, 文本型, , 
+
+
+
+.子程序 置类型, 空白型, , 
+.参数 值, 整数型, , 0空,4对象,5数组
+
+
+
+.子程序 赋值, 空白型, , 
+.参数 值, 文本型, , 
+.参数 为对象, 逻辑型, 可空, 数值,json节点
+
+
+
+.子程序 属性是否存在, 逻辑型, , 
+.参数 名字, 文本型, , 支持a.b.c
+
+
+
+.子程序 取所有属性名, 整数型, , 注意：对于数字键名或者非正常变量字符（比如有空格），必须使用 aa[x]的方式。
+.参数 属性名数组, 文本型, 参考 数组, 
+.参数 名字, 文本型, 可空, a.b,空为根节点,键名为数值时a.b模式无效，必须使用a[20]模式。
+
+
+
+.子程序 取类型, 整数型, , 空=0，数=2，对象=4，数组=5，文本=6
+.参数 名字, 文本型, 可空, 
+
+
+
+.子程序 清除, 空白型, , 
+
+
+.类模块 类_日志输出, , , 
+
+.子程序 文件路径, 文本型, , 获取与设置日志输出文件目录，请在【输出文件】日志前设置目录。
+.参数 参_目录, 文本型, 可空, 默认会在程序运行目录下生成(Log+年月)格式的目录
+.参数 参_文件名, 文本型, 可空, 
+
+
+
+.子程序 输出文件, 逻辑型, , 输出内容到文件到
+.参数 参_内容, 文本型, , 
+.参数 参_级别, 整数型, 可空, 默认为【信息】，或如下级别值：0=信息，1=警告，2=错误，3=调试
+.参数 参_信息框, 逻辑型, 可空, 默认不提示
+
+
+
+.子程序 输出控制台, 逻辑型, , 输入日志内容到控制台
+.参数 参_内容, 文本型, , 
+.参数 参_级别, 整数型, 可空, 默认为【信息】，或如下级别值：0=信息，1=警告，2=错误，3=调试
+.参数 参_标题, 文本型, 可空, 控制台标题，默认 程序日志
+.参数 参_写到文件, 逻辑型, 可空, 默认不出日志文件
+
+
+
+.子程序 输出易调试, 空白型, , 只在调试模式下有效
+.参数 参_内容, 文本型, , 
+.参数 参_级别, 整数型, 可空, 默认为【信息】，或如下级别值：0=信息，1=警告，2=错误，3=调试
+.参数 参_写到文件, 逻辑型, 可空, 默认不出日志文件
+
+
+
+.子程序 输出调试器, 空白型, , 输出到 调试器，编译模式下有效，可用DbgView 查看
+.参数 参_内容, 文本型, , 
+.参数 参_级别, 整数型, 可空, 默认为【信息】，或如下级别值：0=信息，1=警告，2=错误，3=调试
+.参数 参_写到文件, 逻辑型, 可空, 默认不出日志文件
+
+
+
+.子程序 输出编辑框, 空白型, , 输出日志内容到编辑框
+.参数 参_编辑框句柄, 整数型, , 
+.参数 参_内容, 文本型, , 
+.参数 参_级别, 整数型, 可空, 默认为【信息】，或如下级别值：0=信息，1=警告，2=错误，3=调试
+.参数 参_写到文件, 逻辑型, 可空, 默认不出日志文件
+
+
+
+.子程序 目录_是否存在, 逻辑型, , 输入一个目录名,判断此目录是否存在
+.参数 欲判断的目录名, 文本型, , 传入的目录名不会被改变
+
+
+
+.子程序 目录_创建, 逻辑型, , 创建多级目录，成功返回真，失败返回假。如果指定目录存在也会返回真，不覆盖目录内容。
+.参数 目录路径, 文本型, , 
+
+
+
+.类模块 ADSL拨号, , , 
+
+.子程序 _取本机IP, 整数型, , 返回IP的个数，如2:本地IP和外网IP
+.参数 IP数组, 文本型, 数组, 用于装载IP的文本数组
+
+
+
+.子程序 取外网IP, 文本型, , 获取本机的外网IP
+
+
+.子程序 重拨, 文本型, , 重拨成功返回外网IP，失败返回空文本
+.参数 连接名称, 文本型, 可空, 可空,默认为 宽带连接  已建立的拨号连接的名称
+.参数 用户名, 文本型, , 用于拨号的用户名
+.参数 密码, 文本型, , 用于拨号的密码
+
+
+
+.子程序 拨号, 整数型, , 通过拨号建立网络连接，成功返回连接句柄，失败返回0
+.参数 连接名称, 文本型, , 已建立的拨号连接的名称,一般为 宽带连接
+.参数 用户名, 文本型, , 用于拨号的用户名
+.参数 密码, 文本型, , 用于拨号的密码
+
+
+
+.子程序 断开, 逻辑型, , 断开当前拨号网络连接
+
+
+.子程序 重拨_cmd, 空白型, , 宽带重拨，cmd方式
+.参数 宽带名称, 文本型, 可空, 可空。默认为“宽带连接”
+.参数 用户名称, 文本型, , 
+.参数 用户密码, 文本型, , 
+
+
+
+.子程序 拨号_cmd, 空白型, , CMD方式拨号
+.参数 宽带名称, 文本型, 可空, 可空。默认为“宽带连接”
+.参数 用户名称, 文本型, , 
+.参数 用户密码, 文本型, , 
+
+
+
+.子程序 断开_cmd, 逻辑型, , 断开宽带连接，cmd方式。
+.参数 连接名称, 文本型, 可空, 可空,默认为“宽带连接”。已建立的拨号连接的名称
+
+
+
+.子程序 取连接名称, 文本型, , 利用索引取出电脑中拨号的连接名称，成功返回连接名称，失败返回空文本
+.参数 连接索引, 整数型, , 欲取名称的连接索引
+.参数 所有名称数组, 文本型, 参考 可空 数组, 存放所有连接名称的文本数组
+
+
+
+.子程序 取连接数量, 整数型, , 取系统中已经建立的连接数量
+
+
+.子程序 取连接状态, 逻辑型, , 判断指定的连接是否已连接，如果已连接返回真，否则返回假;
+.参数 连接名称, 文本型, , 欲判断的连接名称
+
+
+
+.子程序 连接是否存在, 逻辑型, , 如果指定的连接名称存在返回真，否则返回假;
+.参数 连接名称, 文本型, , 欲判断的连接名称
+
+
+
+.子程序 断开所有连接, 空白型, , 
+
+
+.子程序 创建新拨号连接, 逻辑型, , 建立一个ADS拨号连接，成功反回真，失败返回假;
+.参数 连接名称, 文本型, , 拨号连接的名称,可自定义,如"我的ADSL连接"
+.参数 用户名, 文本型, 可空, 用于拨号的用户名
+.参数 密码, 文本型, 可空, 用于拨号的密码
+.参数 拨号类型, 整数型, 可空, 可空,默认为1  1=PPPoE虚拟拨号  2=电话拨号
+
+
+
+.子程序 设置拨号连接, 逻辑型, , 设置已经存在的连接的用户名或密码
+.参数 连接名称, 文本型, , 已建立的拨号连接的名称
+.参数 用户名, 文本型, , 用于拨号的用户名,留空将不写入连接中
+.参数 密码, 文本型, 可空, 用于拨号的密码
+
+
+
+.子程序 删除拨号连接, 空白型, , 
+.参数 连接名称, 文本型, , 
+
+
+
+.子程序 取宽带用户名密码, 逻辑型, , 成功返回真，失败返回假  注：只有ADSL拨号上网的才能取
+.参数 连接名称, 文本型, 可空, 请提供一个文本变量,用于存放 连接名称
+.参数 宽带用户名, 文本型, 可空, 请提供一个文本变量,用于存放 宽带用户名
+.参数 宽带密码, 文本型, 可空, 请提供一个文本变量,用于存放 宽带密码
+
+
+
+.子程序 系统_取宽带用户名密码, 逻辑型, , 成功返回真,失败返回假  注：只有ADSL拨号上网的才能取
+.参数 连接名称, 文本型, 可空, 请提供一个文本变量,用于存放 连接名称
+.参数 宽带用户名, 文本型, 可空, 请提供一个文本变量,用于存放 宽带用户名
+.参数 宽带密码, 文本型, 可空, 请提供一个文本变量,用于存放 宽带密码
+
+
+
+.子程序 取指针地址_字节集型, 整数型, , 
+.参数 欲取地址的数据, 字节集, 参考, 
+
+
+
+.类模块 类_脚本组件, , , 
+
+.子程序 执行, 逻辑型, , 执行指定的代码文本。返回真为执行正常，返回假为出错，错误信息可以从“错误信息”属性中取得。
+.参数 脚本代码, 文本型, , 
+
+
+
+.子程序 计算表达式, 文本型, , 计算表达式并返回结果。
+.参数 表达式, 文本型, , 
+
+
+
+.子程序 清除, 空白型, , 
+
+
+.子程序 取脚本对象, 对象, , 
+
+
+.子程序 运行, 文本型, , 在添加的代码中运行指定的过程，如有返回值返回相应文本，否则返回空文本。
+.参数 过程或函数名, 文本型, , 
+.参数 参数1, 文本型, 可空, 
+.参数 参数2, 文本型, 可空, 
+.参数 参数3, 文本型, 可空, 
+.参数 参数4, 文本型, 可空, 
+.参数 参数5, 文本型, 可空, 
+.参数 参数6, 文本型, 可空, 
+
+
+
+.子程序 属性_语言, 文本型, , 设置或返回正在使用的脚本语言名称。
+.参数 新语言属性, 整数型, 可空, 默认为为 JScript   0. JScript   1. VBScript
+
+
+
+.子程序 属性_超时, 整数型, , 设置或返回时间（毫秒），此时间后用户可选择中止脚本代码的执行或允许代码继续执行。
+.参数 新超时属性值, 整数型, 可空, 默认为-1，执行无超时
+
+
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 编码_Utf8到Ansi, 文本型, , 
+.参数 Utf8, 字节集, , 
+
+
+
+.子程序 编码_Ansi到Utf8, 字节集, , 
+.参数 ansi, 文本型, , 
+
+
+
+.子程序 进制_十六到十, 整数型, , 将16进制文件转换到10进制数值(返回十进制数)
+.参数 文本, 文本型, , 
+
+
+
+.子程序 Flip, 字节集, , 反转字节集
+.参数 bin, 字节集, 参考, 
+
+
+
+.子程序 Bin2Int, 整数型, , 到整数
+.参数 四字节, 字节集, , 
+
+
+
+.子程序 Int2Bin, 字节集, , 
+.参数 int, 整数型, , 
+
+
+
+.子程序 Long2Bin, 字节集, , 
+.参数 Long, 长整数型, , 
+
+
+
+.子程序 ToIP, 文本型, , 到IP
+.参数 四字节, 字节集, , 四字节
+
+
+
+.子程序 Bin2Long, 长整数型, , 
+.参数 bin, 字节集, , 
+
+
+
+.子程序 Bin2HexTo, 文本型, , 字节集到十六
+.参数 字节集, 字节集, 参考, 
+
+
+
+.子程序 Hex2Bin2, 字节集, , 十六到字节集
+.参数 文本, 文本型, 参考, 
+
+
+
+.子程序 Hex2Bin, 字节集, , 嵌ASM
+.参数 原文, 文本型, , 
+
+
+
+.子程序 GetRandomBin, 字节集, , 
+.参数 len, 整数型, , 
+
+
+
+.子程序 HashMD5, 文本型, , 返回十六
+.参数 字节集, 字节集, , 
+
+
+
+.子程序 HashMD5_, 字节集, , 返回字节集
+.参数 字节集, 字节集, , 
+
+
+
+.子程序 PictureProcessing, 字节集, , 图片置参
+.参数 字节集, 字节集, , 
+
+
+
+.子程序 字节集到十六进制文本, 文本型, , 返回字节集的十六进制文本,可能有最大长度的限制
+.参数 输入字节集, 字节集, 参考, 
+
+
+
+.子程序 十六进制文本到字节集, 字节集, , 嵌ASM
+.参数 原文, 文本型, , 
+
+
+
+.子程序 TimeStamp, 长整数型, , GetUnixTime
+.参数 精确到毫秒, 逻辑型, 可空, 默认为假 精确到秒10位数 精确到毫秒13位数
+
+
+
+.子程序 format_ip, 文本型, , 
+.参数 bin, 字节集, , 
+
+
+
+.子程序 文本_取随机范围数字, 文本型, , 如1-100之间的双数或单数或单双一起！
+.参数 起始数, 整数型, , 如：1
+.参数 结束数, 整数型, , 如：1000
+.参数 单双选择, 整数型, 可空, 1为单，2为双,否则为取单双
+
+
+
+.子程序 汇编_取随机数, 整数型, , 返回一个指定范围内的随机数值。在使用本命令取一系列的随机数之前，应该先使用“置随机数种子”命令为随机数生成器初始化一个种子值。本命令为初级命令。
+.参数 欲取随机数的最小值, 整数型, 可空, 参数必须大于或等于零。本参数如果被省略，默认为 0。
+.参数 欲取随机数的最大值, 整数型, 可空, 参数必须大于或等于零。本参数如果被省略，默认为无限。
+
+
+
+.子程序 文本_取随机字符, 文本型, , A-Z、a-z、0-9 中取出随机指定数量的字符
+.参数 要取出的字符数, 整数型, , 
+
+
+
+.子程序 文本_取随机汉字, 文本型, , 取常用的随机汉字
+.参数 个数, 整数型, , 要取出多少个汉字！
+.参数 汉字或全拼, 整数型, 可空, 0为汉字，否则为全拼音！
+
+
+
+.子程序 文本_取随机字母, 文本型, , 取随机26个字母！
+.参数 要取的字符数, 整数型, , 要取字符个数；
+.参数 字母类型, 整数型, 可空, 可空：默认为小写字母；0=小写字母；1=大写字母；2=大小写字母混合；
+
+
+
+.子程序 文本_取随机数字, 文本型, , 汇编_取随机数字，可选单或双！
+.参数 字符数, 整数型, , 要取字符个数
+.参数 单双选择, 整数型, 可空, 0为单双，1为单，其他数值为双；默认单双一起
+
+
+
+.子程序 文本_取左边, 文本型, , 从文本的左边按 欲寻找的文本 开始寻找
+.参数 被查找的文本, 文本型, , 被查找的文本
+.参数 欲寻找的文本, 文本型, , 欲寻找的文本
+.参数 起始寻找位置, 整数型, 可空, 欲寻找的文本的起始寻找位置
+.参数 是否不区分大小写, 逻辑型, 可空, 默认为假区分大小写
+
+
+
+.子程序 文本_取右边, 文本型, , 从文本的右边按 欲寻找的文本 开始寻找, 取行右边 (“1234567890”, “5”, 1, 真)
+.参数 被查找的文本, 文本型, , 被查找的文本
+.参数 欲寻找的文本, 文本型, , 欲寻找的文本
+.参数 起始寻找位置, 整数型, 可空, 可以被省略。位置值从 1 开始。如果本参数被省略，默认为从被搜寻文本的尾部开始。
+.参数 是否不区分大小写, 逻辑型, 可空, 默认为假,区分大小写
+
+
+
+.子程序 文本_取中间_批量, 整数型, , 比如：欲取全文本为<12345>,现在要取出“3”，<3>的前面为“2”，<3>的后面为“4”
+.参数 源文本, 文本型, , 比如：欲取全文本为 12345
+.参数 前面标识文本, 文本型, , 3的前面为“2”
+.参数 后面标识文本, 文本型, , 3的后面为“4”
+.参数 存放取出文本的数组, 文本型, 可空 数组, 存放取出文本的数组
+.参数 是否区分大小写, 逻辑型, 可空, 是否区分大小写
+.参数 文本长度大于此数的不要, 整数型, 可空, 文本长度大于此数的不要;如取出的文本大于50的不要;留空为不限制
+.参数 为取出的文本加上前缀, 文本型, 可空, 在取出的文本前面加上一段字符或汉字！可空！
+.参数 为取出的文本加上后缀, 文本型, 可空, 在取出的文本后面加上一段字符或汉字！可空！
+.参数 连前面标识文本一起取出, 逻辑型, 可空, 是否连<前面标识文本>一起取出? 默认为假，不取出！
+.参数 连后面标识文本一起取出, 逻辑型, 可空, 是否连<后面标识文本>一起取出? 默认为假，不取出！
+.参数 起始搜寻位置, 整数型, 可空, 注明：位置值从 1 开始。如果本参数被省略，默认为 1 。
+
+
+
+.子程序 文本_取出中间文本, 文本型, , 比如：欲取全文本为“12345”,现在要取出“3”，<3>的前面为“2”，<3>的后面为“4”，
+.参数 欲取全文本, 文本型, , 比如：欲取全文本为 12345
+.参数 前面文本, 文本型, , 3的前面为“2”，引号直接用 #引号，如："<font color=#引号red#引号>"
+.参数 后面文本, 文本型, , 3的后面为“4”，引号直接用 #引号，如："<font color=#引号red#引号>"
+.参数 起始搜寻位置, 整数型, 可空, 可空,这里是指搜寻 参数二 前面文本 的开始位置
+.参数 是否不区分大小写, 逻辑型, 可空, 为真不区分大小写，为假区分。
+
+
+
+.子程序 线程_初始化COM库, 空白型, , 有时执行线程的时候，会自动关闭，此时，可以在多线程的程序里创建COM对象前先初始化，一个线程只能调用一次
+
+
+.子程序 线程_取消COM库, 空白型, , 取消COM库的初始化，如果你在线程头部加入了 线程_初始化COM库 请在尾部加入此命令
+
+
+.子程序 网页_访问_对象, 字节集, , 使用WinHttp对象的方式访问网页
+.参数 网址, 文本型, , 完整的网页地址,必须包含http://或者https://
+.参数 访问方式, 整数型, 可空, 0=GET 1=POST 2=HEAD
+.参数 提交信息, 文本型, 可空, "POST"专用
+.参数 提交Cookies, 文本型, 参考 可空, 本参数传递变量时会自动回传返回的Cookie
+.参数 返回Cookies, 文本型, 参考 可空, 返回的Cookie
+.参数 附加协议头, 文本型, 可空, 一行一个请用换行符隔开
+.参数 返回协议头, 文本型, 参考 可空, 返回的协议头
+.参数 返回状态代码, 整数型, 参考 可空, 网页返回的状态代码，例如：200；302；404等
+.参数 禁止重定向, 逻辑型, 可空, 默认不禁止网页重定向
+.参数 字节集提交, 字节集, 可空, 提交字节集数据
+.参数 代理地址, 文本型, 可空, 代理地址，格式为 8.8.8.8:88
+.参数 超时, 整数型, 可空, 秒|默认为15秒,-1为无限等待
+.参数 代理用户名, 文本型, 可空, 用户名
+.参数 代理密码, 文本型, 可空, 密码
+.参数 代理标识, 整数型, 可空, 代理标识，默认为1，0为路由器
+.参数 对象继承, 对象, 可空, 此处可自行提供对象，不再主动创建
+.参数 是否自动合并更新Cookie, 逻辑型, 可空, 默认为真，自动合并更新
+
+
+
+.子程序 网页_访问, 字节集, , 使用WinInet的方式访问网页
+.参数 网址, 文本型, , 完整的网页地址,必须包含http://或者https://
+.参数 访问方式, 整数型, 可空, 0=GET 1=POST 2=HEAD
+.参数 提交信息, 文本型, 可空, POST专用
+.参数 提交Cookies, 文本型, 参考 可空, 本参数传递变量时会自动回传返回的Cookie
+.参数 返回Cookies, 文本型, 可空, 返回的Cookie
+.参数 附加协议头, 文本型, 可空, 一行一个请用换行符隔开,建议填写常量值或文本值,防止因传参引发错误
+.参数 返回协议头, 文本型, 参考 可空, 返回的协议头
+.参数 禁止重定向, 逻辑型, 可空, 默认不禁止网页重定向
+.参数 字节集提交, 字节集, 可空, 提交字节集数据
+.参数 代理地址, 文本型, 可空, 代理地址，格式为:ip:port,例如:8.8.8.8:88
+.参数 是否自动合并更新Cookie, 逻辑型, 可空, 默认为真，自动合并更新
+
+
+
+.子程序 网页_访问S, 文本型, , 源码由[洫蜘蛛]提供,使用WinHttp的方式访问网页,如果返回是“?”请查询返回协议头是否有“Content-Encoding: gzip“表示gzip压缩过网页，可用 网页_GZIP解压()命令解压，如果返回是乱码，则返回原始文本，请自行转换编码，失败返回空文本，请取出状态文本。
+.参数 网址, 文本型, , 完整的网页地址,必须包含http://或者https://
+.参数 访问方式, 整数型, 可空, 0=GET 1=POST 2=HEAD
+.参数 提交信息, 文本型, 可空, POST专用
+.参数 提交Cookies, 文本型, 可空, 本参数传递变量时会自动回传返回的Cookie
+.参数 返回Cookies, 文本型, 参考 可空, 返回的Cookie
+.参数 附加协议头, 文本型, 可空, 一行一个请用换行符隔开,建议填写常量值或文本值,防止因传参引发错误
+.参数 返回协议头, 文本型, 参考 可空, 返回的协议头
+.参数 禁止重定向, 逻辑型, 可空, 默认不禁止网页重定向
+.参数 网站登录用户名, 文本型, 可空, 自动登录网页用户名 如路由器
+.参数 网站登录密码, 文本型, 可空, 
+.参数 代理地址, 文本型, 可空, 代理地址，格式为 8.8.8.8:88
+.参数 代理帐号, 文本型, 可空, 
+.参数 代理密码, 文本型, 可空, 
+.参数 超时时间, 整数型, 可空, 可以被省略，单位：秒，默认30秒，如果提供大于0的数值，则修改操作超时时间。
+.参数 返回重定向, 文本型, 参考 可空, 可以被省略，提供参数时只能提供文本型变量，用于当发生重定向时取回页面重定向的地址。
+.参数 返回状态文本, 文本型, 参考 可空, 
+.参数 返回原始数据, 字节集, 参考 可空, 可以被省略，返回原始网页编码
+.参数 是否自动合并更新Cookie, 逻辑型, 可空, 默认为真，自动合并更新
+
+
+
+.子程序 编码_BASE64编码, 文本型, , BASE64编码处理；成功返回编码后的文本；
+.参数 待编码数据, 字节集, , 待编码字节集
+
+
+
+.子程序 网页_Cookie合并更新, 文本型, , 返回更新后的Cookie
+.参数 旧Cookie, 文本型, 参考, 
+.参数 新Cookie, 文本型, , 
+
+
+
+.子程序 网页_取域名, 文本型, , 通过“/”或者“.”来获取网址中的域名，默认使用“/”方式
+.参数 网址, 文本型, , 
+.参数 去除二级域名, 逻辑型, 可空, 
+.参数 不过滤端口, 逻辑型, 可空, 
+.参数 后缀点数量, 整数型, 可空, 不留空表示通过“.”的方式取域名 。如：.com后缀点数量为1 ,.com.cn后缀点数量为2
+
+
+
+.子程序 网页_取外网IP, 文本型, , 取本机的外网IP
+.参数 所在省市, 文本型, 可空, 可空。请提供一个文本变量，用于存放您所在的省市
+
+
+
+.子程序 网页_取端口, 整数型, , 取出网站服务器的默认端口
+.参数 网址, 文本型, , 
+
+
+
+.子程序 网页_取页面地址, 文本型, , 
+.参数 网址, 文本型, , 
+
+
+
+.子程序 编码_Ansi到Unicode, 字节集, , 将Ansi码转换为Unicode码；成功返回转换后的字节集；
+.参数 Ansi, 文本型, , 欲转换的Ansi文本
+.参数 非标准Unicode编码, 逻辑型, 可空, 默认为假，为标准Unicode编码
+
+
+
+.子程序 编码_Unicode到Ansi, 文本型, , 将Unicode码转换为Ansi码；成功返回转换后的文本；
+.参数 Unicode, 字节集, , 欲转换的Unicode字节集
+
+
+
+.子程序 文本_去重复文本, 文本型, , 
+.参数 原文本, 文本型, , 
+.参数 分割符, 文本型, , 
+
+
+
+.子程序 编码_Ansi到Utf8, 字节集, , 如果在保存到的文件中发现结尾有NUL字符，可以使用编码_Ansi到Utf8_对象或编码_Ansi到Utf8_无BOM文件命令替代
+.参数 ansi文本, 文本型, , 
+
+
+
+.子程序 编码_Utf8到Ansi, 文本型, , 
+.参数 utf8字节集, 字节集, , 
+
+
+
+.子程序 编码_Unicode到Utf8, 字节集, , 
+.参数 Unicode字节集, 字节集, , 
+
+
+
+.子程序 编码_URL解码, 文本型, , 
+.参数 URL, 文本型, , 
+.参数 是否UTF8, 逻辑型, 可空, 先将文本串解码为文本,再从UTF8转成GBK编码
+
+
+
+.子程序 编码_URL编码, 文本型, , 
+.参数 欲编码的文本, 文本型, , 
+.参数 不编码字母数字, 逻辑型, 可空, 不需要编码【字母数字.-】可以把此参数设置为真
+.参数 是否UTF8, 逻辑型, 可空, 先把文本转换成UTF8编码,再编码成URL
+
+
+
+.子程序 编码_utf8到gb2312, 文本型, , 
+.参数 欲转换的源码, 文本型, , 
+
+
+
+.子程序 编码_gb2312到utf8, 文本型, , 
+.参数 欲转换的源码, 文本型, , 
+
+
+
+.子程序 进制_十到十六, 文本型, , 十进制到十六进制（支持负数）,源码作者：QQ418995189
+.参数 十进制长整数, 长整数型, , 不支持无符号长整数型，易BUG，超过15位长整数型，不能直接使用，必须 用 到长整数()转换
+.参数 是否在前端补零, 逻辑型, 可空, 如果为真，则自动在前面补0，补足位数。如果为假，则不补零；默认为假
+
+
+
+.子程序 进制_十六到十, 长整数型, , 十六进制到十进制（已优化算法）,源码作者：QQ418995189
+.参数 十六进制文本, 文本型, , 字母不区分大小写
+
+
+
+.子程序 进程_名取句柄, 整数型, , 通过进程名取对应的窗口句柄；成功返回窗口句柄，失败返回0，返回-1表示找到进程。
+.参数 进程名, 文本型, , 要取窗口句柄的进程名；
+
+
+
+.子程序 进程_取自进程ID, 整数型, , 取自身的进程ID，成功返回进程ID；失败返回0
+
+
+.子程序 进程_ID取进程名, 文本型, , 通过进程ID取得该进程执行文件名，也就是进程名;
+.参数 参数_进程ID, 整数型, , 该进程的ID;
+
+
+
+.子程序 进程_ID取窗口句柄, 整数型, , 通过进程ID取得该进程的窗口句柄,超时则返回零
+.参数 进程ID, 整数型, , 该进程的ID;
+.参数 窗口标题, 文本型, 可空, 模糊参数 如果为空,忽略此参数
+.参数 窗口类名, 文本型, 可空, 模糊参数 如果为空,忽略此参数
+.参数 超时, 整数型, 可空, 为空则无限循环
+
+
+
+.子程序 进程_名取ID, 整数型, , 通过进程名取进程ID；失败返回0 
+.参数 进程名, 文本型, , 取要进程ID的进程名
+.参数 是否区分大小写, 逻辑型, 可空, 默认为不区分,真=区分
+
+
+
+.子程序 窗口_句柄取进程ID, 整数型, , 返回进程ID；
+.参数 窗口句柄, 整数型, , 
+
+
+
+.子程序 窗口_取标题, 文本型, , 
+.参数 窗口句柄, 整数型, , 
+
+
+
+.子程序 窗口_置标题, 逻辑型, , 改指定窗口句柄的窗口标题(非"0"表示成功,返回"0"表示失败)
+.参数 窗口句柄, 整数型, , 欲更改窗口标题的句柄
+.参数 新标题, 文本型, , 欲改成的新标题
+
+
+
+.子程序 窗口_取类名, 文本型, , 取指定窗口句柄的窗口类名(返回窗口类名,失败返回空文本)
+.参数 窗口句柄, 整数型, , 欲取类名的窗口句柄
+
+
+
+.子程序 进程_创建, 整数型, , 创建一个程序进程(成功返回进程ID,失败返回0)
+.参数 程序路径, 文本型, , 欲创建进程的执行路径
+.参数 命令行, 文本型, 可空, 附加上程序路径后的命令行参数
+.参数 运行目录, 文本型, 可空, 通常留空,特殊情况下使用
+.参数 进程结构, 精易_进程结构, 参考 可空, 接收进程结构信息的变量,如果不为空，产品的句柄用CloseHandle函数释放
+
+
+
+.子程序 进程_结束, 逻辑型, , 结束指定进程。成功返回真，失败返回假。本命令为初级命令
+.参数 进程ID, 整数型, 可空, 欲结束的进程ID,如果为空将结束自己
+
+
+
+.子程序 时间_格式化, 文本型, , 格式化指定日期与时间，失败返回空文本
+.参数 参_欲格式化时间, 日期时间型, , 
+.参数 参_日期格式, 文本型, 可空, 可以为空，格式：yyyy [年]，M [月],d [日],dddd [星期]，如;yyyy/M/d dddd(年/月/日 星期几)
+.参数 参_时间格式, 文本型, 可空, 可以为空，格式：tt [上午或下午],h [小时],m [分钟], s [秒] 。如;hh:mm:ss(小时:分钟:秒),tt hh:mm:ss(上午或下午 小时:分钟:秒)
+.参数 参_是否为24小时制, 逻辑型, 可空, 
+
+
+
+.子程序 时间_北京转格林威治, 长整数型, , 将【北京标准时间】转换成【格林威治的标准时间】，13位的时间戳可用“时间_取现行时间戳（）”获得
+.参数 欲转换的时间, 日期时间型, 可空, 如果为空则取当前时间，如: 1970-01-01 08:00:00 或 2009年2月9日12时36分36秒
+
+
+
+.子程序 时间_格林威治转北京, 日期时间型, , 将【格林威治的标准时间】转换成【北京标准时间】,源码修改至官方用户
+.参数 要转换的格林威治时间, 长整数型, , 要转换的格林威治时间
+
+
+
+.子程序 时间_取现行时间戳, 文本型, , 生成一个13位或者10位的现行时间戳，默认生成13位时间戳。13位：1325252169718，10位：1325252169
+.参数 是否取十位时间戳, 逻辑型, 可空, 本参数为真时，将生成10位时间戳返回
+
+
+
+.子程序 时间_时间戳转文本, 文本型, , 把一个13位的时间戳，如：1325252169718 转成 2011-12-30 21:36:09
+.参数 时间戳, 文本型, , 
+
+
+
+.子程序 时间_取制式, 整数型, , 取当前系统时间制式，返回值；0表示12小时制，1表示24小时制
+
+
+.子程序 时间_到时间戳, 文本型, , 把指定日期时间转换为10位或13位时间戳,默认生成13位时间戳。13位：1325252169718，10位：1325252169
+.参数 参_时间, 日期时间型, 可空, 可为空，默认为现行时间
+.参数 参_十位时间戳, 逻辑型, 可空, 本参数为真时，将生成10位时间戳返回
+.参数 参_是否取满10位, 逻辑型, 可空, 如果参数为真，则保证一定取出至少10位，如果不足10位，在前面补0. 如果为假，则直接取出
+
+
+
+.子程序 IMEI算法, 文本型, , 
+
+
+.子程序 Guid算法, 字节集, , 
+
+
+.子程序 进程通信_接收端_初始化, 空白型, , 监听前必需调用此子程序，只需使用一次，停止监听前不能再使用此子程序，否则会出错。
+.参数 参数_窗口句柄, 整数型, , 当前窗口句柄，可用 取窗口句柄() 得到。
+
+
+
+.子程序 进程通信_接收端_开始监听, 逻辑型, , 成功返回真，失败返回假。
+.参数 参数_标志文本, 文本型, , 可以为任意文本(不能为空文本)，但是不要和系统中已有的冲突。设置不同的标志文本，可绑定不同的子程序。
+.参数 参数_回调函数, 子程序指针, 可空, 接收到信息后要触发的子程序，不可多个标志文本绑定同个子程序，不需要可不填。
+
+
+
+.子程序 进程通信_接收端_关闭监听, 空白型, , 关闭某监听，要恢复请直接开始(不用重新初始化)。
+.参数 参数_标志文本, 文本型, , 
+
+
+
+.子程序 进程通信_接收端_停止监听, 空白型, , 关闭所有监听，要恢复请重新初始化。
+
+
+.子程序 进程通信_接收端_取出数据, 字节集, , 回调函数或其它子程序可用此子程序取出接收到的数据。
+.参数 参数_标识文本, 文本型, , 接收端监听时设置的文本。
+
+
+
+.子程序 进程通信_接收端_清除数据, 空白型, , 清除某监听得到的数据(其它数据不变)，释放该数据所占的内存。
+.参数 参数_标志文本, 文本型, , 
+
+
+
+.子程序 进程通信_接收端_清空数据, 空白型, , 清空所有监听得到的所有数据，释放内存。
+
+
+.子程序 进程通信_发送端_发送数据, 逻辑型, , 成功返回真，失败返回假。
+.参数 参数_窗口句柄, 整数型, , 接收端的窗口句柄。
+.参数 参数_标志文本, 文本型, , 接收端监听时设置的文本。
+.参数 参数_欲发送的数据, 字节集, , 要发送的数据。
+
+
+
+.子程序 编码_ansi到usc2, 文本型, , 将ansi转变成usc2  如 123 转换后为 %u0031%u0032%u0033 失败返回空文本
+.参数 欲转换的文本, 文本型, , 
+.参数 是否不转换括号, 逻辑型, 可空, 可空。默认为假，转换。 真 = 不转换 { }[ ]( ) 等括号，注意；不处理全角字符串
+.参数 是否不转换符号, 逻辑型, 可空, 可空。默认为假，转换。 真 = 不转换:," 等符号
+.参数 分割符, 文本型, 可空, 可空。默认为：%u  如填：%u,返回的数据如:%u0031%u0032%u0033，填\u，返回的数据如:\u0031\u0032\u0033
+
+
+
+.子程序 编码_U编码转换, 文本型, , 默认转换类型为to16un
+.参数 要转的文本, 文本型, , 
+.参数 转换类型, 文本型, 可空, to16on to16un to10on to10un
+
+
+
+.子程序 protobufLongInt, 字节集, , 
+.参数 v, 长整数型, , 
+.参数 mark, 整数型, 可空, 
+.参数 isId, 逻辑型, 可空, 
+
+
+
+.子程序 protobufBigNum, 字节集, , 
+.参数 v, 未知类型0x4000A, , 
+.参数 mark, 整数型, 可空, 
+.参数 isId, 逻辑型, 可空, 
+
+
+
+.子程序 protobufInt, 字节集, , 
+.参数 v, 整数型, , 
+.参数 mark, 整数型, 可空, 
+.参数 isId, 逻辑型, 可空, 
+
+
+
+.子程序 protobufFloat32, 字节集, , 
+.参数 v, 小数型, , 
+.参数 mark, 整数型, 可空, 
+.参数 isId, 逻辑型, 可空, 
+
+
+
+.子程序 protobufFloat64, 字节集, , 
+.参数 v, 双精度小数型, , 
+.参数 mark, 整数型, 可空, 
+.参数 isId, 逻辑型, 可空, 
+
+
+
+.子程序 字节集到十六进制, 文本型, , 
+.参数 chars, 字节集, , 
+.参数 splite_char, 文本型, 可空, 
+
+
+
+.子程序 十六进制到字节集, 字节集, , 
+.参数 str, 文本型, , 
+.参数 sp_len, 整数型, 可空, 
+.参数 result, 逻辑型, 参考 可空, 
+
+
+
+.子程序 protobufString, 字节集, , 
+.参数 v, 文本型, , 
+.参数 mark, 整数型, , 
+.参数 isId, 逻辑型, 可空, 
+
+
+
+.子程序 protobufBytes, 字节集, , 
+.参数 v, 字节集, , 
+.参数 mark, 整数型, , 
+.参数 isId, 逻辑型, 可空, 
+
+
+
+.子程序 protobufObject, 字节集, , 
+.参数 v, 字节集, , 
+.参数 mark, 整数型, , 
+.参数 isId, 逻辑型, 可空, 
+
+
+
+.子程序 protobufUnpack, 逻辑型, , 解包protobuf数据，返回字段数组
+.参数 message, 字节集, , protobuf数据
+.参数 recv_var, ProtobufField, 参考 数组, 用于接收返回
+.参数 输出错误, 逻辑型, 可空, 
+
+
+
+.子程序 protobufGetFieldByIds, 逻辑型, , 
+.参数 fields, ProtobufField, 参考 数组, protobuf字段数据
+.参数 ids, 文本型, , 
+.参数 recv_var, ProtobufField, 参考, 用于接收返回
+.参数 输出错误, 逻辑型, 可空, 
+
+
+
+.子程序 protobufGetFieldById, 逻辑型, , 根据字段id从protobufUnpack返回的数组获取字段
+.参数 fields, ProtobufField, 参考 数组, protobuf字段数据
+.参数 id, 整数型, , 
+.参数 recv_var, ProtobufField, 参考, 用于接收返回
+.参数 index, 整数型, 可空, 从指定索引开始
+
+
+
+.子程序 protobufGetIndexById, 整数型, , 根据字段id从protobufUnpack返回的数组获取字段所在数据的索引,失败返回-1
+.参数 fields, ProtobufField, 参考 数组, 
+.参数 id, 整数型, , 
+.参数 index, 整数型, 可空, 
+
+
+
+.子程序 protobufGetBigNum, 逻辑型, , 将字段作为大数返回
+.参数 fields, ProtobufField, 参考 数组, 
+.参数 index, 整数型, , 
+.参数 value, 未知类型0x4000A, 参考, 
+
+
+
+.子程序 protobufGetFloat32, 逻辑型, , 
+.参数 fields, ProtobufField, 参考 数组, 
+.参数 index, 整数型, , 
+.参数 recv_var, 小数型, 参考, 
+
+
+
+.子程序 protobufGetFloat64, 逻辑型, , 
+.参数 fields, ProtobufField, 参考 数组, 
+.参数 index, 整数型, , 
+.参数 recv_var, 双精度小数型, 参考, 
+
+
+
+.子程序 protobufGetInt, 逻辑型, , 将字段作为整数型返回，所有整数型一律看作为无符号型
+.参数 fields, ProtobufField, 参考 数组, 
+.参数 index, 整数型, , 
+.参数 recv_var, 整数型, 参考, 
+
+
+
+.子程序 protobufGetLongInt, 逻辑型, , 将字段作为长整数型返回，所有整数型一律看作为无符号型
+.参数 fields, ProtobufField, 参考 数组, 
+.参数 index, 整数型, , 
+.参数 recv_var, 长整数型, 参考, 
+
+
+
+.子程序 protobufGetString, 逻辑型, , 将字段作为字符串型返回
+.参数 fields, ProtobufField, 参考 数组, 
+.参数 index, 整数型, , 
+.参数 recv_var, 文本型, 参考, 
+
+
+
+.子程序 protobufGetObject, 逻辑型, , 将字段作为对象型返回，可用protobufUnpack再次解包
+.参数 fields, ProtobufField, 参考 数组, 
+.参数 index, 整数型, , 
+.参数 recv_var, 字节集, 参考, 
+
+
+
+.子程序 protobufGetBytes, 逻辑型, , 将字段作为字节集类型返回
+.参数 field, ProtobufField, , 
+.参数 recv_var, 字节集, 参考, 
+
+
+
+.子程序 protobufPrint, 文本型, , 返回调试文本
+.参数 field, ProtobufField, , 
+.参数 pre, 文本型, 可空, 
+.参数 var, 文本型, 可空, 
+
+
+
+.子程序 protobufPrintAll, 文本型, , 返回调试文本
+.参数 bytes, 字节集, , 
+.参数 pre, 文本型, 可空, 
+
+
+
+.子程序 protobufGetIntByField, 长整数型, , 将字段作为整数型返回，所有整数型一律看作为无符号型
+.参数 field, ProtobufField, 参考, 
+.参数 result, 逻辑型, 参考 可空, 
+
+
+
+.子程序 protobufGetStringByField, 文本型, , 
+.参数 field, ProtobufField, 参考, 
+.参数 result, 逻辑型, 参考 可空, 
+
+
+
+.子程序 protobufGetBytesByField, 字节集, , 
+.参数 field, ProtobufField, 参考, 
+.参数 result, 逻辑型, 参考 可空, 
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

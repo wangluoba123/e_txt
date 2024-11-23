@@ -1,0 +1,416 @@
+ ' 文件类型：未知类型
+
+ ' 程序名称：红尘丶AndroidQQ协议
+ ' 程序描述：
+@备注:
+AndroidQQ7.7
+ ' 程序作者：红尘丶QQ625999902
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：本模块仅用于个人学习交流，禁止用于任何商业用途与一切违规用途，后果自负!最终解释权归作者所有!
+ ' 版本号：7.7
+ ' 创建号：5.8
+
+窗口 窗口1
+    左边 = 50
+    顶边 = 50
+    宽度 = 450
+    高度 = 543
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 头部函数, "“var mingwen, mima, bbbb, jiami1, jiami2, ms = {},
+ceshi;
+var ceOrientationEvent = {
+alpha: null,
+beta: null,
+gamma: null
+}
+var event = {
+pageX: 190,
+pageY: 296
+}
+var screen = {
+availHeight: 1050,
+availLeft: 0,
+availTop: 0,
+availWidth: 1920,
+colorDepth: 24,
+height: 1080,
+orientation: ScreenOrientation = {
+    angle: 0,
+    type: "landscape-primary",
+    onchange: null
+},
+pixelDepth: 24,
+width: 1920
+}
+var document = {
+getElementById: getElementById,
+addEventListener: addListener,
+mozHidden: undefined,
+referrer: "",
+all: false,
+charset: "UTF-8",
+characterSet: "UTF-8",
+cookie: "ptcz=",
+documentElement: {
+    clientWidth: 360,
+    clientHeight: 360
+},
+body: {
+    appendChild: appendChild
+},
+createElement: div,
+location: {
+    href: "https://ssl.captcha.qq.com/cap_union_new_show"
+}
+}
+var navigator = {
+userAgent: "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.26 Safari/537.36 Core/1.63.5221.400 QQBrowser/10.0.1125.400",
+platform: "Win32",
+plugins: {
+    length: 3,
+    "Shockwave Flash": {
+        description: "Shockwave Flash 27.9 r0",
+        name: "Chromium PDF Plugin",
+        description: "Portable Document Format"
+    }
+},
+languages: ["zh-CN", "zh"],
+cookieEnabled: true
+}
+var window = {
+location: {
+    host: {
+        replace: replace
+    }
+},
+host: {
+    replace: replace
+},
+postMessage: postMessage,
+addEventListener: addListener,
+document: document,
+event: event,
+"Array": Array,
+innerWidth: 360,
+innerHeight: 360,
+navigator: navigator,
+BJ_REPORT: 1,
+setTimeout: setTimeout,
+TDC: {}
+}
+var BJ_REPORT = {
+report: setTimeout
+};
+
+function getElementById(a) {
+
+}
+
+function replace(a, b) {
+
+}
+
+function appendChild(a) {
+//ceshi=this;
+}
+
+function div(name) {
+if ("iframe" == name) {
+    return {
+        style: [],
+        addEventListener: addListener,
+        contentWindow: window
+    }
+}
+return {};
+}
+
+function getArray(a) {
+return [a];
+}
+
+function setTimeout(a, b) {
+var begtime = 0,
+endtime = new Date().getTime() + b;
+while (begtime < endtime) {
+    begtime = new Date().getTime();
+}
+return a;
+}
+
+function sTimeout(b) {
+var begtime = 0,
+endtime = new Date().getTime() + b;
+while (begtime < endtime) {
+    begtime = new Date().getTime();
+}
+}
+
+function addListener(a, b, c) {
+
+ms[a] = b;
+if (a == "deviceorientation") {
+
+    b(ceOrientationEvent);
+
+}
+if (a == "message") {
+    //b({data:{"message":{"val":"1450712798:1526699243251","type":"set"}}})
+}
+
+}
+
+function postMessage(a, b) {
+return 0;
+}
+"object" != typeof JSON && (JSON = {}),
+
+function() {
+"use strict";
+
+function f(t) {
+    return t < 10 ? "0" + t: t
+}
+
+function quote(t) {
+    return escapable.lastIndex = 0,
+    escapable.test(t) ? '"' + t.replace(escapable,
+
+    function(t) {
+        var e = meta[t];
+        return "string" == typeof e ? e: "\\u" + ("0000" + t.charCodeAt(0).toString(16)).slice( - 4)
+    }) + '"': '"' + t + '"'
+}
+
+function str(t, e) {
+    var n, r, o, i, a, f = gap,
+    u = e[t];
+    switch (u && "object" == typeof u && "function" == typeof u.toJSON && (u = u.toJSON(t)), "function" == typeof rep && (u = rep.call(e, t, u)), typeof u) {
+    case "string":
+        return quote(u);
+    case "number":
+        return isFinite(u) ? String(u) : "null";
+    case "boolean":
+    case "null":
+        return String(u);
+    case "object":
+        if (!u) return "null";
+        if (gap += indent, a = [], "[object Array]" === Object.prototype.toString.apply(u)) {
+            for (i = u.length, n = 0; n < i; n += 1) a[n] = str(n, u) || "null";
+            return o = 0 === a.length ? "[]": gap ? "[\n" + gap + a.join(",\n" + gap) + "\n" + f + "]": "[" + a.join(",") + "]",
+            gap = f,
+            o
+        }
+        if (rep && "object" == typeof rep) for (i = rep.length, n = 0; n < i; n += 1)"string" == typeof rep[n] && (r = rep[n], o = str(r, u), o && a.push(quote(r) + (gap ? ": ": ":") + o));
+        else for (r in u) Object.prototype.hasOwnProperty.call(u, r) && (o = str(r, u), o && a.push(quote(r) + (gap ? ": ": ":") + o));
+        return o = 0 === a.length ? "{}": gap ? "{\n" + gap + a.join(",\n" + gap) + "\n" + f + "}": "{" + a.join(",") + "}",
+        gap = f,
+        o
+    }
+}
+"function" != typeof Date.prototype.toJSON && (Date.prototype.toJSON = function() {
+    return isFinite(this.valueOf()) ? this.getUTCFullYear() + "-" + f(this.getUTCMonth() + 1) + "-" + f(this.getUTCDate()) + "T" + f(this.getUTCHours()) + ":" + f(this.getUTCMinutes()) + ":" + f(this.getUTCSeconds()) + "Z": null
+},
+String.prototype.toJSON = Number.prototype.toJSON = Boolean.prototype.toJSON = function() {
+    return this.valueOf()
+});
+var cx, escapable, gap, indent, meta, rep;
+"function" != typeof JSON.stringify && (escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g, meta = {
+    "\b": "\\b",
+    "\t": "\\t",
+    "\n": "\\n",
+    "\f": "\\f",
+    "\r": "\\r",
+    '"': '\\"',
+    "\\": "\\\\"
+},
+JSON.stringify = function(t, e, n) {
+    var r;
+    if (gap = "", indent = "", "number" == typeof n) for (r = 0; r < n; r += 1) indent += " ";
+    else "string" == typeof n && (indent = n);
+    if (rep = e, e && "function" != typeof e && ("object" != typeof e || "number" != typeof e.length)) throw new Error("JSON.stringify");
+    return str("", {
+        "": t
+    })
+}),
+"function" != typeof JSON.parse && (cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g, JSON.parse = function(text, reviver) {
+    function walk(t, e) {
+        var n, r, o = t[e];
+        if (o && "object" == typeof o) for (n in o) Object.prototype.hasOwnProperty.call(o, n) && (r = walk(o, n), void 0 !== r ? o[n] = r: delete o[n]);
+        return reviver.call(t, e, o)
+    }
+    var j;
+    if (text = String(text), cx.lastIndex = 0, cx.test(text) && (text = text.replace(cx,
+
+    function(t) {
+        return "\\u" + ("0000" + t.charCodeAt(0).toString(16)).slice( - 4)
+    })), /^[\],:{}\s]*$/.test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, "@").replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, "]").replace(/(?:^|:|,)(?:\s*\[)+/g, ""))) return j = eval("(" + text + ")"),
+    "function" == typeof reviver ? walk({
+        "": j
+    },
+    "") : j;
+    throw new SyntaxError("JSON.parse")
+})
+} ();
+/*/
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+         -------------------------------------------------Split head--------------------------------------------------
+         -------------------------------------------------Split head--------------------------------------------------
+         -------------------------------------------------Split head--------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+/*/”", , 
+.常量 尾部函数, "“/*/
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+         -------------------------------------------------Split head--------------------------------------------------
+         -------------------------------------------------Split head--------------------------------------------------
+         -------------------------------------------------Split head--------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
+/*/
+function get(tokenid,e) {
+var up,
+bt = 1,
+mt = 0,
+o = 0,
+x = 0,
+y = 0,
+mouse = e;
+
+up = getMouserup(e);
+
+
+var token = JSON.stringify({
+    "message": {
+        "val": tokenid+":"+ +new Date(),
+        "type": "set"
+    }
+});
+window.TDC.setData({
+    "ft": "qf_7P_n_H",
+    "coordinate": [10, 64, 0.5],
+    "clientType": "2",
+    trycnt: ++bt,
+    refreshcnt: mt,
+    slideValue: e,
+    dragobj: o
+});
+
+for (var i = 0; i < mouse.length; i++) {
+    sTimeout(mouse[i][2]);
+    ms.mousemove({
+        pageX: mouse[i][0] + x,
+        pageY: mouse[i][1] + y
+    });
+    x = x + mouse[i][0];
+    y = y + mouse[i][1]
+}
+
+ms.mouseup(up);
+ms.message(token);
+return window.TDC.getData(!0);
+}
+function getMouserup(a){
+	var x=0,y=0,t=0;
+	for(var i=0;i<a.length;i++){
+		x+=a[i][0];
+		y+=a[i][1];
+		t+=a[i][2];
+	}
+	return {pageX:x,pageY:y,t:t};
+}
+function getEks(){
+	return window.TDC.getInfo().info;
+}”", , 
+.常量 tokenid, "“var navigator=[];var screen=[];var window=[];var document=[];var ie_activex='ie_activex';GetTokenid=function(){var _0x31cex51=[];_0x31cex51['push'](navigator['userAgent']);_0x31cex51['push'](navigator['language']);_0x31cex51['push'](screen['colorDepth']);if(this['screen_resolution']){var _0x31cex52=this['getScreenResolution']();if(typeof _0x31cex52!=='undefined'){_0x31cex51['push'](_0x31cex52['join']('x'))}};_0x31cex51['push'](new Date()['getTimezoneOffset']());_0x31cex51['push'](this['hasSessionStorage']());_0x31cex51['push'](this['hasLocalStorage']());_0x31cex51['push'](!!window['indexedDB']);if(document['body']){_0x31cex51['push'](typeof(document['body']['addBehavior']))}else{_0x31cex51['push'](typeof undefined)};_0x31cex51['push'](typeof(window['openDatabase']));_0x31cex51['push'](navigator['cpuClass']);_0x31cex51['push'](navigator['platform']);_0x31cex51['push'](navigator['doNotTrack']);_0x31cex51['push'](this['getPluginsString']());if(this['canvas']&&this['isCanvasSupported']()){_0x31cex51['push'](this['getCanvasFingerprint']())};_0x31cex51['push'](this['getRandom']());if(this['hasher']){return this['hasher'](_0x31cex51['join']('###'),31).toString();}else{return this['murmurhash3_32_gc'](_0x31cex51['join']('###'),31).toString();}}
+murmurhash3_32_gc=function(_0x31cex38,_0x31cex53){var _0x31cex54,_0x31cex55,_0x31cex56,_0x31cex57,_0x31cex58,_0x31cex59,_0x31cex5a,_0x31cex3a;_0x31cex54=_0x31cex38['length']&3;_0x31cex55=_0x31cex38['length']-_0x31cex54;_0x31cex56=_0x31cex53;_0x31cex58=0xcc9e2d51;_0x31cex59=0x1b873593;_0x31cex3a=0;while(_0x31cex3a<_0x31cex55){_0x31cex5a=((_0x31cex38['charCodeAt'](_0x31cex3a)&0xff))|((_0x31cex38['charCodeAt'](++_0x31cex3a)&0xff)<<8)|((_0x31cex38['charCodeAt'](++_0x31cex3a)&0xff)<<16)|((_0x31cex38['charCodeAt'](++_0x31cex3a)&0xff)<<24);++_0x31cex3a;_0x31cex5a=((((_0x31cex5a&0xffff)*_0x31cex58)+((((_0x31cex5a>>>16)*_0x31cex58)&0xffff)<<16)))&0xffffffff;_0x31cex5a=(_0x31cex5a<<15)|(_0x31cex5a>>>17);_0x31cex5a=((((_0x31cex5a&0xffff)*_0x31cex59)+((((_0x31cex5a>>>16)*_0x31cex59)&0xffff)<<16)))&0xffffffff;_0x31cex56^=_0x31cex5a;_0x31cex56=(_0x31cex56<<13)|(_0x31cex56>>>19);_0x31cex57=((((_0x31cex56&0xffff)*5)+((((_0x31cex56>>>16)*5)&0xffff)<<16)))&0xffffffff;_0x31cex56=(((_0x31cex57&0xffff)+0x6b64)+((((_0x31cex57>>>16)+0xe654)&0xffff)<<16))};_0x31cex5a=0;switch(_0x31cex54){case 3:_0x31cex5a^=(_0x31cex38['charCodeAt'](_0x31cex3a+2)&0xff)<<16;case 2:_0x31cex5a^=(_0x31cex38['charCodeAt'](_0x31cex3a+1)&0xff)<<8;case 1:_0x31cex5a^=(_0x31cex38['charCodeAt'](_0x31cex3a)&0xff);_0x31cex5a=(((_0x31cex5a&0xffff)*_0x31cex58)+((((_0x31cex5a>>>16)*_0x31cex58)&0xffff)<<16))&0xffffffff;_0x31cex5a=(_0x31cex5a<<15)|(_0x31cex5a>>>17);_0x31cex5a=(((_0x31cex5a&0xffff)*_0x31cex59)+((((_0x31cex5a>>>16)*_0x31cex59)&0xffff)<<16))&0xffffffff;_0x31cex56^=_0x31cex5a};_0x31cex56^=_0x31cex38['length'];_0x31cex56^=_0x31cex56>>>16;_0x31cex56=(((_0x31cex56&0xffff)*0x85ebca6b)+((((_0x31cex56>>>16)*0x85ebca6b)&0xffff)<<16))&0xffffffff;_0x31cex56^=_0x31cex56>>>13;_0x31cex56=((((_0x31cex56&0xffff)*0xc2b2ae35)+((((_0x31cex56>>>16)*0xc2b2ae35)&0xffff)<<16)))&0xffffffff;_0x31cex56^=_0x31cex56>>>16;return _0x31cex56>>>0}
+hasLocalStorage=function(){try{return!!window['localStorage']}catch(e){return true}}
+hasSessionStorage=function(){try{return!!window['sessionStorage']}catch(e){return true}}
+isCanvasSupported:function(){var _0x31cex5b=document['createElement']('canvas');return!!(_0x31cex5b['getContext']&&_0x31cex5b['getContext']('2d'))}
+isIE=function(){if(navigator['appName']==='Microsoft Internet Explorer'){return true}else{if(navigator['appName']==='Netscape'&&/Trident/['test'](navigator['userAgent'])){return true}};return false}
+getPluginsString=function(){if(this['isIE']()&&ie_activex){return this['getIEPluginsString']()}else{return this['getRegularPluginsString']()}}
+getRegularPluginsString=function(){return this['map'](navigator['plugins'],function(_0x31cexb){var _0x31cex5c=this['map'](_0x31cexb,function(_0x31cex5d){return[_0x31cex5d['type'],_0x31cex5d['suffixes']]['join']('~')})['join'](',');return[_0x31cexb['name'],_0x31cexb['description'],_0x31cex5c]['join']('::')},this)['join'](';')}
+getIEPluginsString:function(){if(window['ActiveXObject']){var _0x31cex5e=['ShockwaveFlash.ShockwaveFlash','AcroPDF.PDF','PDF.PdfCtrl','QuickTime.QuickTime','rmocx.RealPlayer G2 Control','rmocx.RealPlayer G2 Control.1','RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)','RealVideo.RealVideo(tm) ActiveX Control (32-bit)','RealPlayer','SWCtl.SWCtl','WMPlayer.OCX','AgControl.AgControl','Skype.Detection'];return this['map'](_0x31cex5e,function(_0x31cex5f){try{new ActiveXObject(_0x31cex5f);return _0x31cex5f}catch(e){return null}})['join'](';')}else{return''}}
+getScreenResolution:function(){var _0x31cex52;if(this['screen_orientation']){_0x31cex52=(screen['height']>screen['width'])?[screen['height'],screen['width']]:[screen['width'],screen['height']]}else{_0x31cex52=[screen['height'],screen['width']]};return _0x31cex52}
+getCanvasFingerprint:function(){var _0x31cex60=document['createElement']('canvas');var _0x31cex61=_0x31cex60['getContext']('2d');var _0x31cex62='aq';_0x31cex61['textBaseline']='top';_0x31cex61['font']='14px \'Arial\'';_0x31cex61['textBaseline']='alphabetic';_0x31cex61['fillStyle']='#f60';_0x31cex61['fillRect'](125,1,62,20);_0x31cex61['fillStyle']='#069';_0x31cex61['fillText'](_0x31cex62,2,15);_0x31cex61['fillStyle']='rgba(102, 204, 0, 0.7)';_0x31cex61['fillText'](_0x31cex62,4,17);return _0x31cex60['toDataURL']()}
+getRandom=function(){var _0x31cex63=+new Date();return _0x31cex63}
+this['map']=function(_0x31cex4b,_0x31cex4c,_0x31cex4d){var _0x31cex4e=[];if(_0x31cex4b==null){return _0x31cex4e};if(_0x31cex4a&&_0x31cex4b['map']===_0x31cex4a){return _0x31cex4b['map'](_0x31cex4c,_0x31cex4d)};this['each'](_0x31cex4b,function(_0x31cex3e,_0x31cex4f,_0x31cex50){_0x31cex4e[_0x31cex4e['length']]=_0x31cex4c['call'](_0x31cex4d,_0x31cex3e,_0x31cex4f,_0x31cex50)});return _0x31cex4e};”", , 
+.常量 cdata, "“function t(n,t){var r=(65535&n)+(65535&t),u=(n>>16)+(t>>16)+(r>>16);return u<<16|65535&r}
+function r(n,t){return n<<t|n>>>32-t}
+function u(n,u,e,o,c,f){return t(r(t(t(u,n),t(o,f)),c),e)}
+function e(n,t,r,e,o,c,f){return u(t&r|~t&e,n,t,o,c,f)}
+function o(n,t,r,e,o,c,f){return u(t&e|r&~e,n,t,o,c,f)}
+function c(n,t,r,e,o,c,f){return u(t^r^e,n,t,o,c,f)}
+function f(n,t,r,e,o,c,f){return u(r^(t|~e),n,t,o,c,f)}
+function i(n,r){n[r>>5]|=128<<r%32,n[(r+64>>>9<<4)+14]=r;var u,i,a,h,g,l=1732584193,d=-271733879,v=-1732584194,C=271733878;for(u=0;u<n.length;u+=16)i=l,a=d,h=v,g=C,l=e(l,d,v,C,n[u],7,-680876936),C=e(C,l,d,v,n[u+1],12,-389564586),v=e(v,C,l,d,n[u+2],17,606105819),d=e(d,v,C,l,n[u+3],22,-1044525330),l=e(l,d,v,C,n[u+4],7,-176418897),C=e(C,l,d,v,n[u+5],12,1200080426),v=e(v,C,l,d,n[u+6],17,-1473231341),d=e(d,v,C,l,n[u+7],22,-45705983),l=e(l,d,v,C,n[u+8],7,1770035416),C=e(C,l,d,v,n[u+9],12,-1958414417),v=e(v,C,l,d,n[u+10],17,-42063),d=e(d,v,C,l,n[u+11],22,-1990404162),l=e(l,d,v,C,n[u+12],7,1804603682),C=e(C,l,d,v,n[u+13],12,-40341101),v=e(v,C,l,d,n[u+14],17,-1502002290),d=e(d,v,C,l,n[u+15],22,1236535329),l=o(l,d,v,C,n[u+1],5,-165796510),C=o(C,l,d,v,n[u+6],9,-1069501632),v=o(v,C,l,d,n[u+11],14,643717713),d=o(d,v,C,l,n[u],20,-373897302),l=o(l,d,v,C,n[u+5],5,-701558691),C=o(C,l,d,v,n[u+10],9,38016083),v=o(v,C,l,d,n[u+15],14,-660478335),d=o(d,v,C,l,n[u+4],20,-405537848),l=o(l,d,v,C,n[u+9],5,568446438),C=o(C,l,d,v,n[u+14],9,-1019803690),v=o(v,C,l,d,n[u+3],14,-187363961),d=o(d,v,C,l,n[u+8],20,1163531501),l=o(l,d,v,C,n[u+13],5,-1444681467),C=o(C,l,d,v,n[u+2],9,-51403784),v=o(v,C,l,d,n[u+7],14,1735328473),d=o(d,v,C,l,n[u+12],20,-1926607734),l=c(l,d,v,C,n[u+5],4,-378558),C=c(C,l,d,v,n[u+8],11,-2022574463),v=c(v,C,l,d,n[u+11],16,1839030562),d=c(d,v,C,l,n[u+14],23,-35309556),l=c(l,d,v,C,n[u+1],4,-1530992060),C=c(C,l,d,v,n[u+4],11,1272893353),v=c(v,C,l,d,n[u+7],16,-155497632),d=c(d,v,C,l,n[u+10],23,-1094730640),l=c(l,d,v,C,n[u+13],4,681279174),C=c(C,l,d,v,n[u],11,-358537222),v=c(v,C,l,d,n[u+3],16,-722521979),d=c(d,v,C,l,n[u+6],23,76029189),l=c(l,d,v,C,n[u+9],4,-640364487),C=c(C,l,d,v,n[u+12],11,-421815835),v=c(v,C,l,d,n[u+15],16,530742520),d=c(d,v,C,l,n[u+2],23,-995338651),l=f(l,d,v,C,n[u],6,-198630844),C=f(C,l,d,v,n[u+7],10,1126891415),v=f(v,C,l,d,n[u+14],15,-1416354905),d=f(d,v,C,l,n[u+5],21,-57434055),l=f(l,d,v,C,n[u+12],6,1700485571),C=f(C,l,d,v,n[u+3],10,-1894986606),v=f(v,C,l,d,n[u+10],15,-1051523),d=f(d,v,C,l,n[u+1],21,-2054922799),l=f(l,d,v,C,n[u+8],6,1873313359),C=f(C,l,d,v,n[u+15],10,-30611744),v=f(v,C,l,d,n[u+6],15,-1560198380),d=f(d,v,C,l,n[u+13],21,1309151649),l=f(l,d,v,C,n[u+4],6,-145523070),C=f(C,l,d,v,n[u+11],10,-1120210379),v=f(v,C,l,d,n[u+2],15,718787259),d=f(d,v,C,l,n[u+9],21,-343485551),l=t(l,i),d=t(d,a),v=t(v,h),C=t(C,g);return[l,d,v,C]}
+function a(n){var t,r="";for(t=0;t<32*n.length;t+=8)r+=String.fromCharCode(n[t>>5]>>>t%32&255);return r}
+function h(n){var t,r=[];for(r[(n.length>>2)-1]=void 0,t=0;t<r.length;t+=1)r[t]=0;for(t=0;t<8*n.length;t+=8)r[t>>5]|=(255&n.charCodeAt(t/8))<<t%32;return r}
+function g(n){return a(i(h(n),8*n.length))}
+function l(n,t){var r,u,e=h(n),o=[],c=[];for(o[15]=c[15]=void 0,e.length>16&&(e=i(e,8*n.length)),r=0;r<16;r+=1)o[r]=909522486^e[r],c[r]=1549556828^e[r];return u=i(o.concat(h(t)),512+8*t.length),a(i(c.concat(u),640))}
+function d(n){var t,r,u="0123456789abcdef",e="";for(r=0;r<n.length;r+=1)t=n.charCodeAt(r),e+=u.charAt(t>>>4&15)+u.charAt(15&t);return e}
+function v(n){return unescape(encodeURIComponent(n))}
+function C(n){return g(v(n))}
+function A(n){return d(C(n))}
+function m(n,t){return l(v(n),v(t))}
+function s(n,t){return d(m(n,t))}
+function md5(n,t,r){return t?r?m(t,n):s(t,n):r?C(n):A(n)}
+function cdata(y){if("string"==typeof y&&""!=y){var r=0;y=y.replace(/&quot;/g,'"'),y=y.replace(/&apos;/g,"'");var n;try{n=eval('('+y+')')}catch(e){};if("object"==typeof n&&"string"==typeof n.randstr&&("string"==typeof n.M||"number"==typeof n.M)&&"string"==typeof n.ans){n.ans=n.ans.toLowerCase(),n.M=parseInt(n.M);for(var s=0;s<n.M&&s<1e3;s++){var i=n.randstr+s,c=md5(i);if(n.ans==c.toLowerCase()){r=s;return r;}}}}};
+function rnd() {
+return Math.floor(1e6 * Math.random())
+};
+function random() {
+return + new Date();
+};”", , 
+.常量 , , , 
+.常量 tk, "“function tk(str) {
+    var hash = 5381;
+    for (var i = 0, len = str.length; i < len; ++i)
+        hash += (hash << 5) + str.charAt(i).charCodeAt();
+    return hash & 2147483647
+}”", , 
+.常量 , , , 
+.常量 , , , 
+.常量 Logining, "0", 公开, 正在登录
+.常量 LoginCaptcha, "1", 公开, 需要验证
+.常量 LoginSuccess, "2", 公开, 登录成功
+.常量 LoginFail, "3", 公开, 登录失败
+.常量 , , , 
+.常量 , , , 
+.常量 常量1, "“02 23 21 53 49 4C 4B 5F 56 33 12 00 A4 26 D7 0B D5 6C C5 8C 37 D4 94 6B 3E B9 FB C5 BC 1F 27 00 B1 38 CF 77 69 90 87 BC 9B 4A 05 E4 DA 6C 52 C9 EF 6E 1C D6 13 20 A4 BF DD 43 C2 B4 37 50 5B 08 3F 67 7F 1F 29 82 E7 25 00 B0 ED 77 79 36 D1 B5 87 DC D6 F1 86 16 9C BD A3 44 86 D5 9C 8B 03 33 B0 53 43 E6 6E 0C C8 C6 60 07 E1 F9 DF 49 29 00 B1 65 30 22 49 57 B6 C1 E3 A0 D5 5B B0 75 EF E4 0F 9E 8C B0 AA 5F 3E 94 8D 93 16 68 D0 65 DC F3 15 54 64 C6 B3 92 0F 1C BF 22 00 B2 07 2D 9B A1 AA B7 DE 08 EC 79 63 E3 45 8F 8C 5F E6 73 BD 6D 9C 03 51 84 6F 33 90 A0 83 0A 15 D5 1F 21 00 B1 C4 99 2C 49 61 AE CF 5E 67 6F A7 15 FB 64 DC 6E AB B8 F3 77 B6 B3 7B 3E A4 CF 60 B3 9A 6B A4 DF 20 00 B1 56 A5 58 99 B6 DC B9 98 68 78 80 27 2B 9A 1B 40 A5 74 B2 4C C4 45 E2 90 B5 08 C2 88 8E F5 7F 23 00 B1 56 A8 36 E6 3E 72 2D 08 18 EC 7A DE 4A 16 72 DB 99 B0 ED 44 6A 42 2B 0B 9C 95 1D F7 F1 7A F8 A8 82 FF 27 00 B1 56 AB 5D 64 0D E7 26 DF B5 80 B8 4F EE 64 DD 17 71 D2 15 0B 3F 64 83 9B 51 9A BE 91 E9 A1 01 EC 52 11 50 EF F5 4F 28 00 B1 56 AB 5D 63 17 D6 C9 C4 FC 38 59 A8 4A 80 9C 9C B4 28 43 AE B1 BB 03 C2 EC 02 64 D9 B2 BF D2 34 10 34 6E AE 86 D6 7F 23 00 B1 65 2F F9 EF 11 24 24 79 8C 0C BD 56 09 87 43 B7 5A 54 FA 33 73 CC 79 88 A7 2C 67 EB CE D9 ED C5 D3 FF 2D 00 A6 3F 0F 1A 4C 0D 22 1F 62 B6 A5 C6 31 42 2F D7 2E 8C 95 94 50 58 27 B0 84 12 7C 1C 07 2F BD 78 24 A3 7A 5F 95 EB A3 88 C9 57 98 55 3F 28 00 B7 1D A8 1B 28 AC D8 14 50 8C 60 08 DB 4B 52 44 D7 B5 82 2F 47 8A 1D DC F8 C8 4A A2 7C 7C 15 85 FE B0 E4 73 D8 9C B2 CF 23 00 B7 20 2E AC DD 39 6C E6 A8 40 1B 81 9E E6 57 3D 63 00 A1 B8 9E 91 EF 26 CE 46 30 BF EF 4C 3E 36 6D 9D A3 22 00 B7 20 2B 49 2E 41 8C 88 36 FF B4 9D 60 CC 50 65 52 25 CF AF AD 2F A9 22 5A 01 A1 CC 71 4D 3E 15 AD 3F 26 00 B7 20 2E B7 BB 4C 1B 02 E2 44 C8 84 CA B0 50 27 F9 FF EE 73 D7 77 C6 68 47 73 55 6C 63 F0 FB 98 3A C7 48 F5 1C 3F 26 00 B6 C0 C4 51 20 8B A4 6B 1D D2 0F 1E 28 BF E1 34 22 9C 34 A8 C8 BF C9 86 B9 9E 86 21 19 A5 FD 30 7D 98 0F 27 31 7F 29 00 B6 C3 70 AE 05 D3 FD AE 5C EF 3C 53 A6 04 D7 06 06 E4 A0 AB 77 93 6E A7 0C AB 60 C3 DB 93 97 68 5A ED 50 CD BC F2 63 59 2B 28 00 B6 C3 6D 2F F5 4B D9 C2 90 39 9C 72 CA 99 22 B3 8D 49 A6 16 B1 C6 95 3A 25 43 F8 82 C2 C1 FB 32 A6 DD 88 C7 B5 51 4D 5F 28 00 B6 C3 70 AD 77 6E 90 44 3C 1A 3F B7 12 52 B0 0B BC DD 75 DC 08 DB 4D 48 1B 76 86 77 DB 3C A3 9E B7 ED 4A 3E 11 2A C3 D9 2A 00 B6 C3 70 B0 08 70 73 79 DF B9 1A 2B 22 80 7A 45 55 7F C2 23 4C 03 27 97 1F 4A 37 F0 A3 DC 5E 9E 04 B7 B4 50 E4 2E 26 D1 88 6F 26 00 B6 C3 6B AC 1B CC 5A CF 55 21 79 FD 38 9E 07 60 59 A8 75 A3 CB 63 42 09 47 52 A4 A8 87 61 70 63 77 F8 E5 86 68 7F 28 00 B6 C3 68 5E F8 D6 71 60 AA A3 EE 19 0B 86 9F A5 46 B6 DF BA 1F DB 31 2A 60 90 CC 7A 28 97 53 B9 DC 04 21 98 59 63 68 59 2A 00 B6 C3 68 84 9B A7 7C 83 4C 5C 5E 63 18 F8 83 6B A5 56 74 E9 D5 1A BE 56 00 AD 35 A8 E2 0A C1 E0 B1 94 39 CB 6B C6 DF 25 BE BE 22 00 B6 C0 E0 82 9B DA 79 50 2E 7A CE 89 FC 4B 8C 10 48 86 86 96 DF 41 D1 0A AC BE D4 B8 A1 04 86 3F 69 8F 2A 00 B6 C0 E0 E0 DA 81 FF 90 A3 5E F4 F2 6E 5A 54 20 B1 A7 8B 05 4D 9E 40 57 C1 3D 0A C6 3B 28 DA B8 67 95 09 B7 85 E8 E9 AD 58 7F 2C 00 B6 C3 68 91 08 3C 0E 89 3F AE 4C 14 44 38 F1 A8 DF 4C 1D 0E 77 1A D5 61 92 D6 C2 97 DB 29 DD 44 09 B9 9E 1F DB 37 2E 11 16 8F 72 3B 23 00 B6 C3 68 38 5B 33 D9 3F 45 7C 3E 1B 23 4F 36 BE BA 23 6B 1C 6E 0D 5C 8A B6 34 6C 72 34 6F A6 16 C5 84 6F 26 00 B6 C3 70 B4 5A 3F 00 CA 17 BA 2F 6B EC DB 01 9E FB 7A 3F BE EB 10 94 DC 3D C6 23 B0 72 18 11 55 A0 E2 5E 71 C9 0F 21 00 B6 C3 68 8E FA 6B 84 DA 8C DE 76 EF B3 7C 34 53 3E A5 23 63 5F 91 90 77 66 0F DD 97 5F 50 17 F4 AF 20 00 B6 C0 EA FA 41 C7 52 16 19 66 C6 2D 56 38 0B E8 CA 83 C4 4A 73 FD 8E C2 EE 17 6C 02 3C EE 28 4F 23 00 B6 AD 2A CE 00 5B B5 E0 EB 70 7F 5A 68 AC 23 21 2D 21 D9 F8 62 CB FA 87 E5 4A FA 40 53 9A 04 5B 09 6D D7 1E 00 B6 61 93 F4 A6 1A D0 18 3F 2A E0 6D 10 03 D4 C7 89 07 9A CA 0D 02 3C 92 11 9D 7A C7 1E C2 25 00 B6 61 9B 1F 88 5C DF ED 31 8C A7 BF A8 BD E4 B5 FE 35 A3 FF F6 3E BC 42 3F 0C A2 D4 E9 53 A8 AD 90 F8 69 4C FF 23 00 B6 61 67 DF AB DE 51 72 36 7C 11 77 3D 3B 5C B4 2B 2B B6 AD DB 75 32 5E 18 F5 A3 00 84 B4 43 37 3B 67 FF 21 00 B6 61 99 F4 70 6D 51 60 FE 96 2E 46 3B 9B 14 22 47 83 74 ED 6D 79 D1 DD 0B BA 04 A7 80 79 E1 42 FF 25 00 B6 61 9B 2F 09 CE 16 6A E0 62 76 2D 70 A6 9A B8 E8 84 6D E6 86 FA A1 75 22 21 61 A9 25 9D 5D F8 63 76 EB 31 7F 1D 00 B6 61 9B 2F 09 BF E6 0C A5 CB 1F 93 F6 F7 AE 29 98 AF B7 FC 3C 13 2F 2B E8 03 32 5C AA 1D 00 B6 4D 5A 05 11 7E 97 DC 6A 2F 58 C9 61 E9 F4 25 A4 02 BA 5F 9A 4E B6 20 EB 82 F8 58 DF 1A 00 B5 6B D7 25 86 25 4D C9 D7 60 EA 05 D8 56 B5 0D 88 57 18 C7 E0 D8 35 FE 78 09 1E 00 B3 EA AC 17 A6 4D 93 F1 88 14 5D A7 DA 62 F0 4A 03 C8 82 01 08 7C 81 A2 47 49 D0 23 C9 FF 20 00 B3 86 E8 4E 9C 1E E0 64 60 2D 14 57 8F 17 A5 D0 2E 01 5A 83 B1 DD 59 CB D6 29 B8 E6 E9 C5 1A FF 1F 00 B3 86 FC FF 28 B4 BE D3 BE 6B B1 A1 E4 83 C0 54 8A B4 78 01 DA 02 30 B8 8B 1D A3 34 58 8F 7F 1F 00 B3 86 E9 BB EC 8B A7 E9 7A 2D BE D4 5E C6 FE C9 42 07 F6 FA D5 FA DE 0B 76 6E 81 5F EA F8 FF 2B 00 B4 23 B0 04 42 33 20 52 BA CA 83 8D 78 23 08 0A F9 FD 95 07 58 38 7B 9F C4 29 DE DA 32 DF CF 14 F4 5C E5 F9 83 21 B1 1A 5C 42 7F 29 00 B6 28 86 60 D8 DB A8 07 64 AC 13 EB 24 49 0F 88 E8 51 6C 80 F6 EA 85 BD CF 80 B1 17 9B F9 25 79 16 3A 74 83 B4 6F EB 05 B3 2D 00 A6 9B 9A 95 45 F4 DD 59 78 80 4D 19 4C DF 42 20 8F 61 6D C2 24 29 3A CD 5E E9 FC 52 D9 07 39 DC 2E 83 07 E8 36 7B 15 65 DC 4A 40 EA FF 2A 00 B7 D0 48 66 21 33 84 E1 3C BB 7C F9 17 73 FB 77 1B 0C 31 09 7B DF 5F E2 5F 81 2C BB A6 DD 78 71 6A 87 CD 81 47 7E 3A 44 F9 BF 2B 00 97 EE ED A4 99 F5 20 64 0B B2 CB 7D 0C 67 BD E4 A6 0D B2 BE F5 B2 13 FA 9E 22 58 F0 2D 86 CB 9B B0 20 1D 60 B5 AF C0 4D 54 B5 FF 2B 00 A3 2B 26 C2 48 D5 1F 61 C5 90 47 AE 75 E8 6B 1F D5 D9 8F 47 2D 09 65 71 90 F7 C4 2A 54 A5 BF E1 B7 28 DE CA B5 37 D5 E2 E7 31 5F 2B 00 8F C3 74 7D BA F6 3E 6C 4B E5 A1 54 37 81 CF 50 17 CD 8B 3C BE AF 1E A6 2F DA C6 D3 D6 3B EC 53 F7 EB 99 1D 6D 3A C1 08 34 B1 0F 2B 00 8E FA F5 29 1B D6 42 23 69 C2 2F 3F F2 CA 47 7A D2 6E 1A 42 BA 20 C3 D0 D4 BB 77 2B F5 C6 64 5D 7F 26 00 12 05 4A E4 D2 5A 93 27 27 00 8E C3 4F E5 3D 76 1A 6A EF 91 5E D1 C4 B8 C5 1A 5C 2D 20 59 0C 1C 34 6B 1B 9D 4A 72 96 45 B2 5E A3 6C 2A 90 8A E8 1F 30 00 8D B3 E8 DB 15 B3 B0 7E 47 22 B3 2D D2 EC 20 16 27 71 E7 70 68 FD E1 CC 89 C8 4B AC 5F 44 19 E6 3B 04 68 14 69 78 A8 8B 08 16 02 E9 C6 DF 5C 7F 33 00 8F 05 60 12 8E 18 2E 49 64 D2 7E 3D B9 6E 5D 8E 9E 9D 6F 4D CB 37 13 AE EE B6 C5 81 B3 58 1B 29 26 13 39 7A EC 60 69 A6 18 7C 3E AE 40 02 A8 A8 26 A5 37 2B 00 A2 B7 75 1F CA F0 CC DA D8 E4 03 D5 37 E5 FE CA 31 99 26 52 D3 75 0B 37 96 7B 2B 85 52 F1 E8 9E 83 DB 96 0C CC 6F CC 0F 1A 13 DE 29 00 A2 D8 C7 24 68 5B 73 8D E9 A1 16 85 27 82 D9 D5 68 D7 A1 17 97 42 F7 81 14 96 CF 6D F8 D6 FD A7 39 F8 9F 93 16 A0 AB 69 EF 22 00 91 C4 4B 09 7A 53 C9 55 E9 B7 45 BA 7C D3 78 67 62 A6 84 E0 E9 55 A2 19 4C 44 E2 88 22 7E 06 23 EC A9 25 00 91 B0 E7 20 89 E6 0B 6C 24 63 AA 4F 60 24 44 CF 63 EB D3 D7 B0 04 ED 30 25 0D 1E AB 11 0A 89 00 4E A2 CF AE D5 26 00 91 5D DE C1 DE 93 89 CB F5 47 00 48 86 A4 E8 EF 0B B7 D5 4B A7 86 DD D8 47 7C A7 9F CF 68 25 69 2E 7E E9 6B 65 01 2E 00 90 45 E2 96 2C 8C F0 2C 0C 39 06 2B 3D DE 20 F7 6E BB A5 3D 34 FB E8 DA CB”", , 
+.常量 , , , 
+.常量 A_1, "“"self_object":{"amount":"”", , qq红包
+.常量 answer, "“","create_time"”", , qq红包
+.常量 resiveuin2, "“"}”", , qq红包
+.常量 resiveuin1, "“"recv_uin":"”", , qq红包
+.常量 , , , 
+.常量 , , , 
+.常量 匿名常量_1, "15", , 
+.常量 , , , 
+.常量 Ａ縚2, "0", , 
+.常量 , , , 
+.图片 Ａ縚3, " ' 已保存到：D:\易语言学习\Data\Hc丶iPhoneQQ.e\Ａ縚3", , 
+.图片 , , , 
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：
+
+ ' 发生异常，当前文件偏移：0xF0009E29

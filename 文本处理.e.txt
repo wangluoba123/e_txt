@@ -1,0 +1,267 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：文本处理扩展模块
+ ' 程序描述：  最近在翻MSDN时发现了一些API，非常好用，可以帮我们实现在编程中经常遇到的文本处理功能。于是写进这个模块，与大家分享。
+  有些功能虽然我们自己编程也可以实现，但有现成的API用，我们何乐而不为呢？
+                    『海洋』
+                         2004-3-28
+ ' 程序作者：袁晓辉
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：etfstudio@vip.sina.com
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 3 系统核心支持库
+
+
+
+
+
+.DLL命令 StrToIntEx, 逻辑型, "Shlwapi", "StrToIntExA", , 
+    .参数 文本, 文本型, , 十六进制以“0x”开头
+    .参数 标志, 整数型, , 1－－支持十六进制
+    .参数 数值, 整数型, 传址, 转换的结果
+
+.DLL命令 StrFormatByteSize, 整数型, "Shlwapi", "StrFormatByteSizeA", , 结果字串地址
+    .参数 字节数, 整数型, , 
+    .参数 结果文本, 文本型, 传址, 
+    .参数 文本长度, 整数型, , 
+
+.DLL命令 StrFromTimeInterval, 整数型, "Shlwapi", "StrFromTimeIntervalA", , 结果字串长度
+    .参数 结果文本, 文本型, 传址, 
+    .参数 文本长度, 整数型, , 
+    .参数 毫秒数, 整数型, , 
+    .参数 位数, 整数型, , 
+
+.DLL命令 PathAddBackslash, 整数型, "ShlWapi", "PathAddBackslashA", , 
+    .参数 路径, 文本型, 传址, 
+
+.DLL命令 PathAddExtension, 逻辑型, "ShlWapi", "PathAddExtensionA", , 无需为路径分配额外空间
+    .参数 路径, 文本型, , 
+    .参数 扩展名, 文本型, , 以"."开头的扩展名
+
+.DLL命令 PathAppend, 逻辑型, "shlwapi", "PathAppendA", , 无需为路径分配额外空间
+    .参数 路径, 文本型, 传址, 
+    .参数 更多路径, 文本型, , 
+
+.DLL命令 PathCombine, 整数型, "shlwapi", "PathCombineA", , 
+    .参数 des, 文本型, 传址, 
+    .参数 dir, 文本型, , 
+    .参数 file, 文本型, , 
+
+.DLL命令 PathCompactPathEx, 逻辑型, "shlwapi", "PathCompactPathExA", , 
+    .参数 结果文本, 文本型, 传址, 
+    .参数 路径, 文本型, , 
+    .参数 最大长度, 整数型, , 
+    .参数 分割符, 整数型, , 
+
+.DLL命令 PathCompactPath, 逻辑型, "shlwapi", "PathCompactPathA", , 
+    .参数 hDC, 整数型, , 
+    .参数 Path, 文本型, , 
+    .参数 最大宽度, 整数型, , 像素
+
+.DLL命令 GetDC, 整数型, "", "GetDC", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 ReleaseDC, 整数型, "", "ReleaseDC", , 
+    .参数 hwnd, 整数型, , 
+    .参数 hdc, 整数型, , 
+
+.DLL命令 PathIsDirectory, 逻辑型, "shlwapi", "PathIsDirectoryA", , 
+    .参数 path, 文本型, , 
+
+.DLL命令 PathFindExtension, 文本型, "shlwapi", "PathFindExtensionA", , 
+    .参数 path, 文本型, , 
+
+.DLL命令 PathFindFileName, 文本型, "shlwapi", "PathFindFileNameA", , 
+    .参数 path, 文本型, , 
+
+.DLL命令 PathFindNextComponent, 文本型, "shlwapi", "PathFindNextComponentA", , 去掉首部分
+    .参数 path, 文本型, , 
+
+.DLL命令 PathIsContentType, 逻辑型, "shlwapi", "PathIsContentTypeA", , 不会用
+    .参数 path, 文本型, , 
+    .参数 type, 文本型, , 
+
+.DLL命令 PathIsFileSpec, 逻辑型, "shlwapi", "PathIsFileSpecA", , 检测该文本是否为合法的文件名或目录名
+    .参数 txt, 文本型, , 
+
+.DLL命令 PathIsHTMLFile, 逻辑型, "shlwapi", "PathIsHTMLFileA", , 错误,找不到
+    .参数 filename, 文本型, , 
+
+.DLL命令 PathIsRelative, 逻辑型, "shlwapi", "PathIsRelativeA", , 
+    .参数 filename, 文本型, , 
+
+.DLL命令 PathIsSameRoot, 逻辑型, "shlwapi", "PathIsSameRootA", , 
+    .参数 path1, 文本型, , 
+    .参数 paht2, 文本型, , 
+
+.DLL命令 PathIsSystemFolder, 逻辑型, "shlwapi", "PathIsSystemFolderA", , 作用不大,只要有read only 就判文系统
+    .参数 path, 文本型, , 
+    .参数 attrib, 整数型, , 如果第一个参数为0,则验证该参数是否足以使一个目录为系统目录
+
+.DLL命令 PathIsUNC, 逻辑型, "shlwapi", "PathIsUNCA", , Determines if the string is a valid UNC (universal naming convention) for a server and share path. 
+
+
+    .参数 path, 文本型, , 
+
+.DLL命令 PathIsUNCServer, 逻辑型, "shlwapi", "PathIsUNCServerA", , 
+    .参数 path, 文本型, , 
+
+.DLL命令 PathIsUNCServerShare, 逻辑型, "shlwapi", "PathIsUNCServerShareA", , Determines if the string is a valid UNC (universal naming convention) for a share path only.
+    .参数 path, 文本型, , 
+
+.DLL命令 PathIsURL, 逻辑型, "shlwapi", "PathIsURLA", , 
+    .参数 path, 文本型, , 
+
+.DLL命令 PathRemoveExtension, 空白型, "shlwapi", "PathRemoveExtensionA", , 
+    .参数 path, 文本型, , 
+
+.DLL命令 PathMakeSystemFolder, 逻辑型, "shlwapi", "PathMakeSystemFolderA", , 作用不大
+    .参数 path, 文本型, , 
+
+.DLL命令 PathRenameExtension, 逻辑型, "", "PathRenameExtensionA", , 
+    .参数 path, 文本型, , 
+    .参数 newExt, 文本型, , 
+
+.DLL命令 PathStripToRoot, 逻辑型, "shlwapi", "PathStripToRootA", , 
+    .参数 path, 文本型, 传址, 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在模块初始化代码执行完毕后调用模块测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+输出调试文本 (删除扩展名 (“c:\sss\t.txt”))
+
+
+.程序集 _接口程序集, , , 在本程序集中定义的子程序可被模块外部程序访问，注意如果不存在本程序集就不能作为易模块编译。
+
+.子程序 文本到整数, 整数型, , 支持十六进制文本到数值,十六进制文本要有“0x”或“0X”前缀。比如“0XFF”。
+.参数 待转换的文本, 文本型, , 
+
+.局部变量 临时整数, 整数型, , , 
+
+.如果 (StrToIntEx (待转换的文本, 1, 临时整数))
+    返回 (临时整数)
+.否则
+    返回 (0)
+.如果结束
+
+
+.子程序 数值到时间文本, 文本型, , 把一个代表毫秒数的整数转换为“xx小时xx分钟xx秒”形式的文本。
+.参数 待转换的毫秒数, 整数型, , 
+.参数 转换精度, 整数型, , 
+
+.局部变量 临时文本, 文本型, , , 
+
+赋值 (临时文本, 取空白文本 (100))
+.如果真 (不等于 (StrFromTimeInterval (临时文本, 100, 待转换的毫秒数, 转换精度), 0))
+    返回 (临时文本)
+.如果真结束
+返回 (“”)
+
+.子程序 字节数到文本, 文本型, , 把一个表示字节数的整数转换为“xx 字节”、“xx KB”、“xx MB”或“xx GB”的形式的文本。
+.参数 字节数, 整数型, , 
+
+.局部变量 临时文本, 文本型, , , 
+
+赋值 (临时文本, 取空白文本 (100))
+.如果真 (不等于 (StrFormatByteSize (字节数, 临时文本, 100), 0))
+    返回 (临时文本)
+.如果真结束
+返回 (“”)
+
+.子程序 添加反斜线, 文本型, , 给一个路径文本的末尾添加以个反斜线“\”，如果原路径文本末尾已经有反斜线，则直接返回原文本。
+.参数 路径, 文本型, , 
+
+PathAddBackslash (路径)
+返回 (路径)
+
+.子程序 添加扩展名, 文本型, , 给指定的文件添加指定的扩展名，如果原文件已经有扩展名，则不改变，直接返回原文件名。
+.参数 文件路径, 文本型, , 
+.参数 欲添加的扩展名, 文本型, , 要包含点，比如“.txt”。
+
+.如果 (PathAddExtension (文件路径, 欲添加的扩展名))
+    返回 (文件路径)
+.否则
+    返回 (“”)
+.如果结束
+
+
+.子程序 合并路径, 文本型, , 合并两个代表文件路径的文本（可以为相对路径），之间会自动添加必要的“\”或删除多余的“\”。
+.参数 路径1, 文本型, , 
+.参数 路径2, 文本型, , 
+
+.局部变量 临时文本, 文本型, , , 
+
+赋值 (临时文本, 取空白文本 (100))
+.如果真 (不等于 (PathCombine (临时文本, 路径1, 路径2), 0))
+    返回 (临时文本)
+.如果真结束
+返回 (“”)
+
+.子程序 压缩路径, 文本型, , 把原路径中的部分字符用省略号代替以使该路径的长度小于或等于指定的长度。
+.参数 原路径, 文本型, , 
+.参数 最大长度, 整数型, , 
+
+.局部变量 临时文本, 文本型, , , 
+
+赋值 (临时文本, 取空白文本 (100))
+.如果真 (PathCompactPathEx (临时文本, 原路径, 最大长度, 取代码 (“\”, )))
+    返回 (临时文本)
+.如果真结束
+返回 (“”)
+
+.子程序 取扩展名, 文本型, , 取出指定的文件名中的扩展名部分。
+.参数 文件名, 文本型, , 
+
+返回 (PathFindExtension (文件名))
+
+.子程序 取文件名, 文本型, , 从指定的路径文本中取出文件名或目录部分。
+.参数 路径, 文本型, , 
+
+返回 (PathFindFileName (路径))
+
+.子程序 取路径下一部分, 文本型, , 比如对于“c:\windows\desktop\a.txt”，返回的是“windows\desktop\a.txt”
+.参数 路径, 文本型, , 
+
+返回 (PathFindNextComponent (路径))
+
+.子程序 是否为有效的文件名, 逻辑型, , 如果指定的文本中包含“:”、“\”等不能做为文件名的字符，返回假，否则返回真。
+.参数 文件名, 文本型, , 
+
+返回 (PathIsFileSpec (文件名))
+
+.子程序 目录是否存在, 逻辑型, , 
+.参数 欲测试的目录名, 文本型, , 
+
+返回 (PathIsDirectory (欲测试的目录名))
+
+.子程序 根目录是否相同, 逻辑型, , 测试两个路径的根目录是否相同。
+.参数 路径1, 文本型, , 
+.参数 路径2, 文本型, , 
+
+返回 (PathIsSameRoot (路径1, 路径2))
+
+.子程序 删除扩展名, 文本型, , 
+.参数 文件名, 文本型, , 
+
+PathRemoveExtension (文件名)
+返回 (文件名)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

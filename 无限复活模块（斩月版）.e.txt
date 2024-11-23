@@ -1,0 +1,314 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：无限复活模块（斩月版）
+ ' 程序描述：模块中函数 可用于斩月计划的程序中！
+ ' 程序作者：无限复活
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 备份, "“SeBackupPrivilege”", 公开, 
+.常量 启动, "“SeRestorePrivilege”", 公开, 
+.常量 关机, "“SeShutdownPrivilege”", 公开, 
+.常量 调试, "“SeDebugPrivilege”", 公开, 
+.常量 PAGE_EXECUTE_READWRITE, "64", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 进程信息, 公开, 进程信息
+    .成员 dwSize, 整数型, , , 
+    .成员 cntUsage, 整数型, , , 
+    .成员 进程ID, 整数型, , , 
+    .成员 th32DefaultHeapID, 整数型, , , 
+    .成员 th32ModuleID, 整数型, , , 
+    .成员 cntThreads, 整数型, , , 
+    .成员 th32ParentProcessID, 整数型, , , 
+    .成员 pcPriClassBase, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+    .成员 进程名称, 字节型, , "256", 
+
+数据类型 模块信息, 公开, 
+    .成员 size, 整数型, , , 
+    .成员 mid, 整数型, , , 
+    .成员 pid, 整数型, , , 
+    .成员 gusage, 整数型, , , 
+    .成员 pusage, 整数型, , , 
+    .成员 base, 整数型, , , 
+    .成员 大小, 整数型, , , 
+    .成员 模块句柄, 整数型, , , 
+    .成员 模块文件名, 字节型, , "256", 
+    .成员 模块完整路径, 字节型, , "256", 
+
+数据类型 TOKEN_PRIVILEGES, 公开, From:AdjustTokenPrivileges
+    .成员 PrivilegeCount, 整数型, , , 
+    .成员 lowpart, 整数型, , , 
+    .成员 highpart, 整数型, , , 
+    .成员 Attributes, 整数型, , , 
+
+数据类型 LuID, 公开, 
+    .成员 lowpart, 整数型, , , 
+    .成员 highpart, 整数型, , , 
+
+数据类型 HOOK结构, 公开, 
+    .成员 首字节, 字节型, , , 
+    .成员 地址, 整数型, , , 
+    .成员 尾字节, 字节型, , "3", 
+
+
+.DLL命令 Module32First, 整数型, "kernel32.dll", "Module32First", , 第一个模块，查找模块
+    .参数 快照句柄, 整数型, , 
+    .参数 模块信息, 模块信息, , 
+
+.DLL命令 Module32Next, 整数型, "kernel32.dll", "Module32Next", , 下一个模块
+    .参数 快照句柄, 整数型, , 
+    .参数 模块信息, 模块信息, , 
+
+.DLL命令 CreateToolhelp32Snapshot, 整数型, "kernel32.dll", "CreateToolhelp32Snapshot", , 创建进程快照
+    .参数 falg, 整数型, , 
+    .参数 进程ID, 整数型, , 
+
+.DLL命令 Process32First, 整数型, "", "Process32First", , 第一个进程，查找进程
+    .参数 hSnapShot, 整数型, , 
+    .参数 uProcess, 进程信息, , 
+
+.DLL命令 Process32Next, 整数型, "", "Process32Next", , 下一个进程
+    .参数 hSnapShot, 整数型, , 
+    .参数 uProcess, 进程信息, , 
+
+.DLL命令 OpenProcess, 整数型, "", "OpenProcess", , 打开进程 获得进程句柄
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 整数型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 CloseHandle, 整数型, "", "CloseHandle", , 关闭句柄
+    .参数 hObject, 整数型, , 
+
+.DLL命令 OpenProcessToken, 整数型, "advapi32.dll", "OpenProcessToken", , 打开进程令牌
+    .参数 ProcessHandle, 整数型, , 
+    .参数 DesiredAccess, 整数型, , 
+    .参数 TokenHandle, 整数型, 传址, 
+
+.DLL命令 LookupPrivilegeValueA, 逻辑型, "advapi32.dll", "LookupPrivilegeValueA", , 恢复权限
+    .参数 lpSystemName, 文本型, , 
+    .参数 lpName, 文本型, , 
+    .参数 lpLuid, LuID, 传址, 
+
+.DLL命令 GetCurrentProcess, 整数型, "kernel32.dll", "GetCurrentProcess", , 获取当前进程句柄
+
+.DLL命令 AdjustTokenPrivileges, 逻辑型, "advapi32.dll", "AdjustTokenPrivileges", , 获取令牌特权
+    .参数 TokenHandle, 整数型, , 
+    .参数 DisableAllPrivileges, 整数型, , 
+    .参数 NewState, TOKEN_PRIVILEGES, 传址, 
+    .参数 BufferLength, 整数型, , 
+    .参数 PreviousState, TOKEN_PRIVILEGES, 传址, 
+    .参数 ReturnLength, 整数型, 传址, 
+
+.DLL命令 VirtualProtect, 逻辑型, "", "", , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flNewProtect, 整数型, , 
+    .参数 lpflOldProtect, 整数型, 传址, 
+
+.DLL命令 GetProcAddress, 整数型, "", "", , 
+    .参数 hModule, 整数型, , 
+    .参数 lpProcName, 文本型, , 
+
+.DLL命令 GetModuleHandleA, 整数型, "", "", , 
+    .参数 lpModuleName, 文本型, , 
+
+.DLL命令 GetClassNameA, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpClassName, 文本型, , 
+    .参数 nMaxCount, 整数型, , 
+
+.DLL命令 拷贝内存2, 整数型, "kernel32", "RtlMoveMemory", , RtlMoveMemory
+    .参数 目标数据, 整数型, , lpvDest
+    .参数 源数据, 字节集, 传址, lpvSource
+    .参数 尺寸, 整数型, , cbCopy
+
+.DLL命令 读内存HOOK结构, 整数型, "kernel32.dll", "ReadProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, HOOK结构, 传址, 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, , 
+
+.DLL命令 写内存HOOK结构, 整数型, "kernel32.dll", "WriteProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, HOOK结构, 传址, 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesRead, 整数型, , 
+
+.DLL命令 取整数指针, 整数型, "kernel32", "lstrcpyn", , 
+    .参数 数据1, 整数型, 传址, lpString1
+    .参数 数据2, 整数型, 传址, lpString2
+    .参数 数据长度, 整数型, , iMaxLength
+
+.DLL命令 子程序指针到整数, 整数型, "kernel32", "lstrcpyn", , 
+    .参数 数据1, 子程序指针, , lpString1
+    .参数 数据2, 子程序指针, , lpString2
+    .参数 数据长度, 整数型, , iMaxLength
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+.局部变量 模块信息数组, 进程信息, , "0", 
+.局部变量 计次, 整数型, , , 
+.局部变量 a, 整数型, , , 
+
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+赋值 (a, 枚举进程 (模块信息数组))
+.计次循环首 (a, 计次)
+    输出调试文本 (相加 (到文本 (模块信息数组 [计次], 进程名称), “--”, 到文本 (模块信息数组 [计次], 进程ID)))
+.计次循环尾 ()
+输出调试文本 (提升权限 ())
+
+.程序集 模块程序集, , , 
+
+.子程序 取进程模块, 整数型, , 失败为0，成功返回模块数量
+.参数 进程ID, 整数型, 可空, 为空 则取当前进程模块
+.参数 模块信息数组, 模块信息, 参考 可空 数组, 
+
+.局部变量 快照句柄, 整数型, , , 
+.局部变量 模块信息, 模块信息, , , 
+.局部变量 进程句柄, 整数型, , , 
+
+赋值 (快照句柄, CreateToolhelp32Snapshot (8, 进程ID))
+.如果真 (等于 (快照句柄, 0))
+    返回 (0)
+.如果真结束
+赋值 (模块信息.size, 1024)
+赋值 (进程句柄, Module32First (快照句柄, 模块信息))
+.判断循环首 (不等于 (进程句柄, 0))
+    加入成员 (模块信息数组, 模块信息)
+    赋值 (进程句柄, Module32Next (快照句柄, 模块信息))
+.判断循环尾 ()
+返回 (取数组成员数 (模块信息数组))
+
+
+.子程序 枚举进程, 整数型, , 失败返回0，成功返回进程数量
+.参数 进程信息, 进程信息, 参考 可空 数组, 进程信息 数组
+
+.局部变量 信息, 进程信息, , , 
+.局部变量 进程快照, 整数型, , , 
+.局部变量 进程句柄, 整数型, , , 
+
+赋值 (进程快照, CreateToolhelp32Snapshot (15, 0))
+.如果真 (等于 (进程快照, 0))
+    返回 (0)
+.如果真结束
+赋值 (信息.dwSize, 1024)
+赋值 (进程句柄, Process32First (进程快照, 信息))
+.判断循环首 (不等于 (进程句柄, 0))
+    加入成员 (进程信息, 信息)
+    赋值 (进程句柄, Process32Next (进程快照, 信息))
+.判断循环尾 ()
+返回 (取数组成员数 (进程信息))
+
+.子程序 提升权限, 逻辑型, , 
+.参数 权限类别, 文本型, 可空, 默认为 #调试 “SeDebugPrivilege”
+
+.局部变量 Token, 整数型, , , 
+.局部变量 tkp, TOKEN_PRIVILEGES, , , 
+.局部变量 tkpNewButIgnored, TOKEN_PRIVILEGES, , , 
+.局部变量 lpLuid, LuID, , , 
+
+.如果真 (等于 (权限类别, “”))
+    赋值 (权限类别, “SeDebugPrivilege”)
+.如果真结束
+OpenProcessToken (GetCurrentProcess (), 40, Token)
+LookupPrivilegeValueA (“”, 权限类别, lpLuid)
+赋值 (tkp.PrivilegeCount, 1)
+赋值 (tkp.lowpart, lpLuid.lowpart)
+赋值 (tkp.highpart, lpLuid.highpart)
+赋值 (tkp.Attributes, 2)
+AdjustTokenPrivileges (Token, 0, tkp, 16, tkpNewButIgnored, 16)
+.如果 (不等于 (tkpNewButIgnored.PrivilegeCount, 1))
+    返回 (假)
+.否则
+    返回 (真)
+.如果结束
+
+
+.子程序 子程序到整数, 整数型, 公开, 
+.参数 子程序参数, 子程序指针, , 
+
+返回 (子程序指针到整数 (子程序参数, 子程序参数, 0))
+
+.类模块 APIHOOK类, , , 
+
+.程序集变量 pFunAddress, 整数型, , , 
+.程序集变量 OldProtect, 整数型, , , 
+.程序集变量 NewData, 字节集, , , 
+.程序集变量 OldData, 字节集, , , 
+.程序集变量 HookInfo, 文本型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 InstallApiHook, 逻辑型, , 
+.参数 lpLibFileName, 文本型, , 
+.参数 lpProcName, 文本型, , 
+.参数 lpfn, 整数型, , 
+
+.局部变量 lpfn指针, 整数型, , , 
+
+.如果真 (不等于 (NewData, {  }))
+    返回 (假)
+    
+.如果真结束
+赋值 (pFunAddress, 未知函数_167838034 (未知函数_167838035 (lpLibFileName), lpProcName)) ' 获取API函数地址
+.如果真 (等于 (pFunAddress, 0))
+    返回 (假)
+.如果真结束
+未知函数_167838036 (pFunAddress, 8) ' 把内存块设置为可读写
+
+.子程序 BeginHook, 空白型, , 
+.如果真 (不等于 (pFunAddress, 0))
+    拷贝内存2 (pFunAddress, NewData, 8)
+.如果真结束
+
+
+.子程序 StopHook, 空白型, , 
+.如果真 (不等于 (pFunAddress, 0))
+    未知函数_167838039 (pFunAddress, OldData, 8)
+.如果真结束
+
+
+.子程序 UninstallApiHook, 空白型, , 
+.局部变量 temp, 整数型, , , 
+
+.如果真 (不等于 (pFunAddress, 0))
+    未知函数_167838039 (pFunAddress, OldData, 8)
+    未知函数_167838040 (pFunAddress, 8, OldProtect, temp)
+.如果真结束
+连续赋值 (0, pFunAddress, OldProtect)
+连续赋值 ({  }, NewData, OldData)
+连续赋值 (“”, HookInfo)
+
+.子程序 GetApiHookInfo, 文本型, 公开, 
+返回 (HookInfo)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

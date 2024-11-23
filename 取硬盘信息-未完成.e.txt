@@ -1,0 +1,134 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.wodesoft.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.wodesoft.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.wodesoft.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' eAPI F7FC1AE45C5C4758AF03EF19F18A395D 3 0 应用接口支持库
+ ' spec A512548E76954B6E92C21055517615B0 3 0 特殊功能支持库
+
+
+
+
+数据类型 SECURITY_ATTRIBUTES, , 安全性结构;
+    .成员 nLength, 整数型, , , 
+    .成员 lpSecurityDescriptor, 整数型, , , 
+    .成员 bInheritHandle, 整数型, , , 
+
+数据类型 largINT, , 
+    .成员 FIRST, 长整数型, , , 
+    .成员 SECOND, 长整数型, , , 
+
+
+.DLL命令 CreateFile, 整数型, "kernel32", "CreateFileA", , 这是一个全功能的例程，可打开和创建文件、管道、邮槽、通信服务、设备以及控制台　如执行成功，则返回文件句柄。INVALID_HANDLE_VALUE表示出错，会设置GetLastError。即使函数成功，但若文件存在，且指定了CREATE_ALWAYS ;    或 OPEN_ALWAYS，GetLastError也会设为ERROR_ALREADY_EXISTS
+    .参数 打开文件名, 文本型, , 要打开的文件的名字
+    .参数 访问权限, 整数型, , 如果为 GENERIC_READ 表示允许对设备进行读访问；如果为 GENERIC_WRITE 表示允许对设备进行写访问（可组合使用）；如果为零，表示只允许获取与一个设备有关的信息
+    .参数 共享方式, 整数型, , 零表示不共享； FILE_SHARE_READ 和/或 FILE_SHARE_WRITE 表示允许对文件进行共享访问
+    .参数 安全特性, SECURITY_ATTRIBUTES, , SECURITY_ATTRIBUTES，指向一个SECURITY_ATTRIBUTES结构的指针，定义了文件的安全特性（如果操作系统支持的话）
+    .参数 创建方式, 整数型, , 下述常数之一：;CREATE_NEW：创建文件；如文件存在则会出错;CREATE_ALWAYS：创建文件，会改写前一个文件;OPEN_EXISTING：文件必须已经存在。由设备提出要求;OPEN_ALWAYS：如文件不存在则创建它;TRUNCATE_EXISTING：讲现有文件缩短为零长度
+    .参数 文件属性, 整数型, , 一个或多个下述常数;FILE_ATTRIBUTE_ARCHIVE：标记归档属性;FILE_ATTRIBUTE_COMPRESSED：将文件标记为已压缩，或者标记为文件在目录中的默认压缩方式;FILE_ATTRIBUTE_NORMAL：默认属性;FILE_ATTRIBUTE_HIDDEN：隐藏文件或目录;FILE_ATTRIBUTE_READONLY：文件为只读;FILE_ATTRIBUTE_SYSTEM：文件为系统文件;FILE_FLAG_WRITE_THROUGH：操作系统不得推迟对文件的写操作;FILE_FLAG_OVERLAPPED：允许对文件进行重叠操作;FILE_FLAG_NO_BUFFERING：禁止对文件进行缓冲处理。文件只能写入磁盘卷的扇区块;FILE_FLAG_RANDOM_ACCESS：针对随机访问对文件缓冲进行优化;FILE_FLAG_SEQUENTIAL_SCAN：针对连续访问对文件缓冲进行优化;FILE_FLAG_DELETE_ON_CLOSE：关闭了上一次打开的句柄后，将文件删除。特别适合临时文件也可在Windows NT下组合使用下述常数标记：SECURITY_ANONYMOUS， SECURITY_IDENTIFICATION， SECURITY_IMPERSONATION， SECURITY_DELEGATION， SECURITY_CONTEXT_TRACKING， SECURITY_EFFECTIVE_ONLY
+    .参数 从文件复制文件属性, 整数型, , 如果不为零，则指定一个文件句柄。新文件将从这个文件中复制扩展属性;  
+
+.DLL命令 API_GetDiskFreeSpaceEx, 整数型, "kernel32.dll", "GetDiskFreeSpaceExA", , 　
+    .参数 lpDirectoryName, 文本型, , 
+    .参数 lpFreeBytesAvailableToCaller, largINT, , 
+    .参数 lpTotalNumberOfBytes, largINT, , 
+    .参数 lpTotalNumberOfFreeBytes, largINT, , 
+
+.DLL命令 API_lstrcpyn, 整数型, "kernel32", "lstrcpynA", , 　
+    .参数 lpString1, largINT, , 
+    .参数 lpString2, 整数型, , 
+    .参数 iMaxLength, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+调试输出 (取硬盘信息1 ())
+
+
+.子程序 取硬盘信息1, 文本型, , 
+.局部变量 info, 未知类型0x20007, , , 
+.局部变量 number, 整数型, , , 
+.局部变量 return, 文本型, , , 
+.局部变量 array, 文本型, , "0", 
+.局部变量 i, 空白型, , , 
+
+赋值 (number, 未知支持库函数_4 (#.))
+赋值 (return, 相加 (“个数:”, 到文本 (number)))
+赋值 (array, 未知支持库函数_5 (#.))
+.计次循环首 (取数组成员数 (array), i)
+    调试输出 (array [i])
+.计次循环尾 ()
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+未知支持库函数_3 (info, 0)
+调试输出 (info., 四舍五入 (相除 (info., 1024), 2), info., info., info., info., info., info.)
+返回 (return)
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+.局部变量 list, 文本型, , "0", 
+.局部变量 dvd, 文本型, , , 
+.局部变量 匿名局部变量_56, 空白型, , , 
+.局部变量 free1, largINT, , , 
+.局部变量 total, largINT, , , 
+.局部变量 free2, largINT, , , 
+.局部变量 i, 整数型, , , 
+
+赋值 (list, 未知支持库函数_5 (#.))
+赋值 (dvd, 未知支持库函数_8 ())
+.计次循环首 (取数组成员数 (list), i)
+    .如果真 (并且 (不等于 (到大写 (list [i]), “A”), 不等于 (到大写 (list [i]), 到大写 (dvd))))
+        API_GetDiskFreeSpaceEx (list [i], free1, total, free2)
+        调试输出 (list [i], “total”, 相除 (total.FIRST, 相乘 (1024, 1024, 1024)))
+        调试输出 (list [i], “free”, 相除 (free2.FIRST, 相乘 (1024, 1024, 1024)))
+        调试输出 (list [i], “use”, 相除 (相减 (total.FIRST, free2.FIRST), 相乘 (1024, 1024, 1024)))
+    .如果真结束
+     ' 本源码来自易语言资源网(www.wodesoft.com)
+.计次循环尾 ()
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

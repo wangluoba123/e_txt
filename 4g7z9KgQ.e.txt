@@ -1,0 +1,487 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 809
+    高度 = 620
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.图片 CLSID_CUrlHistory, " ' 已保存到：D:\易语言学习\Data\4g7z9KgQ.e\CLSID_CUrlHistory", 公开, 
+.图片 IID_IUrlHistoryStg, " ' 已保存到：D:\易语言学习\Data\4g7z9KgQ.e\IID_IUrlHistoryStg", 公开, 
+.图片 CLSID_ProgressDialog, " ' 已保存到：D:\易语言学习\Data\4g7z9KgQ.e\CLSID_ProgressDialog", 公开, 
+.图片 IID_IProgressDialog, " ' 已保存到：D:\易语言学习\Data\4g7z9KgQ.e\IID_IProgressDialog", 公开, 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' spec A512548E76954B6E92C21055517615B0 2 1 特殊功能支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 1 2 扩展界面支持库一
+
+
+
+
+数据类型 STATURL, , 
+    .成员 cbSize, 整数型, , , 
+    .成员 pwcsUrl, 整数型, , , 
+    .成员 pwcsTitle, 整数型, , , 
+    .成员 ftLastVisited1, 整数型, , , 
+    .成员 ftLastVisited2, 整数型, , , 
+    .成员 ftLastUpdated1, 整数型, , , 
+    .成员 ftLastUpdated2, 整数型, , , 
+    .成员 ftExpires1, 整数型, , , 
+    .成员 ftExpires2, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+
+数据类型 Url, , 
+    .成员 Url, 文本型, , , 
+    .成员 Title, 文本型, , , 
+
+
+.DLL命令 CoInitialize, 整数型, "ole32.dll", "CoInitialize", , 
+    .参数 pvReserved, 整数型, , 
+
+.DLL命令 CoCreateInstance, 整数型, "ole32.dll", "CoCreateInstance", , 
+    .参数 rclsid, 字节集, , 
+    .参数 LPUNKNOWN, 整数型, , 
+    .参数 dwClsContext, 整数型, , 
+    .参数 riid, 字节集, , 
+    .参数 ppv, 整数型, 传址, 
+
+.DLL命令 CreateThread, 整数型, "kernel32.dll", "CreateThread", , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 子程序指针, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, 传址, 
+
+.DLL命令 CoTaskMemFree, 空白型, "ole32.dll", "CoTaskMemFree", , 
+    .参数 pv, 整数型, , 
+
+.DLL命令 FindFirstUrlCacheEntryA, 整数型, "Wininet.dll", "FindFirstUrlCacheEntryA", , 
+    .参数 lpszUrlSearchPattern, 文本型, , 
+    .参数 lpFirstCacheEntryInfo, 字节集, , 
+    .参数 lpcbCacheEntryInfo, 整数型, 传址, 
+
+.DLL命令 GetLastError, 整数型, "", "GetLastError", , 
+
+.DLL命令 FindNextUrlCacheEntryA, 逻辑型, "Wininet.dll", "FindNextUrlCacheEntryA", , 
+    .参数 lpszUrlSearchPattern, 整数型, , 
+    .参数 lpFirstCacheEntryInfo, 字节集, , 
+    .参数 lpcbCacheEntryInfo, 整数型, 传址, 
+
+.DLL命令 CoUninitialize, 空白型, "ole32.dll", "CoUninitialize", , 
+
+.DLL命令 SHAnsiToUnicode, 整数型, "shlwapi.dll", "#215", , 
+    .参数 pszSrc, 文本型, , 
+    .参数 pwszDst, 字节集, , 
+    .参数 cwchBuf, 整数型, , 
+
+.DLL命令 SHUnicodeToAnsi, 整数型, "shlwapi.dll", "#217", , 
+    .参数 pszSrc, 整数型, , 
+    .参数 pwszDst, 文本型, , 
+    .参数 cwchBuf, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 UrlHistory, CUrlHistory1, , , 
+.局部变量 tUrl, Url, , , 
+.局部变量 bSus, 逻辑型, , , 
+.局部变量 n, 整数型, , , 
+.局部变量 i, 整数型, , , 
+
+全部删除 ()
+赋值 (n, 0)
+UrlHistory.Init ()
+赋值 (., 假)
+.循环判断首 ()
+    赋值 (bSus, UrlHistory.Next (tUrl))
+    .如果真 (等于 (bSus, 假))
+        跳出循环 ()
+    .如果真结束
+    赋值 (i, .插入表项 (相加 (“[”, 到文本 (n), “]”), , , , ))
+    i.置标题 (1, tUrl.Title)
+    i.置标题 (2, tUrl.Url)
+    赋值 (n, 相加 (n, 1))
+.循环判断尾 (真)
+赋值 (., 真)
+
+.子程序 AnsiToUnicode, 字节集, 公开, 
+.参数 src, 文本型, , 
+
+.局部变量 dst, 字节集, , , 
+
+赋值 (dst, 取空白字节集 (相加 (相乘 (取文本长度 (src), 2), 100)))
+SHAnsiToUnicode (src, dst, 取字节集长度 (dst))
+返回 (dst)
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+.局部变量 UrlHistory, CUrlHistory2, , , 
+.局部变量 tUrl, Url, , , 
+.局部变量 bSus, 逻辑型, , , 
+.局部变量 n, 整数型, , , 
+.局部变量 i, 整数型, , , 
+
+全部删除 ()
+赋值 (n, 0)
+UrlHistory.Init ()
+赋值 (., 假)
+.循环判断首 ()
+    赋值 (bSus, UrlHistory.Next (tUrl))
+    .如果真 (等于 (bSus, 假))
+        跳出循环 ()
+    .如果真结束
+    赋值 (i, .插入表项 (相加 (“[”, 到文本 (n), “]”), , , , ))
+    i.置标题 (1, tUrl.Title)
+    i.置标题 (2, tUrl.Url)
+    赋值 (n, 相加 (n, 1))
+.循环判断尾 (真)
+赋值 (., 真)
+
+
+.子程序 PointerToDword, 整数型, , 
+.参数 Pointer, 整数型, , 
+
+返回 (取字节集数据 (指针到字节集 (Pointer, 4), #整数型, ))
+
+.子程序 _按钮3_被单击, 空白型, , 
+CreateThread (0, 0, &Thread_ProgressDialog, 0, 0, 0)
+赋值 (.禁止, 真)
+
+.子程序 Thread_ProgressDialog, 整数型, , 
+.参数 lpParameter, 整数型, , 
+
+.局部变量 Dlg, 未知类型0x49010261, , , 
+.局部变量 n, 整数型, , , 
+
+
+Dlg.未知函数_67175012 (“fOx ProgressDialog Tester”)
+Dlg.未知函数_67175013 (取窗口句柄 (), 2)
+Dlg.未知函数_67175017 (1, “InProgressing ...”, 假)
+Dlg.未知函数_67175014 (1)
+延时 (1000)
+.计次循环首 (100, n)
+    Dlg.未知函数_67175015 (n, 100)
+    .如果真 (Dlg.未知函数_67175016 ())
+        延时 (2000)
+        跳出循环 ()
+    .如果真结束
+    延时 (500)
+.计次循环尾 ()
+.如果 (等于 (Dlg.未知函数_67175016 (), 假))
+    Dlg.未知函数_67175017 (1, “Done ...”, 假)
+.否则
+    Dlg.未知函数_67175017 (1, “Cancelled ...”, 假)
+.如果结束
+延时 (1000)
+Dlg.StopProgressDialog ()
+赋值 (.禁止, 假)
+返回 (0)
+
+.类模块 CUrlHistory1, , , 
+
+.程序集变量 m_pIEnumSTATURL, 整数型, , , 
+.程序集变量 m_pIUrlHistoryStg, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+.局部变量 hr, 整数型, , , 
+
+赋值 (hr, CoInitialize (0))
+.如果真 (并且 (不等于 (hr, 0), 不等于 (hr, 1)))
+    ReportError (“CoInitialize (0)”, hr)
+.如果真结束
+赋值 (hr, CoCreateInstance (#CLSID_CUrlHistory, 0, 1, #IID_IUrlHistoryStg, m_pIUrlHistoryStg))
+.如果真 (不等于 (hr, 0))
+    ReportError (“CoCreateInstance (#CLSID_CUrlHistory, 0, 1, #IID_IUrlHistoryStg, m_pIUrlHistoryStg)”, hr)
+.如果真结束
+
+
+
+.子程序 EnumUrls, 空白型, , 
+.局部变量 p, 整数型, , , 
+.局部变量 hr, 整数型, , , 
+
+赋值 (p, PointerToDword (相加 (PointerToDword (m_pIUrlHistoryStg), 28)))
+调用子程序 (p, , hr, m_pIUrlHistoryStg, 取变量地址 (m_pIEnumSTATURL))
+.如果真 (不等于 (hr, 0))
+    ReportError (“Try EnumUrls”, hr)
+.如果真结束
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+Release (m_pIEnumSTATURL)
+Release (m_pIUrlHistoryStg)
+CoUninitialize ()
+
+
+.子程序 Release, 空白型, , 
+.参数 m_pUnknown, 整数型, , 
+
+.局部变量 p, 整数型, , , 
+
+赋值 (p, PointerToDword (相加 (PointerToDword (m_pUnknown), 4)))
+调用子程序 (p, , , m_pUnknown)
+
+.子程序 Reset, 空白型, , 
+.局部变量 p, 整数型, , , 
+.局部变量 hr, 整数型, , , 
+
+赋值 (p, PointerToDword (相加 (PointerToDword (m_pIEnumSTATURL), 20)))
+调用子程序 (p, , hr, m_pIEnumSTATURL)
+
+
+.子程序 Init, 空白型, 公开, 
+EnumUrls ()
+Reset ()
+
+
+.子程序 Next, 逻辑型, 公开, 
+.参数 tUrl, Url, 参考, 
+
+.局部变量 p, 整数型, , , 
+.局部变量 hr, 整数型, , , 
+.局部变量 bFill, 逻辑型, , , 
+.局部变量 statUrl, STATURL, , , 
+
+赋值 (p, PointerToDword (相加 (PointerToDword (m_pIEnumSTATURL), 12)))
+赋值 (statUrl.cbSize, 40)
+调用子程序 (p, , hr, m_pIEnumSTATURL, 1, statUrl, 取变量地址 (bFill))
+.如果真 (不等于 (hr, 0))
+    赋值 (bFill, 假)
+.如果真结束
+.如果真 (bFill)
+    赋值 (tUrl.Url, 取空白文本 (4096))
+    赋值 (tUrl.Title, 取空白文本 (4096))
+    
+    SHUnicodeToAnsi (statUrl.pwcsUrl, tUrl.Url, 4096)
+    .如果 (等于 (statUrl.pwcsTitle, 0))
+        赋值 (tUrl.Title, “NULL TITLE”)
+    .否则
+        SHUnicodeToAnsi (statUrl.pwcsTitle, tUrl.Title, 4096)
+    .如果结束
+    
+    CoTaskMemFree (statUrl.pwcsUrl)
+    CoTaskMemFree (statUrl.pwcsTitle)
+.如果真结束
+返回 (bFill)
+
+.子程序 ReportError, 空白型, , 
+.参数 ErrorText, 文本型, , 
+.参数 hr, 整数型, , 
+
+信息框 (相加 (ErrorText, #换行符, “HRESULT : 0x”, 取十六进制文本 (hr)), 0, )
+结束 ()
+
+
+.类模块 CUrlHistory2, , , 
+
+.程序集变量 m_pInfo, 字节集, , , 
+.程序集变量 m_hFind, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+赋值 (m_hFind, 0)
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 Init, 空白型, 公开, 
+赋值 (m_pInfo, 取空白字节集 (4096))
+
+
+.子程序 Next, 逻辑型, 公开, 
+.参数 tUrl, Url, , 
+
+.局部变量 szBuffer, 整数型, , , 
+.局部变量 bSus, 逻辑型, , , 
+
+赋值 (szBuffer, 取字节集长度 (m_pInfo))
+.如果 (等于 (m_hFind, 0))
+    赋值 (m_hFind, FindFirstUrlCacheEntryA (“visited:”, m_pInfo, szBuffer))
+    赋值 (bSus, 真)
+.否则
+    
+    赋值 (bSus, FindNextUrlCacheEntryA (m_hFind, m_pInfo, szBuffer))
+    赋值 (szBuffer, GetLastError ())
+.如果结束
+.如果真 (bSus)
+    赋值 (tUrl, GetTUrl ())
+.如果真结束
+返回 (bSus)
+
+.子程序 GetTUrl, Url, , 
+.局部变量 tUrl, Url, , , 
+.局部变量 p, 整数型, , , 
+.局部变量 n, 短整数型, , , 
+
+赋值 (p, 取字节集数据 (m_pInfo, #整数型, 65))
+赋值 (n, PointerToDword (p))
+赋值 (p, 相加 (p, n))
+赋值 (tUrl.Title, “NULL TITLE”)
+.如果真 (等于 (到字节 (PointerToDword (相加 (p, 2))), 16))
+    .如果真 (等于 (到字节 (PointerToDword (相加 (p, 3))), 31))
+        赋值 (p, 相加 (p, 4))
+        赋值 (tUrl.Title, 取空白文本 (4096))
+        SHUnicodeToAnsi (p, tUrl.Title, 4096)
+    .如果真结束
+    
+.如果真结束
+
+
+
+赋值 (p, 取字节集数据 (m_pInfo, #整数型, 5))
+赋值 (tUrl.Url, 指针到文本 (p))
+返回 (tUrl)
+
+.类模块 CProgressDialog, , , 
+
+.程序集变量 m_pIProgressDialog, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+.局部变量 hr, 整数型, , , 
+
+赋值 (hr, CoInitialize (0))
+.如果真 (并且 (不等于 (hr, 0), 不等于 (hr, 1)))
+    ReportError (“CoInitialize (0)”, hr)
+.如果真结束
+赋值 (hr, CoCreateInstance (#CLSID_ProgressDialog, 0, 1, #IID_IProgressDialog, m_pIProgressDialog))
+.如果真 (不等于 (hr, 0))
+    ReportError (“CoCreateInstance (#CLSID_ProgressDialog, 0, 1, #IID_IProgressDialog, m_pIProgressDialog)”, hr)
+.如果真结束
+
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+Release (m_pIProgressDialog)
+CoUninitialize ()
+
+
+.子程序 SetTitle, 空白型, 公开, 
+.参数 Title, 文本型, , 
+
+.局部变量 p, 整数型, , , 
+.局部变量 hr, 整数型, , , 
+.局部变量 Data, 字节集, , , 
+
+赋值 (p, PointerToDword (相加 (PointerToDword (m_pIProgressDialog), 20)))
+赋值 (Data, AnsiToUnicode (Title))
+调用子程序 (p, , hr, m_pIProgressDialog, 取变量数据地址 (Data))
+.如果真 (不等于 (hr, 0))
+    ReportError (“SetTitle”, hr)
+.如果真结束
+
+
+.子程序 Release, 空白型, , 
+.参数 m_pUnknown, 整数型, , 
+
+.局部变量 p, 整数型, , , 
+
+赋值 (p, PointerToDword (相加 (PointerToDword (m_pUnknown), 4)))
+调用子程序 (p, , , m_pUnknown)
+
+.子程序 SetLine, 空白型, 公开, 
+.参数 LineNum, 整数型, , 
+.参数 pString, 文本型, , 
+.参数 fCompactPath, 逻辑型, , 
+
+.局部变量 p, 整数型, , , 
+.局部变量 hr, 整数型, , , 
+.局部变量 Data, 字节集, , , 
+
+赋值 (p, PointerToDword (相加 (PointerToDword (m_pIProgressDialog), 40)))
+赋值 (Data, AnsiToUnicode (pString))
+调用子程序 (p, , hr, m_pIProgressDialog, LineNum, 取变量数据地址 (Data), fCompactPath, 0)
+.如果真 (不等于 (hr, 0))
+    ReportError (“SetLine”, hr)
+    
+.如果真结束
+
+
+.子程序 StartProgressDialog, 空白型, 公开, 
+.参数 hwndParent, 整数型, , 
+.参数 dwFlags, 整数型, , 
+
+.局部变量 p, 整数型, , , 
+.局部变量 hr, 整数型, , , 
+
+赋值 (p, PointerToDword (相加 (PointerToDword (m_pIProgressDialog), 12)))
+调用子程序 (p, , hr, m_pIProgressDialog, hwndParent, 0, dwFlags, 0)
+.如果真 (不等于 (hr, 0))
+    ReportError (“StartProgressDialog”, hr)
+.如果真结束
+
+
+.子程序 Timer, 空白型, 公开, 
+.参数 dwTimerAction, 整数型, , 
+
+.局部变量 p, 整数型, , , 
+.局部变量 hr, 整数型, , , 
+
+赋值 (p, PointerToDword (相加 (PointerToDword (m_pIProgressDialog), 48)))
+调用子程序 (p, , hr, m_pIProgressDialog, dwTimerAction, 0)
+.如果真 (不等于 (hr, 0))
+    ReportError (“dwTimerAction”, hr)
+.如果真结束
+
+
+.子程序 SetProgress, 空白型, 公开, 
+.参数 dwCompleted, 整数型, , 
+.参数 dwTotal, 整数型, , 
+
+.局部变量 p, 整数型, , , 
+.局部变量 hr, 整数型, , , 
+
+赋值 (p, PointerToDword (相加 (PointerToDword (m_pIProgressDialog), 32)))
+调用子程序 (p, , hr, m_pIProgressDialog, dwCompleted, dwTotal)
+.如果真 (不等于 (0))
+    ReportError (“SetProgress”, hr)
+.如果真结束
+
+
+.子程序 HasUserCancelled, 逻辑型, 公开, 
+.局部变量 p, 整数型, , , 
+.局部变量 bRet, 逻辑型, , , 
+
+赋值 (p, PointerToDword (相加 (PointerToDword (m_pIProgressDialog), 28)))
+调用子程序 (p, , bRet, m_pIProgressDialog)
+返回 (bRet)
+
+.子程序 ReportError, 空白型, , 
+.参数 ErrorText, 文本型, , 
+.参数 hr, 整数型, , 
+
+信息框 (相加 (“CProgressDialog : ”, #换行符, ErrorText, #换行符, “HRESULT : 0x”, 取十六进制文本 (hr)), 0, )
+结束 ()
+
+
+.子程序 StopProgressDialog, 空白型, 公开, 
+.局部变量 p, 整数型, , , 
+.局部变量 hr, 整数型, , , 
+
+赋值 (p, PointerToDword (相加 (PointerToDword (m_pIProgressDialog), 16)))
+调用子程序 (p, , hr, m_pIProgressDialog)
+.如果真 (不等于 (0))
+    ReportError (“StopProgressDialog”, hr)
+.如果真结束
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

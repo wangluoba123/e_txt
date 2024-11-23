@@ -1,0 +1,161 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：多线程控制
+ ' 程序描述：
+ ' 程序作者：易语言我吃了
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 6 系统核心支持库
+
+
+
+
+数据类型 多线程许可证, 公开, 
+    .成员 DebugInfo, 整数型, , , 
+    .成员 LockCount, 整数型, , , 
+    .成员 RecursionCount, 整数型, , , 
+    .成员 OwningThread, 整数型, , , 
+    .成员 LockSemaphore, 整数型, , , 
+    .成员 SpinCount, 整数型, , , 
+
+
+.DLL命令 InitializeCriticalSection, 空白型, "kernel32", "", , 创建许可证
+    .参数 lpCriticalSection, 多线程许可证, 传址, 
+
+.DLL命令 DeleteCriticalSection, 空白型, "kernel32", "", , 删除许可证
+    .参数 lpCriticalSection, 多线程许可证, 传址, 
+
+.DLL命令 EnterCriticalSection, 空白型, "kernel32", "", , 进入许可区
+    .参数 lpCriticalSection, 多线程许可证, 传址, 
+
+.DLL命令 LeaveCriticalSection, 空白型, "kernel32", "", , 退出许可区
+    .参数 lpCriticalSection, 多线程许可证, 传址, 
+
+.DLL命令 CreateThread, 整数型, "kernel32", "", , 启动线程
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 子程序指针, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, 传址, 
+
+.DLL命令 CloseHandle, 整数型, "kernel32", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 WaitForSingleObject, 整数型, "kernel32", "WaitForSingleObject", , 监测一个对象
+    .参数 hHandle, 整数型, , 
+    .参数 dwMilliseconds, 整数型, , 
+
+.DLL命令 SuspendThread, 整数型, "kernel32", "SuspendThread", , 挂起线索
+    .参数 hThread, 整数型, , 
+
+.DLL命令 TerminateThread, 整数型, "kernel32", "TerminateThread", , 中止线索
+    .参数 hThread, 整数型, , 
+    .参数 dwExitCode, 整数型, , 
+
+.DLL命令 ResumeThread, 整数型, "kernel32", "ResumeThread", , 开始暂停的线索
+    .参数 hThread, 整数型, , 
+
+.DLL命令 GetExitCodeThread, 整数型, "kernel32", "GetExitCodeThread", , 
+    .参数 hThread, 整数型, , 
+    .参数 lpExitCode, 整数型, 传址, 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.子程序 子程序_启动线程, 逻辑型, 公开, 
+.参数 欲执行的子程序, 子程序指针, , 
+.参数 参数数据, 整数型, 可空, 
+.参数 线程句柄, 整数型, 参考 可空, 
+
+.局部变量 句柄, 整数型, , , 
+
+赋值 (句柄, CreateThread (0, 0, 欲执行的子程序, 参数数据, 0, 0))
+.如果 (是否为空 (线程句柄))
+    CloseHandle (句柄)
+.否则
+    赋值 (线程句柄, 句柄)
+.如果结束
+返回 (不等于 (句柄, 0))
+
+.子程序 子程序_创建进入许可证, 多线程许可证, 公开, 
+.局部变量 许可证, 多线程许可证, 静态, , 
+
+InitializeCriticalSection (许可证)
+返回 (许可证)
+
+.子程序 子程序_删除进入许可证, 空白型, , 
+.参数 进入许可证, 多线程许可证, , 
+
+DeleteCriticalSection (进入许可证)
+
+.子程序 子程序_进入许可区, 空白型, , 
+.参数 进入许可证, 多线程许可证, , 
+
+EnterCriticalSection (进入许可证)
+
+.子程序 子程序_退出许可区, 空白型, , 
+.参数 进入许可证, 多线程许可证, , 
+
+LeaveCriticalSection (进入许可证)
+
+.子程序 子程序_等待线程, 逻辑型, , 
+.参数 线程句柄, 整数型, , 
+.参数 等待时间, 整数型, 可空, 单位为毫秒，0和-1表示无限等待
+
+返回 (等于 (WaitForSingleObject (线程句柄, 选择 (是否为空 (等待时间), -1, 选择 (等于 (等待时间, 0), -1, 等待时间))), 0))
+
+.子程序 子程序_挂起线程, 逻辑型, , 
+.参数 线程句柄, 整数型, , 
+
+返回 (等于 (SuspendThread (线程句柄), 0))
+
+.子程序 子程序_继续执行, 空白型, , 继续运行被挂起的线程
+.参数 线程句柄, 整数型, , 
+
+返回 (ResumeThread (线程句柄))
+
+.子程序 子程序_取线程返回值, 整数型, , 使用前请保证线程已经运行完毕，如线程尚未中断将返回STILL_ACTIVE(值为259)。子程序返回值为其他数据类型将返回指针。
+.参数 线程句柄, 整数型, , 
+
+.局部变量 返回值, 整数型, , , 
+
+GetExitCodeThread (线程句柄, 返回值)
+返回 (返回值)
+
+.子程序 子程序_强制结束线程, 逻辑型, , 
+.参数 线程句柄, 整数型, , 
+
+返回 (不等于 (TerminateThread (线程句柄, 0), 0))
+
+.子程序 子程序_关闭线程句柄, 逻辑型, , 
+.参数 线程句柄, 整数型, , 
+
+.如果真 (不等于 (GetExitCodeThread (线程句柄, 0), 0))
+    返回 (不等于 (CloseHandle (线程句柄), 0))
+.如果真结束
+返回 (假)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,190 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：系统服务
+ ' 程序描述：启动代码,要启动的代码放到启动子程序里面
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 服务状态, , 
+    .成员 dwServiceType, 整数型, , , 
+    .成员 dwCurrentState, 整数型, , , 
+    .成员 dwControlsAccepted, 整数型, , , 
+    .成员 dwWin32ExitCode, 整数型, , , 
+    .成员 dwServiceSpecificExitCode, 整数型, , , 
+    .成员 dwCheckPoint, 整数型, , , 
+    .成员 dwWaitHint, 整数型, , , 
+
+数据类型 服务表, , 
+    .成员 服务名, 文本型, , , 
+    .成员 调用子程序, 子程序指针, , , 
+
+
+.DLL命令 置服务状态, 整数型, "advapi32.dll", "SetServiceStatus", , 
+    .参数 状态, 整数型, , 
+    .参数 服务状态, 服务状态, , 
+
+.DLL命令 注册服务状态, 整数型, "advapi32.dll", "RegisterServiceCtrlHandlerA", , 
+    .参数 服务名, 文本型, , 
+    .参数 消息处理, 子程序指针, , 
+
+.DLL命令 创建线程, 整数型, "", "CreateThread", , 
+    .参数 安全值, 整数型, , 0
+    .参数 堆栈大小, 整数型, , 0
+    .参数 线程子程序, 子程序指针, , 
+    .参数 传递参数, 整数型, , 
+    .参数 等待时间, 整数型, , 0
+    .参数 线程编号, 整数型, 传址, 
+
+.DLL命令 CloseServiceHandle, 整数型, "advapi32.dll", "CloseServiceHandle", , 
+    .参数 hSCObject, 整数型, , 
+
+.DLL命令 OpenService, 整数型, "advapi32.dll", "OpenServiceA", , 
+    .参数 hSCManager, 整数型, , 
+    .参数 lpServiceName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+
+.DLL命令 OpenSCManager, 整数型, "advapi32.dll", "OpenSCManagerA", , 
+    .参数 lpMachineName, 文本型, , 
+    .参数 lpDatabaseName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+
+.DLL命令 CreateService, 整数型, "advapi32.dll", "CreateServiceA", , 
+    .参数 hSCManager, 整数型, , 
+    .参数 lpServiceName, 文本型, , 
+    .参数 lpDisplayName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwServiceType, 整数型, , 
+    .参数 dwStartType, 整数型, , 
+    .参数 dwErrorControl, 整数型, , 
+    .参数 lpBinaryPathName, 文本型, , 
+    .参数 lpLoadOrderGroup, 文本型, , 
+    .参数 lpdwTagId, 整数型, , 
+    .参数 lpDependencies, 文本型, , 
+    .参数 lpServiceStartName, 整数型, , 
+    .参数 lpPassword, 文本型, , 
+
+.DLL命令 DeleteService, 整数型, "advapi32.dll", "DeleteService", , 
+    .参数 hService, 整数型, , 
+
+.DLL命令 开始启动, 整数型, "advapi32.dll", "StartServiceCtrlDispatcherA", , 
+    .参数 启动表, 服务表, , 
+
+.程序集 Main, , , 
+
+.程序集变量 事件处理, 子程序指针, , , 
+.程序集变量 服务名, 文本型, , , 
+.程序集变量 服务状态, 服务状态, , , 
+.程序集变量 状态, 整数型, , , 
+.子程序 _启动子程序, 整数型, , 
+返回 (0)
+
+.子程序 启动服务器, 空白型, , 放到程序最先运行的地方
+.参数 服务名称, 文本型, , 
+.参数 启动子程序, 子程序指针, , 
+
+.局部变量 A, 服务表, , , 
+
+赋值 (事件处理, 启动子程序)
+赋值 (服务名, 服务名称)
+赋值 (A.服务名, 服务名)
+赋值 (A.调用子程序, &主处理程序)
+开始启动 (A)
+
+.子程序 主处理程序, 空白型, , 
+.参数 dwArgc, 整数型, , 
+.参数 lpszArgv, 整数型, , 
+
+赋值 (服务状态.dwServiceType, 16)
+赋值 (服务状态.dwCurrentState, 2)
+赋值 (服务状态.dwControlsAccepted, 1)
+赋值 (服务状态.dwWin32ExitCode, 0)
+赋值 (服务状态.dwServiceSpecificExitCode, 0)
+赋值 (服务状态.dwCheckPoint, 0)
+赋值 (服务状态.dwWaitHint, 0)
+赋值 (状态, 注册服务状态 (服务名, &消息处理函数))
+置服务状态 (状态, 服务状态)
+赋值 (服务状态.dwCurrentState, 4)
+置服务状态 (状态, 服务状态)
+启动线程 (事件处理, )
+
+.子程序 消息处理函数, 空白型, , 
+.参数 消息值, 整数型, , 
+
+.判断开始 (等于 (消息值, 3))
+    赋值 (服务状态.dwCurrentState, 4)
+.判断 (等于 (消息值, 1))
+    赋值 (服务状态.dwWin32ExitCode, 0)
+    赋值 (服务状态.dwCurrentState, 3)
+    赋值 (服务状态.dwWaitHint, 0)
+    置服务状态 (状态, 服务状态)
+    赋值 (服务状态.dwCurrentState, 1)
+.默认
+    
+.判断结束
+置服务状态 (状态, 服务状态)
+
+.子程序 启动线程, 整数型, 公开, 
+.参数 启动子程序, 子程序指针, , 
+.参数 传递参数, 整数型, 可空, 
+
+返回 (创建线程 (0, 0, 启动子程序, 传递参数, 0, 0))
+
+.子程序 删除服务, 逻辑型, , 
+.参数 服务名称, 文本型, , 
+
+.局部变量 hSCManager, 整数型, , , 
+.局部变量 hService, 整数型, , , 
+.局部变量 ret, 整数型, , , 
+
+赋值 (hSCManager, OpenSCManager (取主机名 (), “ServicesActive”, 2))
+赋值 (hService, OpenService (hSCManager, 服务名称, 983551))
+赋值 (ret, DeleteService (hService))
+CloseServiceHandle (hService)
+CloseServiceHandle (hSCManager)
+.判断开始 (等于 (ret, 0))
+    返回 (假)
+.默认
+    返回 (真)
+.判断结束
+
+
+.子程序 安装服务, 逻辑型, 公开, 
+.参数 服务名称, 文本型, , 
+.参数 启动类型, 整数型, , 2自动
+.参数 服务程序地址, 文本型, , 
+
+.局部变量 hSCManager, 整数型, , , 
+.局部变量 hService, 整数型, , , 
+.局部变量 Cmd, 文本型, , , 
+
+赋值 (hSCManager, OpenSCManager (取主机名 (), “ServicesActive”, 2))
+赋值 (hService, CreateService (hSCManager, 服务名称, 服务名称, 983551, 16, 启动类型, 1, 服务程序地址, “”, 0, “”, 0, “”))
+CloseServiceHandle (hService)
+CloseServiceHandle (hSCManager)
+.判断开始 (等于 (hService, 0))
+    返回 (假)
+.默认
+    返回 (真)
+.判断结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

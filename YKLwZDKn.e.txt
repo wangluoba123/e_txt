@@ -1,0 +1,105 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：自用模块
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 6 系统核心支持库
+ ' 常量支持库 9DEDA17547CF40e085B7C8919B1800AF 1 6 常量支持库
+
+
+
+
+
+.DLL命令 创建文件_, 整数型, "Kernel32.dll", "_lcreat", , 创建一个文件。如文件已经存在，就会将其缩短成零长度，并将其打开，以便读写
+    .参数 文件路径, 文本型, , lpPathName，路径加文件名
+    .参数 文件类型, 整数型, , iAttribute，0,文件能够读写　1,创建只读文件 2,创建隐藏文件 3,创建系统文件
+
+.DLL命令 CloseHandle, 逻辑型, "kernel32.dll", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 取整数指针, 整数型, "kernel32.dll", "lstrcpynA", ,  用于取整数指针，巧妙利用了该API的返回值
+    .参数 lpString1, 整数型, 传址, 
+    .参数 lpString2, 整数型, 传址, 
+    .参数 iMaxLength, 整数型, , 保留，复制长度，设置为0即可
+
+.DLL命令 CreateFile, 整数型, "kernel32.dll", "CreateFileA", , 
+    .参数 lpFileName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwShareMode, 整数型, , 
+    .参数 lpSecurityAttributes, 整数型, , SECURITY_ATTRIBUTES结构体指针
+    .参数 dwCreationDisposition, 整数型, , 
+    .参数 dwFlagsAndAttributes, 整数型, , 
+    .参数 hTemplateFile, 整数型, , 
+
+.DLL命令 SetFilePointer, 整数型, "kernel32.dll", "SetFilePointer", , 
+    .参数 hFile, 整数型, , 
+    .参数 lDistanceToMove, 整数型, , 
+    .参数 lpDistanceToMoveHigh, 整数型, , 
+    .参数 dwMoveMethod, 整数型, , 
+
+.DLL命令 WriteFileD, 逻辑型, "kernel32.dll", "WriteFile", , 
+    .参数 hFile, 整数型, , 
+    .参数 lpBuffer, 字节集, 传址, 
+    .参数 nNumberOfBytesToWrite, 整数型, , 
+    .参数 pNumberOfBytesWritten, 整数型, , 
+    .参数 pOverlapped, 整数型, , 
+
+.DLL命令 WinExec, 整数型, "kernel32", "WinExec", , 
+    .参数 lpCmdLine, 文本型, , 
+    .参数 nCmdShow, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+返回 (0)
+
+.子程序 运行_, 整数型, 公开, 
+.参数 文件名, 文本型, , 路径+文件名
+.参数 运行方式, 整数型, 可空, 0为隐藏运行 1 为正常运行
+
+返回 (WinExec (文件名, 运行方式))
+
+.子程序 创建文件_, 整数型, 公开, 
+.参数 文件名, 文本型, , 要创建文件路径加名称后缀
+.参数 文件类型, 整数型, 可空, 0,文件能够读写　1,创建只读文件 2,创建隐藏文件 3,创建系统文件;默认0
+
+返回 (创建文件_ (文件名, 0))
+
+.子程序 写到文件_, 逻辑型, 公开, 
+.参数 写到位置, 文本型, , 文件下到目录 注：需要带文件后缀 如：c:\test.exe
+.参数 待写出数据, 字节集, , 文件内的资源
+
+.局部变量 文件句柄, 整数型, , , 
+.局部变量 数据, 字节集, , , 
+.局部变量 dwCB, 整数型, , , 
+.局部变量 x, 整数型, , , 
+
+赋值 (文件句柄, CreateFile (写到位置, 20, 2, 0, #, 0, 0))
+赋值 (数据, 待写出数据)
+赋值 (x, SetFilePointer (文件句柄, 10, 0, 0))
+.如果 (等于 (WriteFileD (文件句柄, 数据, 取字节集长度 (数据), 取整数指针 (dwCB, dwCB, 0), 0), 真))
+    CloseHandle (文件句柄)
+    返回 (真)
+.否则
+    CloseHandle (文件句柄)
+    返回 (假)
+.如果结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

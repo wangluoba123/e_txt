@@ -1,0 +1,266 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 403
+    高度 = 274
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “HSB-RGB互换”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 RGB, , 
+    .成员 Red, 整数型, , , 
+    .成员 Green, 整数型, , , 
+    .成员 Blue, 整数型, , , 
+
+数据类型 HSB, , 
+    .成员 Hue, 整数型, , , 
+    .成员 Saturnation, 整数型, , , 
+    .成员 Brightness, 整数型, , , 
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+事件转移 ()
+事件转移 ()
+_滑块条_R_位置被改变 ()
+事件转移 ()
+事件转移 ()
+
+.子程序 _滑块条_R_位置被改变, 空白型, , 
+.局部变量 RGB, RGB, , , 
+.局部变量 HSV, HSB, , , 
+
+赋值 (RGB.Red, .)
+赋值 (RGB.Green, .)
+赋值 (RGB.Blue, .)
+赋值 (., 到文本 (RGB.Red))
+赋值 (., 到文本 (RGB.Green))
+赋值 (., 到文本 (RGB.Blue))
+赋值 (., 取颜色值 (RGB.Red, RGB.Green, RGB.Blue))
+赋值 (HSV, RGBToHSV (RGB))
+赋值 (., 到文本 (HSV.Hue))
+赋值 (., 到文本 (HSV.Saturnation))
+赋值 (., 到文本 (HSV.Brightness))
+赋值 (., HSV.Hue)
+赋值 (., HSV.Saturnation)
+赋值 (., HSV.Brightness)
+
+.子程序 RGBToHSV, HSB, , 
+.参数 RGb, RGB, , 
+
+.局部变量 HSV, HSB, , , 
+.局部变量 var_R, 双精度小数型, , , 
+.局部变量 var_G, 双精度小数型, , , 
+.局部变量 var_B, 双精度小数型, , , 
+.局部变量 var_Min, 双精度小数型, , , 
+.局部变量 var_Max, 双精度小数型, , , 
+.局部变量 del_Max, 双精度小数型, , , 
+.局部变量 H, 双精度小数型, , , 
+.局部变量 S, 双精度小数型, , , 
+.局部变量 V, 双精度小数型, , , 
+.局部变量 del_R, 双精度小数型, , , 
+.局部变量 del_G, 双精度小数型, , , 
+.局部变量 del_B, 双精度小数型, , , 
+
+赋值 (var_R, RGb.Red)
+赋值 (var_G, RGb.Green)
+赋值 (var_B, RGb.Blue)
+赋值 (var_Min, GetMinRGB (RGb))
+赋值 (var_Max, GetMaxRGB (RGb))
+赋值 (del_Max, 相减 (var_Max, var_Min))
+赋值 (V, var_Max)
+.如果 (等于 (del_Max, 0))
+    赋值 (H, 0)
+    赋值 (S, 0)
+.否则
+    赋值 (S, 相除 (del_Max, var_Max))
+    赋值 (del_R, 相除 (相加 (相除 (相减 (var_Max, var_R), 6), 相除 (del_Max, 2)), del_Max))
+    赋值 (del_G, 相除 (相加 (相除 (相减 (var_Max, var_G), 6), 相除 (del_Max, 2)), del_Max))
+    赋值 (del_B, 相除 (相加 (相除 (相减 (var_Max, var_B), 6), 相除 (del_Max, 2)), del_Max))
+    .判断开始 (等于 (var_R, var_Max))
+        赋值 (H, 相减 (del_B, del_G))
+    .判断 (等于 (var_G, var_Max))
+        赋值 (H, 相减 (相加 (相除 (1, 3), del_R), del_B))
+    .判断 (等于 (var_B, var_Max))
+        赋值 (H, 相减 (相加 (相除 (2, 3), del_G), del_R))
+    .默认
+        
+    .判断结束
+    .如果真 (小于 (H, 0))
+        赋值 (H, 相加 (H, 1))
+    .如果真结束
+    .如果真 (大于 (H, 1))
+        赋值 (H, 相减 (H, 1))
+    .如果真结束
+    
+.如果结束
+赋值 (HSV.Hue, 四舍五入 (相乘 (H, 360), ))
+赋值 (HSV.Saturnation, 四舍五入 (相乘 (S, 100), ))
+赋值 (HSV.Brightness, 四舍五入 (相除 (相乘 (V, 100), 255), ))
+返回 (HSV)
+
+.子程序 GetMinRGB, 整数型, , 
+.参数 RGB, RGB, , 
+
+.如果真 (并且 (小于或等于 (RGB.Red, RGB.Blue), 小于或等于 (RGB.Red, RGB.Green)))
+    返回 (RGB.Red)
+.如果真结束
+.如果真 (小于或等于 (RGB.Blue, RGB.Green))
+    返回 (RGB.Blue)
+.如果真结束
+返回 (RGB.Green)
+
+.子程序 GetMaxRGB, 整数型, , 
+.参数 RGB, RGB, , 
+
+.如果真 (并且 (大于或等于 (RGB.Red, RGB.Blue), 大于或等于 (RGB.Red, RGB.Green)))
+    返回 (RGB.Red)
+.如果真结束
+.如果真 (大于或等于 (RGB.Blue, RGB.Green))
+    返回 (RGB.Blue)
+.如果真结束
+返回 (RGB.Green)
+
+.子程序 _滑块条_H_位置被改变, 空白型, , 
+.局部变量 RGB, RGB, , , 
+.局部变量 HSV, HSB, , , 
+
+赋值 (HSV.Hue, .)
+赋值 (HSV.Saturnation, .)
+赋值 (HSV.Brightness, .)
+赋值 (., 到文本 (HSV.Hue))
+赋值 (., 到文本 (HSV.Saturnation))
+赋值 (., 到文本 (HSV.Brightness))
+赋值 (RGB, HSVToRGB (HSV))
+赋值 (., 到文本 (RGB.Red))
+赋值 (., 到文本 (RGB.Green))
+赋值 (., 到文本 (RGB.Blue))
+赋值 (., RGB.Red)
+赋值 (., RGB.Green)
+赋值 (., RGB.Blue)
+赋值 (., 取颜色值 (RGB.Red, RGB.Green, RGB.Blue))
+
+.子程序 HSVToRGB, RGB, , 
+.参数 HSV, HSB, , 
+
+.局部变量 RGB, RGB, , , 
+.局部变量 H, 双精度小数型, , , 
+.局部变量 S, 双精度小数型, , , 
+.局部变量 V, 双精度小数型, , , 
+.局部变量 R, 双精度小数型, , , 
+.局部变量 G, 双精度小数型, , , 
+.局部变量 B, 双精度小数型, , , 
+.局部变量 var_h, 双精度小数型, , , 
+.局部变量 var_i, 双精度小数型, , , 
+.局部变量 var_1, 双精度小数型, , , 
+.局部变量 var_2, 双精度小数型, , , 
+.局部变量 var_3, 双精度小数型, , , 
+.局部变量 var_r, 双精度小数型, , , 
+.局部变量 var_g, 双精度小数型, , , 
+.局部变量 var_b, 双精度小数型, , , 
+
+赋值 (H, 相除 (HSV.Hue, 360))
+赋值 (S, 相除 (HSV.Saturnation, 100))
+赋值 (V, 相除 (HSV.Brightness, 100))
+.如果 (等于 (S, 0))
+    赋值 (R, 相乘 (V, 255))
+    赋值 (G, 相乘 (V, 255))
+    赋值 (B, 相乘 (V, 255))
+.否则
+    赋值 (var_h, 相乘 (H, 6))
+    .如果真 (等于 (var_h, 6))
+        赋值 (var_h, 0)
+    .如果真结束
+    赋值 (var_i, 取整 (var_h))
+    赋值 (var_1, 相乘 (V, 相减 (1, S)))
+    赋值 (var_2, 相乘 (V, 相减 (1, 相乘 (S, 相减 (var_h, var_i)))))
+    赋值 (var_3, 相乘 (V, 相减 (1, 相乘 (S, 相减 (1, 相减 (var_h, var_i))))))
+    .判断开始 (等于 (var_i, 0))
+        赋值 (var_r, V)
+        赋值 (var_g, var_3)
+        赋值 (var_b, var_1)
+    .判断 (等于 (var_i, 1))
+        赋值 (var_r, var_2)
+        赋值 (var_g, V)
+        赋值 (var_b, var_1)
+    .判断 (等于 (var_i, 2))
+        赋值 (var_r, var_1)
+        赋值 (var_g, V)
+        赋值 (var_b, var_3)
+    .判断 (等于 (var_i, 3))
+        赋值 (var_r, var_1)
+        赋值 (var_g, var_2)
+        赋值 (var_b, V)
+    .判断 (等于 (var_i, 4))
+        赋值 (var_r, var_3)
+        赋值 (var_g, var_1)
+        赋值 (var_b, V)
+    .默认
+        赋值 (var_r, V)
+        赋值 (var_g, var_1)
+        赋值 (var_b, var_2)
+    .判断结束
+    
+    赋值 (R, 相乘 (var_r, 255))
+    赋值 (G, 相乘 (var_g, 255))
+    赋值 (B, 相乘 (var_b, 255))
+.如果结束
+赋值 (RGB.Red, 四舍五入 (R, ))
+赋值 (RGB.Green, 四舍五入 (G, ))
+赋值 (RGB.Blue, 四舍五入 (B, ))
+返回 (RGB)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

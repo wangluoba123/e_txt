@@ -1,0 +1,280 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.wodesoft.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.wodesoft.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.wodesoft.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 593
+    高度 = 404
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 Max_Buffer, "4096", , 
+.常量 , , , 
+.常量 GMEM_ZEROINIT, "64", , 
+.常量 , , , 
+.常量 FILE_SHARE_READ, "1", , 
+.常量 FILE_SHARE_WRITE, "2", , 
+.常量 GENERIC_READ, "2147483648", , 
+.常量 GENERIC_WRITE, "1073741824", , 
+.常量 OPEN_EXISTING, "3", , 
+.常量 INVALID_HANDLE_VALUE, "-1", , 
+.常量 FILE_FLAG_BACKUP_SEMANTICS, "33554432", , 
+.常量 , , , 
+.常量 FILE_ACTION_ADDED, "1", , 
+.常量 FILE_ACTION_REMOVED, "2", , 
+.常量 FILE_ACTION_MODIFIED, "3", , 
+.常量 FILE_ACTION_RENAMED_OLD_NAME, "4", , 
+.常量 FILE_ACTION_RENAMED_NEW_NAME, "5", , 
+.常量 , , , // 下面抄的...
+.常量 FILE_NOTIFY_CHANGE_FILE_NAME, "1", , 下面是过滤器,文件被（建立，删除，重命名）
+.常量 FILE_NOTIFY_CHANGE_DIR_NAME, "2", , 目录被（建立，删除，重命名）
+.常量 FILE_NOTIFY_CHANGE_ATTRIBUTES, "4", , 
+.常量 FILE_NOTIFY_CHANGE_SIZE, "8", , 文件大小被改变
+.常量 FILE_NOTIFY_CHANGE_LAST_WRITE, "16", , 
+.常量 FILE_NOTIFY_CHANGE_LAST_ACCESS, "32", , 
+.常量 FILE_NOTIFY_CHANGE_CREATION, "64", , 
+.常量 FILE_NOTIFY_CHANGE_SECURITY, "256", , 
+.常量 , , , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 2 0 扩展界面支持库一
+ ' EThread 5F99C1642A2F4e03850721B4F5D7C3F8 2 0 多线程支持库
+
+
+
+
+数据类型 FILE_NOTIFY_INFORMATION, , 
+    .成员 NextEntryOffset, 空白型, , , 
+    .成员 Action, 空白型, , , 
+    .成员 FileNameLength, 空白型, , , 
+    .成员 lpFileName, 空白型, , , 
+
+
+.DLL命令 _CloseHandle, 整数型, "", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 _CreateFile, 整数型, "", "CreateFileA", , 
+    .参数 lpFileName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwShareMode, 整数型, , 
+    .参数 lpSecurityAttributes, 整数型, , 
+    .参数 dwCreationDisposition, 整数型, , 
+    .参数 dwFlagsAndAttributes, 整数型, , 
+    .参数 hTemplateFile, 整数型, , 
+
+.DLL命令 _CreateThread, 整数型, "", "CreateThread", , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 子程序指针, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, , 
+
+.DLL命令 _ReadDirectoryChangesW, 逻辑型, "", "ReadDirectoryChangesW", , 
+    .参数 hDirectory, 空白型, , 
+    .参数 lpBuffer, 整数型, , 
+    .参数 nBufferLength, 空白型, , 
+    .参数 bWatchSubtree, 逻辑型, , 
+    .参数 dwNotifyFilter, 空白型, , 
+    .参数 lpBytesReturned, 空白型, 传址, 
+    .参数 lpOverlapped, 整数型, , 
+    .参数 lpCompletionRoutine, 空白型, , 
+
+.DLL命令 _WideCharToMultiByte_Byte, 整数型, "", "WideCharToMultiByte", , 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpWideCharStr, 整数型, , 
+    .参数 cchWideChar, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpDefaultChar, 整数型, , 
+    .参数 lpUsedDefaultChar, 整数型, , 
+
+.DLL命令 _GlobalAlloc, 整数型, "", "GlobalAlloc", , 
+    .参数 wFlags, 整数型, , 
+    .参数 dwBytes, 整数型, , 
+
+.DLL命令 _GlobalFree, 整数型, "", "GlobalFree", , 
+    .参数 hMem, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 监视句柄, 空白型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+停止监视吧 (监视句柄)
+赋值 (监视句柄, 监视目录吧 (.内容))
+.如果真 (等于 (监视句柄, 0))
+    信息框 (“监视失败”, #错误图标, )
+.如果真结束
+赋值 (.禁止, 真)
+赋值 (.禁止, 假)
+
+.子程序 _按钮2_被单击, 空白型, , 
+赋值 (.禁止, 真)
+处理事件 ()
+停止监视吧 (监视句柄)
+赋值 (.禁止, 假)
+
+.子程序 __启动窗口_可否被关闭, 逻辑型, , 
+赋值 (., 假)
+停止监视吧 (监视句柄)
+
+.子程序 目录变更处理, 空白型, , 
+.参数 类型, 空白型, , #FILE_ACTION_开头
+.参数 路径, 文本型, , 
+
+.局部变量 item, 空白型, , , 
+.局部变量 许可区, 空白型, 静态, , 
+
+.如果真 (等于 (许可区, 0)) ' 将就着用着吧,后天再弄弄些东西
+    赋值 (许可区, 未知支持库函数_1 ())
+.如果真结束
+未知支持库函数_3 (许可区)
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+赋值 (item, .插入表项 ())
+.判断开始 (等于 (类型, #FILE_ACTION_ADDED))
+    item.置标题 (0, “新建”)
+.判断 (等于 (类型, #FILE_ACTION_REMOVED))
+    item.置标题 (0, “删除”)
+.判断 (等于 (类型, #FILE_ACTION_MODIFIED))
+    item.置标题 (0, “编辑属性”)
+.判断 (等于 (类型, #FILE_ACTION_RENAMED_OLD_NAME))
+    item.置标题 (0, “重命名_原”)
+.判断 (等于 (类型, #FILE_ACTION_RENAMED_NEW_NAME))
+    item.置标题 (0, “重命名_新”)
+.默认
+    item.置标题 (0, 相加 (“未知[”, 到文本 (类型), “]”))
+.判断结束
+' 本源码来自易语言资源网(www.wodesoft.com)
+item.置标题 (1, 路径)
+未知支持库函数_4 (许可区)
+
+.程序集 程序集1, , , 
+
+.子程序 监视目录吧, 整数型, , 返回句柄,关闭时用;失败0
+.参数 目录地址, 文本型, , 
+
+.局部变量 hFile, 空白型, , , 
+
+.如果真 (并且 (不等于 (取文本右边 (目录地址, 1), “\”), 不等于 (取文本右边 (目录地址, 1), “/”)))
+    赋值 (目录地址, 相加 (目录地址, “\”))
+.如果真结束
+赋值 (hFile, _CreateFile (目录地址, 位或 (#GENERIC_READ, #GENERIC_WRITE), 位或 (#FILE_SHARE_READ, #FILE_SHARE_WRITE, 4), 0, #OPEN_EXISTING, #FILE_FLAG_BACKUP_SEMANTICS, 0))
+.如果真 (等于 (hFile, #INVALID_HANDLE_VALUE))
+    返回 (0) ' 本源码来自易语言资源网(www.wodesoft.com)
+.如果真结束
+_CloseHandle (_CreateThread (0, 0, &线程_监视文件更变, hFile, 0, 0))
+返回 (hFile)
+
+.子程序 停止监视吧, 空白型, , 
+.参数 句柄, 空白型, 参考, 
+
+_CloseHandle (_CreateThread (0, 0, &线程_停止监视吧, 句柄, 0, 0))
+赋值 (句柄, 0)
+
+.子程序 线程_停止监视吧, 空白型, , 偷懒用简单方法实现。。。
+.参数 句柄, 空白型, , 
+
+_CloseHandle (句柄)
+
+.子程序 线程_监视文件更变, 空白型, , 
+.参数 hFile, 空白型, , 
+
+.局部变量 监视类型, 空白型, , , 
+.局部变量 监视子目录, 逻辑型, , , 
+.局部变量 bool, 逻辑型, , , 
+.局部变量 缓冲区, 字节集, , , 
+.局部变量 实际长, 空白型, , , 
+.局部变量 lpInfo, 空白型, , , 
+
+赋值 (监视子目录, 真)
+赋值 (监视类型, 位或 (#FILE_NOTIFY_CHANGE_FILE_NAME, #FILE_NOTIFY_CHANGE_DIR_NAME, #FILE_NOTIFY_CHANGE_ATTRIBUTES, #FILE_NOTIFY_CHANGE_SIZE, #FILE_NOTIFY_CHANGE_LAST_WRITE, #FILE_NOTIFY_CHANGE_LAST_ACCESS, #FILE_NOTIFY_CHANGE_CREATION, #FILE_NOTIFY_CHANGE_SECURITY))
+.循环判断首 ()
+    赋值 (实际长, 0)
+    赋值 (lpInfo, _GlobalAlloc (#GMEM_ZEROINIT, 相加 (相乘 (4, 3), #Max_Buffer)))
+    赋值 (bool, _ReadDirectoryChangesW (hFile, lpInfo, #Max_Buffer, 监视子目录, 监视类型, 实际长, 0, 0))
+     ' 还可以用完成端口来实现更高级的,但是比较复杂就不演示了
+    .如果真 (等于 (bool, 假))
+        _GlobalFree (lpInfo)
+        跳出循环 ()
+         ' 本源码来自易语言资源网(www.wodesoft.com)
+    .如果真结束
+    _CloseHandle (_CreateThread (0, 0, &线程_文件更变处理, lpInfo, 0, 0))
+.循环判断尾 (bool)
+
+.子程序 线程_文件更变处理, 空白型, , 
+.参数 BasePtr, 空白型, , 
+
+.局部变量 内存地址, 空白型, , , 
+.局部变量 info, FILE_NOTIFY_INFORMATION, , , 
+.局部变量 str1, 文本型, , , 
+
+赋值 (内存地址, BasePtr)
+.循环判断首 ()
+    赋值 (info.NextEntryOffset, 取字节集数据 (指针到字节集 (相加 (内存地址, 0), 4), #整数型, ))
+    赋值 (info.Action, 取字节集数据 (指针到字节集 (相加 (内存地址, 4), 4), #整数型, ))
+    赋值 (info.FileNameLength, 取字节集数据 (指针到字节集 (相加 (内存地址, 8), 4), #整数型, ))
+    赋值 (info.lpFileName, 相加 (内存地址, 12))
+    赋值 (str1, UnicodeToAnsi_Ptr (info.lpFileName, 相除 (info.FileNameLength, 2)))
+    目录变更处理 (info.Action, str1)
+    赋值 (内存地址, 相加 (内存地址, info.NextEntryOffset))
+.循环判断尾 (不等于 (info.NextEntryOffset, 0))
+_GlobalFree (BasePtr)
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 UnicodeToAnsi_Ptr, 文本型, , 
+.参数 Ptr, 整数型, , 
+.参数 U长度, 空白型, 可空, 
+
+.局部变量 retLen, 空白型, , , 
+.局部变量 str, 文本型, , , 
+
+.如果真 (是否为空 (U长度))
+    赋值 (U长度, -1)
+.如果真结束
+赋值 (retLen, _WideCharToMultiByte_Byte (0, 0, Ptr, U长度, “”, 0, 0, 0))
+赋值 (str, 取空白文本 (retLen)) ' 本源码来自易语言资源网(www.wodesoft.com)
+赋值 (retLen, _WideCharToMultiByte_Byte (0, 0, Ptr, U长度, str, retLen, 0, 0))
+返回 (str)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

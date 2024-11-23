@@ -1,0 +1,300 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 125
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “多桌面切换器”
+    帮助文件名 = “”
+
+
+
+.常量 DESKTOP_ENUMERATE, "64", , 
+.常量 DESKTOP_CREATEMENU, "4", , 
+.常量 DESKTOP_HOOKCONTROL, "8", , 
+.常量 DESKTOP_READOBJECTS, "1", , 
+.常量 DESKTOP_CREATEWINDOW, "2", , 
+.常量 DESKTOP_WRITEOBJECTS, "128", , 
+.常量 DESKTOP_JOURNALRECORD, "16", , 
+.常量 DESKTOP_SWITCHDESKTOP, "256", , 
+.常量 DESKTOP_JOURNALPLAYBACK, "32", , 
+.常量 , , , 
+.常量 NORMAL_PRIORITY_CLASS, "32", , 
+.常量 CREATE_DEFAULT_ERROR_MODE, "67108864", , 
+.常量 CREATE_SEPARATE_WOW_VDM, "2048", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 DEVMODE, , 设备初始设置;
+    .成员 dmDeviceName, 文本型, , "32", 
+    .成员 dmSpecVersion, 短整数型, , , 
+    .成员 dmDriverVersion, 短整数型, , , 
+    .成员 dmSize, 短整数型, , , 
+    .成员 dmDriverExtra, 短整数型, , , 
+    .成员 dmFields, 整数型, , , 
+    .成员 dmOrientation, 短整数型, , , 
+    .成员 dmPaperSize, 短整数型, , , 
+    .成员 dmPaperLength, 短整数型, , , 
+    .成员 dmPaperWidth, 短整数型, , , 
+    .成员 dmScale, 短整数型, , , 
+    .成员 dmCopies, 短整数型, , , 
+    .成员 dmDefaultSource, 短整数型, , , 
+    .成员 dmPrintQuality, 短整数型, , , 
+    .成员 dmColor, 短整数型, , , 
+    .成员 dmDuplex, 短整数型, , , 
+    .成员 dmYResolution, 短整数型, , , 
+    .成员 dmTTOption, 短整数型, , , 
+    .成员 dmCollate, 短整数型, , , 
+    .成员 dmFormName, 文本型, , "32", 
+    .成员 dmUnusedPadding, 短整数型, , , 
+    .成员 dmBitsPerPel, 整数型, , , 
+    .成员 dmPelsWidth, 整数型, , , 
+    .成员 dmPelsHeight, 整数型, , , 
+    .成员 dmDisplayFlags, 整数型, , , 
+    .成员 dmDisplayFrequency, 整数型, , , 
+
+数据类型 SECURITY_ATTRIBUTES, , 安全性结构;
+    .成员 nLength, 整数型, , , 
+    .成员 lpSecurityDescriptor, 整数型, , , 
+    .成员 bInheritHandle, 整数型, , , 
+
+数据类型 STARTUPINFO, , 进程启动信息;
+    .成员 cb, 整数型, , , 
+    .成员 lpReserved, 文本型, , , 
+    .成员 lpDesktop, 文本型, , , 
+    .成员 lpTitle, 文本型, , , 
+    .成员 dwX, 整数型, , , 
+    .成员 dwY, 整数型, , , 
+    .成员 dwXSize, 整数型, , , 
+    .成员 dwYSize, 整数型, , , 
+    .成员 dwXCountChars, 整数型, , , 
+    .成员 dwYCountChars, 整数型, , , 
+    .成员 dwFillAttribute, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+    .成员 wShowWindow, 短整数型, , , 
+    .成员 cbReserved2, 短整数型, , , 
+    .成员 lpReserved2, 整数型, , , 
+    .成员 hStdInput, 整数型, , , 
+    .成员 hStdOutput, 整数型, , , 
+    .成员 hStdError, 整数型, , , 
+
+数据类型 PROCESS_INFORMATION, , 进程标识;
+    .成员 进程句柄, 整数型, , , 
+    .成员 线程句柄, 整数型, , , 
+    .成员 进程标识符, 整数型, , , 
+    .成员 线程标识符, 整数型, , , 
+
+数据类型 热键信息, , 
+    .成员 窗口句柄, 整数型, , , 
+    .成员 功能键状态, 整数型, , , 
+    .成员 一般键, 整数型, , , 
+    .成员 热键ID, 空白型, , , 
+    .成员 处理热键子程序, 子程序指针, , , 
+
+
+.DLL命令 GetThreadDesktop, 整数型, "user32", "GetThreadDesktop", , 返回线索桌面句柄
+    .参数 dwThread, 整数型, , 
+
+.DLL命令 CreateDesktop, 整数型, "user32", "CreateDesktopA", , 
+    .参数 lpszDesktop, 文本型, , 
+    .参数 lpszDevice, 空白型, , 
+    .参数 pDevmode, 空白型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 lpsa, 空白型, , 
+
+.DLL命令 SetThreadDesktop, 整数型, "user32", "SetThreadDesktop", , 
+    .参数 hDesktop, 整数型, , 
+
+.DLL命令 SwitchDesktop, 整数型, "user32", "SwitchDesktop", , 
+    .参数 hDesktop, 整数型, , 
+
+.DLL命令 GetCurrentThreadId, 整数型, "kernel32", "GetCurrentThreadId", , 获取当前线程一个唯一的线程标识符  当前的线程标识符
+
+.DLL命令 CreateProcess, 整数型, "kernel32", "CreateProcessA", , 创建一个新进程（比如执行一个程序）  非零表示成功，零表示失败。会设置GetLastError
+    .参数 a, 空白型, , 
+    .参数 b, 文本型, , 
+    .参数 c, 空白型, , 
+    .参数 d, 空白型, , 
+    .参数 e, 逻辑型, , 
+    .参数 f, 空白型, , 
+    .参数 g, 空白型, , 
+    .参数 g, 空白型, , 
+    .参数 h, STARTUPINFO, , 
+    .参数 h, PROCESS_INFORMATION, , 
+
+.DLL命令 CloseDesktop, 空白型, "user32", "CloseDesktop", , 
+    .参数 a, 空白型, , 
+
+.DLL命令 API_WinExec, 整数型, "kernel32", "WinExec", , 运行指定的程序  大于32表示成功，请参考FindExecutable函数
+    .参数 lpCmdLine, 文本型, , 包含要执行的命令行
+    .参数 nCmdShow, 整数型, , 定义了以怎样的形式启动程序的常数值。参考ShowWindow函数的nCmdShow参数
+
+.DLL命令 置窗口特征, 子程序指针, "", "SetWindowLongA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 特征索引, 整数型, , 
+    .参数 新特征, 子程序指针, , 
+
+.DLL命令 RegisterHotKey, 整数型, "user32.dll", "RegisterHotKey", , 
+    .参数 hWnd, 整数型, , 
+    .参数 id, 整数型, , 
+    .参数 fsModifoers, 整数型, , 
+    .参数 vk, 整数型, , 
+
+.DLL命令 执行窗口程序, 整数型, "", "CallWindowProcA", , 
+    .参数 窗口程序程序指针, 子程序指针, , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 消息, 整数型, , 
+    .参数 参数1, 整数型, , 
+    .参数 参数2, 整数型, , 
+
+.DLL命令 UnregisterHotKey, 整数型, "", "UnregisterHotKey", , 
+    .参数 hWnd, 整数型, , 
+    .参数 HotKeyID, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 全桌面句柄A, 整数型, , , 
+.程序集变量 全桌面句柄B, 整数型, , , 
+.程序集变量 i, 整数型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+赋值 (全桌面句柄A, GetThreadDesktop (GetCurrentThreadId ()))
+输出调试文本 (全桌面句柄A)
+
+未知函数_67174500 (_启动窗口.取窗口句柄 (), 1, #键1, &窗口1)
+未知函数_67174500 (_启动窗口.取窗口句柄 (), 1, #键2, &窗口2)
+
+未知函数_67174500 (_启动窗口.取窗口句柄 (), 1, #键0, &退出)
+
+赋值 (全桌面句柄B, CreateDesktop (“刘投降”, 0, 0, 0, 位或 (#DESKTOP_ENUMERATE, #DESKTOP_CREATEMENU, #DESKTOP_HOOKCONTROL, #DESKTOP_READOBJECTS, #DESKTOP_CREATEWINDOW, #DESKTOP_WRITEOBJECTS, #DESKTOP_JOURNALRECORD, #DESKTOP_SWITCHDESKTOP, #DESKTOP_JOURNALPLAYBACK), 0))
+输出调试文本 (全桌面句柄B)
+
+
+
+.子程序 窗口1, 空白型, , 
+SwitchDesktop (全桌面句柄A)
+
+.子程序 退出, 空白型, , 
+SwitchDesktop (全桌面句柄A)
+CloseDesktop (全桌面句柄B)
+销毁 ()
+
+
+.子程序 窗口2, 空白型, , 
+.局部变量 sui, STARTUPINFO, , , 
+.局部变量 pi, PROCESS_INFORMATION, , , 
+
+SwitchDesktop (全桌面句柄B)
+赋值 (sui.lpDesktop, “刘投降”)
+CreateProcess (0, “Explorer.exe”, 0, 0, 真, 相加 (#CREATE_DEFAULT_ERROR_MODE, #CREATE_SEPARATE_WOW_VDM), 0, 0, sui, pi)
+ ' 运行 (“Explorer.exe”, 假, 1)
+ ' API_WinExec (“Explorer.exe”, 0)
+
+
+
+.程序集 注册热键_程序集, , , 
+
+.程序集变量 父窗口句柄, 整数型, , , 
+.程序集变量 默认窗口程序, 子程序指针, , , 
+.程序集变量 热键ID, 整数型, , , 
+.程序集变量 热键信息数组, 未知类型0x41010179, , "0", 
+.子程序 RegHotKey, 整数型, 公开, 注册成功返回热键ID,失败返回0
+.参数 窗口句柄, 整数型, , 
+.参数 功能键状态, 整数型, , 1、Alt；2、Ctrl；4、Shitf；8、Win。若要两个或以上的状态键按则把它们的值相加.
+.参数 键代码, 整数型, , 
+.参数 子程序指针, 子程序指针, , 
+
+.局部变量 临时, 未知类型0x41010166, , , 
+
+.如果真 (不等于 (未知函数_167838055 (窗口句柄, 相加 (1), 功能键状态, 键代码), 0)) ' RegisterHotKey返回的并不是热键的ID
+    赋值 (相加 (1)) ' 热键的ID也等于热键的数量.
+    赋值 (临时., 窗口句柄)
+     ' 这两个成员在这里没有太大用处,可以在自定义数据类型里删除这两成员----------------------
+    赋值 (临时., 功能键状态)
+    赋值 (临时., 键代码)
+     ' -------------------------------------------------------------------------------------
+    赋值 (临时., )
+    赋值 (临时., 子程序指针)
+    加入成员 (临时)
+    .如果真 (等于 (1))
+        赋值 (窗口句柄)
+        赋值 (默认窗口程序, 置窗口特征 (窗口句柄, -4, &新窗口程序))
+    .如果真结束
+    返回 ()
+.如果真结束
+返回 (0)
+
+.子程序 新窗口程序, 整数型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 消息, 整数型, , 
+.参数 参数1, 整数型, , 
+.参数 参数2, 整数型, , 
+
+.如果真 (等于 (消息, 786))
+    返回 (执行窗口程序 (热键信息数组 [参数1], 处理热键子程序, 窗口句柄, 消息, 参数1, 参数2)) ' 把需要处理的消息传递给处理程序
+.如果真结束
+返回 (未知函数_167838066 (窗口句柄, 消息, 参数1, 参数2)) ' 把不需要处理的消息传递给默认窗口处理程序，使窗口能正常响应消息
+
+.子程序 UnRegHotKey, 整数型, 公开, 成功返回非0,失败返回0
+.参数 窗口句柄, 整数型, , 
+.参数 HotKeyID, 整数型, , 
+
+返回 (UnregisterHotKey (窗口句柄, HotKeyID))
+
+
+.子程序 UnAllRegHotKey, 空白型, 公开, 撤销所有热键
+.局部变量 n, 整数型, , , 
+
+.计次循环首 (取数组成员数 (热键信息数组), n)
+    未知函数_167838067 ( [n], ,  [n], )
+.计次循环尾 ()
+赋值 (0)
+重定义数组 (假, 0)
+未知函数_167838056 (-4, ) ' 还原窗口过程函数
+
+
+ ' 不属于任何一个程序集、类模块的函数：

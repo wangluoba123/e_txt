@@ -1,0 +1,255 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 320
+    高度 = 160
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = 16777215 '  0xFFFFFF
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “搜索引擎”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' iext2 AF6AD80AA4244A59AFB3D83ECF5173CC 1 1 扩展界面支持库二
+
+
+
+
+.全局变量 连接, 整数型, , , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+赋值 (.标题, “搜索内容”)
+赋值 (.标题, “搜索网站”)
+赋值 (.标题, “搜索引擎”)
+ ' 抖落的叶(therys) QQ:35035103
+
+.子程序 _按钮1_被单击, 空白型, , 
+.判断开始 (等于 (.内容, “”))
+    信息框 (“请输入相关搜索文字”, #确认钮, )
+    返回 ()
+.默认
+    
+.判断结束
+.如果 (.选中)
+    赋值 (.类型, 1)
+    赋值 (.Internet地址, 相加 (“http://www.baidu.com/baidu?word=”, .内容, “&sa=Baidu++%CB%D1%CB%F7&tn=bds&cl=3&ct=2097152&si=”, .内容)) ' 百度搜索
+    跳转 ()
+.否则
+    .如果 (.选中)
+        赋值 (.类型, 1)
+        赋值 (.Internet地址, 相加 (“http://www.google.com/search?q=”, .内容, “&ie=zh-CN&btnG=Google+%CB%D1%CB%F7&domains=”, .内容, “&sitesearch=”, .内容)) ' 谷歌搜索
+        跳转 ()
+    .否则
+        .如果 (.选中)
+            赋值 (.类型, 1)
+            赋值 (.Internet地址, 相加 (“http://search.cn.yahoo.com/search?p=”, .内容, “&submit=Yahoo++%CB%D1%CB%F7&vs=”, .内容, “&source=site_search”)) ' Yahoo搜索
+            跳转 ()
+        .否则
+            
+        .如果结束
+        
+    .如果结束
+    
+.如果结束
+
+
+.子程序 _图形按钮1_被单击, 空白型, , 
+.如果 (等于 (_启动窗口.高度, 380))
+    赋值 (_启动窗口.高度, 160)
+.否则
+    赋值 (_启动窗口.高度, 380)
+.如果结束
+
+赋值 (.标题, “ 知道”)
+赋值 (.标题, “ 音乐”)
+赋值 (.标题, “ 新闻”)
+赋值 (.可视, 真)
+赋值 (.可视, 假)
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+.判断开始 (等于 (.内容, “”))
+    信息框 (“请输入相关搜索文字”, #确认钮, )
+    返回 ()
+.默认
+    .如果 (.选中)
+        赋值 (.类型, 1)
+        赋值 (.Internet地址, 相加 (“http://search.cn.yahoo.com/search?p=”, .内容, “&pid=ysearch&source=ysearch_news_result_tab”))
+        跳转 ()
+    .否则
+        .如果 (.选中)
+            赋值 (.类型, 1)
+            赋值 (.Internet地址, 相加 (“http://image.cn.yahoo.com/search?pid=yisou&source=ysearch_img_result_topsearch&chntotal=-1&entotal=-1&mip=all&miw=all&p=”, .内容, “&sf=”))
+            跳转 ()
+        .否则
+            .如果 (.选中)
+                赋值 (.类型, 1)
+                赋值 (.Internet地址, 相加 (“http://music.yahoo.com.cn/search?p=”, .内容, “&pid=yisou&source=ysearch_image_result_tab”))
+                跳转 ()
+            .否则
+                .如果 (.选中)
+                    赋值 (.类型, 1)
+                    赋值 (.Internet地址, 相加 (“http://ys.cn.yahoo.com/mohu/index.html?p=”, .内容, “&bt1=all&bt2=all&source=ysearch_combo_result_topsearch&t=”))
+                    跳转 ()
+                .否则
+                    .如果 (.选中)
+                        赋值 (.类型, 1)
+                        赋值 (.Internet地址, 相加 (“http://ks.cn.yahoo.com/search/search_result2?pid=yisou&ei=utf-8&title=&link=ask_write&p=”, .内容, “&button”))
+                        跳转 ()
+                    .否则
+                        
+                    .如果结束
+                    
+                .如果结束
+                
+            .如果结束
+            
+        .如果结束
+        
+    .如果结束
+    
+.判断结束
+
+
+
+.子程序 _按钮3_被单击, 空白型, , 
+.判断开始 (等于 (.内容, “”))
+    信息框 (“请输入相关搜索文字”, #确认钮, )
+    返回 ()
+.默认
+    .如果 (.选中)
+        赋值 (.类型, 1)
+        赋值 (.Internet地址, 相加 (“http://www.baidu.com/s?wd=”, .内容, “&cl=3”))
+        跳转 ()
+    .否则
+        .如果 (.选中)
+            赋值 (.类型, 1)
+            赋值 (.Internet地址, 相加 (“http://zhidao.baidu.com/q?ct=17&pn=0&tn=ikaslist&rn=10&word=”, .内容, “&t=51”))
+            跳转 ()
+        .否则
+            .如果 (.选中)
+                赋值 (.类型, 1)
+                赋值 (.Internet地址, 相加 (“http://mp3.baidu.com/m?f=ms&tn=baidump3&ct=134217728&lf=&rn=&word=”, .内容, “&lm=-1”))
+                跳转 ()
+            .否则
+                .如果 (.选中)
+                    赋值 (.类型, 1)
+                    赋值 (.Internet地址, 相加 (“http://image.baidu.com/i?tn=baiduimage&ct=201326592&lm=-1&cl=2&word=”, .内容, “&t=12”))
+                    跳转 ()
+                .否则
+                    .如果 (.选中)
+                        赋值 (.类型, 1)
+                        赋值 (.Internet地址, 相加 (“http://news.baidu.com/ns?cl=2&rn=20&tn=news&word=”, .内容))
+                        跳转 ()
+                        
+                    .否则
+                        
+                    .如果结束
+                    
+                .如果结束
+                
+            .如果结束
+            
+        .如果结束
+        
+    .如果结束
+    
+.判断结束
+
+
+
+.子程序 _图形按钮2_被单击, 空白型, , 
+.判断开始 (等于 (.选中, 假))
+    赋值 (.标题, “ 咨询”)
+    赋值 (.标题, “ 学术”)
+    赋值 (.标题, “论坛”)
+    赋值 (.可视, 假)
+    赋值 (.可视, 真)
+    .如果 (.选中)
+        赋值 (.类型, 1)
+        赋值 (.Internet地址, 相加 (“http://www.google.com/search?q=”, .内容))
+        跳转 ()
+    .否则
+        .如果 (.选中)
+            赋值 (.类型, 1)
+            赋值 (.Internet地址, 相加 (“http://news.google.cn/news?hl=zh-CN&ned=ccn&q=”, .内容, “&btnG”))
+            跳转 ()
+        .否则
+            .如果 (.选中)
+                赋值 (.类型, 1)
+                赋值 (.Internet地址, 相加 (“http://scholar.google.com/scholar?hl=zh-CN&lr=&newwindow=”, .内容, “&q”))
+                跳转 ()
+            .否则
+                .如果 (.选中)
+                    赋值 (.类型, 1)
+                    赋值 (.Internet地址, 相加 (“http://images.google.cn/images?hl=zh-CN&q=”, .内容, “&btnG”))
+                    跳转 ()
+                .否则
+                    .如果 (.选中)
+                        赋值 (.类型, 1)
+                        赋值 (.Internet地址, 相加 (“http://groups.google.com/groups/search?hl=zh-CN&ie=UTF-8&oe=UTF-8&q=”, .内容))
+                        跳转 ()
+                    .否则
+                        
+                    .如果结束
+                    
+                .如果结束
+                
+            .如果结束
+            
+        .如果结束
+        
+    .如果结束
+    
+.默认
+    
+.判断结束
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,816 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 473
+    高度 = 355
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “FPE”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 3 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 1 1 扩展界面支持库一
+
+
+
+
+数据类型 IMAGE_SECTION_HEADER, , 40
+    .成员 Name, 字节型, , "8", 
+    .成员 Misc, 整数型, , , Misc指针
+    .成员 VirtualAddress, 整数型, , , 
+    .成员 SizeOfRawData, 整数型, , , 
+    .成员 PointerToRawData, 整数型, , , 
+    .成员 PointerToRelocations, 整数型, , , 
+    .成员 PointerToLinenumbers, 整数型, , , 
+    .成员 NumberOfRelocations, 短整数型, , , 
+    .成员 NumberOfLinenumbers, 短整数型, , , 
+    .成员 Characteristics, 整数型, , , 
+
+数据类型 Misc, , 8
+    .成员 PhysicalAddress, 整数型, , , 
+    .成员 VirtualSize, 整数型, , , 
+
+数据类型 IMAGE_OPTIONAL_HEADER, , 224
+    .成员 Magic, 短整数型, , , 
+    .成员 MajorLinkerVersion, 字节型, , , 
+    .成员 MinorLinkerVersion, 字节型, , , 
+    .成员 SizeOfCode, 整数型, , , 
+    .成员 SizeOfInitializedData, 整数型, , , 
+    .成员 SizeOfUninitializedData, 整数型, , , 
+    .成员 AddressOfEntryPoint, 整数型, , , 
+    .成员 BaseOfCode, 整数型, , , 
+    .成员 BaseOfData, 整数型, , , 
+    .成员 ImageBase, 整数型, , , 
+    .成员 SectionAlignment, 整数型, , , 
+    .成员 FileAlignment, 整数型, , , 
+    .成员 MajorOperatingSystemVersion, 短整数型, , , 
+    .成员 MinorOperatingSystemVersion, 短整数型, , , 
+    .成员 MajorImageVersion, 短整数型, , , 
+    .成员 MinorImageVersion, 短整数型, , , 
+    .成员 MajorSubsystemVersion, 短整数型, , , 
+    .成员 MinorSubsystemVersion, 短整数型, , , 
+    .成员 Win32VersionValue, 整数型, , , 
+    .成员 SizeOfImage, 整数型, , , 
+    .成员 SizeOfHeaders, 整数型, , , 
+    .成员 CheckSum, 整数型, , , 
+    .成员 Subsystem, 短整数型, , , 
+    .成员 DllCharacteristics, 短整数型, , , 
+    .成员 SizeOfStackReserve, 整数型, , , 
+    .成员 SizeOfStackCommit, 整数型, , , 
+    .成员 SizeOfHeapReserve, 整数型, , , 
+    .成员 SizeOfHeapCommit, 整数型, , , 
+    .成员 LoaderFlags, 整数型, , , 
+    .成员 NumberOfRvaAndSizes, 整数型, , , 
+    .成员 DataDirectory, IMAGE_DATA_DIRECTORY, , "16", 
+
+数据类型 IMAGE_DATA_DIRECTORY, , 8
+    .成员 VirtualAddress, 整数型, , , 
+    .成员 isize, 整数型, , , 
+
+数据类型 IMAGE_NT_HEADERS, , 248
+    .成员 Signature, 整数型, , , 
+    .成员 Machine, 短整数型, , , FileHeader - Begin
+    .成员 NumberOfSections, 短整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 PointerToSymbolTable, 整数型, , , 
+    .成员 NumberOfSymbols, 整数型, , , 
+    .成员 SizeOfOptionalHeader, 短整数型, , , 
+    .成员 Characteristics, 短整数型, , , FileHeader - End
+    .成员 Magic, 短整数型, , , OptionalHeader - Begin
+    .成员 MajorLinkerVersion, 字节型, , , 
+    .成员 MinorLinkerVersion, 字节型, , , 
+    .成员 SizeOfCode, 整数型, , , 
+    .成员 SizeOfInitializedData, 整数型, , , 
+    .成员 SizeOfUninitializedData, 整数型, , , 
+    .成员 AddressOfEntryPoint, 整数型, , , 
+    .成员 BaseOfCode, 整数型, , , 
+    .成员 BaseOfData, 整数型, , , 
+    .成员 ImageBase, 整数型, , , 
+    .成员 SectionAlignment, 整数型, , , 
+    .成员 FileAlignment, 整数型, , , 
+    .成员 MajorOperatingSystemVersion, 短整数型, , , 
+    .成员 MinorOperatingSystemVersion, 短整数型, , , 
+    .成员 MajorImageVersion, 短整数型, , , 
+    .成员 MinorImageVersion, 短整数型, , , 
+    .成员 MajorSubsystemVersion, 短整数型, , , 
+    .成员 MinorSubsystemVersion, 短整数型, , , 
+    .成员 Win32VersionValue, 整数型, , , 
+    .成员 SizeOfImage, 整数型, , , 
+    .成员 SizeOfHeaders, 整数型, , , 
+    .成员 CheckSum, 整数型, , , 
+    .成员 Subsystem, 短整数型, , , 
+    .成员 DllCharacteristics, 短整数型, , , 
+    .成员 SizeOfStackReserve, 整数型, , , 
+    .成员 SizeOfStackCommit, 整数型, , , 
+    .成员 SizeOfHeapReserve, 整数型, , , 
+    .成员 SizeOfHeapCommit, 整数型, , , 
+    .成员 LoaderFlags, 整数型, , , 
+    .成员 NumberOfRvaAndSizes, 整数型, , , 
+    .成员 VirtualAddress, 整数型, , , DataDirectory
+    .成员 isize, 整数型, , , 
+    .成员 VirtualAddress1, 整数型, , , DataDirectory
+    .成员 isize1, 整数型, , , 
+    .成员 VirtualAddress2, 整数型, , , DataDirectory
+    .成员 isize2, 整数型, , , 
+    .成员 VirtualAddress3, 整数型, , , DataDirectory
+    .成员 isize3, 整数型, , , 
+    .成员 VirtualAddress4, 整数型, , , DataDirectory
+    .成员 isize4, 整数型, , , 
+    .成员 VirtualAddress5, 整数型, , , DataDirectory
+    .成员 isize5, 整数型, , , 
+    .成员 VirtualAddress6, 整数型, , , DataDirectory
+    .成员 isize6, 整数型, , , 
+    .成员 VirtualAddress7, 整数型, , , DataDirectory
+    .成员 isize7, 整数型, , , 
+    .成员 VirtualAddress8, 整数型, , , DataDirectory
+    .成员 isize8, 整数型, , , 
+    .成员 VirtualAddress9, 整数型, , , DataDirectory
+    .成员 isize9, 整数型, , , 
+    .成员 VirtualAddress10, 整数型, , , DataDirectory
+    .成员 isize10, 整数型, , , 
+    .成员 VirtualAddress11, 整数型, , , DataDirectory
+    .成员 isize11, 整数型, , , 
+    .成员 VirtualAddress12, 整数型, , , DataDirectory
+    .成员 isize12, 整数型, , , 
+    .成员 VirtualAddress13, 整数型, , , DataDirectory
+    .成员 isize13, 整数型, , , 
+    .成员 VirtualAddress14, 整数型, , , DataDirectory
+    .成员 isize14, 整数型, , , 
+    .成员 VirtualAddress15, 整数型, , , DataDirectory
+    .成员 isize15, 整数型, , , 
+    .成员 VirtualAddress16, 整数型, , , DataDirectory
+    .成员 isize16, 整数型, , , OptionalHeader - End
+
+数据类型 IMAGE_FILE_HEADER, , 20
+    .成员 Machine, 短整数型, , , 
+    .成员 NumberOfSections, 短整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 PointerToSymbolTable, 整数型, , , 
+    .成员 NumberOfSymbols, 整数型, , , 
+    .成员 SizeOfOptionalHeader, 短整数型, , , 
+    .成员 Characteristics, 短整数型, , , 
+
+数据类型 PROCESSENTRY32, , 
+    .成员 dwSize, 整数型, , , 
+    .成员 cntUsage, 整数型, , , 
+    .成员 th32ProcessID, 整数型, , , 
+    .成员 th32DefaultHeapID, 整数型, , , 
+    .成员 th32ModuleID, 整数型, , , 
+    .成员 cntThreads, 整数型, , , 
+    .成员 th32ParentProcessID, 整数型, , , 
+    .成员 pcPriClassBase, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+    .成员 szExeFile, 字节型, , "260", 
+
+数据类型 Info, , 
+    .成员 address, 整数型, , , 
+    .成员 size, 整数型, , , 
+
+.全局变量 MemoryPlace, 长整数型, , , 
+.全局变量 info, Info, , "0", 
+.全局变量 hProcess, 整数型, , , 选中进程句柄
+.全局变量 PEFile, 逻辑型, , , 
+
+.DLL命令 OpenProcess, 整数型, "", "OpenProcess", , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 逻辑型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 GetWindowThreadProcessId, 整数型, "", "GetWindowThreadProcessId", , 
+    .参数 WindowHandle, 整数型, , 
+    .参数 ProcessId, 字节集, , 
+
+.DLL命令 CloseHandle, 空白型, "", "CloseHandle", , 
+    .参数 ProcessHandle, 整数型, , 
+
+.DLL命令 ReadProcessMemory, 整数型, "", "ReadProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 字节集, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesRead, 整数型, , 
+
+.DLL命令 WriteProcessMemory, 整数型, "", "WriteProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 字节集, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesRead, 整数型, , 
+
+.DLL命令 GetProcessWorkingSetSize, 整数型, "", "GetProcessWorkingSetSize", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpMinimumWorkingSetSize, 字节集, , 
+    .参数 lpMaximumWorkingSetSize, 字节集, , 
+
+.DLL命令 CreateToolhelp32Snapshot, 整数型, "", "CreateToolhelp32Snapshot", , 
+    .参数 dwFlags, 整数型, , 
+    .参数 th32ProcessID, 整数型, , 
+
+.DLL命令 Process32First, 逻辑型, "", "Process32First", , 
+    .参数 hSnapshot, 整数型, , 
+    .参数 lppe, PROCESSENTRY32, , 
+
+.DLL命令 Process32Next, 逻辑型, "", "Process32Next", , 
+    .参数 hSnapshot, 整数型, , 
+    .参数 lppe, PROCESSENTRY32, , 
+
+.DLL命令 RtlMoveMemory1, 整数型, "", "RtlMoveMemory", , 
+    .参数 mb, IMAGE_SECTION_HEADER, 传址, 
+    .参数 y, 字节集, , 
+    .参数 n, 整数型, , 
+
+.DLL命令 RtlMoveMemory, 整数型, "", "", , 
+    .参数 mb, IMAGE_NT_HEADERS, 传址, 
+    .参数 y, 字节集, , 
+    .参数 n, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 find, 整数型, , "0", 
+.程序集变量 Stop, 逻辑型, , , 
+.子程序 _按钮6_被单击, 空白型, , 
+.局部变量 cd, 整数型, , , 
+
+赋值 (cd, 十六进制文本到整数 (.内容))
+.如果 (并且 (等于 (cd, -1), 不等于 (.内容, “FFFFFFFF”)))
+    赋值 (.内容, “0”)
+.否则
+    赋值 (.内容, 到文本 (cd))
+.如果结束
+
+
+.子程序 _按钮7_被单击, 空白型, , 
+.局部变量 temp, 文本型, , , 
+.局部变量 bool, 逻辑型, , , 
+.局部变量 num, 整数型, , , 
+
+赋值 (temp, 取十六进制文本 (到数值 (.内容)))
+赋值 (bool, 真)
+.计次循环首 (取文本长度 (.内容), num)
+    .如果真 (不等于 (取文本中间 (.内容, num, 1), “0”))
+        赋值 (bool, 假)
+        跳出循环 ()
+    .如果真结束
+    
+.计次循环尾 ()
+.如果 (并且 (等于 (temp, “0”), 等于 (bool, 假)))
+    赋值 (.内容, “FFFFFFFF”)
+.否则
+    赋值 (.内容, 补全 (temp))
+.如果结束
+
+
+.子程序 _编辑框6_字符输入, 整数型, , 
+.参数 字符代码, 整数型, , 
+
+.如果 (或者 (并且 (大于或等于 (字符代码, 取代码 (“0”, )), 小于或等于 (字符代码, 取代码 (“9”, ))), 并且 (大于或等于 (到大写 (字符 (字符代码)), “A”), 小于或等于 (到大写 (字符 (字符代码)), “F”)), 等于 (字符代码, 8)))
+    返回 (字符代码)
+.否则
+    返回 (0)
+.如果结束
+
+
+.子程序 _按钮8_被单击, 空白型, , 
+.局部变量 hSnapShot, 整数型, , , 
+.局部变量 End, 逻辑型, , , 
+.局部变量 buffer, PROCESSENTRY32, , , 
+
+清空 ()
+赋值 (hSnapShot, CreateToolhelp32Snapshot (2, 0))
+赋值 (buffer.dwSize, 296)
+赋值 (End, Process32First (hSnapShot, buffer))
+.判断循环首 (等于 (End, 真))
+    相加 (“[”, 取十六进制文本 (buffer.th32ProcessID), “]”, 到文本 (buffer.szExeFile)).加入项目 (buffer.th32ProcessID)
+    赋值 (End, Process32Next (hSnapShot, buffer))
+.判断循环尾 ()
+CloseHandle (hSnapShot)
+
+.子程序 _纵向滚动条1_位置被改变, 空白型, , 
+赋值 (.内容, 相加 (取文本左边 (补全 (取十六进制文本 (相乘 (.位置, 131076))), 7), “0”))
+赋值 (MemoryPlace, 十六进制文本到长整数 (.内容))
+显示内存 ()
+取当前值 ()
+
+.子程序 _纵向滚动条1_按下某键, 逻辑型, , 
+.参数 键代码, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.如果真 (等于 (键代码, #上光标键))
+    .判断开始 (大于或等于 (MemoryPlace, 16))
+        赋值 (MemoryPlace, 相减 (MemoryPlace, 16))
+    .默认
+        赋值 (MemoryPlace, 0)
+    .判断结束
+    显示内存 ()
+    赋值 (.位置, 整除 (MemoryPlace, 131076))
+    赋值 (.内容, 相加 (取文本左边 (补全 (取十六进制文本 (MemoryPlace)), 7), “0”))
+    取当前值 ()
+    返回 (假)
+.如果真结束
+.如果真 (等于 (键代码, #下光标键))
+    .判断开始 (小于或等于 (MemoryPlace, 4294967295))
+        赋值 (MemoryPlace, 相加 (MemoryPlace, 16))
+    .默认
+        赋值 (MemoryPlace, 4294967279)
+    .判断结束
+    显示内存 ()
+    赋值 (.位置, 整除 (MemoryPlace, 131076))
+    赋值 (.内容, 相加 (取文本左边 (补全 (取十六进制文本 (MemoryPlace)), 7), “0”))
+    取当前值 ()
+    返回 (假)
+.如果真结束
+返回 (真)
+
+.子程序 _编辑框7_字符输入, 整数型, , 
+.参数 字符代码, 整数型, , 
+
+.如果真 (或者 (并且 (大于或等于 (字符代码, 取代码 (“0”, )), 小于或等于 (字符代码, 取代码 (“9”, ))), 并且 (大于或等于 (到大写 (字符 (字符代码)), “A”), 小于或等于 (到大写 (字符 (字符代码)), “F”)), 等于 (字符代码, 8)))
+    返回 (字符代码)
+.如果真结束
+返回 (0)
+
+.子程序 _编辑框7_按下某键, 逻辑型, , 
+.参数 键代码, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.如果真 (等于 (键代码, #回车键))
+    赋值 (MemoryPlace, 十六进制文本到长整数 (相加 (取文本左边 (补全 (.内容), 7), “0”)))
+    赋值 (.位置, 整除 (MemoryPlace, 131076))
+    赋值 (.内容, 补全 (.内容))
+    显示内存 ()
+    取当前值 ()
+.如果真结束
+返回 (真)
+
+.子程序 _按钮9_被单击, 空白型, , 
+赋值 (MemoryPlace, 十六进制文本到长整数 (相加 (取文本左边 (补全 (.内容), 7), “0”)))
+赋值 (.内容, 补全 (.内容))
+显示内存 ()
+取当前值 ()
+
+.子程序 _编辑框8_字符输入, 整数型, , 
+.参数 字符代码, 整数型, , 
+
+.如果真 (或者 (并且 (大于或等于 (字符代码, 取代码 (“0”, )), 小于或等于 (字符代码, 取代码 (“9”, ))), 并且 (大于或等于 (到大写 (字符 (字符代码)), “A”), 小于或等于 (到大写 (字符 (字符代码)), “F”)), 等于 (字符代码, 8)))
+    返回 (字符代码)
+.如果真结束
+返回 (0)
+
+.子程序 _编辑框8_按下某键, 逻辑型, , 
+.参数 键代码, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.如果真 (等于 (键代码, #回车键))
+    _按钮10_被单击 ()
+.如果真结束
+返回 (真)
+
+.子程序 _按钮10_被单击, 空白型, , 
+.局部变量 bool, 逻辑型, , , 
+.局部变量 num, 整数型, , , 
+
+赋值 (MemoryPlace, 十六进制文本到长整数 (相加 (取文本左边 (补全 (.内容), 7), “0”)))
+赋值 (.内容, 补全 (.内容))
+.计次循环首 (四舍五入 (相除 (取文本长度 (.内容), 2), 0), num)
+    赋值 (bool, 写内存 (相减 (相加 (十六进制文本到整数 (.内容), num), 1), 取字节集左边 (到字节集 (十六进制文本到字节 (取文本中间 (.内容, 相减 (相乘 (num, 2), 1), 2))), 1)))
+.计次循环尾 ()
+显示内存 ()
+取当前值 ()
+
+.子程序 _列表框3_列表项被选择, 空白型, , 
+.局部变量 ID, 整数型, , , 
+
+CloseHandle (hProcess)
+赋值 (.内容, .取项目文本 (.现行选中项))
+赋值 (ID, .取项目数值 (.现行选中项))
+赋值 (.内容, “00400000”)
+赋值 (hProcess, OpenProcess (2035711, 假, ID))
+_按钮9_被单击 ()
+赋值 (PEFile, 取位置 (取文本右边 (.内容, 相减 (取文本长度 (.内容), 寻找文本 (.内容, “]”, , 假))), info))
+
+.子程序 _按钮11_被单击, 空白型, , 
+.局部变量 temp, 整数型, , , 
+
+赋值 (temp, .现行选中项)
+temp.删除项目 ()
+.如果真 (等于 (取项目数 (), 0))
+    “Mission 1”.加入项目 ()
+.如果真结束
+赋值 (.现行选中项, temp)
+连续赋值 (“0”, .内容, .内容)
+
+.子程序 _按钮12_被单击, 空白型, , 
+.局部变量 temp, 文本型, , , 
+
+.如果真 (等于 (输入框 (“请输入任务名称：”, , 相加 (“Mission ”, 到文本 (相加 (取项目数 (), 1))), temp, ), 真))
+    相加 (.现行选中项, 1).插入项目 (temp, )
+    连续赋值 (“0”, .内容, .内容)
+    赋值 (.现行选中项, 相加 (.现行选中项, 1))
+.如果真结束
+
+
+.子程序 _按钮13_被单击, 空白型, , 
+.局部变量 temp, 文本型, , , 
+
+.如果真 (不等于 (.现行选中项, -1))
+    .如果真 (等于 (输入框 (“请输入新名称：”, , .取项目文本 (.现行选中项), temp, ), 真))
+        .置项目文本 (.现行选中项, temp)
+    .如果真结束
+    
+.如果真结束
+
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+CloseHandle (hProcess)
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 进制, 字节型, , "2", 
+.局部变量 bin, 字节集, , , 
+.局部变量 Value, 整数型, , , 
+.局部变量 n, 整数型, , , 
+.局部变量 m, 整数型, , , 
+.局部变量 T, 整数型, , , 
+
+.判断开始 (等于 (.选中, 真))
+    赋值 (进制 [1], 1)
+    赋值 (进制 [2], 1)
+.判断 (等于 (.选中, 真))
+    赋值 (进制 [1], 2)
+    赋值 (进制 [2], 2)
+.默认
+    赋值 (进制 [1], 4)
+    赋值 (进制 [2], 3)
+.判断结束
+重定义数组 (find, 假, 0)
+赋值 (Stop, 假)
+赋值 (Value, 到数值 (.内容))
+赋值 (T, 相加 (T, 1))
+.如果真 (不等于 (hProcess, 0))
+    .如果 (PEFile)
+        .计次循环首 (取数组成员数 (info), n)
+            .计次循环首 (info [n], size, m)
+                赋值 (bin, 读内存 (相减 (相加 (info [n], address, m), 1), 进制 [1]))
+                .如果真 (等于 (取字节集数据 (bin, 进制 [2]), Value))
+                    加入成员 (find, n)
+                    赋值 (T, 相加 (T, 1))
+                .如果真结束
+                处理事件 ()
+                赋值 (.位置, 相除 (相加 (n, 2147483648), 42949673))
+                .如果真 (Stop)
+                    跳出循环 ()
+                .如果真结束
+                
+            .计次循环尾 ()
+            赋值 (.内容, 到文本 (T))
+            .如果真 (Stop)
+                跳出循环 ()
+            .如果真结束
+            
+        .计次循环尾 ()
+        
+    .否则
+        .变量循环首 (4194304, 2147483647, 1, n)
+            赋值 (bin, 读内存 (n, 进制 [1]))
+            .如果真 (等于 (取字节集数据 (bin, 进制 [2]), Value))
+                加入成员 (find, n)
+                赋值 (T, 相加 (T, 1))
+                赋值 (.内容, 到文本 (T))
+            .如果真结束
+            处理事件 ()
+            赋值 (.位置, 相除 (相加 (n, 2147483648), 42949673))
+            .如果真 (Stop)
+                跳出循环 ()
+            .如果真结束
+            
+        .变量循环尾 ()
+        .变量循环首 (-2147483648, -1, 1, n)
+            赋值 (bin, 读内存 (n, 进制 [1]))
+            .如果真 (等于 (取字节集数据 (bin, 进制 [2]), Value))
+                加入成员 (find, n)
+                赋值 (T, 相加 (T, 1))
+                赋值 (.内容, 到文本 (T))
+            .如果真结束
+            处理事件 ()
+            赋值 (.位置, 相除 (相加 (n, 2147483648), 42949673))
+            .如果真 (Stop)
+                跳出循环 ()
+            .如果真结束
+            
+        .变量循环尾 ()
+    .如果结束
+    
+.如果真结束
+.如果真 (小于 (到数值 (.内容), 20))
+    .计次循环首 (取数组成员数 (find), n)
+        相加 (“[”, 补全 (取十六进制文本 (find [n])), “]”).加入项目 (find [n])
+    .计次循环尾 ()
+.如果真结束
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+.局部变量 n, 整数型, , , 
+
+赋值 (Stop, 真)
+.如果真 (小于 (到数值 (.内容), 20))
+    .计次循环首 (取数组成员数 (find), n)
+        相加 (“[”, 补全 (取十六进制文本 (find [n])), “]”, .内容).加入项目 (find [n])
+    .计次循环尾 ()
+.如果真结束
+
+
+.程序集 通用程序集, , , 
+
+.子程序 读内存, 字节集, , 失败返回空字节集
+.参数 起始读取位置, 整数型, , 
+.参数 读取字节数, 整数型, , 
+
+.局部变量 Buffer, 字节集, , , 
+.局部变量 Bool, 整数型, , , 
+
+赋值 (Buffer, 取空白字节集 (读取字节数))
+赋值 (Bool, ReadProcessMemory (hProcess, 起始读取位置, Buffer, 读取字节数, 0))
+.如果真 (等于 (Bool, 0))
+    返回 (取空白字节集 (0))
+.如果真结束
+返回 (Buffer)
+
+.子程序 写内存, 逻辑型, , 失败返回假
+.参数 起始写出位置, 整数型, , 
+.参数 写出内容, 字节集, , 
+
+.局部变量 Bool, 整数型, , , 
+
+赋值 (Bool, WriteProcessMemory (hProcess, 起始写出位置, 写出内容, 取字节集长度 (写出内容), 0))
+.如果真 (等于 (Bool, 0))
+    返回 (假)
+.如果真结束
+返回 (真)
+
+.子程序 字节到十六进制文本, 文本型, , 
+.参数 欲转换字节, 字节型, , 
+
+.局部变量 temp, 字节型, , "2", 
+
+.如果真 (大于 (欲转换字节, 15))
+    返回 (取十六进制文本 (欲转换字节))
+.如果真结束
+返回 (相加 (“0”, 取十六进制文本 (欲转换字节)))
+temp [1] ＝ 欲转换字节 ＼ 16
+temp [2] ＝ 欲转换字节 － temp [1] × 16
+如果 (temp [2] ＜ 10)
+temp [2] ＝ temp [2] ＋ 48
+temp [2] ＝ temp [2] ＋ 55
+如果 (temp [1] ＜ 10)
+temp [1] ＝ temp [1] ＋ 48
+temp [1] ＝ temp [1] ＋ 55
+返回 (从字节集转换 (到字节集 (temp [1]), 10) ＋ 从字节集转换 (到字节集 (temp [2]), 10))
+
+.子程序 十六进制文本到整数, 整数型, , 
+.参数 欲转换十六进制文本, 文本型, , 长度不得大于八位，也不得有非法字符，否则返回-1
+
+.局部变量 大写文本, 文本型, , , 
+.局部变量 文本长度, 整数型, , , 
+.局部变量 循环次数, 整数型, , , 
+.局部变量 代码, 整数型, , , 
+.局部变量 n, 整数型, , , 
+
+赋值 (文本长度, 取文本长度 (欲转换十六进制文本))
+.如果真 (大于 (文本长度, 8))
+    返回 (-1)
+.如果真结束
+赋值 (大写文本, 到大写 (欲转换十六进制文本))
+赋值 (n, 0)
+.计次循环首 (文本长度, 循环次数)
+    赋值 (代码, 取代码 (大写文本, 相加 (相减 (文本长度, 循环次数), 1)))
+    .如果 (并且 (大于或等于 (代码, 65), 小于或等于 (代码, 70)))
+        赋值 (n, 相加 (n, 相乘 (相减 (代码, 55), 求次方 (16, 相减 (循环次数, 1)))))
+    .否则
+        .如果 (并且 (大于或等于 (代码, 48), 小于或等于 (代码, 57)))
+            赋值 (n, 相加 (n, 相乘 (相减 (代码, 48), 求次方 (16, 相减 (循环次数, 1)))))
+        .否则
+            返回 (-1)
+        .如果结束
+        
+    .如果结束
+    
+.计次循环尾 ()
+返回 (n)
+
+.子程序 补全, 文本型, , 
+.参数 补全文本, 文本型, , 
+
+.局部变量 n, 整数型, , , 
+
+赋值 (n, 取文本长度 (补全文本))
+.如果真 (大于 (n, 8))
+    返回 (“FFFFFFFF”)
+.如果真结束
+.如果真 (等于 (n, 8))
+    返回 (到大写 (补全文本))
+.如果真结束
+返回 (相加 (取重复文本 (相减 (8, n), “0”), 到大写 (补全文本)))
+
+.子程序 十六进制文本到长整数, 长整数型, , 
+.参数 欲转换十六进制文本, 文本型, , 长度不得大于八位，也不得有非法字符，否则返回-1
+
+.局部变量 大写文本, 文本型, , , 
+.局部变量 文本长度, 整数型, , , 
+.局部变量 循环次数, 整数型, , , 
+.局部变量 代码, 整数型, , , 
+.局部变量 n, 长整数型, , , 
+
+赋值 (文本长度, 取文本长度 (欲转换十六进制文本))
+.如果真 (大于 (文本长度, 8))
+    返回 (-1)
+.如果真结束
+赋值 (大写文本, 到大写 (欲转换十六进制文本))
+赋值 (n, 0)
+.计次循环首 (文本长度, 循环次数)
+    赋值 (代码, 取代码 (大写文本, 相加 (相减 (文本长度, 循环次数), 1)))
+    .如果 (并且 (大于或等于 (代码, 65), 小于或等于 (代码, 70)))
+        赋值 (n, 相加 (n, 相乘 (相减 (代码, 55), 求次方 (16, 相减 (循环次数, 1)))))
+    .否则
+        .如果 (并且 (大于或等于 (代码, 48), 小于或等于 (代码, 57)))
+            赋值 (n, 相加 (n, 相乘 (相减 (代码, 48), 求次方 (16, 相减 (循环次数, 1)))))
+        .否则
+            返回 (-1)
+        .如果结束
+        
+    .如果结束
+    
+.计次循环尾 ()
+返回 (n)
+
+.子程序 十六进制文本到字节, 长整数型, , 
+.参数 欲转换十六进制文本, 文本型, , 长度不大于二位，也不得有非法字符，否则返回-1
+
+.局部变量 大写文本, 文本型, , , 
+.局部变量 文本长度, 整数型, , , 
+.局部变量 循环次数, 整数型, , , 
+.局部变量 代码, 整数型, , , 
+.局部变量 n, 字节型, , , 
+
+赋值 (文本长度, 取文本长度 (欲转换十六进制文本))
+.如果真 (大于 (文本长度, 2))
+    返回 (-1)
+.如果真结束
+赋值 (大写文本, 到大写 (欲转换十六进制文本))
+赋值 (n, 0)
+.计次循环首 (文本长度, 循环次数)
+    赋值 (代码, 取代码 (大写文本, 相加 (相减 (文本长度, 循环次数), 1)))
+    .如果 (并且 (大于或等于 (代码, 65), 小于或等于 (代码, 70)))
+        赋值 (n, 相加 (n, 相乘 (相减 (代码, 55), 求次方 (16, 相减 (循环次数, 1)))))
+    .否则
+        .如果 (并且 (大于或等于 (代码, 48), 小于或等于 (代码, 57)))
+            赋值 (n, 相加 (n, 相乘 (相减 (代码, 48), 求次方 (16, 相减 (循环次数, 1)))))
+        .否则
+            返回 (-1)
+        .如果结束
+        
+    .如果结束
+    
+.计次循环尾 ()
+返回 (n)
+
+.子程序 显示内存, 空白型, , 
+.局部变量 bin, 字节集, , , 
+.局部变量 n, 整数型, , "2", 
+
+.如果真 (不等于 (hProcess, 0))
+    赋值 (bin, 读内存 (MemoryPlace, 272))
+.如果真结束
+.计次循环首 (17, n [1])
+    _启动窗口.置标题 (., 相减 (n [1], 1), 0, 补全 (取十六进制文本 (相加 (MemoryPlace, 相乘 (相减 (n [1], 1), 16)))))
+    .计次循环首 (16, n [2])
+        .如果 (等于 (bin, 取空白字节集 (0)))
+            _启动窗口.置标题 (., 相减 (n [1], 1), n [2], “??”)
+        .否则
+            _启动窗口.置标题 (., 相减 (n [1], 1), n [2], 字节到十六进制文本 (取字节集数据 (取字节集中间 (bin, 相加 (相乘 (相减 (n [1], 1), 16), n [2]), 1), 1)))
+        .如果结束
+        
+    .计次循环尾 ()
+    .如果 (不等于 (bin, 取空白字节集 (0)))
+        _启动窗口.置标题 (., 相减 (n [1], 1), 17, 取字节集数据 (取字节集中间 (bin, 相乘 (相减 (n [1], 1), 16), 16), 10))
+    .否则
+        _启动窗口.置标题 (., 相减 (n [1], 1), 17, “”)
+    .如果结束
+    
+.计次循环尾 ()
+
+.子程序 取当前值, 空白型, , 
+.局部变量 bin, 字节集, , , 
+.局部变量 n1, 短整数型, , , 
+.局部变量 n2, 整数型, , , 
+.局部变量 ntxt, 文本型, , "2", 
+
+.如果真 (不等于 (hProcess, 0))
+    赋值 (bin, 读内存 (十六进制文本到整数 (_启动窗口..内容), 4))
+.如果真结束
+.如果 (等于 (bin, 取空白字节集 (0)))
+    赋值 (_启动窗口..标题, “[08]??”)
+    赋值 (_启动窗口..标题, “[16]??”)
+    赋值 (_启动窗口..标题, “[32]??”)
+.否则
+    赋值 (n1, 取字节集数据 (取字节集左边 (bin, 2), 2))
+    赋值 (n2, 取字节集数据 (bin, 3))
+    .如果 (小于 (n1, 0))
+        赋值 (ntxt [1], 到文本 (相加 (65536, n1)))
+    .否则
+        赋值 (ntxt [1], 到文本 (n1))
+    .如果结束
+    .如果 (小于 (n2, 0))
+        赋值 (ntxt [2], 到文本 (相加 (4294967296, n2)))
+    .否则
+        赋值 (ntxt [2], 到文本 (n2))
+    .如果结束
+    赋值 (_启动窗口..标题, 相加 (“[08]”, 到文本 (取字节集数据 (取字节集左边 (bin, 1), 1))))
+    赋值 (_启动窗口..标题, 相加 (“[16]”, ntxt [1]))
+    赋值 (_启动窗口..标题, 相加 (“[32]”, ntxt [2]))
+.如果结束
+
+
+.子程序 取位置, 逻辑型, , 
+.参数 File, 文本型, , 
+.参数 Info, Info, 数组, 
+
+.局部变量 hFile, 整数型, , , 
+.局部变量 PEHead, IMAGE_NT_HEADERS, , , 
+.局部变量 SectionTable, IMAGE_SECTION_HEADER, , "0", 
+.局部变量 PEFlag, 整数型, , , 
+.局部变量 n, 整数型, , , 
+.局部变量 Section, IMAGE_SECTION_HEADER, , , 
+.局部变量 Useful, Info, , , 
+
+赋值 (hFile, 打开文件 (File, 1, ))
+.如果真 (不等于 (读入字节集 (hFile, 2), 到字节集 (“MZ”)))
+    返回 (假)
+.如果真结束
+移动读写位置 (hFile, 1, 60)
+赋值 (PEFlag, 取字节集数据 (读入字节集 (hFile, 4), 3))
+移动读写位置 (hFile, 1, PEFlag)
+RtlMoveMemory (PEHead, 读入字节集 (hFile, 248), 248)
+.如果真 (不等于 (PEHead.Signature, 17744))
+    返回 (假)
+.如果真结束
+赋值 (PEHead.ImageBase)
+移动读写位置 (hFile, 1, PEFlag)
+移动读写位置 (hFile, 3, 248)
+重定义数组 (Info, 假, 0)
+.计次循环首 (PEHead.NumberOfSections, n)
+    RtlMoveMemory1 (Section, 读入字节集 (hFile, 40), 40)
+    输出调试文本 (到文本 (Section.Name))
+    加入成员 (SectionTable, Section)
+    .如果真 (等于 (位或 (Section.Characteristics, 2147483648), Section.Characteristics))
+        赋值 (Useful.address, 相加 (PEHead.ImageBase, Section.VirtualAddress))
+        赋值 (Useful.size, Section.SizeOfRawData)
+        加入成员 (Info, Useful)
+    .如果真结束
+    
+.计次循环尾 ()
+关闭文件 (hFile)
+返回 (真)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

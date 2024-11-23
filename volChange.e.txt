@@ -1,0 +1,234 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 307
+    高度 = 148
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “硬盘卷序列号修改器[NTFS]”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' spec A512548E76954B6E92C21055517615B0 3 0 特殊功能支持库
+
+
+
+
+数据类型 SECURITY_ATTRIBUTES, , 
+    .成员 nLength, 整数型, , , 
+    .成员 lpSecurityDescriptor, 整数型, , , 
+    .成员 bInheritHandle, 整数型, , , 
+
+数据类型 OVERLAPPED, , 
+    .成员 Internal, 整数型, , , 
+    .成员 InternalHigh, 整数型, , , 
+    .成员 offset, 整数型, , , 
+    .成员 OffsetHigh, 整数型, , , 
+    .成员 hEvent, 整数型, , , 
+
+
+.DLL命令 GetVolumeInformation, 整数型, "kernel32", "GetVolumeInformationA", , 
+    .参数 lpRootPathName, 文本型, , 
+    .参数 lpVolumeNameBuffer, 文本型, , 
+    .参数 nVolumeNameSize, 整数型, , 
+    .参数 lpVolumeSerialNumber, 整数型, 传址, 
+    .参数 lpMaximumComponentLength, 整数型, 传址, 
+    .参数 lpFileSystemFlags, 整数型, 传址, 
+    .参数 lpFileSystemNameBuffer, 文本型, , 
+    .参数 nFileSystemNameSize, 整数型, , 
+
+.DLL命令 CreateFile, 整数型, "kernel32", "CreateFileA", , 
+    .参数 lpFileName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwShareMode, 整数型, , 
+    .参数 lpSecurityAttributes, SECURITY_ATTRIBUTES, 传址, 
+    .参数 dwCreationDisposition, 整数型, , 
+    .参数 dwFlagsAndAttributes, 整数型, , 
+    .参数 hTemplateFile, 整数型, , 
+
+.DLL命令 CloseHandle, 整数型, "kernel32", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 ReadFile, 逻辑型, "kernel32", "ReadFile", , 
+    .参数 hFile, 整数型, , 
+    .参数 lpBuffer, 字节集, 传址, 
+    .参数 nNumberOfBytesToRead, 整数型, , 
+    .参数 lpNumberOfBytesRead, 整数型, 传址, 
+    .参数 lpOverlapped, OVERLAPPED, 传址, 
+
+.DLL命令 SetFilePointer, 整数型, "kernel32", "SetFilePointer", , 
+    .参数 hFile, 整数型, , 
+    .参数 lDistanceToMove, 整数型, , 
+    .参数 lpDistanceToMoveHigh, 整数型, 传址, 
+    .参数 dwMoveMethod, 整数型, , 
+
+.DLL命令 WriteFile, 逻辑型, "kernel32", "WriteFile", , 
+    .参数 hFile, 整数型, , 
+    .参数 lpBuffer, 字节集, 传址, 
+    .参数 nNumberOfBytesToWrite, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, 传址, 
+    .参数 lpOverlapped, OVERLAPPED, 传址, 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+GetSerial ()
+
+.子程序 _按钮_Get_被单击, 空白型, , 
+GetSerial ()
+
+.子程序 _Root_驱动器被改变, 空白型, , 
+GetSerial ()
+
+.子程序 _按钮_Change_被单击, 空白型, , 
+.如果 (ChangeNt ())
+    信息框 (“修改成功,重启生效”, #信息图标, )
+.否则
+    信息框 (“修改失败”, #错误图标, )
+.如果结束
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 GetDiskInfo, 整数型, , 
+.参数 FileSystem, 文本型, 可空, 
+
+.局部变量 VolName, 文本型, , , 
+.局部变量 SerialNumber, 整数型, , , 
+.局部变量 MaxCLength, 整数型, , , 
+.局部变量 FileSysFlag, 整数型, , , 
+
+赋值 (VolName, 取空白文本 (255))
+赋值 (FileSystem, 取空白文本 (255))
+.如果真 (不等于 (GetVolumeInformation (相加 (.驱动器, “:\”), VolName, 255, SerialNumber, MaxCLength, FileSysFlag, FileSystem, 255), 0))
+    调试输出 (VolName, SerialNumber, FileSystem, 取十六进制文本 (SerialNumber))
+    返回 (SerialNumber)
+.如果真结束
+返回 (0)
+
+.子程序 GetSerial, 空白型, , 
+.局部变量 Serial, 文本型, , , 
+
+赋值 (Serial, 取十六进制文本 (GetDiskInfo ()))
+赋值 (.内容, 取文本左边 (Serial, 2))
+赋值 (.内容, 取文本中间 (Serial, 3, 2))
+赋值 (.内容, 取文本中间 (Serial, 5, 2))
+赋值 (.内容, 取文本右边 (Serial, 2))
+
+.子程序 ChangeNt, 逻辑型, , 
+.局部变量 hf, 整数型, , , 
+.局部变量 sa, SECURITY_ATTRIBUTES, , , 
+.局部变量 driver, 文本型, , , 
+.局部变量 buf, 字节集, , , 
+.局部变量 pok, 整数型, , , 
+.局部变量 ol, OVERLAPPED, , , 
+.局部变量 Serial, 整数型, , , 
+.局部变量 NewByte, 字节型, , "4", 
+.局部变量 NewSerial, 字节集, , , 
+.局部变量 FileSystem, 文本型, , , 
+.局部变量 ret, 逻辑型, , , 
+
+赋值 (driver, 相加 (“\\.\”, .驱动器, “:”))
+赋值 (hf, CreateFile (driver, 位或 (2147483648, 1073741824), 位或 (1, 2), sa, 3, 0, 0))
+.如果真 (不等于 (hf, 4294967295))
+    赋值 (buf, 取空白字节集 (512))
+    .如果真 (ReadFile (hf, buf, 512, pok, ol))
+        GetDiskInfo (FileSystem)
+        .如果真 (等于 (文本比较 (FileSystem, “NTFS”, 假), 0))
+            赋值 (NewByte [1], 十六到十 (.内容))
+            赋值 (NewByte [2], 十六到十 (.内容))
+            赋值 (NewByte [3], 十六到十 (.内容))
+            赋值 (NewByte [4], 十六到十 (.内容))
+            赋值 (NewSerial, 到字节集 (NewByte))
+             ' 调试输出 (NewByte, 到字节集 (NewByte))
+            ' 本源码来自易语言资源网(www.5A5X.com)
+            赋值 (buf, 字节集替换 (buf, 73, 4, NewSerial))
+            SetFilePointer (hf, 0, 0, 0)
+            WriteFile (hf, buf, 512, pok, ol)
+            .如果真 (等于 (pok, 512))
+                赋值 (ret, 真)
+            .如果真结束
+            
+        .如果真结束
+        
+    .如果真结束
+    
+.如果真结束
+CloseHandle (hf)
+返回 (ret)
+
+.子程序 十六到十, 整数型, , 
+.参数 十六进制文本, 文本型, , 
+
+.局部变量 buf, 文本型, , , 
+.局部变量 ret, 长整数型, , , 
+.局部变量 i, 整数型, , , 
+
+.变量循环首 (1, 取文本长度 (十六进制文本), 1, i)
+    赋值 (buf, 取文本中间 (十六进制文本, i, 1))
+    赋值 (ret, 相加 (相乘 (相减 (寻找文本 (“0123456789ABCDEF”, buf, , 真), 1), 求次方 (16, 相减 (取文本长度 (十六进制文本), i))), ret))
+.变量循环尾 ()
+返回 (ret)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

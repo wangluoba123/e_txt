@@ -1,0 +1,494 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：反调试模块
+ ' 程序描述：反调试模块
+@备注:
+反调试模块
+ ' 程序作者：李光
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：李光
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 DriverName, "“\\.\SIWVID
+\\.\NTICE
+\\.\SICE
+\\.\SIWDEBUG
+\\.\REGVXD
+\\.\FILEM
+\\.\TRW
+\\.\ICEEXT”", , 
+.常量 EXCEPTION_CONTINUE_SEARCH, "0", , 
+.常量 EXCEPTION_CONTINUE_EXECUTION, "-1", , 
+.常量 PAGE_EXECUTE_READWRITE, "64", , 
+.常量 STATUS_BREAKPOINT, "-2147483645", , 0x80000003 ,2147483651
+.常量 STATUS_ACCESS_VIOLATION, "-1073741819", , 0xC0000005 ,3221225477
+.常量 ThreadHideFromDebugger, "17", , 
+.常量 ProcessDebugPort, "7", , 
+.常量 ProcessDebugPortProcessBasicInformation, "0", , 
+.常量 SystemKernelDebuggerInformation, "35", , 
+.常量 ObjectAllTypeInformation, "3", , 
+.常量 GENERIC_READ, "2147483648", , 
+.常量 GENERIC_WRITE, "1073741824", , 
+.常量 OPEN_EXISTING, "3", , 
+.常量 FILE_ATTRIBUTE_SYSTEM, "4", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' spec A512548E76954B6E92C21055517615B0 3 0 特殊功能支持库
+
+
+
+
+数据类型 EXCEPTION_POINTERS, , 
+    .成员 ExceptionRecord, EXCEPTION_RECORD, , , 
+    .成员 ContextRecord, CONTEXT, , , 
+
+数据类型 EXCEPTION_RECORD, , 
+    .成员 ExceptionCode, 整数型, , , 
+    .成员 ExceptionFlags, 整数型, , , 
+    .成员 ExceptionRecord, 整数型, , , 
+    .成员 ExceptionAddress, 整数型, , , 
+    .成员 NumberParameters, 整数型, , , 
+    .成员 ExceptionInformation, 整数型, , "15", 
+
+数据类型 CONTEXT, , 
+    .成员 ContextFlags, 整数型, , , 
+    .成员 Dr0, 整数型, , , 
+    .成员 Dr1, 整数型, , , 
+    .成员 Dr2, 整数型, , , 
+    .成员 Dr3, 整数型, , , 
+    .成员 Dr6, 整数型, , , 
+    .成员 Dr7, 整数型, , , 
+    .成员 FloatSave, FLOATING_SAVE_AREA, , , 
+    .成员 SegGs, 整数型, , , 
+    .成员 SegFs, 整数型, , , 
+    .成员 SegEs, 整数型, , , 
+    .成员 SegDs, 整数型, , , 
+    .成员 Edi, 整数型, , , 
+    .成员 Esi, 整数型, , , 
+    .成员 Ebx, 整数型, , , 
+    .成员 Edx, 整数型, , , 
+    .成员 Ecx, 整数型, , , 
+    .成员 Eax, 整数型, , , 
+    .成员 Ebp, 整数型, , , 
+    .成员 Eip, 整数型, , , 
+    .成员 SegCs, 整数型, , , 
+    .成员 EFlags, 整数型, , , 
+    .成员 Esp, 整数型, , , 
+    .成员 SegSs, 整数型, , , 
+    .成员 ExtendedRegisters, 字节型, , "512", 
+
+数据类型 FLOATING_SAVE_AREA, , 
+    .成员 ControlWord, 整数型, , , 
+    .成员 StatusWord, 整数型, , , 
+    .成员 TagWord, 整数型, , , 
+    .成员 ErrorOffset, 整数型, , , 
+    .成员 ErrorSelector, 整数型, , , 
+    .成员 DataOffset, 整数型, , , 
+    .成员 DataSelector, 整数型, , , 
+    .成员 RegisterArea, 字节型, , "80", 
+    .成员 Cr0NpxState, 整数型, , , 
+
+
+.DLL命令 RtlMoveMemory_整数型, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_EXCEPTION_RECORD, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, EXCEPTION_RECORD, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_CONTEXT, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, CONTEXT, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_整数型2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 整数型, 传址, 
+    .参数 Length, 整数型, , 
+
+.DLL命令 GetModuleHandle, 整数型, "", "GetModuleHandleA", , 
+    .参数 lpModuleName, 文本型, , 
+
+.DLL命令 GetProcAddress, 整数型, "", "", , 
+    .参数 hModule, 整数型, , 
+    .参数 lpProcName, 文本型, , 
+
+.DLL命令 VirtualProtect, 逻辑型, "", "", , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flNewProtect, 整数型, , 
+    .参数 lpflOldProtect, 整数型, 传址, 
+
+.DLL命令 SetUnhandledExceptionFilter, 整数型, "", "", , 
+    .参数 lpTopLevelExceptionFilter, 子程序指针, , 
+
+.DLL命令 GetCurrentProcess, 整数型, "", "", , 
+
+.DLL命令 GetCurrentThread, 整数型, "", "", , 
+
+.DLL命令 WideCharToMultiByte, 整数型, "", "", , 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpWideCharStr, 整数型, , 
+    .参数 cchWideChar, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpDefaultChar, 文本型, , 
+    .参数 lpUsedDefaultChar, 整数型, , 
+
+.DLL命令 CreateFile, 整数型, "", "CreateFileA", , 
+    .参数 lpFileName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwShareMode, 整数型, , 
+    .参数 lpSecurityAttributes, 整数型, , 
+    .参数 dwCreationDisposition, 整数型, , 
+    .参数 dwFlagsAndAttributes, 整数型, , 
+    .参数 hTemplateFile, 整数型, , 
+
+.DLL命令 CloseHandle, 逻辑型, "", "", , 
+    .参数 hObject, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 驱动名, 文本型, , "0", 
+.子程序 _启动子程序, 整数型, , 
+赋值 (驱动名, 分割文本 (#DriverName, #换行符, ))
+SetUnhandledExceptionFilter (&异常处理)
+_隐藏线程 ()
+返回 (0)
+
+.子程序 异常处理, 整数型, , 
+.参数 ExceptionInfo, 整数型, , 
+
+.局部变量 ExceptionRecord, 整数型, , , 
+.局部变量 ContextRecord, 整数型, , , 
+.局部变量 异常, EXCEPTION_POINTERS, , , 
+.局部变量 tmp, 字节集, , , 
+.局部变量 OldProtect, 整数型, , , 
+.局部变量 接口地址, 整数型, , , 
+
+RtlMoveMemory_整数型 (ExceptionRecord, ExceptionInfo, 4)
+RtlMoveMemory_整数型 (ContextRecord, 相加 (ExceptionInfo, 4), 4)
+.如果真 (不等于 (ExceptionRecord, 0))
+    RtlMoveMemory_EXCEPTION_RECORD (异常.ExceptionRecord, ExceptionRecord, 35)
+.如果真结束
+.如果真 (不等于 (ContextRecord, 0))
+    RtlMoveMemory_CONTEXT (异常.ContextRecord, ContextRecord, 716)
+.如果真结束
+
+
+ ' 异常处理
+.判断开始 (等于 (异常.ExceptionRecord.ExceptionCode, #STATUS_ACCESS_VIOLATION)) ' 内存访问异常
+    
+    .判断开始 (等于 (异常.ContextRecord.Eax, 67305985)) ' {1,2,3,4}
+        
+        RtlMoveMemory_整数型2 (相加 (ContextRecord, 4), 0, 4) ' dr0
+        RtlMoveMemory_整数型2 (相加 (ContextRecord, 8), 0, 4) ' dr1
+        RtlMoveMemory_整数型2 (相加 (ContextRecord, 12), 0, 4) ' dr2
+        RtlMoveMemory_整数型2 (相加 (ContextRecord, 16), 0, 4) ' dr3
+        RtlMoveMemory_整数型2 (相加 (ContextRecord, 20), 0, 4) ' dr6
+        RtlMoveMemory_整数型2 (相加 (ContextRecord, 24), 0, 4) ' dr7
+        
+        RtlMoveMemory_整数型2 (相加 (ContextRecord, 176), 到整数 (&接口地址), 4)
+        RtlMoveMemory_整数型2 (相加 (ContextRecord, 184), 相加 (异常.ContextRecord.Eip, 2), 4) ' eip , 跳过 int1
+        
+        返回 (#EXCEPTION_CONTINUE_EXECUTION)
+        
+        
+    .判断 (等于 (异常.ContextRecord.Eax, 67305987)) ' {3,2,3,4}
+        
+        .如果 (等于 (GetCurrentThread (), -2))
+            RtlMoveMemory_整数型2 (相加 (ContextRecord, 184), 相加 (异常.ContextRecord.Eip, 2), 4)
+            
+            RtlMoveMemory_整数型2 (相加 (ContextRecord, 176), 到整数 (&隐藏线程), 4)
+            
+        .否则
+            
+            RtlMoveMemory_整数型2 (相加 (ContextRecord, 184), 相加 (异常.ContextRecord.Eip, 4524), 4)
+        .如果结束
+        
+        返回 (#EXCEPTION_CONTINUE_EXECUTION)
+        
+    .默认
+        
+    .判断结束
+    
+.判断 (等于 (异常.ExceptionRecord.ExceptionCode, #STATUS_BREAKPOINT)) ' 断点
+    
+    .判断开始 (等于 (异常.ContextRecord.Eax, 67305986)) ' {2,2,3,4}
+        
+        RtlMoveMemory_整数型2 (相加 (ContextRecord, 4), 0, 4) ' dr0
+        RtlMoveMemory_整数型2 (相加 (ContextRecord, 8), 0, 4) ' dr1
+        RtlMoveMemory_整数型2 (相加 (ContextRecord, 12), 0, 4) ' dr2
+        RtlMoveMemory_整数型2 (相加 (ContextRecord, 16), 0, 4) ' dr3
+        RtlMoveMemory_整数型2 (相加 (ContextRecord, 20), 0, 4) ' dr6
+        RtlMoveMemory_整数型2 (相加 (ContextRecord, 24), 0, 4) ' dr7
+        
+        RtlMoveMemory_整数型2 (相加 (ContextRecord, 184), 相加 (异常.ContextRecord.Eip, 1), 4) ' eip
+        
+        返回 (#EXCEPTION_CONTINUE_EXECUTION)
+        
+    .判断 (等于 (异常.ContextRecord.Eax, 67305988)) ' {4,2,3,4}
+        
+        RtlMoveMemory_整数型2 (相加 (ContextRecord, 176), 到整数 (&检测调试器), 4)
+        RtlMoveMemory_整数型2 (相加 (ContextRecord, 184), 相加 (异常.ContextRecord.Eip, 1), 4) ' eip , 跳过 int3
+        
+        返回 (#EXCEPTION_CONTINUE_EXECUTION)
+    .默认
+        
+    .判断结束
+    
+    
+.默认
+    
+.判断结束
+
+
+
+ ' ''''''''''''
+
+返回 (#EXCEPTION_CONTINUE_SEARCH)
+
+.子程序 _隐藏线程, 空白型, , 将当前线程的调试端口隐藏
+_清除硬件断点 ()
+
+置入代码 ({ 184, 3, 2, 3, 4 }) ' MOV EAX,4030203
+置入代码 ({ 205, 1 }) ' INT 1
+
+置入代码 ({ 201 }) ' LEAVE
+置入代码 ({ 255, 224 }) ' JMP EAX
+
+
+.子程序 隐藏线程, 空白型, , 
+.局部变量 接口地址, 整数型, , , 
+
+赋值 (接口地址, _获取接口地址 (“ntdll.dll”, “NtSetInformationThread”))
+.如果真 (不等于 (接口地址, 0))
+    Call_4 (接口地址, -2, #ThreadHideFromDebugger, 0, 0)
+.如果真结束
+
+
+.子程序 _清除硬件断点, 空白型, , 清除硬件断点
+置入代码 ({ 184, 2, 2, 3, 4 }) ' MOV EAX,4030202
+置入代码 ({ 204 }) ' INT3
+
+.子程序 _获取接口地址, 整数型, , 清除接口地址处的内存断点, 并返回接口地址.
+.参数 模块名, 文本型, , 
+.参数 函数名, 文本型, , 
+
+返回 (_接口地址 (取变量数据地址 (模块名), 取变量数据地址 (函数名)))
+
+.子程序 _接口地址, 整数型, , 
+.参数 模块名, 整数型, , 
+.参数 函数名, 整数型, , 
+
+置入代码 ({ 184, 1, 2, 3, 4 }) ' MOV EAX,4030201
+置入代码 ({ 205, 1 }) ' INT 1
+
+置入代码 ({ 201 }) ' LEAVE
+置入代码 ({ 255, 224 }) ' JMP EAX
+
+返回 (0)
+
+.子程序 接口地址, 整数型, , 
+.参数 模块名, 文本型, , 
+.参数 函数名, 文本型, , 
+
+.局部变量 地址, 整数型, , , 
+
+
+赋值 (地址, GetProcAddress (GetModuleHandle (模块名), 函数名))
+
+.如果真 (不等于 (地址, 0))
+    VirtualProtect (地址, 16, #PAGE_EXECUTE_READWRITE, 0)
+.如果真结束
+返回 (地址)
+
+.子程序 _检测调试器, 逻辑型, , 检测系统中是否存在调试器
+置入代码 ({ 184, 4, 2, 3, 4 }) ' MOV EAX,4030204
+置入代码 ({ 204 }) ' INT 3
+
+置入代码 ({ 201 }) ' LEAVE
+置入代码 ({ 255, 224 }) ' JMP EAX
+
+返回 (假)
+
+.子程序 检测调试器, 逻辑型, , 
+.局部变量 接口地址, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 bin, 字节集, , , 
+.局部变量 PEB, 整数型, , , 
+.局部变量 pOTI, 整数型, , , 
+.局部变量 p, 整数型, , , 
+.局部变量 l, 整数型, , , 
+.局部变量 hFile, 整数型, , , 
+
+_清除硬件断点 ()
+
+.如果真 (不等于 (GetCurrentProcess (), -1))
+    返回 (真)
+.如果真结束
+
+
+
+赋值 (接口地址, _获取接口地址 (“kernel32.dll”, “IsDebuggerPresent”))
+.如果真 (不等于 (接口地址, 0))
+    .如果真 (不等于 (Call_0 (接口地址), 0))
+        返回 (真)
+    .如果真结束
+    
+.如果真结束
+
+赋值 (接口地址, _获取接口地址 (“kernel32.dll”, “CheckRemoteDebuggerPresent”))
+.如果真 (不等于 (接口地址, 0))
+    赋值 (i, 0)
+    Call_2 (接口地址, -1, 取变量地址 (i))
+    .如果真 (不等于 (i, 0))
+        返回 (真)
+    .如果真结束
+    
+.如果真结束
+
+赋值 (接口地址, _获取接口地址 (“ntdll.dll”, “NtQueryInformationProcess”))
+.如果真 (不等于 (接口地址, 0))
+    赋值 (i, 0)
+    Call_5 (接口地址, -1, #ProcessDebugPort, 取变量地址 (i), 4, 0)
+    .如果真 (不等于 (i, 0))
+        返回 (真)
+    .如果真结束
+    
+    赋值 (bin, 取空白字节集 (24))
+    Call_5 (接口地址, -1, #ProcessDebugPortProcessBasicInformation, 取变量数据地址 (bin), 24, 0)
+    赋值 (PEB, 取字节集数据 (bin, #整数型, 5))
+    .如果真 (不等于 (PEB, 0))
+        .如果真 (不等于 (取字节集数据 (指针到字节集 (相加 (PEB, 2), 2), #短整数型, ), 0))
+            返回 (真)
+        .如果真结束
+        .如果真 (不等于 (位与 (取字节集数据 (指针到字节集 (相加 (PEB, 104), 2), #短整数型, ), 112), 0))
+            返回 (真)
+        .如果真结束
+        
+        
+    .如果真结束
+    
+.如果真结束
+
+
+
+
+赋值 (接口地址, _获取接口地址 (“ntdll.dll”, “NtQuerySystemInformation”))
+.如果真 (不等于 (接口地址, 0))
+    
+    赋值 (bin, 取空白字节集 (2))
+    Call_4 (接口地址, #SystemKernelDebuggerInformation, 取变量数据地址 (bin), 2, 0)
+    .如果真 (并且 (不等于 (bin [1], 0), 等于 (bin [2], 0)))
+        返回 (真)
+    .如果真结束
+    
+.如果真结束
+
+
+赋值 (接口地址, _获取接口地址 (“ntdll.dll”, “NtQueryObject”))
+.如果真 (不等于 (接口地址, 0))
+    赋值 (i, 0)
+    Call_5 (接口地址, 0, #ObjectAllTypeInformation, 0, 4, 取变量地址 (i))
+    .如果真 (大于 (i, 0))
+        赋值 (bin, 取空白字节集 (i))
+        Call_5 (接口地址, 0, #ObjectAllTypeInformation, 取变量数据地址 (bin), i, 0)
+        
+        赋值 (pOTI, 相加 (取变量数据地址 (bin), 4))
+        .计次循环首 (取字节集数据 (bin, #整数型, 1), )
+            
+            赋值 (p, 取字节集数据 (指针到字节集 (相加 (pOTI, 4), 4), #整数型, ))
+            赋值 (l, 取字节集数据 (指针到字节集 (相加 (pOTI, 2), 2), #短整数型, ))
+            
+            .如果真 (等于 (文本比较 (W2A (p, l), “DebugObject”, 真), 0))
+                
+                .如果真 (或者 (不等于 (指针到字节集 (相加 (pOTI, 8), 4), { 0, 0, 0, 0 }), 不等于 (指针到字节集 (相加 (pOTI, 12), 4), { 0, 0, 0, 0 })))
+                    返回 (真)
+                .如果真结束
+                
+            .如果真结束
+            
+            赋值 (pOTI, 相加 (p, l, 求余数 (l, 4)))
+        .计次循环尾 ()
+    .如果真结束
+    
+.如果真结束
+
+
+.计次循环首 (取数组成员数 (驱动名), i)
+    赋值 (hFile, CreateFile (驱动名 [i], 位或 (#GENERIC_READ, #GENERIC_WRITE), 0, 0, #OPEN_EXISTING, #FILE_ATTRIBUTE_SYSTEM, 0))
+    .如果真 (不等于 (hFile, -1))
+        CloseHandle (hFile)
+        返回 (真)
+    .如果真结束
+    
+.计次循环尾 ()
+
+
+返回 (假)
+
+.子程序 W2A, 文本型, , 
+.参数 Unicode, 整数型, , 
+.参数 Len, 整数型, , 
+
+.局部变量 ansi_len, 整数型, , , 
+.局部变量 ansi, 文本型, , , 
+
+
+赋值 (ansi_len, WideCharToMultiByte (936, 0, Unicode, Len, ansi, 0, “”, 0))
+赋值 (ansi, 取空白文本 (ansi_len))
+WideCharToMultiByte (936, 0, Unicode, Len, ansi, ansi_len, “”, 0)
+返回 (ansi)
+
+.子程序 Call_0, 整数型, , 
+.参数 地址, 整数型, , 
+
+置入代码 ({ 201, 88, 135, 4, 36, 255, 224 })
+返回 (0)
+
+.子程序 Call_2, 整数型, , 
+.参数 地址, 整数型, , 
+.参数 参数一, 整数型, , 
+.参数 参数二, 整数型, , 
+
+置入代码 ({ 201, 88, 135, 4, 36, 255, 224 })
+返回 (0)
+
+.子程序 Call_4, 整数型, , 
+.参数 地址, 整数型, , 
+.参数 参数一, 整数型, , 
+.参数 参数二, 整数型, , 
+.参数 参数三, 整数型, , 
+.参数 参数四, 整数型, , 
+
+置入代码 ({ 201, 88, 135, 4, 36, 255, 224 })
+返回 (0)
+
+.子程序 Call_5, 整数型, , 
+.参数 地址, 整数型, , 
+.参数 参数一, 整数型, , 
+.参数 参数二, 整数型, , 
+.参数 参数三, 整数型, , 
+.参数 参数四, 整数型, , 
+.参数 参数五, 整数型, , 
+
+置入代码 ({ 201, 88, 135, 4, 36, 255, 224 })
+返回 (0)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

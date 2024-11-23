@@ -1,0 +1,191 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “注入教程2－(远程执行代码)简单型”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 SECURITY_ATTRIBUTES, , 安全性结构;
+    .成员 nLength, 整数型, , , 
+    .成员 lpSecurityDescriptor, 整数型, , , 
+    .成员 bInheritHandle, 整数型, , , 
+
+
+.DLL命令 OpenProcess, 整数型, "", "OpenProcess", , 
+    .参数 ba, 空白型, , 
+    .参数 b, 空白型, , 
+    .参数 id, 空白型, , 
+
+.DLL命令 WriteProcessMemory, 整数型, "", "WriteProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 字节集, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, 传址, 
+
+.DLL命令 取指针_整数, 整数型, "", "lstrcpyn", , 
+    .参数 欲取其指针, 整数型, 传址, 
+    .参数 欲取其指针, 整数型, 传址, 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 取指针_字节集, 整数型, "", "lstrcpyn", , 
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 CloseHandle, 整数型, "", "", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 ReadProcessMemory, 整数型, "", "ReadProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 字节集, 传址, 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, , 
+
+.DLL命令 API_CreateRemoteThread, 整数型, "kernel32", "CreateRemoteThread", , 在另一进程中建立线索
+    .参数 hProcess, 整数型, , 
+    .参数 lpThreadAttributes, SECURITY_ATTRIBUTES, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 整数型, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, 传址, 
+
+.DLL命令 API_GetModuleHandle, 整数型, "kernel32", "GetModuleHandleA", , 获取一个应用程序或动态链接库的模块句柄  如执行成功成功，则返回模块句柄。零表示失败。会设置GetLastError
+    .参数 lpModuleName, 文本型, , 指定模块名，这通常是与模块的文件名相同的一个名字。例如，NOTEPAD.EXE程序的模块文件名就叫作NOTEPAD;
+
+.DLL命令 API_GetProcAddress, 整数型, "kernel32", "GetProcAddress", , 返回函数地址
+    .参数 hModule, 整数型, , 
+    .参数 lpProcName, 文本型, , 
+
+.DLL命令 FreeLibrary, 整数型, "kernel32.dll", "", , 
+    .参数 hModule, 整数型, , 
+
+.DLL命令 API_VirtualAllocEx, 整数型, "kernel32.dll", "VirtualAllocEx", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+    .参数 flProtect, 整数型, , 
+
+.DLL命令 取指针_文本, 整数型, "", "lstrcpyn", , 
+    .参数 欲取其指针, 文本型, 传址, 
+    .参数 欲取其指针, 文本型, 传址, 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 VirtualFreeEx, 整数型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBuf, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 sss, 整数型, , 
+
+.DLL命令 LoadLibraryEx, 整数型, "kernel32.dll", "LoadLibraryExA", , 
+    .参数 lpLibFileName, 文本型, 传址, 
+    .参数 hFile, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+
+.DLL命令 WaitForSingleObject, 整数型, "", "", , 
+    .参数 h, 整数型, , 
+    .参数 d, 整数型, , 
+
+.DLL命令 GetExitCodeThread, 整数型, "", "", , 
+    .参数 h, 整数型, , 
+    .参数 ret, 整数型, 传址, 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 phandle, 整数型, , , 
+.局部变量 lpbuf, 整数型, , , 
+.局部变量 ret, 整数型, , , 
+.局部变量 messageaddr, 整数型, , , 
+.局部变量 hthread, 整数型, , , 
+.局部变量 sa, SECURITY_ATTRIBUTES, , , 
+.局部变量 shellcode, 字节集, , , 
+.局部变量 dwsize, 整数型, , , 
+.局部变量 m1, 文本型, , , 
+.局部变量 m2, 文本型, , , 
+
+赋值 (phandle, OpenProcess (2035711, 0, 到整数 (.)))
+.如果真 (等于 (phandle, 0))
+    信息框 (“打开进程失败！”, 0, )
+    返回 ()
+.如果真结束
+赋值 (messageaddr, API_GetProcAddress (API_GetModuleHandle (“user32.dll”), “MessageBoxA”))
+赋值 (lpbuf, API_VirtualAllocEx (phandle, 0, 100, 4096, 64))
+.如果真 (等于 (0))
+    信息框 (“分配内存失败！”, 0, )
+    未知函数_167837956 ()
+    返回 ()
+.如果真结束
+赋值 (m1, “我是shellcode!”)
+赋值 (m2, “aboutme”)
+赋值 (shellcode, 相加 (到字节集 (m2), { 0 }, 到字节集 (m1), { 0 }, { 96, 184 }, 到字节集 (messageaddr), { 106, 0, 104 }, 到字节集 (lpbuf), { 104 }, 到字节集 (到整数 (相加 (lpbuf, 取文本长度 (m2), 1))), { 106, 0, 255, 208, 97, 195, 144 }))
+赋值 (dwsize, 取字节集长度 (shellcode))
+赋值 (ret, WriteProcessMemory (phandle, lpbuf, shellcode, dwsize, 0))
+.如果真 (等于 (ret, 0))
+    信息框 (“写内存失败！”, 0, )
+    VirtualFreeEx (phandle, lpbuf, 100, 16384)
+    返回 ()
+.如果真结束
+赋值 (hthread, API_CreateRemoteThread (phandle, sa, 0, 相加 (lpbuf, 取文本长度 (m1), 取文本长度 (m2), 2), 0, 0, 0))
+WaitForSingleObject (hthread, -1)
+VirtualFreeEx (phandle, lpbuf, 100, 16384)
+CloseHandle (hthread)
+CloseHandle (phandle)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

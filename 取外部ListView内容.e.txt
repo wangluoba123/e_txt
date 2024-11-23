@@ -1,0 +1,203 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 PROCESS_VM_OPERATION, "8", , 
+.常量 PROCESS_VM_READ, "16", , 
+.常量 PROCESS_VM_WRITE, "32", , 
+.常量 , , , 
+.常量 MEM_RESERVE, "8192", , 
+.常量 MEM_COMMIT, "4096", , 
+.常量 PAGE_READWRITE, "4", , 
+.常量 MEM_RELEASE, "32768", , 
+.常量 HDM_GETITEMCOUNT, "4608", , 
+.常量 LVM_GETHEADER, "4127", , 
+.常量 LVM_GETITEMCOUNT, "4100", , 
+.常量 LVM_GETITEM, "4101", , 
+.常量 , , , 
+.常量 LVIF_TEXT, "1", , 
+.常量 GW_CHILD, "5", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 1 系统核心支持库
+
+
+
+
+数据类型 LVITEM, , 
+    .成员 mask, 整数型, , , 
+    .成员 iItem, 整数型, , , 
+    .成员 iSubItem, 整数型, , , 
+    .成员 State, 整数型, , , 
+    .成员 StateMask, 整数型, , , 
+    .成员 pszText, 整数型, , , 
+    .成员 TextMax, 整数型, , , 
+
+
+.DLL命令 OpenProcess, 整数型, "", "", , 
+    .参数 dwAccess, 整数型, , 
+    .参数 bInh, 逻辑型, , 
+    .参数 dwProcessID, 整数型, , 
+
+.DLL命令 VirtualAllocEx, 整数型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 Type, 整数型, , 
+    .参数 Protect, 整数型, , 
+
+.DLL命令 VirtualFreeEx, 逻辑型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 dwFreeType, 整数型, , 
+
+.DLL命令 CloseHandle, 逻辑型, "", "", , 
+    .参数 hHandle, 整数型, , 
+
+.DLL命令 SendMessageA, 整数型, "", "", , 
+    .参数 HWND, 整数型, , 
+    .参数 msg, 整数型, , 
+    .参数 w, 整数型, , 
+    .参数 l, 整数型, , 
+
+.DLL命令 GetWindowThreadProcessId, 整数型, "", "", , 
+    .参数 hwnd, 整数型, , 
+    .参数 ProcessID, 整数型, 传址, 
+
+.DLL命令 ReadProcessMemory, 逻辑型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 Address, 整数型, , 
+    .参数 lpBuffer, 文本型, , 
+    .参数 nSize, 整数型, , 
+    .参数 BytesRead, 整数型, 传址, 
+
+.DLL命令 WriteProcessMemory, 逻辑型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 Address, 整数型, , 
+    .参数 lpBuffer, LVITEM, , 
+    .参数 nSize, 整数型, , 
+    .参数 BytesWrite, 整数型, 传址, 
+
+.DLL命令 WriteProcessMemory1, 逻辑型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 Address, 整数型, , 
+    .参数 lpBuffer, 整数型, , 
+    .参数 nSize, 整数型, , 
+    .参数 BytesWrite, 整数型, 传址, 
+
+.DLL命令 FindWindowA, 整数型, "", "", , 
+    .参数 Classname, 文本型, , 
+    .参数 WindowName, 文本型, , 
+
+.DLL命令 GetDesktopWindow, 整数型, "", "", , 
+
+.DLL命令 GetWindow, 整数型, "", "", , 
+    .参数 hwnd, 整数型, , 
+    .参数 uCmd, 整数型, , 
+
+.DLL命令 FindWindowExA, 整数型, "", "", , 
+    .参数 Parent, 整数型, , 
+    .参数 After, 整数型, , 
+    .参数 class, 文本型, , 
+    .参数 name, 文本型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 内容, 文本型, , "0", 
+.局部变量 维数, 整数型, , , 
+.局部变量 n, 整数型, , , 
+
+取ListView内容 (取桌面ListView (), 内容)
+赋值 (维数, 取数组成员数 (内容))
+输出调试文本 (到文本 (维数))
+.计次循环首 (维数, n)
+    输出调试文本 (内容 [n])
+.计次循环尾 ()
+
+.子程序 取桌面ListView, 整数型, , 
+.局部变量 ProgMan, 整数型, , , 
+.局部变量 Def_view, 整数型, , , 
+
+ ' 该方法适用用于XP，98下不能用这个方法取得桌面listview
+赋值 (ProgMan, FindWindowA (“Progman”, 字符 (0)))
+赋值 (Def_view, FindWindowExA (ProgMan, 0, “SHELLDLL_DefView”, 字符 (0)))
+返回 (FindWindowExA (Def_view, 0, “SysListView32”, 字符 (0)))
+
+.子程序 取ListView内容, 空白型, , 根据ListView句柄取得其内容。该ListView可以为本进程外的窗口－－－海洋
+.参数 句柄, 整数型, , 
+.参数 内容, 文本型, 数组, 
+
+.局部变量 行数, 整数型, , , 
+.局部变量 列数, 整数型, , , 
+.局部变量 进程ID, 整数型, , , 
+.局部变量 地址, 整数型, , , 
+.局部变量 进程句柄, 整数型, , , 
+.局部变量 列, 整数型, , , 
+.局部变量 行, 整数型, , , 
+.局部变量 结构, LVITEM, , , 
+.局部变量 变量1, 整数型, , , 
+.局部变量 表项, 文本型, , , 
+
+.如果真 (等于 (句柄, 0))
+    返回 ()
+.如果真结束
+ ' 取行数，列数
+赋值 (行数, SendMessageA (句柄, #LVM_GETITEMCOUNT, 0, 0))
+赋值 (列数, SendMessageA (SendMessageA (句柄, #LVM_GETHEADER, 0, 0), #HDM_GETITEMCOUNT, 0, 0))
+ ' 在目标进程中分配内存
+GetWindowThreadProcessId (句柄, 进程ID)
+赋值 (进程句柄, OpenProcess (位或 (#PROCESS_VM_OPERATION, #PROCESS_VM_READ, #PROCESS_VM_WRITE), 假, 进程ID))
+赋值 (地址, VirtualAllocEx (进程句柄, 0, 4096, 位或 (#MEM_COMMIT, #MEM_RESERVE), #PAGE_READWRITE))
+重定义数组 (内容, 假, 0)
+赋值 (表项, 取空白文本 (相减 (4096, 28)))
+ ' 循环读取各个表项
+.计次循环首 (行数, 行)
+    重定义数组 (内容, 真, 行)
+    .计次循环首 (列数, 列)
+        赋值 (结构.mask, #LVIF_TEXT)
+        赋值 (结构.pszText, 相加 (地址, 28))
+        赋值 (结构.TextMax, 相减 (4096, 28))
+        赋值 (结构.iItem, 相减 (行, 1))
+        赋值 (结构.iSubItem, 相减 (列, 1))
+         ' 把结构拷贝到我们在目标进程中分配的内存中
+        WriteProcessMemory (进程句柄, 地址, 结构, 28, 变量1)
+         ' 发送消息
+        SendMessageA (句柄, #LVM_GETITEM, 0, 地址)
+         ' 从目标进程取回数据
+        ReadProcessMemory (进程句柄, 结构.pszText, 表项, 相减 (4096, 28), 变量1)
+         ' 加入数组
+        赋值 (内容 [行], 相加 (内容 [行], 表项, 字符 (9)))
+    .计次循环尾 ()
+.计次循环尾 ()
+ ' 释放
+VirtualFreeEx (进程句柄, 地址, 0, #MEM_RELEASE)
+CloseHandle (进程句柄)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

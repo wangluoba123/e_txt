@@ -1,0 +1,283 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 586
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = 16777215 '  0xFFFFFF
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “动态文字效果[GOOD] - By 神2”
+    帮助文件名 = “”
+
+
+
+.常量 COLOR_BTNFACE, "15", , 
+.常量 DT_BOTTOM, "8", , 
+.常量 DT_CALCRECT, "1024", , 
+.常量 DT_CENTER, "1", , 
+.常量 DT_CHARSTREAM, "4", , 
+.常量 DT_DISPFILE, "6", , 
+.常量 DT_EXPANDTABS, "64", , 
+.常量 DT_EXTERNALLEADING, "512", , 
+.常量 DT_INTERNAL, "4096", , 
+.常量 DT_LEFT, "0", , 
+.常量 DT_METAFILE, "5", , 
+.常量 DT_NOCLIP, "256", , 
+.常量 DT_NOPREFIX, "2048", , 
+.常量 DT_PLOTTER, "0", , 
+.常量 DT_RASCAMERA, "3", , 
+.常量 DT_RASDISPLAY, "1", , 
+.常量 DT_RASPRINTER, "2", , 
+.常量 DT_RIGHT, "2", , 
+.常量 DT_SINGLELINE, "32", , 
+.常量 DT_TABSTOP, "128", , 
+.常量 DT_TOP, "0", , 
+.常量 DT_VCENTER, "4", , 
+.常量 DT_WORDBREAK, "16", , 
+.常量 CLR_INVALID, "-1", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 RECT, , 
+    .成员 left, 整数型, , , 
+    .成员 tOp, 整数型, , , 
+    .成员 Right, 整数型, , , 
+    .成员 Bottom, 整数型, , , 
+
+
+.DLL命令 timeGetTime, 整数型, "winmm.dll", "timeGetTime", , 
+
+.DLL命令 SetTextCharacterExtra, 整数型, "gdi32", "SetTextCharacterExtra", , 
+    .参数 hdc, 整数型, , 
+    .参数 nCharExtra, 整数型, , 
+
+.DLL命令 OffsetRect, 整数型, "user32", "OffsetRect", , 
+    .参数 lpRect, RECT, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+
+.DLL命令 SetTextColor, 整数型, "gdi32", "SetTextColor", , 
+    .参数 hdc, 整数型, , 
+    .参数 crColor, 整数型, , 
+
+.DLL命令 FillRect, 整数型, "user32", "FillRect", , 
+    .参数 hdc, 整数型, , 
+    .参数 lpRect, RECT, , 
+    .参数 hBrush, 整数型, , 
+
+.DLL命令 GetDC, 整数型, "", "GetDC", , 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 CreateSolidBrush, 整数型, "gdi32", "CreateSolidBrush", , 
+    .参数 crColor, 整数型, , 
+
+.DLL命令 DeleteObject, 整数型, "gdi32", "DeleteObject", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 GetSysColor, 整数型, "user32", "GetSysColor", , 
+    .参数 nIndex, 整数型, , 
+
+.DLL命令 TextOut, 整数型, "gdi32", "TextOutA", , 
+    .参数 hdc, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 lpString, 文本型, , 
+    .参数 nCount, 整数型, , 
+
+.DLL命令 DrawText, 整数型, "user32", "DrawTextA", , 
+    .参数 hdc, 整数型, , 
+    .参数 lpStr, 文本型, , 
+    .参数 nCount, 整数型, , 
+    .参数 lpRect, RECT, , 
+    .参数 wFormat, 整数型, , 
+
+.DLL命令 OleTranslateColor, 整数型, "OLEPRO32.DLL", "OleTranslateColor", , 
+    .参数 OLE_COLOR, 整数型, , 
+    .参数 HPALETTE, 整数型, , 
+    .参数 pccolorref, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 m_bDoEffect, 逻辑型, , , 
+.子程序 TextEffect, 空白型, , 
+.参数 sText, 文本型, , 
+.参数 lX, 整数型, , 
+.参数 lY, 整数型, , 
+.参数 bLoop, 逻辑型, 可空, 
+.参数 lStartSpacing, 整数型, 可空, 
+.参数 lEndSpacing, 整数型, 可空, 
+.参数 oColor, 整数型, 可空, 
+
+.局部变量 i, 整数型, , , 
+.局部变量 x, 整数型, , , 
+.局部变量 lLen, 整数型, , , 
+.局部变量 lHDC, 整数型, , , 
+.局部变量 hBrush, 整数型, , , 
+.局部变量 tR, RECT, 静态, , 
+.局部变量 iDir, 整数型, , , 
+.局部变量 bNotFirstTime1, 逻辑型, , , 
+.局部变量 lTime1, 整数型, , , 
+.局部变量 lIter, 整数型, , , 
+.局部变量 bSlowDown, 逻辑型, , , 
+.局部变量 lCOlor, 整数型, , , 
+.局部变量 bDoIt, 逻辑型, , , 
+
+.如果真 (是否为空 (bLoop))
+    赋值 (bLoop, 假)
+.如果真结束
+.如果真 (是否为空 (lStartSpacing))
+    赋值 (lStartSpacing, 128)
+.如果真结束
+.如果真 (是否为空 (lEndSpacing))
+    赋值 (lEndSpacing, -1)
+.如果真结束
+.如果真 (是否为空 (oColor))
+    赋值 (oColor, 2147483656)
+.如果真结束
+赋值 (lCOlor, 0)
+赋值 (iDir, -1)
+赋值 (i, lStartSpacing)
+赋值 (tR.left, lX)
+赋值 (tR.tOp, lY)
+赋值 (tR.Right, lX)
+赋值 (tR.Bottom, lY)
+OleTranslateColor (oColor, 0, lCOlor)
+赋值 (hBrush, CreateSolidBrush (#白色))
+赋值 (lLen, 取文本长度 (sText))
+赋值 (lHDC, GetDC (取窗口句柄 ()))
+SetTextColor (lHDC, oColor)
+赋值 (bDoIt, 真)
+.判断循环首 (并且 (m_bDoEffect, bDoIt))
+    赋值 (lTime1, 取启动时间 ())
+    .判断开始 (并且 (小于 (i, -3), 取反 (bLoop), 取反 (bSlowDown)))
+        赋值 (bSlowDown, 真)
+        赋值 (iDir, 1)
+        赋值 (lIter, 相加 (i, 4))
+    .默认
+        
+    .判断结束
+    .判断开始 (大于 (i, 128))
+        赋值 (iDir, -1)
+    .默认
+        
+    .判断结束
+    
+    .判断开始 (并且 (取反 (bLoop), 等于 (iDir, 1)))
+        .判断开始 (等于 (i, lEndSpacing))
+            赋值 (bDoIt, 假)
+        .默认
+            赋值 (lIter, 相减 (lIter, 1))
+            .判断开始 (小于或等于 (lIter, 0))
+                赋值 (i, 相加 (i, iDir))
+                赋值 (lIter, 相加 (i, 4))
+            .默认
+                
+            .判断结束
+            
+        .判断结束
+        
+    .默认
+        
+        赋值 (i, 相加 (i, iDir))
+    .判断结束
+    FillRect (lHDC, tR, hBrush)
+    赋值 (x, 相减 (32, 相乘 (i, lLen)))
+    SetTextCharacterExtra (lHDC, i)
+    DrawText (lHDC, sText, lLen, tR, #DT_CALCRECT)
+    赋值 (tR.Right, 相加 (tR.Right, 4))
+    .判断开始 (大于 (tR.Right, .))
+        赋值 (tR.Right, .)
+    .默认
+        
+    .判断结束
+    DrawText (lHDC, sText, lLen, tR, #DT_LEFT)
+    .判断循环首 (小于 (相减 (取启动时间 (), lTime1), 20))
+        处理事件 ()
+        刷新显示 ()
+    .判断循环尾 ()
+.判断循环尾 ()
+DeleteObject (hBrush)
+返回 ()
+
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+赋值 (., 真)
+处理事件 ()
+.判断开始 (取反 ())
+    赋值 (m_bDoEffect, 真)
+    TextEffect (“Hello Every Body”, 12, 12, , 128, 0, 取颜色值 (128, 0, 0))
+    .判断开始 ()
+        赋值 (.., 14)
+        TextEffect (“www.loveXyou.com”, 36, 52, , 128, 0, #绿色)
+    .默认
+        
+    .判断结束
+    .判断开始 ()
+        赋值 (.., “Tahoma”)
+        赋值 (.., 8)
+        赋值 (.., 假)
+        TextEffect (“兄弟姐妹们你们好！”, 49, 86, , 128, 0, #蓝色)
+    .默认
+        
+    .判断结束
+    .判断开始 (m_bDoEffect)
+        TextEffect (“By BoyChong 神2 - 谢栋”, 49, 105, , 128, 0, #红色)
+    .默认
+        
+    .判断结束
+    赋值 (假)
+.默认
+    赋值 (假)
+.判断结束
+返回 ()
+
+
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+赋值 (假)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

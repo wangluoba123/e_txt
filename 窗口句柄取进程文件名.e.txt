@@ -1,0 +1,114 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 42
+    底图方式 = 402718748
+    底色 = 0 '  0x0
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1095652191
+    可否移动 = 真
+    背景音乐播放次数 = 4541525
+    回车下移焦点 = 真
+    Esc键关闭 = 假
+    F1键打开帮助 = 真
+    帮助标志值 = 1931018240
+    在任务栏中显示 = 真
+    随意移动 = 真
+    外形 = -859831552
+    总在最前 = 真
+    保持标题栏激活 = 真
+    帮助文件名 = “s”
+
+
+
+.常量 TH32CS_SNAPMODULE, "8", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 5 系统核心支持库
+ ' spec A512548E76954B6E92C21055517615B0 2 1 特殊功能支持库
+
+
+
+
+数据类型 MODULEENTRY32, , 
+    .成员 dwSize, 整数型, , , 548
+    .成员 th32ModuleID, 整数型, , , 模块ID
+    .成员 th32ProcessID, 整数型, , , 进程ID
+    .成员 GlblcntUsage, 整数型, , , 全局引用数
+    .成员 ProccntUsage, 整数型, , , 引用数
+    .成员 modBaseAddr, 整数型, , , 模块基址
+    .成员 modBaseSize, 整数型, , , 模块大小
+    .成员 hModule, 整数型, , , 模块句柄
+    .成员 szModule, 字节型, , "256", 模块名
+    .成员 szExePath, 字节型, , "260", 模块路径
+
+
+.DLL命令 CreateToolhelp32Snapshot, 整数型, "", "", , 
+    .参数 dwFlags, 整数型, , 
+    .参数 th32ProcessID, 整数型, , 
+
+.DLL命令 GetWindowThreadProcessId, 整数型, "user32", "", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpdwProcessId, 整数型, 传址, 
+
+.DLL命令 CloseHandle, 整数型, "kernel32", "", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 Module32First, 整数型, "KERNEL32.DLL", "", , 
+    .参数 hSnapshot, 整数型, , 
+    .参数 lpme, 未知类型0x4101001A, 传址, 
+
+.DLL命令 GetDesktopWindow, 整数型, "user32", "GetDesktopWindow", , 
+
+.DLL命令 FindWindowEx, 整数型, "user32", "FindWindowExA", , 
+    .参数 hWnd1, 整数型, , 
+    .参数 hWnd2, 整数型, , 
+    .参数 lpsz1, 文本型, , 
+    .参数 lpsz2, 文本型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 hwnd, 整数型, , , 
+
+赋值 (hwnd, FindWindowEx (0, 0, “Shell_TrayWnd”, 字符 (0)))
+
+调试输出 (句柄取进程文件名 (hwnd))
+
+.子程序 句柄取进程文件名, 文本型, , 
+.参数 窗口句柄, 整数型, , 
+
+.局部变量 hModule, 整数型, , , 
+.局部变量 进程标示符, 整数型, , , 
+.局部变量 PID, 整数型, , , 
+.局部变量 ModuleBuffer, 未知类型0x4101002A, , , 
+
+GetWindowThreadProcessId (窗口句柄, PID)
+赋值 (hModule)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

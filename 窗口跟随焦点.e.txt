@@ -1,0 +1,119 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 251
+    高度 = 93
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 4
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “wqrsksk 和您一起学E”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 5 系统核心支持库
+
+
+
+
+数据类型 tagGUITHREADINFO, , 
+    .成员 cbSize, 整数型, , , 
+    .成员 flags, 整数型, , , 
+    .成员 hwndActive, 整数型, , , 
+    .成员 hwndFocus, 整数型, , , 
+    .成员 hwndCapture, 整数型, , , 
+    .成员 hwndMenuOwner, 整数型, , , 
+    .成员 hwndMoveSize, 整数型, , , 
+    .成员 hwndCaret, 整数型, , , 
+    .成员 rcCaret, RECT, , , 
+
+数据类型 RECT, , 
+    .成员 left, 空白型, , , 
+    .成员 top, 空白型, , , 
+    .成员 right, 空白型, , , 
+    .成员 bottom, 空白型, , , 
+
+数据类型 POINT, , 
+    .成员 x, 空白型, , , 
+    .成员 y, 空白型, , , 
+
+
+.DLL命令 GetGUIThreadInfo, 逻辑型, "", "GetGUIThreadInfo", , 
+    .参数 idThread, 整数型, , 
+    .参数 LPGUITHREADINFO, tagGUITHREADINFO, , 
+
+.DLL命令 ClientToScreen, 逻辑型, "", "ClientToScreen", , 
+    .参数 hwnd, 整数型, , 
+    .参数 LPPOINT, POINT, , 
+
+.DLL命令 SetWindowPos, 整数型, "user32", "SetWindowPos", , 
+    .参数 hwnd, 整数型, , 
+    .参数 hWndInsertAfter, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 cx, 整数型, , 
+    .参数 cy, 整数型, , 
+    .参数 wFlags, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _时钟1_周期事件, 空白型, , 
+.局部变量 hWnd, 整数型, , , 
+.局部变量 PG, tagGUITHREADINFO, , , 
+.局部变量 PT, POINT, , , 
+
+赋值 (PG.cbSize, 48)
+GetGUIThreadInfo (0, PG)
+赋值 (hWnd, PG.hwndCaret)
+.如果真 (大于 (hWnd, 0))
+    赋值 (PT.x, PG.rcCaret.right)
+    赋值 (PT.y, PG.rcCaret.bottom)
+    ClientToScreen (PG.hwndCaret, PT)
+    SetWindowPos (_启动窗口.取窗口句柄 (), -1, PT.x, PT.y, 0, 0, 相加 (16, 1, 64))
+.如果真结束
+
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

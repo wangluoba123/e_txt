@@ -1,0 +1,873 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：TCP服务器
+ ' 程序描述：Iocp服务器
+@备注:
+Iocp服务器
+ ' 程序作者：李光
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：李光
+ ' 版本号：5.0
+ ' 创建号：2.0
+
+
+
+.常量 AF_INET, "2", , 
+.常量 SOCK_STREAM, "1", , 
+.常量 IPPROTO_TCP, "6", , 
+.常量 WSA_FLAG_OVERLAPPED, "1", , 
+.常量 addrlen, "16", , 
+.常量 SOMAXCONN, "2147483647", , 
+.常量 WSA_IO_PENDING, "997", , 
+.常量 SOCKET_ERROR, "-1", , 
+.常量 WSA_WAIT_TIMEOUT, "258", , 
+.常量 INVALID_SOCKET, "0", , 
+.常量 Accept, "1", , 
+.常量 Recv, "2", , 
+.常量 Send, "3", , 
+.常量 客户进入, "1", 公开, 
+.常量 数据到达, "2", 公开, 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+ ' 所需要的模块
+ ' 多线程模块 C:\Documents and Settings\Administrator\桌面\TCP服务器\多线程模块.ec
+ ' 内存操作 C:\Documents and Settings\Administrator\桌面\TCP服务器\内存操作.ec
+
+
+数据类型 SYSTEM_INFO, , 
+    .成员 dwOemId, dwOemId, , , 
+    .成员 dwPageSize, 整数型, , , 
+    .成员 lpMinimumApplicationAddress, 整数型, , , 
+    .成员 lpMaximumApplicationAddress, 整数型, , , 
+    .成员 dwActiveProcessorMask, 整数型, 传址, , 
+    .成员 dwNumberOfProcessors, 整数型, , , 
+    .成员 dwProcessorType, 整数型, , , 
+    .成员 dwAllocationGranularity, 整数型, , , 
+    .成员 wProcessorLevel, 短整数型, , , 
+    .成员 wProcessorRevision, 短整数型, , , 
+
+数据类型 dwOemId, , 
+    .成员 wProcessorArchitecture, 短整数型, , , 
+    .成员 wReserved, 短整数型, , , 
+
+数据类型 WSADATA, , 
+    .成员 wVersion, 短整数型, , , 
+    .成员 lpVendorInfo, 短整数型, , , 
+    .成员 szDescription, 字节型, , "257", 
+    .成员 szSystemStatus, 字节型, , "129", 
+    .成员 wMaxSockets, 整数型, , , 
+    .成员 wMaxUDPDG, 整数型, , , 
+    .成员 dwVendorInfo, 字节型, , , 
+
+数据类型 sockaddr_in, , 
+    .成员 sin_family, 短整数型, , , 
+    .成员 sin_port, 短整数型, , , 
+    .成员 sin_addr, 整数型, , , 
+    .成员 sin_zero, 字节型, , "8", 
+
+数据类型 sockaddr, , 
+    .成员 sa_family, 短整数型, , , 
+    .成员 sa_data, 字节型, , "14", 
+
+数据类型 服务器信息, , 
+    .成员 ListenSocket, 整数型, , , 
+    .成员 CompletionPort, 整数型, , , 
+    .成员 Heap, Heap, , , 
+    .成员 工作线程, 多线程类, , "1", 
+    .成员 工作线程数, 整数型, , , 
+    .成员 回调函数, 整数型, , , 
+    .成员 状态, 逻辑型, , , 
+
+数据类型 多线程许可证, 公开, 
+    .成员 DebugInfo, 整数型, , , 
+    .成员 LockCount, 整数型, , , 
+    .成员 RecursionCount, 整数型, , , 
+    .成员 OwningThread, 整数型, , , 
+    .成员 LockSemaphore, 整数型, , , 
+    .成员 SpinCount, 整数型, , , 
+
+
+.DLL命令 WSAStartup, 整数型, "ws2_32.dll", "", , 
+    .参数 wVersionRequiredas, 整数型, , 
+    .参数 lpWSAData, WSADATA, 传址, 
+
+.DLL命令 WSACleanup, 整数型, "ws2_32.dll", "", , 
+
+.DLL命令 closesocket, 整数型, "ws2_32.dll", "", , 
+    .参数 s, 整数型, , 
+
+.DLL命令 listen, 整数型, "ws2_32.dll", "", , 
+    .参数 s, 整数型, , 
+    .参数 backlog, 整数型, , 
+
+.DLL命令 bind, 整数型, "ws2_32.dll", "", , 
+    .参数 s, 整数型, , 
+    .参数 addr, sockaddr_in, 传址, 
+    .参数 namelen, 整数型, , 
+
+.DLL命令 htons, 短整数型, "ws2_32.dll", "", , 
+    .参数 hostshortas, 短整数型, , 
+
+.DLL命令 inet_addr, 整数型, "ws2_32.dll", "", , 
+    .参数 cp, 文本型, , 
+
+.DLL命令 accept, 整数型, "ws2_32.dll", "", , 
+    .参数 s, 整数型, , 
+    .参数 addr, 整数型, , 
+    .参数 addrlen, 整数型, , 
+
+.DLL命令 shutdown, 整数型, "ws2_32.dll", "", , 
+    .参数 s, 整数型, , 
+    .参数 how, 整数型, , 
+
+.DLL命令 getpeername, 整数型, "ws2_32.dll", "", , 
+    .参数 s, 整数型, , 
+    .参数 name, sockaddr_in, 传址, 
+    .参数 namelen, 整数型, 传址, 
+
+.DLL命令 ntohs, 整数型, "ws2_32.dll", "", , 
+    .参数 netshortas, 短整数型, , 
+
+.DLL命令 inet_ntoa, 文本型, "ws2_32.dll", "", , 
+    .参数 in, 整数型, , 
+
+.DLL命令 WaitForSingleObject, 整数型, "", "", , 
+    .参数 hHandle, 整数型, , 
+    .参数 dwMilliseconds, 整数型, , 
+
+.DLL命令 GetLastError, 整数型, "", "", , 
+
+.DLL命令 AcceptEx, 逻辑型, "mswsock.dll", "", , 
+    .参数 sListenSocket, 整数型, , 
+    .参数 sAcceptSocket, 整数型, , 
+    .参数 lpOutputBuffer, 整数型, , 
+    .参数 dwReceiveDataLength, 整数型, , 
+    .参数 dwLocalAddressLength, 整数型, , 
+    .参数 dwRemoteAddressLength, 整数型, , 
+    .参数 lpdwBytesReceived, 整数型, 传址, 
+    .参数 lpOverlapped, 整数型, , 
+
+.DLL命令 WSARecv, 整数型, "ws2_32.dll", "", , 
+    .参数 s, 整数型, , 
+    .参数 lpBuffers, 整数型, , 
+    .参数 dwBufferCount, 整数型, , 
+    .参数 lpNumberOfBytesRecvd, 整数型, 传址, 
+    .参数 lpFlags, 整数型, 传址, 
+    .参数 lpOverlapped, 整数型, , 
+    .参数 lpCompletionRoutine, 整数型, , 
+
+.DLL命令 WSASend, 整数型, "ws2_32.dll", "", , 
+    .参数 s, 整数型, , 
+    .参数 lpBuffers, 整数型, , 
+    .参数 dwBufferCount, 整数型, , 
+    .参数 lpNumberOfBytesSent, 整数型, 传址, 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpOverlapped, 整数型, , 
+    .参数 lpCompletionRoutine, 整数型, , 
+
+.DLL命令 GetTickCount, 整数型, "", "", , 
+
+.DLL命令 CreateIoCompletionPort, 整数型, "", "", , 
+    .参数 Handle, 整数型, , 
+    .参数 ExistingCompletionPort, 整数型, , 
+    .参数 CompletionKey, 整数型, , 
+    .参数 NumberOfConcurrentThreads, 整数型, , 
+
+.DLL命令 GetQueuedCompletionStatus, 逻辑型, "", "", , 
+    .参数 CompletionPort, 整数型, , 
+    .参数 lpNumberOfBytesTransferred, 整数型, 传址, 
+    .参数 lpCompletionKey, 整数型, 传址, 
+    .参数 lpOverlapped, 整数型, 传址, 
+    .参数 dwMilliseconds, 整数型, , 
+
+.DLL命令 PostQueuedCompletionStatus, 整数型, "", "", , 
+    .参数 CompletionPort, 整数型, , 
+    .参数 dwNumberOfBytesTransferred, 整数型, , 
+    .参数 dwCompletionKey, 整数型, , 
+    .参数 lpOverlapped, 整数型, , 
+
+.DLL命令 WSASocket, 整数型, "Ws2_32.dll", "WSASocketA", , 
+    .参数 af, 整数型, , 
+    .参数 type, 整数型, , 
+    .参数 protocol, 整数型, , 
+    .参数 lpProtocolInfo, 整数型, , 
+    .参数 g, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+
+.DLL命令 GetAcceptExSockaddrs, 空白型, "Mswsock.dll", "", , 
+    .参数 lpOutputBuffer, 整数型, , 
+    .参数 dwReceiveDataLength, 整数型, , 
+    .参数 dwLocalAddressLength, 整数型, , 
+    .参数 dwRemoteAddressLength, 整数型, , 
+    .参数 LocalSockaddr, 整数型, 传址, 
+    .参数 LocalSockaddrLength, 整数型, 传址, 
+    .参数 RemoteSockaddr, 整数型, 传址, 
+    .参数 RemoteSockaddrLength, 整数型, 传址, 
+
+.DLL命令 GetSystemInfo, 空白型, "", "", , 
+    .参数 lpSystemInfo, SYSTEM_INFO, , 
+
+.DLL命令 CloseHandle, 逻辑型, "", "", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 RtlMoveMemory_int_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 整数型, 传址, 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_int_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_short_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 短整数型, 传址, 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_short_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 短整数型, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_sockaddr_in_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, sockaddr_in, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_byte_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 字节集, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_byte_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+初始化 ()
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+载入 (假)
+
+.程序集 WinSocket, , , 
+
+.程序集变量 初始化, 逻辑型, , , 
+.程序集变量 服务器数组, 服务器信息, , "0", 
+.程序集变量 黑名单, 整数型, , "0", 
+.程序集变量 黑名单数, 整数型, , , 
+.子程序 初始化, 空白型, , 
+.局部变量 WSADATA, WSADATA, , , 
+
+ ' --========  易语言资源网  (www.5a5x.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5a5x.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5a5x.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5a5x.com  ================--
+
+赋值 (初始化, 等于 (WSAStartup (合并整数 (2, 2), WSADATA), 0))
+
+.子程序 取未使用数组成员, 整数型, , 
+.局部变量 数组索引, 整数型, , , 
+
+赋值 (数组索引, 取数组成员数 (服务器数组))
+
+.计次循环首 (数组索引, 数组索引)
+    .如果真 (取反 (服务器数组 [数组索引], 状态))
+        返回 (数组索引)
+    .如果真结束
+    
+.计次循环尾 ()
+
+重定义数组 (服务器数组, 真, 数组索引)
+返回 (数组索引)
+
+.子程序 回调, 整数型, , 
+.参数 数组索引, 整数型, , 
+.参数 消息类型, 整数型, , 
+.参数 数据指针, 整数型, , 
+.参数 数据长度, 整数型, , 
+
+返回 (call (服务器数组 [数组索引], 回调函数, 消息类型, 数据指针, 数据长度))
+
+.子程序 call, 整数型, , 
+.参数 指针, 整数型, , 
+.参数 消息类型, 整数型, , 
+.参数 数据指针, 整数型, , 
+.参数 数据长度, 整数型, , 
+
+置入代码 ({ 201, 88, 135, 4, 36, 255, 224 })
+返回 (0)
+
+.子程序 释放资源, 空白型, , 
+.参数 数组索引, 整数型, , 
+.参数 lpOverlapped, 整数型, , 
+
+.局部变量 x, 整数型, , , 
+
+RtlMoveMemory_int_2 (x, 相加 (lpOverlapped, 36), 4)
+closesocket (x)
+RtlMoveMemory_int_2 (x, 相加 (lpOverlapped, 24), 4)
+服务器数组.Free ( [数组索引], Heap, x)
+RtlMoveMemory_int_2 (x, 相加 (lpOverlapped, 32), 4)
+服务器数组.Free ( [数组索引], Heap, x)
+服务器数组.Free ( [数组索引], Heap, lpOverlapped)
+
+.子程序 释放资源2, 空白型, , 
+.参数 数组索引, 整数型, , 
+.参数 lpOverlapped, 整数型, , 
+
+.局部变量 x, 整数型, , , 
+
+RtlMoveMemory_int_2 (x, 相加 (lpOverlapped, 36), 4)
+服务器数组.Free ( [数组索引], Heap, x)
+服务器数组.Free ( [数组索引], Heap, lpOverlapped)
+
+.子程序 添加黑名单, 整数型, , 全局黑名单, 所有服务器均有效. 返回黑名单索引.
+.参数 IP地址, 文本型, , 
+
+.局部变量 i, 整数型, , , 
+.局部变量 ip, 整数型, , , 
+
+赋值 (ip, inet_addr (IP地址))
+.计次循环首 (黑名单数, i)
+    .如果真 (等于 (黑名单 [i], ip))
+        返回 (i)
+    .如果真结束
+    
+.计次循环尾 ()
+赋值 (黑名单数, 相加 (黑名单数, 1))
+重定义数组 (黑名单, 真, 黑名单数)
+赋值 (黑名单 [黑名单数], ip)
+返回 (黑名单数)
+
+.子程序 删除黑名单, 空白型, , 在黑名单中删除指定IP. 所有服务器均有效.
+.参数 黑名单索引, 整数型, , 
+
+.如果真 (并且 (大于或等于 (黑名单索引, 1), 小于或等于 (黑名单索引, 黑名单数)))
+    删除成员 (黑名单, 黑名单索引, )
+    赋值 (黑名单数, 相减 (黑名单数, 1))
+.如果真结束
+
+
+.子程序 是否拒绝, 逻辑型, , 
+.参数 lpOverlapped, 整数型, , 
+
+.局部变量 i, 整数型, , , 
+.局部变量 sockaddr_in, sockaddr_in, , , 
+.局部变量 addr, 整数型, , , 
+
+RtlMoveMemory_int_2 (addr, 相加 (lpOverlapped, 24), 4)
+GetAcceptExSockaddrs (addr, 0, 0, 32, 0, 0, addr, 0)
+RtlMoveMemory_sockaddr_in_2 (sockaddr_in, addr, 16)
+
+.计次循环首 (黑名单数, i)
+    .如果真 (等于 (黑名单 [i], sockaddr_in.sin_addr))
+        返回 (真)
+    .如果真结束
+    
+.计次循环尾 ()
+返回 (假)
+
+.子程序 启动服务器, 整数型, , 
+.参数 IP地址, 文本型, , 
+.参数 端口号, 整数型, , 
+.参数 事件回调函数, 子程序指针, , 
+.参数 AcceptEx数量, 整数型, , 
+
+.局部变量 service, sockaddr_in, , , 
+.局部变量 SysInf, SYSTEM_INFO, , , 
+.局部变量 AcceptSocket, 整数型, , , 
+.局部变量 olOverlap, 整数型, , , 
+.局部变量 WSABuf, 整数型, , , 
+.局部变量 addr, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 ListenSocket, 整数型, , , 
+.局部变量 CompletionPort, 整数型, , , 
+.局部变量 数组索引, 整数型, , , 
+
+.如果真 (初始化)
+    赋值 (ListenSocket, WSASocket (#AF_INET, #SOCK_STREAM, #IPPROTO_TCP, 0, 0, #WSA_FLAG_OVERLAPPED))
+    .如果真 (不等于 (ListenSocket, #INVALID_SOCKET))
+        赋值 (service.sin_family, #AF_INET)
+        赋值 (service.sin_addr, inet_addr (IP地址))
+        赋值 (service.sin_port, htons (端口号))
+        
+        .如果真 (等于 (bind (ListenSocket, service, 16), 0))
+            .如果真 (等于 (listen (ListenSocket, #SOMAXCONN), 0))
+                赋值 (CompletionPort, CreateIoCompletionPort (ListenSocket, 0, 0, 0))
+                .如果真 (不等于 (CompletionPort, 0))
+                    赋值 (数组索引, 取未使用数组成员 ())
+                    
+                    赋值 (服务器数组 [数组索引], 状态, 真)
+                    赋值 (服务器数组 [数组索引], ListenSocket, ListenSocket)
+                    赋值 (服务器数组 [数组索引], CompletionPort, CompletionPort)
+                    赋值 (服务器数组 [数组索引], 回调函数, 到整数 (事件回调函数))
+                    
+                    GetSystemInfo (SysInf)
+                    赋值 (服务器数组 [数组索引], 工作线程数, 相乘 (SysInf.dwNumberOfProcessors, 2))
+                    重定义数组 (服务器数组 [数组索引], 工作线程, 假, 服务器数组 [数组索引], 工作线程数)
+                    
+                    .计次循环首 (服务器数组 [数组索引], 工作线程数, i)
+                        服务器数组.创建线程 ( [数组索引], 工作线程 [i], &工作线程, 数组索引)
+                    .计次循环尾 ()
+                    
+                    .计次循环首 (AcceptEx数量, )
+                        赋值 (AcceptSocket, WSASocket (#AF_INET, #SOCK_STREAM, #IPPROTO_TCP, 0, 0, #WSA_FLAG_OVERLAPPED))
+                        
+                        .如果真 (不等于 (AcceptSocket, #INVALID_SOCKET))
+                            赋值 (olOverlap, 服务器数组.Alloc ( [数组索引], Heap, 40))
+                            赋值 (addr, 服务器数组.Alloc ( [数组索引], Heap, 相乘 (16, 2)))
+                            赋值 (WSABuf, 服务器数组.Alloc ( [数组索引], Heap, 4096))
+                            RtlMoveMemory_int_1 (相加 (olOverlap, 20), #Accept, 4) ' type
+                            RtlMoveMemory_int_1 (相加 (olOverlap, 24), addr, 4) ' addr
+                            RtlMoveMemory_int_1 (相加 (olOverlap, 28), 4096, 4) ' wsabuflen
+                            RtlMoveMemory_int_1 (相加 (olOverlap, 32), WSABuf, 4) ' wsabuf
+                            RtlMoveMemory_int_1 (相加 (olOverlap, 36), AcceptSocket, 4) ' socket
+                            .如果 (AcceptEx (ListenSocket, AcceptSocket, addr, 0, 0, 32, 0, olOverlap))
+                                
+                            .否则
+                                .如果真 (不等于 (GetLastError (), #WSA_IO_PENDING))
+                                    释放资源 (数组索引, olOverlap)
+                                .如果真结束
+                                
+                            .如果结束
+                            
+                        .如果真结束
+                        
+                    .计次循环尾 ()
+                    返回 (数组索引)
+                .如果真结束
+                
+            .如果真结束
+            
+        .如果真结束
+        closesocket (ListenSocket)
+    .如果真结束
+    
+.如果真结束
+
+返回 (0)
+
+.子程序 关闭服务器, 空白型, , 
+.参数 数组索引, 整数型, , 
+
+.如果真 (并且 (大于或等于 (数组索引, 1), 小于或等于 (数组索引, 取数组成员数 (服务器数组))))
+    .如果真 (服务器数组 [数组索引], 状态)
+        .计次循环首 (服务器数组 [数组索引], 工作线程数, )
+            PostQueuedCompletionStatus (服务器数组 [数组索引], CompletionPort, 0, 1, 0)
+        .计次循环尾 ()
+        WaitForSingleObject (-1, 500)
+        closesocket (服务器数组 [数组索引], ListenSocket)
+        CloseHandle (服务器数组 [数组索引], CompletionPort)
+        赋值 (服务器数组 [数组索引], 状态, 假)
+    .如果真结束
+    
+.如果真结束
+
+
+.子程序 工作线程, 空白型, , 
+.参数 数组索引, 空白型, , 
+
+.局部变量 lpNumberOfBytesTransferred, 整数型, , , 
+.局部变量 lpCompletionKey, 整数型, , , 
+.局部变量 lpOverlapped, 整数型, , , 
+.局部变量 x, 整数型, , , 
+.局部变量 addr, 整数型, , , 
+
+.判断循环首 (真)
+    .如果 (GetQueuedCompletionStatus (服务器数组 [数组索引], CompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, lpOverlapped, -1))
+        .如果真 (等于 (lpCompletionKey, 1))
+            跳出循环 ()
+        .如果真结束
+        RtlMoveMemory_int_2 (x, 相加 (lpOverlapped, 20), 4)
+        .判断开始 (等于 (x, #Accept))
+            .如果 (是否拒绝 (lpOverlapped))
+                RtlMoveMemory_int_2 (x, 相加 (lpOverlapped, 36), 4)
+                closesocket (x)
+                赋值 (x, WSASocket (#AF_INET, #SOCK_STREAM, #IPPROTO_TCP, 0, 0, #WSA_FLAG_OVERLAPPED))
+                RtlMoveMemory_int_1 (相加 (lpOverlapped, 36), x, 4)
+                .如果 (等于 (x, #INVALID_SOCKET))
+                    释放资源 (数组索引, lpOverlapped)
+                .否则
+                    RtlMoveMemory_int_2 (addr, 相加 (lpOverlapped, 24), 4)
+                    .如果 (AcceptEx (服务器数组 [数组索引], ListenSocket, x, addr, 0, 0, 32, 0, lpOverlapped))
+                         ' 本源码来自易语言资源网(www.5a5x.com)
+                    .否则
+                        .如果真 (不等于 (GetLastError (), #WSA_IO_PENDING))
+                            释放资源 (数组索引, lpOverlapped)
+                        .如果真结束
+                        
+                    .如果结束
+                    
+                .如果结束
+                
+            .否则
+                RtlMoveMemory_int_1 (相加 (lpOverlapped, 20), #Recv, 4)
+                RtlMoveMemory_int_2 (x, 相加 (lpOverlapped, 36), 4)
+                CreateIoCompletionPort (x, 服务器数组 [数组索引], CompletionPort, 0, 0)
+                
+                .如果 (等于 (WSARecv (x, 相加 (lpOverlapped, 28), 1, 0, 0, lpOverlapped, 0), #SOCKET_ERROR))
+                    .如果 (等于 (GetLastError (), #WSA_IO_PENDING))
+                        回调 (数组索引, #客户进入, lpOverlapped, 0)
+                        赋值 (lpOverlapped, 服务器数组.Alloc ( [数组索引], Heap, 40))
+                        RtlMoveMemory_int_1 (相加 (lpOverlapped, 24), 服务器数组.Alloc ( [数组索引], Heap, 相乘 (16, 2)), 4)
+                        RtlMoveMemory_int_1 (相加 (lpOverlapped, 28), 4096, 4)
+                        RtlMoveMemory_int_1 (相加 (lpOverlapped, 32), 服务器数组.Alloc ( [数组索引], Heap, 4096), 4)
+                    .否则
+                        closesocket (x)
+                    .如果结束
+                    
+                .否则
+                    回调 (数组索引, #客户进入, lpOverlapped, 0)
+                    赋值 (lpOverlapped, 服务器数组.Alloc ( [数组索引], Heap, 40))
+                    RtlMoveMemory_int_1 (相加 (lpOverlapped, 24), 服务器数组.Alloc ( [数组索引], Heap, 相乘 (16, 2)), 4)
+                    RtlMoveMemory_int_1 (相加 (lpOverlapped, 28), 4096, 4)
+                    RtlMoveMemory_int_1 (相加 (lpOverlapped, 32), 服务器数组.Alloc ( [数组索引], Heap, 4096), 4)
+                .如果结束
+                
+                
+                赋值 (x, WSASocket (#AF_INET, #SOCK_STREAM, #IPPROTO_TCP, 0, 0, #WSA_FLAG_OVERLAPPED))
+                RtlMoveMemory_int_1 (相加 (lpOverlapped, 20), #Accept, 4)
+                RtlMoveMemory_int_1 (相加 (lpOverlapped, 36), x, 4)
+                .如果 (等于 (x, #INVALID_SOCKET))
+                    释放资源 (数组索引, lpOverlapped)
+                .否则
+                    RtlMoveMemory_int_2 (addr, 相加 (lpOverlapped, 24), 4)
+                    .如果 (AcceptEx (服务器数组 [数组索引], ListenSocket, x, addr, 0, 0, 32, 0, lpOverlapped))
+                        
+                    .否则
+                        .如果真 (不等于 (GetLastError (), #WSA_IO_PENDING))
+                            释放资源 (数组索引, lpOverlapped)
+                        .如果真结束
+                        
+                    .如果结束
+                    
+                .如果结束
+                
+            .如果结束
+            
+        .判断 (等于 (lpNumberOfBytesTransferred, 0))
+            释放资源 (数组索引, lpOverlapped)
+        .判断 (等于 (x, #Recv))
+            回调 (数组索引, #数据到达, lpOverlapped, lpNumberOfBytesTransferred)
+            RtlMoveMemory_int_2 (x, 相加 (lpOverlapped, 36), 4)
+            .如果真 (等于 (WSARecv (x, 相加 (lpOverlapped, 28), 1, 0, 0, lpOverlapped, 0), #SOCKET_ERROR))
+                .如果真 (不等于 (GetLastError (), #WSA_IO_PENDING))
+                    释放资源 (数组索引, lpOverlapped)
+                .如果真结束
+                
+            .如果真结束
+            
+        .判断 (等于 (x, #Send))
+            RtlMoveMemory_int_2 (x, 相加 (lpOverlapped, 24), 4)
+            .如果 (大于或等于 (x, lpNumberOfBytesTransferred))
+                释放资源2 (数组索引, lpOverlapped)
+            .否则
+                RtlMoveMemory_int_1 (相加 (lpOverlapped, 24), 相减 (lpNumberOfBytesTransferred, x), 4)
+                RtlMoveMemory_int_2 (x, 相加 (lpOverlapped, 28), 4)
+                赋值 (x, 相加 (x, lpNumberOfBytesTransferred))
+                RtlMoveMemory_int_1 (相加 (lpOverlapped, 28), x, 4)
+                
+                RtlMoveMemory_int_2 (x, 相加 (lpOverlapped, 32), 4)
+                .如果真 (等于 (WSASend (x, 相加 (lpOverlapped, 24), 1, 0, 0, lpOverlapped, 0), #SOCKET_ERROR))
+                    .如果真 (不等于 (GetLastError (), #WSA_IO_PENDING))
+                        释放资源2 (数组索引, lpOverlapped)
+                    .如果真结束
+                    
+                .如果真结束
+                
+            .如果结束
+            
+        .默认
+            
+        .判断结束
+        
+        
+        
+    .否则
+        .如果 (等于 (lpOverlapped, 0))
+            到循环尾 ()
+        .否则
+            RtlMoveMemory_int_2 (x, 相加 (lpOverlapped, 20), 4)
+            .判断开始 (等于 (x, #Send))
+                释放资源2 (数组索引, lpOverlapped)
+            .默认
+                释放资源 (数组索引, lpOverlapped)
+            .判断结束
+            
+        .如果结束
+        
+    .如果结束
+    
+.判断循环尾 ()
+
+
+.子程序 取客户地址, 文本型, , 
+.参数 lpOverlapped, 整数型, , 
+
+.局部变量 sockaddr_in, sockaddr_in, , , 
+.局部变量 addr, 整数型, , , 
+
+RtlMoveMemory_int_2 (addr, 相加 (lpOverlapped, 24), 4)
+GetAcceptExSockaddrs (addr, 0, 0, 32, 0, 0, addr, 0)
+RtlMoveMemory_sockaddr_in_2 (sockaddr_in, addr, 16)
+返回 (相加 (inet_ntoa (sockaddr_in.sin_addr), “:”, 到文本 (ntohs (sockaddr_in.sin_port))))
+
+.子程序 取数据, 空白型, , 
+.参数 lpOverlapped, 整数型, , 
+.参数 Buf, 字节集, , 
+.参数 len, 整数型, , 
+
+.局部变量 pMem, 整数型, , , 
+
+RtlMoveMemory_int_2 (pMem, 相加 (lpOverlapped, 32), 4)
+RtlMoveMemory_byte_2 (Buf, pMem, len)
+
+.子程序 发数据, 逻辑型, , 
+.参数 数组索引, 整数型, , 
+.参数 lpOverlapped, 整数型, , 
+.参数 Buf, 字节集, , 
+.参数 len, 整数型, , 
+
+.局部变量 s, 整数型, , , 
+.局部变量 olOverlap, 整数型, , , 
+.局部变量 WSABuf, 整数型, , , 
+
+RtlMoveMemory_int_2 (s, 相加 (lpOverlapped, 36), 4)
+' 本源码来自易语言资源网(www.5a5x.com)
+赋值 (olOverlap, 服务器数组.Alloc ( [数组索引], Heap, 40))
+赋值 (WSABuf, 服务器数组.Alloc ( [数组索引], Heap, len))
+RtlMoveMemory_byte_1 (WSABuf, Buf, len)
+RtlMoveMemory_int_1 (相加 (olOverlap, 20), #Send, 4) ' type
+RtlMoveMemory_int_1 (相加 (olOverlap, 24), len, 4) ' wsabuflen
+RtlMoveMemory_int_1 (相加 (olOverlap, 28), WSABuf, 4) ' wsabuf
+RtlMoveMemory_int_1 (相加 (olOverlap, 32), s, 4) ' socket
+RtlMoveMemory_int_1 (相加 (olOverlap, 36), WSABuf, 4)
+
+.如果真 (等于 (WSASend (s, 相加 (olOverlap, 24), 1, 0, 0, olOverlap, 0), #SOCKET_ERROR))
+    .如果真 (不等于 (GetLastError (), #WSA_IO_PENDING))
+        释放资源2 (数组索引, olOverlap)
+        返回 (假)
+    .如果真结束
+    
+.如果真结束
+返回 (真)
+
+.类模块 TCP服务器, , , 
+
+.程序集变量 服务器ID, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+关闭 ()
+
+.子程序 启动, 逻辑型, , 
+.参数 IP地址, 文本型, 可空, 欲绑定的IP地址. 留空绑定所有可用IP.
+.参数 端口号, 整数型, , 欲绑定的端口号.
+.参数 事件回调函数, 子程序指针, , 网络事件回调函数. 客户进入,数据到达...
+.参数 AcceptEx数量, 整数型, 可空, AcceptEx 的数量. 留空 保持100个 AcceptEx.
+
+.如果真 (是否为空 (IP地址))
+    赋值 (IP地址, “0”)
+.如果真结束
+.如果真 (等于 (AcceptEx数量, 0))
+    赋值 (AcceptEx数量, 100)
+.如果真结束
+.如果真 (不等于 (服务器ID, 0))
+    关闭服务器 (服务器ID)
+.如果真结束
+
+赋值 (服务器ID, 启动服务器 (IP地址, 端口号, 事件回调函数, AcceptEx数量))
+返回 (不等于 (服务器ID, 0))
+
+.子程序 关闭, 空白型, , 
+.如果真 (不等于 (服务器ID, 0))
+    关闭服务器 (服务器ID)
+.如果真结束
+
+
+.子程序 取回客户, 文本型, , 
+.参数 数据地址, 整数型, , 
+
+.如果 (等于 (服务器ID, 0))
+    返回 (“”)
+.否则
+    返回 (取客户地址 (数据地址))
+.如果结束
+
+
+.子程序 取回数据, 字节集, , 
+.参数 数据地址, 整数型, , 
+.参数 数据长度, 整数型, , 
+
+.局部变量 Buf, 字节集, , , 
+
+赋值 (Buf, 取空白字节集 (数据长度))
+取数据 (数据地址, Buf, 数据长度)
+返回 (Buf)
+
+.子程序 发送数据, 逻辑型, , 
+.参数 数据地址, 整数型, , 
+.参数 数据, 字节集, , 
+
+返回 (发数据 (服务器ID, 数据地址, 数据, 取字节集长度 (数据)))
+
+.子程序 断开客户, 空白型, , 
+.参数 数据地址, 整数型, , 
+
+释放资源 (服务器ID, 数据地址)
+
+.类模块 多线程类, , , 
+
+.子程序 创建线程, 逻辑型, , 创建线程
+.参数 线程函数, 子程序指针, , 线程函数
+.参数 参数, 整数型, 可空, 线程函数的参数
+
+
+
+.子程序 结束线程, 逻辑型, , 关闭线程
+
+
+.子程序 挂起线程, 逻辑型, , 挂起线程
+
+
+.子程序 恢复运行, 逻辑型, , 恢复运行
+
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 创建进入许可证, 多线程许可证, , 创建一个多线程许可证
+
+
+.子程序 删除进入许可证, 空白型, , 删除一个多线程许可证
+.参数 进入许可证, 多线程许可证, , 
+
+
+
+.子程序 进入许可区, 空白型, , 进入许可区
+.参数 进入许可证, 多线程许可证, , 
+
+
+
+.子程序 退出许可区, 空白型, , 离开许可区
+.参数 进入许可证, 多线程许可证, , 
+
+
+
+.子程序 创建远线程, 整数型, , 
+.参数 进程句柄, 整数型, , 
+.参数 函数指针, 整数型, , 
+.参数 线程参数, 整数型, , 
+
+
+
+.类模块 Heap, , , 
+
+.子程序 Alloc, 整数型, , 
+.参数 dwBytes, 整数型, , 
+
+
+
+.子程序 Free, 逻辑型, , 
+.参数 lpMem, 整数型, , 
+
+
+
+.子程序 ReAlloc, 整数型, , 
+.参数 lpMem, 整数型, , 
+.参数 dwBytes, 整数型, , 
+
+
+
+.子程序 GetHeap, 整数型, , 
+
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 分配内存, 整数型, , 成功返回内存句柄, 否则返回 0 . 如果失败 可调用 GetLastError 取错误代码 .
+.参数 内存长度, 整数型, , 
+
+
+
+.子程序 释放内存, 逻辑型, , 成功返回真, 否则返回假 . 如果失败 可调用 GetLastError 取错误代码 .
+.参数 内存句柄, 整数型, , 
+
+
+
+.子程序 重置内存, 整数型, , 成功返回内存指针, 否则返回 0 . 如果失败 可调用 GetLastError 取错误代码 .
+.参数 内存句柄, 整数型, , 
+.参数 内存长度, 整数型, , 
+
+
+
+.子程序 锁定内存, 整数型, , 成功返回内存指针, 否则返回 0 . 如果失败 可调用 GetLastError 取错误代码 .
+.参数 内存句柄, 整数型, , 
+
+
+
+.子程序 解锁内存, 逻辑型, , 成功返回真, 否则返回假 .
+.参数 内存句柄, 整数型, , 
+
+
+
+.子程序 拷贝内存, 空白型, , 无返回值.
+.参数 目标指针, 整数型, , 
+.参数 源指针, 整数型, , 
+.参数 拷贝长度, 整数型, , 
+
+
+
+.子程序 读内存, 字节集, , 成功返回实际读出的字节集数据, 否则返回空字节集. 如果失败 可调用 GetLastError 取错误代码 .
+.参数 进程句柄, 整数型, , 
+.参数 内存指针, 整数型, , 
+.参数 读取长度, 整数型, , 
+
+
+
+.子程序 写内存, 整数型, , 成功返回实际写出的字节数, 否则返回 -1. 如果失败 可调用 GetLastError 取错误代码 .
+.参数 进程句柄, 整数型, , 
+.参数 内存指针, 整数型, , 
+.参数 字节集数据, 字节集, , 
+
+
+
+.子程序 分配内存Ex, 整数型, , 成功返回内存指针, 否则返回 0 . 如果失败 可调用 GetLastError 取错误代码 .
+.参数 进程句柄, 整数型, , 
+.参数 内存长度, 整数型, , 
+
+
+
+.子程序 释放内存Ex, 逻辑型, , 成功返回真, 否则返回假 . 如果失败 可调用 GetLastError 取错误代码 .
+.参数 进程句柄, 整数型, , 
+.参数 内存指针, 整数型, , 分配内存Ex 返回的指针.
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

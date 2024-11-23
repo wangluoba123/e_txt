@@ -1,0 +1,299 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 546
+    高度 = 455
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 HTML, "“<html> 
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312"> 
+<style type='text/css'> 
+body{font-size:12px;} 
+a:visited{text-decoration:none;color:slategray;} 
+a:hover{text-decoration:underline;color:slategray;} 
+a:link{text-decoration:none;color:slategray;} 
+</style> 
+<script language=JScript> 
+
+var x0=0,y0=0,x1=0,y1=0; 
+var offx=6,offy=6; 
+var moveable=false; 
+var hover='orange',normal='#336699';
+var index=10000;
+
+function startDrag(obj) 
+{ 
+if(event.button==1) 
+{ 
+
+obj.setCapture(); 
+
+var win = obj.parentNode; 
+var sha = win.nextSibling; 
+
+x0 = event.clientX; 
+y0 = event.clientY; 
+x1 = parseInt(win.style.left); 
+y1 = parseInt(win.style.top); 
+
+normal = obj.style.backgroundColor; 
+
+obj.style.backgroundColor = hover; 
+win.style.borderColor = hover; 
+obj.nextSibling.style.color = hover; 
+sha.style.left = x1 + offx; 
+sha.style.top = y1 + offy; 
+moveable = true; 
+} 
+} 
+
+function drag(obj) 
+{ 
+if(moveable) 
+{ 
+var win = obj.parentNode; 
+var sha = win.nextSibling; 
+win.style.left = x1 + event.clientX - x0; 
+win.style.top = y1 + event.clientY - y0; 
+sha.style.left = parseInt(win.style.left) + offx; 
+sha.style.top = parseInt(win.style.top) + offy; 
+} 
+} 
+
+function stopDrag(obj) 
+{ 
+if(moveable) 
+{ 
+var win = obj.parentNode; 
+var sha = win.nextSibling; 
+var msg = obj.nextSibling; 
+win.style.borderColor = normal; 
+obj.style.backgroundColor = normal; 
+msg.style.color = normal; 
+sha.style.left = obj.parentNode.style.left; 
+sha.style.top = obj.parentNode.style.top; 
+obj.releaseCapture(); 
+moveable = false; 
+} 
+} 
+
+function getFocus(obj) 
+{ 
+if(obj.style.zIndex!=index) 
+{ 
+index = index + 2; 
+var idx = index; 
+obj.style.zIndex=idx; 
+obj.nextSibling.style.zIndex=idx-1; 
+} 
+} 
+
+function min(obj) 
+{ 
+var win = obj.parentNode.parentNode; 
+var sha = win.nextSibling; 
+var tit = obj.parentNode; 
+var msg = tit.nextSibling; 
+var flg = msg.style.display=="none"; 
+if(flg) 
+{ 
+win.style.height = parseInt(msg.style.height) + parseInt(tit.style.height) + 2*2; 
+sha.style.height = win.style.height; 
+msg.style.display = "block"; 
+obj.innerHTML = "0"; 
+} 
+else 
+{ 
+win.style.height = parseInt(tit.style.height) + 2*2; 
+sha.style.height = win.style.height; 
+obj.innerHTML = "2"; 
+msg.style.display = "none"; 
+} 
+} 
+
+function xWin(id,w,h,l,t,tit,msg) 
+{ 
+index = index+2; 
+this.id = id; 
+this.width = w; 
+this.height = h; 
+this.left = l; 
+this.top = t; 
+this.zIndex = index; 
+this.title = tit; 
+this.message = msg; 
+this.obj = null; 
+this.bulid = bulid; 
+this.bulid(); 
+} 
+
+function bulid() 
+{ 
+var str = "" 
++ "<div id=xMsg" + this.id + " " 
++ "style='" 
++ "z-index:" + this.zIndex + ";" 
++ "width:" + this.width + ";" 
++ "height:" + this.height + ";" 
++ "left:" + this.left + ";" 
++ "top:" + this.top + ";" 
++ "background-color:" + normal + ";" 
++ "color:" + normal + ";" 
++ "font-size:8pt;" 
++ "font-family:Tahoma;" 
++ "position:absolute;" 
++ "cursor:default;" 
++ "border:2px solid " + normal + ";" 
++ "' " 
++ "onmousedown='getFocus(this)'>" 
++ "<div " 
++ "style='" 
++ "background-color:" + normal + ";" 
++ "width:" + (this.width-2*2) + ";" 
++ "height:20;" 
++ "color:white;" 
++ "' " 
++ "onmousedown='startDrag(this)' " 
++ "onmouseup='stopDrag(this)' " 
++ "onmousemove='drag(this)' " 
++ "ondblclick='min(this.childNodes[1])'" 
++ ">" 
++ "<span style='width:" + (this.width-2*12-4) + ";padding-left:3px;'>" + this.title + "</span>" 
++ "<span style='width:12;border-width:0px;color:white;font-family:webdings;' onclick='min(this)'>0</span>" 
++ "<span style='width:12;border-width:0px;color:white;font-family:webdings;' onclick='ShowHide(\""+this.id+"\",null);window.open(\"about:blank\")'>r</span>" 
++ "</div>" 
++ "<div style='" 
++ "width:100%;" 
++ "height:" + (this.height-20-4) + ";" 
++ "background-color:white;" 
++ "line-height:14px;" 
++ "word-break:break-all;" 
++ "padding:3px;" 
++ "'>" + this.message + "</div>" 
++ "</div>" 
++ "<div id=xMsg" + this.id + "bg style='" 
++ "width:" + this.width + ";" 
++ "height:" + this.height + ";" 
++ "top:" + this.top + ";" 
++ "left:" + this.left + ";" 
++ "z-index:" + (this.zIndex-1) + ";" 
++ "position:absolute;" 
++ "background-color:black;" 
++ "filter:alpha(opacity=40);" 
++ "'></div>"; 
+document.body.insertAdjacentHTML("beforeEnd",str); 
+} 
+
+function ShowHide(id,dis){ 
+var bdisplay = (dis==null)?((document.getElementById("xMsg"+id).style.display=="")?"none":""):dis 
+document.getElementById("xMsg"+id).style.display = bdisplay; 
+document.getElementById("xMsg"+id+"bg").style.display = bdisplay; 
+} 
+
+function initialize() 
+{ 
+var a = new xWin("1",600,400,100,100,"WEBUI窗口","这里是工作区，模拟窗口主要工作区域。");  
+
+ShowHide("1",""); 
+
+center('1');
+} 
+
+function center(id) 
+{ 
+xwin = document.getElementById("xMsg"+id); 
+var wleft = (document.body.clientWidth-xwin.style.width.replace("px",""))/2 < 0 ? 0 : (document.body.clientWidth-xwin.style.width.replace("px",""))/2; 
+var wtop = (document.body.clientHeight-xwin.style.height.replace("px",""))/2 < 0 ? 0 : (document.body.clientHeight-xwin.style.height.replace("px",""))/2;; 
+
+xwin.style.left = wleft; 
+xwin.style.top  = wtop; 
+
+xwinbg = document.getElementById("xMsg"+id+"bg"); 
+xwinbg.style.left = wleft; 
+xwinbg.style.top  = wtop; 
+} 
+
+window.onload = initialize; 
+</script> 
+</head> 
+<body bgcolor='#080808' scroll='no' onselectstart='return false' oncontextmenu='return false'> 
+</body> 
+</html> 
+”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' HtmlView 5014D8FA6DCA40b68FA626D8183666EB 2 0 超文本浏览框支持库
+
+
+
+
+
+.DLL命令 GetWindowLong, 整数型, "", "GetWindowLongA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+
+.DLL命令 SetLayeredWindowAttributes, 整数型, "", "SetLayeredWindowAttributes", , 
+    .参数 hwnd, 整数型, , 
+    .参数 crKey, 整数型, , 
+    .参数 bAlpha, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+
+.DLL命令 SetWindowLong, 整数型, "", "SetWindowLongA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+    .参数 dwNewLong, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+赋值 (.可视, 假)
+赋值 (.底色, 取颜色值 (8, 8, 8))
+赋值 (.边框, 0)
+赋值 (.位置, 3)
+赋值 (.标题, “WEBUI窗口”)
+赋值 (., -2)
+赋值 (., -2)
+赋值 (., 相加 (取屏幕宽度 (), 4))
+赋值 (., 相加 (取屏幕高度 (), 4))
+
+写到文件 (相加 (取运行目录 (), “\apphome.htm”), 到字节集 (#HTML))
+赋值 (., 相加 (取运行目录 (), “\apphome.htm”))
+
+SetWindowLong (取窗口句柄 (), -20, 位或 (GetWindowLong (取窗口句柄 (), -20), 524288))
+SetLayeredWindowAttributes (取窗口句柄 (), .底色, 0, 1)
+赋值 (.可视, 真)
+
+
+.子程序 _超文本浏览框1_即将打开新窗口, 逻辑型, , 
+销毁 ()
+返回 (假)
+
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+信息框 (“你点了关闭按钮，程序退出！”, 0, )
+
+
+ ' 不属于任何一个程序集、类模块的函数：

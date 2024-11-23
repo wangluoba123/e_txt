@@ -1,0 +1,87 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+输出调试文本 (accesstoxml (“c:\test.mdb”, “test”, “c:\test.xml”))
+
+.子程序 accesstoxml, 文本型, 公开, 
+.参数 access文件名, 文本型, , 
+.参数 access表名, 文本型, , 
+.参数 xml文件名, 文本型, , 
+.参数 SQL条件, 文本型, 可空, 
+
+.局部变量 objAccess, 对象, , , 
+.局部变量 执行结果, 文本型, , , 
+
+.如果真 (取反 (objAccess.创建 (“Access.Application”, )))
+    返回 (“创建对象[Access.Application]失败!”)
+.如果真结束
+
+ ' 打开指定ACCESS文件
+objAccess.方法 (“OpenCurrentDatabase”, access文件名)
+ ' 将指定表导出来XML文件
+objAccess.方法 (“ExportXML”, 0, access表名, xml文件名, , , , , 1, SQL条件)
+赋值 (执行结果, objAccess.取错误 ())
+
+ ' 导入指定XML到数据库
+ ' objAccess.方法 (“ImportXML”, xml文件名, 2)
+
+ ' 关闭数据库
+objAccess.方法 (“CloseCurrentDatabase”, )
+objAccess.方法 (“Quit”, )
+
+返回 (选择 (等于 (执行结果, “”), “导出成功!”, 执行结果))
+
+ ' -------------导出XML-----------
+ ' 方法调用格式： 〈无返回值〉 对象．方法 （"ExportXML"，ObjectType，DataSource，DataTarget，SchemaTarget，PresentationTarget，ImageTarget，Encoding，OtherFlags，WhereCondition，AdditionalData）
+ ' 参数<1>的名称为“ObjectType”，类型为“整数型”，参数值为以下值之一： 0、acExportTable； 1、acExportQuery； 2、acExportForm； 3、acExportReport； 7、acExportServerView； 9、acExportStoredProcedure； 10、acExportFunction。
+ ' 参数<2>的名称为“DataSource”，类型为“文本型”。
+ ' 参数<3>的名称为“DataTarget”，类型为“文本型”。
+ ' 参数<4>的名称为“SchemaTarget”，类型为“文本型”。
+ ' 参数<5>的名称为“PresentationTarget”，类型为“文本型”。
+ ' 参数<6>的名称为“ImageTarget”，类型为“文本型”。
+ ' 参数<7>的名称为“Encoding”，类型为“整数型”，参数默认值为“0”，参数值为以下值之一： 0、acUTF8； 1、acUTF16。
+ ' 参数<8>的名称为“OtherFlags”，类型为“整数型”，参数默认值为“0”，参数值为以下值之一： 1、acEmbedSchema； 2、acExcludePrimaryKeyAndIndexes； 4、acRunFromServer； 8、acLiveReportSource； 16、acPersistReportML； 32、acExportAllTableAndFieldProperties。
+ ' 参数<9>的名称为“WhereCondition”，类型为“文本型”。
+ ' 参数<10>的名称为“AdditionalData”，类型为“变体型”，可以被省略。
+
+ ' -------------导入XML-----------
+
+ ' 方法调用格式： 〈无返回值〉 对象．方法 （"ImportXML"，DataSource，ImportOptions）
+ ' 参数<1>的名称为“DataSource”，类型为“文本型”。
+ ' 参数<2>的名称为“ImportOptions”，类型为“整数型”，参数默认值为“1”，参数值为以下值之一： 0、acStructureOnly； 1、acStructureAndData； 2、acAppendData。
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

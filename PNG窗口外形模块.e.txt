@@ -1,0 +1,350 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：风很凉PNG窗口外形
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 6 系统核心支持库
+
+
+
+
+数据类型 GdiplusStartupInput, , 
+    .成员 GdiplusVersion, 整数型, , , 
+    .成员 DebugEventCallback, 整数型, , , 
+    .成员 SuppressBackgroundThread, 整数型, , , 
+    .成员 SuppressExternalCodecs, 整数型, , , 
+
+数据类型 Rect, , 
+    .成员 Left, 整数型, , , 
+    .成员 Top, 整数型, , , 
+    .成员 Right, 整数型, , , 
+    .成员 Bottom, 整数型, , , 
+
+数据类型 BITMAPINFO_易格式, , MSDN标准格式BITMAPINFO的易语言变形
+    .成员 biSize, 整数型, , , 
+    .成员 biWidth, 整数型, , , 
+    .成员 biHeight, 整数型, , , 
+    .成员 biPlanes, 短整数型, , , 
+    .成员 biBitCount, 短整数型, , , 
+    .成员 biCompression, 整数型, , , 
+    .成员 biSizeImage, 整数型, , , 
+    .成员 biXPelsPerMeter, 整数型, , , 
+    .成员 biYPelsPerMeter, 整数型, , , 
+    .成员 biClrUsed, 整数型, , , 
+    .成员 biClrImportant, 整数型, , , 
+    .成员 rgbBlue, 字节型, , , 
+    .成员 rgbGreen, 字节型, , , 
+    .成员 rgbRed, 字节型, , , 
+    .成员 rgbReserved, 字节型, , , 
+
+数据类型 POINT, , 
+    .成员 x, 整数型, , , 
+    .成员 y, 整数型, , , 
+
+数据类型 SIZE, , 
+    .成员 cx, 整数型, , , 
+    .成员 cy, 整数型, , , 
+
+数据类型 BLENDFUNCTION, , 
+    .成员 BlendOp, 字节型, , , 
+    .成员 BlendFlags, 字节型, , , 
+    .成员 SourceConstantAlpha, 字节型, , , 
+    .成员 AlphaFormat, 字节型, , , 
+
+
+.DLL命令 GdiplusStartup, 整数型, "gdiplus.dll", "GdiplusStartup", , 
+    .参数 token, 整数型, 传址, 
+    .参数 inputbuf, GdiplusStartupInput, , 
+    .参数 outputbuf, 整数型, , 
+
+.DLL命令 GdiplusShutdown, 空白型, "gdiplus.dll", "GdiplusShutdown", , 
+    .参数 token, 整数型, , 
+
+.DLL命令 GetDC, 整数型, "", "GetDC", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 GdipCreateFromHDC, 整数型, "GdiPlus.dll", "GdipCreateFromHDC", , 
+    .参数 hdc, 整数型, , 
+    .参数 graphics, 整数型, 传址, 
+
+.DLL命令 GlobalAlloc, 整数型, "", "GlobalAlloc", , 
+    .参数 wFlags, 整数型, , 
+    .参数 dwBytes, 整数型, , 
+
+.DLL命令 GlobalLock, 整数型, "", "GlobalLock", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 GlobalUnlock, 整数型, "", "GlobalUnlock", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 CreateStreamOnHGlobal, 整数型, "Ole32.dll", "CreateStreamOnHGlobal", , 
+    .参数 hGlobal, 整数型, , 
+    .参数 fDeleteOnRelease, 整数型, , 
+    .参数 ppstm, 整数型, 传址, 
+
+.DLL命令 GdipGetImageHeight, 整数型, "gdiplus", "GdipGetImageHeight", , 取Image高度
+    .参数 image, 整数型, , 
+    .参数 Height, 整数型, 传址, 
+
+.DLL命令 GdipGetImageWidth, 整数型, "gdiplus", "GdipGetImageWidth", , 取Image宽度
+    .参数 image, 整数型, , 
+    .参数 Width, 整数型, 传址, 
+
+.DLL命令 GdipLoadImageFromStream, 整数型, "GdiPlus.dll", "GdipLoadImageFromStream", , 
+    .参数 stream, 整数型, , 
+    .参数 image, 整数型, 传址, 
+
+.DLL命令 GdipGetImageDimension, 整数型, "GdiPlus.dll", "GdipGetImageDimension", , 
+    .参数 image, 整数型, , 
+    .参数 width, 小数型, 传址, 
+    .参数 height, 小数型, 传址, 
+
+.DLL命令 MoveWindow, 整数型, "", "MoveWindow", , 改变指定窗口的位置和尺寸
+    .参数 hWnd, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHaight, 整数型, , 
+    .参数 bRepaint, 逻辑型, , 真为刷新
+
+.DLL命令 GetWindowRect, 空白型, "", "GetWindowRect", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpRect, Rect, 传址, 
+
+.DLL命令 GlobalFree, 整数型, "", "GlobalFree", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 CreateCompatibleDC, 整数型, "", "CreateCompatibleDC", , 
+    .参数 hdc, 整数型, , 
+
+.DLL命令 CreateDIBSection, 整数型, "gdi32.dll", "CreateDIBSection", , 该函数创建应用程序可以直接写入的、与设备无关的位图（DIB）。一般情况下后面4参数都为NULL
+    .参数 hdc, 整数型, , 设备环境句柄。如果iUsage的值是DIB＿PAL＿COLORS，那么函数使用该设备环境的逻辑调色板对与设备无关位图的颜色进行初始化。
+    .参数 pbmi, BITMAPINFO_易格式, , 指向BITMAPINFO结构的指针，该结构指定了与设备无关位图的各种属性，其中包括位图的维数和颜色。
+    .参数 iUsage, 整数型, , 指定由pbmi参数指定的BITMAPINFO结构中的成员bmiColors数组包含的数据类型（要么是逻辑调色板索引值，要么是原文的RGB值）。
+    .参数 ppvBits, 整数型, , 指向一个变量的指针，该变量接收一个指向DIB位数据值的指针。
+    .参数 hSection, 整数型, , 文件映射对象的句柄。函数将使用该对象来创建DIB（与设备无关位图）。该参数可以是NULL。
+    .参数 dwOffset, 整数型, , 如果hSection为NULL，那么系统将为与设备无关位图（DIB）分配内存。在这种情况下，函数CreateDIBSection将忽略参数dwOffset，应用程序无法在以后获取指向内存的句柄。通过调用GetObject函数来填充的DIBSECTION结构成员dshSection也将成为NULL。
+
+.DLL命令 SelectObject, 整数型, "", "SelectObject", , 
+    .参数 hdc, 整数型, , 一个设备场景的句柄
+    .参数 hObject, 整数型, , 一个画笔、位图、刷子、字体或区域的句柄
+
+.DLL命令 GdipDrawImageRect, 整数型, "GdiPlus.dll", "GdipDrawImageRect", , 
+    .参数 graphics, 整数型, , 
+    .参数 image, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+
+.DLL命令 GetWindowLong, 整数型, "user32.dll", "GetWindowLongA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+
+.DLL命令 UpdateLayeredWindow, 整数型, "", "UpdateLayeredWindow", , 
+    .参数 hwnd, 整数型, , 当前窗口的句柄
+    .参数 hdcDst, 整数型, , 当前窗口的DC
+    .参数 pptDst, POINT, , 当前窗口在屏幕的左上角位置(相当于 ::SetWindowPos()函数)
+    .参数 psize, SIZE, , 当前窗口在的宽度和高度
+    .参数 hdcSrc, 整数型, , 内存缓存DC
+    .参数 pptSrc, POINT, , 内存缓存的左上角坐标(可用于裁剪内存缓存)
+    .参数 crKey, 整数型, , 
+    .参数 pblend, BLENDFUNCTION, , 混合样式
+    .参数 dwFlags, 整数型, , 
+
+.DLL命令 DeleteDC, 整数型, "", "DeleteDC", , 
+    .参数 hdc, 空白型, , 
+
+.DLL命令 ReleaseDC, 空白型, "", "ReleaseDC", , 
+    .参数 hwnd, 整数型, , 要释放的设备场景相关的窗口句柄
+    .参数 hdc, 整数型, , 要释放的设备场景句柄
+
+.DLL命令 DeleteObject, 整数型, "", "DeleteObject", , 
+    .参数 hdc, 空白型, , 
+
+.DLL命令 SetWindowLong, 整数型, "user32", "SetWindowLongA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+    .参数 dwNewLong, 整数型, , 
+
+.DLL命令 GdipDisposeImage, 整数型, "gdiplus.dll", "GdipDisposeImage", , 
+    .参数 image, 整数型, , 
+
+.DLL命令 GdipDeleteGraphics, 整数型, "gdiplus", "", , 
+    .参数 graphics, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.类模块 PNG窗口类, , , 
+
+.程序集变量 Token, 空白型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+.局部变量 GpInput, GdiplusStartupInput, , , 
+
+赋值 (GpInput.GdiplusVersion, 1)
+GdiplusStartup (Token, GpInput, 0) ' 启动 GDI+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+GdiplusShutdown (Token) ' 关闭 GDI+
+
+.子程序 置PNG外形, 逻辑型, 公开, 
+.参数 参_窗口句柄, 整数型, , 
+.参数 参_png数据, 字节集, , 
+.参数 透明度, 整数型, 可空, 
+
+.局部变量 窗口设备场景, 整数型, , , 
+.局部变量 Graphics, 整数型, , , 
+.局部变量 n, 整数型, , , 
+.局部变量 hMem, 整数型, , , 
+.局部变量 p, 整数型, , , 
+.局部变量 stream, 整数型, , , 
+.局部变量 图片宽度, 小数型, , , 
+.局部变量 图片高度, 小数型, , , 
+.局部变量 Image, 整数型, , , 
+.局部变量 窗口左边, 整数型, , , 
+.局部变量 窗口位置信息, Rect, , , 
+.局部变量 窗口顶边, 整数型, , , 
+.局部变量 窗口高度, 整数型, , , 
+.局部变量 窗口宽度, 整数型, , , 
+.局部变量 位图信息, BITMAPINFO_易格式, , , 
+.局部变量 内存场景, 整数型, , , 
+.局部变量 内存位图, 整数型, , , 
+.局部变量 旧位图, 整数型, , , 
+.局部变量 图形, 整数型, , , 
+.局部变量 图像, 整数型, , , 
+.局部变量 旧窗口风格, 整数型, , , 
+.局部变量 新窗口风格, 整数型, , , 
+.局部变量 srcPoint, POINT, , , 
+.局部变量 winSize, SIZE, , , 
+.局部变量 blendFunc32bpp, BLENDFUNCTION, , , 
+.局部变量 dstPoint, POINT, , , 
+.局部变量 返回值, 整数型, , , 
+
+ ' \\\\ 本模块根据大力水手发布的例程,修改而成!!  -------风很凉
+.如果真 (不等于 (取字节集左边 (参_png数据, 8), { 137, 80, 78, 71, 13, 10, 26, 10 }))
+    输出调试文本 (“错误：该图片非Png格式”)
+    返回 (假)
+.如果真结束
+
+ ' 获取窗口设备场景
+赋值 (窗口设备场景, GetDC (参_窗口句柄))
+GdipCreateFromHDC (窗口设备场景, Graphics)
+
+赋值 (n, 取字节集长度 (参_png数据))
+赋值 (hMem, GlobalAlloc (0, n)) ' GMEM_FIXED=0
+赋值 (p, GlobalLock (hMem))
+写到内存 (参_png数据, p, n)
+GlobalUnlock (hMem)
+CreateStreamOnHGlobal (hMem, 0, stream)
+GdipLoadImageFromStream (stream, Image)
+
+ ' 获取PNG图像的高度和宽度
+GdipGetImageDimension (Image, 图片宽度, 图片高度)
+
+GlobalFree (hMem) ' 释放字节流
+赋值 (hMem, 0)
+
+输出调试文本 (相加 (“PNG图：宽度 =”, 到文本 (图片宽度), “   高度:”, 到文本 (图片高度)))
+
+ ' 修改窗口的宽度和高度
+MoveWindow (参_窗口句柄, 窗口左边, 窗口顶边, 图片宽度, 图片高度, 假)
+
+ ' 取出窗口信息
+GetWindowRect (参_窗口句柄, 窗口位置信息)
+
+
+赋值 (窗口宽度, 窗口位置信息.Right)
+赋值 (窗口高度, 窗口位置信息.Bottom)
+
+ ' 输出调试文本 (“窗口宽度：” ＋ 到文本 (窗口宽度) ＋ “    窗口高度：” ＋ 到文本 (窗口高度))
+
+
+赋值 (位图信息.biSize, 40)
+赋值 (位图信息.biBitCount, 32)
+赋值 (位图信息.biWidth, 窗口宽度)
+赋值 (位图信息.biHeight, 窗口高度)
+赋值 (位图信息.biPlanes, 1)
+赋值 (位图信息.biSizeImage, 相除 (相乘 (位图信息.biWidth, 位图信息.biHeight, 位图信息.biBitCount), 8))
+
+ ' 根据窗口设备场景创建兼容的内存设备场景
+赋值 (内存场景, CreateCompatibleDC (窗口设备场景))
+赋值 (内存位图, CreateDIBSection (内存场景, 位图信息, 0, 0, 0, 0))
+
+ ' 把新建的内存位图选入内存设备场景中
+赋值 (旧位图, SelectObject (内存场景, 内存位图))
+
+ ' 从内存设备场景创建GDI+图形
+GdipCreateFromHDC (内存场景, 图形)
+ ' 绘制之前载入的图像到这个内存场景中
+GdipDrawImageRect (图形, Image, 0, 0, 图片宽度, 图片高度)
+
+
+
+ ' 取出窗口风格
+赋值 (旧窗口风格, GetWindowLong (参_窗口句柄, -20))
+
+ ' 计算新窗口风格
+赋值 (新窗口风格, 位或 (旧窗口风格, 524288))
+ ' 设置新窗口风格
+SetWindowLong (参_窗口句柄, -20, 新窗口风格)
+
+
+赋值 (dstPoint.x, 相减 (相除 (取屏幕宽度 (), 2), 相除 (窗口宽度, 2)))
+赋值 (dstPoint.y, 相减 (相除 (取屏幕高度 (), 2), 相除 (窗口高度, 2)))
+ ' 设置内存场景的左顶点横坐标和纵坐标。
+赋值 (srcPoint.x, 0)
+赋值 (srcPoint.y, 0)
+
+ ' 设置窗口的宽高
+赋值 (winSize.cx, 窗口宽度)
+赋值 (winSize.cy, 窗口高度)
+
+ ' 设置窗口透明绘制方式
+赋值 (blendFunc32bpp.AlphaFormat, 1)
+赋值 (blendFunc32bpp.BlendFlags, 0)
+赋值 (blendFunc32bpp.BlendOp, 0)
+.如果真 (等于 (透明度, 0))
+    赋值 (透明度, 255)
+.如果真结束
+赋值 (blendFunc32bpp.SourceConstantAlpha, 透明度)
+
+GdipDisposeImage (Image)
+GdipDeleteGraphics (Graphics) ' 删除画板
+
+ ' 处理透明窗口
+赋值 (返回值, UpdateLayeredWindow (参_窗口句柄, 窗口设备场景, dstPoint, winSize, 内存场景, srcPoint, 0, blendFunc32bpp, 2))
+
+
+ ' 释放...
+ReleaseDC (0, 窗口设备场景)
+DeleteDC (内存场景)
+DeleteObject (内存位图)
+
+返回 (不等于 (返回值, 0))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

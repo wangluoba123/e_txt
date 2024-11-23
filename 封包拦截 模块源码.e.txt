@@ -1,0 +1,240 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：线程注入
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.图片 不调用这个可以吗, " ' 已保存到：D:\易语言学习\Data\封包拦截 模块源码.e\不调用这个可以吗", , 
+.常量 xrh6bdt, "64", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 SECURITY_ATTRIBUTES, , 安全性结构;
+    .成员 nLength, 整数型, , , 
+    .成员 lpSecurityDescriptor, 整数型, , , 
+    .成员 bInheritHandle, 整数型, , , 
+
+
+.DLL命令 CallWindowProc, 整数型, "", "CallWindowProcA", , 
+    .参数 lpPrevWndFunc, 整数型, , 
+    .参数 hWnd, 整数型, , 
+    .参数 Msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 _动态调用子程序2, 整数型, "", "CallWindowProcA", , 
+    .参数 动态调用代码, 整数型, , 
+    .参数 子程序, 子程序指针, , 
+    .参数 参数, 整数型, 数组, 
+    .参数 参数数目, 整数型, , 
+    .参数 是否C调用, 逻辑型, , 
+
+.DLL命令 _释放DLL, 逻辑型, "", "FreeLibrary", 公开, kernel32.dll
+    .参数 模块句柄, 整数型, , 
+
+.DLL命令 _取指针_字节集2, 整数型, "", "lstrcpynA", , 
+    .参数 lpString1, 字节集, , 
+    .参数 lpString2, 字节集, , 
+    .参数 iMaxLength, 整数型, , 
+
+.DLL命令 _修改内存属性, 逻辑型, "", "VirtualProtect", , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flNewProtect, 整数型, , 
+    .参数 lpflOldProtect, 整数型, 传址, 
+
+.DLL命令 _取库函数地址, 整数型, "", "GetProcAddress", 公开, 
+    .参数 hModule, 整数型, , 
+    .参数 lpProcName, 文本型, , 
+
+.DLL命令 _装载DLL, 整数型, "", "LoadLibraryA", 公开, 
+    .参数 lpLibFileName, 文本型, , 
+
+.DLL命令 _取模块句柄2, 整数型, "", "GetModuleHandleA", 公开, 
+    .参数 lpModuleName, 文本型, , 
+
+.DLL命令 OpenProcesszr, 整数型, "kernel32.dll", "OpenProcess", , 
+    .参数 ba, 空白型, , 
+    .参数 b, 空白型, , 
+    .参数 id, 空白型, , 
+
+.DLL命令 WriteProcessMemoryzr, 整数型, "kernel32.dll", "WriteProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 字节集, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, 传址, 
+
+.DLL命令 取指针_整数zr, 整数型, "kernel32.dll", "lstrcpyn", , 
+    .参数 欲取其指针, 整数型, 传址, 
+    .参数 欲取其指针, 整数型, 传址, 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 取指针_字节集zr, 整数型, "kernel32.dll", "lstrcpyn", , 
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 CloseHandlezr, 整数型, "kernel32.dll", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 ReadProcessMemoryzr, 整数型, "kernel32.dll", "ReadProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 字节集, 传址, 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, , 
+
+.DLL命令 API_CreateRemoteThreadzr, 整数型, "kernel32", "CreateRemoteThread", , 在另一进程中建立线索
+    .参数 hProcess, 整数型, , 
+    .参数 lpThreadAttributes, SECURITY_ATTRIBUTES, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 整数型, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, 传址, 
+
+.DLL命令 API_GetModuleHandlezr, 整数型, "kernel32", "GetModuleHandleA", , 获取一个应用程序或动态链接库的模块句柄  如执行成功成功，则返回模块句柄。零表示失败。会设置GetLastError
+    .参数 lpModuleName, 文本型, , 指定模块名，这通常是与模块的文件名相同的一个名字。例如，NOTEPAD.EXE程序的模块文件名就叫作NOTEPAD;
+
+.DLL命令 API_GetProcAddresszr, 整数型, "kernel32", "GetProcAddress", , 返回函数地址
+    .参数 hModule, 整数型, , 
+    .参数 lpProcName, 文本型, , 
+
+.DLL命令 FreeLibraryzr, 整数型, "kernel32.dll", "FreeLibrary", , 
+    .参数 hModule, 整数型, , 
+
+.DLL命令 API_VirtualAllocExzr, 整数型, "kernel32.dll", "VirtualAllocEx", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+    .参数 flProtect, 整数型, , 
+
+.DLL命令 取指针_文本zr, 整数型, "kernel32.dll", "lstrcpyn", , 
+    .参数 欲取其指针, 文本型, 传址, 
+    .参数 欲取其指针, 文本型, 传址, 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 VirtualFreeExzr, 整数型, "kernel32.dll", "VirtualFreeEx", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBuf, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 sss, 整数型, , 
+
+.DLL命令 LoadLibraryExzr, 整数型, "kernel32.dll", "LoadLibraryExA", , 
+    .参数 lpLibFileName, 文本型, 传址, 
+    .参数 hFile, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+
+.DLL命令 WaitForSingleObjectzr, 整数型, "kernel32.dll", "WaitForSingleObject", , 
+    .参数 h, 整数型, , 
+    .参数 d, 整数型, , 
+
+.DLL命令 GetExitCodeThreadzr, 整数型, "kernel32.dll", "GetExitCodeThread", , 
+    .参数 h, 整数型, , 
+    .参数 ret, 整数型, 传址, 
+
+.程序集 程序集1, , , 
+
+.程序集变量 nrfdntrh6, 子程序指针, , , 
+.程序集变量 ase4byry, 整数型, , , 
+.程序集变量 dtgesxt, 整数型, , , 
+.程序集变量 se4g6s, 字节集, , , 
+.程序集变量 sr5h6bdfd, 字节集, , , 
+.程序集变量 dr7hb, 整数型, , , 
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 安装send, 逻辑型, 公开, TCP封包拦截类功能
+.参数 封包处理, 子程序指针, , 该子程序有三个整型参数与一个整型返回值,封包处理函数(套接字,封包指针,封包长度),返回值为实际需发送的长度,0为全部,-1为拦截
+
+赋值 (nrfdntrh6, 封包处理)
+返回 (安装2 (“WS2_32.DLL”, “send”, &djugdy))
+
+
+.子程序 djugdy, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 封包指针, 整数型, , 待发送的数据在内存中的地址
+.参数 封包长度, 整数型, , 待发送的数据长度
+.参数 类型, 整数型, , 值=0
+
+.局部变量 参数, 整数型, , "3", 
+.局部变量 a, 整数型, , , 
+
+赋值 (参数 [1], 套接字)
+赋值 (参数 [2], 封包指针)
+赋值 (参数 [3], 封包长度)
+赋值 (a, _动态调用子程序2 (#不调用这个可以吗, nrfdntrh6, 参数, 3, 假))
+.如果真 (等于 (a, -1))
+    返回 (封包长度)
+.如果真结束
+.如果真 (等于 (a, 0))
+    返回 (CallWindowProc (取地址 (), 套接字, 封包指针, 封包长度, 类型))
+.如果真结束
+返回 (CallWindowProc (取地址 (), 套接字, 封包指针, a, 类型))
+
+
+.子程序 取地址, 整数型, 公开, 取原始数据地址,回调原指针时使用
+返回 (dr7hb)
+
+.子程序 安装, 逻辑型, 公开, 安装APIHOOK
+.参数 动态链接库路径, 文本型, , 欲截获的函数名所在动态链接库的路径
+.参数 函数名, 文本型, , 欲截获的函数名
+.参数 新函数地址, 整数型, , 回调子程序指针地址.可以用 到整数(子程序指针) 获得
+
+.局部变量 模块句柄, 整数型, , , 
+
+.如果真 (不等于 (ase4byry, 0))
+    返回 (真)
+.如果真结束
+赋值 (模块句柄, _取模块句柄2 (动态链接库路径))
+.如果真 (等于 (模块句柄, 0))
+    赋值 (模块句柄, _装载DLL (动态链接库路径))
+.如果真结束
+.如果真 (等于 (模块句柄, 0))
+    返回 (假)
+.如果真结束
+赋值 (ase4byry, _取库函数地址 (模块句柄, 函数名)) ' 获取API函数地址
+.如果真 (等于 (ase4byry, 0))
+    返回 (假)
+.如果真结束
+.如果真 (等于 (_修改内存属性 (ase4byry, 5, #xrh6bdt, dtgesxt), 假))
+    返回 (假)
+.如果真结束
+赋值 (se4g6s, 指针到字节集 (ase4byry, 5)) ' 保存API入口前5个字节
+赋值 (sr5h6bdfd, 相加 ({ 233 }, 到字节集 (到整数 (相减 (新函数地址, 相加 (ase4byry, 5))))))
+写到内存 (sr5h6bdfd, ase4byry, 5) ' 修改API入口前5字节
+赋值 (se4g6s, 相加 (se4g6s, { 233, 0, 0, 0, 0 }))
+赋值 (dr7hb, _取指针_字节集2 (se4g6s, se4g6s, 0))
+写到内存 (到整数 (相减 (相加 (ase4byry, 5), 相加 (dr7hb, 10))), 相加 (dr7hb, 6), 4)
+_释放DLL (模块句柄)
+返回 (真)
+
+
+.子程序 安装2, 逻辑型, 公开, 安装APIHOOK
+.参数 动态链接库路径, 文本型, , 欲截获的函数名所在动态链接库的路径
+.参数 函数名, 文本型, , 欲截获的函数名
+.参数 新函数地址, 子程序指针, , 回调子程序指针
+
+返回 (安装 (动态链接库路径, 函数名, 到整数 (新函数地址)))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

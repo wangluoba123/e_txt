@@ -1,0 +1,209 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：GZIP_数据解压缩
+ ' 程序描述：
+ ' 程序作者：youzuzhu
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 窗口1
+    左边 = 50
+    顶边 = 50
+    宽度 = 368
+    高度 = 242
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.图片 gzipdll, " ' 已保存到：D:\易语言学习\Data\YN60LWo7.e\gzipdll", , 
+.常量 MAX_BUF, "8192", , 
+.常量 GZIP_LVL, "3", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 5 系统核心支持库
+
+
+
+
+
+.DLL命令 InitDecompression, 整数型, "gzip.dll", "InitDecompression", , 
+
+.DLL命令 InitCompression, 整数型, "gzip.dll", "InitCompression", , 
+
+.DLL命令 CreateDecompression, 整数型, "gzip.dll", "CreateDecompression", , 
+    .参数 context, 整数型, 传址, 
+    .参数 flags, 整数型, , 
+
+.DLL命令 CreateCompression, 整数型, "gzip.dll", "CreateCompression", , 
+    .参数 context, 整数型, 传址, 
+    .参数 flags, 整数型, , 
+
+.DLL命令 ResetDecompression, 整数型, "gzip.dll", "ResetDecompression", , 
+    .参数 context, 整数型, , 
+
+.DLL命令 ResetCompression, 整数型, "gzip.dll", "ResetCompression", , 
+    .参数 ontext, 整数型, , 
+
+.DLL命令 DestroyDecompression, 空白型, "gzip.dll", "DestroyDecompression", , 
+    .参数 context, 整数型, , 
+
+.DLL命令 DeInitCompression, 整数型, "gzip.dll", "DeInitCompression", , 
+
+.DLL命令 DeInitDecompression, 整数型, "", "DeInitDecompression", , 
+    .参数 context, 整数型, , 
+
+.DLL命令 DestroyCompression, 整数型, "gzip.dll", "DestroyCompression", , 
+    .参数 context, 整数型, , 
+
+.DLL命令 Compress, 整数型, "gzip.dll", "Compress", , 压缩
+    .参数 context, 整数型, , 
+    .参数 inBytes, 字节集, , 
+    .参数 input_size, 整数型, , 
+    .参数 outBytes, 字节集, , 
+    .参数 output_size, 整数型, , 
+    .参数 input_used, 整数型, 传址, 
+    .参数 output_used, 整数型, 传址, 
+    .参数 compressionLevel, 整数型, , 
+
+.DLL命令 Decompress, 整数型, "gzip.dll", "Decompress", , 解压
+    .参数 context, 整数型, , 
+    .参数 inBytes, 字节集, , 
+    .参数 input_size, 整数型, , 
+    .参数 outBytes, 字节集, , 
+    .参数 output_size, 整数型, , 
+    .参数 input_used, 整数型, 传址, 
+    .参数 output_used, 整数型, 传址, 
+
+.DLL命令 CopyMemory, 空白型, "kernel32", "RtlMoveMemory", , 
+    .参数 pDest, 整数型, , 
+    .参数 pSrc, 整数型, , 
+    .参数 ByteLen, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+.如果真 (等于 (文件是否存在 (“gzip.dll”), 假))
+    写到文件 (“gzip.dll”, #gzipdll)
+.如果真结束
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+载入 (窗口1, , 真)
+
+.子程序 GZIP压缩, 字节集, 公开, 
+.参数 inData, 字节集, , 
+
+.局部变量 context, 整数型, , , 
+.局部变量 inData2, 字节集, , , 
+.局部变量 inLength, 整数型, , , 
+.局部变量 buffer, 字节集, , , 
+.局部变量 inUsed, 整数型, , , 
+.局部变量 outUsed, 整数型, , , 
+.局部变量 hResult, 整数型, , , 
+.局部变量 retBytes, 字节集, , , 
+.局部变量 upRetByts, 字节集, , , 
+.局部变量 压缩位置, 整数型, , , 
+
+赋值 (buffer, 取空白字节集 (#MAX_BUF))
+InitCompression ()
+CreateCompression (context, #GZIP_LVL)
+.循环判断首 ()
+    赋值 (inData2, 取字节集中间 (inData, 相加 (压缩位置, 1), #MAX_BUF))
+    赋值 (inLength, 取字节集长度 (inData2))
+    赋值 (hResult, Compress (context, inData2, inLength, buffer, #MAX_BUF, inUsed, outUsed, #GZIP_LVL))
+    .如果真 (不等于 (0, outUsed))
+        赋值 (upRetByts, 相加 (upRetByts, 取字节集左边 (buffer, outUsed)))
+        赋值 (压缩位置, 相加 (压缩位置, inUsed))
+    .如果真结束
+    
+.循环判断尾 (等于 (hResult, 0))
+DestroyCompression (context)
+返回 (upRetByts)
+
+.子程序 GZIP解压, 字节集, 公开, 
+.参数 inData, 字节集, , 
+
+.局部变量 context, 整数型, , , 
+.局部变量 inData2, 字节集, , , 
+.局部变量 inLength, 整数型, , , 
+.局部变量 buffer, 字节集, , , 
+.局部变量 inUsed, 整数型, , , 
+.局部变量 outUsed, 整数型, , , 
+.局部变量 hResult, 整数型, , , 
+.局部变量 retBytes, 字节集, , , 
+.局部变量 upRetByts, 字节集, , , 
+.局部变量 解压位置, 整数型, , , 
+
+赋值 (buffer, 取空白字节集 (#MAX_BUF))
+InitDecompression ()
+CreateDecompression (context, #GZIP_LVL)
+
+.循环判断首 ()
+    赋值 (inData2, 取字节集中间 (inData, 相加 (解压位置, 1), #MAX_BUF))
+    赋值 (inLength, 取字节集长度 (inData2))
+    赋值 (hResult, Decompress (context, inData2, inLength, buffer, #MAX_BUF, inUsed, outUsed))
+    .如果真 (不等于 (0, outUsed))
+        赋值 (upRetByts, 相加 (upRetByts, 取字节集左边 (buffer, outUsed)))
+        赋值 (解压位置, 相加 (解压位置, inUsed))
+    .如果真结束
+    
+.循环判断尾 (等于 (hResult, 0))
+DestroyDecompression (context)
+返回 (upRetByts)
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.如果真 (等于 (打开 (), 假))
+    返回 ()
+.如果真结束
+赋值 (., .)
+
+.子程序 _按钮2_被单击, 空白型, , 
+.局部变量 数据, 字节集, , , 
+.局部变量 数据2, 字节集, , , 
+
+.如果真 (等于 (文件是否存在 (.), 假))
+    返回 ()
+.如果真结束
+赋值 (数据, 读入文件 (.))
+赋值 (数据2, GZIP压缩 (数据))
+写到文件 (相加 (., “.gip”), 数据2)
+信息框 (“压缩完成”, 0, )
+
+.子程序 _按钮3_被单击, 空白型, , 
+.如果真 (等于 (打开 (), 假))
+    返回 ()
+.如果真结束
+赋值 (., .)
+
+
+.子程序 _按钮4_被单击, 空白型, , 
+.局部变量 数据, 字节集, , , 
+.局部变量 数据2, 字节集, , , 
+
+.如果真 (等于 (文件是否存在 (.), 假))
+    返回 ()
+.如果真结束
+赋值 (数据, 读入文件 (.))
+赋值 (数据2, GZIP解压 (数据))
+写到文件 (取文本左边 (., 相减 (取文本长度 (.), 4)), 数据2)
+信息框 (“解压完成”, 0, )
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

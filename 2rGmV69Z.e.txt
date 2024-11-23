@@ -1,0 +1,98 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 OSVERSIONINFO, , 
+    .成员 dwOSVersionInfoSize, 整数型, , , 
+    .成员 dwMajorVersion, 整数型, , , 
+    .成员 dwMinorVersion, 整数型, , , 
+    .成员 dwBuildNumber, 整数型, , , 
+    .成员 dwPlatformId, 整数型, , , Specifies the platform supported by the operating system. May be one of the following:VER_PLATFORM_WIN32s: Win32s on Windows 3.1.VER_PLATFORM_WIN32_WINDOWS: Win32 on Windows 95.VER_PLATFORM_WIN32_NT: Windows NT.
+    .成员 szCSDVersion, 文本型, , , 
+
+
+.DLL命令 取版本号, 空白型, "", "GetVersionExA", , 
+    .参数 lpVersionInformation, OSVERSIONINFO, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 环境变量, OSVERSIONINFO, , , 
+.局部变量 版本及编号, 文本型, , , 
+.局部变量 操作系统, 文本型, , , 
+
+赋值 (环境变量.dwOSVersionInfoSize, 148)
+取版本号 (环境变量)
+赋值 (相加 (“ 版本编号：”, 到文本 (.), “.”, 到文本 (.), “.”, 到文本 (求余数 (., 65536))))
+.如果 (等于 (., 1))
+    .如果 (并且 (等于 (., 4), 等于 (., 10)))
+        赋值 (操作系统, “Microsoft Windows 98”)
+        
+    .否则
+        赋值 (“Microsoft Windows 95”)
+    .如果结束
+    
+.否则
+    .如果 (等于 (., 2))
+        .如果 (并且 (等于 (., 5), 等于 (., 2)))
+            赋值 (“Microsoft Windows Server 2003 family”)
+        .否则
+            .如果 (并且 (等于 (., 5), 等于 (., 1)))
+                赋值 (“Microsoft Windows Server XP”)
+            .否则
+                .如果 (并且 (等于 (., 5), 等于 (., 0)))
+                    赋值 (“Microsoft Windows Server 2000”)
+                .否则
+                    .如果 (小于或等于 (., 4))
+                        赋值 (“Microsoft Windows NT”)
+                    .否则
+                        
+                    .如果结束
+                    
+                .如果结束
+                
+            .如果结束
+            
+        .如果结束
+        
+    .否则
+        
+    .如果结束
+    
+.如果结束
+
+赋值 (., 相加 (版本及编号, #换行符, 操作系统))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

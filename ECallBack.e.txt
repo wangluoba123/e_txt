@@ -1,0 +1,362 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：ECallBack
+ ' 程序描述：
+ ' 程序作者：星锋工作室-东灿
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：2.2
+ ' 创建号：0.0
+
+
+
+.常量 PAGE_EXECUTE_READWRITE, "64", , 
+.常量 MEM_COMMIT, "4096", , 
+.常量 MEM_RELEASE, "32768", , 
+.常量 sizeof_int, "4", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' spec A512548E76954B6E92C21055517615B0 3 0 特殊功能支持库
+
+
+
+
+
+.DLL命令 CopyToPtr_FromEBin, 空白型, "", "RtlMoveMemory", , 
+    .参数 Dest, 空白型, , 
+    .参数 Src, 字节集, , 
+    .参数 length, 空白型, , 
+
+.DLL命令 _CopyMemory, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 pDest, 整数型, , 
+    .参数 pSrc, 整数型, , 
+    .参数 ByteLen, 整数型, , 
+
+.DLL命令 _VirtualAlloc, 整数型, "kernel32.dll", "VirtualAlloc", , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+    .参数 flProtect, 整数型, , 
+
+.DLL命令 _VirtualFree, 整数型, "kernel32.dll", "VirtualFree", , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 dwFreeType, 整数型, , 
+
+.程序集 EC, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+输出调试文本 (辅_生成_方法回调 (1972070208), 指针到字节集 (get_retn_code (), 30))
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+.程序集 程序集1, , , 
+
+.子程序 取_类_函数地址, 整数型, 公开, 
+.参数 this, 空白型, , 
+.参数 index, 空白型, , 从1开始,[_初始化][_销毁],[xx]
+
+.局部变量 函数数组, 空白型, , , 
+
+赋值 (index, 相减 (index, 1))
+赋值 (函数数组, 取指针内容_整数 (this))
+返回 (取指针内容_整数 (相加 (函数数组, 相乘 (index, #sizeof_int))))
+
+.子程序 辅_字节集到子程序地址, 子程序指针, 公开, 
+.参数 data, 字节集, , 
+
+返回 (到子程序指针_从数值 (取变量地址_字节集 (data)))
+
+.子程序 取变量地址_字节集, 整数型, 公开, 
+.参数 变量, 字节集, 参考, 
+
+.局部变量 ret, 空白型, , , 
+
+ ' xor     ecx, ecx
+ ' mov     eax, dword ptr [ebp+8]
+ ' cmp     eax, ecx
+ ' je      short 0040AF58
+ ' mov     eax, dword ptr [eax]
+ ' cmp     eax, ecx
+ ' je      short 0040AF58
+ ' mov     ecx, dword ptr [eax]
+ ' lea     eax, dword ptr [eax+ecx*4+4]
+ ' mov     dword ptr [ebp-4], eax
+置入代码 ({ 51, 201, 139, 69, 8, 59, 193, 116, 15, 139, 0, 59, 193, 116, 9, 139, 8, 141, 68, 136, 4, 137, 69, 252 })
+返回 (ret)
+
+.子程序 到数值_从子程序指针, 整数型, 公开, 
+.参数 proc, 子程序指针, , 
+
+.局部变量 ret, 整数型, , , 
+
+置入代码 ({ 139, 69, 8, 137, 69, 252 })
+ ' 置入代码 (“mov eax,[ebp+8] | mov [ebp-4],eax”)
+返回 (ret)
+
+.子程序 到子程序指针_从数值, 子程序指针, , 
+.参数 val, 整数型, , 
+
+.局部变量 ret, 子程序指针, , , 
+
+置入代码 ({ 139, 69, 8, 137, 69, 252 })
+ ' 置入代码 (“mov eax,[ebp+8] | mov [ebp-4],eax”)
+返回 (ret)
+
+.子程序 取上层函数首参, 整数型, , 
+.局部变量 ret, 空白型, , , 
+
+置入代码 ({ 139, 69, 0, 139, 0, 139, 64, 8, 137, 69, 252 })
+ ' 置入代码 ({ 139, 69, 0, 139, 0, 139, 64, 8, 137, 69, 252 })
+返回 (ret)
+
+.子程序 get_retn_code, 整数型, , 
+.局部变量 static_ptr, 空白型, 静态, , 
+.局部变量 data, 字节集, , , 
+
+.如果真 (不等于 (static_ptr, 0))
+    返回 (static_ptr)
+.如果真结束
+ ' mov     edx, dword ptr [ebp-4]
+ ' mov     ebx, dword ptr [ebp-8]
+ ' mov     esi, dword ptr [ebp-C]
+ ' mov     edi, dword ptr [ebp-10]
+ ' fldcw   word ptr [ebp-14]
+ ' mov     esp, ebp
+ ' pop     ebp
+ ' pop     ecx
+ ' add     esp, edx
+ ' jmp     ecx
+赋值 (data, { 139, 77, 252, 139, 93, 248, 139, 117, 244, 139, 125, 240, 217, 109, 236, 139, 229, 93, 141, 100, 12, 4, 247, 217, 139, 76, 12, 252, 255, 225 })
+赋值 (static_ptr, DumpCode (data))
+返回 (static_ptr)
+
+.子程序 辅_生成_方法回调, 字节集, 公开, [不需要fcw复位]
+.参数 回调地址, 空白型, , 
+.参数 参数个数, 空白型, 可空, 
+.参数 push_ecx, 逻辑型, 可空, 当有[附加参数1]附加到第二个参数，当没有[附加参数1]时附加到第一个参数;默认为假
+.参数 cdecl方式, 逻辑型, 可空, 默认为假
+.参数 附加参数1, 空白型, 可空, 附加到第一个的参数.不为0则附加
+
+.局部变量 data, 字节集, , , 
+.局部变量 匿名局部变量_30, 空白型, , , 
+.局部变量 arg_length, 空白型, , , 
+.局部变量 ret_len_WORD, 短整数型, , , 
+
+.如果真 (等于 (回调地址, 0))
+    输出调试文本 (“[辅_生成_方法回调][失败]：回调地址错误”)
+    返回 ({  })
+.如果真结束
+.如果 (cdecl方式)
+    赋值 (ret_len_WORD, 0)
+.否则
+    赋值 (ret_len_WORD, 相乘 (参数个数, #sizeof_int))
+.如果结束
+赋值 (arg_length, 相乘 (参数个数, #sizeof_int))
+.如果真 (或者 (大于 (arg_length, 512), 小于 (arg_length, 0)))
+    输出调试文本 (“局部变量长度错误”)
+    返回 ({  })
+.如果真结束
+赋值 (data, {  })
+赋值 (data, 相加 (data, { 85 })) ' push ebp;
+赋值 (data, 相加 (data, { 139, 236 })) ' mov ebp,esp;
+赋值 (data, 相加 (data, { 106 }, 到字节集_从字节 (ret_len_WORD))) ' push [retn_size]; // [ebp-04]
+赋值 (data, 相加 (data, { 83 })) ' push ebx; // [ebp-08]
+赋值 (data, 相加 (data, { 86 })) ' push esi; // [ebp-0C]
+赋值 (data, 相加 (data, { 87 })) ' push edi; // [ebp-10]
+赋值 (data, 相加 (data, { 106 }, { 0 })) ' push 0; // [ebp-14]
+赋值 (data, 相加 (data, { 217, 60, 36 })) ' fstcw [esp];
+赋值 (data, 相加 (data, { 219, 227 })) ' finit;
+ ' ////////////////////////////////////////////////////////////////////////////
+.如果真 (不等于 (参数个数, 0))
+    赋值 (data, 相加 (data, { 185 }, 到字节集_从整数_ (arg_length))) ' mov ecx,arg_length;
+    赋值 (data, 相加 (data, { 43, 225 })) ' sub esp,ecx;
+    赋值 (data, 相加 (data, { 141, 117, 8 })) ' lea esi,[ebp+8];
+    赋值 (data, 相加 (data, { 141, 60, 36 })) ' lea edi,[esp];
+    赋值 (data, 相加 (data, { 252 })) ' cld;
+    赋值 (data, 相加 (data, { 243, 164 })) ' rep movsb;
+    赋值 (data, 相加 (data, { 139, 77, 248 })) ' mov ecx,[ebp-8];
+    赋值 (data, 相加 (data, { 139, 117, 244 })) ' mov esi.[ebp-C];
+    赋值 (data, 相加 (data, { 139, 125, 240 })) ' mov edi,[ebp-10];
+.如果真结束
+.如果真 (push_ecx)
+    赋值 (data, 相加 (data, { 81 })) ' push ecx;
+.如果真结束
+.如果真 (不等于 (附加参数1, 0))
+    赋值 (data, 相加 (data, { 104 }, 到字节集_从整数_ (附加参数1))) ' push arg_1
+.如果真结束
+赋值 (data, 相加 (data, { 184 }, 到字节集_从整数_ (回调地址))) ' mov eax,addr;
+赋值 (data, 相加 (data, { 104 }, 到字节集_从整数_ (get_retn_code ()))) ' push arg_1; //retn to static code
+赋值 (data, 相加 (data, { 255, 224 })) ' jmp eax
+返回 (data)
+
+.子程序 辅_生成_类回调_易, 字节集, 公开, [只能在类里调用]
+.参数 函数序号, 空白型, , 从1开始,[_初始化][_销毁],[xx]
+.参数 参数个数, 空白型, 可空, 
+.参数 push_ecx, 逻辑型, 可空, 附加到第一个参数;默认为假
+.参数 cdecl方式, 逻辑型, 可空, 默认为假
+
+.局部变量 this, 空白型, , , 
+.局部变量 匿名局部变量_75, 空白型, , , 
+.局部变量 回调地址, 空白型, , , 
+.局部变量 data, 字节集, , , 
+.局部变量 匿名局部变量_90, 空白型, , , 
+.局部变量 arg_length, 空白型, , , 
+.局部变量 sizeof_int, 空白型, , , 
+.局部变量 ret_len_WORD, 短整数型, , , 
+
+赋值 (this, 取指针内容_整数 (取上层函数首参 ()))
+赋值 (回调地址, 取_类_函数地址 (this, 函数序号))
+
+.如果真 (小于或等于 (回调地址, 0))
+    输出调试文本 (“[辅_生成_方法回调][失败]：回调地址错误”)
+    返回 ({  })
+.如果真结束
+赋值 (sizeof_int, 4) ' #sizeof_int
+.如果 (cdecl方式)
+    赋值 (ret_len_WORD, 0)
+.否则
+    赋值 (ret_len_WORD, 相乘 (参数个数, sizeof_int))
+.如果结束
+赋值 (arg_length, 相乘 (参数个数, sizeof_int))
+.如果真 (或者 (大于 (arg_length, 512), 小于 (arg_length, 0)))
+    输出调试文本 (“局部变量长度错误”)
+    返回 ({  })
+.如果真结束
+赋值 (data, {  })
+赋值 (data, 相加 (data, { 85 })) ' push ebp;
+赋值 (data, 相加 (data, { 139, 236 })) ' mov ebp,esp;
+赋值 (data, 相加 (data, { 106 }, 到字节集_从字节 (ret_len_WORD))) ' push [retn_size]; // [ebp-04]
+赋值 (data, 相加 (data, { 83 })) ' push ebx; // [ebp-8]
+赋值 (data, 相加 (data, { 86 })) ' push esi; // [ebp-0C]
+赋值 (data, 相加 (data, { 87 })) ' push edi; // [ebp-10]
+赋值 (data, 相加 (data, { 106 }, { 0 })) ' push 0; // [ebp-14]
+赋值 (data, 相加 (data, { 217, 60, 36 })) ' fstcw [esp];
+赋值 (data, 相加 (data, { 219, 227 })) ' finit;
+赋值 (data, 相加 (data, { 104 }, 到字节集_从整数_ (this))) ' push dwThis;
+赋值 (data, 相加 (data, { 139, 196 })) ' mov eax,esp
+.如果真 (不等于 (参数个数, 0))
+    赋值 (data, 相加 (data, { 185 }, 到字节集_从整数_ (arg_length))) ' mov ecx,arg_length;
+    赋值 (data, 相加 (data, { 43, 225 })) ' sub esp,ecx;
+    赋值 (data, 相加 (data, { 141, 117, 8 })) ' lea esi,[ebp+8];
+    赋值 (data, 相加 (data, { 141, 60, 36 })) ' lea edi,[esp];
+    赋值 (data, 相加 (data, { 252 })) ' cld;
+    赋值 (data, 相加 (data, { 243, 164 })) ' rep movsb;
+    赋值 (data, 相加 (data, { 139, 77, 248 })) ' mov ecx,[ebp-8];
+    赋值 (data, 相加 (data, { 139, 117, 244 })) ' mov esi.[ebp-C];
+    赋值 (data, 相加 (data, { 139, 125, 240 })) ' mov edi,[ebp-10];
+.如果真结束
+.如果真 (push_ecx)
+    赋值 (data, 相加 (data, { 81 })) ' push ecx;
+.如果真结束
+赋值 (data, 相加 (data, { 80 })) ' push eax;  // push &(this)
+赋值 (data, 相加 (data, { 184 }, 到字节集_从整数_ (回调地址))) ' mov eax,addr;
+赋值 (data, 相加 (data, { 104 }, 到字节集_从整数_ (get_retn_code ()))) ' push arg_1; //retn to static code
+赋值 (data, 相加 (data, { 255, 224 })) ' jmp eax
+返回 (data)
+
+
+.子程序 DumpCode, 整数型, 公开, VirtualAlloc/VirtualFree
+.参数 data, 字节集, , 
+
+.局部变量 hMem, 空白型, , , 
+.局部变量 Ptr, 空白型, , , 
+.局部变量 len, 空白型, , , 
+
+赋值 (len, 辅_取字节集长度 (data))
+赋值 (hMem, _VirtualAlloc (0, len, #MEM_COMMIT, #PAGE_EXECUTE_READWRITE))
+CopyToPtr_FromEBin (hMem, data, len)
+返回 (hMem)
+
+.子程序 FreeDumpCode, 空白型, 公开, 
+.参数 ptr, 空白型, , 
+
+_VirtualFree (ptr, 0, #MEM_RELEASE)
+
+.程序集 sdk, , , 
+
+.子程序 取指针内容_整数, 整数型, , 
+.参数 内存地址, 空白型, , 
+
+.局部变量 ret, 空白型, , , 
+
+置入代码 ({ 139, 69, 8, 139, 0, 137, 69, 252 })
+ ' 置入代码 (“mov eax,[ebp+8] | mov eax,[eax] | mov [ebp-4],eax”)
+返回 (ret)
+
+.子程序 到字节集_从整数_, 字节集, , 
+.参数 欲转换的数值, 整数型, 参考, 
+
+.局部变量 ptr, 空白型, , , 
+
+赋值 (ptr, 取变量地址_整数 (欲转换的数值))
+返回 (指针到字节集 (ptr, 4))
+
+.子程序 到字节集_从短整数_, 字节集, , 
+.参数 欲转换的数值, 短整数型, 参考, 
+
+.局部变量 ptr, 空白型, , , 
+
+赋值 (ptr, 取变量地址_短整数 (欲转换的数值))
+返回 (指针到字节集 (ptr, 2))
+
+.子程序 到字节集_从字节, 字节集, , 
+.参数 欲转换的数值, 短整数型, 参考, 
+
+.局部变量 ptr, 空白型, , , 
+
+赋值 (ptr, 取变量地址_短整数 (欲转换的数值))
+返回 (指针到字节集 (ptr, 1))
+
+.子程序 取变量地址_字节, 整数型, , 
+.参数 变量, 字节型, 参考, 
+
+.局部变量 reuslt, 空白型, , , 
+
+置入代码 ({ 139, 69, 8, 137, 69, 252 })
+ ' 置入代码 (“mov eax,[ebp+8] | mov [ebp-4],eax”)
+返回 (reuslt)
+
+.子程序 取变量地址_整数, 整数型, 公开, 
+.参数 var, 整数型, 参考, 
+
+.局部变量 ptr, 空白型, , , 
+
+置入代码 ({ 139, 69, 8, 137, 69, 252 })
+ ' 置入代码 (“mov eax,[ebp+8] | mov [ebp-4],eax”)
+返回 (ptr)
+
+.子程序 取变量地址_短整数, 整数型, , 
+.参数 变量, 短整数型, 参考, 
+
+.局部变量 reuslt, 空白型, , , 
+
+置入代码 ({ 139, 69, 8, 137, 69, 252 })
+ ' 置入代码 (“mov eax,[ebp+8] | mov [ebp-4],eax”)
+返回 (reuslt)
+
+.子程序 辅_取字节集长度, 整数型, , 
+.参数 v, 字节集, , 
+
+.局部变量 len, 空白型, , , 
+
+.如果真 (等于 (v, {  }))
+    返回 (0)
+.如果真结束
+置入代码 ({ 139, 69, 8, 139, 0, 139, 64, 4, 137, 69, 252 })
+ ' 置入代码 (“mov eax,[ebp+8] | mov eax,[eax] | mov eax,[eax+4] | mov [ebp-4],eax ”)
+返回 (len)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

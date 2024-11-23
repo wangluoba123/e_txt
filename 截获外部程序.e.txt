@@ -1,0 +1,216 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：消息截获主程序
+ ' 程序描述：该程序演示了截获外部程序窗口消息的技术.
+
+该程序通过windows Hook技术把一个dll注入了记事本程序中,进而实现了消息截获.
+ ' 程序作者：袁晓辉(海洋)
+ ' 邮政编码：
+ ' 联系地址：辽宁省大连市中山区人民路55号亚太国际金融中心
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：hyzs@sina.com
+ ' 主页地址：
+ ' 版权声明：QQ:149363435
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “截获外部程序的窗口消息   海洋 20054-9”
+    帮助文件名 = “”
+
+
+
+.常量 WH_GETMESSAGE, "3", , 
+.常量 PROP, "“中国－易语言－袁晓辉－开始子类”", , 
+.常量 MyMsgSubclass, "32888", , 
+.常量 MyMsgQueryHHook, "32999", , 
+.常量 GWL_WNDPROC, "-4", , 
+.常量 WM_DESTROY, "2", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 1 系统核心支持库
+
+
+
+
+
+.DLL命令 SetPropA, 逻辑型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpString, 文本型, , 
+    .参数 hData, 整数型, , 
+
+.DLL命令 SetWindowsHookExA, 整数型, "", "", , 
+    .参数 idHook, 整数型, , 
+    .参数 lpfn, 子程序指针, , 
+    .参数 nMod, 整数型, , 
+    .参数 dwThreadID, 整数型, , 
+
+.DLL命令 CallNextHookEx, 整数型, "", "", , 
+    .参数 hhook, 整数型, , 
+    .参数 nCode, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 UnhookWindowsHookEx, 逻辑型, "", "", , 
+    .参数 hhook, 整数型, , 
+
+.DLL命令 PostMessageA, 逻辑型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 msg, 整数型, , 
+    .参数 lparam, 整数型, , 
+    .参数 waparam, 整数型, , 
+
+.DLL命令 SendMessageA, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 msg, 整数型, , 
+    .参数 lparam, 整数型, , 
+    .参数 waparam, 整数型, , 
+
+.DLL命令 LoadLibraryA, 整数型, "", "", , 
+    .参数 lpFileName, 文本型, , 
+
+.DLL命令 FreeLibrary, 逻辑型, "", "", , 
+    .参数 hMod, 整数型, , 
+
+.DLL命令 GetProcAddress, 子程序指针, "", "", , 
+    .参数 hMod, 整数型, , 
+    .参数 lpFileName, 文本型, , 
+
+.DLL命令 RemovePropA, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpString, 文本型, , 
+
+.DLL命令 GetWindowThreadProcessId, 整数型, "", "", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpProcessID, 整数型, , 
+
+.DLL命令 GetPropA, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpString, 文本型, , 
+
+.DLL命令 SetWindowLongA, 子程序指针, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+    .参数 newLong, 子程序指针, , 
+
+.DLL命令 CallWindowProcA, 整数型, "", "", , 
+    .参数 lpOldProc, 子程序指针, , 
+    .参数 hWnd, 整数型, , 
+    .参数 uMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 FindWindowA, 整数型, "", "", , 
+    .参数 lpCalssName, 文本型, , 
+    .参数 lpWindowName, 文本型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 OldProc, 子程序指针, , , 
+.子程序 _开始截获按钮_被单击, 空白型, , 
+.局部变量 句柄, 整数型, , , 
+
+赋值 (句柄, 取指定窗口句柄 (“无标题 - 记事本”))
+.如果真 (等于 (句柄, 0))
+    信息框 (“请打开一个空白的记事本程序！”, #信息图标, “信息”)
+    返回 ()
+.如果真结束
+.如果真 (开始截获 (句柄))
+    信息框 (“已经开始截获，请在关闭记事本程序，验证一下！”, #信息图标, “成功”)
+.如果真结束
+
+
+.子程序 _结束截获按钮_被单击, 空白型, , 
+结束截获 (取指定窗口句柄 (“无标题 - 记事本”))
+
+.子程序 取指定窗口句柄, 整数型, , 
+.参数 窗口标题, 文本型, , 
+
+返回 (FindWindowA (字符 (0), 窗口标题))
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+结束截获 (取指定窗口句柄 (“无标题 - 记事本”))
+
+
+.程序集 消息截获程序集, , , 
+
+.子程序 开始截获, 逻辑型, , 
+.参数 窗口句柄, 整数型, , 
+
+.局部变量 hHook, 整数型, , , 
+.局部变量 hMod, 整数型, , , 
+.局部变量 lpProc, 子程序指针, , , 
+.局部变量 ThreadID, 整数型, , , 
+
+.如果真 (等于 (窗口句柄, 0))
+    返回 (假)
+.如果真结束
+.如果真 (不等于 (GetPropA (窗口句柄, #PROP), 0))
+     ' 已经加载过钩子了
+    返回 (假)
+.如果真结束
+ ' dll的模块句柄
+赋值 (hMod, LoadLibraryA (相加 (取运行目录 (), “\HookDLL.dll”)))
+检查 (不等于 (hMod, 0))
+ ' hookproc的地址
+赋值 (lpProc, GetProcAddress (hMod, “GetMsgProc”))
+检查 (不等于 (取字节集数据 (到字节集 (lpProc), #整数型), 0))
+赋值 (ThreadID, GetWindowThreadProcessId (窗口句柄, 0))
+ ' 给指定的窗口安装消息钩子，该窗口在收到PostMessage的消息时会加钩子函数所在的DLL
+赋值 (hHook, SetWindowsHookExA (#WH_GETMESSAGE, lpProc, hMod, ThreadID))
+FreeLibrary (hMod)
+ ' 给窗口发送特定的消息，通知dll子类化窗口替换窗口过程并传送钩子句柄过去
+PostMessageA (窗口句柄, #MyMsgSubclass, 1, hHook)
+返回 (不等于 (hHook, 0))
+
+.子程序 结束截获, 逻辑型, , 
+.参数 窗口句柄, 整数型, , 
+
+.局部变量 hHook, 整数型, , , 
+
+.如果真 (等于 (窗口句柄, 0))
+    返回 (假)
+.如果真结束
+赋值 (hHook, SendMessageA (窗口句柄, #MyMsgQueryHHook, 0, 0)) ' 取回钩子句柄
+.如果真 (等于 (hHook, 0)) ' 窗口已经关闭了
+    返回 (真)
+.如果真结束
+
+ ' 通知窗口结束截获，恢复窗口过程
+SendMessageA (窗口句柄, #MyMsgSubclass, 0, 0)
+返回 (UnhookWindowsHookEx (hHook))
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

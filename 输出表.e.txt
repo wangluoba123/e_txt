@@ -1,0 +1,206 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 IMAGE_DOS_HEADER, , 
+    .成员 e_magic, 短整数型, , , 
+    .成员 e_cblp, 短整数型, , , 
+    .成员 e_cp, 短整数型, , , 
+    .成员 e_crlc, 短整数型, , , 
+    .成员 e_cparhdr, 短整数型, , , 
+    .成员 e_minalloc, 短整数型, , , 
+    .成员 e_maxalloc, 短整数型, , , 
+    .成员 e_ss, 短整数型, , , 
+    .成员 e_sp, 短整数型, , , 
+    .成员 e_csum, 短整数型, , , 
+    .成员 e_ip, 短整数型, , , 
+    .成员 e_cs, 短整数型, , , 
+    .成员 e_lfarlc, 短整数型, , , 
+    .成员 e_ovno, 短整数型, , , 
+    .成员 e_res, 短整数型, , "4", 
+    .成员 e_oemid, 短整数型, , , 
+    .成员 e_oeminfo, 短整数型, , , 
+    .成员 e_res2, 短整数型, , "10", 
+    .成员 e_lfanew, 整数型, , , 
+
+数据类型 IMAGE_NT_HEADERS, , 
+    .成员 Signature, 整数型, , , 
+    .成员 FileHeader, IMAGE_FILE_HEADER, , , 
+    .成员 OptionalHeader, IMAGE_OPTIONAL_HEADER, , , 
+
+数据类型 IMAGE_FILE_HEADER, , 
+    .成员 Machine, 短整数型, , , 
+    .成员 NumberOfSections, 短整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 PointerToSymbolTable, 整数型, , , 
+    .成员 NumberOfSymbols, 整数型, , , 
+    .成员 SizeOfOptionalHeader, 短整数型, , , 
+    .成员 Characteristics, 短整数型, , , 
+
+数据类型 IMAGE_OPTIONAL_HEADER, , 
+    .成员 Magic, 短整数型, , , 
+    .成员 MajorLinkerVersion, 字节型, , , 
+    .成员 MinorLinkerVersion, 字节型, , , 
+    .成员 SizeOfCode, 整数型, , , 
+    .成员 SizeOfInitializedData, 整数型, , , 
+    .成员 SizeOfUninitializedData, 整数型, , , 
+    .成员 AddressOfEntryPoint, 整数型, , , 
+    .成员 BaseOfCode, 整数型, , , 
+    .成员 BaseOfData, 整数型, , , 
+    .成员 ImageBase, 整数型, , , 
+    .成员 SectionAlignment, 整数型, , , 
+    .成员 FileAlignment, 整数型, , , 
+    .成员 MajorOperatingSystemVersion, 短整数型, , , 
+    .成员 MinorOperatingSystemVersion, 短整数型, , , 
+    .成员 MajorImageVersion, 短整数型, , , 
+    .成员 MinorImageVersion, 短整数型, , , 
+    .成员 MajorSubsystemVersion, 短整数型, , , 
+    .成员 MinorSubsystemVersion, 短整数型, , , 
+    .成员 Win32VersionValue, 整数型, , , 
+    .成员 SizeOfImage, 整数型, , , 
+    .成员 SizeOfHeaders, 整数型, , , 
+    .成员 CheckSum, 整数型, , , 
+    .成员 Subsystem, 短整数型, , , 
+    .成员 DllCharacteristics, 短整数型, , , 
+    .成员 SizeOfStackReserve, 整数型, , , 
+    .成员 SizeOfStackCommit, 整数型, , , 
+    .成员 SizeOfHeapReserve, 整数型, , , 
+    .成员 SizeOfHeapCommit, 整数型, , , 
+    .成员 LoaderFlags, 整数型, , , 
+    .成员 NumberOfRvaAndSizes, 整数型, , , 
+    .成员 DataDirectory, IMAGE_DATA_DIRECTORY, , "16", 
+
+数据类型 IMAGE_DATA_DIRECTORY, , 
+    .成员 VirtualAddress, 整数型, , , 
+    .成员 Size, 整数型, , , 
+
+数据类型 IMAGE_EXPORT_DIRECTORY, , 
+    .成员 Characteristics, 整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 MajorVersion, 短整数型, , , 
+    .成员 MinorVersion, 短整数型, , , 
+    .成员 Name, 整数型, , , 
+    .成员 Base, 整数型, , , 
+    .成员 NumberOfFunctions, 整数型, , , 
+    .成员 NumberOfNames, 整数型, , , 
+    .成员 AddressOfFunctions, 整数型, , , 
+    .成员 AddressOfNames, 整数型, , , 
+    .成员 AddressOfNameOrdinals, 整数型, , , 
+
+
+.DLL命令 LoadLibrary, 整数型, "", "LoadLibraryA", , 
+    .参数 lpLibFileName, 文本型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_DOS_HEADER, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_DOS_HEADER, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_NT_HEADERS, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_NT_HEADERS, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_EXPORT_DIRECTORY, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_EXPORT_DIRECTORY, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 lstrlen, 整数型, "", "lstrlenA", , 
+    .参数 lpString, 文本型, , 
+
+.DLL命令 FreeLibrary, 整数型, "", "FreeLibrary", , 
+    .参数 hLibModule, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+返回 (0)
+
+.子程序 取输出表, 字节集, , 
+.参数 lpLibFileName, 文本型, , 
+
+.局部变量 hLibModule, 整数型, , , 
+.局部变量 DosHeader, IMAGE_DOS_HEADER, , , 
+.局部变量 NTHeader, IMAGE_NT_HEADERS, 静态, , 
+.局部变量 ExportDirectory, IMAGE_EXPORT_DIRECTORY, , , 
+.局部变量 AddressOfNames, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 Str, 文本型, , , 
+.局部变量 Offset, 整数型, , , 
+.局部变量 Bin, 字节集, , , 
+
+赋值 (hLibModule, LoadLibrary (lpLibFileName))
+
+.如果真 (等于 (hLibModule, 0))
+    返回 ({  })
+.如果真结束
+ ' 本源码来自易语言资源网(www.5A5X.com)
+RtlMoveMemory_IMAGE_DOS_HEADER (DosHeader, hLibModule, 64)
+RtlMoveMemory_IMAGE_NT_HEADERS (NTHeader, 相加 (hLibModule, DosHeader.e_lfanew), 248)
+
+.如果真 (等于 (NTHeader.OptionalHeader.DataDirectory [1].Size, 0))
+    FreeLibrary (hLibModule)
+    返回 ({  })
+.如果真结束
+
+RtlMoveMemory_IMAGE_EXPORT_DIRECTORY (ExportDirectory, 相加 (hLibModule, NTHeader.OptionalHeader.DataDirectory [1].VirtualAddress), 40)
+RtlMoveMemory (AddressOfNames, 相加 (hLibModule, ExportDirectory.AddressOfNames), 4)
+
+.计次循环首 (ExportDirectory.NumberOfNames, i)
+    
+    赋值 (Str, 指针到文本 (相加 (hLibModule, AddressOfNames, Offset)))
+    赋值 (Offset, 相加 (Offset, lstrlen (Str), 1))
+    赋值 (Bin, 相加 (Bin, 到字节集 (Str), { 13, 10 }))
+.计次循环尾 ()
+' 本源码来自易语言资源网(www.5A5X.com)
+FreeLibrary (hLibModule)
+
+返回 (Bin)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

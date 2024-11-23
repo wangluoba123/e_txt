@@ -1,0 +1,96 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 535
+    高度 = 415
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 INTERNET_OPTION_PROXY, "38", , 
+.常量 INTERNET_OPTION_SETTINGS_CHANGED, "39", , 
+.常量 INTERNET_OPEN_TYPE_PROXY, "3", , 
+.常量 INTERNET_OPEN_TYPE_DIRECT, "1", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' WebBrowser2 F600363078DE49c5B10AF62C7A13B37E 2 0 WEB浏览器
+
+
+
+
+数据类型 INTERNET_PROXY_INFO, , 
+    .成员 dwAccessType, 整数型, , , INTERNET_OPEN_TYPE_PROXY 或 INTERNET_OPEN_TYPE_DIRECT
+    .成员 lpszProxy, 文本型, , , http=59.188.125.8:3370
+    .成员 lpszProxyBypass, 文本型, , , “”
+
+
+.DLL命令 InternetSetOptionA2, 整数型, "wininet.dll", "InternetSetOptionA", , 
+    .参数 hinternet, 整数型, , 0
+    .参数 dwoption, 整数型, , 
+    .参数 lpbuffer, INTERNET_PROXY_INFO, 传址, 
+    .参数 dwbufferlength, 整数型, , 
+
+.DLL命令 InternetSetOptionA, 整数型, "wininet.dll", "InternetSetOptionA", , 
+    .参数 hinternet, 整数型, , 0
+    .参数 dwoption, 整数型, , 
+    .参数 lpbuffer, 整数型, , 
+    .参数 dwbufferlength, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+
+
+.子程序 设置代理服务器, 空白型, , 
+.参数 代理IP, 文本型, , 
+.参数 端口, 文本型, 可空, 为空默认80
+.参数 启用, 逻辑型, , 
+
+.局部变量 op, INTERNET_PROXY_INFO, , , 
+.局部变量 c, 整数型, , , 
+
+.如果 (启用)
+    赋值 (op.dwAccessType, #INTERNET_OPEN_TYPE_PROXY)
+    赋值 (op.lpszProxy, 相加 (“http=”, 代理IP, “:”, 选择 (是否为空 (端口), 到文本 (80), 端口)))
+    赋值 (op.lpszProxyBypass, “”)
+    InternetSetOptionA2 (0, #INTERNET_OPTION_PROXY, op, 12)
+    InternetSetOptionA (0, #INTERNET_OPTION_SETTINGS_CHANGED, 0, 0)
+.否则
+    赋值 (op.dwAccessType, #INTERNET_OPEN_TYPE_DIRECT)
+    赋值 (op.lpszProxy, “”)
+    赋值 (op.lpszProxyBypass, “”)
+    InternetSetOptionA2 (0, #INTERNET_OPTION_PROXY, op, 12)
+    InternetSetOptionA (0, #INTERNET_OPTION_SETTINGS_CHANGED, 0, 0)
+.如果结束
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+设置代理服务器 (“221.204.246.101”, 到文本 (80), 真) ' 这代理似乎已经失效，请自己寻找代理！
+“http://www.ip138.com”.未知支持库函数_0 ()
+
+.子程序 _按钮2_被单击, 空白型, , 
+设置代理服务器 (“”, , 假)
+“http://www.ip138.com”.未知支持库函数_0 ()
+
+
+ ' 不属于任何一个程序集、类模块的函数：

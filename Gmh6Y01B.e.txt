@@ -1,0 +1,195 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：密码代理验证
+ ' 程序描述：2008.6.27　wbss　写，　希望有高手改进！
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 INTERNET_OPEN_TYPE_PROXY, "3", , 
+.常量 INTERNET_SERVICE_HTTP, "3", , 
+.常量 INTERNET_FLAG_RELOAD, "2147483648", , 
+.常量 HTTP_QUERY_STATUS_CODE, "19", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 5 系统核心支持库
+
+
+
+
+数据类型 SECURITY_ATTRIBUTES, , 安全性结构;
+    .成员 nLength, 整数型, , , 
+    .成员 lpSecurityDescriptor, 整数型, , , 
+    .成员 bInheritHandle, 整数型, , , 
+
+
+.DLL命令 API_InternetOpen, 整数型, "wininet.dll", "InternetOpenA", , 
+    .参数 lpszAgent, 文本型, , 
+    .参数 dwAccessType, 整数型, , 
+    .参数 lpszProxy, 文本型, , 
+    .参数 lpszProxyBypass, 文本型, , 
+    .参数 dwFlags, 整数型, , 
+
+.DLL命令 API_InternetConnect, 整数型, "wininet.dll", "InternetConnectA", , 
+    .参数 hInternet, 整数型, , 
+    .参数 lpszServerName, 文本型, , 
+    .参数 nServerPort, 整数型, , 
+    .参数 lpszUserName, 文本型, , 
+    .参数 lpszPassword, 文本型, , 
+    .参数 dwService, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 dwContext, 整数型, , 
+
+.DLL命令 API_HttpOpenRequest, 整数型, "wininet.dll", "HttpOpenRequestA", , 
+    .参数 hConnect, 整数型, , 
+    .参数 lpszVerb, 文本型, , 
+    .参数 lpszObjectName, 文本型, , 
+    .参数 lpszVersion, 文本型, , 
+    .参数 lpszReferrer, 文本型, , 
+    .参数 lplpszAcceptTypes, 文本型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 dwContext, 整数型, , 
+
+.DLL命令 API_HttpSendRequest, 逻辑型, "wininet.dll", "HttpSendRequestA", , 
+    .参数 hRequest, 整数型, , 
+    .参数 lpszHeaders, 文本型, , 
+    .参数 dwHeadersLength, 整数型, , 
+    .参数 lpOptional, 文本型, , 
+    .参数 dwOptionalLength, 整数型, , 
+
+.DLL命令 API_HttpQueryInfo, 逻辑型, "wininet.dll", "HttpQueryInfoA", , 
+    .参数 hRequest, 整数型, , 
+    .参数 dwInfoLevel, 整数型, , 
+    .参数 lpBuffer, 文本型, 传址, 
+    .参数 lpdwBufferLength, 整数型, 传址, 
+    .参数 lpdwIndex, 整数型, , 
+
+.DLL命令 API_InternetCloseHandle, 逻辑型, "wininet.dll", "InternetCloseHandle", , 
+    .参数 hInternet, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.子程序 密码代理验证, 逻辑型, , 
+.参数 测试网址, 文本型, , 
+.参数 代理服务器, 文本型, , 
+.参数 代理用户名, 文本型, 可空, 
+.参数 代理密码, 文本型, 可空, 
+
+.局部变量 会话句柄, 整数型, , , 
+.局部变量 HTTP连接句柄, 整数型, , , 
+.局部变量 HTTP请求句柄, 整数型, , , 
+.局部变量 连接状态, 文本型, , , 
+.局部变量 匿名局部变量_90, 空白型, , , 
+.局部变量 测试网址域名, 文本型, , , 
+.局部变量 测试网址端口, 整数型, , , 
+.局部变量 测试页面地址, 文本型, , , 
+
+
+赋值 (测试网址域名, 取域名 (测试网址, 假))
+赋值 (测试网址端口, 取端口 (测试网址))
+赋值 (测试页面地址, 取页面地址 (测试网址))
+
+赋值 (会话句柄, API_InternetOpen (“Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)”, #INTERNET_OPEN_TYPE_PROXY, 相加 (“http=”, 代理服务器), “密代”, 0))
+
+赋值 (HTTP连接句柄, API_InternetConnect (会话句柄, 测试网址域名, 测试网址端口, 选择 (不等于 (代理用户名, “”), 代理用户名, 字符 (0)), 选择 (不等于 (代理密码, “”), 代理密码, 字符 (0)), #INTERNET_SERVICE_HTTP, 0, 0))
+
+赋值 (HTTP请求句柄, API_HttpOpenRequest (HTTP连接句柄, “GET”, 测试页面地址, “HTTP/1.1”, 字符 (0), “*/*”, #INTERNET_FLAG_RELOAD, 0))
+
+
+ ' 信息框 (到文本 (会话句柄), 0, )
+ ' 信息框 (到文本 (HTTP连接句柄), 0, )
+ ' 信息框 (到文本 (HTTP请求句柄), 0, )
+
+.如果真 (等于 (API_HttpSendRequest (HTTP请求句柄, 字符 (0), 0, 字符 (0), 0), 假))
+    API_InternetCloseHandle (HTTP请求句柄)
+    API_InternetCloseHandle (HTTP连接句柄)
+    API_InternetCloseHandle (会话句柄)
+    返回 (假)
+.如果真结束
+
+赋值 (连接状态, 取空白文本 (10))
+.如果 (API_HttpQueryInfo (HTTP请求句柄, #HTTP_QUERY_STATUS_CODE, 连接状态, 10, 0))
+    .如果 (不等于 (连接状态, “200”))
+        API_InternetCloseHandle (HTTP请求句柄)
+        API_InternetCloseHandle (HTTP连接句柄)
+        API_InternetCloseHandle (会话句柄)
+        返回 (假)
+    .否则
+        API_InternetCloseHandle (HTTP请求句柄)
+        API_InternetCloseHandle (HTTP连接句柄)
+        API_InternetCloseHandle (会话句柄)
+        返回 (真)
+    .如果结束
+    
+.否则
+    API_InternetCloseHandle (HTTP请求句柄)
+    API_InternetCloseHandle (HTTP连接句柄)
+    API_InternetCloseHandle (会话句柄)
+    返回 (假)
+.如果结束
+
+
+.子程序 取域名, 文本型, , 
+.参数 网址, 文本型, , 
+.参数 不过滤端口, 逻辑型, 可空, 
+
+.局部变量 dwNumber, 整数型, , , 
+.局部变量 dwLast, 整数型, , , 
+.局部变量 szServerName, 文本型, , , 
+
+赋值 (szServerName, 网址)
+赋值 (dwNumber, 选择 (等于 (寻找文本 (szServerName, “http://”, , 假), -1), 1, 相加 (寻找文本 (szServerName, “http://”, , 假), 7)))
+赋值 (szServerName, 取文本中间 (szServerName, dwNumber, 选择 (等于 (寻找文本 (szServerName, “/”, dwNumber, 假), -1), 取文本长度 (szServerName), 相减 (寻找文本 (szServerName, “/”, dwNumber, 假), dwNumber)))) ' 这段代码是过滤掉前http://和后/
+.如果真 (等于 (不过滤端口, 假))
+    赋值 (dwNumber, 寻找文本 (szServerName, “:”, , 假))
+    .如果真 (不等于 (dwNumber, -1))
+        赋值 (szServerName, 取文本左边 (szServerName, 相减 (dwNumber, 1)))
+    .如果真结束
+    
+.如果真结束
+返回 (到小写 (szServerName))
+
+.子程序 取端口, 整数型, , 
+.参数 网址, 文本型, , 
+
+.局部变量 dwNumber, 整数型, , , 
+.局部变量 szServerName, 文本型, , , 
+
+赋值 (szServerName, 取域名 (网址, 真))
+赋值 (dwNumber, 寻找文本 (szServerName, “:”, , 假))
+赋值 (dwNumber, 选择 (等于 (dwNumber, -1), 80, 到数值 (取文本右边 (szServerName, 相减 (取文本长度 (szServerName), dwNumber)))))
+返回 (dwNumber)
+
+.子程序 取页面地址, 文本型, , 
+.参数 网址, 文本型, , 
+
+.局部变量 页面地址, 文本型, , , 
+.局部变量 符号位置, 整数型, , , 
+.局部变量 域名, 文本型, , , 
+
+赋值 (域名, 取域名 (网址))
+赋值 (符号位置, 寻找文本 (网址, “/”, 寻找文本 (网址, 域名, 1, 真), 真))
+赋值 (页面地址, 选择 (等于 (符号位置, -1), “/”, 取文本右边 (网址, 相加 (相减 (取文本长度 (网址), 符号位置), 1))))
+返回 (页面地址)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

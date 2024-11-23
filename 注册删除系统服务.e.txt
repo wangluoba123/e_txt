@@ -1,0 +1,111 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 198
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “系统服务”
+    帮助文件名 = “”
+
+
+
+.常量 常量1, "“[Version] 
+Signature="$WINDOWS NT$" 
+[DefaultInstall.Services] 
+AddService=myTest,,My_AddService_Name 
+[My_AddService_Name] 
+DisplayName=cnckcheck
+Description=系统检测 
+ServiceType=0x10 
+StartType=2 
+ErrorControl=0 
+ServiceBinary=D:\Server\run.exe
+
+
+
+
+[Version] 
+Signature="$WINDOWS NT$" 
+[DefaultInstall.Services] 
+DelService=cnckcheck
+
+”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 5 系统核心支持库
+ ' vclbase {6793B367-79D9-43F3-88B7-5EB6CF04B618} 1 0 VCLBase
+
+
+
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+写配置项 (相加 (取运行目录 (), “\inetsvr.inf”), “Version”, “Signature”, “$WINDOWS NT$”)
+写配置项 (相加 (取运行目录 (), “\inetsvr.inf”), “DefaultInstall.Services”, “AddService”, “myTest,,My_AddService_Name”)
+
+写配置项 (相加 (取运行目录 (), “\inetsvr.inf”), “My_AddService_Name”, “DisplayName”, .)
+写配置项 (相加 (取运行目录 (), “\inetsvr.inf”), “My_AddService_Name”, “Description”, .)
+写配置项 (相加 (取运行目录 (), “\inetsvr.inf”), “My_AddService_Name”, “ServiceType”, “0x10”)
+写配置项 (相加 (取运行目录 (), “\inetsvr.inf”), “My_AddService_Name”, “StartType”, “2”)
+写配置项 (相加 (取运行目录 (), “\inetsvr.inf”), “My_AddService_Name”, “ErrorControl”, “0 ”)
+写配置项 (相加 (取运行目录 (), “\inetsvr.inf”), “My_AddService_Name”, “ServiceBinary”, .)
+
+运行 (相加 (“rundll32.exe setupapi,InstallHinfSection DefaultInstall 128”, “ ”, 取运行目录 (), “\inetsvr.inf”), 假, )
+
+信息框 (“注册系统服务成功！”, 0, )
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+写配置项 (相加 (取运行目录 (), “\inetsvr.inf”), “Version”, “Signature”, “$WINDOWS NT$”)
+写配置项 (相加 (取运行目录 (), “\inetsvr.inf”), “DefaultInstall.Services”, “DelService”, .)
+
+
+运行 (相加 (“rundll32.exe setupapi,InstallHinfSection DefaultInstall 128”, “ ”, 取运行目录 (), “\inetsvr.inf”), 假, )
+
+信息框 (“删除系统服务成功！”, 0, )
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

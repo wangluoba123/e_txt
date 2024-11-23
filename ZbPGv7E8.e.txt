@@ -1,0 +1,454 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 669
+    高度 = 455
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 已保存到：D:\易语言学习\Data\ZbPGv7E8.e\_启动窗口_图标.ico
+    背景音乐 =  ' 空
+    标题 = “千年服务端设置工具V1.1测试版”
+    帮助文件名 = “”
+
+窗口 窗口1
+    左边 = 50
+    顶边 = 50
+    宽度 = 448
+    高度 = 145
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+窗口 窗口2
+    左边 = 50
+    顶边 = 50
+    宽度 = 226
+    高度 = 88
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “关于”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+赋值 (., “*.ini|*.ini”)
+打开 ()
+赋值 (., “”)
+赋值 (., “”)
+赋值 (., “”)
+赋值 (., “”)
+赋值 (., “”)
+赋值 (., “”)
+赋值 (., “”)
+赋值 (., “”)
+赋值 (., “”)
+赋值 (., “”)
+赋值 (., “”)
+赋值 (., “”)
+赋值 (., “”)
+赋值 (., “”)
+赋值 (., “”)
+赋值 (., “”)
+赋值 (., “”)
+赋值 (., “”)
+赋值 (., “”)
+赋值 (., “”)
+.如果真 (等于 (取文本右边 (., 11), “BALANCE.INI”))
+    赋值 (., “均衡(BALANCE)服务器设置”)
+    赋值 (., “IP地址(克星工具特有)”)
+    赋值 (., “外网端口(TCP协议)”)
+    赋值 (., “GATE服务器地址(克星工具特有)”)
+    赋值 (., “GATE端口(UDP协议)”)
+    读配置项 (., “BALANCE”, “TCPLOCALIP”, ).加入文本 ()
+    读配置项 (., “BALANCE”, “TCPLOCALPORT”, ).加入文本 ()
+    读配置项 (., “BALANCE”, “UDPLOCALIP”, ).加入文本 ()
+    读配置项 (., “BALANCE”, “UDPLOCALPORT”, ).加入文本 ()
+.如果真结束
+.如果真 (等于 (取文本右边 (., 6), “DB.INI”))
+    赋值 (., “人物资料(DB)服务器设置”)
+    赋值 (., “数据库名称”)
+    赋值 (., “数据库大小”)
+    赋值 (., “GATE连接端口”)
+    赋值 (., “接收端口”)
+    赋值 (., “物品接收端口”)
+    读配置项 (., “DB_SERVER”, “FileName”, ).加入文本 ()
+    读配置项 (., “DB_SERVER”, “BufferSizeS2S”, ).加入文本 ()
+    读配置项 (., “DB_SERVER”, “GateAcceptPort”, ).加入文本 ()
+    读配置项 (., “DB_SERVER”, “RemotePort”, ).加入文本 ()
+    读配置项 (., “DB_SERVER”, “ItemRemotePort”, ).加入文本 ()
+.如果真结束
+.如果真 (等于 (取文本右边 (., 8), “GATE.INI”))
+    赋值 (., “网关(GATE)服务器设置”)
+    赋值 (., “外网IP”)
+    赋值 (., “外网端口”)
+    赋值 (., “最大人数上限”)
+    赋值 (., “是否收费服务器”)
+    赋值 (., “均衡服务器IP”)
+    赋值 (., “均衡服务器端口”)
+    赋值 (., “服务器名”)
+    赋值 (., “未知文件大小”)
+    赋值 (., “未知文件大小”)
+    赋值 (., “TGS(游戏引擎)IP”)
+    赋值 (., “TGS(游戏引擎)端口”)
+    赋值 (., “DB(人物数据)服务器IP”)
+    赋值 (., “DB(人物数据)服务器端口”)
+    赋值 (., “LOGIN(连接)服务器IP”)
+    赋值 (., “LOGIN(连接)服务器端口”)
+    赋值 (., “充值验证服务器IP”)
+    赋值 (., “充值验证服务器端口”)
+    读配置项 (., “GATE_SERVER”, “LOCALIP”, ).加入文本 ()
+    读配置项 (., “GATE_SERVER”, “LOCALPORT”, ).加入文本 ()
+    读配置项 (., “GATE_SERVER”, “LIMITUSERCOUNT”, ).加入文本 ()
+    读配置项 (., “GATE_SERVER”, “CHECKPAIDINFO”, ).加入文本 ()
+    读配置项 (., “GATE_SERVER”, “BALANCEIP”, ).加入文本 ()
+    读配置项 (., “GATE_SERVER”, “BALANCEPORT”, ).加入文本 ()
+    读配置项 (., “GATE_SERVER”, “SERVERNAME”, ).加入文本 ()
+    读配置项 (., “GATE_SERVER”, “BUFFERSIZES2S”, ).加入文本 ()
+    读配置项 (., “GATE_SERVER”, “BUFFERSIZES2C”, ).加入文本 ()
+    读配置项 (., “GAME_SERVER”, “REMOTEIP”, ).加入文本 ()
+    读配置项 (., “GAME_SERVER”, “REMOTEPORT”, ).加入文本 ()
+    读配置项 (., “DB_SERVER”, “REMOTEIP”, ).加入文本 ()
+    读配置项 (., “DB_SERVER”, “REMOTEPORT”, ).加入文本 ()
+    读配置项 (., “LOGIN_SERVER”, “REMOTEIP”, ).加入文本 ()
+    读配置项 (., “LOGIN_SERVER”, “REMOTEPORT”, ).加入文本 ()
+    读配置项 (., “PAID_SERVER”, “REMOTEIP”, ).加入文本 ()
+    读配置项 (., “PAID_SERVER”, “REMOTEPORT”, ).加入文本 ()
+.如果真结束
+.如果真 (等于 (取文本右边 (., 14), “CreateChar.ini”))
+    赋值 (., “角色初始资料设置”)
+    赋值 (., “男子上衣”)
+    赋值 (., “男子下衣”)
+    赋值 (., “女子上衣”)
+    赋值 (., “女子下衣”)
+    赋值 (., “剑物品”)
+    赋值 (., “刀物品”)
+    赋值 (., “枪物品”)
+    赋值 (., “斧物品”)
+    赋值 (., “特殊物品01”)
+    赋值 (., “特殊物品02(克星新GATE)”)
+    赋值 (., “特殊物品03(克星新GATE)”)
+    赋值 (., “特殊物品04(克星新GATE)”)
+    赋值 (., “特殊物品05(克星新GATE)”)
+    赋值 (., “初始活力值(克星新GATE)”)
+    赋值 (., “初始武功值(克星新GATE)”)
+    赋值 (., “初始外功值(克星新GATE)”)
+    赋值 (., “初始内功值(克星新GATE)”)
+    赋值 (., “特殊设置(克星新GATE)”)
+    读配置项 (., “CLOTHES”, “CLOTHES_COAT”, ).加入文本 ()
+    读配置项 (., “CLOTHES”, “CLOTHES_PANTS”, ).加入文本 ()
+    读配置项 (., “CLOTHES”, “CLOTHES_COAT”, ).加入文本 ()
+    读配置项 (., “CLOTHES”, “CLOTHES_PANTS”, ).加入文本 ()
+    读配置项 (., “WEAPON”, “WEAPON_SWORD”, ).加入文本 ()
+    读配置项 (., “WEAPON”, “WEAPON_KNIFE”, ).加入文本 ()
+    读配置项 (., “WEAPON”, “WEAPON_SPEAR”, ).加入文本 ()
+    读配置项 (., “WEAPON”, “WEAPON_AX”, ).加入文本 ()
+    读配置项 (., “ETC”, “ETC_01”, ).加入文本 ()
+    读配置项 (., “ETC”, “ETC_02”, ).加入文本 ()
+    读配置项 (., “ETC”, “ETC_03”, ).加入文本 ()
+    读配置项 (., “ETC”, “ETC_04”, ).加入文本 ()
+    读配置项 (., “ETC”, “ETC_05”, ).加入文本 ()
+    读配置项 (., “CHARBASE”, “LIFE”, ).加入文本 ()
+    读配置项 (., “CHARBASE”, “MAGIC”, ).加入文本 ()
+    读配置项 (., “CHARBASE”, “INPOWER”, ).加入文本 ()
+    读配置项 (., “CHARBASE”, “OUTPOWER”, ).加入文本 ()
+    读配置项 (., “CHARDATA”, “FILENAME”, ).加入文本 ()
+.如果真结束
+.如果真 (等于 (取文本右边 (., 11), “Village.Ini”))
+    赋值 (., “出生地设置”)
+    赋值 (., “出生地总数量”)
+    赋值 (., “出生地名称”)
+    赋值 (., “坐标X”)
+    赋值 (., “坐标Y”)
+    赋值 (., “地图编号”)
+    读配置项 (., “VILLAGE”, “COUNT”, ).加入文本 ()
+    读配置项 (., “VILLAGE”, “NAME0”, ).加入文本 ()
+    读配置项 (., “VILLAGE”, “X0”, ).加入文本 ()
+    读配置项 (., “VILLAGE”, “Y0”, ).加入文本 ()
+    读配置项 (., “VILLAGE”, “SERVERID0”, ).加入文本 ()
+.如果真结束
+.如果真 (等于 (取文本右边 (., 9), “login.ini”))
+    赋值 (., “登陆(LOGIN)服务器设置(官方SQL版)”)
+    赋值 (., “DSN名(官方SQL版)”)
+    赋值 (., “用户名(官方SQL版)”)
+    赋值 (., “密码(官方SQL版)”)
+    赋值 (., “客户连接端口(官方SQL版)”)
+    赋值 (., “连接IP(官方SQL版)”)
+    赋值 (., “内部断口(官方SQL版)”)
+    读配置项 (., “ODBC”, “DSN”, ).加入文本 ()
+    读配置项 (., “ODBC”, “UserName”, ).加入文本 ()
+    读配置项 (., “ODBC”, “Password”, ).加入文本 ()
+    读配置项 (., “SERVER”, “CLIENTACCEPTPORT”, ).加入文本 ()
+    读配置项 (., “REMOTE_SERVER”, “IP”, ).加入文本 ()
+    读配置项 (., “REMOTE_SERVER”, “Port”, ).加入文本 ()
+.如果真结束
+.如果真 (等于 (取文本右边 (., 9), “LOGIN.INI”))
+    赋值 (., “登陆(LOGIN)服务器设置(隐龙版)”)
+    赋值 (., “数据源名”)
+    赋值 (., “服务端口”)
+    赋值 (., “数据库类型”)
+    赋值 (., “数据库名称”)
+    赋值 (., “数据库目录”)
+    赋值 (., “SQL访问用户名”)
+    赋值 (., “SQL用户密码”)
+    赋值 (., “数据库中的数据表名称”)
+    读配置项 (., “ODBC”, “DSN”, ).加入文本 ()
+    读配置项 (., “ODBC”, “CLIENTACCEPTPORT”, ).加入文本 ()
+    读配置项 (., “DATABASE”, “DATATYPE”, ).加入文本 ()
+    读配置项 (., “DATABASE”, “DATABASENAME”, ).加入文本 ()
+    读配置项 (., “DATABASE”, “DATABASEPATH”, ).加入文本 ()
+    读配置项 (., “DATABASE”, “MSSQL_LONGID”, ).加入文本 ()
+    读配置项 (., “DATABASE”, “MSSQL_PASSWORD”, ).加入文本 ()
+    读配置项 (., “DATABASE”, “TABLENAME”, ).加入文本 ()
+.如果真结束
+.如果真 (等于 (取文本右边 (., 8), “game.ini”))
+    赋值 (., “TGS游戏引擎内容设置”)
+    赋值 (., “本门派玩家情报指令”)
+    赋值 (., “追杀指令”)
+    赋值 (., “脱色设置”)
+    赋值 (., “绳索设置”)
+    赋值 (., “性别(男)”)
+    赋值 (., “性别(女)”)
+    赋值 (., “门派石设置”)
+    赋值 (., “基本货币单位”)
+    读配置项 (., “STRINGS”, “WHO”, ).加入文本 ()
+    读配置项 (., “STRINGS”, “SERCHSKILL”, ).加入文本 ()
+    读配置项 (., “STRINGS”, “WHITEDRUG”, ).加入文本 ()
+    读配置项 (., “STRINGS”, “ROPE”, ).加入文本 ()
+    读配置项 (., “STRINGS”, “SEX_FIELD_MAN”, ).加入文本 ()
+    读配置项 (., “STRINGS”, “SEX_FIELD_WOMAN”, ).加入文本 ()
+    读配置项 (., “STRINGS”, “GUILD_STONE”, ).加入文本 ()
+    读配置项 (., “STRINGS”, “GOLD”, ).加入文本 ()
+.如果真结束
+.如果真 (等于 (取文本右边 (., 10), “sv1000.Ini”))
+    赋值 (., “游戏引擎端口设置”)
+    赋值 (., “连接DB服务器IP”)
+    赋值 (., “连接DB服务器端口”)
+    赋值 (., “物品记录服务器IP”)
+    赋值 (., “物品记录服务器端口”)
+    赋值 (., “交易记录服务器IP”)
+    赋值 (., “交易记录服务器端口”)
+    赋值 (., “怪物记录服务器IP”)
+    赋值 (., “怪物记录服务器端口”)
+    赋值 (., “玩家在线管理服务器IP”)
+    赋值 (., “玩家在线管理服务器端口”)
+    读配置项 (., “DB_SERVER”, “IPADDRESS”, ).加入文本 ()
+    读配置项 (., “DB_SERVER”, “PORT”, ).加入文本 ()
+    读配置项 (., “UDP_ITEM”, “IPADDRESS”, ).加入文本 ()
+    读配置项 (., “UDP_ITEM”, “PORT”, ).加入文本 ()
+    读配置项 (., “UDP_PAY”, “IPADDRESS”, ).加入文本 ()
+    读配置项 (., “UDP_PAY”, “PORT”, ).加入文本 ()
+    读配置项 (., “UDP_OBJECT”, “IPADDRESS”, ).加入文本 ()
+    读配置项 (., “UDP_OBJECT”, “PORT”, ).加入文本 ()
+    读配置项 (., “NOTICE_SERVER”, “IPADDRESS”, ).加入文本 ()
+    读配置项 (., “NOTICE_SERVER”, “PORT”, ).加入文本 ()
+.如果真结束
+.如果 (等于 (., “”))
+    信息框 (相加 (“没有选择配置文件”, #换行符, “请先选择一个配置文件”), 0, “提示:”)
+.否则
+    
+.如果结束
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+.如果真 (等于 (取文本右边 (., 11), “BALANCE.INI”))
+    写配置项 (., “BALANCE”, “TCPLOCALIP”, .)
+    写配置项 (., “BALANCE”, “TCPLOCALPORT”, .)
+    写配置项 (., “BALANCE”, “UDPLOCALIP”, .)
+    写配置项 (., “BALANCE”, “UDPLOCALPORT”, .)
+.如果真结束
+.如果真 (等于 (取文本右边 (., 6), “DB.INI”))
+    写配置项 (., “DB_SERVER”, “FileName”, .)
+    写配置项 (., “DB_SERVER”, “BufferSizeS2S”, .)
+    写配置项 (., “DB_SERVER”, “GateAcceptPort”, .)
+    写配置项 (., “DB_SERVER”, “RemotePort”, .)
+    写配置项 (., “DB_SERVER”, “ItemRemotePort”, .)
+.如果真结束
+.如果真 (等于 (取文本右边 (., 8), “GATE.INI”))
+    写配置项 (., “GATE_SERVER”, “LOCALIP”, .)
+    写配置项 (., “GATE_SERVER”, “LOCALPORT”, .)
+    写配置项 (., “GATE_SERVER”, “LIMITUSERCOUNT”, .)
+    写配置项 (., “GATE_SERVER”, “CHECKPAIDINFO”, .)
+    写配置项 (., “GATE_SERVER”, “BALANCEIP”, .)
+    写配置项 (., “GATE_SERVER”, “BALANCEPORT”, .)
+    写配置项 (., “GATE_SERVER”, “SERVERNAME”, .)
+    写配置项 (., “GATE_SERVER”, “BUFFERSIZES2S”, .)
+    写配置项 (., “GATE_SERVER”, “BUFFERSIZES2C”, .)
+    写配置项 (., “GAME_SERVER”, “REMOTEIP”, .)
+    写配置项 (., “GAME_SERVER”, “REMOTEPORT”, .)
+    写配置项 (., “DB_SERVER”, “REMOTEIP”, .)
+    写配置项 (., “DB_SERVER”, “REMOTEPORT”, .)
+    写配置项 (., “LOGIN_SERVER”, “REMOTEIP”, .)
+    写配置项 (., “LOGIN_SERVER”, “REMOTEPORT”, .)
+    写配置项 (., “PAID_SERVER”, “REMOTEIP”, .)
+    写配置项 (., “PAID_SERVER”, “REMOTEPORT”, .)
+.如果真结束
+.如果真 (等于 (取文本右边 (., 14), “CreateChar.ini”))
+    写配置项 (., “CLOTHES”, “CLOTHES_COAT”, .)
+    写配置项 (., “CLOTHES”, “CLOTHES_PANTS”, .)
+    写配置项 (., “CLOTHES”, “CLOTHES_COAT”, .)
+    写配置项 (., “CLOTHES”, “CLOTHES_PANTS”, .)
+    写配置项 (., “WEAPON”, “WEAPON_SWORD”, .)
+    写配置项 (., “WEAPON”, “WEAPON_KNIFE”, .)
+    写配置项 (., “WEAPON”, “WEAPON_SPEAR”, .)
+    写配置项 (., “WEAPON”, “WEAPON_AX”, .)
+    写配置项 (., “ETC”, “ETC_01”, .)
+    写配置项 (., “ETC”, “ETC_02”, .)
+    写配置项 (., “ETC”, “ETC_03”, .)
+    写配置项 (., “ETC”, “ETC_04”, .)
+    写配置项 (., “ETC”, “ETC_05”, .)
+    写配置项 (., “CHARBASE”, “LIFE”, .)
+    写配置项 (., “CHARBASE”, “MAGIC”, .)
+    写配置项 (., “CHARBASE”, “INPOWER”, .)
+    写配置项 (., “CHARBASE”, “OUTPOWER”, .)
+    写配置项 (., “CHARDATA”, “FILENAME”, .)
+.如果真结束
+.如果真 (等于 (取文本右边 (., 11), “Village.Ini”))
+    写配置项 (., “VILLAGE”, “COUNT”, .)
+    写配置项 (., “VILLAGE”, “NAME0”, .)
+    写配置项 (., “VILLAGE”, “X0”, .)
+    写配置项 (., “VILLAGE”, “Y0”, .)
+    写配置项 (., “VILLAGE”, “SERVERID0”, .)
+.如果真结束
+.如果真 (等于 (取文本右边 (., 9), “lgoin.ini”))
+    写配置项 (., “ODBC”, “DSN”, .)
+    写配置项 (., “ODBC”, “UserName”, .)
+    写配置项 (., “ODBC”, “Password”, .)
+    写配置项 (., “SERVER”, “CLIENTACCEPTPORT”, .)
+    写配置项 (., “REMOTE_SERVER”, “IP”, .)
+    写配置项 (., “REMOTE_SERVER”, “Port”, .)
+.如果真结束
+.如果真 (等于 (取文本右边 (., 9), “LOGIN.INI”))
+    写配置项 (., “ODBC”, “DSN”, .)
+    写配置项 (., “ODBC”, “CLIENTACCEPTPORT”, .)
+    写配置项 (., “DATABASE”, “DATATYPE”, .)
+    写配置项 (., “DATABASE”, “DATABASENAME”, .)
+    写配置项 (., “DATABASE”, “DATABASEPATH”, .)
+    写配置项 (., “DATABASE”, “MSSQL_LONGID”, .)
+    写配置项 (., “DATABASE”, “MSSQL_PASSWORD”, .)
+    写配置项 (., “DATABASE”, “TABLENAME”, .)
+.如果真结束
+.如果真 (等于 (取文本右边 (., 8), “game.ini”))
+    写配置项 (., “STRINGS”, “WHO”, .)
+    写配置项 (., “STRINGS”, “SERCHSKILL”, .)
+    写配置项 (., “STRINGS”, “WHITEDRUG”, .)
+    写配置项 (., “STRINGS”, “ROPE”, .)
+    写配置项 (., “STRINGS”, “SEX_FIELD_MAN”, .)
+    写配置项 (., “STRINGS”, “SEX_FIELD_WOMAN”, .)
+    写配置项 (., “STRINGS”, “GUILD_STONE”, .)
+    写配置项 (., “STRINGS”, “GOLD”, .)
+.如果真结束
+.如果真 (等于 (取文本右边 (., 10), “sv1000.Ini”))
+    写配置项 (., “DB_SERVER”, “IPADDRESS”, .)
+    写配置项 (., “DB_SERVER”, “PORT”, .)
+    写配置项 (., “UDP_ITEM”, “IPADDRESS”, .)
+    写配置项 (., “UDP_ITEM”, “PORT”, .)
+    写配置项 (., “UDP_PAY”, “IPADDRESS”, .)
+    写配置项 (., “UDP_PAY”, “PORT”, .)
+    写配置项 (., “UDP_OBJECT”, “IPADDRESS”, .)
+    写配置项 (., “UDP_OBJECT”, “PORT”, .)
+    写配置项 (., “NOTICE_SERVER”, “IPADDRESS”, .)
+    写配置项 (., “NOTICE_SERVER”, “PORT”, .)
+.如果真结束
+.如果 (等于 (., “”))
+    信息框 (相加 (“没有选择配置文件”, #换行符, “请先选择一个配置文件”), 0, “提示:”)
+.否则
+    
+.如果结束
+
+
+.子程序 _载入配置_被选择, 空白型, , 
+_按钮1_被单击 ()
+
+.子程序 _保存配置_被选择, 空白型, , 
+_按钮2_被单击 ()
+
+
+.子程序 _退出_被选择, 空白型, , 
+销毁 ()
+
+
+.子程序 _功能简介_被选择, 空白型, , 
+ ' 载入 (窗口1, , 真)
+
+
+.子程序 _关于作者_被选择, 空白型, , 
+载入 (窗口2, , 真)
+
+
+.子程序 _BUG提交_被选择, 空白型, , 
+信息框 (相加 (“请至龙网论坛提交BUG”, #换行符, “http://bbs.lanlong.net”), 0, “提示:”)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

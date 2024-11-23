@@ -1,0 +1,159 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 416
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 SW_HIDE, "0", , 
+.常量 STARTF_USESHOWWINDOW, "1", , 
+.常量 STARTF_USESTDHANDLES, "256", , 
+.常量 STILL_ACTIVE, "259", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 3 系统核心支持库
+
+
+
+
+数据类型 STARTUPINFO, , 
+    .成员 cb, 整数型, , , 
+    .成员 lpReserved, 文本型, , , 
+    .成员 lpDesktop, 文本型, , , 
+    .成员 lpTitle, 文本型, , , 
+    .成员 dwX, 整数型, , , 
+    .成员 dwY, 整数型, , , 
+    .成员 dwXSize, 整数型, , , 
+    .成员 dwYSize, 整数型, , , 
+    .成员 dwXCountChars, 整数型, , , 
+    .成员 dwYCountChars, 整数型, , , 
+    .成员 dwFillAttribute, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+    .成员 wShowWindow, 短整数型, , , 
+    .成员 cbReserved2, 短整数型, , , 
+    .成员 lpReserved2, 整数型, , , 
+    .成员 hStdInput, 整数型, , , 
+    .成员 hStdOutput, 整数型, , , 
+    .成员 hStdError, 整数型, , , 
+
+数据类型 SECURITY_ATTRIBUTES, , 
+    .成员 nLength, 整数型, , , 
+    .成员 lpSecurityDescriptor, 整数型, , , 
+    .成员 bInheritHandle, 整数型, , , 
+
+数据类型 PROCESS_INFORMATION, , 
+    .成员 hProcess, 整数型, , , 
+    .成员 hThread, 整数型, , , 
+    .成员 dwProcessId, 整数型, , , 
+    .成员 dwThreadId, 整数型, , , 
+
+
+.DLL命令 CreateProcess, 整数型, "", "CreateProcessA", , 
+    .参数 lpApplicationName, 整数型, , 
+    .参数 lpCommandLine, 文本型, , 
+    .参数 lpProcessAttributes, 整数型, , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 bInheritHandles, 逻辑型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpEnvironment, 整数型, , 
+    .参数 lpCurrentDriectory, 整数型, , 
+    .参数 lpStartupInfo, STARTUPINFO, 传址, 
+    .参数 lpProcessInformation, PROCESS_INFORMATION, 传址, 
+
+.DLL命令 CreatePipe, 整数型, "", "CreatePipe", , 
+    .参数 phReadPipe, 整数型, 传址, 
+    .参数 phWritePipe, 整数型, 传址, 
+    .参数 lpPipeAttributes, SECURITY_ATTRIBUTES, 传址, 
+    .参数 nSize, 整数型, , 
+
+.DLL命令 ReadFile, 整数型, "", "ReadFile", , 
+    .参数 hFile, 整数型, , 
+    .参数 lpBuffer, 字节集, 传址, 
+    .参数 nNumberOfBytesToRead, 整数型, , 
+    .参数 lpNumberOfBytesRead, 整数型, 传址, 
+    .参数 lpOverlapped, 整数型, , 
+
+.DLL命令 CloseHandle, 整数型, "", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 PeekNamedPipe, 整数型, "", "PeekNamedPipe", , 
+    .参数 hNamedPipe, 整数型, , 
+    .参数 lpBuffer, 整数型, , 
+    .参数 nBufferSize, 整数型, , 
+    .参数 lpBytesRead, 整数型, , 
+    .参数 lpTotalBytesAvail, 整数型, 传址, 
+    .参数 lpBytesLeftThisMessage, 整数型, , 
+
+.DLL命令 GetExitCodeProcess, 整数型, "", "GetExitCodeProcess", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpExitCode, 整数型, 传址, 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 SECURITY_ATTRIBUTES, SECURITY_ATTRIBUTES, , , 
+.程序集变量 STARTUPINFO, STARTUPINFO, , , 
+.程序集变量 PROCESS_INFORMATION, PROCESS_INFORMATION, , , 
+.程序集变量 hWrite, 整数型, , , 
+.程序集变量 hRead, 整数型, , , 
+.程序集变量 txt, 字节集, , , 
+.程序集变量 len, 整数型, , , 
+.程序集变量 EXIT, 整数型, , , 
+.子程序 _按钮1_被单击, 空白型, , 
+赋值 (., “”)
+赋值 (SECURITY_ATTRIBUTES.nLength, 12)
+赋值 (SECURITY_ATTRIBUTES.lpSecurityDescriptor, 0)
+赋值 (SECURITY_ATTRIBUTES.bInheritHandle, 1)
+CreatePipe (hRead, hWrite, SECURITY_ATTRIBUTES, 0) ' 创建一个匿名管道
+赋值 (STARTUPINFO.cb, 68)
+赋值 (STARTUPINFO.dwFlags, 位或 (#STARTF_USESHOWWINDOW, #STARTF_USESTDHANDLES))
+赋值 (STARTUPINFO.wShowWindow, #SW_HIDE)
+赋值 (STARTUPINFO.hStdOutput, hWrite)
+赋值 (STARTUPINFO.hStdError, hWrite)
+.如果 (小于或等于 (取操作系统类别 (), 2))
+    CreateProcess (0, 相加 (“command.com /c ”, .), 0, 0, 真, 0, 0, 0, STARTUPINFO, PROCESS_INFORMATION) ' 创建一个新进程，并且设置读写管道，创建成功后，进程会自动再创建一个写管道端口
+.否则
+    CreateProcess (0, 相加 (“cmd.exe /c ”, .), 0, 0, 真, 0, 0, 0, STARTUPINFO, PROCESS_INFORMATION) ' 创建一个新进程，并且设置读写管道，创建成功后，进程会自动再创建一个写管道端口
+.如果结束
+
+CloseHandle (hWrite) ' 因为我们开始已经创建了一个写管道端口，现在进程创键时又自动创键了一个写管道端口，所以应关闭多余的管道写端口
+.判断循环首 (不等于 (len, -1)) ' 制造一个无限循环
+    PeekNamedPipe (hRead, 0, 0, 0, len, 0) ' 查看管道中是否有数据
+    .如果 (不等于 (len, 0))
+        赋值 (txt, 取空白字节集 (1024))
+        ReadFile (hRead, txt, 1023, len, 0) ' 从管道中读取数据
+        赋值 (., 相加 (., 取字节集数据 (txt, #文本型)))
+    .否则
+        GetExitCodeProcess (PROCESS_INFORMATION.hProcess, EXIT) ' 查看指定进程是否已结束
+        .如果真 (不等于 (EXIT, #STILL_ACTIVE)) ' 因为会有程序退出来了，但管道中还有数据的情况，所以必须在管道中没有数据的情况下判断程序是否已结束，这时才能中止循环！
+            CloseHandle (hRead) ' 关闭管道
+            跳出循环 ()
+        .如果真结束
+        
+    .如果结束
+    处理事件 ()
+    输出调试文本 (到文本 (len))
+.判断循环尾 ()
+
+
+ ' 不属于任何一个程序集、类模块的函数：

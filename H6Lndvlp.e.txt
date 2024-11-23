@@ -1,0 +1,177 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 313
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 CF_TEXT, "1", , 
+.常量 CF_BITMAP, "2", , 
+.常量 CF_METAFILEPICT, "3", , 
+.常量 CF_SYLK, "4", , 
+.常量 CF_DIF, "5", , 
+.常量 CF_TIFF, "6", , 
+.常量 CF_OEMTEXT, "7", , 
+.常量 CF_DIB, "8", , 
+.常量 CF_PALETTE, "9", , 
+.常量 CF_PENDATA, "10", , 
+.常量 CF_RIFF, "11", , 
+.常量 CF_WAVE, "12", , 
+.常量 CF_UNICODETEXT, "13", , 
+.常量 CF_ENHMETAFILE, "14", , 
+.常量 CF_HDROP, "15", , 
+.常量 CF_LOCALE, "16", , 
+.常量 CF_DIBV5, "17", , 
+.常量 CF_MAX, "18", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+
+.DLL命令 GetClipboardSequenceNumber, 整数型, "", "GetClipboardSequenceNumber", , 返回剪贴板序号
+
+.DLL命令 GetClipboardData, 整数型, "", "GetClipboardData", , 获取剪贴板内的数据
+    .参数 a, 整数型, , 表示的是剪贴板内数据的格式。该参数的意义可参照后面
+
+.DLL命令 GlobalSize, 整数型, "", "", , 取内存对象大小（内存指针）
+    .参数 hmem, 整数型, , 
+
+.DLL命令 OpenClipboard, 整数型, "", "", , 
+    .参数 a, 整数型, , 
+
+.DLL命令 CloseClipboard, 整数型, "", "", , 关闭剪贴板
+
+.DLL命令 IsClipboardFormatAvailable, 整数型, "", "IsClipboardFormatAvailable", , 判断剪贴板的格式
+    .参数 a, 整数型, , 表示的是剪贴板内数据的格式
+
+.DLL命令 GetClipboardFormatNameA, 整数型, "", "", , 获取剪贴板内数据格式的名称
+    .参数 wFormat, 整数型, , clipboard format to retrieve 
+    .参数 lpString, 文本型, , address of buffer for name
+    .参数 nMaxCount, 整数型, , length of name string in characters 
+
+.DLL命令 AddClipboardFormatListener, 逻辑型, "", "", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 ChangeClipboardChain, 逻辑型, "", "", , 将剪贴的连接从一个句柄转到下一个句柄
+    .参数 hWndRemove, 整数型, , 表示第一个窗口的句柄(断开)
+    .参数 hWndNewNext, 整数型, , 表示第二个窗口的句柄(连接)
+
+.DLL命令 CountClipboardFormats, 整数型, "", "", , 不管剪贴板是什么格式，全部转化为数据格式
+
+.DLL命令 EmptyClipboard, 逻辑型, "", "EmptyClipboard", , 清空剪贴板
+
+.DLL命令 EnumClipboardFormats, 整数型, "", "EnumClipboardFormats", , 使剪贴板内的格式转变成指定格式
+    .参数 a, 整数型, , t表示的是将要转化成的格式。该参数的意义可参照后面
+
+.DLL命令 GetClipboardOwner, 整数型, "", "", , 获取当前剪贴板是属于哪一个窗口的句柄
+
+.DLL命令 GetClipboardViewer, 整数型, "", "", , 
+
+.DLL命令 RegisterClipboardFormat, 整数型, "", "", , 
+    .参数 lpszFormat, 空白型, 传址, ASCIIZ pointer
+
+.DLL命令 RemoveClipboardFormatListener, 逻辑型, "", "", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 SetClipboardData, 整数型, "", "", , 
+    .参数 a, 整数型, , 
+    .参数 b, 整数型, , 
+
+.DLL命令 SetClipboardViewer, 整数型, "", "", , 
+    .参数 a, 整数型, , 
+
+.DLL命令 GlobalLock, 整数型, "", "", , 
+    .参数 hmem, 整数型, , 
+
+.DLL命令 GlobalUnlock, 整数型, "", "", , 
+    .参数 hmem, 空白型, , 
+
+.DLL命令 拷贝内存02_, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目的变量, 字节集, , pTo
+    .参数 源, 整数型, , uFrom
+    .参数 尺寸, 整数型, , lSize
+
+.DLL命令 模拟键盘, 空白型, "", "keybd_event", , 
+    .参数 虚拟键盘数值, 字节型, , 例#aj
+    .参数 未使用, 字节型, , 
+    .参数 上下, 整数型, , KEYEVENTF_KEYUP2 down1 UNICODE4 SCANCODE8
+    .参数 dwExtraInfo, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 h, 整数型, , , 
+.局部变量 图象, 字节集, , , 
+.局部变量 l, 整数型, , , 
+
+.如果真 (不等于 (未知函数_167837822 (取窗口句柄 ()), 0))
+    赋值 (h, GetClipboardData (#CF_DIB))
+    CloseClipboard ()
+    赋值 (l, GlobalSize (h))
+    .如果真 (不等于 (l, 0))
+        赋值 (图象, 取空白字节集 (l))
+        GlobalLock (h)
+        赋值 (图象, 指针到字节集 (h, l))
+        未知函数_167837826 (h)
+        写到文件 (“1.bmp”, 图象)
+        输出调试文本 (相加 (到文本 (h), “---”, 到文本 (l)))
+    .如果真结束
+    
+.如果真结束
+
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+.局部变量 h, 整数型, , , 
+.局部变量 图象, 字节集, , , 
+.局部变量 l, 整数型, , , 
+
+.如果真 (不等于 (未知函数_167837842 (取窗口句柄 ()), 0))
+    赋值 (h, GetClipboardData (#CF_DIB))
+    CloseClipboard ()
+    赋值 (l, 未知函数_167837846 (h))
+    .如果真 (不等于 (l, 0))
+        赋值 (图象, 取空白字节集 (l))
+        未知函数_167837844 (h)
+        拷贝内存02_ (图象, h, l)
+        GlobalUnlock (h)
+        写到文件 (“2.bmp”, 图象)
+        输出调试文本 (相加 (到文本 (h), “---”, 到文本 (l)))
+    .如果真结束
+    
+.如果真结束
+
+
+
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+模拟键盘 (44, 0, 1, 0)
+模拟键盘 (44, 0, 2, 0)
+ ' VK_SNAPSHOT (2C) PRINT SCREEN key
+
+
+ ' 不属于任何一个程序集、类模块的函数：

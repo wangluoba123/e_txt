@@ -1,0 +1,147 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 582
+    高度 = 408
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 真
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “[080731]监控TCP连接”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 5 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 1 3 扩展界面支持库一
+
+
+
+
+数据类型 MIB_TCPROW, , 
+    .成员 dwState, 整数型, , , 
+    .成员 dwLocalAddr, 整数型, , , 
+    .成员 dwLocalPort, 整数型, , , 
+    .成员 dwRemoteAddr, 整数型, , , 
+    .成员 dwRemotePort, 整数型, , , 
+
+数据类型 MIB_TCPTABLE, , 
+    .成员 dwNumEntries, 整数型, , , 
+    .成员 table, MIB_TCPROW, , "100", 
+
+
+.DLL命令 API_GetTcpTable, 整数型, "IPHLPAPI.DLL", "GetTcpTable", , 　
+    .参数 pTcpTable, MIB_TCPTABLE, 传址, 
+    .参数 pdwSize, 整数型, 传址, 
+    .参数 border, 整数型, , 
+
+.DLL命令 API_LocalSize, 整数型, "kernel32", "LocalSize", , 返回本地内存块大小　
+    .参数 hMem, MIB_TCPTABLE, , 
+
+.DLL命令 API_CopyMemory, 空白型, "kernel32", "RtlMoveMemory", , 　
+    .参数 pDest, 文本型, , 
+    .参数 pSrc, 整数型, , 
+    .参数 ByteLen, 整数型, , 
+
+.DLL命令 API_inet_ntoa, 整数型, "ws2_32.dll", "inet_ntoa", , 　
+    .参数 lIn, 整数型, , 
+
+.DLL命令 API_lstrlen, 整数型, "kernel32", "lstrlenA", , 返回字符串中字符数　
+    .参数 lpString, 整数型, , 
+
+.DLL命令 API_ntohs, 整数型, "ws2_32.dll", "ntohs", , 　
+    .参数 netshort, 短整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 状态数组, 文本型, , "0", 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+赋值 (状态数组, { “未知”, “已经关闭”, “监听”, “发送同步空闲字符”, “接收同步空闲字符”, “数据交换中”, “结束等待1”, “结束等待2”, “关闭等待”, “关闭中”, “命令正确应答”, “连接等待”, “删除TCP连接” })
+
+.子程序 GetPort, 空白型, , 
+.局部变量 TCP, MIB_TCPTABLE, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 Ip_Buf, 字节型, , , 
+
+全部删除 ()
+API_GetTcpTable (TCP, API_LocalSize (TCP), 1)
+.计次循环首 (TCP.dwNumEntries, i)
+    .插入表项 (到文本 (i), , , , )
+    相减 (i, 1).置标题 (1, GetAscIP (TCP.table [i], dwLocalAddr))
+    相减 (i, 1).置标题 (2, 到文本 (API_ntohs (TCP.table [i], dwLocalPort)))
+    相减 (i, 1).置标题 (3, GetAscIP (TCP.table [i], dwRemoteAddr))
+    相减 (i, 1).置标题 (4, 到文本 (API_ntohs (TCP.table [i], dwRemotePort)))
+    相减 (i, 1).置标题 (5, 状态数组 [相加 (TCP.table [i], dwState, 1)])
+.计次循环尾 ()
+赋值 (.标题, 相加 (“[080731]监控TCP连接(共”, 到文本 (TCP.dwNumEntries), “项)”))
+
+.子程序 _按钮1_被单击, 空白型, , 
+赋值 (.禁止, 真)
+赋值 (.时钟周期, 1000)
+
+.子程序 GetAscIP, 文本型, , 
+.参数 inn, 整数型, , 
+
+.局部变量 nStr, 整数型, , , 
+.局部变量 lpStr, 整数型, , , 
+.局部变量 retString, 文本型, , , 
+
+赋值 (retString, 取空白文本 (32))
+赋值 (lpStr, API_inet_ntoa (inn))
+.如果 (不等于 (lpStr, 0))
+    赋值 (nStr, API_lstrlen (lpStr))
+    .如果真 (大于 (nStr, 32))
+        赋值 (nStr, 32)
+    .如果真结束
+    API_CopyMemory (retString, lpStr, nStr)
+    赋值 (retString, 取文本左边 (retString, nStr))
+    返回 (retString)
+.否则
+    返回 (“无法获取IP”)
+.如果结束
+
+
+.子程序 _时钟1_周期事件, 空白型, , 
+GetPort ()
+
+
+ ' 不属于任何一个程序集、类模块的函数：

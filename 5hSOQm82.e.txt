@@ -1,0 +1,183 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 HKEY_CLASSES_ROOT, "2147483648", , 
+.常量 HKEY_CURRENT_USER, "2147483649", , 
+.常量 HKEY_LOCAL_MACHINE, "2147483650", , 
+.常量 HKEY_USERS, "2147483651", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 5 系统核心支持库
+
+
+
+
+数据类型 LuID, , 
+    .成员 lowpart, 整数型, , , 
+    .成员 highpart, 整数型, , , 
+
+数据类型 Token_Privileges, , From:AdjustTokenPrivileges
+    .成员 PrivilegeCount, 整数型, , , 
+    .成员 lowpart, 整数型, , , 
+    .成员 highpart, 整数型, , , 
+    .成员 Attributes, 整数型, , , 
+
+
+.DLL命令 GetCurrentProcess, 整数型, "kernel32.dll", "GetCurrentProcess", , 
+
+.DLL命令 OpenProcessToken, 整数型, "advapi32.dll", "OpenProcessToken", , 
+    .参数 ProcessHandle, 整数型, , 
+    .参数 DesiredAccess, 整数型, , 
+    .参数 TokenHandle, 整数型, 传址, 
+
+.DLL命令 LookupPrivilegeValue, 整数型, "advapi32.dll", "LookupPrivilegeValueA", , 
+    .参数 lpSystemName, 文本型, , 
+    .参数 lpName, 文本型, , 
+    .参数 lpLuid, LuID, 传址, 
+
+.DLL命令 AdjustTokenPrivileges, 整数型, "advapi32.dll", "AdjustTokenPrivileges", , 
+    .参数 TokenHandle, 整数型, , 
+    .参数 DisableAllPrivileges, 整数型, , 0
+    .参数 NewState, Token_Privileges, 传址, 
+    .参数 BufferLength, 整数型, , 
+    .参数 PreviousState, Token_Privileges, 传址, 
+    .参数 ReturnLength, 整数型, 传址, 0
+
+.DLL命令 RegSaveKeyA, 整数型, "", "", , 
+    .参数 hKey, 整数型, , 
+    .参数 lpFile, 文本型, , 
+    .参数 lpSecurityAttributeswbx, 整数型, , 
+
+.DLL命令 RegOpenKeyExA, 整数型, "", "RegOpenKeyExA", , 打开注册表项
+    .参数 hKey, 整数型, , 
+    .参数 lpSubKey, 文本型, , 
+    .参数 ulOptions, 整数型, , 
+    .参数 samDesired, 整数型, , 
+    .参数 phkResult, 整数型, 传址, 
+
+.DLL命令 RegCloseKey, 空白型, "", "RegCloseKey", , 
+    .参数 hKey, 整数型, , 
+
+.DLL命令 RegRestoreKey, 整数型, "Advapi32.dll", "RegRestoreKeyA", , 
+    .参数 hKey, 整数型, , 
+    .参数 lpFile, 文本型, , 
+    .参数 dwFlags, 整数型, , 
+
+.DLL命令 RegCreateKeyA, 整数型, "advapi32.dll", "RegCreateKeyA", , 在指定的项下创建一个新项。如指定的项已经存在，那么函数会打开现有的项  零（ERROR_SUCCESS）表示成功。其他任何值都代表一个错误代码
+    .参数 hKey, 整数型, , 要打开项的句柄，或者一个标准项名
+    .参数 lpSubKey, 文本型, , 欲创建的新子项。可同时创建多个项，只需用反斜杠将它们分隔开即可。例如level1\level2\newkey
+    .参数 phkResult, 整数型, 传址, 指定一个变量，用于装载新子项的句柄;
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 导出注册项, 逻辑型, , 
+.参数 根目录, 整数型, , 
+.参数 注册项名, 文本型, , 
+.参数 文件名, 文本型, , 
+
+.局部变量 long, 整数型, , , 
+.局部变量 phkResult, 整数型, , , 
+.局部变量 hdlTokenHandle, 整数型, , , 
+.局部变量 tmpLuid, LuID, , , 
+.局部变量 tkp, Token_Privileges, , , 
+.局部变量 tkpNewButIgnored, Token_Privileges, , , 
+
+.如果真 (文件是否存在 (文件名))
+    返回 (假)
+.如果真结束
+
+赋值 (long, RegOpenKeyExA (根目录, 注册项名, 0, 1, phkResult))
+.如果真 (不等于 (long, 0))
+    返回 (假)
+.如果真结束
+
+OpenProcessToken (GetCurrentProcess (), 40, hdlTokenHandle)
+LookupPrivilegeValue (“”, “SeBackupPrivilege”, tmpLuid)
+
+赋值 (tkp.PrivilegeCount, 1)
+赋值 (tkp.lowpart, tmpLuid.lowpart)
+赋值 (tkp.highpart, tmpLuid.highpart)
+赋值 (tkp.Attributes, 2)
+AdjustTokenPrivileges (hdlTokenHandle, 0, tkp, 24, tkpNewButIgnored, 0)
+
+赋值 (long, RegSaveKeyA (phkResult, 文件名, 0))
+RegCloseKey (phkResult)
+返回 (选择 (不等于 (long, 0), 假, 真))
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+.如果 (导出注册项 (#HKEY_LOCAL_MACHINE, “SOFTWARE\Microsoft\Windows\CurrentVersion\Run”, 相加 (取运行目录 (), “\”, “Run.dat”)))
+    信息框 (“导出成功”, 0, )
+.否则
+    
+.如果结束
+
+.如果 (导入注册项 (#HKEY_LOCAL_MACHINE, “SOFTWARE\Microsoft\Windows\CurrentVersion\Run”, 相加 (取运行目录 (), “\”, “Run.dat”)))
+    信息框 (“导入成功”, 0, )
+.否则
+    
+.如果结束
+
+
+.子程序 导入注册项, 逻辑型, , 
+.参数 根目录, 整数型, , 
+.参数 注册项名, 文本型, , 
+.参数 文件名, 文本型, , 
+
+.局部变量 long, 整数型, , , 
+.局部变量 phkResult, 整数型, , , 
+.局部变量 hdlTokenHandle, 整数型, , , 
+.局部变量 tmpLuid, LuID, , , 
+.局部变量 tkp, Token_Privileges, , , 
+.局部变量 tkpNewButIgnored, Token_Privileges, , , 
+
+.如果真 (等于 (文件是否存在 (文件名), 假))
+    返回 (假)
+.如果真结束
+
+赋值 (long, RegOpenKeyExA (根目录, 注册项名, 0, 1, phkResult))
+.如果真 (不等于 (0))
+    未知函数_167837878 ()
+.如果真结束
+
+OpenProcessToken (GetCurrentProcess (), 40, hdlTokenHandle)
+LookupPrivilegeValue (“”, “SeRestorePrivilege”, tmpLuid)
+
+赋值 (tkp.PrivilegeCount, 1)
+赋值 (tkp.lowpart, tmpLuid.lowpart)
+赋值 (tkp.highpart, tmpLuid.highpart)
+赋值 (tkp.Attributes, 2)
+AdjustTokenPrivileges (hdlTokenHandle, 0, tkp, 24, tkpNewButIgnored, 0)
+
+赋值 (long, RegRestoreKey (phkResult, 文件名, 0))
+RegCloseKey (phkResult)
+返回 (选择 (不等于 (long, 0), 假, 真))
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

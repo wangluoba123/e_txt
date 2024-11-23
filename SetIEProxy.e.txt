@@ -1,0 +1,91 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：设置IE代理服务器
+ ' 程序描述：可以更改IE的代理服务器设置
+ ' 程序作者：Mr X
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：kingofdemon@sohu.com
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 3 系统核心支持库
+
+
+
+
+数据类型 INTERNET_PROXY_INFO, , 
+    .成员 dwAccessType, 整数型, , , 
+    .成员 lpszProxy, 文本型, , , 
+    .成员 lpszProxyBypass, 文本型, , , 
+
+
+.DLL命令 InternetSetOption1, 逻辑型, "Wininet.dll", "InternetSetOptionA", , 
+    .参数 hInternet, 整数型, , 
+    .参数 dwOption, 整数型, , 
+    .参数 lpBuffer, 整数型, , 
+    .参数 dwBufferLength, 整数型, , 
+
+.DLL命令 InternetSetOption, 逻辑型, "Wininet.dll", "InternetSetOptionA", , 
+    .参数 hInternet, 整数型, , 
+    .参数 dwOption, 整数型, , 
+    .参数 lpBuffer, INTERNET_PROXY_INFO, , 
+    .参数 dwBufferLength, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+_临时子程序 () ' 在模块初始化代码执行完毕后调用模块测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的参数及返回值类型。
+
+
+.程序集 _接口程序集, , , 在本程序集中定义的子程序可被模块外部程序访问，注意如果不存在本程序集就不能作为易模块编译。
+
+.子程序 设置IE代理, 逻辑型, , 
+.参数 代理服务器IP, 文本型, 可空, 为空时取消现有代理
+
+.局部变量 A, INTERNET_PROXY_INFO, , , 
+
+.如果 (是否为空 (代理服务器IP))
+    赋值 (A.dwAccessType, 1)
+    赋值 (A.lpszProxy, “”)
+    .如果真 (等于 (删除注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Internet Settings\ProxyServer”), 假))
+        返回 (假)
+    .如果真结束
+    .如果真 (等于 (写注册表项 (“Microsoft”, “Windows\CurrentVersion\Internet Settings”, “ProxyEnable”, 0), 假))
+        返回 (假)
+    .如果真结束
+    
+.否则
+    赋值 (A.dwAccessType, 3)
+    赋值 (A.lpszProxy, 代理服务器IP)
+    .如果真 (等于 (写注册表项 (“Microsoft”, “Windows\CurrentVersion\Internet Settings”, “ProxyServer”, 代理服务器IP), 假))
+        返回 (假)
+    .如果真结束
+    .如果真 (等于 (写注册表项 (“Microsoft”, “Windows\CurrentVersion\Internet Settings”, “ProxyEnable”, 1), 假))
+        返回 (假)
+    .如果真结束
+    
+.如果结束
+.如果真 (等于 (InternetSetOption (0, 38, A, 12), 假))
+    返回 (假)
+.如果真结束
+.如果真 (等于 (InternetSetOption1 (0, 39, 0, 0), 假))
+    返回 (假)
+.如果真结束
+返回 (真)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

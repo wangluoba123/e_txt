@@ -1,0 +1,2012 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 389
+    高度 = 281
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 1
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 假
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “PEViewer”
+    帮助文件名 = “”
+
+窗口 窗口1 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 397
+    高度 = 249
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 1
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “”
+    帮助文件名 = “”
+
+窗口 窗口2 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 329
+    高度 = 101
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 4
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 真
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “查找文本”
+    帮助文件名 = “”
+
+窗口 窗口3 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 364
+    高度 = 253
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 1
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “函数列表”
+    帮助文件名 = “”
+
+窗口 窗口4
+    左边 = 50
+    顶边 = 50
+    宽度 = 486
+    高度 = 305
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 1
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “”
+    帮助文件名 = “”
+
+窗口 窗口5
+    左边 = 50
+    顶边 = 50
+    宽度 = 285
+    高度 = 183
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 4
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “重定位项目列表”
+    帮助文件名 = “”
+
+
+
+.图片 ICONS, " ' 已保存到：D:\易语言学习\Data\PEViewer(未完成).e\ICONS", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 8 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 1 1 扩展界面支持库一
+
+
+
+
+数据类型 IMAGE_SECTION_HEADER, , 40
+    .成员 Name, 字节型, , "8", 
+    .成员 VirtualSize, 整数型, , , 
+    .成员 VirtualAddress, 整数型, , , 
+    .成员 SizeOfRawData, 整数型, , , 
+    .成员 PointerToRawData, 整数型, , , 
+    .成员 PointerToRelocations, 整数型, , , 
+    .成员 PointerToLinenumbers, 整数型, , , 
+    .成员 NumberOfRelocations, 短整数型, , , 
+    .成员 NumberOfLinenumbers, 短整数型, , , 
+    .成员 Characteristics, 整数型, , , 
+
+数据类型 IMAGE_OPTIONAL_HEADER, , 224
+    .成员 Magic, 短整数型, , , 
+    .成员 MajorLinkerVersion, 字节型, , , 
+    .成员 MinorLinkerVersion, 字节型, , , 
+    .成员 SizeOfCode, 整数型, , , 
+    .成员 SizeOfInitializedData, 整数型, , , 
+    .成员 SizeOfUninitializedData, 整数型, , , 
+    .成员 AddressOfEntryPoint, 整数型, , , 
+    .成员 BaseOfCode, 整数型, , , 
+    .成员 BaseOfData, 整数型, , , 
+    .成员 ImageBase, 整数型, , , 
+    .成员 SectionAlignment, 整数型, , , 
+    .成员 FileAlignment, 整数型, , , 
+    .成员 MajorOperatingSystemVersion, 短整数型, , , 
+    .成员 MinorOperatingSystemVersion, 短整数型, , , 
+    .成员 MajorImageVersion, 短整数型, , , 
+    .成员 MinorImageVersion, 短整数型, , , 
+    .成员 MajorSubsystemVersion, 短整数型, , , 
+    .成员 MinorSubsystemVersion, 短整数型, , , 
+    .成员 Win32VersionValue, 整数型, , , 
+    .成员 SizeOfImage, 整数型, , , 
+    .成员 SizeOfHeaders, 整数型, , , 
+    .成员 CheckSum, 整数型, , , 
+    .成员 Subsystem, 短整数型, , , 
+    .成员 DllCharacteristics, 短整数型, , , 
+    .成员 SizeOfStackReserve, 整数型, , , 
+    .成员 SizeOfStackCommit, 整数型, , , 
+    .成员 SizeOfHeapReserve, 整数型, , , 
+    .成员 SizeOfHeapCommit, 整数型, , , 
+    .成员 LoaderFlags, 整数型, , , 
+    .成员 NumberOfRvaAndSizes, 整数型, , , 
+    .成员 DataDirectory, IMAGE_DATA_DIRECTORY, , "16", 
+
+数据类型 IMAGE_DATA_DIRECTORY, , 8
+    .成员 VirtualAddress, 整数型, , , 
+    .成员 isize, 整数型, , , 
+
+数据类型 IMAGE_NT_HEADERS, , 248
+    .成员 Signature, 整数型, , , 
+    .成员 Machine, 短整数型, , , FileHeader - Begin
+    .成员 NumberOfSections, 短整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 PointerToSymbolTable, 整数型, , , 
+    .成员 NumberOfSymbols, 整数型, , , 
+    .成员 SizeOfOptionalHeader, 短整数型, , , 
+    .成员 Characteristics, 短整数型, , , FileHeader - End
+    .成员 Magic, 短整数型, , , OptionalHeader - Begin
+    .成员 MajorLinkerVersion, 字节型, , , 
+    .成员 MinorLinkerVersion, 字节型, , , 
+    .成员 SizeOfCode, 整数型, , , 
+    .成员 SizeOfInitializedData, 整数型, , , 
+    .成员 SizeOfUninitializedData, 整数型, , , 
+    .成员 AddressOfEntryPoint, 整数型, , , 
+    .成员 BaseOfCode, 整数型, , , 
+    .成员 BaseOfData, 整数型, , , 
+    .成员 ImageBase, 整数型, , , 
+    .成员 SectionAlignment, 整数型, , , 
+    .成员 FileAlignment, 整数型, , , 
+    .成员 MajorOperatingSystemVersion, 短整数型, , , 
+    .成员 MinorOperatingSystemVersion, 短整数型, , , 
+    .成员 MajorImageVersion, 短整数型, , , 
+    .成员 MinorImageVersion, 短整数型, , , 
+    .成员 MajorSubsystemVersion, 短整数型, , , 
+    .成员 MinorSubsystemVersion, 短整数型, , , 
+    .成员 Win32VersionValue, 整数型, , , 
+    .成员 SizeOfImage, 整数型, , , 
+    .成员 SizeOfHeaders, 整数型, , , 
+    .成员 CheckSum, 整数型, , , 
+    .成员 Subsystem, 短整数型, , , 
+    .成员 DllCharacteristics, 短整数型, , , 
+    .成员 SizeOfStackReserve, 整数型, , , 
+    .成员 SizeOfStackCommit, 整数型, , , 
+    .成员 SizeOfHeapReserve, 整数型, , , 
+    .成员 SizeOfHeapCommit, 整数型, , , 
+    .成员 LoaderFlags, 整数型, , , 
+    .成员 NumberOfRvaAndSizes, 整数型, , , 
+    .成员 DataDirectory, 整数型, , "34", VirtualAddress & isize
+
+数据类型 IMAGE_FILE_HEADER, , 20
+    .成员 Machine, 短整数型, , , 
+    .成员 NumberOfSections, 短整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 PointerToSymbolTable, 整数型, , , 
+    .成员 NumberOfSymbols, 整数型, , , 
+    .成员 SizeOfOptionalHeader, 短整数型, , , 
+    .成员 Characteristics, 短整数型, , , 
+
+数据类型 IMAGE_DOS_HEADER, , 64
+    .成员 e_magic, 短整数型, , , 
+    .成员 e_cblp, 短整数型, , , 
+    .成员 e_cp, 短整数型, , , 
+    .成员 e_crlc, 短整数型, , , 
+    .成员 e_cparhdr, 短整数型, , , 
+    .成员 e_minalloc, 短整数型, , , 
+    .成员 e_maxalloc, 短整数型, , , 
+    .成员 e_ss, 短整数型, , , 
+    .成员 e_sp, 短整数型, , , 
+    .成员 e_csum, 短整数型, , , 
+    .成员 e_ip, 短整数型, , , 
+    .成员 e_cs, 短整数型, , , 
+    .成员 e_lfarlc, 短整数型, , , 
+    .成员 e_ovno, 短整数型, , , 
+    .成员 e_res, 短整数型, , "4", 
+    .成员 e_oemid, 短整数型, , , 
+    .成员 e_oeminfo, 短整数型, , , 
+    .成员 e_res2, 短整数型, , "10", 
+    .成员 e_lfanew, 整数型, , , 
+
+数据类型 IMAGE_IMPORT_DESCRIPTOR, , 
+    .成员 OrginalFirstThunk, 整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 ForwarderChain, 整数型, , , 
+    .成员 Name, 整数型, , , 
+    .成员 FirstThunk, 整数型, , , 
+
+数据类型 IMAGE_IMPORT_BY_NAME, , 
+    .成员 Hint, 短整数型, , , 
+    .成员 Name, 字节型, , "255", 
+
+数据类型 IMAGE_EXPORT_DIRECTORY, , 
+    .成员 Characteristics, 整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 MajorVersion, 短整数型, , , 
+    .成员 MinorVersion, 短整数型, , , 
+    .成员 nName, 整数型, , , 
+    .成员 nBase, 整数型, , , 
+    .成员 NumberOfFunctions, 整数型, , , 
+    .成员 NumberOfNames, 整数型, , , 
+    .成员 AddressOfFunctions, 整数型, , , 
+    .成员 AddressOfNames, 整数型, , , 
+    .成员 AddressOfNameOrdinals, 整数型, , , 
+
+数据类型 APP_HEADER_INFO, , 88
+    .成员 m_dwMark, 字节型, , "4", "WTNE"
+    .成员 m_chMark, 字节型, , "32", " / MADE BY E COMPILER - WUTAO "
+    .成员 m_nHeaderSize, 整数型, , , 
+    .成员 m_nVersion, 整数型, , , 
+    .成员 m_nType, 整数型, , , PT_DEBUG_RUN_VER 或 PT_RELEASE_RUN_VER
+    .成员 m_dwState, 整数型, , , 
+    .成员 m_Reserved, 整数型, , , 
+    .成员 m_nDllCmdCount, 整数型, , , 
+    .成员 m_nStartCodeOffset, 整数型, , , 
+    .成员 m_nConstSectionOffset, 整数型, , , 
+    .成员 m_nWinFormSectionOffset, 整数型, , , 
+    .成员 m_nHelpFuncSectionOffset, 整数型, , , 
+    .成员 m_nCodeSectionOffset, 整数型, , , 
+    .成员 m_nVarSectionOffset, 整数型, , , 
+    .成员 m_nBeginSectionOffset, 整数型, , , 
+
+数据类型 SECTION_INFO, , 56
+    .成员 m_nSectionSize, 整数型, , , 
+    .成员 m_nNextSectionOffset, 整数型, , , 
+    .成员 m_dwState, 整数型, , , 
+    .成员 m_szName, 字节型, , "24", 
+    .成员 m_nLoadedSize, 整数型, , , 
+    .成员 m_nRecordSize, 整数型, , , 
+    .成员 m_nRecordOffset, 整数型, , , 
+    .成员 m_nReLocationItemCount, 整数型, , , 
+    .成员 m_nExportSymbolCount, 整数型, , , 
+
+数据类型 IMAGE_RESOURCE_DIRECTORY, , 16
+    .成员 Characteristics, 整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 MajorVersion, 短整数型, , , 
+    .成员 MinorVersion, 短整数型, , , 
+    .成员 NumberOfNamedEntries, 短整数型, , , 
+    .成员 NumberOfIdEntries, 短整数型, , , 
+
+数据类型 IMAGE_RESOURCE_DIRECTORY_ENTRY, , 8
+    .成员 Name, 整数型, , , 
+    .成员 OffsetToData, 整数型, , , 
+
+数据类型 IMAGE_RESOURCE_DIR_STRING_U, , 
+    .成员 Length, 整数型, , , 
+    .成员 NameString, 整数型, , , 
+
+数据类型 IMAGE_RESOURCE_DATA_ENTRY, , 16
+    .成员 OffsetToData, 整数型, , , 
+    .成员 Size, 整数型, , , 
+    .成员 CodePage, 整数型, , , 
+    .成员 Reserved, 整数型, , , 
+
+数据类型 OPENFILENAME, , 76
+    .成员 lStructSize, 整数型, , , 
+    .成员 hwndOwner, 整数型, , , 
+    .成员 hInstance, 整数型, , , 
+    .成员 lpstrFilter, 字节集, , , 
+    .成员 lpstrCustomFilter, 整数型, , , 
+    .成员 nMaxCustFilter, 整数型, , , 
+    .成员 nFilterIndex, 整数型, , , 
+    .成员 lpstrFile, 字节集, , , 
+    .成员 nMaxFile, 整数型, , , 
+    .成员 lpstrFileTitle, 整数型, , , 
+    .成员 nMaxFileTitle, 整数型, , , 
+    .成员 lpstrInitialDir, 整数型, , , 
+    .成员 lpstrTitle, 整数型, , , 
+    .成员 Flags, 整数型, , , 
+    .成员 nFileOffset, 整数型, , , 
+    .成员 nFileExtension, 整数型, , , 
+    .成员 lpstrDefExt, 整数型, , , 
+    .成员 lCustData, 整数型, , , 
+    .成员 lpfnHook, 整数型, , , 
+    .成员 lpTemplateName, 整数型, , , 
+
+.全局变量 Reloc, 字节集, , "5", 
+.全局变量 stDOS_HEADER, IMAGE_DOS_HEADER, , , 
+.全局变量 stNT_HEADERS, IMAGE_NT_HEADERS, , , 
+.全局变量 stE_HEADER, APP_HEADER_INFO, , , 
+.全局变量 hMapFile, 整数型, , , 
+.全局变量 lpMemory, 整数型, , , 
+.全局变量 szRecentFile, 文本型, , , 
+.全局变量 dwType, 整数型, , , 
+.全局变量 szSearchTxt, 文本型, , , 
+.全局变量 lpEcode, 整数型, , , 
+
+.DLL命令 CopyESection, 整数型, "Kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, SECTION_INFO, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 CopyExport, 整数型, "Kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_EXPORT_DIRECTORY, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 CopyEcode, 整数型, "Kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, APP_HEADER_INFO, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 CopyImportName, 整数型, "Kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_IMPORT_BY_NAME, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 CopyImportDescriptor, 整数型, "Kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_IMPORT_DESCRIPTOR, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 CopySectionHeader, 整数型, "Kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_SECTION_HEADER, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 CopyDOSHeader, 整数型, "Kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_DOS_HEADER, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 CopyNTHeader, 整数型, "Kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_NT_HEADERS, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 CopyResource, 整数型, "Kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_RESOURCE_DIRECTORY, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 CopyResDirEntry, 整数型, "Kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_RESOURCE_DIRECTORY_ENTRY, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 CopyResDataEntry, 整数型, "Kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_RESOURCE_DATA_ENTRY, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 StrToIntEx, 整数型, "shlwapi.dll", "StrToIntExA", , 
+    .参数 pszString, 文本型, , 
+    .参数 dwFlags, 整数型, , STIF_SUPPORT_HEX
+    .参数 piRet, 整数型, 传址, 
+
+.DLL命令 CreateFileMapping, 整数型, "Kernel32.dll", "CreateFileMappingA", , 
+    .参数 hFile, 整数型, , 
+    .参数 lpAttributes, 整数型, , 
+    .参数 flProtect, 整数型, , 
+    .参数 dwMaximumSizeHigh, 整数型, , 
+    .参数 dwMaximumSizeLow, 整数型, , 
+    .参数 lpName, 整数型, , 
+
+.DLL命令 OpenFileMapping, 整数型, "Kernel32.dll", "OpenFileMappingA", , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 整数型, , 
+    .参数 lpName, 文本型, , 
+
+.DLL命令 MapViewOfFile, 整数型, "Kernel32.dll", "MapViewOfFile", , 
+    .参数 hFileMappingObject, 整数型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwFileOffsetHigh, 整数型, , 
+    .参数 dwFileOffsetLow, 整数型, , 
+    .参数 dwNumberOfBytesToMap, 整数型, , 
+
+.DLL命令 UnmapViewOfFile, 整数型, "Kernel32.dll", "UnmapViewOfFile", , 
+    .参数 lpBaseAddress, 整数型, , 
+
+.DLL命令 CreateFile, 整数型, "Kernel32.dll", "CreateFileA", , 
+    .参数 lpFileName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwShareMode, 整数型, , 
+    .参数 lpSecurityAttributes, 整数型, , 
+    .参数 dwCreationDisposition, 整数型, , 
+    .参数 dwFlagsAndAttributes, 整数型, , 
+    .参数 hTemplateFile, 整数型, , 
+
+.DLL命令 CloseHandle, 整数型, "Kernel32.dll", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 GetOpenFileName, 整数型, "Comdlg32.dll", "GetOpenFileNameA", , 
+    .参数 lpofn, OPENFILENAME, , 
+
+.DLL命令 SendMessage, 整数型, "User32.dll", "SendMessageA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 Msg, 整数型, , 
+    .参数 wParam, 文本型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 WideCharToMultiByte, 整数型, "Kernel32.dll", "WideCharToMultiByte", , 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpWideCharStr, 整数型, , 
+    .参数 cchWideChar, 整数型, , 
+    .参数 lpMultiByteStr, 字节集, 传址, 
+    .参数 cbMultiByte, 整数型, , 
+    .参数 lpDefaultChar, 整数型, , 
+    .参数 lpUsedDefaultChar, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _超级链接框1_鼠标左键被放开, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+_打开文件_被选择 ()
+
+.子程序 Format, 文本型, , 
+.参数 Num, 整数型, , 
+.参数 Length, 字节型, , 
+
+.局部变量 Temp, 文本型, , , 
+
+赋值 (Temp, 到大写 (取十六进制文本 (Num)))
+赋值 (Temp, 相加 (取重复文本 (相减 (Length, 取文本长度 (Temp)), “0”), Temp))
+返回 (相加 (“0x”, 取文本右边 (Temp, Length)))
+
+.子程序 PEShow, 空白型, , 
+.参数 File, 文本型, , 
+
+.局部变量 hFile, 整数型, , , 
+.局部变量 Root, 整数型, , , 
+.局部变量 SubRoot, 整数型, , , 
+.局部变量 Next, 整数型, , , 
+.局部变量 Offset, 整数型, , , 
+
+清空 ()
+赋值 (lpEcode, 0)
+.如果真 (不等于 (lpMemory, 0))
+    UnmapViewOfFile (lpMemory)
+.如果真结束
+.如果真 (不等于 (hMapFile, 0))
+    CloseHandle (hMapFile)
+.如果真结束
+.如果真 (不等于 (hFile, 0))
+    CloseHandle (hFile)
+.如果真结束
+赋值 (hFile, CreateFile (File, -2147483648, 3, 0, 3, 32, 0))
+.如果真 (等于 (hFile, -1))
+    信息框 (“无法打开文件!”, 16, “错误”)
+    返回 ()
+.如果真结束
+赋值 (hMapFile, CreateFileMapping (hFile, 0, 2, 0, 0, 0))
+.如果真 (等于 (hMapFile, 0))
+    信息框 (“无法打开文件!”, 16, “错误”)
+    返回 ()
+.如果真结束
+赋值 (Root, .加入项目 (“文件信息”, 1, , ))
+赋值 (lpMemory, MapViewOfFile (hMapFile, 4, 0, 0, 0))
+赋值 (Offset, lpMemory)
+.如果真 (不等于 (取字节集数据 (指针到字节集 (Offset, 2), 10), “MZ”))
+    Root.加入项目 (“非可执行文件格式”, , , )
+    返回 ()
+.如果真结束
+赋值 (SubRoot, Root.加入项目 (“DOS Header”, 1, , ))
+赋值 (Next, 相加 (DOSHeader (Offset, SubRoot, stDOS_HEADER), lpMemory))
+.如果真 (不等于 (取字节集数据 (指针到字节集 (Next, 2), 10), “PE”))
+    Root.加入项目 (“非PE格式文件”, , , )
+    返回 ()
+.如果真结束
+赋值 (SubRoot, Root.加入项目 (“PE Header”, 1, , ))
+NTHeader (Next, SubRoot, stNT_HEADERS)
+赋值 (SubRoot, Root.加入项目 (“Section Header”, 1, , ))
+SectionHeader (相加 (Next, 248), stNT_HEADERS.NumberOfSections, SubRoot)
+.如果真 (不等于 (lpEcode, 0))
+    赋值 (SubRoot, Root.加入项目 (“E Header”, 1, , ))
+    EHeader (SubRoot)
+.如果真结束
+Root.扩展 ()
+赋值 (_启动窗口.标题, 相加 (“PEViewer - ”, File))
+
+.子程序 DOSHeader, 整数型, , 
+.参数 Offset, 整数型, , 
+.参数 Root, 整数型, , 
+.参数 IMAGE_DOS_HEADER, IMAGE_DOS_HEADER, 参考, 
+
+.局部变量 SubRoot, 整数型, , , 
+.局部变量 N, 整数型, , , 
+
+CopyDOSHeader (IMAGE_DOS_HEADER, Offset, 64)
+Root.加入项目 (相加 (“e_magic   ：”, Format (IMAGE_DOS_HEADER.e_magic, 4)), , , 101)
+Root.加入项目 (相加 (“e_cblp    ：”, Format (IMAGE_DOS_HEADER.e_cblp, 4)), , , 102)
+Root.加入项目 (相加 (“e_cp      ：”, Format (IMAGE_DOS_HEADER.e_cp, 4)), , , 103)
+Root.加入项目 (相加 (“e_crlc    ：”, Format (IMAGE_DOS_HEADER.e_crlc, 4)), , , 104)
+Root.加入项目 (相加 (“e_cparhdr ：”, Format (IMAGE_DOS_HEADER.e_cparhdr, 4)), , , 105)
+Root.加入项目 (相加 (“e_minalloc：”, Format (IMAGE_DOS_HEADER.e_minalloc, 4)), , , 106)
+Root.加入项目 (相加 (“e_maxalloc：”, Format (IMAGE_DOS_HEADER.e_maxalloc, 4)), , , 107)
+Root.加入项目 (相加 (“e_ss      ：”, Format (IMAGE_DOS_HEADER.e_ss, 4)), , , 108)
+Root.加入项目 (相加 (“e_sp      ：”, Format (IMAGE_DOS_HEADER.e_sp, 4)), , , 109)
+Root.加入项目 (相加 (“e_csum    ：”, Format (IMAGE_DOS_HEADER.e_csum, 4)), , , 110)
+Root.加入项目 (相加 (“e_ip      ：”, Format (IMAGE_DOS_HEADER.e_ip, 4)), , , 111)
+Root.加入项目 (相加 (“e_cs      ：”, Format (IMAGE_DOS_HEADER.e_cs, 4)), , , 112)
+Root.加入项目 (相加 (“e_lfarlc  ：”, Format (IMAGE_DOS_HEADER.e_lfarlc, 4)), , , 113)
+Root.加入项目 (相加 (“e_ovno    ：”, Format (IMAGE_DOS_HEADER.e_ovno, 4)), , , 114)
+赋值 (SubRoot, Root.加入项目 (“e_res”, , , ))
+.计次循环首 (4, N)
+    SubRoot.加入项目 (相加 (“e_res[”, Format (N, 1), “]：”, Format (IMAGE_DOS_HEADER.e_res [N], 4)), , , 115)
+.计次循环尾 ()
+Root.加入项目 (相加 (“e_oemid   ：”, Format (IMAGE_DOS_HEADER.e_oemid, 4)), , , 116)
+Root.加入项目 (相加 (“e_oeminfo ：”, Format (IMAGE_DOS_HEADER.e_oeminfo, 4)), , , 117)
+赋值 (SubRoot, Root.加入项目 (“e_res2”, , , ))
+.计次循环首 (10, N)
+    SubRoot.加入项目 (相加 (“e_res2[”, Format (N, 1), “]：”, Format (IMAGE_DOS_HEADER.e_res2 [N], 4)), , , 118)
+.计次循环尾 ()
+Root.加入项目 (相加 (“e_lfanew  ：”, Format (IMAGE_DOS_HEADER.e_lfanew, 8)), , , 119)
+返回 (IMAGE_DOS_HEADER.e_lfanew)
+
+.子程序 NTHeader, 空白型, , 
+.参数 Offset, 整数型, , 
+.参数 Root, 整数型, , 
+.参数 IMAGE_NT_HEADERS, IMAGE_NT_HEADERS, 参考, 
+
+.局部变量 SubRoot, 整数型, , , 
+
+CopyNTHeader (IMAGE_NT_HEADERS, Offset, 248)
+Root.加入项目 (相加 (“Signature：”, Format (IMAGE_NT_HEADERS.Signature, 8)), , , 201)
+赋值 (SubRoot, Root.加入项目 (“File Header”, 1, , ))
+FileHeader (SubRoot, IMAGE_NT_HEADERS)
+赋值 (SubRoot, Root.加入项目 (“Optional Header”, 1, , ))
+OptionalHeader (SubRoot, IMAGE_NT_HEADERS)
+
+.子程序 FileHeader, 空白型, , 
+.参数 Root, 整数型, , 
+.参数 IMAGE_NT_HEADERS, IMAGE_NT_HEADERS, 参考, 
+
+Root.加入项目 (相加 (“Machine             ：”, Format (IMAGE_NT_HEADERS.Machine, 4)), , , 301)
+Root.加入项目 (相加 (“NumberOfSections    ：”, Format (IMAGE_NT_HEADERS.NumberOfSections, 4)), , , 302)
+Root.加入项目 (相加 (“TimeDateStamp       ：”, Format (IMAGE_NT_HEADERS.TimeDateStamp, 8)), , , 303)
+Root.加入项目 (相加 (“PointerToSymbolTable：”, Format (IMAGE_NT_HEADERS.PointerToSymbolTable, 8)), , , 304)
+Root.加入项目 (相加 (“NumberOfSymbols     ：”, Format (IMAGE_NT_HEADERS.NumberOfSymbols, 8)), , , 305)
+Root.加入项目 (相加 (“SizeOfOptionalHeader：”, Format (IMAGE_NT_HEADERS.SizeOfOptionalHeader, 4)), , , 306)
+Root.加入项目 (相加 (“Characteristics     ：”, Format (IMAGE_NT_HEADERS.Characteristics, 4)), , , 307)
+
+.子程序 OptionalHeader, 空白型, , 
+.参数 Root, 整数型, , 
+.参数 IMAGE_NT_HEADERS, IMAGE_NT_HEADERS, 参考, 
+
+.局部变量 SubRoot, 整数型, , , 
+
+Root.加入项目 (相加 (“Magic                      ：”, Format (IMAGE_NT_HEADERS.Magic, 4)), , , 401)
+Root.加入项目 (相加 (“MajorLinkerVersion         ：”, Format (IMAGE_NT_HEADERS.MajorLinkerVersion, 2)), , , 402)
+Root.加入项目 (相加 (“MinorLinkerVersion         ：”, Format (IMAGE_NT_HEADERS.MinorLinkerVersion, 2)), , , 403)
+Root.加入项目 (相加 (“SizeOfCode                 ：”, Format (IMAGE_NT_HEADERS.SizeOfCode, 8)), , , 404)
+Root.加入项目 (相加 (“SizeOfInitializedData      ：”, Format (IMAGE_NT_HEADERS.SizeOfInitializedData, 8)), , , 405)
+Root.加入项目 (相加 (“SizeOfUninitializedData    ：”, Format (IMAGE_NT_HEADERS.SizeOfUninitializedData, 8)), , , 406)
+Root.加入项目 (相加 (“AddressOfEntryPoint        ：”, Format (IMAGE_NT_HEADERS.AddressOfEntryPoint, 8)), , , 407)
+Root.加入项目 (相加 (“BaseOfCode                 ：”, Format (IMAGE_NT_HEADERS.BaseOfCode, 8)), , , 408)
+Root.加入项目 (相加 (“BaseOfData                 ：”, Format (IMAGE_NT_HEADERS.BaseOfData, 8)), , , 409)
+Root.加入项目 (相加 (“ImageBase                  ：”, Format (IMAGE_NT_HEADERS.ImageBase, 8)), , , 410)
+Root.加入项目 (相加 (“SectionAlignment           ：”, Format (IMAGE_NT_HEADERS.SectionAlignment, 8)), , , 411)
+Root.加入项目 (相加 (“FileAlignment              ：”, Format (IMAGE_NT_HEADERS.FileAlignment, 8)), , , 412)
+Root.加入项目 (相加 (“MajorOperatingSystemVersion：”, Format (IMAGE_NT_HEADERS.MajorOperatingSystemVersion, 4)), , , 413)
+Root.加入项目 (相加 (“MinorOperatingSystemVersion：”, Format (IMAGE_NT_HEADERS.MinorOperatingSystemVersion, 4)), , , 414)
+Root.加入项目 (相加 (“MajorImageVersion          ：”, Format (IMAGE_NT_HEADERS.MajorImageVersion, 4)), , , 415)
+Root.加入项目 (相加 (“MinorImageVersion          ：”, Format (IMAGE_NT_HEADERS.MinorImageVersion, 4)), , , 416)
+Root.加入项目 (相加 (“MajorSubsystemVersion      ：”, Format (IMAGE_NT_HEADERS.MajorSubsystemVersion, 4)), , , 417)
+Root.加入项目 (相加 (“MinorSubsystemVersion      ：”, Format (IMAGE_NT_HEADERS.MinorSubsystemVersion, 4)), , , 418)
+Root.加入项目 (相加 (“Win32VersionValue          ：”, Format (IMAGE_NT_HEADERS.Win32VersionValue, 8)), , , 419)
+Root.加入项目 (相加 (“SizeOfImage                ：”, Format (IMAGE_NT_HEADERS.SizeOfImage, 8)), , , 420)
+Root.加入项目 (相加 (“SizeOfHeaders              ：”, Format (IMAGE_NT_HEADERS.SizeOfHeaders, 8)), , , 421)
+Root.加入项目 (相加 (“CheckSum                   ：”, Format (IMAGE_NT_HEADERS.CheckSum, 8)), , , 422)
+Root.加入项目 (相加 (“Subsystem                  ：”, Format (IMAGE_NT_HEADERS.Subsystem, 4)), , , 423)
+Root.加入项目 (相加 (“DllCharacteristics         ：”, Format (IMAGE_NT_HEADERS.DllCharacteristics, 4)), , , 424)
+Root.加入项目 (相加 (“SizeOfStackReserve         ：”, Format (IMAGE_NT_HEADERS.SizeOfStackReserve, 8)), , , 425)
+Root.加入项目 (相加 (“SizeOfStackCommit          ：”, Format (IMAGE_NT_HEADERS.SizeOfStackCommit, 8)), , , 426)
+Root.加入项目 (相加 (“SizeOfHeapReserve          ：”, Format (IMAGE_NT_HEADERS.SizeOfHeapReserve, 8)), , , 427)
+Root.加入项目 (相加 (“SizeOfHeapCommit           ：”, Format (IMAGE_NT_HEADERS.SizeOfHeapCommit, 8)), , , 428)
+Root.加入项目 (相加 (“LoaderFlags                ：”, Format (IMAGE_NT_HEADERS.LoaderFlags, 8)), , , 429)
+Root.加入项目 (相加 (“NumberOfRvaAndSizes        ：”, Format (IMAGE_NT_HEADERS.NumberOfRvaAndSizes, 8)), , , 430)
+赋值 (SubRoot, Root.加入项目 (“DataDirectory”, 1, , ))
+DataDirectory (SubRoot, IMAGE_NT_HEADERS)
+
+.子程序 DataDirectory, 空白型, , 
+.参数 Root, 整数型, , 
+.参数 IMAGE_NT_HEADERS, IMAGE_NT_HEADERS, 参考, 
+
+.局部变量 SubRoot, 整数型, , , 
+.局部变量 N, 整数型, , , 
+
+.计次循环首 (16, N)
+    赋值 (SubRoot, Root.加入项目 (多项选择 (N, “Export”, “Import”, “Resource”, “Exception”, “Security”, “BaseReloc”, “Debug”, “Copyright”, “GlobalPTR”, “TLS”, “Load Config”, “Bound Import”, “IAT”, “Delay Import”, “COM Descriptor”, “NO USE”), 1, , ))
+    SubRoot.加入项目 (相加 (“VirtualAddress：”, Format (IMAGE_NT_HEADERS.DataDirectory [相减 (相乘 (N, 2), 1)], 8)), , , 相加 (500, N))
+    SubRoot.加入项目 (相加 (“isize：”, Format (IMAGE_NT_HEADERS.DataDirectory [相乘 (N, 2)], 8)), , , 相加 (500, N))
+.计次循环尾 ()
+赋值 (.禁止, 等于 (IMAGE_NT_HEADERS.DataDirectory [2], 0))
+赋值 (.禁止, 等于 (IMAGE_NT_HEADERS.DataDirectory [4], 0))
+赋值 (.禁止, 等于 (IMAGE_NT_HEADERS.DataDirectory [6], 0))
+
+.子程序 SectionHeader, 空白型, , 
+.参数 Offset, 整数型, , 
+.参数 Num, 整数型, , 
+.参数 Root, 整数型, , 
+
+.局部变量 IMAGE_SECTION_HEADER, IMAGE_SECTION_HEADER, , , 
+.局部变量 SubRoot, 整数型, , , 
+.局部变量 Name, 文本型, , , 
+
+.计次循环首 (Num, )
+    CopySectionHeader (IMAGE_SECTION_HEADER, Offset, 40)
+    赋值 (Name, 到文本 (IMAGE_SECTION_HEADER.Name))
+    赋值 (SubRoot, Root.加入项目 (Name, 1, , ))
+    .如果真 (等于 (到小写 (Name), “.ecode”))
+        赋值 (lpEcode, 相加 (IMAGE_SECTION_HEADER.PointerToRawData, lpMemory))
+    .如果真结束
+    SubRoot.加入项目 (相加 (“Name                ：”, Name), , , 601)
+    SubRoot.加入项目 (相加 (“VirtualSize         ：”, Format (IMAGE_SECTION_HEADER.VirtualSize, 8)), , , 602)
+    SubRoot.加入项目 (相加 (“VirtualAddress      ：”, Format (IMAGE_SECTION_HEADER.VirtualAddress, 8)), , , 603)
+    SubRoot.加入项目 (相加 (“SizeOfRawData       ：”, Format (IMAGE_SECTION_HEADER.SizeOfRawData, 8)), , , 604)
+    SubRoot.加入项目 (相加 (“PointerToRawData    ：”, Format (IMAGE_SECTION_HEADER.PointerToRawData, 8)), , , 605)
+    SubRoot.加入项目 (相加 (“PointerToRelocations：”, Format (IMAGE_SECTION_HEADER.PointerToRelocations, 4)), , , 606)
+    SubRoot.加入项目 (相加 (“PointerToLinenumbers：”, Format (IMAGE_SECTION_HEADER.PointerToLinenumbers, 4)), , , 607)
+    SubRoot.加入项目 (相加 (“NumberOfRelocations ：”, Format (IMAGE_SECTION_HEADER.NumberOfRelocations, 8)), , , 608)
+    SubRoot.加入项目 (相加 (“Characteristics     ：”, Format (IMAGE_SECTION_HEADER.Characteristics, 8)), , , 609)
+    赋值 (Offset, 相加 (Offset, 40))
+.计次循环尾 ()
+
+.子程序 EHeader, 空白型, , 
+.参数 Root, 整数型, , 
+
+.局部变量 SubRoot, 整数型, , , 
+
+CopyEcode (stE_HEADER, lpEcode, 88)
+赋值 (SubRoot, Root.加入项目 (“APP_HEADER_INFO”, 1, , ))
+APP_HEADER_INFO (SubRoot, stE_HEADER)
+赋值 (SubRoot, Root.加入项目 (“SECTION_INFO”, 1, , ))
+SECTION_INFO (SubRoot, stE_HEADER)
+
+.子程序 APP_HEADER_INFO, 空白型, , 
+.参数 Root, 整数型, , 
+.参数 E_HEADER, APP_HEADER_INFO, , 
+
+.局部变量 SubRoot, 整数型, , , 
+.局部变量 Lib, 文本型, , , 
+.局部变量 LibInfo, 文本型, , "0", 
+.局部变量 N, 整数型, , , 
+.局部变量 M, 整数型, , , 
+.局部变量 Temp, 整数型, , , 
+
+Root.加入项目 (相加 (“m_dwMark                 ：”, 到文本 (E_HEADER.m_dwMark)), , , 701)
+Root.加入项目 (相加 (“m_chMark                 ：”, 到文本 (E_HEADER.m_chMark)), , , 702)
+Root.加入项目 (相加 (“m_nHeaderSize            ：”, Format (E_HEADER.m_nHeaderSize, 8)), , , 703)
+Root.加入项目 (相加 (“m_nVersion               ：”, Format (E_HEADER.m_nVersion, 8)), , , 704)
+Root.加入项目 (相加 (“m_nType                  ：”, Format (E_HEADER.m_nType, 8)), , , 705)
+Root.加入项目 (相加 (“m_dwState                ：”, Format (E_HEADER.m_dwState, 8)), , , 706)
+Root.加入项目 (相加 (“m_Reserved               ：”, Format (E_HEADER.m_Reserved, 8)), , , 707)
+Root.加入项目 (相加 (“m_nDllCmdCount           ：”, Format (E_HEADER.m_nDllCmdCount, 8)), , , 708)
+Root.加入项目 (相加 (“m_nStartCodeOffset       ：”, Format (E_HEADER.m_nStartCodeOffset, 8)), , , 709)
+Root.加入项目 (相加 (“m_nConstSectionOffset    ：”, Format (E_HEADER.m_nConstSectionOffset, 8)), , , 710)
+Root.加入项目 (相加 (“m_nWinFormSectionOffset  ：”, Format (E_HEADER.m_nWinFormSectionOffset, 8)), , , 711)
+Root.加入项目 (相加 (“m_nHelpFuncSectionOffset ：”, Format (E_HEADER.m_nHelpFuncSectionOffset, 8)), , , 712)
+Root.加入项目 (相加 (“m_nCodeSectionOffset     ：”, Format (E_HEADER.m_nCodeSectionOffset, 8)), , , 713)
+Root.加入项目 (相加 (“m_nVarSectionOffset      ：”, Format (E_HEADER.m_nVarSectionOffset, 8)), , , 714)
+Root.加入项目 (相加 (“m_nBeginSectionOffset    ：”, Format (E_HEADER.m_nBeginSectionOffset, 8)), , , 715)
+.如果真 (不等于 (E_HEADER.m_nDllCmdCount, 0))
+    赋值 (Temp, 相加 (lpEcode, 88))
+    赋值 (SubRoot, Root.加入项目 (“m_nDllFileNameConstOffset”, , , 716))
+    .计次循环首 (E_HEADER.m_nDllCmdCount, N)
+        赋值 (M, 取字节集数据 (指针到字节集 (Temp, 4), 3))
+        SubRoot.加入项目 (相加 (Format (M, 8), “：”, 指针到文本 (相加 (E_HEADER.m_nConstSectionOffset, lpEcode, M, 56))), , , 717)
+        赋值 (Temp, 相加 (Temp, 4))
+    .计次循环尾 ()
+    赋值 (SubRoot, Root.加入项目 (“m_nDllCmdNameConstOffset”, , , 718))
+    .计次循环首 (E_HEADER.m_nDllCmdCount, N)
+        赋值 (M, 取字节集数据 (指针到字节集 (Temp, 4), 3))
+        SubRoot.加入项目 (相加 (Format (M, 8), “：”, 指针到文本 (相加 (E_HEADER.m_nConstSectionOffset, lpEcode, M, 56))), , , 719)
+        赋值 (Temp, 相加 (Temp, 4))
+    .计次循环尾 ()
+.如果真结束
+赋值 (SubRoot, Root.加入项目 (“Libs”, 1, , 719))
+赋值 (Lib, 指针到文本 (Temp))
+.判断循环首 (不等于 (Lib, “”))
+    赋值 (LibInfo, 分割文本 (Lib, 字符 (13), ))
+    .如果真 (等于 (取数组成员数 (LibInfo), 5))
+        Lib (SubRoot.加入项目 (相加 (LibInfo [5], “ ”, LibInfo [3], “.”, LibInfo [4]), 1, , 720), LibInfo [1], LibInfo [2], LibInfo [3], LibInfo [4], LibInfo [5])
+    .如果真结束
+    赋值 (Temp, 相加 (Temp, 取文本长度 (Lib), 1))
+    赋值 (Lib, 读入文本 (Temp, ))
+.判断循环尾 ()
+
+.子程序 Lib, 空白型, , 
+.参数 Root, 整数型, , 
+.参数 File, 文本型, , 
+.参数 GUID, 文本型, , 
+.参数 MajVer, 文本型, , 
+.参数 MinVer, 文本型, , 
+.参数 Name, 文本型, , 
+
+Root.加入项目 (相加 (“m_szFile：”, File), , , 721)
+Root.加入项目 (相加 (“m_szGuid：”, GUID), , , 722)
+Root.加入项目 (相加 (“m_nMajorVersion：”, MajVer), , , 723)
+Root.加入项目 (相加 (“m_nMinorVersion：”, MinVer), , , 724)
+Root.加入项目 (相加 (“m_szName：”, Name), , , 725)
+
+.子程序 SECTION_INFO, 空白型, , 
+.参数 Root, 整数型, , 
+.参数 E_HEADER, APP_HEADER_INFO, , 
+
+.局部变量 SECTION_INFO, SECTION_INFO, , , 
+
+.如果真 (不等于 (E_HEADER.m_nConstSectionOffset, -1))
+    CopyESection (SECTION_INFO, 相加 (E_HEADER.m_nConstSectionOffset, lpEcode), 56)
+    Section (相加 (E_HEADER.m_nConstSectionOffset, lpEcode, 56), Root, 1, SECTION_INFO)
+.如果真结束
+.如果真 (不等于 (E_HEADER.m_nWinFormSectionOffset, -1))
+    CopyESection (SECTION_INFO, 相加 (E_HEADER.m_nWinFormSectionOffset, lpEcode), 56)
+    Section (相加 (E_HEADER.m_nWinFormSectionOffset, lpEcode, 56), Root, 2, SECTION_INFO)
+.如果真结束
+.如果真 (不等于 (E_HEADER.m_nHelpFuncSectionOffset, -1))
+    CopyESection (SECTION_INFO, 相加 (E_HEADER.m_nHelpFuncSectionOffset, lpEcode), 56)
+    Section (相加 (E_HEADER.m_nHelpFuncSectionOffset, lpEcode, 56), Root, 3, SECTION_INFO)
+.如果真结束
+.如果真 (不等于 (E_HEADER.m_nCodeSectionOffset, -1))
+    CopyESection (SECTION_INFO, 相加 (E_HEADER.m_nCodeSectionOffset, lpEcode), 56)
+    Section (相加 (E_HEADER.m_nCodeSectionOffset, lpEcode, 56), Root, 4, SECTION_INFO)
+.如果真结束
+.如果真 (不等于 (E_HEADER.m_nVarSectionOffset, -1))
+    CopyESection (SECTION_INFO, 相加 (E_HEADER.m_nVarSectionOffset, lpEcode), 56)
+    Section (相加 (E_HEADER.m_nVarSectionOffset, lpEcode, 56), Root, 5, SECTION_INFO)
+.如果真结束
+
+
+.子程序 Section, 空白型, , 
+.参数 Offset, 整数型, , 
+.参数 Root, 整数型, , 
+.参数 Index, 字节型, , 
+.参数 SECTION_INFO, SECTION_INFO, , 
+
+.局部变量 N, 整数型, , , 
+.局部变量 SubRoot1, 整数型, , , 
+.局部变量 SubRoot, 整数型, , , 
+
+赋值 (SubRoot, Root.加入项目 (到文本 (SECTION_INFO.m_szName), 1, , ))
+SubRoot.加入项目 (相加 (“m_nSectionSize         ：”, Format (SECTION_INFO.m_nSectionSize, 8)), , , 801)
+SubRoot.加入项目 (相加 (“m_nNextSectionOffset   ：”, Format (SECTION_INFO.m_nNextSectionOffset, 8)), , , 802)
+SubRoot.加入项目 (相加 (“m_dwState              ：”, Format (SECTION_INFO.m_dwState, 8)), , , 803)
+SubRoot.加入项目 (相加 (“m_szName               ：”, 到文本 (SECTION_INFO.m_szName)), , , 804)
+SubRoot.加入项目 (相加 (“m_nLoadedSize          ：”, Format (SECTION_INFO.m_nLoadedSize, 8)), , , 805)
+SubRoot.加入项目 (相加 (“m_nRecordSize          ：”, Format (SECTION_INFO.m_nRecordSize, 8)), , , 806)
+SubRoot.加入项目 (相加 (“m_nRecordOffset        ：”, Format (SECTION_INFO.m_nRecordOffset, 8)), , , 807)
+SubRoot.加入项目 (相加 (“m_nReLocationItemCount ：”, Format (SECTION_INFO.m_nReLocationItemCount, 8)), , , 808)
+SubRoot.加入项目 (相加 (“m_nExportSymbolCount   ：”, Format (SECTION_INFO.m_nExportSymbolCount, 8)), , , 809)
+.如果真 (不等于 (SECTION_INFO.m_nReLocationItemCount, 0))
+    赋值 (SubRoot1, SubRoot.加入项目 (“m_aryReLocationItem”, , , Index))
+    SubRoot1.加入项目 (“双击获取完整列表...”, , , 811)
+    赋值 (Reloc [Index], 指针到字节集 (Offset, 相乘 (SECTION_INFO.m_nReLocationItemCount, 4)))
+    赋值 (Offset, 相加 (Offset, 相乘 (SECTION_INFO.m_nReLocationItemCount, 4)))
+.如果真结束
+.如果真 (不等于 (SECTION_INFO.m_nExportSymbolCount, 0))
+    赋值 (SubRoot1, SubRoot.加入项目 (“m_arySymbolDataOffset”, , , 815))
+    .计次循环首 (SECTION_INFO.m_nExportSymbolCount, N)
+        SubRoot1.加入项目 (Format (取字节集数据 (指针到字节集 (Offset, 4), 3), 8), , , 816)
+        赋值 (Offset, 相加 (Offset, 4))
+    .计次循环尾 ()
+.如果真结束
+.如果真 (不等于 (SECTION_INFO.m_nExportSymbolCount, 0))
+    赋值 (SubRoot1, SubRoot.加入项目 (“m_szarySymbolNameOffset”, , , 817))
+    .计次循环首 (SECTION_INFO.m_nExportSymbolCount, N)
+        SubRoot1.加入项目 (Format (取字节集数据 (指针到字节集 (Offset, 4), 3), 8), , , 818)
+        赋值 (Offset, 相加 (Offset, 4))
+    .计次循环尾 ()
+.如果真结束
+
+
+.子程序 _树型框1_项目被选择, 空白型, , 
+.参数 选择方式, 整数型, , 
+
+1.置文本 (Info (.))
+
+.子程序 Info, 文本型, , 
+.参数 ID, 整数型, , 
+
+.局部变量 Num, 整数型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 String, 文本型, , , 
+.局部变量 M, 整数型, , , 
+
+赋值 (Num, ID.取项目数值 ())
+.判断开始 (等于 (Num, 0))
+    返回 (“”)
+.默认
+    
+.判断结束
+.如果真 (小于 (Num, 200))
+    .判断开始 (等于 (Num, 101))
+        赋值 (String, ID.取项目文本 ())
+        赋值 (String, 取文本右边 (String, 相减 (取文本长度 (String), 倒找文本 (String, “：”, , 假), 1)))
+        StrToIntEx (String, 1, N)
+        返回 (相加 (“Magic number：”, 取字节集数据 (到字节集 (N), 10)))
+    .判断 (等于 (Num, 102))
+        返回 (“Bytes on last page of file”)
+    .判断 (等于 (Num, 103))
+        返回 (“Pages in file”)
+    .判断 (等于 (Num, 104))
+        返回 (“Relocations”)
+    .判断 (等于 (Num, 105))
+        返回 (“Size of Header in paragraphs”)
+    .判断 (等于 (Num, 106))
+        返回 (“Minimum extra paragraphs needed”)
+    .判断 (等于 (Num, 107))
+        返回 (“Maximum extra paragraphs needed”)
+    .判断 (等于 (Num, 108))
+        返回 (“Initial (relative) SS value”)
+    .判断 (等于 (Num, 109))
+        返回 (“Initial SP value”)
+    .判断 (等于 (Num, 110))
+        返回 (“Checksum”)
+    .判断 (等于 (Num, 111))
+        返回 (“Initial IP value”)
+    .判断 (等于 (Num, 112))
+        返回 (“Initial (relative) CS value”)
+    .判断 (等于 (Num, 113))
+        返回 (“File address of relocation table”)
+    .判断 (等于 (Num, 114))
+        返回 (“Overlay number”)
+    .判断 (等于 (Num, 115))
+        返回 (“Reserved”)
+    .判断 (等于 (Num, 116))
+        返回 (“OEM identifier”)
+    .判断 (等于 (Num, 117))
+        返回 (“OEM information”)
+    .判断 (等于 (Num, 118))
+        返回 (“Reserved”)
+    .判断 (等于 (Num, 119))
+        返回 (“File address of new exe Header”)
+    .默认
+        
+    .判断结束
+    返回 (“”)
+.如果真结束
+.如果真 (小于 (Num, 300))
+    赋值 (String, ID.取项目文本 ())
+    赋值 (String, 取文本右边 (String, 相减 (取文本长度 (String), 倒找文本 (String, “：”, , 假), 1)))
+    StrToIntEx (String, 1, N)
+    返回 (相加 (“Signature：”, 取字节集数据 (到字节集 (N), 10)))
+.如果真结束
+.如果真 (小于 (Num, 400))
+    .判断开始 (等于 (Num, 301))
+        赋值 (String, ID.取项目文本 ())
+        赋值 (String, 取文本右边 (String, 相减 (取文本长度 (String), 倒找文本 (String, “：”, , 假), 1)))
+        StrToIntEx (String, 1, N)
+        .判断开始 (等于 (N, 0))
+            返回 (“Unknown”)
+        .判断 (等于 (N, 332))
+            返回 (“Intel 386”)
+        .判断 (等于 (N, 333))
+            返回 (“Intel 486”)
+        .判断 (等于 (N, 334))
+            返回 (“Intel 586”)
+        .判断 (等于 (N, 352))
+            返回 (“R3000 MIPS Big-Endian”)
+        .判断 (等于 (N, 354))
+            返回 (“R3000 MIPS Little-Endian”)
+        .判断 (等于 (N, 358))
+            返回 (“R4000 MIPS Little-Endian”)
+        .判断 (等于 (N, 360))
+            返回 (“R10000 MIPS Little-Endian”)
+        .判断 (等于 (N, 361))
+            返回 (“MIPS Little-Endian WCE v2”)
+        .判断 (等于 (N, 388))
+            返回 (“DEC Alpha AXP”)
+        .判断 (等于 (N, 496))
+            返回 (“IBM PowerPC Little-Endian”)
+        .判断 (等于 (N, 418))
+            返回 (“SH3 little-endian”)
+        .判断 (等于 (N, 420))
+            返回 (“SH3E Little-Endian”)
+        .判断 (等于 (N, 422))
+            返回 (“SH4 Little-Endian”)
+        .判断 (等于 (N, 448))
+            返回 (“ARM Little-Endian”)
+        .判断 (等于 (N, 450))
+            返回 (“Thumb”)
+        .判断 (等于 (N, 512))
+            返回 (“Intel 64”)
+        .判断 (等于 (N, 614))
+            返回 (“MIPS16”)
+        .判断 (等于 (N, 870))
+            返回 (“MIPSFPU”)
+        .判断 (等于 (N, 1126))
+            返回 (“MIPSFPU16”)
+        .判断 (等于 (N, 644))
+            返回 (“Alpha 64”)
+        .判断 (等于 (N, 448))
+            返回 (“ARM Little-Endian”)
+        .判断 (等于 (N, 448))
+            返回 (“ARM Little-Endian”)
+        .判断 (等于 (N, 616))
+            返回 (“Motorola 68000”)
+        .判断 (等于 (N, 656))
+            返回 (“Precision Architecture RISC”)
+        .默认
+            返回 (“Unknown”)
+        .判断结束
+        
+    .判断 (等于 (Num, 307))
+        赋值 (String, ID.取项目文本 ())
+        赋值 (String, 取文本右边 (String, 相减 (取文本长度 (String), 倒找文本 (String, “：”, , 假), 1)))
+        StrToIntEx (String, 1, N)
+        赋值 (String, “”)
+        .计次循环首 (16, Num)
+            赋值 (M, 求次方 (2, 相减 (Num, 1)))
+            .如果真 (等于 (位或 (N, M), N))
+                赋值 (String, 相加 (String, 多项选择 (Num, “Relocs Stripped;”, “Executable;”, “Line Nums Stripped;”, “Local Syms Stripped;”, “”, “”, “”, “Little-Endian;”, “32bit Machine;”, “Debug Stripped;”, “Removable Run From Swap;”, “Net Run From Swap;”, “System;”, “DLL;”, “Up System Only;”, “Big-Endian”)))
+            .如果真结束
+            
+        .计次循环尾 ()
+        返回 (String)
+    .默认
+        
+    .判断结束
+    返回 (“”)
+.如果真结束
+.如果真 (小于 (Num, 500))
+    .判断开始 (等于 (Num, 401))
+        赋值 (String, ID.取项目文本 ())
+        赋值 (String, 取文本右边 (String, 相减 (取文本长度 (String), 倒找文本 (String, “：”, , 假), 1)))
+        StrToIntEx (String, 1, N)
+        .判断开始 (等于 (N, 263))
+            返回 (“ROM image”)
+        .判断 (等于 (N, 267))
+            返回 (“EXE image”)
+        .默认
+            返回 (“Unknown image”)
+        .判断结束
+        
+    .判断 (等于 (Num, 423))
+        赋值 (String, ID.取项目文本 ())
+        赋值 (String, 取文本右边 (String, 相减 (取文本长度 (String), 倒找文本 (String, “：”, , 假), 1)))
+        StrToIntEx (String, 1, N)
+        .判断开始 (等于 (N, 0))
+            返回 (“Unknown”)
+        .判断 (等于 (N, 1))
+            返回 (“Native”)
+        .判断 (等于 (N, 2))
+            返回 (“Windows GUI”)
+        .判断 (等于 (N, 3))
+            返回 (“Windows CUI”)
+        .判断 (等于 (N, 5))
+            返回 (“OS/2 CUI”)
+        .判断 (等于 (N, 7))
+            返回 (“Posix CUI”)
+        .判断 (等于 (N, 8))
+            返回 (“Native Windows”)
+        .判断 (等于 (N, 9))
+            返回 (“WinCE GUI”)
+        .默认
+            返回 (“Unknown”)
+        .判断结束
+        
+    .判断 (等于 (Num, 424))
+        赋值 (String, ID.取项目文本 ())
+        赋值 (String, 取文本右边 (String, 相减 (取文本长度 (String), 倒找文本 (String, “：”, , 假), 1)))
+        StrToIntEx (String, 1, N)
+        赋值 (String, “”)
+        .判断开始 (等于 (N, 0))
+            返回 (“”)
+        .判断 (等于 (位或 (N, 1), N))
+            赋值 (String, “DLL Loaded;”)
+        .判断 (等于 (位或 (N, 2), N))
+            赋值 (String, 相加 (String, “Thread Exited;”))
+        .判断 (等于 (位或 (N, 4), N))
+            赋值 (String, 相加 (String, “Thread Started;”))
+        .判断 (等于 (位或 (N, 8), N))
+            赋值 (String, 相加 (String, “Dll Exited;”))
+        .判断 (等于 (位或 (N, 8192), N))
+            赋值 (String, 相加 (String, “WDM Driver”))
+        .默认
+            
+        .判断结束
+        返回 (String)
+    .默认
+        
+    .判断结束
+    返回 (“”)
+.如果真结束
+.如果真 (小于 (Num, 600))
+    返回 (“”)
+.如果真结束
+.如果真 (小于 (Num, 700))
+    .判断开始 (等于 (Num, 609))
+        赋值 (String, ID.取项目文本 ())
+        赋值 (String, 取文本右边 (String, 相减 (取文本长度 (String), 倒找文本 (String, “：”, , 假), 1)))
+        StrToIntEx (String, 1, N)
+        赋值 (String, “”)
+        .如果真 (等于 (位或 (N, 16), N))
+            赋值 (String, “Code;”)
+        .如果真结束
+        .如果真 (等于 (位或 (N, 32), N))
+            赋值 (String, 相加 (String, “Initialized;”))
+        .如果真结束
+        .如果真 (等于 (位或 (N, 64), N))
+            赋值 (String, 相加 (String, “Uninitialized;”))
+        .如果真结束
+        .如果真 (等于 (位或 (N, 33554432), N))
+            赋值 (String, 相加 (String, “Discardable;”))
+        .如果真结束
+        .如果真 (等于 (位或 (N, 67108864), N))
+            赋值 (String, 相加 (String, “Not Cached;”))
+        .如果真结束
+        .如果真 (等于 (位或 (N, 134217728), N))
+            赋值 (String, 相加 (String, “Not Paged;”))
+        .如果真结束
+        .如果真 (等于 (位或 (N, 268435456), N))
+            赋值 (String, 相加 (String, “Shared;”))
+        .如果真结束
+        .如果真 (等于 (位或 (N, 536870912), N))
+            赋值 (String, 相加 (String, “Execute;”))
+        .如果真结束
+        .如果真 (等于 (位或 (N, 1073741824), N))
+            赋值 (String, 相加 (String, “Read;”))
+        .如果真结束
+        .如果真 (等于 (位或 (N, 2147483648), N))
+            赋值 (String, 相加 (String, “Write”))
+        .如果真结束
+        返回 (String)
+    .默认
+        
+    .判断结束
+    返回 (“”)
+.如果真结束
+.如果真 (小于 (Num, 800))
+    
+.如果真结束
+.如果真 (小于 (Num, 900))
+    
+    
+.如果真结束
+返回 (“”)
+
+.子程序 __启动窗口_尺寸被改变, 空白型, , 
+赋值 (., 取用户区宽度 ())
+赋值 (., 相减 (取用户区高度 (), .))
+赋值 (.左边, 相减 (., .宽度, 20))
+
+.子程序 _打开文件_被选择, 空白型, , 
+.局部变量 stOFN, OPENFILENAME, , , 
+
+赋值 (stOFN.lStructSize, 76)
+赋值 (stOFN.Flags, 6148)
+赋值 (stOFN.hwndOwner, _启动窗口.取窗口句柄 ())
+赋值 (stOFN.lpstrFilter, 子字节集替换 (到字节集 (“可执行文件|*.exe;*.dll|所有文件|*.*||”), { 124 }, { 0 }, , ))
+赋值 (stOFN.lpstrFile, 取空白字节集 (256))
+赋值 (stOFN.nMaxFile, 255)
+.如果真 (不等于 (GetOpenFileName (stOFN), 0))
+    处理事件 ()
+    赋值 (szRecentFile, 取字节集数据 (stOFN.lpstrFile, 10))
+    0.置文本 (相加 (数值到格式文本 (相除 (取文件尺寸 (szRecentFile), 1024), 2, 假), “KB”))
+    1.置文本 (“”)
+    PEShow (szRecentFile)
+.如果真结束
+
+
+.子程序 _退出_被选择, 空白型, , 
+结束 ()
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 K, 文本型, , , 
+.局部变量 N, 文本型, , "0", 
+
+赋值 (., #ICONS)
+取命令行 (N)
+.如果真 (大于或等于 (取数组成员数 (N), 1))
+    .如果 (文件是否存在 (N [1]))
+        赋值 (szRecentFile, N [1])
+        0.置文本 (相加 (数值到格式文本 (相除 (取文件尺寸 (szRecentFile), 1024), 2, 假), “KB”))
+        1.置文本 (“”)
+        PEShow (szRecentFile)
+    .否则
+        结束 ()
+        返回 ()
+    .如果结束
+    
+.如果真结束
+.如果真 (等于 (是否为调试版 (), 假))
+    赋值 (K, 取运行目录 ())
+    .如果真 (不等于 (取文本右边 (K, 1), “\”))
+        赋值 (K, 相加 (K, “\”))
+    .如果真结束
+    赋值 (K, 相加 (K, 取执行文件名 ()))
+    写注册项 (1, “exefile\shell\PEViewer\command\”, 相加 (#引号, K, #引号, “ ”, #引号, “%1”, #引号))
+    写注册项 (1, “dllfile\shell\PEViewer\command\”, 相加 (#引号, K, #引号, “ ”, #引号, “%1”, #引号))
+.如果真结束
+
+
+.子程序 _导入表_被选择, 空白型, , 
+赋值 (dwType, 1)
+载入 (窗口1, , 真)
+
+.子程序 _导出表_被选择, 空白型, , 
+赋值 (dwType, 2)
+载入 (窗口1, , 真)
+
+.子程序 _资源表_被选择, 空白型, , 
+载入 (窗口4, , 真)
+
+.子程序 _树型框1_双击项目, 空白型, , 
+.局部变量 Num, 整数型, , , 
+
+赋值 (Num, .取项目数值 (.))
+.如果真 (等于 (Num, 811))
+    载入 (窗口5, , 真)
+.如果真结束
+
+
+.子程序 _树型框1_即将扩展, 逻辑型, , 
+.参数 项目索引, 整数型, , 
+
+.局部变量 A, 整数型, , , 
+
+赋值 (A, 项目索引.取图片 ())
+.如果真 (或者 (等于 (A, 1), 等于 (A, 2)))
+    项目索引.置图片 (2)
+    项目索引.置选中图片 (2)
+.如果真结束
+返回 (真)
+
+.子程序 _树型框1_即将收缩, 逻辑型, , 
+.参数 项目索引, 整数型, , 
+
+.局部变量 A, 整数型, , , 
+
+赋值 (A, 项目索引.取图片 ())
+.如果真 (或者 (等于 (A, 1), 等于 (A, 2)))
+    项目索引.置图片 (1)
+    项目索引.置选中图片 (1)
+.如果真结束
+返回 (真)
+
+.窗口程序集 窗口程序集2, , , 
+
+.子程序 _窗口1_创建完毕, 空白型, , 
+赋值 (., #ICONS)
+赋值 (窗口1.标题, 相加 (“查看”, 多项选择 (dwType, “导入表”, “导出表”), “ - ”, szRecentFile))
+.判断开始 (等于 (dwType, 1))
+    Import ()
+.判断 (等于 (dwType, 2))
+    Export ()
+.默认
+    
+.判断结束
+赋值 (.可视, 等于 (dwType, 1))
+
+.子程序 _窗口1_尺寸被改变, 空白型, , 
+赋值 (., 取用户区高度 ())
+赋值 (., 取用户区宽度 ())
+
+.子程序 Import, 空白型, , 
+.局部变量 ImportBegin, 整数型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 M, 整数型, , , 
+.局部变量 Name, 文本型, , , 
+.局部变量 Root, 整数型, , , 
+.局部变量 IMAGE_IMPORT_DESCRIPTOR, IMAGE_IMPORT_DESCRIPTOR, , , 
+.局部变量 IMAGE_IMPORT_BY_NAME, IMAGE_IMPORT_BY_NAME, , , 
+.局部变量 SubRoot, 整数型, , , 
+.局部变量 Dll, 文本型, , , 
+
+.如果真 (等于 (stNT_HEADERS.DataDirectory [3], 0))
+    .加入项目 (“无导入表”, , , )
+    返回 ()
+.如果真结束
+赋值 (ImportBegin, RVAtoOffset (stNT_HEADERS.DataDirectory [3]))
+赋值 (Name, GetRVASectionName (stNT_HEADERS.DataDirectory [3]))
+.加入项目 (相加 (“导入表所在节：”, Name), 1, , )
+CopyImportDescriptor (IMAGE_IMPORT_DESCRIPTOR, ImportBegin, 20)
+.判断循环首 (取反 (并且 (等于 (IMAGE_IMPORT_DESCRIPTOR.Name, 0), 等于 (IMAGE_IMPORT_DESCRIPTOR.FirstThunk, 0), 等于 (IMAGE_IMPORT_DESCRIPTOR.TimeDateStamp, 0), 等于 (IMAGE_IMPORT_DESCRIPTOR.ForwarderChain, 0), 等于 (IMAGE_IMPORT_DESCRIPTOR.OrginalFirstThunk, 0))))
+    赋值 (N, RVAtoOffset (IMAGE_IMPORT_DESCRIPTOR.Name))
+    .如果 (不等于 (N, -1))
+        赋值 (Root, 0.加入项目 (指针到文本 (N), 1, , ))
+    .否则
+        赋值 (Root, 0.加入项目 (“”, 1, , ))
+    .如果结束
+    赋值 (SubRoot, Root.加入项目 (“相关信息”, 3, , ))
+    SubRoot.加入项目 (相加 (“OriginalFirstThunk：”, Format (IMAGE_IMPORT_DESCRIPTOR.OrginalFirstThunk, 8)), , , )
+    SubRoot.加入项目 (相加 (“TimeDateStamp     ：”, Format (IMAGE_IMPORT_DESCRIPTOR.TimeDateStamp, 8)), , , )
+    SubRoot.加入项目 (相加 (“ForwarderChain    ：”, Format (IMAGE_IMPORT_DESCRIPTOR.ForwarderChain, 8)), , , )
+    SubRoot.加入项目 (相加 (“FirstThunk        ：”, Format (IMAGE_IMPORT_DESCRIPTOR.FirstThunk, 8)), , , )
+    赋值 (SubRoot, Root.加入项目 (“导入函数”, 4, , ))
+    .如果 (不等于 (IMAGE_IMPORT_DESCRIPTOR.OrginalFirstThunk, 0))
+        赋值 (N, RVAtoOffset (IMAGE_IMPORT_DESCRIPTOR.OrginalFirstThunk))
+    .否则
+        赋值 (N, RVAtoOffset (IMAGE_IMPORT_DESCRIPTOR.FirstThunk))
+    .如果结束
+    赋值 (M, 取字节集数据 (指针到字节集 (N, 4), 3))
+    .判断循环首 (不等于 (M, 0))
+        .如果 (不等于 (位与 (M, 2147483648), 0))
+            赋值 (M, 位与 (M, 65535))
+            SubRoot.加入项目 (相加 (“序号：”, Format (M, 4), “ (按序号导入)”), , , )
+        .否则
+            赋值 (M, RVAtoOffset (M))
+            .如果真 (不等于 (M, -1))
+                CopyImportName (IMAGE_IMPORT_BY_NAME, M, 257)
+            .如果真结束
+            SubRoot.加入项目 (相加 (“序号：”, Format (IMAGE_IMPORT_BY_NAME.Hint, 4), “ 函数名：”, 到文本 (IMAGE_IMPORT_BY_NAME.Name)), , , )
+        .如果结束
+        赋值 (N, 相加 (N, 4))
+        赋值 (M, 取字节集数据 (指针到字节集 (N, 4), 3))
+    .判断循环尾 ()
+    赋值 (ImportBegin, 相加 (ImportBegin, 20))
+    CopyImportDescriptor (IMAGE_IMPORT_DESCRIPTOR, ImportBegin, 20)
+.判断循环尾 ()
+.如果真 (并且 (不等于 (lpEcode, 0), 不等于 (stE_HEADER.m_nDllCmdCount, 0)))
+    赋值 (Root, .加入项目 (“易程序导入表：”, 1, , ))
+    赋值 (ImportBegin, 相加 (lpEcode, 88))
+    .计次循环首 (stE_HEADER.m_nDllCmdCount, N)
+        赋值 (M, 取字节集数据 (指针到字节集 (相加 (ImportBegin, 相乘 (相减 (N, 1), 4)), 4), 3))
+        赋值 (M, 相加 (M, stE_HEADER.m_nConstSectionOffset, lpEcode, 56))
+        赋值 (Dll, 指针到文本 (M))
+        .如果真 (等于 (Dll, “”))
+            赋值 (Dll, “(未指定)”)
+        .如果真结束
+        赋值 (M, 取字节集数据 (指针到字节集 (相加 (ImportBegin, 相乘 (相减 (相加 (stE_HEADER.m_nDllCmdCount, N), 1), 4)), 4), 3))
+        赋值 (M, 相加 (M, stE_HEADER.m_nConstSectionOffset, lpEcode, 56))
+        赋值 (Name, 指针到文本 (M))
+        Root.加入项目 (相加 (Dll, “：”, Name), , , )
+        输出调试文本 (取十六进制文本 (相减 (ImportBegin, lpMemory)))
+    .计次循环尾 ()
+.如果真结束
+0.扩展 ()
+
+.子程序 Export, 空白型, , 
+.局部变量 IMAGE_EXPORT_DIRECTORY, IMAGE_EXPORT_DIRECTORY, , , 
+.局部变量 ExportBegin, 整数型, , , 
+.局部变量 Bin, 字节集, , , 
+.局部变量 Root, 整数型, , , 
+.局部变量 SubRoot, 整数型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 lpIDBegin, 整数型, , , 
+.局部变量 lpID, 整数型, , , 
+.局部变量 ID, 短整数型, , , 
+.局部变量 lpName, 整数型, , , 
+.局部变量 lpRealName, 整数型, , , 
+.局部变量 Name, 文本型, , , 
+.局部变量 lpAddress, 整数型, , , 
+.局部变量 Address, 整数型, , , 
+
+.如果真 (等于 (stNT_HEADERS.DataDirectory [1], 0))
+    .加入项目 (“无导出表”, , , )
+    返回 ()
+.如果真结束
+赋值 (Root, .加入项目 (GetRVASectionName (stNT_HEADERS.DataDirectory [1]), 1, , ))
+赋值 (ExportBegin, RVAtoOffset (stNT_HEADERS.DataDirectory [1]))
+CopyExport (IMAGE_EXPORT_DIRECTORY, ExportBegin, 40)
+赋值 (Root, Root.加入项目 (指针到文本 (RVAtoOffset (IMAGE_EXPORT_DIRECTORY.nName)), 1, , ))
+赋值 (SubRoot, Root.加入项目 (“相关信息”, 3, , ))
+SubRoot.加入项目 (相加 (“Characteristics      ：”, Format (IMAGE_EXPORT_DIRECTORY.Characteristics, 8)), , , )
+SubRoot.加入项目 (相加 (“TimeDateStamp        ：”, Format (IMAGE_EXPORT_DIRECTORY.TimeDateStamp, 8)), , , )
+SubRoot.加入项目 (相加 (“MajorVersion         ：”, Format (IMAGE_EXPORT_DIRECTORY.MajorVersion, 4)), , , )
+SubRoot.加入项目 (相加 (“MinorVersion         ：”, Format (IMAGE_EXPORT_DIRECTORY.MinorVersion, 4)), , , )
+SubRoot.加入项目 (相加 (“nName                ：”, Format (IMAGE_EXPORT_DIRECTORY.nName, 8)), , , )
+SubRoot.加入项目 (相加 (“nBase                ：”, Format (IMAGE_EXPORT_DIRECTORY.nBase, 8)), , , )
+SubRoot.加入项目 (相加 (“NumberOfFunctions    ：”, Format (IMAGE_EXPORT_DIRECTORY.NumberOfFunctions, 8)), , , )
+SubRoot.加入项目 (相加 (“NumberOfNames        ：”, Format (IMAGE_EXPORT_DIRECTORY.NumberOfNames, 8)), , , )
+SubRoot.加入项目 (相加 (“AddressOfFunctions   ：”, Format (IMAGE_EXPORT_DIRECTORY.AddressOfFunctions, 8)), , , )
+SubRoot.加入项目 (相加 (“AddressOfNames       ：”, Format (IMAGE_EXPORT_DIRECTORY.AddressOfNames, 8)), , , )
+SubRoot.加入项目 (相加 (“AddressOfNameOrdinals：”, Format (IMAGE_EXPORT_DIRECTORY.AddressOfNameOrdinals, 8)), , , )
+赋值 (SubRoot, Root.加入项目 (“导出函数”, 4, , ))
+赋值 (lpIDBegin, RVAtoOffset (IMAGE_EXPORT_DIRECTORY.AddressOfNameOrdinals))
+赋值 (lpName, RVAtoOffset (IMAGE_EXPORT_DIRECTORY.AddressOfNames))
+赋值 (lpAddress, RVAtoOffset (IMAGE_EXPORT_DIRECTORY.AddressOfFunctions))
+.变量循环首 (0, 相减 (IMAGE_EXPORT_DIRECTORY.NumberOfFunctions, 1), 1, N)
+    赋值 (lpID, lpIDBegin)
+    .计次循环首 (IMAGE_EXPORT_DIRECTORY.NumberOfNames, )
+        赋值 (ID, 取字节集数据 (指针到字节集 (lpID, 2), 2))
+        .如果真 (等于 (ID, N))
+            跳出循环 ()
+        .如果真结束
+        赋值 (lpID, 相加 (lpID, 2))
+    .计次循环尾 ()
+    .如果 (等于 (ID, N))
+        赋值 (lpRealName, 取字节集数据 (指针到字节集 (lpName, 4), 3))
+        赋值 (lpRealName, RVAtoOffset (lpRealName))
+        赋值 (Name, 指针到文本 (lpRealName))
+    .否则
+        赋值 (Name, “(按序号导出)”)
+    .如果结束
+    赋值 (lpName, 相加 (lpName, 4))
+    赋值 (Address, 取字节集数据 (指针到字节集 (lpAddress, 4), 3))
+    赋值 (lpAddress, 相加 (lpAddress, 4))
+    SubRoot.加入项目 (相加 (“导出序号：”, Format (相加 (N, IMAGE_EXPORT_DIRECTORY.nBase), 4), “ 虚拟地址：”, Format (Address, 8), “ 函数名：”, Name), , , )
+.变量循环尾 ()
+0.扩展 ()
+1.扩展 ()
+SubRoot.扩展 ()
+
+.子程序 _查找文本_被选择, 空白型, , 
+载入 (窗口2, 窗口1, 假)
+
+.子程序 _查找下一个_被选择, 空白型, , 
+.如果 (等于 (szSearchTxt, “”))
+    _查找文本_被选择 ()
+.否则
+    .如果 (查找文本 ())
+        窗口1.获取焦点 (.)
+    .否则
+        信息框 (相加 (“未找到”, #左引号, szSearchTxt, #右引号, “！”), 64, )
+    .如果结束
+    
+.如果结束
+
+
+.子程序 _显示函数列表_被选择, 空白型, , 
+载入 (窗口3, 窗口1, 假)
+
+.子程序 _树型框1_即将扩展, 逻辑型, , 
+.参数 项目索引, 整数型, , 
+
+.局部变量 A, 整数型, , , 
+
+赋值 (A, 项目索引.取图片 ())
+.如果真 (或者 (等于 (A, 1), 等于 (A, 2)))
+    项目索引.置图片 (2)
+    项目索引.置选中图片 (2)
+.如果真结束
+返回 (真)
+
+.子程序 _树型框1_即将收缩, 逻辑型, , 
+.参数 项目索引, 整数型, , 
+
+.局部变量 A, 整数型, , , 
+
+赋值 (A, 项目索引.取图片 ())
+.如果真 (或者 (等于 (A, 1), 等于 (A, 2)))
+    项目索引.置图片 (1)
+    项目索引.置选中图片 (1)
+.如果真结束
+返回 (真)
+
+.子程序 _关闭_被选择, 空白型, , 
+销毁 ()
+
+.窗口程序集 程序集, , , 
+
+.子程序 RVAtoOffset, 整数型, , 
+.参数 RVA, 整数型, , 
+
+.局部变量 Sections, IMAGE_SECTION_HEADER, , , 
+.局部变量 Offset, 整数型, , , 
+.局部变量 SectionEnd, 整数型, , , 
+.局部变量 Ret, 整数型, , , 
+
+赋值 (Offset, 相加 (lpMemory, stDOS_HEADER.e_lfanew, 248))
+.计次循环首 (stNT_HEADERS.NumberOfSections, )
+    CopySectionHeader (Sections, Offset, 40)
+    赋值 (SectionEnd, 相加 (Sections.VirtualAddress, Sections.SizeOfRawData))
+    .如果真 (并且 (大于或等于 (RVA, Sections.VirtualAddress), 小于 (RVA, SectionEnd)))
+        赋值 (Ret, Sections.VirtualAddress)
+        赋值 (Ret, 相加 (相减 (RVA, Ret), Sections.PointerToRawData))
+        返回 (相加 (Ret, lpMemory))
+    .如果真结束
+    赋值 (Offset, 相加 (Offset, 40))
+.计次循环尾 ()
+返回 (-1)
+
+.子程序 GetRVASectionName, 文本型, , 
+.参数 RVA, 整数型, , 
+
+.局部变量 Sections, IMAGE_SECTION_HEADER, , , 
+.局部变量 Offset, 整数型, , , 
+.局部变量 SectionEnd, 整数型, , , 
+.局部变量 Ret, 整数型, , , 
+
+赋值 (Offset, 相加 (stDOS_HEADER.e_lfanew, 248, lpMemory))
+.计次循环首 (stNT_HEADERS.NumberOfSections, )
+    CopySectionHeader (Sections, Offset, 40)
+    赋值 (SectionEnd, 相加 (Sections.VirtualAddress, Sections.SizeOfRawData))
+    .如果真 (并且 (大于或等于 (RVA, Sections.VirtualAddress), 小于 (RVA, SectionEnd)))
+        返回 (到文本 (Sections.Name))
+    .如果真结束
+    赋值 (Offset, 相加 (Offset, 40))
+.计次循环尾 ()
+返回 (“”)
+
+.窗口程序集 窗口程序集3, , , 
+
+.子程序 _按钮2_被单击, 空白型, , 
+销毁 ()
+
+.子程序 _按钮1_被单击, 空白型, , 
+赋值 (szSearchTxt, .内容)
+.如果 (查找文本 ())
+    窗口1.获取焦点 (.)
+    窗口2.销毁 ()
+.否则
+    信息框 (相加 (“未找到”, #左引号, szSearchTxt, #右引号, “！”), 64, )
+.如果结束
+
+
+.子程序 _窗口2_创建完毕, 空白型, , 
+赋值 (.内容, szSearchTxt)
+获取焦点 ()
+赋值 (.被选择字符数, -1)
+
+.子程序 查找文本, 逻辑型, , 
+.局部变量 N, 整数型, , , 
+.局部变量 Found, 逻辑型, , , 
+.局部变量 Txt, 文本型, , , 
+
+.变量循环首 (相加 (窗口1.., 1), 相减 (窗口1.取项目数 (.), 1), 1, N)
+    赋值 (Txt, 窗口1.取项目文本 (., N))
+    .如果真 (不等于 (寻找文本 (Txt, szSearchTxt, , 真), -1))
+        赋值 (Found, 真)
+        赋值 (窗口1.., N)
+        跳出循环 ()
+    .如果真结束
+    
+.变量循环尾 ()
+返回 (Found)
+
+.窗口程序集 窗口程序集4, , , 
+
+.程序集变量 Sort, 逻辑型, , , 
+.子程序 _窗口3_创建完毕, 空白型, , 
+.局部变量 N, 整数型, , , 
+.局部变量 Txt, 文本型, , , 
+.局部变量 Dll, 文本型, , , 
+.局部变量 ID, 文本型, , , 
+.局部变量 Name, 文本型, , , 
+.局部变量 M, 整数型, , , 
+.局部变量 ImportBegin, 整数型, , , 
+.局部变量 Root, 整数型, , , 
+.局部变量 Bin, 字节集, , , 
+.局部变量 IMAGE_IMPORT_DESCRIPTOR, IMAGE_IMPORT_DESCRIPTOR, , , 
+.局部变量 IMAGE_IMPORT_BY_NAME, IMAGE_IMPORT_BY_NAME, , , 
+
+.如果 (不等于 (lpMemory, 0))
+    赋值 (ImportBegin, RVAtoOffset (stNT_HEADERS.DataDirectory [3]))
+    CopyImportDescriptor (IMAGE_IMPORT_DESCRIPTOR, ImportBegin, 20)
+    .判断循环首 (取反 (并且 (等于 (IMAGE_IMPORT_DESCRIPTOR.Name, 0), 等于 (IMAGE_IMPORT_DESCRIPTOR.FirstThunk, 0), 等于 (IMAGE_IMPORT_DESCRIPTOR.TimeDateStamp, 0), 等于 (IMAGE_IMPORT_DESCRIPTOR.ForwarderChain, 0), 等于 (IMAGE_IMPORT_DESCRIPTOR.OrginalFirstThunk, 0))))
+        赋值 (N, RVAtoOffset (IMAGE_IMPORT_DESCRIPTOR.Name))
+        赋值 (Name, 指针到文本 (N))
+        .如果 (不等于 (IMAGE_IMPORT_DESCRIPTOR.OrginalFirstThunk, 0))
+            赋值 (N, RVAtoOffset (IMAGE_IMPORT_DESCRIPTOR.OrginalFirstThunk))
+        .否则
+            赋值 (N, RVAtoOffset (IMAGE_IMPORT_DESCRIPTOR.FirstThunk))
+        .如果结束
+        赋值 (M, 取字节集数据 (指针到字节集 (N, 4), 3))
+        .判断循环首 (不等于 (M, 0))
+            .如果 (不等于 (位与 (M, 2147483648), 0))
+                赋值 (M, 位与 (M, 65535))
+                赋值 (Root, .插入表项 (“(按序号导入)”, , , , ))
+                Root.置标题 (1, Format (M, 4))
+            .否则
+                赋值 (M, RVAtoOffset (M))
+                CopyImportName (IMAGE_IMPORT_BY_NAME, M, 257)
+                赋值 (Root, .插入表项 (到文本 (IMAGE_IMPORT_BY_NAME.Name), , , , ))
+                Root.置标题 (1, Format (IMAGE_IMPORT_BY_NAME.Hint, 4))
+            .如果结束
+            Root.置标题 (2, Name)
+            赋值 (N, 相加 (N, 4))
+            赋值 (M, 取字节集数据 (指针到字节集 (N, 4), 3))
+        .判断循环尾 ()
+        赋值 (ImportBegin, 相加 (ImportBegin, 20))
+        CopyImportDescriptor (IMAGE_IMPORT_DESCRIPTOR, ImportBegin, 20)
+    .判断循环尾 ()
+.否则
+    .计次循环首 (窗口1.取项目数 (.), N)
+        赋值 (Txt, 窗口1.取项目文本 (., 相减 (N, 1)))
+        .如果真 (等于 (取文本左边 (Txt, 2), “序”))
+            赋值 (Dll, 窗口1.取项目文本 (., 窗口1.取父项目 (., 窗口1.取父项目 (., 相减 (N, 1)))))
+            赋值 (ID, 取文本中间 (Txt, 7, 6))
+            .如果 (等于 (取文本中间 (Txt, 14, 1), “(”))
+                赋值 (Name, “(按序号导入)”)
+            .否则
+                赋值 (Name, 取文本右边 (Txt, 相减 (取文本长度 (Txt), 21)))
+            .如果结束
+            赋值 (M, .插入表项 (Name, , , , ))
+            M.置标题 (2, Dll)
+            M.置标题 (1, ID)
+        .如果真结束
+        
+    .计次循环尾 ()
+.如果结束
+0.置列图片 (-1)
+1.置列图片 (-1)
+2.置列图片 (-1)
+
+.子程序 _窗口3_尺寸被改变, 空白型, , 
+赋值 (., 取用户区宽度 ())
+赋值 (., 取用户区高度 ())
+
+
+.子程序 _超级列表框1_表头被单击, 空白型, , 
+.参数 被单击列索引, 整数型, , 
+
+.局部变量 N, 整数型, , , 
+
+赋值 (Sort, 取反 (Sort))
+超级列表框排序 (被单击列索引, 1, 假, Sort)
+.变量循环首 (0, 相减 (取列数 (), 1), 1, N)
+    .如果 (不等于 (N, 被单击列索引))
+        N.置列图片 (-1)
+    .否则
+        .如果 (Sort)
+            N.置列图片 (1)
+        .否则
+            N.置列图片 (0)
+        .如果结束
+        
+    .如果结束
+    
+.变量循环尾 ()
+
+.子程序 超级列表框排序, 空白型, , 
+.参数 对象, 超级列表框, , 
+.参数 列索引, 整数型, , 
+.参数 类型, 整数型, 可空, 
+.参数 区分大小写, 逻辑型, 可空, 
+.参数 排序方式, 逻辑型, 可空, 
+
+.局部变量 排序变量, 文本型, , "0", 
+.局部变量 序号数组, 整数型, , "0", 
+.局部变量 变量, 整数型, , , 
+.局部变量 数据, 文本型, , , 
+.局部变量 列数, 整数型, , , 
+.局部变量 行数, 整数型, , , 
+.局部变量 单元数, 整数型, , , 
+
+赋值 (类型, 选择 (并且 (大于或等于 (类型, 0), 小于或等于 (类型, 3)), 类型, 1))
+赋值 (区分大小写, 选择 (是否为空 (区分大小写), 真, 区分大小写))
+赋值 (排序方式, 选择 (是否为空 (排序方式), 真, 排序方式))
+.计次循环首 (对象.取表项数 (), 变量)
+    赋值 (数据, 对象.取标题 (相减 (变量, 1), 列索引))
+    .如果 (不等于 (类型, 3))
+        赋值 (单元数, 二分查找 (排序变量, 数据, 类型, 区分大小写))
+        插入成员 (排序变量, 单元数, 数据)
+        插入成员 (序号数组, 单元数, 相减 (变量, 1))
+    .否则
+        插入成员 (序号数组, 选择 (等于 (数据, “假”), 变量, 1), 相减 (变量, 1))
+    .如果结束
+    
+.计次循环尾 ()
+赋值 (列数, 对象.取列数 ())
+赋值 (行数, 取数组成员数 (序号数组))
+赋值 (单元数, 相乘 (行数, 列数))
+重定义数组 (排序变量, 假, 单元数)
+.计次循环首 (单元数, 变量)
+    赋值 (排序变量 [变量], 对象.取标题 (序号数组 [取绝对值 (相减 (选择 (排序方式, -1, 行数), 整除 (相减 (变量, 1), 列数)))], 求余数 (相减 (变量, 1), 列数)))
+.计次循环尾 ()
+.计次循环首 (单元数, 变量)
+    对象.置标题 (整除 (相减 (变量, 1), 列数), 求余数 (相减 (变量, 1), 列数), 排序变量 [变量])
+.计次循环尾 ()
+
+.子程序 二分查找, 整数型, , 
+.参数 数组, 文本型, 数组, 
+.参数 待查, 文本型, , 
+.参数 类型, 整数型, , 
+.参数 区分大小写, 逻辑型, , 
+
+.局部变量 K, 整数型, , , 
+.局部变量 M, 整数型, , , 
+.局部变量 J, 整数型, , , 
+.局部变量 数值A, 双精度小数型, , , 
+.局部变量 数值B, 双精度小数型, , , 
+.局部变量 文本, 文本型, , , 
+
+赋值 (K, 1)
+赋值 (M, 取数组成员数 (数组))
+.如果真 (等于 (M, 0))
+    返回 (1)
+.如果真结束
+.判断开始 (等于 (类型, 0))
+    赋值 (数值A, 到数值 (待查))
+    .如果真 (大于或等于 (数值A, 到数值 (数组 [M])))
+        返回 (相加 (M, 1))
+    .如果真结束
+    .如果真 (小于或等于 (数值A, 到数值 (数组 [1])))
+        返回 (1)
+    .如果真结束
+    .判断循环首 (小于 (K, 相减 (M, 1)))
+        赋值 (J, 整除 (相加 (K, M), 2))
+        赋值 (数值B, 到数值 (数组 [J]))
+        .如果真 (等于 (数值A, 数值B))
+            赋值 (K, J)
+            跳出循环 ()
+        .如果真结束
+        .如果 (小于 (数值A, 数值B))
+            赋值 (M, J)
+        .否则
+            赋值 (K, J)
+        .如果结束
+        
+    .判断循环尾 ()
+.判断 (等于 (类型, 1))
+    .如果真 (大于或等于 (文本比较 (待查, 数组 [M], 区分大小写), 0))
+        返回 (相加 (M, 1))
+    .如果真结束
+    .如果真 (小于或等于 (文本比较 (待查, 数组 [1], 区分大小写), 0))
+        返回 (1)
+    .如果真结束
+    .判断循环首 (小于 (K, 相减 (M, 1)))
+        赋值 (J, 整除 (相加 (K, M), 2))
+        .如果真 (等于 (文本比较 (待查, 数组 [J], 区分大小写), 0))
+            赋值 (K, J)
+            跳出循环 ()
+        .如果真结束
+        .如果 (小于 (文本比较 (待查, 数组 [J], 区分大小写), 0))
+            赋值 (M, J)
+        .否则
+            赋值 (K, J)
+        .如果结束
+        
+    .判断循环尾 ()
+    
+.判断 (等于 (类型, 2))
+    赋值 (数值A, 取字节集数据 (到字节集 (到时间 (待查)), #双精度小数型))
+    .如果真 (大于或等于 (数值A, 取字节集数据 (到字节集 (到时间 (数组 [M])), #双精度小数型)))
+        返回 (相加 (M, 1))
+    .如果真结束
+    .如果真 (小于或等于 (数值A, 取字节集数据 (到字节集 (到时间 (数组 [1])), #双精度小数型)))
+        返回 (1)
+    .如果真结束
+    .判断循环首 (小于 (K, 相减 (M, 1)))
+        赋值 (J, 整除 (相加 (K, M), 2))
+        赋值 (数值B, 取字节集数据 (到字节集 (到时间 (数组 [J])), #双精度小数型))
+        .如果真 (等于 (数值A, 数值B))
+            赋值 (K, J)
+            跳出循环 ()
+        .如果真结束
+        .如果 (小于 (数值A, 数值B))
+            赋值 (M, J)
+        .否则
+            赋值 (K, J)
+        .如果结束
+        
+    .判断循环尾 ()
+.默认
+    
+.判断结束
+返回 (相加 (K, 1))
+
+.子程序 _超级列表框1_表项被激活, 空白型, , 
+置剪辑板文本 (.取标题 (., 0))
+
+.子程序 _超级列表框1_结束编辑, 逻辑型, , 
+.参数 表项索引, 整数型, , 
+
+返回 (假)
+
+.窗口程序集 窗口程序集5, , , 
+
+.子程序 _窗口5_创建完毕, 空白型, , 
+.局部变量 Num, 整数型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 M, 整数型, , , 
+.局部变量 K, 整数型, , , 
+.局部变量 String, 文本型, , , 
+.局部变量 Root, 整数型, , , 
+.局部变量 Bin, 字节集, , , 
+
+清空 ()
+赋值 (Num, _启动窗口.取父项目 (., _启动窗口..))
+赋值 (M, _启动窗口.取项目数值 (., Num))
+赋值 (K, 相除 (取字节集长度 (Reloc [M]), 4))
+.计次循环首 (K, N)
+    赋值 (Bin, 取字节集中间 (Reloc [M], 相减 (相乘 (N, 4), 3), 4))
+    赋值 (String, Format (取字节集数据 (Bin, 3), 8))
+    赋值 (String, 相加 (“m_dwOffset[”, 到文本 (N), “]：”, String))
+    String.加入项目 ()
+    赋值 (.可视, 真)
+.计次循环尾 ()
+
+.窗口程序集 窗口程序集6, , , 
+
+.程序集变量 szResName, 文本型, , , 
+.程序集变量 Root, 整数型, , , 
+.程序集变量 SubRoot1, 整数型, , , 
+.程序集变量 SubRoot2, 整数型, , , 
+.程序集变量 hFile, 整数型, , , 
+.子程序 _窗口4_创建完毕, 空白型, , 
+.局部变量 Offset, 整数型, , , 
+
+.如果真 (或者 (等于 (stNT_HEADERS.DataDirectory [5], 0), 等于 (stNT_HEADERS.DataDirectory [6], 0)))
+    信息框 (“无资源表！”, 16, “错误”)
+    销毁 ()
+    返回 ()
+.如果真结束
+赋值 (., #ICONS)
+赋值 (窗口4.标题, 相加 (“查看资源表 - ”, szRecentFile))
+赋值 (Offset, RVAtoOffset (stNT_HEADERS.DataDirectory [5]))
+赋值 (Root, .加入项目 (相加 (“资源表所在节：”, GetRVASectionName (stNT_HEADERS.DataDirectory [5])), 1, , -1))
+赋值 (szResName, 取空白文本 (256))
+ProcessRes (Offset, Offset, 1)
+Root.扩展 ()
+
+.子程序 ProcessRes, 空白型, , 
+.参数 lpRes, 整数型, , 
+.参数 lpResDir, 整数型, , 
+.参数 dwLevel, 整数型, , 
+
+.局部变量 Num, 整数型, , , 
+.局部变量 Offset1, 整数型, , , ebx
+.局部变量 Offset2, 整数型, , , eax
+.局部变量 ResDir, IMAGE_RESOURCE_DIRECTORY, , , 
+.局部变量 ResDirEntry, IMAGE_RESOURCE_DIRECTORY_ENTRY, , , 
+.局部变量 ResDataEntry, IMAGE_RESOURCE_DATA_ENTRY, , , 
+.局部变量 szTemp, 字节集, , , 
+
+CopyResource (ResDir, lpResDir, 16)
+赋值 (lpResDir, 相加 (lpResDir, 16))
+.变量循环首 (相加 (ResDir.NumberOfIdEntries, ResDir.NumberOfNamedEntries), 1, -1, Num)
+    CopyResDirEntry (ResDirEntry, lpResDir, 8)
+    赋值 (Offset1, ResDirEntry.OffsetToData)
+    .如果 (不等于 (位与 (Offset1, 2147483648), 0)) ' 80000000
+        赋值 (Offset1, 相加 (位与 (Offset1, 2147483647), lpRes)) ' 7FFFFFFF
+        .判断开始 (等于 (dwLevel, 1))
+            赋值 (Offset2, ResDirEntry.Name)
+            .如果 (不等于 (位与 (Offset2, 2147483648), 0))
+                赋值 (Offset2, 相加 (位与 (Offset2, 2147483647), lpRes))
+                WideCharToMultiByte (0, 512, 相加 (Offset2, 2), 取字节集数据 (指针到字节集 (Offset2, 2), 2), szTemp, 256, 0, 0)
+                赋值 (szResName, 删尾空 (取字节集数据 (szTemp, 10)))
+            .否则
+                .如果 (小于或等于 (Offset2, 16))
+                    赋值 (szResName, 多项选择 (Offset2, “光标”, “位图”, “图标”, “菜单”, “对话框”, “字符串”, “字体目录”, “字体”, “快捷键”, “未格式化资源”, “消息表”, “光标组”, “未定义类型”, “图标组”, “未定义类型”, “版本信息”))
+                .否则
+                    赋值 (szResName, 相加 (到文本 (Offset2), “(自定义编号)”))
+                .如果结束
+                
+            .如果结束
+            赋值 (SubRoot1, Root.加入项目 (szResName, 1, , Offset2))
+        .判断 (等于 (dwLevel, 2))
+            赋值 (Offset2, ResDirEntry.Name)
+            .如果 (不等于 (位与 (Offset2, 2147483648), 0))
+                赋值 (Offset2, 相加 (位与 (Offset2, 2147483647), lpRes))
+                WideCharToMultiByte (0, 512, 相加 (Offset2, 2), 取字节集数据 (指针到字节集 (Offset2, 2), 2), szTemp, 256, 0, 0)
+                赋值 (szResName, 取字节集数据 (szTemp, 10))
+                赋值 (SubRoot2, SubRoot1.加入项目 (相加 (“Name：”, szResName), 4, , SubRoot1.取项目数值 ()))
+            .否则
+                赋值 (SubRoot2, SubRoot1.加入项目 (相加 (“ID：”, 到文本 (Offset2)), 4, , SubRoot1.取项目数值 ()))
+            .如果结束
+            
+        .默认
+            跳出循环 ()
+        .判断结束
+        ProcessRes (lpRes, Offset1, 相加 (dwLevel, 1))
+    .否则
+        CopyResDataEntry (ResDataEntry, 相加 (Offset1, lpRes), 16)
+        SubRoot2.加入项目 (相加 (“文件偏移：”, Format (相减 (RVAtoOffset (ResDataEntry.OffsetToData), lpMemory), 8)), , , )
+        SubRoot2.加入项目 (相加 (“数据尺寸：”, 到文本 (ResDataEntry.Size), “字节”), , , )
+        SubRoot2.加入项目 (相加 (“代码页  ：”, Format (ResDirEntry.Name, 4)), , , )
+    .如果结束
+    赋值 (lpResDir, 相加 (lpResDir, 8))
+.变量循环尾 ()
+
+.子程序 _树型框1_即将扩展, 逻辑型, , 
+.参数 项目索引, 整数型, , 
+
+.局部变量 A, 整数型, , , 
+
+赋值 (A, 项目索引.取图片 ())
+.如果真 (或者 (等于 (A, 1), 等于 (A, 2)))
+    项目索引.置图片 (2)
+    项目索引.置选中图片 (2)
+.如果真结束
+返回 (真)
+
+.子程序 _树型框1_即将收缩, 逻辑型, , 
+.参数 项目索引, 整数型, , 
+
+.局部变量 A, 整数型, , , 
+
+赋值 (A, 项目索引.取图片 ())
+.如果真 (或者 (等于 (A, 1), 等于 (A, 2)))
+    项目索引.置图片 (1)
+    项目索引.置选中图片 (1)
+.如果真结束
+返回 (真)
+
+.子程序 _窗口4_尺寸被改变, 空白型, , 
+.局部变量 Width, 整数型, , , 
+.局部变量 Height, 整数型, , , 
+
+赋值 (Width, 相减 (取用户区宽度 (), Width, 1))
+.如果真 (小于 (取用户区宽度 (), 440))
+    赋值 (窗口4.宽度, 相减 (相加 (440, 窗口4.宽度), 取用户区宽度 ()))
+.如果真结束
+赋值 (Height, 取用户区高度 ())
+连续赋值 (Height, ., .高度, .高度)
+赋值 (.宽度, Width)
+赋值 (.宽度, Width)
+
+.子程序 _树型框1_项目被选择, 空白型, , 
+.参数 选择方式, 整数型, , 
+
+.局部变量 ID, 整数型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 Offset, 整数型, , , 
+.局部变量 Data, 字节集, , , 
+.局部变量 RealData, 字节集, , , 
+.局部变量 TxtLength, 整数型, , , 
+.局部变量 Length, 整数型, , , 
+.局部变量 Total, 整数型, , , 
+
+赋值 (ID, .)
+赋值 (N, ID.取项目数值 ())
+.如果真 (等于 (ID.取父项目 ().取项目数值 (), -1))
+    返回 ()
+.如果真结束
+.如果真 (并且 (不等于 (N, 0), 不等于 (N, -1)))
+    .判断开始 (等于 (N, 1))
+        赋值 (.可视, 真)
+        赋值 (.可视, 假)
+        赋值 (.图片, 指针到字节集 (相加 (GetNum (相加 (ID, 1)), lpMemory), 相加 (GetNum (相加 (ID, 2)), lpMemory)))
+    .判断 (等于 (N, 6))
+        赋值 (.可视, 真)
+        赋值 (.可视, 假)
+        赋值 (Offset, 相加 (GetNum (相加 (ID, 1)), lpMemory))
+        赋值 (Total, GetNum (相加 (ID, 2)))
+        .判断循环首 (等于 (Total, Length))
+            赋值 (TxtLength, 取字节集数据 (指针到字节集 (Offset, 2), 2))
+            赋值 (Offset, 相加 (Offset, 2))
+            赋值 (Data, 指针到字节集 (Offset, 相乘 (TxtLength, 2)))
+            .变量循环首 (1, TxtLength, 1, N)
+                .如果真 (不等于 (位与 (2147483648, Data [N]), 0))
+                    赋值 (N, 相加 (N, 1))
+                    
+                .如果真结束
+                
+            .变量循环尾 ()
+            WideCharToMultiByte (0, 512, 相加 (Offset, lpMemory, 2), TxtLength, Data, TxtLength, 0, 0)
+            赋值 (TxtLength, 1)
+        .判断循环尾 ()
+        
+        赋值 (.内容, 取字节集数据 (Data, 10))
+    .默认
+        
+    .判断结束
+    
+.如果真结束
+
+
+.子程序 GetNum, 整数型, , 
+.参数 ID, 整数型, , 
+
+.局部变量 Num, 整数型, , , 
+.局部变量 String, 文本型, , , 
+
+赋值 (String, ID.取项目文本 ())
+赋值 (String, 取文本右边 (String, 相减 (取文本长度 (String), 倒找文本 (String, “：”, , 假), 1)))
+StrToIntEx (String, 1, Num)
+返回 (Num)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

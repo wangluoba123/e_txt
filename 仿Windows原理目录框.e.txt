@@ -1,0 +1,243 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 444
+    高度 = 468
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “[神2也教你学E] - 仿Windows原理目录框”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 1 2 扩展界面支持库一
+
+
+
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 TextSelected, 整数型, , , 
+.子程序 FixDiskPath, 空白型, , 
+.参数 TreeForm, 树型框, , 
+.参数 Disk, 文本型, , 
+
+.局部变量 StringTemp, 文本型, , , 
+.局部变量 StringTempB, 文本型, , , 
+.局部变量 IntTemp, 整数型, , "2", 
+.局部变量 PathAry, 文本型, , "0", 
+
+赋值 (StringTemp, 全文本替换 (Disk, “\”, “/”))
+.如果真 (不等于 (取文本右边 (StringTemp, 1), “/”))
+    赋值 (StringTemp, 相加 (StringTemp, “/”))
+.如果真结束
+TreeForm.清空 ()
+TreeForm.加入项目 (-1, 取文本左边 (StringTemp, 2), 0, , )
+赋值 (StringTempB, 寻找文件 (相加 (StringTemp, “*.*”), #子目录))
+.判断循环首 (不等于 (StringTempB, “”))
+    .如果真 (并且 (不等于 (StringTempB, “.”), 不等于 (StringTempB, “..”)))
+        TreeForm.加入项目 (0, StringTempB, 1, 2, )
+        .如果真 (IsExistSongDir (相加 (StringTemp, StringTempB)))
+            TreeForm.置项目数值 (相减 (TreeForm.取项目数 (), 1), 38)
+            TreeForm.加入项目 (相减 (TreeForm.取项目数 (), 1), “ ”, , , )
+        .如果真结束
+        
+    .如果真结束
+    赋值 (StringTempB, 寻找文件 (#子目录))
+.判断循环尾 ()
+TreeForm.扩展 (0)
+
+.子程序 IsExistSongDir, 逻辑型, , 
+.参数 Dir, 文本型, , 
+
+.局部变量 StringTemp, 文本型, , , 
+
+赋值 (StringTemp, 寻找文件 (相加 (Dir, “/*.*”), #子目录))
+.判断循环首 (不等于 (StringTemp, “”))
+    .如果真 (并且 (不等于 (StringTemp, “.”), 不等于 (StringTemp, “..”)))
+        跳出循环 ()
+    .如果真结束
+    赋值 (StringTemp, 寻找文件 (#子目录))
+.判断循环尾 ()
+.如果 (不等于 (StringTemp, “”))
+    返回 (真)
+.否则
+    返回 (假)
+.如果结束
+
+
+.子程序 全文本替换, 文本型, 公开, 
+.参数 具体文本, 文本型, , 
+.参数 要替换的文本, 文本型, , 
+.参数 被替换的文本, 文本型, , 
+
+.局部变量 操作调用文本变量, 文本型, , , 文本操作过程中使用的文本变量
+.局部变量 操作调用整数变量, 整数型, , , 文本操作过程中用来记录当前寻找的位置
+
+赋值 (操作调用文本变量, 具体文本)
+.判断循环首 (大于 (寻找文本 (操作调用文本变量, 要替换的文本, 操作调用整数变量, 真), -1))
+    赋值 (操作调用整数变量, 寻找文本 (操作调用文本变量, 要替换的文本, 操作调用整数变量, 真))
+    赋值 (操作调用文本变量, 文本替换 (操作调用文本变量, 操作调用整数变量, 取文本长度 (要替换的文本), 被替换的文本))
+    赋值 (操作调用整数变量, 相加 (操作调用整数变量, 取文本长度 (被替换的文本)))
+.判断循环尾 ()
+返回 (操作调用文本变量)
+
+.子程序 _Driver1_驱动器被改变, 空白型, , 
+FixDiskPath (相加 (.驱动器, “:/”))
+
+.子程序 _TreeView1_即将扩展, 逻辑型, , 
+.参数 项目索引, 整数型, , 
+
+FixDirPath (项目索引)
+
+.子程序 FixDirPath, 空白型, , 
+.参数 TreeForm, 树型框, , 
+.参数 ListNumInfo, 整数型, , 
+
+.局部变量 DirPath, 文本型, , , 
+.局部变量 StringTemp, 文本型, , , 
+.局部变量 IntTemp, 整数型, , , 
+
+.如果真 (等于 (TreeForm.取项目数值 (ListNumInfo), 38))
+    TreeForm.置项目数值 (ListNumInfo, 0)
+    TreeForm.删除项目 (相加 (ListNumInfo, 1))
+    赋值 (DirPath, GetDirPath (TreeForm, ListNumInfo))
+    赋值 (IntTemp, ListNumInfo)
+    赋值 (StringTemp, 寻找文件 (相加 (DirPath, “/*.*”), #子目录))
+    .判断循环首 (不等于 (StringTemp, “”))
+        .如果真 (并且 (不等于 (StringTemp, “.”), 不等于 (StringTemp, “..”)))
+            TreeForm.加入项目 (ListNumInfo, StringTemp, 1, 2, )
+            赋值 (IntTemp, 相加 (IntTemp, 1))
+            .如果真 (IsExistSongDir (相加 (DirPath, “/”, StringTemp)))
+                TreeForm.置项目数值 (IntTemp, 38)
+                TreeForm.加入项目 (IntTemp, “ ”, , , )
+                赋值 (IntTemp, 相加 (IntTemp, 1))
+            .如果真结束
+            
+        .如果真结束
+        赋值 (StringTemp, 寻找文件 (#子目录))
+    .判断循环尾 ()
+    TreeForm.扩展 (ListNumInfo)
+.如果真结束
+
+
+.子程序 FixFullPath, 空白型, , 
+.参数 TreeForm, 树型框, , 
+.参数 Path, 文本型, , 
+
+.局部变量 StringTemp, 文本型, , , 
+.局部变量 StringTempAry, 文本型, , "0", 
+.局部变量 IntTemp, 整数型, , "2", 
+
+赋值 (StringTemp, 全文本替换 (Path, “\”, “/”))
+.如果真 (等于 (取文本右边 (StringTemp, 1), “/”))
+    赋值 (StringTemp, 取文本左边 (StringTemp, 相减 (取文本长度 (StringTemp), 1)))
+.如果真结束
+赋值 (StringTempAry, 分割文本 (StringTemp, “/”, ))
+.如果真 (小于 (取数组成员数 (StringTempAry), 1))
+    重定义数组 (StringTempAry, 假, 1)
+    赋值 (StringTempAry [1], 取文本左边 (StringTemp, 2))
+.如果真结束
+.如果真 (不等于 (TreeForm.取项目文本 (0), StringTempAry [1]))
+    FixDiskPath (TreeForm, StringTempAry [1])
+.如果真结束
+.计次循环首 (相减 (取数组成员数 (StringTempAry), 1), IntTemp [1])
+    .计次循环首 (TreeForm.取项目数 (), IntTemp [2])
+        .如果真 (并且 (等于 (TreeForm.取缩进层次 (相减 (IntTemp [2], 1)), 相加 (IntTemp [1], 1)), 等于 (TreeForm.取项目文本 (相减 (IntTemp [2], 1)), StringTempAry [相加 (IntTemp [1], 1)])))
+            .如果真 (等于 (TreeForm.取项目数值 (相减 (IntTemp [2], 1)), 38))
+                FixDirPath (TreeForm, 相减 (IntTemp [2], 1))
+            .如果真结束
+            TreeForm.扩展 (相减 (IntTemp [2], 1))
+            赋值 (TreeForm., 相减 (IntTemp [2], 1))
+        .如果真结束
+        
+    .计次循环尾 ()
+.计次循环尾 ()
+
+.子程序 GetDirPath, 文本型, , 
+.参数 TreeForm, 树型框, , 
+.参数 ListNumInfo, 整数型, , 
+
+.局部变量 IntTemp, 整数型, , , 
+.局部变量 IntTempB, 整数型, , , 
+.局部变量 StringTemp, 文本型, , , 
+
+赋值 (IntTempB, ListNumInfo)
+.计次循环首 (TreeForm.取缩进层次 (ListNumInfo), IntTemp)
+    赋值 (StringTemp, 相加 (TreeForm.取项目文本 (IntTempB), “/”, StringTemp))
+    赋值 (IntTempB, TreeForm.取父项目 (IntTempB))
+.计次循环尾 ()
+赋值 (StringTemp, 取文本左边 (StringTemp, 相减 (取文本长度 (StringTemp), 1)))
+返回 (StringTemp)
+
+.子程序 _TreeView1_项目被选择, 空白型, , 
+.参数 选择方式, 整数型, , 
+
+赋值 (.内容, GetDirPath (.))
+.如果真 (并且 (.是否有子项目 (.), 等于 (.是否已扩展 (.), 假)))
+    .扩展 (.)
+.如果真结束
+
+
+.子程序 _BtnGoto_被单击, 空白型, , 
+FixFullPath (.内容)
+
+.子程序 _Text1_失去焦点, 空白型, , 
+赋值 (TextSelected, 0)
+
+.子程序 _Text1_鼠标左键被放开, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.如果真 (不等于 (TextSelected, 8))
+    赋值 (TextSelected, 8)
+    赋值 (.被选择字符数, 取文本长度 (.内容))
+.如果真结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

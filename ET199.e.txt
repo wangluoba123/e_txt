@@ -1,0 +1,653 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：坚石诚信ET199易语言例程
+ ' 程序描述：合作厂家：
+坚石诚信科技有限公司
+http://www.rockey.com.cn/
+ ' 程序作者：大连大有吴涛易语言软件开发有限公司
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 494
+    高度 = 384
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “坚石科技ET199加密狗测试程序”
+    帮助文件名 = “”
+
+
+
+.常量 ET_S_SUCCESS, "0", , 操作成功
+.常量 ET_E_KEY_REMOVED, "“F0000001”", , 设备未连接，或者被移除
+.常量 ET_E_INVALID_PARAMETER, "“F0000002”", , 参数错误
+.常量 ET_E_COMM_ERROR, "“F0000003”", , 通讯错误，例如数据传输超时
+.常量 ET_E_INSUFFICIENT_BUFFER, "“F0000004”", , 缓冲区空间不足
+.常量 ET_E_NO_LIST, "“F0000005”", , 没有找到设备列表
+.常量 ET_E_DEVPIN_NOT_CHECK, "“F0000006”", , 开发商口令没有验证
+.常量 ET_E_USERPIN_NOT_CHECK, "“F0000007”", , 用户口令没有验证
+.常量 ET_E_RSA_FILE_FORMAT_ERROR, "“F0000008”", , RSA文件格式错误
+.常量 ET_E_DIR_NOT_FOUND, "“F0000009”", , 目录没有找到
+.常量 ET_E_ACCESS_DENIED, "“F000000A”", , 访问被拒绝
+.常量 ET_E_ALREADY_INITIALIZED, "“F000000B”", , 产品已经初始化
+.常量 ET_E_INCORRECT_PIN, "“F000000C”", , 密码不正确
+.常量 ET_E_DF_SIZE, "“F000000D”", , 指定的目录空间大小不够
+.常量 ET_E_FILE_EXIST, "“F000000E”", , 文件已存在
+.常量 ET_E_UNSUPPORTED, "“F000000F”", , 功能不支持或尚未建立文件系统
+.常量 ET_E_FILE_NOT_FOUND, "“F0000010”", , 未找到指定的文件
+.常量 ET_E_ALREADY_OPENED, "“F0000011”", , 卡已经被打开
+.常量 ET_E_DIRECTORY_EXIST, "“F0000012”", , 目录已存在
+.常量 ET_E_CODE_RANGE, "“F0000013”", , 虚拟机内存地址溢出
+.常量 ET_E_INVALID_POINTER, "“F0000014”", , 虚拟机错误的指针
+.常量 ET_E_GENERAL_FILESYSTEM, "“F0000015”", , 常规文件系统错误
+.常量 ET_E_OFFSET_BEYOND, "“F0000016”", , 文件偏移量超出文件大小
+.常量 ET_E_FILE_TYPE_MISMATCH, "“F0000017”", , 文件类型不匹配
+.常量 ET_E_PIN_BLOCKED, "“F0000018”", , PIN码锁死
+.常量 ET_E_INVALID_CONTEXT, "“F0000019”", , ETContext 参数错误
+.常量 ET_E_ERROR_UNKNOWN, "“FFFFFFFF”", , 未知的错误
+.常量 , , , 
+.常量 MAX_ATR_LEN, "16", , 最大ATR长度
+.常量 MAX_ID_LEN, "8", , 最大硬件ID长度
+.常量 , , , 
+.常量 ET_USER_PIN, "0", , 用户PIN
+.常量 ET_DEV_PIN, "1", , 开发商PIN
+.常量 , , , 
+.常量 ET_CREATE_NEW, "0", , 创建新文件
+.常量 ET_UPDATE_FILE, "1", , 更新数据文件
+.常量 , , , 
+.常量 ET_CREATE_ROOT_DIR, "0", , 创建根目录
+.常量 ET_CREATE_SUB_DIR, "1", , 创建当前目录的子目录
+.常量 , , , 
+.常量 ET_LED_UP, "1", , LED灯亮
+.常量 ET_LED_DOWN, "2", , LED灯灭
+.常量 ET_LED_WINK, "3", , LED灯闪烁
+.常量 , , , 
+.常量 ET_GET_DEVICE_TYPE, "17", , 获得设备类型
+.常量 ET_GET_SERIAL_NUMBER, "18", , 获取硬件序列号
+.常量 ET_GET_DEVICE_USABLE_SPACE, "19", , 获得设备空间大小
+.常量 ET_GET_DEVICE_ATR, "20", , 获得设备ATR
+.常量 ET_GET_CUSTOMER_NAME, "21", , 获得客户号
+.常量 ET_GET_MANUFACTURE_DATE, "22", , 获得生产日期
+.常量 ET_GET_DF_AVAILABLE_SPACE, "23", , 获得当前目录的剩余空间
+.常量 ET_GET_EF_INFO, "24", , 获得指定文件信息
+.常量 ET_GET_COS_VERSION, "25", , 获得COS版本信息
+.常量 , , , 
+.常量 ET_SET_DEVICE_ATR, "33", , 设置设备ATR
+.常量 ET_SET_TOKEN_TYPE, "34", , 设置卡类型
+.常量 ET_SET_SHELL_KEY, "35", , 设置8字节外壳加密种子码
+.常量 , , , 
+.常量 ET_RESET_DEVICE, "49", , 复位设备
+.常量 , , , 
+.常量 ET_TOKEN_TYPE_PKI, "1", , 身份验证锁类型
+.常量 ET_TOKEN_TYPE_DONGLE, "2", , 加密锁类型
+.常量 ET_TOKEN_TYPE_EMPTY, "4", , 空锁类型
+.常量 , , , 
+.常量 ET_DEFAULT_TRY, "255", , 默认重试次数（0和255为无限制，限制范围为1~254）
+.常量 , , , 
+.常量 ET_DEFAULT_DEV_PIN, "“123456781234567812345678”", , 
+.常量 ET_DEFAULT_USER_PIN, "“12345678”", , 
+.常量 ET_DEV_PIN_LEN, "24", , 
+.常量 ET_USER_PIN_LEN, "8", , 
+.常量 , , , 
+.常量 ET_EXCLUSIZE_MODE, "0", , 独占模式
+.常量 ET_SHARE_MODE, "1", , 共享模式
+.常量 , , , 
+.常量 FILE_TYPE_EXE, "0", , 可执行文件
+.常量 FILE_TYPE_DATA, "1", , 数据文件
+.常量 FILE_TYPE_RSA_PUBLIC, "2", , RSA 公钥文件
+.常量 FILE_TYPE_RSA_PRIVATE, "3", , RSA 私钥文件
+.常量 FILE_TYPE_INTERNAL_EXE, "4", , 可执行文件（不可读写）
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 5 系统核心支持库
+
+
+
+
+数据类型 ET_CREATEDIRINFO, , 
+    .成员 dwETCreateDirInfoSize, 整数型, , , 
+    .成员 szAtr, 字节型, , "16", 
+
+数据类型 ET_OPENINFO, , 
+    .成员 dwETOpenInfoSize, 整数型, , , 
+    .成员 dwShareMode, 整数型, , , 
+
+数据类型 ET_CONTEXT, , 
+    .成员 dwIndex, 整数型, , , 设备索引，从0开始编号
+    .成员 dwVersion, 整数型, , , 版本号
+    .成员 hLock, 整数型, , , 设备句柄
+    .成员 reserve, 字节型, , "12", 系统保留
+    .成员 dwCustomer, 整数型, , , 客户号
+    .成员 bAtr, 字节型, , "16", ATR信息
+    .成员 bID, 字节型, , "8", ID号
+    .成员 dwAtrLen, 整数型, , , ATR长度
+
+数据类型 ET_MANUFACTURE_DATE, , 
+    .成员 byYear, 字节型, , , 年
+    .成员 byMonth, 字节型, , , 月
+    .成员 byDay, 字节型, , , 日
+    .成员 byHour, 字节型, , , 时
+    .成员 byMinute, 字节型, , , 分
+    .成员 bySecond, 字节型, , , 秒
+
+
+.DLL命令 ETEnum, 整数型, "ET199_32", "ETEnum", , 枚举所有连接的正常ET199设备
+    .参数 pETContextList, ET_CONTEXT, 传址, 
+    .参数 pdwDeviceCount, 整数型, 传址, 
+
+.DLL命令 ETOpen, 整数型, "ET199_32", "ETOpen", , 打开ET199设备
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+
+.DLL命令 ETOpenEx, 整数型, "ET199_32", "ETOpenEx", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 pETOpenInfo, ET_OPENINFO, 传址, 
+
+.DLL命令 ETClose, 整数型, "ET199_32", "ETClose", , 关闭ET199设备
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+
+.DLL命令 ETCreateDir, 整数型, "ET199_32", "ETCreateDir", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 lpszDirID, 文本型, , 
+    .参数 dwDirSize, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+
+.DLL命令 ETChangeDir, 整数型, "ET199_32", "ETChangeDir", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 lpszPath, 文本型, , 
+
+.DLL命令 ETEraseDir, 整数型, "ET199_32", "ETEraseDir", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 szDirID, 文本型, , 
+
+.DLL命令 ETVerifyPin, 整数型, "ET199_32", "ETVerifyPin", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 pbPin, 字节型, 传址, 
+    .参数 dwPinLen, 整数型, , 
+    .参数 dwPinType, 整数型, , 
+
+.DLL命令 ETChangePin, 整数型, "ET199_32", "ETChangePin", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 pbOldPin, 字节型, 传址, 
+    .参数 dwOldPinLen, 整数型, , 
+    .参数 pbNewPin, 字节型, 传址, 
+    .参数 dwNewPinLen, 整数型, , 
+    .参数 dwPinType, 整数型, , 
+    .参数 byPinTryCount, 字节型, , 
+
+.DLL命令 ETWriteFile, 整数型, "ET199_32", "ETWriteFile", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 lpszFileID, 文本型, , 
+    .参数 dwOffset, 整数型, , 
+    .参数 pBuffer, 整数型, 传址, 
+    .参数 dwBufferSize, 整数型, , 
+
+.DLL命令 ETWriteFileEx, 整数型, "ET199_32", "ETWriteFileEx", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 lpszFileID, 文本型, , 
+    .参数 dwOffset, 整数型, , 
+    .参数 pBuffer, 整数型, , 
+    .参数 dwBufferSize, 整数型, , 
+    .参数 dwFileSize, 整数型, , 
+    .参数 pdwBytesWritten, 整数型, 传址, 
+    .参数 dwFlags, 整数型, , 
+    .参数 bFileType, 字节型, , 
+
+.DLL命令 ETExecute, 整数型, "ET199_32", "ETExecute", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 lpszFileID, 文本型, , 
+    .参数 pInBuffer, 整数型, 传址, 
+    .参数 dwInbufferSize, 整数型, , 
+    .参数 pOutBuffer, 整数型, 传址, 
+    .参数 dwOutBufferSize, 整数型, , 
+    .参数 pdwBytesReturned, 整数型, 传址, 
+
+.DLL命令 ETCreateDirEx, 整数型, "ET199_32", "ETCreateDirEx", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 lpszDirID, 文本型, , 
+    .参数 dwDirSize, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 pCreateDirInfo, ET_CREATEDIRINFO, 传址, 
+
+.DLL命令 ETCreateFile, 整数型, "ET199_32", "ETCreateFile", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 lpszFileID, 文本型, , 
+    .参数 dwFileSize, 整数型, , 
+    .参数 bFileType, 字节型, , 
+
+.DLL命令 PETWriteFile, 整数型, "ET199_32", "PETWriteFile", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 lpszFileID, 文本型, , 
+    .参数 lpszPCFilePath, 文本型, , 
+    .参数 pdwFileSize, 整数型, 传址, 
+    .参数 dwFlags, 整数型, , 
+    .参数 dwFileType, 字节型, , 
+    .参数 pdwBytesWritten, 整数型, 传址, 
+
+.DLL命令 ETGenRsaKey, 整数型, "ET199_32", "ETGenRsaKey", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 wKeySize, 整数型, , 
+    .参数 dwE, 整数型, , 
+    .参数 lpszPubFileID, 文本型, , 
+    .参数 lpszPriFileID, 文本型, , 
+    .参数 pbPubKeyData, 字节型, 传址, 
+    .参数 dwPubKeyDataSize, 整数型, 传址, 
+    .参数 pbPriKeyData, 字节型, 传址, 
+    .参数 dwPriKeyDataSize, 整数型, 传址, 
+
+.DLL命令 ETFormatErrorMessage, 整数型, "ET199_32", "ETFormatErrorMessage", , 
+    .参数 dwCode, 整数型, , 
+    .参数 lpszMessage, 整数型, 传址, 
+    .参数 dwMsgBufLen, 整数型, , 
+
+.DLL命令 SendMessage, 整数型, "user32", "SendMessageA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 PostMessage, 整数型, "user32", "PostMessageA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 DestroyWindow, 整数型, "user32", "DestroyWindow", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 CopyMemory, 空白型, "kernel32", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 GetCurrentDirectory, 整数型, "kernel32", "GetCurrentDirectoryA", , 
+    .参数 nBufferLength, 整数型, , 
+    .参数 lpBuffer, 文本型, , 
+
+.DLL命令 置LED闪烁, 整数型, "ET199_32", "ETControl", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 dwCtlCode, 整数型, , 
+    .参数 pInBuffer, 整数型, 传址, 
+    .参数 dwInBufferLen, 整数型, , 
+    .参数 pOutBuffer, 整数型, 传址, 
+    .参数 dwOutBufferLen, 整数型, , 
+    .参数 pdwBytesReturned, 整数型, 传址, 
+
+.DLL命令 取TokenSize, 整数型, "ET199_32", "ETControl", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 dwCtlCode, 整数型, , 
+    .参数 pInBuffer, 整数型, 传址, 
+    .参数 dwInBufferLen, 整数型, , 
+    .参数 pOutBuffer, 整数型, 传址, 
+    .参数 dwOutBufferLen, 整数型, , 
+    .参数 pdwBytesReturned, 整数型, 传址, 
+
+.DLL命令 置ART, 整数型, "ET199_32", "ETControl", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 dwCtlCode, 整数型, , 
+    .参数 pInBuffer, 字节型, 传址 数组, 
+    .参数 dwInBufferLen, 整数型, , 
+    .参数 pOutBuffer, 整数型, , 
+    .参数 dwOutBufferLen, 整数型, , 
+    .参数 pdwBytesReturned, 整数型, 传址, 
+
+.DLL命令 取ART, 整数型, "ET199_32", "ETControl", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 dwCtlCode, 整数型, , 
+    .参数 pInBuffer, 整数型, 传址, 
+    .参数 dwInBufferLen, 整数型, , 
+    .参数 pOutBuffer, 字节型, 传址 数组, 
+    .参数 dwOutBufferLen, 整数型, , 
+    .参数 pdwBytesReturned, 整数型, 传址, 
+
+.DLL命令 获取当前磁盘有效空间, 整数型, "ET199_32", "ETControl", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 dwCtlCode, 整数型, , 
+    .参数 pInBuffer, 整数型, 传址, 
+    .参数 dwInBufferLen, 整数型, , 
+    .参数 pOutBuffer, 整数型, 传址, 
+    .参数 dwOutBufferLen, 整数型, , 
+    .参数 pdwBytesReturned, 整数型, 传址, 
+
+.DLL命令 ETControl, 整数型, "ET199_32", "ETControl", , 
+    .参数 pETCtx, ET_CONTEXT, 传址, 
+    .参数 dwCtlCode, 整数型, , 
+    .参数 pInBuffer, 整数型, 传址, 
+    .参数 dwInBufferLen, 整数型, , 
+    .参数 pOutBuffer, 整数型, 传址, 
+    .参数 dwOutBufferLen, 整数型, , 
+    .参数 pdwBytesReturned, 整数型, 传址, 
+
+.窗口程序集 窗口程序集_ET199, , , 
+
+.子程序 _按钮_测试_被单击, 空白型, , 
+.局部变量 dwRet, 整数型, , , 
+.局部变量 frq, 整数型, , , 
+.局部变量 dwCount, 整数型, , , 
+.局部变量 TokenSize, 整数型, , , 
+.局部变量 DFSize, 整数型, , , 
+.局部变量 id, 整数型, , , 
+.局部变量 bytesReturn, 整数型, , , 
+.局部变量 pContext, ET_CONTEXT, , "256", 
+.局部变量 inBuff, 字节型, , "0", 
+.局部变量 outBuff, 字节型, , "0", 
+.局部变量 devPinOrigin, 字节型, , "24", 
+.局部变量 userPinOrigin, 字节型, , "8", 
+.局部变量 msgStr, 文本型, , , 
+.局部变量 strtemp, 文本型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 msg, 文本型, , , 
+.局部变量 devPinNew, 字节型, , "0", 
+.局部变量 userPinNew, 字节型, , "0", 
+.局部变量 pubKeyData, 字节型, , "65536", 
+.局部变量 priKeyData, 字节型, , "65536", 
+.局部变量 pubSize, 整数型, , , 
+.局部变量 priSize, 整数型, , , 
+.局部变量 bufferSize, 字节型, , , 
+
+赋值 (., “”)
+
+赋值 (dwCount, 255)
+
+.计次循环首 (取数组下标 (devPinOrigin, ), i) ' 初始的开发商PIN
+    赋值 (devPinOrigin [i], 取代码 (取文本中间 (#ET_DEFAULT_DEV_PIN, i, 1), ))
+.计次循环尾 ()
+.计次循环首 (取数组下标 (userPinOrigin, ), i) ' 初始的用户PIN
+    赋值 (userPinOrigin [i], 取代码 (取文本中间 (#ET_DEFAULT_USER_PIN, i, 1), ))
+.计次循环尾 ()
+
+赋值 (dwRet, ETEnum (pContext [1], dwCount)) ' 枚举所有连接的正常ET199设备
+赋值 (msg, 相加 (“发现”, 到文本 (取十六进制文本 (dwCount)), “个硬件”))
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+
+赋值 (dwRet, ETOpen (pContext [1])) ' 打开ET199设备
+
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (msg, “连接第一个设备成功”)
+.默认
+    赋值 (msg, 相加 (“连接第一个设备失败！code: ”, 取十六进制文本 (dwRet)))
+.判断结束
+
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+
+赋值 (frq, 5) ' LED闪烁频率
+赋值 (dwRet, 置LED闪烁 (pContext [1], #ET_LED_WINK, frq, 4, 0, 0, bytesReturn))
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (msg, “LED 闪烁.....成功！”)
+.默认
+    赋值 (msg, 相加 (“使LED闪烁失败！返回：”, 取十六进制文本 (dwRet)))
+.判断结束
+
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+
+
+
+
+赋值 (msg, 相加 (“COS Version: ”, 到文本 (取十六进制文本 (位与 (相除 (pContext [1].dwVersion, 求次方 (2, 8)), 255))), “.”))
+赋值 (strtemp, 相加 (“00”, 删首空 (到文本 (取十六进制文本 (位与 (pContext [1].dwVersion, 255))))))
+赋值 (msg, 相加 (msg, 取文本右边 (strtemp, 2)))
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+赋值 (strtemp, 到文本 (pContext [1].bID))
+赋值 (msg, “HardSerial: ”)
+.计次循环首 (#MAX_ID_LEN, i)
+    赋值 (msg, 相加 (msg, 取文本右边 (相加 (“0”, 取十六进制文本 (到数值 (pContext [1].bID [i]))), 2)))
+.计次循环尾 ()
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+赋值 (strtemp, 到文本 (pContext [1].bAtr))
+赋值 (msg, 相加 (“ATR: ”, strtemp))
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+赋值 (msg, “Customer: ”)
+赋值 (msg, 相加 (msg, 取十六进制文本 (pContext [1].dwCustomer)))
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+
+
+
+赋值 (dwRet, 取TokenSize (pContext [1], #ET_GET_DEVICE_USABLE_SPACE, 0, 0, TokenSize, 4, bytesReturn))
+
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (msg, 相加 (“TokenSize : ”, 到文本 (相除 (TokenSize, 1024)), “k”))
+.默认
+    赋值 (msg, 相加 (“获得TokenSize出错！ 返回：”, 取十六进制文本 (dwRet)))
+.判断结束
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+
+ ' 切换到根目录,检查根目录是否存在
+赋值 (dwRet, ETChangeDir (pContext [1], “\”))
+
+.如果真 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (dwRet, ETVerifyPin (pContext [1], devPinOrigin [1], #ET_DEV_PIN_LEN, #ET_DEV_PIN)) ' 使用默认开发商口令验证，如果不是默认口令，这里需要替换成您自己的口令
+    赋值 (dwRet, ETEraseDir (pContext [1], “”)) ' 删除根目录
+.如果真结束
+
+赋值 (dwRet, ETCreateDir (pContext [1], “”, 0, #ET_CREATE_ROOT_DIR))
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (msg, “创建根目录成功！”)
+.默认
+    赋值 (msg, 相加 (“创建根目录失败！ 返回：”, 取十六进制文本 (dwRet)))
+.判断结束
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+ ' 使用默认开发商口令验证，如果不是默认口令，这里需要替换成您自己的口令
+赋值 (dwRet, ETVerifyPin (pContext [1], devPinOrigin [1], #ET_DEV_PIN_LEN, #ET_DEV_PIN))
+
+ ' 设置ATR
+重定义数组 (inBuff, 假, #MAX_ATR_LEN)
+.计次循环首 (取数组成员数 (inBuff), i)
+    赋值 (inBuff [i], 取代码 (取文本中间 (“ET199 VC TEST PROJECT           ”, i, 1), ))
+.计次循环尾 ()
+赋值 (dwRet, 置ART (pContext [1], #ET_SET_DEVICE_ATR, inBuff, #MAX_ATR_LEN, 0, 0, bytesReturn))
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (msg, “设置新的ATR成功！”)
+.默认
+    赋值 (msg, 相加 (“设置新的ATR失败！ 返回 ：”, 取十六进制文本 (dwRet)))
+.判断结束
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+ ' 取ATR
+重定义数组 (outBuff, 假, #MAX_ATR_LEN)
+
+赋值 (dwRet, 取ART (pContext [1], #ET_GET_DEVICE_ATR, 0, 0, outBuff, #MAX_ATR_LEN, bytesReturn))
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (strtemp, 到文本 (outBuff))
+    赋值 (msg, 相加 (“获取新的ATR : ”, strtemp))
+.默认
+    赋值 (msg, 相加 (“获取新的ATR失败！ 返回 ：”, 取十六进制文本 (dwRet)))
+.判断结束
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+
+ ' 验证修改开发商口令
+重定义数组 (devPinNew, 假, #ET_DEV_PIN_LEN)
+.计次循环首 (取数组成员数 (devPinNew), i)
+    赋值 (devPinNew [i], 取代码 (取文本中间 (“876543218765432187654321”, i, 1), ))
+.计次循环尾 ()
+
+赋值 (dwRet, ETChangePin (pContext [1], devPinOrigin [1], #ET_DEV_PIN_LEN, devPinNew [1], #ET_DEV_PIN_LEN, #ET_DEV_PIN, 0))
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (msg, “修改 DEV_PIN 成功！”)
+.默认
+    赋值 (msg, 相加 (“修改 DEV_PIN 失败！ 返回 ：”, 取十六进制文本 (dwRet)))
+.判断结束
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+ ' 恢复开发商口令
+赋值 (dwRet, ETChangePin (pContext [1], devPinNew [1], #ET_DEV_PIN_LEN, devPinOrigin [1], #ET_DEV_PIN_LEN, #ET_DEV_PIN, 0))
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (msg, “恢复 DEV_PIN 成功！”)
+.默认
+    赋值 (msg, 相加 (“恢复 DEV_PIN 失败！ 返回 ：”, 取十六进制文本 (dwRet)))
+.判断结束
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+
+ ' 验证修改用户口令
+
+重定义数组 (userPinNew, 假, #ET_USER_PIN_LEN)
+.计次循环首 (取数组成员数 (userPinNew), i)
+    赋值 (userPinNew [i], 取代码 (取文本中间 (“87654321”, i, 1), ))
+.计次循环尾 ()
+赋值 (dwRet, ETChangePin (pContext [1], userPinOrigin [1], #ET_USER_PIN_LEN, userPinNew [1], #ET_USER_PIN_LEN, #ET_USER_PIN, 0))
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (msg, “修改 USER_PIN 成功！”)
+.默认
+    赋值 (msg, 相加 (“修改 USER_PIN 失败！ 返回 ：”, 取十六进制文本 (dwRet)))
+.判断结束
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+ ' 恢复用户口令
+赋值 (dwRet, ETChangePin (pContext [1], userPinNew [1], #ET_USER_PIN_LEN, userPinOrigin [1], #ET_USER_PIN_LEN, #ET_USER_PIN, 0))
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (msg, “恢复 USER_PIN 成功！”)
+.默认
+    赋值 (msg, 相加 (“恢复 USER_PIN 失败！ 返回 ：”, 取十六进制文本 (dwRet)))
+.判断结束
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+ ' 进行目录操作，需要验证开发商口令
+赋值 (dwRet, ETVerifyPin (pContext [1], devPinOrigin [1], #ET_DEV_PIN_LEN, #ET_DEV_PIN))
+
+
+ ' 建立一个子目录，作为一个应用
+赋值 (dwRet, ETCreateDir (pContext [1], “2000”, 60000, #ET_CREATE_SUB_DIR))
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (msg, “创建目录成功！”)
+.默认
+    赋值 (msg, 相加 (“创建目录失败！ 返回 ：”, 取十六进制文本 (dwRet)))
+.判断结束
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+ ' 由于创建完目录后当前目录自动进入了子目录，需要验证开发商口令
+赋值 (dwRet, ETVerifyPin (pContext [1], devPinOrigin [1], #ET_DEV_PIN_LEN, #ET_DEV_PIN))
+
+ ' 建立5个类型的文件
+赋值 (dwRet, ETCreateFile (pContext [1], “1001”, 1024, 0)) ' 可执行文件
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (msg, “创建可执行文件成功！”)
+.默认
+    赋值 (msg, 相加 (“创建可执行文件失败！ 返回 ：”, 取十六进制文本 (dwRet)))
+.判断结束
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+赋值 (dwRet, ETCreateFile (pContext [1], “1002”, 1024, 1)) ' 数据文件
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (msg, “创建数据文件成功！”)
+.默认
+    赋值 (msg, 相加 (“创建数据文件失败！ 返回 ：”, 取十六进制文本 (dwRet)))
+.判断结束
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+
+赋值 (dwRet, ETCreateFile (pContext [1], “1003”, 1024, 2)) ' 公钥文件
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (msg, “创建公钥文件成功！”)
+.默认
+    赋值 (msg, 相加 (“创建公钥文件失败！ 返回 ：”, 取十六进制文本 (dwRet)))
+.判断结束
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+
+赋值 (dwRet, ETCreateFile (pContext [1], “1004”, 1024, 3)) ' 私钥文件
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (msg, “创建私钥文件成功！”)
+.默认
+    赋值 (msg, 相加 (“创建私钥文件失败！ 返回 ：”, 取十六进制文本 (dwRet)))
+.判断结束
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+赋值 (dwRet, ETCreateFile (pContext [1], “1005”, 1024, 4)) ' 内部可执行文件
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (msg, “创建内部可执行文件成功！”)
+.默认
+    赋值 (msg, 相加 (“创建内部可执行文件失败！ 返回 ：”, 取十六进制文本 (dwRet)))
+.判断结束
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+赋值 (dwRet, 获取当前磁盘有效空间 (pContext [1], #ET_GET_DF_AVAILABLE_SPACE, 0, 0, DFSize, 4, bytesReturn))
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (msg, 相加 (“当前磁盘有效空间 ：”, 到文本 (DFSize), “byte”))
+.默认
+    赋值 (msg, 相加 (“获取当前磁盘有效空间失败！ 返回 ：”, 取十六进制文本 (dwRet)))
+.判断结束
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+
+ ' 创建key
+赋值 (pubSize, 65535)
+赋值 (priSize, 65535)
+
+赋值 (dwRet, ETGenRsaKey (pContext [1], 1024, 65537, “1003”, “1004”, pubKeyData [1], pubSize, priKeyData [1], priSize))
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (msg, “创建key文件成功！”)
+.默认
+    赋值 (msg, 相加 (“创建key文件失败！ 返回 ：”, 取十六进制文本 (dwRet)))
+.判断结束
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+
+ ' 初始空锁状态
+赋值 (dwRet, ETChangeDir (pContext [1], “\”))
+赋值 (dwRet, ETVerifyPin (pContext [1], devPinOrigin [1], #ET_DEV_PIN_LEN, #ET_DEV_PIN))
+ ' 删除根目录
+赋值 (dwRet, ETEraseDir (pContext [1], “”))
+赋值 (dwRet, ETCreateDir (pContext [1], “”, 0, #ET_CREATE_ROOT_DIR))
+
+赋值 (dwRet, ETControl (pContext [1], #ET_LED_UP, 0, 0, 0, 0, bytesReturn))
+
+
+赋值 (dwRet, ETClose (pContext [1])) ' 关闭ET199设备
+.判断开始 (等于 (dwRet, #ET_S_SUCCESS))
+    赋值 (msg, “关闭第一个设备成功”)
+.默认
+    赋值 (msg, 相加 (“关闭第一个设备失败！code: ”, 取十六进制文本 (dwRet)))
+.判断结束
+相加 (msg, #换行符, #换行符).加入文本 ()
+
+
+.子程序 _按钮_退出_被单击, 空白型, , 
+结束 ()
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

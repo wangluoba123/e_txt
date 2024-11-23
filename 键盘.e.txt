@@ -1,0 +1,242 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 406
+    高度 = 280
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “WIN32API功能150个(键盘篇)”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 2 系统核心支持库
+
+
+
+
+
+.DLL命令 GetKeyState, 短整数型, "User32.dll", "GetKeyState", , 取按键状态；返回值,如开关键打开，则位0设为1（开关键包括CapsLock， NumLock，ScrollLock）
+    .参数 nVirtKey, 整数型, , 欲测试的虚拟键键码。对字母、数字字符（A-Z、a-z、0-9），用它们实际的ASCII值
+
+.DLL命令 ShowCaret, 整数型, "User32.dll", "ShowCaret", , 在指定的窗口里显示光标
+    .参数 hwnd, 整数型, , 显示光标窗口的句柄
+
+.DLL命令 HideCaret, 整数型, "User32.dll", "HideCaret", , 隐含指定的窗口里光标
+    .参数 hwnd, 整数型, , 隐含光标窗口的句柄
+
+.DLL命令 SetKeyboardState, 整数型, "User32.dll", "SetKeyboardState", , 置键盘状态
+    .参数 lppbKeyState, 字节型, 传址, 
+
+.DLL命令 GetKeyboardState, 整数型, "User32.dll", "GetKeyboardState", , 取键盘状态
+    .参数 pbKeyState, 字节型, 传址, 
+
+.DLL命令 GetKeyboardType, 整数型, "User32.dll", "GetKeyboardType", , 取键盘类型
+    .参数 nTypeFlag, 整数型, , 0返回键盘类型,1返回键盘子类型,2返回键盘上的功能键数量
+
+.DLL命令 SetCaretBlinkTime, 整数型, "User32.dll", "SetCaretBlinkTime", , 光标闪动频率
+    .参数 wMSeconds, 整数型, , 
+
+.DLL命令 GetCaretBlinkTime, 整数型, "User32.dll", "GetCaretBlinkTime", , 光标闪动频率
+
+.DLL命令 keybd_event, 空白型, "User32.dll", "keybd_event", , 模拟键盘行动
+    .参数 bVk, 字节型, , 欲模拟的虚拟键码
+    .参数 bScan, 字节型, , 键的OEM扫描码
+    .参数 dwFlags, 整数型, , 零；或设为两个标志之一
+    .参数 dwExtraInfo, 整数型, , 
+
+.DLL命令 SystemParametersInfo, 整数型, "User32.dll", "SystemParametersInfoA", , 允许获取和设置数量众多的windows系统参数
+    .参数 uAction, 整数型, , 
+    .参数 uParam, 整数型, , 
+    .参数 lpvParam, 整数型, 传址, 
+    .参数 fuWinIni, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 键盘类型, 空白型, , , 
+.局部变量 功能键数目, 空白型, , , 
+
+赋值 (键盘类型, GetKeyboardType (0))
+.判断开始 (等于 (键盘类型, 1))
+    赋值 (., “PC或兼容的83键键盘”)
+.判断 (等于 (键盘类型, 2))
+    赋值 (., “Olivetti102键键盘”)
+.判断 (等于 (键盘类型, 3))
+    赋值 (., “AT或兼容84键键盘”)
+.判断 (等于 (键盘类型, 4))
+    赋值 (., “增强型（IBM）101或102键键盘”)
+.判断 (等于 (键盘类型, 5))
+    赋值 (., “Nokia1050键盘”)
+.判断 (等于 (键盘类型, 6))
+    赋值 (., “Nokia9140键盘”)
+.判断 (等于 (键盘类型, 7))
+    赋值 (., “日文键盘”)
+.默认
+    赋值 (., “”)
+.判断结束
+
+赋值 (功能键数目, GetKeyboardType (2)) ' 即键盘最上排的F1~F12键
+.判断开始 (等于 (功能键数目, 1))
+    赋值 (., “功能键总数10个”)
+.判断 (等于 (功能键数目, 2))
+    赋值 (., “功能键总数12个或18个”)
+.判断 (等于 (功能键数目, 3))
+    赋值 (., “功能键总数10个”)
+.判断 (等于 (功能键数目, 4))
+    赋值 (., “功能键总数12个”)
+.判断 (等于 (功能键数目, 5))
+    赋值 (., “功能键总数10个”)
+.判断 (等于 (功能键数目, 6))
+    赋值 (., “功能键总数24个”)
+.判断 (等于 (功能键数目, 7))
+    赋值 (., “由硬件OEM厂商决定”)
+.默认
+    赋值 (., 相加 (“功能键总数”, 到文本 (功能键数目), “个”))
+.判断结束
+
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 Val, 空白型, , , 
+
+_时钟1_周期事件 ()
+SystemParametersInfo (22, 0, Val, 0) ' 取延时
+赋值 (., 到文本 ())
+未知函数_167837752 (10, 0, , 0) ' 取速度
+赋值 (., 到文本 ())
+
+赋值 (Val, GetCaretBlinkTime ())
+赋值 (., 到文本 (Val))
+
+.子程序 _时钟1_周期事件, 空白型, , 
+.局部变量 Capslock, 空白型, , , 
+.局部变量 Numlock, 空白型, , , 
+.局部变量 ScrollLock, 空白型, , , 
+
+ ' 取这三个键的开关状态
+赋值 (位与 (GetKeyState (20), 1)) ' 20是Capslock键的ASCII值，相当易常数#CapsLock键
+.如果 (等于 (1))
+    赋值 (., 真)
+.否则
+    赋值 (., 假)
+.如果结束
+赋值 (位与 (GetKeyState (144), 1)) ' 144是Numlock键的ASCII值，相当易常数#Numlock键
+.如果 (等于 (1))
+    赋值 (., 真)
+.否则
+    赋值 (., 假)
+.如果结束
+赋值 (位与 (GetKeyState (145), 1)) ' 145是ScrollLock键的ASCII值，相当易常数#ScrollLock]键
+.如果 (等于 (1))
+    赋值 (., 真)
+.否则
+    赋值 (., 假)
+.如果结束
+
+
+
+.子程序 _选择框1_被单击, 空白型, , 
+.如果 (等于 (取操作系统类别 (), 3)) ' Windows NT/2000系统，要模拟按键
+    keybd_event (#CapsLock键, 0, 1, 0)
+    keybd_event (#CapsLock键, 0, 3, 0)
+.否则
+    置按键状态 (#CapsLock键, .)
+.如果结束
+
+
+.子程序 _选择框2_被单击, 空白型, , 
+.如果 (等于 (取操作系统类别 (), 3)) ' Windows NT/2000系统，要模拟按键
+    keybd_event (#NumLock键, 0, 1, 0)
+    keybd_event (#NumLock键, 0, 3, 0)
+.否则
+    置按键状态 (#NumLock键, .)
+.如果结束
+
+
+.子程序 _选择框3_被单击, 空白型, , 
+.如果 (等于 (取操作系统类别 (), 3)) ' Windows NT/2000系统，要模拟按键
+    keybd_event (#ScrollLock键, 0, 1, 0)
+    keybd_event (#ScrollLock键, 0, 3, 0)
+.否则
+    置按键状态 (#ScrollLock键, .)
+.如果结束
+
+
+.子程序 置按键状态, 空白型, , 
+.参数 intKey, 短整数型, , 选中键，对应ASCII码
+.参数 fTurnOn, 逻辑型, , 是否开
+
+.局部变量 abytBuffer, 字节型, , "256", 按键缓冲
+
+GetKeyboardState (abytBuffer [1]) ' 取键盘状态
+.如果 (fTurnOn)
+    赋值 (abytBuffer [相加 (intKey, 1)], 位或 (abytBuffer [intKey], 1))
+.否则
+    赋值 (abytBuffer [相加 (intKey, 1)], 位与 (abytBuffer [intKey], 位取反 (1)))
+.如果结束
+SetKeyboardState (abytBuffer [1]) ' 置键盘状态
+
+.子程序 _延时设置_被单击, 空白型, , 
+.局部变量 val, 空白型, , , 
+
+赋值 (val, 到数值 (.))
+SystemParametersInfo (23, val, 0, 3)
+鸣叫 ()
+
+.子程序 _速度设置_被单击, 空白型, , 
+.局部变量 val, 空白型, , , 
+
+赋值 (val, 到数值 (.))
+SystemParametersInfo (11, val, 0, 3)
+鸣叫 ()
+
+.子程序 _选择框4_被单击, 空白型, , 
+.如果 (.)
+    ShowCaret (0)
+.否则
+    HideCaret (0)
+.如果结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

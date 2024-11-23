@@ -1,0 +1,144 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' spec A512548E76954B6E92C21055517615B0 3 0 特殊功能支持库
+
+
+
+
+
+.DLL命令 GetProcessHeap, 整数型, "kernel32.dll", "GetProcessHeap", , 
+
+.DLL命令 GetProcAddress, 整数型, "kernel32.dll", "GetProcAddress", , 
+    .参数 hModule, 整数型, , 
+    .参数 ProName, 文本型, , 
+
+.DLL命令 LoadLibrary, 整数型, "kernel32", "LoadLibraryA", , 
+    .参数 lpLibFileName, 文本型, , 
+
+.DLL命令 InternalGetTcpTable2, 整数型, "Iphlpapi.dll", "InternalGetTcpTable2", , 
+    .参数 pTcpTable_Vista, 整数型, 传址, 
+    .参数 heap, 整数型, , 
+    .参数 flags, 整数型, , 
+
+.DLL命令 InternalGetUdpTableWithOwnerPid, 整数型, "Iphlpapi.dll", "InternalGetUdpTableWithOwnerPid", , 
+    .参数 pUdpTable, 整数型, 传址, 
+    .参数 heap, 整数型, , 
+    .参数 flags, 整数型, , 
+
+.DLL命令 AllocateAndGetUdpExTableFromStack, 整数型, "Iphlpapi.dll", "AllocateAndGetUdpExTableFromStack", , 
+    .参数 ppUDPTable, 整数型, 传址, 
+    .参数 bOrder, 逻辑型, , 
+    .参数 hHeap, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 dwFamily, 整数型, , 
+
+.DLL命令 AllocateAndGetTcpExTableFromStack, 整数型, "Iphlpapi.dll", "AllocateAndGetTcpExTableFromStack", , 
+    .参数 ppUDPTable, 整数型, 传址, 
+    .参数 bOrder, 逻辑型, , 
+    .参数 hHeap, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 dwFamily, 整数型, , 
+
+.DLL命令 inet_ntoa, 整数型, "ws2_32.dll", "inet_ntoa", , 
+    .参数 IP, 整数型, , 
+
+.DLL命令 ntohs, 整数型, "ws2_32.dll", "ntohs", , 　
+    .参数 netshort, 短整数型, , 
+
+.DLL命令 HeapFree, 整数型, "kernel32", "HeapFree", , , HeapFree，释放从堆中分配的内存
+    .参数 hHeap, 整数型, , hHeap
+    .参数 dwFlags, 整数型, , dwFlags
+    .参数 lpMem, 整数型, , any，lpMem
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+yHan_GetLinks ()
+
+.子程序 yHan_GetLinks, 空白型, , 取连接,支持win7
+.局部变量 arg, 文本型, , "13", 
+.局部变量 pbuf, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 状态, 文本型, , , 
+.局部变量 本地, 文本型, , , 
+.局部变量 远程, 文本型, , , 
+.局部变量 pid, 整数型, , , 
+.局部变量 dwState, 整数型, , , 
+.局部变量 win7, 逻辑型, , , 
+.局部变量 hHeap, 整数型, , , 
+.局部变量 num, 整数型, , , 
+
+赋值 (arg, { “已关闭”, “正在监听”, “同步发送”, “同步接收”, “已建立”, “FIN_WAIT1”, “FIN_WAIT2”, “关闭等待”, “正在关闭”, “最后确认”, “延时等待”, “删除”, “未知” })
+
+赋值 (hHeap, GetProcessHeap ())
+.如果 (等于 (GetProcAddress (LoadLibrary (“iphlpapi.dll”), “AllocateAndGetTcpExTableFromStack”), 0))
+    InternalGetTcpTable2 (pbuf, hHeap, 1)
+    赋值 (win7, 真)
+.否则
+    AllocateAndGetTcpExTableFromStack (pbuf, 真, hHeap, 2, 2)
+.如果结束
+
+赋值 (num, GetDate (pbuf, 0))
+赋值 (pbuf, 相加 (pbuf, 4))
+.计次循环首 (i)
+    赋值 (dwState, GetDate (pbuf, 0))
+    赋值 (状态, arg [选择 (或者 (大于 (dwState, 12), 小于 (dwState, 1)), 13, dwState)])
+    赋值 (本地, 相加 (指针到文本 (inet_ntoa (GetDate (pbuf, 4))), “:”, 到文本 (ntohs (GetDate (pbuf, 8)))))
+    赋值 (远程, 相加 (指针到文本 (inet_ntoa (GetDate (pbuf, 12))), “:”, 到文本 (ntohs (GetDate (pbuf, 16)))))
+    赋值 (pid, GetDate (pbuf, 20))
+    调试输出 (“TCP”, 本地, 远程, pid, 状态)
+    赋值 (pbuf, 相加 (pbuf, 选择 (win7, 28, 24)))
+.计次循环尾 ()
+HeapFree (hHeap, 0, pbuf)
+ ' hHeap ＝ GetProcessHeap ()
+.如果 (win7)
+    InternalGetUdpTableWithOwnerPid (pbuf, hHeap, 1)
+.否则
+    AllocateAndGetUdpExTableFromStack (pbuf, 真, hHeap, 2, 2)
+.如果结束
+
+.计次循环首 (GetDate (pbuf, 0), i)
+    赋值 (本地, 相加 (指针到文本 (inet_ntoa (GetDate (pbuf, 4))), “:”, 到文本 (ntohs (GetDate (pbuf, 8)))))
+    赋值 (pid, GetDate (pbuf, 12))
+    调试输出 (“UDP”, 本地, pid)
+    赋值 (pbuf, 相加 (pbuf, 12))
+.计次循环尾 ()
+HeapFree (hHeap, 0, pbuf)
+
+.子程序 GetDate, 整数型, , 
+.参数 addr, 整数型, , 
+.参数 offset, 整数型, , 
+
+返回 (取字节集数据 (指针到字节集 (相加 (addr, offset), 4), #整数型, ))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

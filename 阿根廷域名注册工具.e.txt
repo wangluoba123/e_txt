@@ -1,0 +1,405 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：阿根廷域名注册工具
+ ' 程序描述：http://www.cds123.com
+@备注:
+金光论坛:如影相随
+ ' 程序作者：QQ:540163
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 302
+    高度 = 392
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “Main Ar”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “阿根廷域名注册查询工具 bate 0.1”
+    帮助文件名 = “”
+
+窗口 窗口1
+    左边 = 50
+    顶边 = 50
+    宽度 = 579
+    高度 = 416
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 真
+    窗口类名 = “Reg Ar”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “注册”
+    帮助文件名 = “”
+
+
+
+.常量 规则组织, "“<OPTION VALUE="(.*?)">”", , 
+.常量 规则ISP, "“<input type="text" name="patron_ent_adm" value="(.*?)"size="40" maxlength="256">”", , 
+.常量 规则技术联系, "“<input type="text" name="patron_conttecn" value="(.*?)">”", , 
+.常量 规则图片, "“<img src="(.*?)" width="200" height="80">[\s\S]*?<input TYPE="hidden" NAME="tales" VALUE="(.*?)">”", , 
+.常量 code, "“<input TYPE="hidden" NAME="tales" VALUE="(.*?)">”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 2 0 扩展界面支持库一
+ ' eAPI F7FC1AE45C5C4758AF03EF19F18A395D 3 0 应用接口支持库
+
+
+
+ ' 所需要的模块
+ ' 彗星正则表达式类 C:\Documents and Settings\Administrator\桌面\彗星正则表达式类.ec
+ ' 彗星HTTP应用模块 C:\Documents and Settings\Administrator\桌面\彗星http应用模块.ec
+
+
+
+.DLL命令 WideCharToMultiByte, 整数型, "kernel32", "WideCharToMultiByte", 公开, 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpWideCharStr, 字节集, 传址, 
+    .参数 cchWideChar, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, 传址, 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpDefaultChar, 整数型, , 
+    .参数 lpUsedDefaultChar, 整数型, , 
+
+.DLL命令 MultiByteToWideChar, 整数型, "", "MultiByteToWideChar", 公开, 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, 传址, 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpWideCharStr, 字节集, 传址, 
+    .参数 cchWideChar, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 登录帐号, 文本型, , , 
+.程序集变量 登录密码, 文本型, , , 
+.程序集变量 图片, 字节集, , , 
+.程序集变量 code, 文本型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.判断开始 (等于 (未知支持库函数_52 (), 真))
+    初始化 ()
+.默认
+    信息框 (“网络连接失败，请检查网络连接！”, 0, )
+    初始化 ()
+.判断结束
+
+
+.子程序 初始化, 空白型, , 
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 i, 整数型, , , 
+.局部变量 c, 文本型, , , 
+.局部变量 POST地址, 文本型, , , 
+.局部变量 POST数据, 文本型, , , 
+.局部变量 表项, 整数型, , , 
+.局部变量 a, 文本型, , , 
+.局部变量 email, 文本型, , , 
+.局部变量 POST返回, 文本型, , , 
+.局部变量 yuming, 文本型, , , 
+
+赋值 (yuming, .取项目文本 (.现行选中项))
+.如果真 (等于 (.内容, “”))
+    信息框 (“请输入要查询的域名。”, #信息图标, “提示信息”)
+    返回 ()
+.如果真结束
+赋值 (POST地址, “http://www.nic.ar/consdom.html”)
+赋值 (POST数据, 相加 (“nombre=”, .内容, “&dominio=.”, .取项目文本 (.现行选中项)))
+赋值 (POST返回, 彗星HTTP读文本 (POST地址, “POST”, , , POST数据))
+输出调试文本 (POST返回)
+.插入表项 ()
+赋值 (a, 到文本 (彗星HTTP读文件 (POST地址, “POST”, , , POST数据, )))
+赋值 (表项, 相减 (取表项数 (), 1))
+.如果 (等于 (寻找文本 (a, “Para solicitar el registro de este dominio, haga click”, , 假), -1))
+    表项.置标题 (0, 相加 (.内容, “.”, .取项目文本 (.现行选中项)))
+    表项.置标题 (1, “已注册”)
+.否则
+    表项.置标题 (0, 相加 (.内容, “.”, .取项目文本 (.现行选中项)))
+    表项.置标题 (1, “未注册”)
+.如果结束
+
+
+.子程序 _超级列表框1_鼠标右键被放开, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+弹出菜单 ()
+
+.子程序 _保存列表_被选择, 空白型, , 
+.局部变量 i, 整数型, , , 
+.局部变量 b, 文本型, , , 
+
+.如果真 (打开 ())
+    .计次循环首 (取表项数 (), i)
+         ' 赋值 (b, 相加 (b, 相减 (i, 1).取标题 (0), “----”, 相减 (i, 1).取标题 (1), #换行符))
+    .计次循环尾 ()
+    写到文件 (.文件名, 到字节集 (b))
+.如果真结束
+
+
+.子程序 _超级列表框1_右键单击表项, 空白型, , 
+弹出菜单 ()
+
+.子程序 _注册按钮_被单击, 空白型, , 
+载入 (窗口1, _启动窗口, 真)
+
+
+.窗口程序集 窗口程序集2, , , 
+
+.程序集变量 POST地址, 文本型, , , 
+.程序集变量 POST数据, 文本型, , , 
+.程序集变量 POST返回, 文本型, , , 
+.程序集变量 正则表达式, 彗星正则表达式类, , , 
+.程序集变量 i, 整数型, , , 
+.程序集变量 a, 文本型, , , 
+.程序集变量 图片, 字节集, , , 
+.程序集变量 codestmp, 文本型, , , 
+.子程序 _启动窗口, 空白型, , 
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+赋值 (POST地址, “http://www.nic.ar/asigdel.html”)
+赋值 (POST数据, 相加 (“verif=”, .内容, “&aceptacion_reglas=SI&submit1=Confirmar+Datos&nombre_form=Confirmar+Datos&mail_sender=”, .内容, “&nombre_dominio=”, .内容, “.”, .取项目文本 (.现行选中项), “&accion=Registro+y+delegacion&tipo_entidad=VIEJA&tipo_persona=VIEJA&tipo_ent_adm=VIEJA&tipo_conttecn=VIEJA&nombre_entidad=%231+WebHost%2C+Inc&nom_responsable=”, .取项目文本 (.现行选中项), “&nombre_entadm=”, .取项目文本 (.现行选中项), “&nombre_conttecn=”, .取项目文本 (.现行选中项), “&dir_ip_primario=”, .内容, “&nombre_primario=”, .内容, “&dir_ip_secundario=”, .内容, “&nombre_secundario=”, .内容, “&dir_ip_tercero=”, .内容, “&nombre_tercero=”, .内容, “&dir_ip_cuarto=”, .内容, “&nombre_cuarto=”, .内容, “&dir_ip_quinto=”, .内容, “&nombre_cuarto=”, .内容, “&doc_extranj=999993&prov_entidad=&prov_responsable=&prov_entadm=&prov_conttecn=Ciudad+de+Buenos+Aires&direccione=6896+Babcock+St+Se&ciudade=Palm+Bay&cpe=Fl+32909&telefonoe=%28321%29+956-9617&faxe=%28321%29+956-9617&tales=”, .内容))
+赋值 (POST返回, 彗星HTTP读文本 (POST地址, “POST”, , , POST数据))
+输出调试文本 (POST返回)
+
+.子程序 _按钮2_被单击, 空白型, , 
+.如果真 (等于 (.内容, “”))
+    信息框 (“请输入关键词！”, #信息图标, “提示信息”)
+    返回 ()
+.如果真结束
+赋值 (POST地址, “http://www.nic.ar/asigdel.html”)
+赋值 (POST数据, 相加 (“patron_entidad=”, .内容, “&patron_entidad=&submit1=Continuar&mail_sender=a@a.com&nombre_dominio=caonimabihahaha1h2h.com.ar”, “&accion=Registro+y+delegacion&nombre_form=patron_entidad”))
+赋值 (a, 到文本 (彗星HTTP读文件 (POST地址, “POST”, , , POST数据, )))
+正则表达式.创建 (#规则组织, , 真)
+正则表达式.搜索全部 (a)
+.计次循环首 (正则表达式.取匹配数量 (), i)
+    正则表达式.取子匹配文本 (i, 1).加入项目 ()
+.计次循环尾 ()
+
+.子程序 _按钮3_被单击, 空白型, , 
+.如果真 (等于 (.内容, “”))
+    信息框 (“请输入关键词！”, #信息图标, “提示信息”)
+    返回 ()
+.如果真结束
+赋值 (POST地址, “http://www.nic.ar/asigdel.html”)
+赋值 (POST数据, 相加 (“patron_persona=”, .内容, “&submit1=Continuar&nombre_form=patron_personas&mail_sender=a@a.com&nombre_dominio=caonimabihahaha1h2h.com.ar&accion=Registro+y+delegacion&tipo_entidad=VIEJA&nombre_entidad=%231+WebHost%2C+Inc&doc_extranj=999993&prov_entidad=&direccione=&ciudade=&cpe=&telefonoe=&faxe=”))
+赋值 (a, 到文本 (彗星HTTP读文件 (POST地址, “POST”, , , POST数据, )))
+正则表达式.创建 (#规则组织, , 真)
+正则表达式.搜索全部 (a)
+.计次循环首 (正则表达式.取匹配数量 (), i)
+    正则表达式.取子匹配文本 (i, 1).加入项目 ()
+.计次循环尾 ()
+
+.子程序 _按钮4_被单击, 空白型, , 
+.如果真 (等于 (.内容, “”))
+    信息框 (“获取DNS ISP必须填写(*)的编辑框！”, #信息图标, “提示信息”)
+    返回 ()
+.如果真结束
+.如果真 (等于 (.内容, “”))
+    信息框 (“获取DNS ISP必须填写(*)的编辑框！”, #信息图标, “提示信息”)
+    返回 ()
+.如果真结束
+.如果真 (等于 (.内容, “”))
+    信息框 (“获取DNS ISP必须填写(*)的编辑框！”, #信息图标, “提示信息”)
+    返回 ()
+.如果真结束
+.如果真 (等于 (.内容, “”))
+    信息框 (“获取DNS ISP必须填写(*)的编辑框！”, #信息图标, “提示信息”)
+    返回 ()
+.如果真结束
+赋值 (POST地址, “http://www.nic.ar/asigdel.html”)
+赋值 (POST数据, 相加 (“dir_ip_primario=”, .内容, “&nombre_primario=”, .内容, “&dir_ip_secundario=”, .内容, “&nombre_secundario=”, .内容, “&dir_ip_tercero=”, .内容, “&nombre_tercero=”, .内容, “&dir_ip_cuarto=”, .内容, “&nombre_cuarto=”, .内容, “&dir_ip_quinto=”, .内容, “&nombre_cuarto=”, .内容, “&nombre_quinto=&submit1=Continuar&nombre_form=hosts&mail_sender=a@a.com&nombre_dominio=caonimabihahaha1h2h.com.ar&accion=Registro+y+delegacion&tipo_entidad=VIEJA&tipo_persona=VIEJA&nombre_entidad=%231+WebHost%2C+Inc&nom_responsable=000.webhost.com&doc_extranj=999993”))
+赋值 (a, 到文本 (彗星HTTP读文件 (POST地址, “POST”, , , POST数据, )))
+正则表达式.创建 (#规则ISP, , 真)
+正则表达式.搜索全部 (a)
+.计次循环首 (正则表达式.取匹配数量 (), i)
+    正则表达式.取子匹配文本 (i, 1).加入项目 ()
+.计次循环尾 ()
+
+.子程序 _组合框5_列表项被选择, 空白型, , 
+赋值 (POST地址, “http://www.nic.ar/asigdel.html”)
+赋值 (POST数据, 相加 (“patron_conttecn=”, .取项目文本 (.现行选中项), “&submit1=Continuar&nombre_form=patron_ct&mail_sender=a@a.com&nombre_dominio=caonimabihahaha1h2h.com.ar&accion=Registro+y+delegacion&tipo_entidad=VIEJA&tipo_persona=VIEJA&tipo_ent_adm=VIEJA&nombre_entidad=%231+WebHost%2C+Inc&nom_responsable=000.webhost.com&nombre_entadm=Nerdie+Networks&doc_extranj=999993&dir_ip_primario=”, .内容, “&nombre_primario=”, .内容, “&dir_ip_secundario=”, .内容, “&nombre_secundario=”, .内容, “&dir_ip_tercero=”, .内容, “&nombre_tercero=”, .内容, “&dir_ip_cuarto=”, .内容, “&nombre_cuarto=”, .内容, “&dir_ip_quinto=”, .内容, “&nombre_cuarto=”, .内容))
+赋值 (a, 到文本 (彗星HTTP读文件 (POST地址, “POST”, , , POST数据, )))
+正则表达式.创建 (#规则组织, , 真)
+正则表达式.搜索全部 (a)
+.计次循环首 (正则表达式.取匹配数量 (), i)
+    正则表达式.取子匹配文本 (i, 1).加入项目 ()
+.计次循环尾 ()
+
+.子程序 _组合框4_列表项被选择, 空白型, , 
+赋值 (POST地址, “http://www.nic.ar/asigdel.html”)
+赋值 (POST数据, 相加 (“nombre_entadm=”, .取项目文本 (.现行选中项), “&submit1=Continuar&nombre_form=lista_ea&mail_sender=a@a.com&nombre_dominio=caonimabihahaha1h2h.com.ar&accion=Registro+y+delegacion&tipo_entidad=VIEJA&tipo_persona=VIEJA&tipo_ent_adm=NUEVA&nombre_entidad=%231+WebHost%2C+Inc&nom_responsable=000.webhost.com&doc_extranj=999993&dir_ip_primario=”, .内容, “&nombre_primario=”, .内容, “&dir_ip_secundario=”, .内容, “&nombre_secundario=”, .内容, “&dir_ip_tercero=”, .内容, “&nombre_tercero=”, .内容, “&dir_ip_cuarto=”, .内容, “&nombre_cuarto=”, .内容, “&dir_ip_quinto=”, .内容, “&nombre_cuarto=”, .内容, “&nombre_conttecn=Alexis+Maldonado”))
+赋值 (a, 到文本 (彗星HTTP读文件 (POST地址, “POST”, , , POST数据, )))
+正则表达式.创建 (#规则技术联系, , 真)
+正则表达式.搜索全部 (a)
+.计次循环首 (正则表达式.取匹配数量 (), i)
+    正则表达式.取子匹配文本 (i, 1).加入项目 ()
+.计次循环尾 ()
+
+.子程序 _组合框6_列表项被选择, 空白型, , 
+赋值 (POST地址, “http://www.nic.ar/asigdel.html”)
+赋值 (POST数据, 相加 (“nombre_conttecn=”, .取项目文本 (.现行选中项), “&submit1=Continuar&nombre_form=lista_ct&mail_sender=a@a.com&nombre_dominio=caonimabihahaha1h2h.com.ar&accion=Registro+y+delegacion&tipo_entidad=VIEJA&tipo_persona=VIEJA&tipo_ent_adm=VIEJA&tipo_conttecn=VIEJA&nombre_entidad=%231+WebHost%2C+Inc&nom_responsable=000.webhost.com&nombre_entadm=Nerdie+Networks&doc_extranj=999993&dir_ip_primario=”, .内容, “&nombre_primario=”, .内容, “&dir_ip_secundario=”, .内容, “&nombre_secundario=”, .内容, “&dir_ip_tercero=”, .内容, “&nombre_tercero=”, .内容, “&dir_ip_cuarto=”, .内容, “&nombre_cuarto=”, .内容, “&dir_ip_quinto=”, .内容, “&nombre_cuarto=”, .内容))
+赋值 (a, 到文本 (彗星HTTP读文件 (POST地址, “POST”, , , POST数据, )))
+正则表达式.创建 (#规则图片, , 真)
+正则表达式.搜索全部 (a)
+.计次循环首 (正则表达式.取匹配数量 (), i)
+    赋值 (图片, 彗星HTTP读文件 (正则表达式.取子匹配文本 (i, 1)))
+    写到文件 (“C:\Temp.jpg”, 图片)
+    赋值 (.图片, 读入文件 (“C:\Temp.jpg”))
+    赋值 (.内容, 正则表达式.取子匹配文本 (i, 2))
+.计次循环尾 ()
+
+.类模块 彗星正则表达式类, , , 
+
+.子程序 创建, 逻辑型, , 根据指定的正则表达式文本创建一个正则表达式对象。本对象中的原有内容将被释放
+.参数 正则表达式文本, 文本型, , 比如“易语言4\.0(模块|支持库)?”
+.参数 忽略大小写, 逻辑型, 可空, 可以被省略。默认值为真。本参数指定这个正则表达式在创建成功后进行匹配、搜索、替换时，是否区分大小写。
+.参数 匹配多行, 逻辑型, 可空, 可以被省略。默认值为真。如果本成员值为真，字符“^”不仅匹配目标文本的开头，而且匹配目标文本中换行符（字符(10)，字符(13)或 #换行符）的后面；字符“$”不仅匹配目标文本的结尾，而且匹配目标文本中换行符的前面。否则字符“^”仅仅匹配目标文本的开头，“$”也仅仅匹配目标文本的结尾。
+.参数 全局匹配, 逻辑型, 可空, 
+
+
+
+.子程序 取文本, 文本型, , 返回以文本形式表示的正则表达式。如果该对象尚未创建，则返回空文本。本命令为高级对象成员命令。
+
+
+.子程序 替换, 文本型, , 替换在正则表达式查找中找到的文本。
+.参数 欲被替换的文本, 文本型, , 将要进行文本替换的字符串
+.参数 用作替换的文本, 文本型, 可空, 用作替换的文本
+
+
+
+.子程序 搜索全部, 整数型, , 使用指定的正则表达式搜索指定文本中与该表达式匹配的所有子文本。返回匹配结果数量
+.参数 欲被搜索的文本, 文本型, , 
+
+
+
+.子程序 取匹配数量, 整数型, , 
+
+
+.子程序 取匹配文本, 文本型, , 
+.参数 匹配索引, 整数型, , 第几个匹配文本，索引值从1开始
+
+
+
+.子程序 取子匹配文本, 文本型, , 
+.参数 匹配索引, 整数型, , 第几个匹配文本，索引值从1开始
+.参数 子表达式索引, 整数型, , 欲取其值的子表达式。该参数对应与正则表达式中的一个子表达式（以圆括号标记）。索引从1开始。
+
+
+
+.子程序 取子表达式个数, 整数型, , 
+
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 初始化COM库, 整数型, , 在多线程的程序里创建COM对象前先初始化，一个线程只能调用一次
+
+
+.子程序 取消COM库初始化, 空白型, , 取消COM库的初始化
+
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 彗星URL编码, 文本型, , 返回已编码的URL
+.参数 Bin_URL, 文本型, , 
+
+
+
+.子程序 彗星URL编码_UTF8, 文本型, , 返回已编码的URL
+.参数 Bin_URL, 文本型, , 
+
+
+
+.子程序 彗星URL解码, 文本型, , 返回已解码的URL
+.参数 Bin_URL, 文本型, , 
+
+
+
+.子程序 彗星URL解码_UTF8, 文本型, , 返回已解码的URL
+.参数 Bin_URL, 文本型, , 
+
+
+
+.子程序 彗星HTTP读文件, 字节集, , 有可能线程阻塞,请在外部加超时判断
+.参数 完整网址, 文本型, , 
+.参数 访问方式, 文本型, 可空, "GET" or "POST",为空默认"GET"
+.参数 代理地址, 文本型, 可空, 
+.参数 附加协议头, 文本型, 可空, 
+.参数 提交信息, 文本型, 可空, "POST"专用
+.参数 网页头, 文本型, 参考 可空, 返回网页头部信息
+
+
+
+.子程序 彗星HTTP读文本, 文本型, , 有可能线程阻塞,请在外部加超时判断
+.参数 完整网址, 文本型, , 
+.参数 访问方式, 文本型, 可空, "GET" or "POST",为空默认"GET"
+.参数 代理地址, 文本型, 可空, 
+.参数 附加协议头, 文本型, 可空, 
+.参数 提交信息, 文本型, 可空, "POST"专用
+.参数 网页头, 文本型, 参考 可空, 返回网页头部信息
+
+
+
+.子程序 彗星打开指定网址, 空白型, , 调用默认浏览器打开指定网址
+.参数 要打开的网址, 文本型, , 
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

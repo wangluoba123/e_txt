@@ -1,0 +1,961 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：Windows 窗口信息操作模块
+ ' 程序描述：Windows 窗口信息操作模块
+@备注:
+Windows 窗口信息操作模块
+ ' 程序作者：Yulon
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：Yulon(老四), 朝晖中学
+ ' 版本号：1.1
+ ' 创建号：0.0
+
+
+
+.常量 WM_NULL, "0", 公开, 0x0
+.常量 WM_CREATE, "1", 公开, 0x1
+.常量 WM_DESTROY, "2", 公开, 0x2
+.常量 WM_MOVE, "3", 公开, 0x3
+.常量 WM_SIZE, "5", 公开, 0x5
+.常量 WM_ACTIVATE, "6", 公开, 0x6
+.常量 WM_SETFOCUS, "7", 公开, 0x7
+.常量 WM_KILLFOCUS, "8", 公开, 0x8
+.常量 WM_ENABLE, "10", 公开, 0xa
+.常量 WM_SETREDRAW, "11", 公开, 0xb
+.常量 WM_SETTEXT, "12", 公开, 0xc
+.常量 WM_GETTEXT, "13", 公开, 0xd
+.常量 WM_GETTEXTLENGTH, "14", 公开, 0xe
+.常量 WM_PAINT, "15", 公开, 0xf
+.常量 WM_CLOSE, "16", 公开, 0x10
+.常量 WM_QUERYENDSESSION, "17", 公开, 0x11
+.常量 WM_QUERYOPEN, "19", 公开, 0x13
+.常量 WM_ENDSESSION, "22", 公开, 0x16
+.常量 WM_QUIT, "18", 公开, 0x12
+.常量 WM_ERASEBKGND, "20", 公开, 0x14
+.常量 WM_SYSCOLORCHANGE, "21", 公开, 0x15
+.常量 WM_SHOWWINDOW, "24", 公开, 0x18
+.常量 WM_WININICHANGE, "26", 公开, 0x1a
+.常量 WM_SETTINGCHANGE, "26", 公开, 0x1a
+.常量 WM_DEVMODECHANGE, "27", 公开, 0x1b
+.常量 WM_ACTIVATEAPP, "28", 公开, 0x1c
+.常量 WM_FONTCHANGE, "29", 公开, 0x1d
+.常量 WM_TIMECHANGE, "30", 公开, 0x1e
+.常量 WM_CANCELMODE, "31", 公开, 0x1f
+.常量 WM_SETCURSOR, "32", 公开, 0x20
+.常量 WM_MOUSEACTIVATE, "33", 公开, 0x21
+.常量 WM_CHILDACTIVATE, "34", 公开, 0x22
+.常量 WM_QUEUESYNC, "35", 公开, 0x23
+.常量 WM_GETMINMAXINFO, "36", 公开, 0x24
+.常量 WM_PAINTICON, "38", 公开, 0x26
+.常量 WM_ICONERASEBKGND, "39", 公开, 0x27
+.常量 WM_NEXTDLGCTL, "40", 公开, 0x28
+.常量 WM_SPOOLERSTATUS, "42", 公开, 0x2a
+.常量 WM_DRAWITEM, "43", 公开, 0x2b
+.常量 WM_MEASUREITEM, "44", 公开, 0x2c
+.常量 WM_DELETEITEM, "45", 公开, 0x2d
+.常量 WM_VKEYTOITEM, "46", 公开, 0x2e
+.常量 WM_CHARTOITEM, "47", 公开, 0x2f
+.常量 WM_SETFONT, "48", 公开, 0x30
+.常量 WM_GETFONT, "49", 公开, 0x31
+.常量 WM_SETHOTKEY, "50", 公开, 0x32
+.常量 WM_GETHOTKEY, "51", 公开, 0x33
+.常量 WM_QUERYDRAGICON, "55", 公开, 0x37
+.常量 WM_COMPAREITEM, "57", 公开, 0x39
+.常量 WM_GETOBJECT, "61", 公开, 0x3d
+.常量 WM_COMPACTING, "65", 公开, 0x41
+.常量 WM_COMMNOTIFY, "68", 公开, 0x44
+.常量 WM_WINDOWPOSCHANGING, "70", 公开, 0x46
+.常量 WM_WINDOWPOSCHANGED, "71", 公开, 0x47
+.常量 WM_POWER, "72", 公开, 0x48
+.常量 WM_COPYDATA, "74", 公开, 0x4a
+.常量 WM_CANCELJOURNAL, "75", 公开, 0x4b
+.常量 WM_NOTIFY, "78", 公开, 0x4e
+.常量 WM_INPUTLANGCHANGEREQUEST, "80", 公开, 0x50
+.常量 WM_INPUTLANGCHANGE, "81", 公开, 0x51
+.常量 WM_TCARD, "82", 公开, 0x52
+.常量 WM_HELP, "83", 公开, 0x53
+.常量 WM_USERCHANGED, "84", 公开, 0x54
+.常量 WM_NOTIFYFORMAT, "85", 公开, 0x55
+.常量 WM_CONTEXTMENU, "123", 公开, 0x7b
+.常量 WM_STYLECHANGING, "124", 公开, 0x7c
+.常量 WM_STYLECHANGED, "125", 公开, 0x7d
+.常量 WM_DISPLAYCHANGE, "126", 公开, 0x7e
+.常量 WM_GETICON, "127", 公开, 0x7f
+.常量 WM_SETICON, "128", 公开, 0x80
+.常量 WM_NCCREATE, "129", 公开, 0x81
+.常量 WM_NCDESTROY, "130", 公开, 0x82
+.常量 WM_NCCALCSIZE, "131", 公开, 0x83
+.常量 WM_NCHITTEST, "132", 公开, 0x84
+.常量 WM_NCPAINT, "133", 公开, 0x85
+.常量 WM_NCACTIVATE, "134", 公开, 0x86
+.常量 WM_GETDLGCODE, "135", 公开, 0x87
+.常量 WM_SYNCPAINT, "136", 公开, 0x88
+.常量 WM_NCMOUSEMOVE, "160", 公开, 0xa0
+.常量 WM_NCLBUTTONDOWN, "161", 公开, 0xa1
+.常量 WM_NCLBUTTONUP, "162", 公开, 0xa2
+.常量 WM_NCLBUTTONDBLCLK, "163", 公开, 0xa3
+.常量 WM_NCRBUTTONDOWN, "164", 公开, 0xa4
+.常量 WM_NCRBUTTONUP, "165", 公开, 0xa5
+.常量 WM_NCRBUTTONDBLCLK, "166", 公开, 0xa6
+.常量 WM_NCMBUTTONDOWN, "167", 公开, 0xa7
+.常量 WM_NCMBUTTONUP, "168", 公开, 0xa8
+.常量 WM_NCMBUTTONDBLCLK, "169", 公开, 0xa9
+.常量 WM_NCXBUTTONDOWN, "171", 公开, 0xab
+.常量 WM_NCXBUTTONUP, "172", 公开, 0xac
+.常量 WM_NCXBUTTONDBLCLK, "173", 公开, 0xad
+.常量 WM_INPUT_DEVICE_CHANGE, "254", 公开, 0xfe
+.常量 WM_INPUT, "255", 公开, 0xff
+.常量 WM_KEYFIRST, "256", 公开, 0x100
+.常量 WM_KEYDOWN, "256", 公开, 0x100
+.常量 WM_KEYUP, "257", 公开, 0x101
+.常量 WM_CHAR, "258", 公开, 0x102
+.常量 WM_DEADCHAR, "259", 公开, 0x103
+.常量 WM_SYSKEYDOWN, "260", 公开, 0x104
+.常量 WM_SYSKEYUP, "261", 公开, 0x105
+.常量 WM_SYSCHAR, "262", 公开, 0x106
+.常量 WM_SYSDEADCHAR, "263", 公开, 0x107
+.常量 WM_UNICHAR, "265", 公开, 0x109
+.常量 WM_KEYLAST, "265", 公开, 0x109
+.常量 WM_IME_STARTCOMPOSITION, "269", 公开, 0x10d
+.常量 WM_IME_ENDCOMPOSITION, "270", 公开, 0x10e
+.常量 WM_IME_COMPOSITION, "271", 公开, 0x10f
+.常量 WM_IME_KEYLAST, "271", 公开, 0x10f
+.常量 WM_INITDIALOG, "272", 公开, 0x110
+.常量 WM_COMMAND, "273", 公开, 0x111
+.常量 WM_SYSCOMMAND, "274", 公开, 0x112
+.常量 WM_TIMER, "275", 公开, 0x113
+.常量 WM_HSCROLL, "276", 公开, 0x114
+.常量 WM_VSCROLL, "277", 公开, 0x115
+.常量 WM_INITMENU, "278", 公开, 0x116
+.常量 WM_INITMENUPOPUP, "279", 公开, 0x117
+.常量 WM_MENUSELECT, "287", 公开, 0x11f
+.常量 WM_MENUCHAR, "288", 公开, 0x120
+.常量 WM_ENTERIDLE, "289", 公开, 0x121
+.常量 WM_MENURBUTTONUP, "290", 公开, 0x122
+.常量 WM_MENUDRAG, "291", 公开, 0x123
+.常量 WM_MENUGETOBJECT, "292", 公开, 0x124
+.常量 WM_UNINITMENUPOPUP, "293", 公开, 0x125
+.常量 WM_MENUCOMMAND, "294", 公开, 0x126
+.常量 WM_CHANGEUISTATE, "295", 公开, 0x127
+.常量 WM_UPDATEUISTATE, "296", 公开, 0x128
+.常量 WM_QUERYUISTATE, "297", 公开, 0x129
+.常量 WM_CTLCOLORMSGBOX, "306", 公开, 0x132
+.常量 WM_CTLCOLOREDIT, "307", 公开, 0x133
+.常量 WM_CTLCOLORLISTBOX, "308", 公开, 0x134
+.常量 WM_CTLCOLORBTN, "309", 公开, 0x135
+.常量 WM_CTLCOLORDLG, "310", 公开, 0x136
+.常量 WM_CTLCOLORSCROLLBAR, "311", 公开, 0x137
+.常量 WM_CTLCOLORSTATIC, "312", 公开, 0x138
+.常量 WM_MOUSEFIRST, "512", 公开, 0x200
+.常量 WM_MOUSEMOVE, "512", 公开, 0x200
+.常量 WM_LBUTTONDOWN, "513", 公开, 0x201
+.常量 WM_LBUTTONUP, "514", 公开, 0x202
+.常量 WM_LBUTTONDBLCLK, "515", 公开, 0x203
+.常量 WM_RBUTTONDOWN, "516", 公开, 0x204
+.常量 WM_RBUTTONUP, "517", 公开, 0x205
+.常量 WM_RBUTTONDBLCLK, "518", 公开, 0x206
+.常量 WM_MBUTTONDOWN, "519", 公开, 0x207
+.常量 WM_MBUTTONUP, "520", 公开, 0x208
+.常量 WM_MBUTTONDBLCLK, "521", 公开, 0x209
+.常量 WM_MOUSEWHEEL, "522", 公开, 0x20a
+.常量 WM_XBUTTONDOWN, "523", 公开, 0x20b
+.常量 WM_XBUTTONUP, "524", 公开, 0x20c
+.常量 WM_XBUTTONDBLCLK, "525", 公开, 0x20d
+.常量 WM_MOUSEHWHEEL, "526", 公开, 0x20e
+.常量 WM_MOUSELAST, "522", 公开, 0x20a
+.常量 WM_PARENTNOTIFY, "528", 公开, 0x210
+.常量 WM_ENTERMENULOOP, "529", 公开, 0x211
+.常量 WM_EXITMENULOOP, "530", 公开, 0x212
+.常量 WM_NEXTMENU, "531", 公开, 0x213
+.常量 WM_SIZING, "532", 公开, 0x214
+.常量 WM_CAPTURECHANGED, "533", 公开, 0x215
+.常量 WM_MOVING, "534", 公开, 0x216
+.常量 WM_POWERBROADCAST, "536", 公开, 0x218
+.常量 WM_DEVICECHANGE, "537", 公开, 0x219
+.常量 WM_MDICREATE, "544", 公开, 0x220
+.常量 WM_MDIDESTROY, "545", 公开, 0x221
+.常量 WM_MDIACTIVATE, "546", 公开, 0x222
+.常量 WM_MDIRESTORE, "547", 公开, 0x223
+.常量 WM_MDINEXT, "548", 公开, 0x224
+.常量 WM_MDIMAXIMIZE, "549", 公开, 0x225
+.常量 WM_MDITILE, "550", 公开, 0x226
+.常量 WM_MDICASCADE, "551", 公开, 0x227
+.常量 WM_MDIICONARRANGE, "552", 公开, 0x228
+.常量 WM_MDIGETACTIVE, "553", 公开, 0x229
+.常量 WM_MDISETMENU, "560", 公开, 0x230
+.常量 WM_ENTERSIZEMOVE, "561", 公开, 0x231
+.常量 WM_EXITSIZEMOVE, "562", 公开, 0x232
+.常量 WM_DROPFILES, "563", 公开, 0x233
+.常量 WM_MDIREFRESHMENU, "564", 公开, 0x234
+.常量 WM_IME_SETCONTEXT, "641", 公开, 0x281
+.常量 WM_IME_NOTIFY, "642", 公开, 0x282
+.常量 WM_IME_CONTROL, "643", 公开, 0x283
+.常量 WM_IME_COMPOSITIONFULL, "644", 公开, 0x284
+.常量 WM_IME_SELECT, "645", 公开, 0x285
+.常量 WM_IME_CHAR, "646", 公开, 0x286
+.常量 WM_IME_REQUEST, "648", 公开, 0x288
+.常量 WM_IME_KEYDOWN, "656", 公开, 0x290
+.常量 WM_IME_KEYUP, "657", 公开, 0x291
+.常量 WM_MOUSEHOVER, "673", 公开, 0x2a1
+.常量 WM_MOUSELEAVE, "675", 公开, 0x2a3
+.常量 WM_NCMOUSEHOVER, "672", 公开, 0x2a0
+.常量 WM_NCMOUSELEAVE, "674", 公开, 0x2a2
+.常量 WM_WTSSESSION_CHANGE, "689", 公开, 0x2b1
+.常量 WM_TABLET_FIRST, "704", 公开, 0x2c0
+.常量 WM_TABLET_LAST, "735", 公开, 0x2df
+.常量 WM_CUT, "768", 公开, 0x300
+.常量 WM_COPY, "769", 公开, 0x301
+.常量 WM_PASTE, "770", 公开, 0x302
+.常量 WM_CLEAR, "771", 公开, 0x303
+.常量 WM_UNDO, "772", 公开, 0x304
+.常量 WM_RENDERFORMAT, "773", 公开, 0x305
+.常量 WM_RENDERALLFORMATS, "774", 公开, 0x306
+.常量 WM_DESTROYCLIPBOARD, "775", 公开, 0x307
+.常量 WM_DRAWCLIPBOARD, "776", 公开, 0x308
+.常量 WM_PAINTCLIPBOARD, "777", 公开, 0x309
+.常量 WM_VSCROLLCLIPBOARD, "778", 公开, 0x30a
+.常量 WM_SIZECLIPBOARD, "779", 公开, 0x30b
+.常量 WM_ASKCBFORMATNAME, "780", 公开, 0x30c
+.常量 WM_CHANGECBCHAIN, "781", 公开, 0x30d
+.常量 WM_HSCROLLCLIPBOARD, "782", 公开, 0x30e
+.常量 WM_QUERYNEWPALETTE, "783", 公开, 0x30f
+.常量 WM_PALETTEISCHANGING, "784", 公开, 0x310
+.常量 WM_PALETTECHANGED, "785", 公开, 0x311
+.常量 WM_HOTKEY, "786", 公开, 0x312
+.常量 WM_PRINT, "791", 公开, 0x317
+.常量 WM_PRINTCLIENT, "792", 公开, 0x318
+.常量 WM_APPCOMMAND, "793", 公开, 0x319
+.常量 WM_THEMECHANGED, "794", 公开, 0x31a
+.常量 WM_CLIPBOARDUPDATE, "797", 公开, 0x31d
+.常量 WM_DWMCOMPOSITIONCHANGED, "798", 公开, 0x31e
+.常量 WM_DWMNCRENDERINGCHANGED, "799", 公开, 0x31f
+.常量 WM_DWMCOLORIZATIONCOLORCHANGED, "800", 公开, 0x320
+.常量 WM_DWMWINDOWMAXIMIZEDCHANGE, "801", 公开, 0x321
+.常量 WM_GETTITLEBARINFOEX, "831", 公开, 0x33f
+.常量 WM_HANDHELDFIRST, "856", 公开, 0x358
+.常量 WM_HANDHELDLAST, "863", 公开, 0x35f
+.常量 WM_AFXFIRST, "864", 公开, 0x360
+.常量 WM_AFXLAST, "895", 公开, 0x37f
+.常量 WM_PENWINFIRST, "896", 公开, 0x380
+.常量 WM_PENWINLAST, "911", 公开, 0x38f
+.常量 WM_APP, "32768", 公开, 0x8000
+.常量 WM_USER, "1024", 公开, 0x400
+.常量 GWL_EXSTYLE, "-20", 公开, 
+.常量 GWL_HINSTANCE, "6", 公开, 
+.常量 GWL_WNDPROC, "-4", 公开, 
+.常量 GWL_STYLE, "-16", 公开, 
+.常量 GWL_HWNDPARENT, "-8", 公开, 获取父窗口句柄
+.常量 GWL_ID, "-12", 公开, 获取窗口标识
+.常量 GWL_USERDATA, "-21", 公开, 获取、设置与窗口关联的自定义数据
+.常量 WS_SYSMENU, "524288", 公开, 
+.常量 WS_EX_TRANSPARENT, "32", 公开, 
+.常量 WS_ACTIVECAPTION, "1", 公开, 0x0001
+.常量 WS_BORDER, "8388608", 公开, 有单边框
+.常量 WS_CAPTION, "12582912", 公开, 有标题框和边框(和WS_TILED样式相同)
+.常量 WS_CHILD, "1073741824", 公开, 0x40000000L
+.常量 WS_CHILDWINDOW, "1073741824", 公开, 子窗口(不能与WS_POPUP合用)
+.常量 WS_CLIPCHILDREN, "33554432", 公开, 当在父窗口内绘图时,排除子窗口区域
+.常量 WS_CLIPSIBLINGS, "67108864", 公开, 使窗口排除子窗口之间的相对区域
+.常量 WS_DISABLED, "134217728", 公开, 不可用状态
+.常量 WS_DLGFRAME, "4194304", 公开, 带对话框边框样式,不带标题框
+.常量 WS_EX_ACCEPTFILES, "16", 公开, 可接受文件拖放
+.常量 WS_EX_APPWINDOW, "262144", 公开, 当窗口可见时将一个顶层窗口放置在任务栏上
+.常量 WS_EX_CLIENTEDGE, "512", 公开, 带阴影的边缘
+.常量 WS_EX_COMPOSITED, "33554432", 公开, 用双缓冲从下到上绘制窗口的所有子孙(WinXP以上)
+.常量 WS_EX_CONTEXTHELP, "1024", 公开, 有上下文帮助样式,标题栏包含一个问号标志
+.常量 WS_EX_CONTROLPARENT, "65536", 公开, 允许用户使用TAB键在窗口的子窗口间搜索
+.常量 WS_EX_DLGMODALFRAME, "1", 公开, 带双层边框
+.常量 WS_EX_LAYERED, "524288", 公开, 分层或透明窗口,该样式可使用混合特效
+.常量 WS_EX_LAYOUTRTL, "4194304", 公开, 窗体或控件将具有从右向左的布局(因而会被镜像)
+.常量 WS_EX_LEFT, "0", 公开, 0x00000000L
+.常量 WS_EX_LEFTSCROLLBAR, "16384", 公开, 垂直滚动条在窗口左边界
+.常量 WS_EX_LTRREADING, "0", 公开, 0x00000000L
+.常量 WS_EX_MDICHILD, "64", 公开, MDI子窗口样式
+.常量 WS_EX_NOACTIVATE, "134217728", 公开, 处于顶层但不激活
+.常量 WS_EX_NOINHERITLAYOUT, "1048576", 公开, 子控件不继承窗体或控件的布局
+.常量 WS_EX_NOPARENTNOTIFY, "4", 公开, 创建/销毁时不通知父窗口
+.常量 WS_EX_OVERLAPPEDWINDOW, "768", 公开, 带凸起边缘的边框,边缘有阴影
+.常量 WS_EX_PALETTEWINDOW, "392", 公开, 带立体边框,有工具条窗口样式,窗口在顶层
+.常量 WS_EX_RIGHT, "4096", 公开, 右对齐
+.常量 WS_EX_RIGHTSCROLLBAR, "0", 公开, 0x00000000L
+.常量 WS_EX_RTLREADING, "8192", 公开, 窗口文本从右到左显示
+.常量 WS_EX_STATICEDGE, "131072", 公开, 当窗口为不可用状态时创建一个三维边缘
+.常量 WS_EX_TOOLWINDOW, "128", 公开, 工具条窗口样式
+.常量 WS_EX_TOPMOST, "8", 公开, 窗口置顶(停留在所有非最高层窗口的上面)
+.常量 WS_EX_WINDOWEDGE, "256", 公开, 带凸起边缘的边框
+.常量 WS_GROUP, "131072", 公开, 组样式,每个组的第一个控件具有WS_TABSTOP样式
+.常量 WS_GT, "196608", 公开, 0x30000
+.常量 WS_HSCROLL, "1048576", 公开, 有水平滚动条
+.常量 WS_ICONIC, "536870912", 公开, 0x20000000
+.常量 WS_MAXIMIZE, "16777216", 公开, 具有最大化按钮,须指定WS_SYSTEM样式
+.常量 WS_MAXIMIZEBOX, "65536", 公开, 有最大化按钮
+.常量 WS_MINIMIZE, "536870912", 公开, 最小化状态
+.常量 WS_MINIMIZEBOX, "131072", 公开, 有最小化按钮
+.常量 WS_OVERLAPPED, "0", 公开, 0x00000000L
+.常量 WS_OVERLAPPEDWINDOW, "13565952", 公开, 具有层叠,标题框,系统菜单,可调边框,系统按钮
+.常量 WS_POPUP, "-2147483648", 公开, 弹出式窗口(不能与WS_CHILDWINDOW样式同时使用)
+.常量 WS_POPUPWINDOW, "-2138570752", 公开, 具有单边框,弹出式,系统菜单样式
+.常量 WS_SIZEBOX, "262144", 公开, 0x00040000
+.常量 WS_TABSTOP, "65536", 公开, 可接受TAB键焦点
+.常量 WS_THICKFRAME, "262144", 公开, 有可调边框(与WS_SIZEBOX样式相同)
+.常量 WS_TILED, "0", 公开, 0x00000000
+.常量 WS_TILEDWINDOW, "13565952", 公开, 0x00cf0000
+.常量 WS_VISIBLE, "268435456", 公开, 可见状态
+.常量 WS_VSCROLL, "2097152", 公开, 有垂直滚动条
+.常量 DWL_DLGPROC, "4", 公开, 4
+.常量 DWL_MSGRESULT, "0", 公开, 0
+.常量 DWL_USER, "8", 公开, 8
+.常量 CS_BYTEALIGNCLIENT, "4096", 公开, 对齐窗口的字节边界上的客户区
+.常量 CS_BYTEALIGNWINDOW, "8192", 公开, 对齐字节边界上的窗口
+.常量 CS_CLASSDC, "64", 公开, 分配一个设备上下文共享在类的所有窗口
+.常量 CS_DBLCLKS, "8", 公开, 当用户双击鼠标时向窗口程序发送一个双击的信息，同时，光标位于属于该类的窗口中
+.常量 CS_DELETE_TRANSFORM, "3", 公开, 0x00000003L
+.常量 CS_DISABLE, "2", 公开, 0x00000002L
+.常量 CS_DROPSHADOW, "131072", 公开, 0x00020000
+.常量 CS_E_ADMIN_LIMIT_EXCEEDED, "-2147221139", 公开, 0x8004016DL
+.常量 CS_E_CLASS_NOTFOUND, "-2147221146", 公开, 0x80040166L
+.常量 CS_E_FIRST, "-2147221148", 公开, 0x80040164L
+.常量 CS_E_INTERNAL_ERROR, "-2147221137", 公开, 0x8004016FL
+.常量 CS_E_INVALID_PATH, "-2147221141", 公开, 0x8004016BL
+.常量 CS_E_INVALID_VERSION, "-2147221145", 公开, 0x80040167L
+.常量 CS_E_LAST, "-2147221137", 公开, 0x8004016FL
+.常量 CS_E_NETWORK_ERROR, "-2147221140", 公开, 0x8004016CL
+.常量 CS_E_NO_CLASSSTORE, "-2147221144", 公开, 0x80040168L
+.常量 CS_E_NOT_DELETABLE, "-2147221147", 公开, 0x80040165L
+.常量 CS_E_OBJECT_ALREADY_EXISTS, "-2147221142", 公开, 0x8004016AL
+.常量 CS_E_OBJECT_NOTFOUND, "-2147221143", 公开, 0x80040169L
+.常量 CS_E_PACKAGE_NOTFOUND, "-2147221148", 公开, 0x80040164L
+.常量 CS_E_SCHEMA_MISMATCH, "-2147221138", 公开, 0x8004016EL
+.常量 CS_ENABLE, "1", 公开, 0x00000001L
+.常量 CS_GLOBALCLASS, "16384", 公开, 指定窗口类是一个应用程序全局类
+.常量 CS_HREDRAW, "2", 公开, 若移动或改变了窗口宽度，则刷新整个窗口
+.常量 CS_IME, "65536", 公开, 输入法窗口
+.常量 CS_INSERTCHAR, "8192", 公开, 0x2000
+.常量 CS_NOCLOSE, "512", 公开, 禁止系统菜单上的关闭命令
+.常量 CS_NOMOVECARET, "16384", 公开, 0x4000
+.常量 CS_OWNDC, "32", 公开, 为该类中每个窗口分配一个单值的设备描述表
+.常量 CS_PARENTDC, "128", 公开, 在父窗口中设定一个子窗口的剪切区，以便于子窗口能够画在父窗口中
+.常量 CS_SAVEBITS, "2048", 公开, 在一个窗口中保存用户图像，以便于在该窗口被遮住、移动时不必每次刷新屏幕
+.常量 CS_VREDRAW, "1", 公开, 若移动或改变了窗口高度，则刷新整个窗口
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 PAINTSTRUCT, , 
+    .成员 hdc, 整数型, , , 
+    .成员 fErase, 整数型, , , 
+    .成员 rcPaint, 未知类型0x41010140, , , 
+    .成员 fRestore, 整数型, , , 
+    .成员 fIncUpdate, 整数型, , , 
+    .成员 rgbReserved, 字节型, , "32", 
+
+.全局变量 过程, 整数型, , , 
+
+.DLL命令 SetWindowLong, 整数型, "user32", "SetWindowLongA", 公开, 在窗口结构中为指定的窗口设置信息  指定数据的前一个值
+    .参数 hwnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+    .参数 dwNewLong, 整数型, , 
+
+.DLL命令 CallWindowProc, 整数型, "user32", "CallWindowProcA", 公开, 将消息传答窗口函数
+    .参数 lpPrevWndFunc, 整数型, , 
+    .参数 hwnd, 整数型, , 
+    .参数 msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 BeginPaint, 整数型, "user32", "BeginPaint", , 准备一个画图窗　
+    .参数 hwnd, 整数型, , 
+    .参数 lpPaint, PAINTSTRUCT, , 
+
+.DLL命令 EndPaint, 整数型, "user32", "EndPaint", , 在指定窗口中标记图画结尾标志　
+    .参数 hwnd, 整数型, , 
+    .参数 lpPaint, PAINTSTRUCT, , 
+
+.DLL命令 GetWindowLong, 整数型, "user32", "GetWindowLongA", 公开, 从指定窗口的结构中取得信息  由nIndex决定。零表示出错。会设置GetLastError
+    .参数 窗口句柄, 整数型, , 欲为其获取信息的窗口的句柄
+    .参数 属性, 整数型, , 欲取回的信息，可以是下述任何一个常数：;GWL_EXSTYLE：扩展窗口样式;GWL_STYLE：窗口样式;GWL_WNDPROC：该窗口的窗口函数的地址;GWL_HINSTANCE：拥有窗口的实例的句柄;GWL_HWNDPARENT：该窗口之父的句柄。不要用SetWindowWord来改变这个值;GWL_ID：对话框中一个子窗口的标识符;GWL_USERDATA：含义由应用程序规定;DWL_DLGPROC：这个窗口的对话框函数地址;DWL_MSGRESULT：在对话框函数中处理的一条消息返回的值;DWL_USER：含义由应用程序规定;
+
+.DLL命令 SetBkMode, 整数型, "gdi32", "SetBkMode", , SetBkMode，Long，前一个背景模式的值
+    .参数 设备场景句柄, 整数型, , hdc，设备场景的句柄
+    .参数 方式, 整数型, , nBkMode，下述常数之一：OPAQUE用当前的背景色填充虚线画笔、阴影刷子以及字符的空隙TRANSPARENT透明处理，即不作上述填充
+
+.DLL命令 SendMessage, 整数型, "user32.dll", "SendMessageA", 公开, 调用一个窗口的窗口函数，将一条消息发给那个窗口。除非消息处理完毕，否则该函数不会返回。SendMessageBynum， ;    SendMessageByString是该函数的“类型安全”声明形式  由具体的消息决定
+    .参数 窗口句柄, 整数型, , 要接收消息的那个窗口的句柄
+    .参数 信息值, 整数型, , 消息的标识符
+    .参数 参数一, 整数型, , 具体取决于消息
+    .参数 参数二, 整数型, , 具体取决于消息;
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.子程序 测试, 整数型, , 
+.参数 hwnd, 整数型, , 要接收消息的那个窗口的句柄
+.参数 wMsg, 整数型, , 消息的标识符
+.参数 wParam, 整数型, , 具体取决于消息
+.参数 lParam, 整数型, , 具体取决于消息;
+
+.判断开始 (等于 (wMsg, 0))
+    输出调试文本 ("0 - WM_NULL")
+.判断 (wMsg ＝ 1)
+    输出调试文本 ("1 - WM_CREATE")
+.判断 (wMsg ＝ 2)
+    输出调试文本 ("2 - WM_DESTROY")
+.判断 (wMsg ＝ 3)
+    输出调试文本 ("3 - WM_MOVE")
+.判断 (wMsg ＝ 5)
+    输出调试文本 ("5 - WM_SIZE")
+.判断 (wMsg ＝ 6)
+    输出调试文本 ("6 - WM_ACTIVATE")
+.判断 (wMsg ＝ 7)
+    输出调试文本 ("7 - WM_SETFOCUS")
+.判断 (wMsg ＝ 8)
+    输出调试文本 ("8 - WM_KILLFOCUS")
+.判断 (wMsg ＝ 10)
+    输出调试文本 ("10 - WM_ENABLE")
+.判断 (wMsg ＝ 11)
+    输出调试文本 ("11 - WM_SETREDRAW")
+.判断 (wMsg ＝ 12)
+    输出调试文本 ("12 - WM_SETTEXT")
+.判断 (wMsg ＝ 13)
+    输出调试文本 ("13 - WM_GETTEXT")
+.判断 (wMsg ＝ 14)
+    输出调试文本 ("14 - WM_GETTEXTLENGTH")
+.判断 (wMsg ＝ 15)
+    输出调试文本 ("15 - WM_PAINT")
+.判断 (wMsg ＝ 16)
+    输出调试文本 ("16 - WM_CLOSE")
+.判断 (wMsg ＝ 17)
+    输出调试文本 ("17 - WM_QUERYENDSESSION")
+.判断 (wMsg ＝ 19)
+    输出调试文本 ("19 - WM_QUERYOPEN")
+.判断 (wMsg ＝ 22)
+    输出调试文本 ("22 - WM_ENDSESSION")
+.判断 (wMsg ＝ 18)
+    输出调试文本 ("18 - WM_QUIT")
+.判断 (wMsg ＝ 20)
+    输出调试文本 ("20 - WM_ERASEBKGND")
+.判断 (wMsg ＝ 21)
+    输出调试文本 ("21 - WM_SYSCOLORCHANGE")
+.判断 (wMsg ＝ 24)
+    输出调试文本 ("24 - WM_SHOWWINDOW")
+.判断 (wMsg ＝ 26)
+    输出调试文本 ("26 - WM_WININICHANGE")
+.判断 (wMsg ＝ 27)
+    输出调试文本 ("27 - WM_DEVMODECHANGE")
+.判断 (wMsg ＝ 27)
+    输出调试文本 ("27 - WM_DEVMODECHANGE")
+.判断 (wMsg ＝ 28)
+    输出调试文本 ("28 - WM_ACTIVATEAPP")
+.判断 (wMsg ＝ 29)
+    输出调试文本 ("29 - WM_FONTCHANGE")
+.判断 (wMsg ＝ 30)
+    输出调试文本 ("30 - WM_TIMECHANGE")
+.判断 (wMsg ＝ 31)
+    输出调试文本 ("31 - WM_CANCELMODE")
+.判断 (wMsg ＝ 32)
+    输出调试文本 ("32 - WM_SETCURSOR")
+.判断 (wMsg ＝ 33)
+    输出调试文本 ("33 - WM_MOUSEACTIVATE")
+.判断 (wMsg ＝ 34)
+    输出调试文本 ("34 - WM_CHILDACTIVATE")
+.判断 (wMsg ＝ 35)
+    输出调试文本 ("35 - WM_QUEUESYNC")
+.判断 (wMsg ＝ 36)
+    输出调试文本 ("36 - WM_GETMINMAXINFO")
+.判断 (wMsg ＝ 38)
+    输出调试文本 ("38 - WM_PAINTICON")
+.判断 (wMsg ＝ 39)
+    输出调试文本 ("39 - WM_ICONERASEBKGND")
+.判断 (wMsg ＝ 40)
+    输出调试文本 ("40 - WM_NEXTDLGCTL")
+.判断 (wMsg ＝ 42)
+    输出调试文本 ("42 - WM_SPOOLERSTATUS")
+.判断 (wMsg ＝ 43)
+    输出调试文本 ("43 - WM_DRAWITEM")
+.判断 (wMsg ＝ 44)
+    输出调试文本 ("44 - WM_MEASUREITEM")
+.判断 (wMsg ＝ 45)
+    输出调试文本 ("45 - WM_DELETEITEM")
+.判断 (wMsg ＝ 46)
+    输出调试文本 ("46 - WM_VKEYTOITEM")
+.判断 (wMsg ＝ 47)
+    输出调试文本 ("47 - WM_CHARTOITEM")
+.判断 (wMsg ＝ 48)
+    输出调试文本 ("48 - WM_SETFONT")
+.判断 (wMsg ＝ 49)
+    输出调试文本 ("49 - WM_GETFONT")
+.判断 (wMsg ＝ 50)
+    输出调试文本 ("50 - WM_SETHOTKEY")
+.判断 (wMsg ＝ 51)
+    输出调试文本 ("51 - WM_GETHOTKEY")
+.判断 (wMsg ＝ 55)
+    输出调试文本 ("55 - WM_QUERYDRAGICON")
+.判断 (wMsg ＝ 57)
+    输出调试文本 ("57 - WM_COMPAREITEM")
+.判断 (wMsg ＝ 61)
+    输出调试文本 ("61 - WM_GETOBJECT")
+.判断 (wMsg ＝ 65)
+    输出调试文本 ("65 - WM_COMPACTING")
+.判断 (wMsg ＝ 68)
+    输出调试文本 ("68 - WM_COMMNOTIFY")
+.判断 (wMsg ＝ 70)
+    输出调试文本 ("70 - WM_WINDOWPOSCHANGING")
+.判断 (wMsg ＝ 71)
+    输出调试文本 ("71 - WM_WINDOWPOSCHANGED")
+.判断 (wMsg ＝ 72)
+    输出调试文本 ("72 - WM_POWER")
+.判断 (wMsg ＝ 74)
+    输出调试文本 ("74 - WM_COPYDATA")
+.判断 (wMsg ＝ 75)
+    输出调试文本 ("75 - WM_CANCELJOURNAL")
+.判断 (wMsg ＝ 78)
+    输出调试文本 ("78 - WM_NOTIFY")
+.判断 (wMsg ＝ 80)
+    输出调试文本 ("80 - WM_INPUTLANGCHANGEREQUEST")
+.判断 (wMsg ＝ 81)
+    输出调试文本 ("81 - WM_INPUTLANGCHANGE")
+.判断 (wMsg ＝ 82)
+    输出调试文本 ("82 - WM_TCARD")
+.判断 (wMsg ＝ 83)
+    输出调试文本 ("83 - WM_HELP")
+.判断 (wMsg ＝ 84)
+    输出调试文本 ("84 - WM_USERCHANGED")
+.判断 (wMsg ＝ 85)
+    输出调试文本 ("85 - WM_NOTIFYFORMAT")
+.判断 (wMsg ＝ 123)
+    输出调试文本 ("123 - WM_CONTEXTMENU")
+.判断 (wMsg ＝ 124)
+    输出调试文本 ("124 - WM_STYLECHANGING")
+.判断 (wMsg ＝ 125)
+    输出调试文本 ("125 - WM_STYLECHANGED")
+.判断 (wMsg ＝ 126)
+    输出调试文本 ("126 - WM_DISPLAYCHANGE")
+.判断 (wMsg ＝ 127)
+    输出调试文本 ("127 - WM_GETICON")
+.判断 (wMsg ＝ 128)
+    输出调试文本 ("128 - WM_SETICON")
+.判断 (wMsg ＝ 129)
+    输出调试文本 ("129 - WM_NCCREATE")
+.判断 (wMsg ＝ 130)
+    输出调试文本 ("130 - WM_NCDESTROY")
+.判断 (wMsg ＝ 131)
+    输出调试文本 ("131 - WM_NCCALCSIZE")
+.判断 (wMsg ＝ 132)
+    输出调试文本 ("132 - WM_NCHITTEST")
+.判断 (wMsg ＝ 133)
+    输出调试文本 ("133 - WM_NCPAINT")
+.判断 (wMsg ＝ 134)
+    输出调试文本 ("134 - WM_NCACTIVATE")
+.判断 (wMsg ＝ 135)
+    输出调试文本 ("135 - WM_GETDLGCODE")
+.判断 (wMsg ＝ 136)
+    输出调试文本 ("136 - WM_SYNCPAINT")
+.判断 (wMsg ＝ 160)
+    输出调试文本 ("160 - WM_NCMOUSEMOVE")
+.判断 (wMsg ＝ 161)
+    输出调试文本 ("161 - WM_NCLBUTTONDOWN")
+.判断 (wMsg ＝ 162)
+    输出调试文本 ("162 - WM_NCLBUTTONUP")
+.判断 (wMsg ＝ 163)
+    输出调试文本 ("163 - WM_NCLBUTTONDBLCLK")
+.判断 (wMsg ＝ 164)
+    输出调试文本 ("164 - WM_NCRBUTTONDOWN")
+.判断 (wMsg ＝ 165)
+    输出调试文本 ("165 - WM_NCRBUTTONUP")
+.判断 (wMsg ＝ 166)
+    输出调试文本 ("166 - WM_NCRBUTTONDBLCLK")
+.判断 (wMsg ＝ 167)
+    输出调试文本 ("167 - WM_NCMBUTTONDOWN")
+.判断 (wMsg ＝ 168)
+    输出调试文本 ("168 - WM_NCMBUTTONUP")
+.判断 (wMsg ＝ 169)
+    输出调试文本 ("169 - WM_NCMBUTTONDBLCLK")
+.判断 (wMsg ＝ 171)
+    输出调试文本 ("171 - WM_NCXBUTTONDOWN")
+.判断 (wMsg ＝ 172)
+    输出调试文本 ("172 - WM_NCXBUTTONUP")
+.判断 (wMsg ＝ 173)
+    输出调试文本 ("173 - WM_NCXBUTTONDBLCLK")
+.判断 (wMsg ＝ 254)
+    输出调试文本 ("254 - WM_INPUT_DEVICE_CHANGE")
+.判断 (wMsg ＝ 255)
+    输出调试文本 ("255 - WM_INPUT")
+.判断 (wMsg ＝ 256)
+    输出调试文本 ("256 - WM_KEYFIRST")
+.判断 (wMsg ＝ 256)
+    输出调试文本 ("256 - WM_KEYDOWN")
+.判断 (wMsg ＝ 257)
+    输出调试文本 ("257 - WM_KEYUP")
+.判断 (wMsg ＝ 258)
+    输出调试文本 ("258 - WM_CHAR")
+.判断 (wMsg ＝ 259)
+    输出调试文本 ("259 - WM_DEADCHAR")
+.判断 (wMsg ＝ 260)
+    输出调试文本 ("260 - WM_SYSKEYDOWN")
+.判断 (wMsg ＝ 261)
+    输出调试文本 ("261 - WM_SYSKEYUP")
+.判断 (wMsg ＝ 262)
+    输出调试文本 ("262 - WM_SYSCHAR")
+.判断 (wMsg ＝ 263)
+    输出调试文本 ("263 - WM_SYSDEADCHAR")
+.判断 (wMsg ＝ 265)
+    输出调试文本 ("265 - WM_UNICHAR")
+.判断 (wMsg ＝ 265)
+    输出调试文本 ("265 - WM_KEYLAST")
+.判断 (wMsg ＝ 264)
+    输出调试文本 ("264 - WM_KEYLAST")
+.判断 (wMsg ＝ 269)
+    输出调试文本 ("269 - WM_IME_STARTCOMPOSITION")
+.判断 (wMsg ＝ 270)
+    输出调试文本 ("270 - WM_IME_ENDCOMPOSITION")
+.判断 (wMsg ＝ 271)
+    输出调试文本 ("271 - WM_IME_COMPOSITION")
+.判断 (wMsg ＝ 271)
+    输出调试文本 ("271 - WM_IME_KEYLAST")
+.判断 (wMsg ＝ 272)
+    输出调试文本 ("272 - WM_INITDIALOG")
+.判断 (wMsg ＝ 273)
+    输出调试文本 ("273 - WM_COMMAND")
+.判断 (wMsg ＝ 274)
+    输出调试文本 ("274 - WM_SYSCOMMAND")
+.判断 (wMsg ＝ 275)
+    输出调试文本 ("275 - WM_TIMER")
+.判断 (wMsg ＝ 276)
+    输出调试文本 ("276 - WM_HSCROLL")
+.判断 (wMsg ＝ 277)
+    输出调试文本 ("277 - WM_VSCROLL")
+.判断 (wMsg ＝ 278)
+    输出调试文本 ("278 - WM_INITMENU")
+.判断 (wMsg ＝ 279)
+    输出调试文本 ("279 - WM_INITMENUPOPUP")
+.判断 (wMsg ＝ 287)
+    输出调试文本 ("287 - WM_MENUSELECT")
+.判断 (wMsg ＝ 288)
+    输出调试文本 ("288 - WM_MENUCHAR")
+.判断 (wMsg ＝ 289)
+    输出调试文本 ("289 - WM_ENTERIDLE")
+.判断 (wMsg ＝ 290)
+    输出调试文本 ("290 - WM_MENURBUTTONUP")
+.判断 (wMsg ＝ 291)
+    输出调试文本 ("291 - WM_MENUDRAG")
+.判断 (wMsg ＝ 292)
+    输出调试文本 ("292 - WM_MENUGETOBJECT")
+.判断 (wMsg ＝ 293)
+    输出调试文本 ("293 - WM_UNINITMENUPOPUP")
+.判断 (wMsg ＝ 294)
+    输出调试文本 ("294 - WM_MENUCOMMAND")
+.判断 (wMsg ＝ 295)
+    输出调试文本 ("295 - WM_CHANGEUISTATE")
+.判断 (wMsg ＝ 296)
+    输出调试文本 ("296 - WM_UPDATEUISTATE")
+.判断 (wMsg ＝ 297)
+    输出调试文本 ("297 - WM_QUERYUISTATE")
+.判断 (wMsg ＝ 306)
+    输出调试文本 ("306 - WM_CTLCOLORMSGBOX")
+.判断 (wMsg ＝ 307)
+    输出调试文本 ("307 - WM_CTLCOLOREDIT")
+.判断 (wMsg ＝ 308)
+    输出调试文本 ("308 - WM_CTLCOLORLISTBOX")
+.判断 (wMsg ＝ 309)
+    输出调试文本 ("309 - WM_CTLCOLORBTN")
+.判断 (wMsg ＝ 310)
+    输出调试文本 ("310 - WM_CTLCOLORDLG")
+.判断 (wMsg ＝ 311)
+    输出调试文本 ("311 - WM_CTLCOLORSCROLLBAR")
+.判断 (wMsg ＝ 312)
+    输出调试文本 ("312 - WM_CTLCOLORSTATIC")
+.判断 (wMsg ＝ 512)
+    输出调试文本 ("512 - WM_MOUSEFIRST")
+.判断 (wMsg ＝ 512)
+    输出调试文本 ("512 - WM_MOUSEMOVE")
+.判断 (wMsg ＝ 513)
+    输出调试文本 ("513 - WM_LBUTTONDOWN")
+.判断 (等于 (wMsg, 514)) ' 本源码来自易语言资源网(www.wodesoft.com)
+    输出调试文本 ("514 - WM_LBUTTONUP")
+.判断 (wMsg ＝ 515)
+    输出调试文本 ("515 - WM_LBUTTONDBLCLK")
+.判断 (wMsg ＝ 516)
+    输出调试文本 ("516 - WM_RBUTTONDOWN")
+.判断 (wMsg ＝ 517)
+    输出调试文本 (“517 - WM_RBUTTONUP”)
+.判断 (wMsg ＝ 518)
+    输出调试文本 ("518 - WM_RBUTTONDBLCLK")
+.判断 (wMsg ＝ 519)
+    输出调试文本 ("519 - WM_MBUTTONDOWN")
+.判断 (wMsg ＝ 520)
+    输出调试文本 ("520 - WM_MBUTTONUP")
+.判断 (wMsg ＝ 521)
+    输出调试文本 ("521 - WM_MBUTTONDBLCLK")
+.判断 (wMsg ＝ 522)
+    输出调试文本 ("522 - WM_MOUSEWHEEL")
+.判断 (wMsg ＝ 523)
+    输出调试文本 ("523 - WM_XBUTTONDOWN")
+.判断 (wMsg ＝ 524)
+    输出调试文本 ("524 - WM_XBUTTONUP")
+.判断 (等于 (wMsg, 525)) ' 本源码来自易语言资源网(www.wodesoft.com)
+    输出调试文本 ("525 - WM_XBUTTONDBLCLK")
+.判断 (wMsg ＝ 526)
+    输出调试文本 ("526 - WM_MOUSEHWHEEL")
+.判断 (wMsg ＝ 526)
+    输出调试文本 ("526 - WM_MOUSELAST")
+.判断 (wMsg ＝ 525)
+    输出调试文本 ("525 - WM_MOUSELAST")
+.判断 (wMsg ＝ 522)
+    输出调试文本 ("522 - WM_MOUSELAST")
+.判断 (wMsg ＝ 521)
+    输出调试文本 ("521 - WM_MOUSELAST")
+.判断 (wMsg ＝ 528)
+    输出调试文本 ("528 - WM_PARENTNOTIFY")
+.判断 (wMsg ＝ 529)
+    输出调试文本 ("529 - WM_ENTERMENULOOP")
+.判断 (wMsg ＝ 530)
+    输出调试文本 ("530 - WM_EXITMENULOOP")
+.判断 (wMsg ＝ 531)
+    输出调试文本 ("531 - WM_NEXTMENU")
+.判断 (wMsg ＝ 532)
+    输出调试文本 ("532 - WM_SIZING")
+.判断 (wMsg ＝ 533)
+    输出调试文本 ("533 - WM_CAPTURECHANGED")
+.判断 (wMsg ＝ 534)
+    输出调试文本 ("534 - WM_MOVING")
+.判断 (wMsg ＝ 536)
+    输出调试文本 ("536 - WM_POWERBROADCAST")
+.判断 (wMsg ＝ 537)
+    输出调试文本 ("537 - WM_DEVICECHANGE")
+.判断 (wMsg ＝ 544)
+    输出调试文本 ("544 - WM_MDICREATE")
+.判断 (wMsg ＝ 545)
+    输出调试文本 ("545 - WM_MDIDESTROY")
+.判断 (wMsg ＝ 546)
+    输出调试文本 ("546 - WM_MDIACTIVATE")
+.判断 (wMsg ＝ 547)
+    输出调试文本 ("547 - WM_MDIRESTORE")
+.判断 (wMsg ＝ 548)
+    输出调试文本 ("548 - WM_MDINEXT")
+.判断 (wMsg ＝ 549)
+    输出调试文本 ("549 - WM_MDIMAXIMIZE")
+.判断 (wMsg ＝ 550)
+    输出调试文本 ("550 - WM_MDITILE")
+.判断 (wMsg ＝ 551)
+    输出调试文本 ("551 - WM_MDICASCADE")
+.判断 (wMsg ＝ 552)
+    输出调试文本 ("552 - WM_MDIICONARRANGE")
+.判断 (wMsg ＝ 553)
+    输出调试文本 ("553 - WM_MDIGETACTIVE")
+.判断 (wMsg ＝ 560)
+    输出调试文本 ("560 - WM_MDISETMENU")
+.判断 (wMsg ＝ 561)
+    输出调试文本 ("561 - WM_ENTERSIZEMOVE")
+.判断 (wMsg ＝ 562)
+    输出调试文本 ("562 - WM_EXITSIZEMOVE")
+.判断 (wMsg ＝ 563)
+    输出调试文本 ("563 - WM_DROPFILES")
+.判断 (wMsg ＝ 564)
+    输出调试文本 ("564 - WM_MDIREFRESHMENU")
+.判断 (wMsg ＝ 641)
+    输出调试文本 ("641 - WM_IME_SETCONTEXT")
+.判断 (wMsg ＝ 642)
+    输出调试文本 ("642 - WM_IME_NOTIFY")
+.判断 (wMsg ＝ 643)
+    输出调试文本 ("643 - WM_IME_CONTROL")
+.判断 (wMsg ＝ 644)
+    输出调试文本 ("644 - WM_IME_COMPOSITIONFULL")
+.判断 (wMsg ＝ 645)
+    输出调试文本 ("645 - WM_IME_SELECT")
+.判断 (wMsg ＝ 646)
+    输出调试文本 ("646 - WM_IME_CHAR")
+.判断 (wMsg ＝ 648)
+    输出调试文本 ("648 - WM_IME_REQUEST")
+.判断 (wMsg ＝ 656)
+    输出调试文本 ("656 - WM_IME_KEYDOWN")
+.判断 (wMsg ＝ 657)
+    输出调试文本 ("657 - WM_IME_KEYUP")
+.判断 (wMsg ＝ 673)
+    输出调试文本 ("673 - WM_MOUSEHOVER")
+.判断 (wMsg ＝ 675)
+    输出调试文本 ("675 - WM_MOUSELEAVE")
+.判断 (wMsg ＝ 672)
+    输出调试文本 ("672 - WM_NCMOUSEHOVER")
+.判断 (wMsg ＝ 674)
+    输出调试文本 ("674 - WM_NCMOUSELEAVE")
+.判断 (wMsg ＝ 689)
+    输出调试文本 ("689 - WM_WTSSESSION_CHANGE")
+.判断 (wMsg ＝ 704)
+    输出调试文本 ("704 - WM_TABLET_FIRST")
+.判断 (wMsg ＝ 735)
+    输出调试文本 ("735 - WM_TABLET_LAST")
+.判断 (wMsg ＝ 768)
+    输出调试文本 ("768 - WM_CUT")
+.判断 (wMsg ＝ 769)
+    输出调试文本 ("769 - WM_COPY")
+.判断 (wMsg ＝ 770)
+    输出调试文本 ("770 - WM_PASTE")
+.判断 (wMsg ＝ 771)
+    输出调试文本 ("771 - WM_CLEAR")
+.判断 (wMsg ＝ 772)
+    输出调试文本 ("772 - WM_UNDO")
+.判断 (wMsg ＝ 773)
+    输出调试文本 ("773 - WM_RENDERFORMAT")
+.判断 (wMsg ＝ 774)
+    输出调试文本 ("774 - WM_RENDERALLFORMATS")
+.判断 (wMsg ＝ 775)
+    输出调试文本 ("775 - WM_DESTROYCLIPBOARD")
+.判断 (wMsg ＝ 776)
+    输出调试文本 ("776 - WM_DRAWCLIPBOARD")
+.判断 (wMsg ＝ 777)
+    输出调试文本 ("777 - WM_PAINTCLIPBOARD")
+.判断 (wMsg ＝ 778)
+    输出调试文本 ("778 - WM_VSCROLLCLIPBOARD")
+.判断 (wMsg ＝ 779)
+    输出调试文本 ("779 - WM_SIZECLIPBOARD")
+.判断 (wMsg ＝ 780)
+    输出调试文本 ("780 - WM_ASKCBFORMATNAME")
+.判断 (wMsg ＝ 781)
+    输出调试文本 ("781 - WM_CHANGECBCHAIN")
+.判断 (wMsg ＝ 782)
+    输出调试文本 ("782 - WM_HSCROLLCLIPBOARD")
+.判断 (wMsg ＝ 783)
+    输出调试文本 ("783 - WM_QUERYNEWPALETTE")
+.判断 (wMsg ＝ 784)
+    输出调试文本 ("784 - WM_PALETTEISCHANGING")
+.判断 (wMsg ＝ 785)
+    输出调试文本 ("785 - WM_PALETTECHANGED")
+.判断 (wMsg ＝ 786)
+    输出调试文本 ("786 - WM_HOTKEY")
+.判断 (wMsg ＝ 791)
+    输出调试文本 ("791 - WM_PRINT")
+.判断 (wMsg ＝ 792)
+    输出调试文本 ("792 - WM_PRINTCLIENT")
+.判断 (wMsg ＝ 793)
+    输出调试文本 ("793 - WM_APPCOMMAND")
+.判断 (wMsg ＝ 794)
+    输出调试文本 ("794 - WM_THEMECHANGED")
+.判断 (wMsg ＝ 797)
+    输出调试文本 ("797 - WM_CLIPBOARDUPDATE")
+.判断 (wMsg ＝ 798)
+    输出调试文本 ("798 - WM_DWMCOMPOSITIONCHANGED")
+.判断 (wMsg ＝ 799)
+    输出调试文本 ("799 - WM_DWMNCRENDERINGCHANGED")
+.判断 (wMsg ＝ 800)
+    输出调试文本 ("800 - WM_DWMCOLORIZATIONCOLORCHANGED")
+.判断 (wMsg ＝ 801)
+    输出调试文本 ("801 - WM_DWMWINDOWMAXIMIZEDCHANGE")
+.判断 (wMsg ＝ 831)
+    输出调试文本 ("831 - WM_GETTITLEBARINFOEX")
+.判断 (wMsg ＝ 856)
+    输出调试文本 ("856 - WM_HANDHELDFIRST")
+.判断 (wMsg ＝ 863)
+    输出调试文本 ("863 - WM_HANDHELDLAST")
+.判断 (wMsg ＝ 864)
+    输出调试文本 ("864 - WM_AFXFIRST")
+.判断 (wMsg ＝ 895)
+    输出调试文本 ("895 - WM_AFXLAST")
+.判断 (wMsg ＝ 896)
+    输出调试文本 ("896 - WM_PENWINFIRST")
+.判断 (wMsg ＝ 911)
+    输出调试文本 ("911 - WM_PENWINLAST")
+.判断 (wMsg ＝ 32768)
+    输出调试文本 ("32768 - WM_APP")
+.判断 (wMsg ＝ 1024)
+    输出调试文本 ("1024 - WM_USER")
+.默认
+    输出调试文本 (相加 (到文本 (wMsg), “ - 未知”))
+.判断结束
+
+返回 (CallWindowProc (过程, hwnd, wMsg, wParam, lParam))
+
+.子程序 回调示例, 整数型, , 本程序为 子类化.创建 中窗口消息回调的示例，为空程序，复制过去用吧
+.参数 hwnd, 整数型, , 要接收消息的那个窗口的句柄
+.参数 wMsg, 整数型, , 消息的标识符
+.参数 wParam, 整数型, , 具体取决于消息
+.参数 lParam, 整数型, , 具体取决于消息;
+
+
+
+.类模块 子类化, , , 
+
+.程序集变量 句柄, 整数型, , , 
+.程序集变量 旧窗口过程, 整数型, , , 
+.程序集变量 A, 逻辑型, , , 
+.程序集变量 hdc, 整数型, , , 
+.程序集变量 ht, PAINTSTRUCT, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 创建, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 窗口消息回调, 子程序指针, 可空, 空为测试消息
+
+赋值 (句柄, 窗口句柄)
+.如果 (是否为空 (窗口消息回调))
+    赋值 (过程, SetWindowLong (句柄, #GWL_WNDPROC, 到整数 (&测试))) ' 子类化窗口过程
+.否则
+    赋值 (旧窗口过程, SetWindowLong (句柄, #GWL_WNDPROC, 到整数 (窗口消息回调))) ' 子类化窗口过程
+.如果结束
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 处理消息, 整数型, , 请放置于消息回调的最后用作返回
+.参数 hwnd, 整数型, , 
+.参数 wMsg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+返回 (CallWindowProc (旧窗口过程, hwnd, wMsg, wParam, lParam))
+
+.子程序 自绘_开始, 空白型, , 请放置于WM_PAINT中。告诉系统，我们开始重画了
+赋值 (hdc, BeginPaint (句柄, ht))
+
+.子程序 自绘_结束, 空白型, , 请放置于WM_PAINT中。结束重绘
+EndPaint (句柄, ht)
+
+.子程序 自绘_取设备句柄, 整数型, , 请在 子类化.自绘_开始() 与 子类化.自绘_结束() 之间使用
+返回 (hdc)
+
+.子程序 自绘_取绘图信息, PAINTSTRUCT, , 请在 子类化.自绘_开始() 与 子类化.自绘_结束() 之间使用
+返回 (ht)
+
+.子程序 自绘_透明处理_外, 空白型, , 设置背景透明，请在 子类化.创建() 之前使用
+.参数 窗口句柄, 整数型, , 
+
+SetWindowLong (窗口句柄, #GWL_EXSTYLE, 位或 (GetWindowLong (窗口句柄, #GWL_EXSTYLE), #WS_EX_TRANSPARENT))
+
+.子程序 自绘_透明处理_内, 空白型, , 设置背景透明，请在 子类化.自绘_开始() 与 子类化.自绘_结束() 之间使用
+SetBkMode (hdc, 1)
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,305 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 705
+    高度 = 589
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 AF_INET, "2", , 
+.常量 SOCK_STREAM, "1", , 
+.常量 IPPROTO_TCP, "6", , 
+.常量 SOL_SOCKET, "65535", , 0xffff
+.常量 socket_error, "-1", , 
+.常量 SO_SNDTIMEO, "4101", , 0x1005
+.常量 SO_RCVTIMEO, "4102", , 0x1006
+.常量 SD_SEND, "1", , 0x01
+.常量 , , , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 套接字信息_, , , WSADataType
+    .成员 版本, 短整数型, , , wVersion
+    .成员 高版本, 短整数型, , , wHighVersion
+    .成员 种类, 字节型, , "257", * WSA_DescriptionSize
+    .成员 系统状态, 字节型, , "2", * WSA_SysStatusSize
+    .成员 最大套接字, 短整数型, , , iMaxSockets
+    .成员 最大Udp, 短整数型, , , iMaxUdpDg
+    .成员 信息, 整数型, , , lpVendorInfo
+
+数据类型 套接字地址_, , , sockaddr
+    .成员 常量, 短整数型, , , sin_family
+    .成员 端口, 短整数型, , , sin_port
+    .成员 地址, 整数型, , , sin_addr
+    .成员 地址范围, 字节型, , "8", sin_zero
+
+数据类型 空闲_, , , LingerType
+    .成员 开关选项, 短整数型, , , l_onoff
+    .成员 空闲时间, 短整数型, , , l_linger
+
+数据类型 HOSTENT, , 
+    .成员 hName, 整数型, , , 
+    .成员 hAliases, 整数型, , , 
+    .成员 hAddrType, 短整数型, , , 
+    .成员 hLen, 短整数型, , , 
+    .成员 hAddrList, 整数型, , , 
+
+
+.DLL命令 WSAStartup, 整数型, "ws2_32.dll", "WSAStartup", , ,
+    .参数 必需版本, 整数型, , wVersionRequired
+    .参数 网络通讯数据结构, 套接字信息_, , lpWSAData
+
+.DLL命令 closesocket, 整数型, "ws2_32.dll", "closesocket", , ,"closesocket", 
+    .参数 网络通讯标识符, 整数型, , 
+
+.DLL命令 socket, 整数型, "ws2_32.dll", "socket", , ,
+    .参数 地址, 整数型, , af
+    .参数 类型, 整数型, , lType
+    .参数 协议, 整数型, , protocol
+
+.DLL命令 gethostbyname, 整数型, "ws2_32.dll", "gethostbyname", , ,
+    .参数 名称, 文本型, , name
+
+.DLL命令 htons, 短整数型, "ws2_32.dll", "htons", , ,
+    .参数 十六位主机命令, 短整数型, , hostshort
+
+.DLL命令 connect, 整数型, "ws2_32.dll", "connect", , ,
+    .参数 网络通讯标识符, 整数型, , 
+    .参数 名称结构, 套接字地址_, , 
+    .参数 名称结构长度, 整数型, , 
+
+.DLL命令 setsockopt, 整数型, "ws2_32.dll", "setsockopt", , ,
+    .参数 网络通讯标识符, 整数型, , 
+    .参数 级别, 整数型, , 
+    .参数 操作名称, 整数型, , 
+    .参数 操作结构, 空闲_, , 
+    .参数 操作结构长度, 整数型, , 
+
+.DLL命令 send, 整数型, "ws2_32.dll", "send", , ,
+    .参数 网络通讯标识符, 整数型, , s
+    .参数 缓冲区, 文本型, , buf
+    .参数 缓冲区长度, 整数型, , lLen
+    .参数 标志, 整数型, , flags
+
+.DLL命令 recv, 整数型, "ws2_32.dll", "recv", , ,
+    .参数 网络通讯标识符, 整数型, , s
+    .参数 缓冲区, 文本型, 传址, buf
+    .参数 缓冲区长度, 整数型, , lLen
+    .参数 标志, 整数型, , flags
+
+.DLL命令 WSACleanup, 整数型, "ws2_32.dll", "WSACleanup", , ,
+
+.DLL命令 RtlMoveMemory_HOSTENT, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, HOSTENT, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_整数, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_字节型, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, 字节型, 传址 数组, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 inet_addr, 整数型, "ws2_32.dll", "inet_addr", , 点数格式转换为整数格式IP地址
+    .参数 cp, 文本型, , 欲被转换的IP地址
+
+.DLL命令 shutdown, 空白型, "ws2_32.dll", "shutdown", , 
+    .参数 SOCKET, 整数型, , 
+    .参数 how, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 Str, 文本型, , , 
+.局部变量 H, 文本型, , , 
+.局部变量 host, 文本型, , , 
+
+赋值 (., 真)
+赋值 (H, #换行符)
+赋值 (Str, “”)
+赋值 (Str, 相加 (Str, “GET / HTTP/1.1”, H)) ' //自定义封包头
+赋值 (Str, 相加 (Str, “Accept: */*”, H))
+赋值 (Str, 相加 (Str, “Accept-Language: zh-cn”, H))
+赋值 (Str, 相加 (Str, “User-Agent: Mozilla/4.0”, H))
+赋值 (Str, 相加 (Str, “Host: www.baidu.com”, H))
+赋值 (Str, 相加 (Str, “Connection: Close”, H, H))
+赋值 (host, “www.baidu.com”)
+赋值 (., 子程序_发送封包 (host, Str))
+赋值 (., 假)
+
+.子程序 子程序_发送封包, 文本型, , 
+.参数 Host, 文本型, , 格式www.baidu.com
+.参数 封包头, 文本型, , 
+
+.局部变量 Name, 套接字地址_, , , 
+.局部变量 He, HOSTENT, , , 
+.局部变量 WSD, 套接字信息_, , , 
+.局部变量 Timeout, 空闲_, , , 
+.局部变量 Len, 整数型, , , 
+.局部变量 Skt, 整数型, , , 
+.局部变量 Data, 文本型, , , 
+.局部变量 lpHost, 整数型, , , 
+.局部变量 tmpIPAddr, 字节型, , "0", 
+.局部变量 dwIPAddr, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 sIPAddr, 文本型, , , 
+.局部变量 Buf, 文本型, , , 
+
+.如果真 (不等于 (WSAStartup (257, WSD), 0))
+    返回 (“”)
+.如果真结束
+赋值 (Skt, socket (#AF_INET, #SOCK_STREAM, #IPPROTO_TCP))
+.如果真 (等于 (Skt, #socket_error))
+    返回 (“”)
+.如果真结束
+赋值 (lpHost, gethostbyname (Host)) ' //域名转IP
+.判断开始 (不等于 (lpHost, 0))
+    RtlMoveMemory_HOSTENT (He, lpHost, 16)
+    RtlMoveMemory_整数 (dwIPAddr, He.hAddrList, 4)
+    重定义数组 (tmpIPAddr, 假, He.hLen)
+    RtlMoveMemory_字节型 (tmpIPAddr, dwIPAddr, He.hLen)
+    .计次循环首 (He.hLen, i)
+        .如果 (等于 (i, He.hLen))
+            赋值 (sIPAddr, 相加 (sIPAddr, 到文本 (tmpIPAddr [i])))
+        .否则
+            赋值 (sIPAddr, 相加 (sIPAddr, 到文本 (tmpIPAddr [i]), “.”))
+        .如果结束
+        
+    .计次循环尾 ()
+.默认
+    返回 (“”)
+.判断结束
+赋值 (Name.常量, #AF_INET)
+赋值 (Name.地址, inet_addr (sIPAddr))
+赋值 (Name.端口, htons (80))
+.如果真 (不等于 (connect (Skt, Name, 16), 0))
+    返回 (“”)
+.如果真结束
+赋值 (Timeout.空闲时间, 3000)
+setsockopt (Skt, #SOL_SOCKET, #SO_SNDTIMEO, Timeout, 4) ' //设置发送超时
+setsockopt (Skt, #SOL_SOCKET, #SO_RCVTIMEO, Timeout, 4) ' //设置接收超时
+send (Skt, 封包头, 取文本长度 (封包头), 0) ' //发送封包
+赋值 (Buf, 取空白文本 (1024))
+.判断循环首 (真)
+    赋值 (Len, recv (Skt, Buf, 1024, 0)) ' //接收数据
+    .如果真 (小于 (Len, 1))
+        跳出循环 ()
+    .如果真结束
+    赋值 (Data, 相加 (Data, Buf))
+.判断循环尾 ()
+shutdown (Skt, #SD_SEND)
+closesocket (Skt)
+返回 (Data)
+
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+WSACleanup ()
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+
+
+
+.子程序 URL编码, 文本型, , 
+.参数 s, 文本型, , 
+
+.局部变量 局部_数据, 字节集, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 ii, 文本型, , , 
+
+赋值 (局部_数据, 到字节集 (s))
+.计次循环首 (取字节集长度 (局部_数据), i)
+    赋值 (ii, 相加 (ii, “%”, 取十六进制文本 (局部_数据 [i])))
+.计次循环尾 ()
+返回 (ii)
+
+.子程序 _按钮2_被单击, 空白型, , 
+.局部变量 Text, 文本型, , , 
+.局部变量 Str, 文本型, , , 
+.局部变量 H, 文本型, , , 
+
+.如果真 (等于 (., “”))
+    信息框 (“帐号不能为空!”, 0, )
+    获取焦点 ()
+    返回 ()
+    
+.如果真结束
+.如果真 (等于 (., “”))
+    信息框 (“密码不能为空!”, 0, )
+    获取焦点 ()
+    返回 ()
+.如果真结束
+
+赋值 (., 真)
+赋值 (Text, “”)
+赋值 (H, #换行符)
+赋值 (Text, 相加 (Text, “TPL_username=”, URL编码 (.)))
+赋值 (Text, 相加 (Text, “&TPL_password=”, URL编码 (.)))
+赋值 (Text, 相加 (Text, “&_tb_token_=”))
+赋值 (Text, 相加 (Text, “&action=Authenticator”))
+赋值 (Text, 相加 (Text, “&event_submit_do_login=anything”))
+赋值 (Text, 相加 (Text, “&TPL_redirect_url=”))
+赋值 (Text, 相加 (Text, “&from=tb”))
+赋值 (Text, 相加 (Text, “&fc=2”))
+赋值 (Text, 相加 (Text, “&style=default”))
+赋值 (Text, 相加 (Text, “&tid=XOR_1_000000000000000000000000000000_63584421307E09797204760B”))
+赋值 (Text, 相加 (Text, “&support=000001”))
+赋值 (Text, 相加 (Text, “&CtrlVersion=1%2C0%2C0%2C7”))
+赋值 (Text, 相加 (Text, “&loginType=3”))
+赋值 (Text, 相加 (Text, “&minititle=”))
+赋值 (Text, 相加 (Text, “&minipara=”))
+赋值 (Text, 相加 (Text, “&pstrong=2”))
+赋值 (Text, 相加 (Text, “&longLogin=-1”))
+赋值 (Text, 相加 (Text, “&llnick=”))
+赋值 (Text, 相加 (Text, “&sign=”))
+赋值 (Text, 相加 (Text, “&need_sign=”))
+赋值 (Text, 相加 (Text, “&isIgnore=”))
+赋值 (Text, 相加 (Text, “&popid=”))
+赋值 (Text, 相加 (Text, “&callback=”))
+赋值 (Text, 相加 (Text, “&not_duplite_str=”))
+赋值 (Text, 相加 (Text, “&need_user_id=”))
+赋值 (Text, 相加 (Text, “&from_encoding=”))
+赋值 (Str, “”)
+赋值 (Str, 相加 (Str, “POST /member/login.jhtml HTTP/1.1”, H))
+赋值 (相加 (“Accept: */*”, ))
+赋值 (相加 (“Accept-Language: zh-cn”, ))
+赋值 (Str, 相加 (Str, “User-Agent: Mozilla/4.0”, H))
+赋值 (Str, 相加 (Str, “Connection: Close”, H))
+赋值 (Str, 相加 (Str, “Content-Type: application/x-www-form-urlencoded”, H))
+赋值 (Str, 相加 (Str, “Content-Length: ”, 到文本 (取文本长度 (Text)), H))
+赋值 (Str, 相加 (Str, “Host: login.taobao.com”, H))
+赋值 (Str, 相加 (Str, “Cache-Control: no-cache”, H))
+赋值 (Str, 相加 (Str, “Cookie: tracknick=; v=0; _lang=zh_CN:GBK”, H, H))
+赋值 (Str, 相加 (Str, Text)) ' POST提交数据
+赋值 (., 子程序_发送封包 (“login.taobao.com”, Str))
+赋值 (., 假)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,110 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：硬件信息
+ ' 程序描述：硬件信息
+@备注:
+硬件信息
+ ' 程序作者：李光
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：李光
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 GetTrait, "“Function GetTrait(P)
+Dim WMI,Obj
+    Select Case P
+    Case "BIOS"
+    Set WMI =GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_BIOS")
+    For Each Obj in WMI
+    GetTrait = Obj.Name
+    Exit For
+    Next
+    Case "磁盘序列号"
+    Set WMI =GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_PhysicalMedia")
+    For Each Obj in WMI
+    GetTrait = Obj.SerialNumber
+    Exit For
+    Next
+    Case "CPUID"
+    Set WMI =GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Processor")
+    For Each Obj in WMI
+    GetTrait = Obj.ProcessorId
+    Exit For
+    Next
+    Case "声卡"
+    Set WMI =GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_SoundDevice")
+    For Each Obj in WMI
+    GetTrait = Obj.Caption
+    Exit For
+    Next
+    Case "显卡"
+    Set WMI =GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_VideoController")
+    For Each Obj in WMI
+    GetTrait = Obj.Caption
+    Exit For
+    Next
+    Case "MAC"
+    Set WMI =GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_NetworkAdapterConfiguration")
+    For Each Obj in WMI
+        If Obj.IPEnabled=True Then
+           GetTrait = Obj.MacAddress
+           Exit For
+        End If
+    Next
+    End Select
+End Function”", , 
+.常量 磁盘序列号, "“磁盘序列号”", 公开, 
+.常量 CPUID, "“CPUID”", 公开, 
+.常量 MAC, "“MAC”", 公开, 
+.常量 声卡, "“声卡”", 公开, 
+.常量 显卡, "“显卡”", 公开, 
+.常量 BIOS, "“BIOS”", 公开, 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 6 系统核心支持库
+
+
+
+
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+输出调试文本 (取硬件信息 (#BIOS))
+
+.程序集 硬件信息, , , 
+
+.子程序 取硬件信息, 文本型, 公开, 
+.参数 类型, 文本型, 可空, 默认 #磁盘序列号
+
+.局部变量 VBScript, 对象, , , 
+
+.如果 (是否为空 (类型))
+    赋值 (类型, #磁盘序列号)
+.否则
+    .如果真 (并且 (不等于 (类型, #MAC), 不等于 (类型, #CPUID), 不等于 (类型, #磁盘序列号), 不等于 (类型, #声卡), 不等于 (类型, #显卡), 不等于 (类型, #BIOS)))
+        赋值 (类型, #磁盘序列号)
+    .如果真结束
+    
+.如果结束
+VBScript.创建 (“ScriptControl”, )
+VBScript.写属性 (“Language”, “VBScript”)
+VBScript.数值方法 (“ExecuteStatement”, #GetTrait)
+返回 (删首尾空 (VBScript.通用方法 (“Run”, “GetTrait”, 类型).取文本 ()))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

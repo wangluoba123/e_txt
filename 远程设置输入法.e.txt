@@ -1,0 +1,267 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：ActivateProcessIME
+ ' 程序描述：激活远程输入法
+BY：路过已错过
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 MEM_RELEASE, "32768", , 
+.常量 MEM_COMMIT, "4096", , 
+.常量 PAGE_EXECUTE_READWRITE, "64", , 
+.常量 , , , 
+.常量 PROCESS_CREATE_THREAD, "2", , 
+.常量 PROCESS_VM_OPERATION, "8", , 
+.常量 PROCESS_VM_READ, "16", , 
+.常量 PROCESS_VM_WRITE, "32", , 
+.常量 PROCESS_QUERY_INFORMATION, "1024", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+
+.DLL命令 OpenProcess, 整数型, "", "OpenProcess", , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 逻辑型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 CloseHandle, 逻辑型, "", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 VirtualAllocEx, 整数型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+    .参数 flProtect, 整数型, , 
+
+.DLL命令 VirtualFreeEx, 逻辑型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+
+.DLL命令 ReadProcessMemory, 逻辑型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 整数型, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, , 
+
+.DLL命令 WriteProcessMemory, 逻辑型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 整数型, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, , 
+
+.DLL命令 CreateThread, 整数型, "", "", , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 整数型, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, 传址, 
+
+.DLL命令 _P_Bin, 整数型, "", "lstrcatA", , 
+    .参数 lpString1, 字节集, 传址, 
+    .参数 lpString2, 整数型, 传址, 
+
+.DLL命令 _P_Str, 整数型, "", "lstrcatA", , 
+    .参数 lpString1, 文本型, 传址, 
+    .参数 lpString2, 整数型, 传址, 
+
+.DLL命令 LoadLibraryA, 整数型, "", "", , 
+    .参数 lpFileName, 文本型, , ;
+
+.DLL命令 GetProcAddress, 整数型, "", "", , 
+    .参数 hModule, 整数型, , 
+    .参数 lpProcName, 文本型, , 
+
+.DLL命令 GetExitCodeThread, 整数型, "", "", , 
+    .参数 hThread, 整数型, , 
+    .参数 lpExitCode, 整数型, 传址, 
+
+.DLL命令 CreateRemoteThread, 整数型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 整数型, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, 传址, 
+
+.DLL命令 WaitForSingleObject, 整数型, "", "", , 
+    .参数 hHandle, 整数型, , 
+    .参数 dwMilliseconds, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+ ' ActivateProcessIME (pid, “E0040804”)
+ ' “E0040804”为智能ABC的ID
+
+.子程序 ActivateProcessIME, 逻辑型, , 
+.参数 hProcessID, 整数型, , 
+.参数 pwszKLID, 文本型, , 
+
+.局部变量 hProcess, 整数型, , , 
+.局部变量 LoadKeyboardLayoutA, 整数型, , , 
+.局部变量 pstr, 整数型, , , 
+.局部变量 lkbArg, 整数型, , "2", 
+.局部变量 lkbCode, 字节集, , , 
+.局部变量 plkbCode, 整数型, , , 
+.局部变量 ActivateKeyboardLayout, 整数型, , , 
+.局部变量 akbArgs, 整数型, , "2", 
+.局部变量 akbCode, 字节集, , , 
+.局部变量 pakbCode, 整数型, , , 
+.局部变量 hKL, 整数型, , , 
+.局部变量 len, 整数型, , , 
+.局部变量 offset, 整数型, , , 
+
+赋值 (hProcess, VOpen (hProcessID))
+.如果真 (等于 (hProcess, 0))
+    返回 (假) ' 打开进程失败
+.如果真结束
+赋值 (LoadKeyboardLayoutA, GetProcAddress (LoadLibraryA (“user32.dll”), “LoadKeyboardLayoutA”))
+赋值 (ActivateKeyboardLayout, GetProcAddress (LoadLibraryA (“user32.dll”), “ActivateKeyboardLayout”))
+.如果真 (或者 (等于 (LoadKeyboardLayoutA, 0), 等于 (ActivateKeyboardLayout, 0)))
+    VClose (hProcess) ' 载入动态连接库 或 获取函数地址失败！
+    返回 (假)
+.如果真结束
+ ' 构造第一个函数代码并执行
+ ' 计算需要的内存大小
+赋值 (lkbArg [1], 0) ' 文本假地址，不用也可以，本身已是整数型，无需对齐，美观~~
+赋值 (lkbArg [2], 1) ' 参数2
+赋值 (lkbCode, MakeCallCode (LoadKeyboardLayoutA, lkbArg)) ' 构造指令
+赋值 (offset, 相加 (取文本长度 (pwszKLID), 1)) ' 计算文本便移
+赋值 (len, 相加 (取字节集长度 (lkbCode), offset)) ' 计算全部长度
+ ' 计算完毕
+赋值 (plkbCode, VAlloc (hProcess, len)) ' 分配内存
+.如果真 (等于 (plkbCode, 0))
+    VClose (hProcess) ' 分配内存失败
+    返回 (假)
+.如果真结束
+赋值 (lkbArg [1], plkbCode) ' 将目标进程的文本地址重新赋值给参数1
+赋值 (lkbCode, 相加 (到字节集 (pwszKLID), { 0 }, MakeCallCode (LoadKeyboardLayoutA, lkbArg))) ' 重新构造调用代码
+.如果真 (等于 (VWrite (hProcess, plkbCode, lkbCode), 假)) ' 将代码写到目标进程内存空间
+    VFree (hProcess, plkbCode) ' 写入目标进程内存数据失败
+    VClose (hProcess)
+    返回 (假)
+.如果真结束
+赋值 (hKL, CreateProcessThread (hProcess, 相加 (plkbCode, offset))) ' 创建远程线程并执行取得返回值
+ ' plkbCode到offset之间刚好是文本的数据，其次后面才是指令，这样做其实就是不用多申请一段内存来存放文本而已。
+VFree (hProcess, plkbCode) ' 释放内存
+.如果真 (等于 (hKL, 0))
+    VClose (hProcess) ' 函数执行失败或参数错误
+    返回 (假)
+.如果真结束
+ ' 第一个函数执行完毕，开始构造第二个函数代码并执行。
+赋值 (akbArgs [1], hKL)
+赋值 (akbArgs [2], 256)
+赋值 (akbCode, MakeCallCode (ActivateKeyboardLayout, akbArgs)) ' 构造指令
+赋值 (pakbCode, VAlloc (hProcess, 取字节集长度 (akbCode))) ' 分配内存
+.如果真 (等于 (pakbCode, 0))
+    VClose (hProcess) ' 分配内存失败
+    返回 (假)
+.如果真结束
+.如果真 (等于 (VWrite (hProcess, pakbCode, akbCode), 假)) ' 将代码写到目标进程内存空间
+    VFree (hProcess, pakbCode) ' 写入目标进程内存数据失败
+    VClose (hProcess)
+    返回 (假)
+.如果真结束
+赋值 (hKL, CreateProcessThread (hProcess, pakbCode)) ' 创建远程线程并执行取得返回值
+VFree (hProcess, pakbCode) ' 释放内存
+ ' 第二个函数执行完毕，判断是否成功。
+VClose (hProcess) ' 关闭打开的进程句柄
+返回 (不等于 (hKL, 0)) ' 判断返回值是不为0
+
+.子程序 CreateProcessThread, 整数型, , 
+.参数 hProcess, 整数型, , 
+.参数 lpStartAddress, 整数型, , 
+.参数 lpParameter, 整数型, 可空, 
+
+.局部变量 hThread, 整数型, , , 
+.局部变量 ret, 整数型, , , 
+
+赋值 (hThread, CreateRemoteThread (hProcess, 0, 0, lpStartAddress, lpParameter, 0, 0)) ' 创建远程线程
+WaitForSingleObject (hThread, -1) ' 等待线程执行完毕
+GetExitCodeThread (hThread, ret) ' 获取返回值
+CloseHandle (hThread) ' 关闭线程内核对象
+返回 (ret)
+
+.子程序 MakeCallCode, 字节集, , 
+.参数 addr, 整数型, , 
+.参数 args, 整数型, 可空 数组, 
+
+.局部变量 i, 整数型, , , 
+.局部变量 code, 字节集, , , 
+
+赋值 (code, 相加 ({ 184 }, 到字节集 (addr)))
+.变量循环首 (取数组成员数 (args), 1, -1, i)
+    赋值 (code, 相加 (code, { 104 }, 到字节集 (args [i])))
+.变量循环尾 ()
+赋值 (code, 相加 (code, { 255, 208, 195, 144 }))
+返回 (code)
+
+.程序集 VirtualMemory, , , 
+
+.子程序 VOpen, 整数型, , 
+.参数 hProcessId, 整数型, , 
+
+返回 (OpenProcess (位或 (#PROCESS_CREATE_THREAD, #PROCESS_VM_OPERATION, #PROCESS_VM_READ, #PROCESS_VM_WRITE, #PROCESS_QUERY_INFORMATION), 假, hProcessId))
+
+.子程序 VAlloc, 整数型, , 
+.参数 hProcess, 整数型, , 
+.参数 dwSize, 整数型, , 
+
+返回 (VirtualAllocEx (hProcess, 0, dwSize, #MEM_COMMIT, #PAGE_EXECUTE_READWRITE))
+
+.子程序 VRead, 逻辑型, , 
+.参数 hProcess, 整数型, , 
+.参数 lpBaseAddress, 整数型, , 
+.参数 lpBuffer, 整数型, , 
+.参数 nSize, 整数型, , 
+
+返回 (ReadProcessMemory (hProcess, lpBaseAddress, lpBuffer, nSize, 0))
+
+.子程序 VWrite, 逻辑型, , 
+.参数 hProcess, 整数型, , 
+.参数 lpBaseAddress, 整数型, , 
+.参数 lpBuffer, 字节集, , 
+
+返回 (WriteProcessMemory (hProcess, lpBaseAddress, _P_Bin (lpBuffer, 0), 取字节集长度 (lpBuffer), 0))
+
+.子程序 VFree, 逻辑型, , 
+.参数 hProcess, 整数型, , 
+.参数 lpAddress, 整数型, , 
+
+返回 (VirtualFreeEx (hProcess, lpAddress, 0, #MEM_RELEASE))
+
+.子程序 VClose, 逻辑型, , 
+.参数 hProcess, 整数型, , 
+
+返回 (CloseHandle (hProcess))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

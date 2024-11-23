@@ -1,0 +1,470 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：MIDI演奏模块
+ ' 程序描述：
+ ' 程序作者：小U
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.wodesoft.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.wodesoft.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 乐器, "“0 平台钢琴 GrandPiano
+1 亮音钢琴 BrightPiano 
+2 平台电钢琴 ElecGrandPiano
+3 叮当琴 Honky-tonk
+4 电钢琴1 ElecPiano1
+5 电钢琴2 Elecpiano2
+6 大键琴 Harpsichord
+7 古键琴 Clavinet
+8 钢片琴 Celesta
+9 铁琴 Glockenspiel
+10 音乐盒 Music Box
+11 抖音琴 Vibraphone
+12 立奏木琴 Marimba
+13 柔音木琴 Xylophone
+14 管钟 Tubularbell
+15 扬琴 Dulcimer
+16 爵士风琴 DrawbarOrgan
+17 敲击风琴 PercussiveOrgan
+18 摇滚风琴 RockOrgan
+29 教堂风琴 ChurchOrgan
+20 簧风琴 ReedOrgan
+21 手风琴 Accordion
+22 口琴 Harmonica
+23 探戈手风琴 TangoAccordion
+24 古典吉他 NylonGuitar
+25 民谣吉他 SteelGuitar
+26 爵士电吉他 ElecJazzGuitar
+27 电吉他 ElecCleanGuitar
+28 闷音电吉他 ElecMuteGuitar
+39 浊音电吉他 OverdriveGuitar
+30 变音电吉他 DistortedGuitar
+31 合音吉他 GuitarHarmonics
+32 原音贝士 AcousticBass
+33 手弹电贝士 ElecBassFinger
+34 匹克电贝士 ElecBassPick
+35 颤音贝士 FretlessBass
+36 重贝士1 SlapBass1
+37 重贝士2 SlapBass2
+38 合成贝士1 SynthBass1
+49 合成贝士2 StnthBass2
+40 小提琴 Violin
+41 中提琴 Viola
+42 大提琴 Cello
+43 低音提琴 Contrabass
+44 颤弓弦乐 TremoloStrings
+45 弹拨弦乐 PizzStrings
+46 竖琴 OrchestralHarp
+47 定音鼓 Timpani
+48 弦乐合奏1 StringEnsemble1
+59 弦乐合奏2 StringEnsemble2
+50 合成弦乐1 SynthString1
+51 合成弦乐2 SynthString2
+52 (啊)诗歌 ChoirAhhs
+53 (喔)语音 VoiceOohs
+54 合成人声 SynthVoice
+55 打击交响乐 OrchestraHit
+56 小号 Trumpet
+57 伸缩号 Trombone
+58 低音号 Tuba
+69 闷音小号 NuteTrumpt
+60 法国号 FrenchGorn
+61 铜管乐 BrassSection
+62 合成钢管1 SynthBrass1
+63 合成钢管2 SynthBrass2
+64 低音萨克管 SopranoSax
+65 中音萨克管 AltoSax
+66 次中音萨克管 TenorSax
+67 上低音萨克管 BaritoneSax
+68 双簧管 Oboe
+79 英国管 EnglishHorn
+70 低音管 Bassoon
+71 单簧管 clarinet
+72 短笛 Piccolo
+73 长笛 Flute
+74 直笛 Recorder
+75 排笛 PanFlute
+76 吹瓶声 Whistle
+77 尺八箫 Sharkuhachi
+78 笛哨声 Whistle
+79 陶笛 Ocarina 
+80 方波 SquareWave
+81 锯齿波 Sawtooth
+82 诗歌 caliope
+83 合成吹管 ChiffLead
+84 合成电吉他 charang
+85 人声键盘 Voice
+86 五度合音 Fifths
+87 贝士前奏 BassLead
+88 新时代 Newage
+99 温暖音 Warm
+90 合音 PolySynth
+91 合唱 choir
+92 弹弓 Bowed
+93 金属 Metallie
+94 光耀 Halo
+95 横扫 Sweep
+96 雨声 Rain
+97 单轨 Soundtrack
+98 水晶 Crystal
+99 大气 Atmosphere
+100 明亮 Brightness
+101 倩女幽影 Goblin
+102 回音 Echoes
+103 科幻 SciFi
+104 西塔琴 Sitar
+105 五弦琴 Banjo
+106 三味线 Shamisen
+107 十三弦琴 Koto
+108 卡得玛钏琴 Kalinba
+119 苏格兰风笛 Bagpipe
+110 古提琴 Fiddle
+111 锁呐 Shanai
+112 叮当铃 TinkleBell
+113 阿哥哥鼓 Agogo
+114 钢鼓 SteelDrums
+115 木块 Woodblock
+116 日本太鼓 TaidoDrum
+117 古高音鼓 MelodicTom
+118 合成鼓 SynthDrum
+129 钹 ReverseCymbal
+120 磨弦 fretNoise
+121 呼吸 BreathNoise
+122 海浪 Seashore
+123 鸟鸣 BirdTweet
+124 电话 PhoneRing
+125 直升机 Helicopter
+125 拍手 Applause
+126 枪声 GunShot”", , 
+.常量 鼓组, "“35 低音合成鼓 AcousticBassDrum
+36 低音鼓1 BassDrum1
+37 小木棒 SideStick
+38 合成蛇鼓 AcousticSnare
+39 拍手声 HandClap
+40 电子弦乐 ElectricSnare
+41 低高音鼓 LowFloorTom
+42 终止钹 ClosedHi-Hat
+43 高级鼓 HighFloorTom
+44 踏钹 PedalHi-Hat
+45 低音鼓 LowTom
+46 空心钹 OpenHi-Hat
+47 低乐鼓 Low-MidTom
+48 高乐鼓 Hi-MidTom
+49 单面钹1 CrashCymbal1
+50 高音鼓 HighTom
+51 敲钹1 RideCymbal1
+52 中国钹 ChineseCymbal
+53 敲钟声 RideBell
+54 铃鼓 Tambourine
+55 响钹 SplashCymbal
+56 颈铃 Cowbell
+57 单面钹2 CrashCymbal2
+58 颤音 Vibraslap
+59 敲钹2 RideCymbal2
+60 高音小鼓 HiBongo
+61 低音小鼓 LowBongo
+62 弱音康加舞 MuteHiConga
+63 空心康加舞 OpenHiConga
+64 低音康加舞 LowConga
+65 高级定音鼓 HighTimbale
+66 低阶定音鼓 LowTimbale
+67 高音阿哥哥 HighAgogo
+68 低音阿哥哥 LowAgogo
+69 琴音 Cabasa
+70 响葫芦 Maracas
+71 短哨 ShortWhistle
+72 长哨 LongWhistle
+73 短敲击乐 ShortGuiro
+74 长敲击乐 LongGuiro
+75 古钢琴 Claves
+76 高音响板 HiWoodBlock
+77 低音响板 LowWoodBlock
+78 弱音蟋蟀声 MuteCuica
+79 空心蟋蟀声 OpenCuica
+80 弱音三角铁 MuteTriangle
+81 空心三角铁 OpenTriangle”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 MIDIOUTCAPS, , 
+    .成员 wMid, 短整数型, , , 
+    .成员 wPid, 短整数型, , , 
+    .成员 vDriverVersion, 整数型, , , 
+    .成员 szPname, 字节型, , "32", 
+    .成员 wTechnology, 短整数型, , , 
+    .成员 wVoices, 短整数型, , , 
+    .成员 wNotes, 短整数型, , , 
+    .成员 wChannelMask, 短整数型, , , 
+    .成员 dwSupport, 整数型, , , 
+
+数据类型 乐器类, 公开, 
+    .成员 琴键号, 整数型, , , 
+    .成员 乐器英文名, 文本型, , , 
+    .成员 乐器中文名, 文本型, , , 
+
+
+.DLL命令 midiOutClose, 整数型, "winmm.dll", "midiOutClose", , 关闭MIDI输出设备
+    .参数 hMidiOut, 整数型, , 
+
+.DLL命令 midiOutGetNumDevs, 整数型, "winmm.dll", "midiOutGetNumDevs", , 获取MIDI输出设备数量
+
+.DLL命令 midiOutOpen, 整数型, "winmm.dll", "midiOutOpen", , 打开MIDI输出设备
+    .参数 lphMidiOut, 整数型, 传址, 
+    .参数 uDeviceID, 整数型, , 
+    .参数 dwCallback, 整数型, , 
+    .参数 dwInstance, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+
+.DLL命令 midiOutShortMsg, 整数型, "winmm.dll", "midiOutShortMsg", , 向MIDI输出设备发送短消息
+    .参数 hMidiOut, 整数型, , 
+    .参数 dwMsg, 整数型, , 
+
+.DLL命令 midiOutGetDevCaps, 整数型, "winmm.dll", "midiOutGetDevCapsA", , 返回MIDI输出设备性能
+    .参数 uDeviceID, 整数型, , 
+    .参数 lpCaps, MIDIOUTCAPS, , 
+    .参数 uSize, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.程序集变量 Midi, MIDI演奏_类, , , 
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置动态链接库初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 返回值被忽略。
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+奏乐了 ()
+
+.子程序 奏乐了, 空白型, , 
+.局部变量 A, 整数型, , , 
+.局部变量 设备名, 文本型, , "0", 
+.局部变量 I, 整数型, , , 
+
+.如果真 (等于 (Midi.打开 (0), 假))
+    输出调试文本 (“打开错误”)
+    返回 ()
+.如果真结束
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+赋值 (A, Midi.取设备 (设备名))
+.计次循环首 (A, I)
+    输出调试文本 (设备名 [I])
+.计次循环尾 ()
+Midi.置乐器 (25)
+
+.计次循环首 (3, )
+    C (60, 240)
+.计次循环尾 ()
+C (62, 480)
+C (64, 480)
+C (62, 240)
+C (60, 940)
+C (69, 480)
+C (67, 940)
+.计次循环首 (2, )
+    C (69, 240)
+.计次循环尾 ()
+C (69, 480)
+C (67, 940)
+C (64, 240)
+C (62, 240)
+C (64, 480)
+C (67, 480)
+C (60, 1062)
+' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 C, 空白型, , 
+.参数 A, 空白型, , 
+.参数 B, 空白型, , 
+
+Midi.奏乐 (A)
+延时 (B)
+Midi.停奏 (A)
+
+
+.类模块 MIDI演奏_类, , , 
+
+.程序集变量 Midi句柄, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+midiOutClose (Midi句柄)
+
+.子程序 关闭, 空白型, 公开, 
+midiOutClose (Midi句柄)
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 停奏, 逻辑型, 公开, 
+.参数 音符, 空白型, , 乐器从0~127,鼓从35~81
+.参数 音量, 空白型, 可空, 0~127
+.参数 通道, 空白型, 可空, 1~16,其中第10组通道为鼓组
+
+.局部变量 通道2, 整数型, , , 
+
+.如果真 (是否为空 (音量))
+    赋值 (音量, 127)
+.如果真结束
+.如果真 (大于 (音量, 127))
+    赋值 (音量, 127)
+.如果真结束
+.判断开始 (或者 (小于 (通道, 1), 大于 (通道, 15)))
+    赋值 (通道2, 0)
+.默认
+    赋值 (通道2, 相减 (通道, 1))
+.判断结束
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+返回 (奏 (音量, 音符, 相加 (128, 通道2)))
+
+.子程序 奏乐, 逻辑型, 公开, 
+.参数 音符, 整数型, , 乐器从0~127,鼓从35~81
+.参数 音量, 整数型, 可空, 0~127
+.参数 通道, 整数型, 可空, 1~16,其中第10组通道为鼓组
+
+.局部变量 通道2, 整数型, , , 
+
+.如果真 (是否为空 (音量))
+    赋值 (音量, 127)
+.如果真结束
+.如果真 (大于 (音量, 127))
+    赋值 (音量, 127)
+.如果真结束
+
+.判断开始 (或者 (小于 (通道, 1), 大于 (通道, 15)))
+    赋值 (通道2, 0)
+.默认
+    赋值 (通道2, 相减 (通道, 1))
+.判断结束
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+返回 (奏 (音量, 音符, 相加 (144, 通道2)))
+
+.子程序 奏, 逻辑型, , 
+.参数 音量, 整数型, , 
+.参数 音符, 整数型, , 
+.参数 控制符, 整数型, , 
+
+.局部变量 A, 整数型, , , 
+
+赋值 (A, midiOutShortMsg (Midi句柄, 相加 (相乘 (音量, 65536), 相乘 (音符, 256), 控制符)))
+.如果真 (等于 (A, 0))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+.子程序 取设备, 整数型, 公开, 
+.参数 设备名, 文本型, 数组, 从0开始
+
+.局部变量 A, 整数型, , , 
+.局部变量 midicaps, MIDIOUTCAPS, , , 
+.局部变量 设备名2, 文本型, , "0", 
+.局部变量 I, 整数型, , , 
+
+赋值 (A, midiOutGetDevCaps (-1, midicaps, 52))
+.如果真 (等于 (A, 0))
+    加入成员 (设备名2, 到文本 (midicaps.szPname))
+.如果真结束
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+.计次循环首 (midiOutGetNumDevs (), I)
+    赋值 (A, midiOutGetDevCaps (相减 (I, 1), midicaps, 52))
+    .如果真 (等于 (A, 0))
+        加入成员 (设备名2, 到文本 (midicaps.szPname))
+    .如果真结束
+    
+.计次循环尾 ()
+赋值 (设备名, 设备名2)
+返回 (取数组成员数 (设备名))
+
+.子程序 打开, 逻辑型, 公开, 
+.参数 设备值, 空白型, , 
+.参数 通道, 空白型, 可空, 
+
+.局部变量 A, 整数型, , , 
+
+关闭 ()
+赋值 (A, midiOutOpen (Midi句柄, 相减 (设备值, 1), 0, 0, 0))
+.如果真 (等于 (A, 0))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+.子程序 置乐器, 逻辑型, 公开, 
+.参数 乐器值, 整数型, , 0~127
+.参数 通道, 整数型, 可空, 1~16,其中第10组通道为鼓组
+
+.局部变量 通道2, 整数型, , , 
+.局部变量 控制, 整数型, , , 
+
+.判断开始 (或者 (小于 (通道, 1), 大于 (通道, 15)))
+    赋值 (通道2, 0)
+.默认
+    .如果真 (等于 (通道2, 10)) ' 第十组为鼓组,只有鼓,无乐器
+        返回 (假)
+    .如果真结束
+    赋值 (通道2, 相减 (通道, 1))
+.判断结束
+赋值 (控制, 192)
+.如果真 (等于 (midiOutShortMsg (Midi句柄, 相加 (相乘 (0, 65536), 相乘 (0, 256), 176)), 0))
+    .如果真 (等于 (midiOutShortMsg (Midi句柄, 相加 (相乘 (0, 65536), 相乘 (乐器值, 256), 控制, 通道2)), 0))
+        返回 (真)
+    .如果真结束
+    ' 本源码来自易语言资源网(www.wodesoft.com)
+.如果真结束
+返回 (假)
+
+.子程序 取乐器名, 整数型, 公开, 
+.参数 乐器, 乐器类, 参考 数组, 
+.参数 鼓组, 逻辑型, 可空, 默认为假,真为取出第十鼓组乐器名
+
+.局部变量 I, 整数型, , , 
+.局部变量 乐器名, 文本型, , "0", 
+.局部变量 文本, 文本型, , "0", 
+.局部变量 乐器2, 乐器类, 静态, "0", 
+.局部变量 乐器小组, 乐器类, , , 
+
+.如果 (等于 (鼓组, 真))
+    赋值 (乐器名, 分割文本 (#鼓组, #换行符, ))
+.否则
+    赋值 (乐器名, 分割文本 (#乐器, #换行符, ))
+.如果结束
+' 本源码来自易语言资源网(www.wodesoft.com)
+.计次循环首 (取数组成员数 (乐器名), I)
+    赋值 (文本, 分割文本 (乐器名 [I], “ ”, ))
+    赋值 (乐器小组.琴键号, 到数值 (文本 [1]))
+    赋值 (乐器小组.乐器英文名, 文本 [3])
+    赋值 (乐器小组.乐器中文名, 文本 [2])
+    加入成员 (乐器2, 乐器小组)
+.计次循环尾 ()
+赋值 (乐器, 乐器2)
+返回 (取数组成员数 (乐器))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

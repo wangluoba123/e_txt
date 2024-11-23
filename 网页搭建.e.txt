@@ -1,0 +1,267 @@
+ ' 文件类型：Windows控制台程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 443
+    高度 = 246
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 假
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “”
+    帮助文件名 = “”
+
+
+
+.常量 需发送数据, "“HTTP/1.1 200 OK
+Content-Type: text/html;charset=GB2312
+X-Ua-Compatible: IE=Edge,chrome=1
+
+
+
+<!doctype html>
+<html>
+<head>
+<meta charset="GB2312">
+<title>MING7/软件园</title>
+
+<style>
+	a1{
+	color: rgba(203,53,56,1.00);
+	font-family: "微软雅黑";
+	font-weight: ;
+	text-align: center;
+	line-height: 140%;
+	letter-spacing: 5%;
+	border: auto;
+	display: block;
+	margin: 5px;
+	width: auto;
+	height: auto;
+	min-width: 0px;
+	font-size: 26px;
+	}
+
+
+
+</style>
+
+<link rel="shortcut icon" href="http://att.125.la/data/attachment/album/201809/30/123909ggp0l70z00fqjxdi.png.thumb.jpg" />
+
+<link rel="bookmark"href="http://att.125.la/data/attachment/album/201809/30/123909ggp0l70z00fqjxdi.png.thumb.jpg" />
+
+</head>
+
+<body>
+
+<a1>
+
+<div style="text-align: center;"><img src="http://att.125.la/data/attachment/album/201809/30/123909ggp0l70z00fqjxdi.png.thumb.jpg"></div><div style="text-align: center;"><span style="color: rgb(203, 53, 56); font-family: 微软雅黑; font-size: 26px;">MING7 / 网站架设中&nbsp;</span></div><div style="text-align: center;"><span style="color: rgb(203, 53, 56); font-family: 微软雅黑; font-size: 26px;"><br></span></div>
+<div style="text-align: center;"><b style="color: rgb(255, 0, 0);"><font size="5">安安静静做一个改变世界的程序员</font></b></div>
+<br>
+
+<a title="联系网站管理员" class="jzqq" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=3300214&amp;website=bbs.125.la"><b>联系网站管理员</b></a>
+
+</a1>
+</body>”", , 
+.常量 需发送数据A, "“HTTP/1.1 200 OK
+Content-Type: text/html;charset=GB2312
+X-Ua-Compatible: IE=Edge,chrome=1
+
+
+
+<!doctype html>
+<html>
+<head>
+<meta charset="GB2312">
+<title>MING7/软件园</title>
+
+<style>
+	a1{
+	color: rgba(203,53,56,1.00);
+	font-family: "微软雅黑";
+	font-weight: ;
+	text-align: center;
+	line-height: 140%;
+	letter-spacing: 5%;
+	border: auto;
+	display: block;
+	margin: 5px;
+	width: auto;
+	height: auto;
+	min-width: 0px;
+	font-size: 26px;
+	}
+
+
+
+</style>
+
+<link rel="shortcut icon" href="http://att.125.la/data/attachment/album/201809/30/123909ggp0l70z00fqjxdi.png.thumb.jpg" />
+
+<link rel="bookmark"href="http://att.125.la/data/attachment/album/201809/30/123909ggp0l70z00fqjxdi.png.thumb.jpg" />
+
+</head>
+
+
+
+
+
+
+
+
+<body style="overflow:hidden;">
+
+<canvas id="canvas"></canvas>
+
+<script type="text/javascript"<img src="file:///C:/Users/Administrator/Desktop/%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA/jiaoben5227/js/digit.js"></script>
+<script type="text/javascript"<img src="file:///C:/Users/Administrator/Desktop/%E7%BD%91%E7%AB%99%E6%90%AD%E5%BB%BA/jiaoben5227/js/app.js"></script>
+</body>
+
+
+
+
+
+
+<body>
+
+<a1>
+
+<div style="text-align: center;"><img src="http://att.125.la/data/attachment/album/201809/30/123909ggp0l70z00fqjxdi.png.thumb.jpg"></div><div style="text-align: center;"><span style="color: rgb(203, 53, 56); font-family: 微软雅黑; font-size: 26px;">MING7 / 网站架设中&nbsp;</span></div><div style="text-align: center;"><span style="color: rgb(203, 53, 56); font-family: 微软雅黑; font-size: 26px;"><br></span></div>
+<div style="text-align: center;"><b style="color: rgb(255, 0, 0);"><font size="5">安安静静做一个改变世界的程序员</font></b></div>
+<br>
+
+<a title="联系网站管理员" class="jzqq" href="tencent://AddContact/?fromId=45&amp;fromSubId=1&amp;subcmd=all&amp;uin=3300214&amp;website=bbs.125.la"><b>联系网站管理员</b></a>
+
+</a1>
+</body>
+<html/>”", , 
+.常量 动态框架, "“<!doctype html>
+<html lang="zh-cn">
+
+<head>
+<meta charset="GB2312">
+<meta http-equiv="x-ua-compatible" content="ie=edge,chrome=1">
+<title>CSS3仿QQ浏览器官网彗星特效 - 站长素材</title>
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+
+
+<link type="text/css" rel="stylesheet" href="css/tabris.css" /> 
+<link type="text/css" rel="stylesheet" href="css/lib.css" /> 
+
+</head>
+<body>
+
+<div class="bg0 pa">
+	<div class="bg1"></div>
+</div>
+<div class="hx-box pa">
+	<ul class="pr">
+		<li class="hx-k1 pa0">
+			<span></span>
+		</li>
+		<li class="hx-k2 pa0">
+			<span></span>
+		</li>
+		<li class="hx-k3 pa0">
+			<span></span>
+		</li>
+	</ul>
+</div>
+
+<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';color:#ffffff">
+<p>适用浏览器：360、FireFox、Chrome、Opera、傲游、搜狗、世界之窗. 不支持Safari、IE8及以下浏览器。</p>
+<p>来源：<a href="http://sc.chinaz.com/" target="_blank">站长素材</a></p>
+</div>
+</body>
+</html>
+”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 3 系统核心支持库
+ ' sock A6B983789F624b2cBDFD7D671249C097 2 0 网络通讯支持库
+ ' EThread 5F99C1642A2F4e03850721B4F5D7C3F8 2 0 多线程支持库
+
+
+
+
+
+.窗口程序集 窗口程序集_启动窗口, , , 
+
+.程序集变量 服务器, 未知类型0x20001, , , 
+.程序集变量 许可证, 整数型, , , 
+.程序集变量 访问次数, 整数型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+未知支持库函数_0 (&服务器处理, , )
+赋值 (许可证, 未知支持库函数_1 ())
+
+
+.子程序 服务器处理, 空白型, , 
+.局部变量 客户端句柄, 整数型, , , 
+.局部变量 时间, 文本型, , , 
+.局部变量 是否连接, 逻辑型, , , 
+.局部变量 得到数据, 文本型, , , 
+
+
+.如果真 (等于 (服务器.未知支持库函数_0 (80), 假))
+    信息框 (“端口被占用”, 0, , )
+    返回 ()
+.如果真结束
+
+
+.判断循环首 (真)
+    赋值 (客户端句柄, 服务器.未知支持库函数_2 (0))
+    .如果真 (不等于 (客户端句柄, -1))
+        赋值 (得到数据, 到文本 (服务器.未知支持库函数_3 (客户端句柄, 5000, 是否连接)))
+        
+        服务器.未知支持库函数_4 (客户端句柄, #需发送数据, 5000)
+        未知支持库函数_0 ()
+
+.子程序 线程_发送数据, 空白型, , 
+.参数 客户端ID, 整数型, , 
+
+
+未知支持库函数_3 (许可证)
+赋值 (访问次数, 相加 (访问次数, 1))
+赋值 (.标题, 相加 (“被访问次数：”, 到文本 (访问次数)))
+未知支持库函数_4 (许可证)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,446 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：TreeCtrl
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 TreeItem_Null, "0", 公开, 
+.常量 TreeItem_Root, "0", 公开, 
+.常量 , , , 
+.常量 TV_FIRST, "4352", , 
+.常量 TVM_INSERTITEM, "4352", , 0
+.常量 TVM_DELETEITEM, "4353", , 1
+.常量 TVM_EXPAND, "4354", , 2
+.常量 TVM_3, "4355", , 3
+.常量 TVM_GETITEMRECT, "4356", , 4
+.常量 TVM_GETCOUNT, "4357", , 5
+.常量 TVM_GETINDENT, "4358", , 6
+.常量 TVM_SETINDENT, "4359", , 7
+.常量 TVM_GETIMAGELIST, "4360", , 8
+.常量 TVM_SETIMAGELIST, "4361", , 9
+.常量 TVM_GETNEXTITEM, "4362", , 10
+.常量 TVM_SELECTITEM, "4363", , 11
+.常量 TVM_GETITEMA, "4364", , 12
+.常量 TVM_SETITEMA, "4365", , 13
+.常量 TVM_EDITLABELA, "4366", , 14
+.常量 TVM_GETEDITCONTROL, "4367", , 15
+.常量 TVM_GETVISIBLECOUNT, "4368", , 16
+.常量 TVM_HITTEST, "4369", , 17
+.常量 TVM_CREATEDRAGIMAGE, "4370", , 18
+.常量 TVM_SORTCHILDREN, "4371", , 19
+.常量 TVM_ENSUREVISIBLE, "4372", , 20
+.常量 TVM_SORTCHILDRENCB, "4373", , 21
+.常量 TVM_ENDEDITLABELNOW, "4374", , 22
+.常量 TVM_GETISEARCHSTRINGA, "4375", , 23
+.常量 TVM_SETTOOLTIPS, "4376", , 24
+.常量 TVM_GETTOOLTIPS, "4377", , 25
+.常量 TVM_SETINSERTMARK, "4378", , 26
+.常量 TVM_SETITEMHEIGHT, "4379", , 27
+.常量 TVM_GETITEMHEIGHT, "4380", , 28
+.常量 TVM_SETBKCOLOR, "4381", , 29
+.常量 TVM_SETTEXTCOLOR, "4382", , 30
+.常量 TVM_GETBKCOLOR, "4383", , 31
+.常量 TVM_GETTEXTCOLOR, "4384", , 32
+.常量 TVM_SETSCROLLTIME, "4385", , 33
+.常量 TVM_GETSCROLLTIME, "4386", , 34
+.常量 TVM_35, "4387", , 35
+.常量 TVM_36, "4388", , 36
+.常量 TVM_SETINSERTMARKCOLOR, "4389", , 37
+.常量 TVM_GETINSERTMARKCOLOR, "4390", , 38
+.常量 TVM_GETITEMSTATE, "4391", , 39
+.常量 TVM_SETLINECOLOR, "4392", , 40
+.常量 TVM_GETLINECOLOR, "4393", , 41
+.常量 TVM_MAPACCIDTOHTREEITEM, "4394", , 42
+.常量 TVM_MAPHTREEITEMTOACCID, "4395", , 43
+.常量 , , , 
+.常量 TVGN_ROOT, "0", , 
+.常量 TVGN_NEXT, "1", , 
+.常量 TVGN_PREVIOUS, "2", , 
+.常量 TVGN_PARENT, "3", , 
+.常量 TVGN_CHILD, "4", , 
+.常量 TVGN_FIRSTVISIBLE, "5", , 
+.常量 TVGN_NEXTVISIBLE, "6", , 
+.常量 TVGN_PREVIOUSVISIBLE, "7", , 
+.常量 TVGN_DROPHILITE, "8", , 
+.常量 TVGN_CARET, "9", , 
+.常量 TVGN_LASTVISIBLE, "10", , 
+.常量 TVSI_NOSINGLEEXPAND, "32768", , 
+.常量 , , , 
+.常量 TVI_ROOT, "-65536", , 
+.常量 TVI_FIRST, "-65535", , 
+.常量 TVI_LAST, "-65534", , 
+.常量 TVI_SORT, "-65533", , 
+.常量 , , , 
+.常量 TVE_COLLAPSE, "1", , 
+.常量 TVE_EXPAND, "2", , 
+.常量 TVE_TOGGLE, "3", , 
+.常量 TVE_EXPANDPARTIAL, "16384", , 
+.常量 TVE_COLLAPSERESET, "32768", , 
+.常量 , , , 
+.常量 TVIF_TEXT, "1", , 
+.常量 TVIF_IMAGE, "2", , 
+.常量 TVIF_PARAM, "4", , 
+.常量 TVIF_STATE, "8", , 
+.常量 TVIF_HANDLE, "16", , 
+.常量 TVIF_SELECTEDIMAGE, "32", , 
+.常量 TVIF_CHILDREN, "64", , 
+.常量 TVIF_INTEGRAL, "128", , 
+.常量 , , , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 6 系统核心支持库
+
+
+
+
+数据类型 TVITEMA, , 
+    .成员 mask, 空白型, , , 
+    .成员 hItem, 空白型, , , 
+    .成员 state, 空白型, , , 
+    .成员 stateMask, 空白型, , , 
+    .成员 pszText, 文本型, , , 
+    .成员 cchTextMax, 空白型, , , 
+    .成员 iImage, 空白型, , , 
+    .成员 iSelectedImage, 空白型, , , 
+    .成员 cChildren, 空白型, , , 
+    .成员 lParam, 空白型, , , 
+
+数据类型 TVINSERTSTRUCTA, , 
+    .成员 hParent, 空白型, , , 
+    .成员 hInsertAfter, 空白型, , , 
+    .成员 item, TVITEMA, , , 
+    .成员 iIntegral, 空白型, , , 
+
+
+.DLL命令 SendMsg_InsertStruct, 整数型, "", "SendMessageA", , 
+    .参数 hWnd, 空白型, , 
+    .参数 uMsg, 空白型, , 
+    .参数 wParam, 空白型, , 
+    .参数 lParam, TVINSERTSTRUCTA, , 
+
+.DLL命令 SendMsg_Item, 整数型, "", "SendMessageA", , 
+    .参数 hWnd, 空白型, , 
+    .参数 uMsg, 空白型, , 
+    .参数 wParam, 空白型, , 
+    .参数 lParam, TVITEMA, , 
+
+.DLL命令 SendMessage, 整数型, "", "SendMessageA", , 
+    .参数 hWnd, 空白型, , 
+    .参数 uMsg, 空白型, , 
+    .参数 wParam, 空白型, , 
+    .参数 lParam, 空白型, , 
+
+.程序集 ec, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.类模块 CTreeCtrl, , , 
+
+.程序集变量 m_hWnd, 空白型, , , 
+.子程序 _Init, 空白型, 公开, 
+.参数 hWnd, 空白型, , 
+
+赋值 (m_hWnd, hWnd)
+
+.子程序 InsertItem, 整数型, , 
+.参数 nMask, 空白型, , 
+.参数 lpszItem, 文本型, , 
+.参数 nImage, 空白型, , 
+.参数 nSelectedImage, 空白型, , 
+.参数 nState, 空白型, , 
+.参数 nStateMask, 空白型, , 
+.参数 lParam, 空白型, , 
+.参数 hParent, 空白型, , 
+.参数 hInsertAfter, 空白型, , 
+
+.局部变量 tvis, TVINSERTSTRUCTA, , , 
+
+赋值 (tvis.hParent, hParent)
+赋值 (tvis.hInsertAfter, hInsertAfter)
+赋值 (tvis.item.mask, nMask)
+赋值 (tvis.item.pszText, lpszItem)
+赋值 (tvis.item.iImage, nImage)
+赋值 (tvis.item.iSelectedImage, nSelectedImage)
+赋值 (tvis.item.state, nState)
+赋值 (tvis.item.stateMask, nStateMask)
+赋值 (tvis.item.lParam, lParam)
+返回 (_InsertItem (tvis))
+
+.子程序 _InsertItem, 整数型, , 
+.参数 tvis, TVINSERTSTRUCTA, , 
+
+返回 (SendMsg_InsertStruct (m_hWnd, #TVM_INSERTITEM, 0, tvis))
+
+.子程序 Select, 逻辑型, 公开, 
+.参数 hItem, 空白型, , 
+.参数 nCode, 空白型, , 
+
+返回 (不等于 (SendMessage (m_hWnd, #TVM_SELECTITEM, nCode, hItem), 0))
+
+.子程序 SelectItem, 逻辑型, 公开, 
+.参数 hItem, 空白型, , 
+
+返回 (Select (hItem, #TVGN_CARET))
+
+.子程序 DeleteItem, 逻辑型, 公开, 
+.参数 hItem, 空白型, , 
+
+返回 (不等于 (SendMessage (m_hWnd, #TVM_DELETEITEM, 0, hItem), 0))
+
+.子程序 SetItem, 逻辑型, 公开, 
+.参数 hItem, 空白型, , 
+.参数 nMask, 空白型, , 
+.参数 lpszItem, 文本型, , 
+.参数 nImage, 空白型, , 
+.参数 nSelectedImage, 空白型, , 
+.参数 nState, 空白型, , 
+.参数 nStateMask, 空白型, , 
+.参数 lParam, 空白型, , 
+
+.局部变量 item, TVITEMA, , , 
+
+赋值 (item.hItem, hItem)
+赋值 (item.mask, nMask)
+赋值 (item.pszText, lpszItem)
+赋值 (item.iImage, nImage)
+赋值 (item.iSelectedImage, nSelectedImage)
+赋值 (item.state, nState)
+赋值 (item.stateMask, nStateMask)
+赋值 (item.lParam, lParam)
+返回 (_SetItem (item))
+
+.子程序 _SetItem, 逻辑型, , 
+.参数 item, TVITEMA, , 
+
+返回 (不等于 (SendMsg_Item (m_hWnd, #TVM_SETITEMA, 0, item), 0))
+
+.子程序 SetItemText, 逻辑型, 公开, 
+.参数 hItem, 空白型, , 
+.参数 lpszItem, 文本型, , 
+
+返回 (SetItem (hItem, #TVIF_TEXT, lpszItem, 0, 0, 0, 0, 0))
+
+.子程序 SetItemParam, 逻辑型, 公开, 
+.参数 hItem, 空白型, , 
+.参数 Param, 空白型, , 
+
+返回 (SetItem (hItem, #TVIF_TEXT, “”, 0, 0, 0, 0, Param))
+
+.子程序 SetItemImage, 逻辑型, 公开, 
+.参数 hItem, 空白型, , 
+.参数 nImage, 空白型, , 
+.参数 nSelectedImage, 空白型, , 
+
+返回 (SetItem (hItem, 位或 (#TVIF_IMAGE, #TVIF_SELECTEDIMAGE), “”, nImage, nSelectedImage, 0, 0, 0))
+
+.子程序 GetItem, 逻辑型, 公开, 
+.参数 item, TVITEMA, 参考, 
+
+返回 (不等于 (SendMsg_Item (m_hWnd, #TVM_GETITEMA, 0, item), 0))
+
+.子程序 GetItemText, 文本型, 公开, 
+.参数 hItem, 空白型, , 
+
+.局部变量 info, TVITEMA, , , 
+.局部变量 bytes, 整数型, , , 
+
+赋值 (info.hItem, hItem)
+赋值 (info.mask, #TVIF_TEXT)
+赋值 (info.cchTextMax, 128) ' × 2
+.循环判断首 ()
+    赋值 (info.cchTextMax, 相乘 (info.cchTextMax, 2))
+    赋值 (info.pszText, 取空白文本 (info.cchTextMax))
+    .如果真 (等于 (GetItem (info), 假))
+        返回 (“”)
+    .如果真结束
+    赋值 (bytes, 取文本长度 (info.pszText))
+.循环判断尾 (等于 (bytes, 相减 (info.cchTextMax, 1)))
+返回 (info.pszText)
+
+.子程序 GetItemParam, 整数型, 公开, 
+.参数 hItem, 空白型, , 
+
+.局部变量 info, TVITEMA, , , 
+
+赋值 (info.hItem, hItem)
+赋值 (info.mask, #TVIF_PARAM)
+.如果真 (GetItem (info))
+    返回 (info.lParam)
+.如果真结束
+返回 (0)
+
+.子程序 DeleteAllItems, 逻辑型, 公开, 
+返回 (DeleteItem (#TVI_ROOT))
+
+.子程序 GetCount, 整数型, 公开, 
+返回 (SendMessage (m_hWnd, #TVM_GETCOUNT, 0, 0))
+
+.子程序 GetNextItem, 整数型, 公开, 
+.参数 hItem, 空白型, , 
+.参数 nCode, 空白型, , 
+
+返回 (SendMessage (m_hWnd, #TVM_GETNEXTITEM, nCode, hItem))
+
+.子程序 GetRootItem, 整数型, 公开, 
+返回 (GetNextItem (0, #TVGN_ROOT))
+
+.子程序 GetSelectItem, 整数型, 公开, 
+返回 (GetNextItem (0, #TVGN_CARET))
+
+.子程序 GetParentItem, 整数型, 公开, 
+.参数 hItem, 空白型, , 
+
+返回 (GetNextItem (hItem, #TVGN_PARENT))
+
+.子程序 GetChildItem, 整数型, 公开, 
+.参数 hItem, 空白型, , 
+
+返回 (GetNextItem (hItem, #TVGN_CHILD))
+
+.子程序 GetNextSiblingItem, 整数型, 公开, 
+.参数 hItem, 空白型, , 
+
+返回 (GetNextItem (hItem, #TVGN_NEXT))
+
+.子程序 GetPrevSiblingItem, 整数型, 公开, 
+.参数 hItem, 空白型, , 
+
+返回 (GetNextItem (hItem, #TVGN_PREVIOUS))
+
+.子程序 Expand, 逻辑型, 公开, 
+.参数 hItem, 空白型, , 
+.参数 nCode, 空白型, , 
+
+返回 (不等于 (SendMessage (m_hWnd, #TVM_EXPAND, nCode, hItem), 0))
+
+
+.类模块 类_树型框, CTreeCtrl, , 
+
+.子程序 清空, 空白型, 公开, 
+DeleteAllItems ()
+
+.子程序 加入项目, 整数型, 公开, 
+.参数 父项目索引, 空白型, 可空, 
+.参数 项目文本, 文本型, 可空, 
+.参数 图片索引, 空白型, 可空, 
+.参数 选中图片索引, 空白型, 可空, 
+.参数 项目数值, 空白型, 可空, 
+
+.如果真 (或者 (是否为空 (父项目索引), 小于或等于 (父项目索引, 0)))
+    赋值 (父项目索引, #TVI_ROOT)
+.如果真结束
+返回 (InsertItem (位或 (#TVIF_TEXT, #TVIF_IMAGE, #TVIF_SELECTEDIMAGE, #TVIF_PARAM), 项目文本, 图片索引, 选中图片索引, 0, 0, 项目数值, 父项目索引, #TVI_LAST))
+
+.子程序 ExpandAll, 空白型, , 
+.参数 hItem, 空白型, , 
+.参数 nCode, 空白型, , 
+
+.局部变量 hChild, 整数型, , , 
+
+Expand (hItem, nCode)
+赋值 (hItem, GetChildItem (hItem))
+.判断循环首 (不等于 (hItem, 0))
+    赋值 (hChild, GetChildItem (hItem))
+    .如果真 (不等于 (hChild, 0))
+        Expand (hItem, nCode)
+        ExpandAll (hChild, nCode)
+    .如果真结束
+    赋值 (hItem, GetNextSiblingItem (hItem))
+.判断循环尾 ()
+
+.子程序 展开所有项, 空白型, 公开, 
+.参数 hItem, 空白型, , 
+
+ExpandAll (hItem, #TVE_EXPAND)
+
+.子程序 收缩所有项, 空白型, 公开, 
+.参数 hItem, 空白型, , 
+
+ExpandAll (hItem, #TVE_COLLAPSE)
+
+.子程序 展开选中所有项, 空白型, 公开, 
+展开所有项 (GetSelectItem ())
+
+.子程序 取缩进层次, 整数型, 公开, 
+.参数 hItem, 空白型, , 
+
+.局部变量 count, 空白型, , , 
+
+赋值 (count, 1)
+.循环判断首 ()
+    赋值 (hItem, GetParentItem (hItem))
+    .如果真 (不等于 (hItem, #TreeItem_Null))
+        赋值 (count, 相加 (count, 1))
+    .如果真结束
+    
+.循环判断尾 (不等于 (hItem, #TreeItem_Null))
+返回 (count)
+
+.子程序 取项目文本, 文本型, 公开, 
+.参数 hItem, 空白型, , 
+
+返回 (GetItemText (hItem))
+
+.子程序 取项目数值, 整数型, 公开, 
+.参数 hItem, 空白型, , 
+
+返回 (GetItemParam (hItem))
+
+.子程序 取父项目, 整数型, 公开, 
+.参数 hItem, 空白型, , 
+
+返回 (GetParentItem (hItem))
+
+.子程序 删除项目, 空白型, 公开, 
+.参数 hItem, 空白型, , 
+
+DeleteItem (hItem)
+
+.子程序 ________________, 空白型, , 
+
+
+.子程序 收缩选中所有项, 空白型, 公开, 
+收缩所有项 (GetSelectItem ())
+
+.子程序 取顶层项目, 整数型, 公开, 
+.参数 hItem, 空白型, , 
+
+.局部变量 hParent, 空白型, , , 
+
+.循环判断首 ()
+    赋值 (hParent, GetParentItem (hItem))
+    .如果真 (不等于 (hParent, #TreeItem_Null))
+        赋值 (hItem, hParent)
+    .如果真结束
+    
+.循环判断尾 (不等于 (hParent, #TreeItem_Null))
+返回 (hItem)
+
+
+.子程序 是否有子项目, 逻辑型, 公开, 
+.参数 hItem, 空白型, , 
+
+返回 (不等于 (GetChildItem (hItem), 0))
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

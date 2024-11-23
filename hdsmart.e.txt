@@ -1,0 +1,879 @@
+ ' 文件类型：Windows控制台程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 SPACE_STRING, "“ ”", , 
+.常量 FILE_SHARE_READ, "1", , 
+.常量 FILE_SHARE_WRITE, "2", , 
+.常量 GENERIC_READ, "2147483648", , 
+.常量 GENERIC_WRITE, "1073741824", , 
+.常量 OPEN_EXISTING, "3", , 
+.常量 INVALID_HANDLE_VALUE, "-1", , 
+.常量 DFP_GET_VERSION, "475264", , 
+.常量 DFP_SEND_DRIVE_COMMAND, "508036", , 
+.常量 DFP_RECEIVE_DRIVE_DATA, "508040", , 
+.常量 MAX_IDE_DRIVES, "4", , 
+.常量 IDE_ATAPI_ID, "161", , 
+.常量 IDE_ID_FUNCTION, "236", , 
+.常量 IDENTIFY_BUFFER_SIZE, "512", , 
+.常量 SMART_READ_ATTRIBUTE_VALUES, "208", , ATA4: Renamed
+.常量 SMART_READ_ATTRIBUTE_THRESHOLDS, "209", , Obsoleted in ATA4!
+.常量 SMART_ENABLE_DISABLE_ATTRIBUTE_AUTOSAVE, "210", , 
+.常量 SMART_SAVE_ATTRIBUTE_VALUES, "211", , 
+.常量 SMART_EXECUTE_OFFLINE_IMMEDIATE, "212", , ATA4
+.常量 SMART_ENABLE_SMART_OPERATIONS, "216", , 
+.常量 SMART_DISABLE_SMART_OPERATIONS, "217", , 
+.常量 SMART_RETURN_SMART_STATUS, "218", , 
+.常量 NUM_ATTRIBUTE_STRUCTS, "30", , 
+.常量 MAX_KNOWN_ATTRIBUTES, "55", , 
+.常量 READ_THRESHOLD_BUFFER_SIZE, "512", , 
+.常量 SMART_CYL_LOW, "79", , 
+.常量 SMART_CYL_HI, "194", , 
+.常量 IDE_EXECUTE_SMART_FUNCTION, "176", , 
+.常量 READ_ATTRIBUTE_BUFFER_SIZE, "512", , 
+.常量 STD_INPUT_HANDLE, "-10", , 
+.常量 ENABLE_ECHO_INPUT, "4", , 
+.常量 ENABLE_LINE_INPUT, "2", , 
+.常量 ENABLE_PROCESSED_INPUT, "1", , 
+.常量 ENABLE_WINDOW_INPUT, "8", , 
+.常量 KEY_EVENT, "1", , 
+.常量 MENU_EVENT, "8", , 
+.常量 IOCTL_DISK_GET_DRIVE_GEOMETRY, "458752", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+ ' 所需要的模块
+ ' wsprintfA E:\Documents and Settings\Administrator\My Documents\下载\wsprintfA.ec
+
+
+数据类型 GETVERSIONOUTPARAMS, , 24
+    .成员 bVersion, 字节型, , , 
+    .成员 bRevision, 字节型, , , 
+    .成员 bReserved, 字节型, , , 
+    .成员 bIDEDeviceMap, 字节型, , , 
+    .成员 fCapabilities, 整数型, , , 
+    .成员 dwReserved, 整数型, , "4", 
+
+数据类型 SENDCMDINPARAMS, , 33
+    .成员 cBufferSize, 整数型, , , 
+    .成员 irDriveRegs, IDEREGS, , , 
+    .成员 bDriveNumber, 字节型, , , 
+    .成员 bReserved, 字节型, , "3", 
+    .成员 dwReserved, 整数型, , "4", 
+    .成员 bBuffer, 字节型, , , 
+
+数据类型 IDEREGS, , 
+    .成员 bFeaturesReg, 字节型, , , 
+    .成员 bSectorCountReg, 字节型, , , 
+    .成员 bSectorNumberReg, 字节型, , , 
+    .成员 bCylLowReg, 字节型, , , 
+    .成员 bCylHighReg, 字节型, , , 
+    .成员 bDriveHeadReg, 字节型, , , 
+    .成员 bCommandReg, 字节型, , , 
+    .成员 bReserved, 字节型, , , 
+
+数据类型 SENDCMDOUTPARAMS, , 17
+    .成员 cBufferSize, 整数型, , , 
+    .成员 DriverStatus, DRIVERSTATUS, , , 
+    .成员 bBuffer, 字节型, , "1", 
+
+数据类型 DRIVERSTATUS, , 
+    .成员 bDriverError, 字节型, , , 
+    .成员 bIDEStatus, 字节型, , , 
+    .成员 bReserved, 字节型, , "2", 
+    .成员 dwReserved, 整数型, , "2", 
+
+数据类型 DRIVEATTRIBUTE, , 12
+    .成员 bAttrID, 字节型, , , Identifies which attribute
+    .成员 wStatusFlags, 短整数型, , , see bit definitions below
+    .成员 bAttrValue, 字节型, , , Current normalized value
+    .成员 bWorstValue, 字节型, , , How bad has it ever been?
+    .成员 bRawValue, 字节型, , "6", Un-normalized value
+    .成员 bReserved, 字节型, , , ...
+
+数据类型 ATTRTHRESHOLD, , 12
+    .成员 bAttrID, 字节型, , , Identifies which attribute
+    .成员 bWarrantyThreshold, 字节型, , , Triggering value
+    .成员 bReserved, 字节型, , "10", ...
+
+数据类型 _IDINFO, , 512
+    .成员 wGenConfig, 短整数型, , , 基本信息字
+    .成员 wNumCyls, 短整数型, , , 柱面数
+    .成员 wReserved, 短整数型, , , 保留
+    .成员 wNumHeads, 短整数型, , , 磁头数
+    .成员 wBytesPerTrack, 短整数型, , , 保留
+    .成员 wBytesPerSector, 短整数型, , , 保留
+    .成员 wSectorsPerTrack, 短整数型, , , 每磁道扇区数
+    .成员 wVendorUnique, 短整数型, , "3", 厂家设定值
+    .成员 sSerialNumber, 字节型, , "20", 序列号
+    .成员 wBufferType, 短整数型, , , 缓冲类型
+    .成员 wBufferSize, 短整数型, , , 缓冲大小
+    .成员 wECCSize, 短整数型, , , ECC校验大小
+    .成员 sFirmwareRev, 字节型, , "8", 固件版本
+    .成员 sModelNumber, 字节型, , "40", 内部型号
+    .成员 wMoreVendorUnique, 短整数型, , , 厂家设定值
+    .成员 wDoubleWordIO, 短整数型, , , 保留
+    .成员 wCapabilities, 短整数型, , , 一般能力
+    .成员 wReserved1, 短整数型, , , 保留
+    .成员 wPIOTiming, 短整数型, , , PIO时序
+    .成员 wDMATiming, 短整数型, , , DMA时序
+    .成员 wFieldValidity, 短整数型, , , 后续字段有效性标志
+    .成员 wNumCurrentCyls, 短整数型, , , CHS可寻址的柱面数
+    .成员 wNumCurrentHeads, 短整数型, , , CHS可寻址的磁头数
+    .成员 wNumCurrentSectorsPerTrack, 短整数型, , , CHS可寻址每磁道扇区数
+    .成员 wCurSectorsLow, 短整数型, , , CHS可寻址的扇区数低位字
+    .成员 wCurSectorsHigh, 短整数型, , , CHS可寻址的扇区数高位字
+    .成员 wMultSectorStuff, 短整数型, , , 多扇区读写设定
+    .成员 dwTotalSectors, 整数型, , , LBA可寻址的扇区数
+    .成员 wSingleWordDMA, 短整数型, , , 单字节DMA支持能力
+    .成员 wMultiWordDMA, 短整数型, , , 多字节DMA支持能力
+    .成员 wPIOCapacity, 短整数型, , , 高级PIO支持能力
+    .成员 wMinMultiWordDMACycle, 短整数型, , , 多字节DMA传输周期的最小值
+    .成员 wRecMultiWordDMACycle, 短整数型, , , 多字节DMA传输周期的建议值
+    .成员 wMinPIONoFlowCycle, 短整数型, , , 无流控制时PIO传输周期的最小值
+    .成员 wMinPOIFlowCycle, 短整数型, , , 有流控制时PIO传输周期的最小值
+    .成员 wReserved69, 短整数型, , "11", 保留
+    .成员 wMajorVersion, 短整数型, , , 主版本
+    .成员 wMinorVersion, 短整数型, , , 副版本
+    .成员 wReserved82, 短整数型, , "6", 保留
+    .成员 wUltraDMA, 短整数型, , , Ultra DMA支持能力
+    .成员 wReserved89, 短整数型, , "167", 
+
+数据类型 DISK_GEOMETRY, , 
+    .成员 Cylinders, 长整数型, , , LARGE_INTEGER (8 bytes)
+    .成员 MediaType, 整数型, , , 
+    .成员 TracksPerCylinder, 整数型, , , 
+    .成员 SectorsPerTrack, 整数型, , , 
+    .成员 BytesPerSector, 整数型, , , 
+
+.全局变量 pAttrNames, 文本型, , "0", 
+.全局变量 AttrOutCmd, 整数型, , , SENDCMDOUTPARAMS
+.全局变量 ThreshOutCmd, 整数型, , , 
+.全局变量 IdOutCmd, 整数型, , , 
+
+.DLL命令 CreateFile, 整数型, "kernel32.dll", "CreateFileA", , 
+    .参数 lpFileName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwShareMode, 整数型, , 
+    .参数 lpSecurityAttributes, 整数型, , 
+    .参数 dwCreationDisposition, 整数型, , 
+    .参数 dwFlagsAndAttributes, 整数型, , 
+    .参数 hTemplateFile, 整数型, , 
+
+.DLL命令 GetLastError, 整数型, "kernel32.dll", "GetLastError", , 
+
+.DLL命令 DeviceIoControl_GETVERSIONOUTPARAMS, 整数型, "kernel32.dll", "DeviceIoControl", , 
+    .参数 hDevice, 整数型, , 
+    .参数 dwIoControlCode, 整数型, , 
+    .参数 lpInBuffer, 整数型, 传址, 
+    .参数 nInBufferSize, 整数型, , 
+    .参数 lpOutBuffer, GETVERSIONOUTPARAMS, , 
+    .参数 nOutBufferSize, 整数型, , 
+    .参数 lpBytesReturned, 整数型, 传址, 
+    .参数 lpOverlapped, 整数型, , 
+
+.DLL命令 DeviceIoControl_DISK_GEOMETRY, 整数型, "kernel32.dll", "DeviceIoControl", , 
+    .参数 hDevice, 整数型, , 
+    .参数 dwIoControlCode, 整数型, , 
+    .参数 lpInBuffer, 整数型, 传址, 
+    .参数 nInBufferSize, 整数型, , 
+    .参数 lpOutBuffer, DISK_GEOMETRY, 传址, 
+    .参数 nOutBufferSize, 整数型, , 
+    .参数 lpBytesReturned, 整数型, 传址, 
+    .参数 lpOverlapped, 整数型, , 
+
+.DLL命令 DeviceIoControl_SENDCMDINPARAMS, 整数型, "kernel32.dll", "DeviceIoControl", , 
+    .参数 hDevice, 整数型, , 
+    .参数 dwIoControlCode, 整数型, , 
+    .参数 lpInBuffer, SENDCMDINPARAMS, 传址, 
+    .参数 nInBufferSize, 整数型, , 
+    .参数 lpOutBuffer, 整数型, , 
+    .参数 nOutBufferSize, 整数型, , 
+    .参数 lpBytesReturned, 整数型, 传址, 
+    .参数 lpOverlapped, 整数型, , 
+
+.DLL命令 CopyMemory_Ptr2DRIVEATTRIBUTE, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 pDest, DRIVEATTRIBUTE, , 
+    .参数 pSrc, 整数型, , 
+    .参数 ByteLen, 整数型, , 
+
+.DLL命令 CopyMemory_Ptr2ATTRTHRESHOLD, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 pDest, ATTRTHRESHOLD, , 
+    .参数 pSrc, 整数型, , 
+    .参数 ByteLen, 整数型, , 
+
+.DLL命令 CopyMemory_Ptr2IDSECTOR, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 pDest, _IDINFO, , 
+    .参数 pSrc, 整数型, , 
+    .参数 ByteLen, 整数型, , 
+
+.DLL命令 CopyMemory_Ptr2SENDCMDOUTPARAMS, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 pDest, SENDCMDOUTPARAMS, , 
+    .参数 pSrc, 整数型, , 
+    .参数 ByteLen, 整数型, , 
+
+.DLL命令 lstrcpyn, 整数型, "kernel32.dll", "lstrcpynA", , 
+    .参数 lpString1, 文本型, , 
+    .参数 lpString2, 字节型, 传址 数组, 
+    .参数 iMaxLength, 整数型, , 
+
+.DLL命令 CloseHandle, 整数型, "kernel32.dll", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 LocalAlloc, 整数型, "kernel32.dll", "LocalAlloc", , 
+    .参数 wFlags, 整数型, , 
+    .参数 wBytes, 整数型, , 
+
+.DLL命令 LocalFree, 整数型, "kernel32.dll", "LocalFree", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 GetConsoleMode, 整数型, "kernel32.dll", "GetConsoleMode", , 
+    .参数 hConsoleHandle, 整数型, , 
+    .参数 lpMode, 整数型, , 
+
+.DLL命令 GetStdHandle, 整数型, "kernel32.dll", "GetStdHandle", , 
+    .参数 nStdHandle, 整数型, , 
+
+.DLL命令 SetConsoleMode, 整数型, "kernel32.dll", "SetConsoleMode", , 
+    .参数 hConsoleHandle, 整数型, , 
+    .参数 dwMode, 整数型, , 
+
+.DLL命令 ReadConsoleInput, 整数型, "kernel32.dll", "ReadConsoleInputA", , 
+    .参数 hConsoleInput, 整数型, , 
+    .参数 lpBuffer, 字节型, 数组, 
+    .参数 nLength, 整数型, , 
+    .参数 lpNumberOfEventsRead, 整数型, 传址, 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 
+GetHdSmart ()
+返回 (0)
+
+.子程序 GetHdSmart, 逻辑型, , 
+.局部变量 hSMARTIOCTL, 整数型, , , 
+.局部变量 cbBytesReturned, 整数型, , , 
+.局部变量 VersionParams, GETVERSIONOUTPARAMS, , , 
+.局部变量 scip, SENDCMDINPARAMS, , , 
+.局部变量 OutCmd, 整数型, , , 
+.局部变量 bDfpDriveMap, 字节型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 bIDCmd, 字节型, , , // IDE or ATAPI IDENTIFY cmd
+.局部变量 IDSECTOR_tmp, _IDINFO, , , 
+.局部变量 IdOutCmd_temp, SENDCMDOUTPARAMS, , , 
+.局部变量 AttrOutCmd_temp, SENDCMDOUTPARAMS, , , 
+.局部变量 ThreshOutCmd_temp, SENDCMDOUTPARAMS, , , 
+.局部变量 OutCmd_temp, SENDCMDOUTPARAMS, , , 
+.局部变量 hInput, 整数型, , , 
+.局部变量 lpBuff, 字节型, , "20", 
+.局部变量 lpNumberOfEventsRead, 整数型, , , 
+.局部变量 ret, 逻辑型, , , 
+.局部变量 LastMsg, 整数型, , , 
+
+GetLastError ()
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+ ' pAttrNames ＝ { “No Attribute Here       ”, “Raw Read Error Rate     ”, “Throughput Performance  ”, “Spin Up Time            ”, “Start/Stop Count        ”, “Reallocated Sector Count”, “Read Channel Margin     ”, “Seek Error Rate         ”, “Seek Time Performance   ”, “Power On Hours Count    ”, “Spin Retry Count        ”, “Calibration Retry Count ”, “Power Cycle Count       ”, “(Unknown attribute)     ” }
+赋值 (pAttrNames, { “0___这里没有属性                ”, “1___底层数据读取出错率          ”, “2___硬盘读写数据的吞吐量性能    ”, “3___马达旋转到规定转速所需时间  ”, “4___主轴马达启动/停止次数       ”, “5___重新映射磁盘扇区的数量      ”, “6___读取通道边缘的数据          ”, “7___磁头寻道出错率              ”, “8___磁头寻道时间的平均性能      ”, “9___硬盘加电累计时间            ”, “10__马达重新旋转到规定转速次数  ”, “11__磁盘校准重试次数            ”, “12__硬盘完全启动/停止的次数     ”, “13__程序读取出错率              ”, “184_End to End Error            ”, “187_报告的无法校正的错误        ”, “188_命令超时                    ”, “189_快速写入                    ”, “190_气流温度                    ”, “191_震动传感器检测的出错率      ”, “192_硬盘断电回位次数            ”, “193_磁头载入次数                ”, “194_硬盘温度                    ”, “195_硬件出错纠正恢复次数        ”, “196_重新映射扇区数据转移的次数  ”, “197_当前不良扇区待映射的数量    ”, “198_脱机无法纠正扇区数量        ”, “199_Ultra DMA 奇偶校验出错次数  ”, “200_磁盘扇区写入出错率          ”, “201_检测磨擦热计数器            ”, “202_增加磨擦热计数器            ”, “203_纠正出错率                  ”, “204_程序出错纠正恢复校准        ”, “205_磁盘酷热性能率              ”, “206_磁头定位高度                ”, “207_马达电流过高使磁盘快速旋转  ”, “208_磁盘旋转蜂音                ”, “209_脱机操作的磁盘寻道性能      ”, “211_震动期间写入                ”, “212_冲击期间写入                ”, “220_强烈震动导致磁盘偏移        ”, “221_震动传感器检测的出错率      ”, “222_常规操作所引起磁头载入次数  ”, “223_磁头载入/载出重试次数       ”, “224_摩擦所引起的磁头载入        ”, “225_磁头载入/载出次数           ”, “226_磁头载入时间                ”, “227_磁盘运行旋转瞬间的次数      ”, “228_电源断电磁头紧急缩回次数    ”, “230_正在运行中的 GMR 磁头发抖   ”, “231_硬盘温度                    ”, “240_磁头定位时间                ”, “250_读取出错重试率              ”, “254_自由下落保护                ”, “    (未知属性)                  ” })
+
+赋值 (hSMARTIOCTL, OpenSMART ())
+.如果真 (不等于 (hSMARTIOCTL, #INVALID_HANDLE_VALUE))
+    赋值 (AttrOutCmd, LocalAlloc (64, 相减 (相加 (17, 512), 1)))
+    赋值 (IdOutCmd, LocalAlloc (64, 相减 (相加 (17, 512), 1)))
+    赋值 (ThreshOutCmd, LocalAlloc (64, 相减 (相加 (17, 512), 1)))
+    赋值 (OutCmd, LocalAlloc (64, 17))
+     ' // Get the version, etc of SMART IOCTL
+    .如果 (不等于 (DeviceIoControl_GETVERSIONOUTPARAMS (hSMARTIOCTL, #DFP_GET_VERSION, 0, 0, VersionParams, 24, cbBytesReturned, 0), 0))
+        标准输出 (“DFP_GET_VERSION returned:”, #换行符)
+        标准输出 (格式化文本_ (_S (“%8sVersion        = %d”), _S (#SPACE_STRING), VersionParams.bVersion), #换行符)
+        标准输出 (格式化文本_ (_S (“%8sRevision       = %d”), _S (#SPACE_STRING), VersionParams.bRevision), #换行符)
+        标准输出 (格式化文本_ (_S (“%8sCapabilities   = 0x%lx”), _S (#SPACE_STRING), VersionParams.fCapabilities), #换行符)
+        标准输出 (格式化文本_ (_S (“%8sReserved       = 0x%x”), _S (#SPACE_STRING), VersionParams.bReserved), #换行符)
+        标准输出 (格式化文本_ (_S (“%8sIDEDeviceMap   = 0x%x”), _S (#SPACE_STRING), VersionParams.bIDEDeviceMap), #换行符)
+        标准输出 (格式化文本_ (_S (“%8sBytesReturned  = %d”), _S (#SPACE_STRING), cbBytesReturned), #换行符, #换行符)
+    .否则
+        标准输出 (格式化文本_ (_S (“DFP_GET_VERSION failed. error code : %d ”), GetLastError ()), #换行符)
+    .如果结束
+    
+    .变量循环首 (0, #MAX_IDE_DRIVES, 1, i)
+         ' // If there is a IDE device at number "i" issue commands
+         ' // to the device.
+        .如果真 (不等于 (位与 (右移 (VersionParams.bIDEDeviceMap, i), 1), 0))
+             ' // Try to enable SMART so we can tell if a drive supports it.
+             ' // Ignore ATAPI devices.
+            .如果真 (取反 (不等于 (位与 (右移 (VersionParams.bIDEDeviceMap, i), 16), 0)))
+                 ' memset(&scip, 0, sizeof(scip))
+                 ' memset(&OutCmd, 0, sizeof(OutCmd))
+                .如果 (DoEnableSMART (hSMARTIOCTL, scip, OutCmd, i, cbBytesReturned))
+                    标准输出 (格式化文本_ (_S (“SMART Enabled on Drive: %d”), i), #换行符)
+                     ' // Mark the drive as SMART enabled
+                     ' bDfpDriveMap |= (1 << i)
+                    赋值 (bDfpDriveMap, 位或 (bDfpDriveMap, 左移 (1, i)))
+                    
+                .否则
+                    CopyMemory_Ptr2SENDCMDOUTPARAMS (OutCmd_temp, OutCmd, 17)
+                    
+                    标准输出 (格式化文本_ (_S (“SMART Enable Command Failed, Drive: %d.”), i), #换行符)
+                    标准输出 (格式化文本_ (_S (“ DriverStatus: bDriverError=0x%X, bIDEStatus=0x%X”), OutCmd_temp.DriverStatus.bDriverError, OutCmd_temp.DriverStatus.bIDEStatus), #换行符)
+                .如果结束
+                
+                标准输出 (格式化文本_ (_S (“%8sBytesReturned: %d”), _S (#SPACE_STRING), cbBytesReturned), #换行符)
+            .如果真结束
+             ' // Now, get the ID sector for all IDE devices in the system.
+             ' // If the device is ATAPI use the IDE_ATAPI_ID command,
+             ' // otherwise use the IDE_ID_FUNCTION command.
+            赋值 (bIDCmd, 选择 (不等于 (位与 (右移 (VersionParams.bIDEDeviceMap, i), 16), 0), #IDE_ATAPI_ID, #IDE_ID_FUNCTION))
+             ' 本源码来自易语言资源网(www.5A5X.com)
+             ' memset(&scip, 0, sizeof(scip))
+             ' memset(IdOutCmd, 0, sizeof(IdOutCmd))
+            .如果 (DoIDENTIFY (hSMARTIOCTL, scip, IdOutCmd, bIDCmd, i, cbBytesReturned))
+                 ' DisplayIdInfo((PIDSECTOR) ((PSENDCMDOUTPARAMS)IdOutCmd).bBuffer,scip,bIDCmd,bDfpDriveMap,i)
+                CopyMemory_Ptr2IDSECTOR (IDSECTOR_tmp, 相加 (IdOutCmd, 16), 512)
+                DisplayIdInfo (hSMARTIOCTL, IDSECTOR_tmp, scip, bIDCmd, bDfpDriveMap, i)
+            .否则
+                CopyMemory_Ptr2SENDCMDOUTPARAMS (IdOutCmd_temp, IdOutCmd, 17)
+                
+                标准输出 (格式化文本_ (_S (“Identify Command Failed on Drive: %d”), i), #换行符)
+                标准输出 (格式化文本_ (_S (“DriverStatus: bDriverError=0x%X, bIDEStatus=0x%X”), IdOutCmd_temp.DriverStatus.bDriverError, IdOutCmd_temp.DriverStatus.bIDEStatus), #换行符)
+            .如果结束
+            
+            标准输出 (格式化文本_ (_S (“%8scbBytesReturned: %d”), _S (#SPACE_STRING), cbBytesReturned), #换行符, #换行符)
+        .如果真结束
+        
+    .变量循环尾 ()
+     ' // Loop through all possible IDE drives and send commands to the ones that support SMART.
+    .变量循环首 (0, #MAX_IDE_DRIVES, 1, i)
+        .如果真 (不等于 (位与 (右移 (bDfpDriveMap, i), 1), 0))
+             ' memset(AttrOutCmd, 0, sizeof(AttrOutCmd))
+             ' memset(ThreshOutCmd, 0, sizeof(ThreshOutCmd))
+            .如果 (取反 (DoReadAttributesCmd (hSMARTIOCTL, scip, AttrOutCmd, i)))
+                CopyMemory_Ptr2SENDCMDOUTPARAMS (AttrOutCmd_temp, AttrOutCmd, 17)
+                
+                标准输出 (格式化文本_ (_S (“SMART Read Attr Command Failed on Drive: %d.”), i), #换行符)
+                标准输出 (格式化文本_ (_S (“ DriverStatus: bDriverError=0x%X, bIDEStatus=0x%X”), AttrOutCmd_temp.DriverStatus.bDriverError, AttrOutCmd_temp.DriverStatus.bIDEStatus), #换行符)
+            .否则
+                 ' // ReadAttributes worked. Try ReadThresholds.
+                .如果真 (取反 (DoReadThresholdsCmd (hSMARTIOCTL, scip, ThreshOutCmd, i)))
+                    CopyMemory_Ptr2SENDCMDOUTPARAMS (ThreshOutCmd_temp, ThreshOutCmd, 17)
+                    
+                    标准输出 (格式化文本_ (_S (“SMART Read Thrsh Command Failed on Drive: %d.”), i), #换行符)
+                    标准输出 (格式化文本_ (_S (“ DriverStatus: bDriverError=0x%X, bIDEStatus=0x%X”), ThreshOutCmd_temp.DriverStatus.bDriverError, ThreshOutCmd_temp.DriverStatus.bIDEStatus), #换行符)
+                .如果真结束
+                
+            .如果结束
+             ' // The following report will print if ReadAttributes works.
+             ' // If ReadThresholds works, the report will also show values for
+             ' // Threshold values.
+            DoPrintData (AttrOutCmd, ThreshOutCmd, i)
+             ' 本源码来自易语言资源网(www.5A5X.com)
+        .如果真结束
+        
+    .变量循环尾 ()
+     ' // Close SMART.
+    CloseHandle (hSMARTIOCTL)
+    LocalFree (AttrOutCmd)
+    LocalFree (IdOutCmd)
+    LocalFree (ThreshOutCmd)
+    LocalFree (OutCmd)
+    赋值 (ret, 真)
+.如果真结束
+赋值 (hInput, GetStdHandle (#STD_INPUT_HANDLE)) ' 让易的控制台支持鼠标等
+SetConsoleMode (hInput, 位或 (#ENABLE_PROCESSED_INPUT, #ENABLE_LINE_INPUT, #ENABLE_ECHO_INPUT, #ENABLE_WINDOW_INPUT))
+标准输出 (#换行符)
+标准输出 (“Press any key to continue”)
+ReadConsoleInput (hInput, lpBuff, 1, lpNumberOfEventsRead)
+ReadConsoleInput (hInput, lpBuff, 1, lpNumberOfEventsRead)
+.循环判断首 () ' 按任意键继续
+    延时 (100)
+    赋值 (LastMsg, lpBuff [1])
+    ReadConsoleInput (hInput, lpBuff, 1, lpNumberOfEventsRead)
+.循环判断尾 (或者 (并且 (等于 (lpNumberOfEventsRead, 1), 不等于 (lpBuff [1], #KEY_EVENT)), 等于 (LastMsg, #MENU_EVENT)))
+返回 (ret)
+
+.子程序 DoIDENTIFY, 逻辑型, , 
+.参数 hSMARTIOCTL, 整数型, , 
+.参数 pSCIP, SENDCMDINPARAMS, 参考, 
+.参数 pSCOP, 整数型, , 
+.参数 bIDCmd, 字节型, , 
+.参数 bDriveNum, 字节型, , 
+.参数 lpcbBytesReturned, 整数型, 参考, 
+
+ ' /****************************************************************************
+ ' *
+ ' * DoIDENTIFY
+ ' *
+ ' * FUNCTION: Send an IDENTIFY command to the drive
+ ' * bDriveNum = 0-3
+ ' * bIDCmd = IDE_ID_FUNCTION or IDE_ATAPI_ID
+ ' *
+ ' ****************************************************************************/
+ ' BOOL DoIDENTIFY(HANDLE hSMARTIOCTL, PSENDCMDINPARAMS pSCIP,PSENDCMDOUTPARAMS pSCOP, BYTE bIDCmd, BYTE bDriveNum, PDWORD lpcbBytesReturned)
+
+ ' //
+ ' // Set up data structures for IDENTIFY command.
+ ' //
+
+赋值 (pSCIP.cBufferSize, #IDENTIFY_BUFFER_SIZE)
+赋值 (pSCIP.irDriveRegs.bFeaturesReg, 0)
+赋值 (pSCIP.irDriveRegs.bSectorCountReg, 1)
+赋值 (pSCIP.irDriveRegs.bSectorNumberReg, 1)
+赋值 (pSCIP.irDriveRegs.bCylLowReg, 0)
+赋值 (pSCIP.irDriveRegs.bCylHighReg, 0)
+ ' //
+ ' // Compute the drive number.
+ ' //
+赋值 (pSCIP.irDriveRegs.bDriveHeadReg, 位或 (160, 左移 (位与 (bDriveNum, 1), 4)))
+ ' //
+ ' // The command can either be IDE identify or ATAPI identify.
+ ' //
+赋值 (pSCIP.irDriveRegs.bCommandReg, bIDCmd)
+赋值 (pSCIP.bDriveNumber, bDriveNum)
+赋值 (pSCIP.cBufferSize, #IDENTIFY_BUFFER_SIZE)
+ ' 本源码来自易语言资源网(www.5A5X.com)
+返回 (不等于 (DeviceIoControl_SENDCMDINPARAMS (hSMARTIOCTL, #DFP_RECEIVE_DRIVE_DATA, pSCIP, 32, pSCOP, 528, lpcbBytesReturned, 0), 0))
+
+.子程序 DisplayIdInfo, 空白型, , 
+.参数 hSMARTIOCTL, 整数型, , 
+.参数 pids, _IDINFO, , 
+.参数 pSCIP, SENDCMDINPARAMS, , 
+.参数 bIDCmd, 字节型, , 
+.参数 bDfpDriveMap, 字节型, , 
+.参数 bDriveNum, 字节型, , 
+
+.局部变量 szOutBuffer, 文本型, , , 
+
+ ' /****************************************************************************
+ ' *
+ ' * DisplayIdInfo
+ ' *
+ ' * Display the contents of the ID buffer
+ ' *
+ ' ****************************************************************************/
+ ' VOID DisplayIdInfo(PIDSECTOR pids, PSENDCMDINPARAMS pSCIP, BYTE bIDCmd, BYTE bDfpDriveMap, BYTE bDriveNum)
+
+赋值 (szOutBuffer, 取空白文本 (41))
+
+.如果 (等于 (bIDCmd, #IDE_ID_FUNCTION))
+    标准输出 (格式化文本_ (_S (“Drive %d is an IDE Hard drive”), bDriveNum))
+    赋值 (szOutBuffer, 选择 (不等于 (位与 (右移 (bDfpDriveMap, bDriveNum), 1), 0), “ that supports SMART”, “”))
+    标准输出 (格式化文本_ (_S (“%s”), _S (szOutBuffer)), #换行符)
+    标准输出 (格式化文本_ (_S (“%8s#Cylinders: %d, #Heads: %d, #Sectors per Track: %d”), _S (#SPACE_STRING), pids.wNumCyls, pids.wNumHeads, pids.wSectorsPerTrack), #换行符)
+    PrintIDERegs (pSCIP)
+.否则
+    标准输出 (格式化文本_ (_S (“Drive %d is an ATAPI device.”), bDriveNum), #换行符)
+.如果结束
+ ' 本源码来自易语言资源网(www.5A5X.com)
+ ' // Change the WORD array to a BYTE
+ ' // array
+ChangeByteOrder (pids.sModelNumber, 40)
+ ' memset(szOutBuffer,0, sizeof(szOutBuffer))
+lstrcpyn (szOutBuffer, pids.sModelNumber, 40)
+标准输出 (格式化文本_ (_S (“%8sModel number: %s”), _S (#SPACE_STRING), _S (szOutBuffer)), #换行符)
+ ' // Change the WORD array to a BYTE
+ ' // array
+ChangeByteOrder (pids.sFirmwareRev, 8)
+ ' memset(szOutBuffer,0, sizeof(szOutBuffer))
+lstrcpyn (szOutBuffer, pids.sFirmwareRev, 8)
+标准输出 (格式化文本_ (_S (“%8sFirmware rev: %s”), _S (#SPACE_STRING), _S (szOutBuffer)), #换行符)
+ ' // Change the WORD array to a BYTE
+ ' // array
+ChangeByteOrder (pids.sSerialNumber, 20)
+ ' memset(szOutBuffer,0, sizeof(szOutBuffer))
+lstrcpyn (szOutBuffer, pids.sSerialNumber, 20)
+赋值 (szOutBuffer, 删首尾空_ (szOutBuffer))
+标准输出 (格式化文本_ (_S (“%8sSerial number: %s”), _S (#SPACE_STRING), _S (szOutBuffer)), #换行符)
+
+赋值 (szOutBuffer, 相加 (到文本 (DoGETDRIVEGEOMETRY (hSMARTIOCTL)), “ GB”))
+标准输出 (格式化文本_ (_S (“%8sCapacity: %s”), _S (#SPACE_STRING), _S (szOutBuffer)), #换行符)
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 DoGETDRIVEGEOMETRY, 整数型, , 
+.参数 hSMARTIOCTL, 整数型, , 
+
+.局部变量 DG, DISK_GEOMETRY, , , 
+
+DeviceIoControl_DISK_GEOMETRY (hSMARTIOCTL, #IOCTL_DISK_GET_DRIVE_GEOMETRY, 0, 0, DG, 24, 0, 0)
+返回 (相除 (相乘 (DG.Cylinders, DG.TracksPerCylinder, DG.SectorsPerTrack, DG.BytesPerSector), 1000, 1000, 1000))
+
+.子程序 DoEnableSMART, 逻辑型, , 
+.参数 hSMARTIOCTL, 整数型, , 
+.参数 pSCIP, SENDCMDINPARAMS, , 
+.参数 pSCOP, 整数型, , 
+.参数 bDriveNum, 字节型, , 
+.参数 lpcbBytesReturned, 整数型, 参考, 
+
+ ' /****************************************************************************
+ ' *
+ ' * DoEnableSMART
+ ' *
+ ' * FUNCTION: Send a SMART_ENABLE_SMART_OPERATIONS command to the drive
+ ' * bDriveNum = 0-3
+ ' *
+ ' ****************************************************************************/
+ ' BOOL DoEnableSMART(HANDLE hSMARTIOCTL, PSENDCMDINPARAMS pSCIP, PSENDCMDOUTPARAMS pSCOP, BYTE bDriveNum, PDWORD lpcbBytesReturned)
+ ' // Set up data structures for Enable SMART Command.
+
+赋值 (pSCIP.cBufferSize, 0)
+赋值 (pSCIP.irDriveRegs.bFeaturesReg, #SMART_ENABLE_SMART_OPERATIONS)
+赋值 (pSCIP.irDriveRegs.bSectorCountReg, 1)
+赋值 (pSCIP.irDriveRegs.bSectorNumberReg, 1)
+赋值 (pSCIP.irDriveRegs.bCylLowReg, #SMART_CYL_LOW)
+赋值 (pSCIP.irDriveRegs.bCylHighReg, #SMART_CYL_HI)
+
+ ' // Compute the drive number.
+ ' 本源码来自易语言资源网(www.5A5X.com)
+赋值 (pSCIP.irDriveRegs.bDriveHeadReg, 位或 (160, 左移 (位与 (bDriveNum, 1), 4)))
+赋值 (pSCIP.irDriveRegs.bCommandReg, #IDE_EXECUTE_SMART_FUNCTION)
+赋值 (pSCIP.bDriveNumber, bDriveNum)
+
+返回 (不等于 (DeviceIoControl_SENDCMDINPARAMS (hSMARTIOCTL, #DFP_SEND_DRIVE_COMMAND, pSCIP, 相减 (33, 1), pSCOP, 相减 (17, 1), lpcbBytesReturned, 0), 0))
+
+.子程序 DoReadAttributesCmd, 逻辑型, , 
+.参数 hSMARTIOCTL, 整数型, , 
+.参数 pSCIP, SENDCMDINPARAMS, , 
+.参数 pSCOP, 整数型, , 
+.参数 bDriveNum, 字节型, , 
+
+.局部变量 cbBytesReturned, 整数型, , , 
+
+
+ ' /****************************************************************************
+ ' *
+ ' * DoReadAttributesCmd
+ ' *
+ ' * FUNCTION: Send a SMART_READ_ATTRIBUTE_VALUES command to the drive
+ ' * bDriveNum = 0-3
+ ' *
+ ' ****************************************************************************/
+ ' BOOL DoReadAttributesCmd(HANDLE hSMARTIOCTL, PSENDCMDINPARAMS pSCIP, PSENDCMDOUTPARAMS pSCOP, BYTE bDriveNum)
+ ' // Set up data structures for Read Attributes SMART Command.
+
+赋值 (pSCIP.cBufferSize, #READ_ATTRIBUTE_BUFFER_SIZE)
+
+赋值 (pSCIP.irDriveRegs.bFeaturesReg, #SMART_READ_ATTRIBUTE_VALUES)
+赋值 (pSCIP.irDriveRegs.bSectorCountReg, 1)
+赋值 (pSCIP.irDriveRegs.bSectorNumberReg, 1)
+赋值 (pSCIP.irDriveRegs.bCylLowReg, #SMART_CYL_LOW)
+赋值 (pSCIP.irDriveRegs.bCylHighReg, #SMART_CYL_HI)
+ ' 本源码来自易语言资源网(www.5A5X.com)
+ ' // Compute the drive number.
+
+赋值 (pSCIP.irDriveRegs.bDriveHeadReg, 位与 (160, 左移 (位与 (bDriveNum, 1), 4)))
+赋值 (pSCIP.irDriveRegs.bCommandReg, #IDE_EXECUTE_SMART_FUNCTION)
+赋值 (pSCIP.bDriveNumber, bDriveNum)
+返回 (不等于 (DeviceIoControl_SENDCMDINPARAMS (hSMARTIOCTL, #DFP_RECEIVE_DRIVE_DATA, pSCIP, 相减 (33, 1), pSCOP, 相减 (相加 (17, #READ_ATTRIBUTE_BUFFER_SIZE), 1), cbBytesReturned, 0), 0))
+
+.子程序 DoReadThresholdsCmd, 逻辑型, , // FUNCTION: Send a SMART_READ_ATTRIBUTE_THRESHOLDS command to the drive bDriveNum = 0-3
+.参数 hSMARTIOCTL, 整数型, , 
+.参数 pSCIP, SENDCMDINPARAMS, , 
+.参数 pSCOP, 整数型, , 
+.参数 bDriveNum, 字节型, , 
+
+.局部变量 cbBytesReturned, 整数型, , , 
+
+ ' // Set up data structures for Read Thresholds SMART Command.
+赋值 (pSCIP.cBufferSize, #READ_THRESHOLD_BUFFER_SIZE)
+
+赋值 (pSCIP.irDriveRegs.bFeaturesReg, #SMART_READ_ATTRIBUTE_THRESHOLDS)
+赋值 (pSCIP.irDriveRegs.bSectorCountReg, 1)
+赋值 (pSCIP.irDriveRegs.bSectorNumberReg, 1)
+赋值 (pSCIP.irDriveRegs.bCylLowReg, #SMART_CYL_LOW)
+赋值 (pSCIP.irDriveRegs.bCylHighReg, #SMART_CYL_HI)
+
+ ' // Compute the drive number.
+
+赋值 (pSCIP.irDriveRegs.bDriveHeadReg, 位或 (160, 左移 (位与 (bDriveNum, 1), 4)))
+赋值 (pSCIP.irDriveRegs.bCommandReg, #IDE_EXECUTE_SMART_FUNCTION)
+赋值 (pSCIP.bDriveNumber, bDriveNum)
+ ' 本源码来自易语言资源网(www.5A5X.com)
+返回 (不等于 (DeviceIoControl_SENDCMDINPARAMS (hSMARTIOCTL, #DFP_RECEIVE_DRIVE_DATA, pSCIP, 相减 (33, 1), pSCOP, 相减 (相加 (17, #READ_THRESHOLD_BUFFER_SIZE), 1), cbBytesReturned, 0), 0))
+
+.子程序 DoPrintData, 空白型, , //FUNCTION: Display the SMART Attributes and Thresholds
+.参数 pAttrBuffer, 整数型, , 
+.参数 pThrsBuffer, 整数型, , 
+.参数 bDriveNum, 字节型, , 
+
+.局部变量 i, 整数型, , , 
+.局部变量 pDA, DRIVEATTRIBUTE, , , 
+.局部变量 pAT, ATTRTHRESHOLD, , , 
+.局部变量 pDA_Ptr, 整数型, , , 
+.局部变量 PAT_Ptr, 整数型, , , 
+
+ ' // Print the drive number
+标准输出 (格式化文本_ (_S (“Data for Drive Number %d”), bDriveNum), #换行符)
+ ' // Print the revisions of the data structures
+标准输出 (“Attribute Structure Revision          Threshold Structure Revision”, #换行符)
+标准输出 (格式化文本_ (_S (“%13s%d%36s%d”), _S (#SPACE_STRING), 指针到字节 (相加 (pAttrBuffer, 16)), _S (#SPACE_STRING), 指针到字节 (相加 (pThrsBuffer, 16))), #换行符, #换行符)
+ ' // Print the header and loop through the structures, printing
+ ' // the structures when the attribute ID is known.
+标准输出 (“ -ID-     -属性名-                 -当前值-   -最差-   -阈值-   -数据-”, #换行符)
+
+赋值 (pDA_Ptr, 相加 (pAttrBuffer, 18))
+赋值 (PAT_Ptr, 相加 (pThrsBuffer, 18))
+
+.变量循环首 (1, #NUM_ATTRIBUTE_STRUCTS, 1, i)
+    CopyMemory_Ptr2DRIVEATTRIBUTE (pDA, pDA_Ptr, 12)
+    CopyMemory_Ptr2ATTRTHRESHOLD (pAT, PAT_Ptr, 12)
+    .如果真 (不等于 (pDA.bAttrID, 0))
+        标准输出 (格式化文本_ (_S (“ (%02X) %-31s%3d%7c%3d%6c%3d%6c%d”), pDA.bAttrID, GetAttrName (pDA.bAttrID), pDA.bAttrValue, 32, pDA.bWorstValue, 32, pAT.bWarrantyThreshold, 32, 字节数组到整数 (pDA.bRawValue)), #换行符)
+    .如果真结束
+     ' 本源码来自易语言资源网(www.5A5X.com)
+    赋值 (pDA_Ptr, 相加 (pDA_Ptr, 12))
+    赋值 (PAT_Ptr, 相加 (PAT_Ptr, 12))
+.变量循环尾 ()
+
+.子程序 GetAttrName, 整数型, , 
+.参数 AttrID, 整数型, , 
+
+.局部变量 i, 整数型, , , 
+.局部变量 sPos, 整数型, , , 
+.局部变量 sRet, 整数型, , , 
+
+赋值 (sRet, -1)
+.计次循环首 (取数组成员数 (pAttrNames), i)
+    赋值 (sPos, 寻找文本 (pAttrNames [i], “_”, , 假))
+    .如果真 (等于 (AttrID, 到整数 (取文本左边 (pAttrNames [i], 相减 (sPos, 1)))))
+         ' sRet ＝ 取文本右边 (pAttrNames [i], 取文本长度 (pAttrNames [i]) － sPos)
+        赋值 (sRet, 相加 (_S (pAttrNames [i]), 4))
+        跳出循环 ()
+    .如果真结束
+    
+.计次循环尾 ()
+.如果真 (等于 (sRet, -1))
+    赋值 (sRet, 相加 (_S (pAttrNames [相加 (#MAX_KNOWN_ATTRIBUTES, 0)]), 4))
+.如果真结束
+返回 (sRet)
+
+.子程序 ChangeByteOrder, 空白型, , 
+.参数 szString, 字节型, 数组, 
+.参数 uscStrSize, 短整数型, , 
+
+.局部变量 i, 整数型, , , 
+.局部变量 temp, 字节型, , , 
+
+ ' VOID ChangeByteOrder(PCHAR szString, USHORT uscStrSize)
+.变量循环首 (1, uscStrSize, 2, i)
+    赋值 (temp, szString [i])
+    赋值 (szString [i], szString [相加 (i, 1)])
+    赋值 (szString [相加 (i, 1)], temp)
+.变量循环尾 ()
+
+.子程序 PrintIDERegs, 空白型, , // Display contents of IDE hardware registers reported by SMART
+.参数 pscip, SENDCMDINPARAMS, , 
+
+标准输出 (格式化文本_ (_S (“%8sIDE TASK FILE REGISTERS:”), _S (#SPACE_STRING), ), #换行符)
+标准输出 (格式化文本_ (_S (“%16sbFeaturesReg     = 0x%X”), _S (#SPACE_STRING), pscip.irDriveRegs.bFeaturesReg), #换行符)
+标准输出 (格式化文本_ (_S (“%16sbSectorCountReg  = 0x%X”), _S (#SPACE_STRING), pscip.irDriveRegs.bSectorCountReg), #换行符)
+标准输出 (格式化文本_ (_S (“%16sbSectorNumberReg = 0x%X”), _S (#SPACE_STRING), pscip.irDriveRegs.bSectorNumberReg), #换行符)
+标准输出 (格式化文本_ (_S (“%16sbCylLowReg       = 0x%X”), _S (#SPACE_STRING), pscip.irDriveRegs.bCylLowReg), #换行符)
+标准输出 (格式化文本_ (_S (“%16sbCylHighReg      = 0x%X”), _S (#SPACE_STRING), pscip.irDriveRegs.bCylHighReg), #换行符)
+标准输出 (格式化文本_ (_S (“%16sbDriveHeadReg    = 0x%X”), _S (#SPACE_STRING), pscip.irDriveRegs.bDriveHeadReg), #换行符)
+标准输出 (格式化文本_ (_S (“%16sStatus           = 0x%X”), _S (#SPACE_STRING), pscip.irDriveRegs.bCommandReg), #换行符)
+
+.子程序 OpenSMART, 整数型, , // Open SMART to allow DeviceIoControl communications.
+.局部变量 hSMARTIOCTL, 整数型, , , 
+
+ ' // Windows NT, Windows 2000
+赋值 (hSMARTIOCTL, CreateFile (“\\.\PhysicalDrive0”, 位或 (#GENERIC_READ, #GENERIC_WRITE), 位或 (#FILE_SHARE_READ, #FILE_SHARE_WRITE), 0, #OPEN_EXISTING, 0, 0))
+ ' hSMARTIOCTL ＝ CreateFile (“\\.\Scsi0:”, 位或 (#GENERIC_READ, #GENERIC_WRITE), 位或 (#FILE_SHARE_READ, #FILE_SHARE_WRITE), 0, #OPEN_EXISTING, 0, 0)
+ ' 本源码来自易语言资源网(www.5A5X.com)
+.如果 (等于 (hSMARTIOCTL, #INVALID_HANDLE_VALUE))
+    标准输出 (格式化文本_ (_S (“Unable to open physical drive, error code: 0x%lX”), GetLastError ()), #换行符)
+.否则
+    标准输出 (“Physical drive opened successfully”, #换行符)
+.如果结束
+
+返回 (hSMARTIOCTL)
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 格式化文本_, 文本型, , sprintf
+.参数 参数1, 整数型, 可空, 
+.参数 参数2, 整数型, 可空, 
+.参数 参数3, 整数型, 可空, 
+.参数 参数4, 整数型, 可空, 
+.参数 参数5, 整数型, 可空, 
+.参数 参数6, 整数型, 可空, 
+.参数 参数7, 整数型, 可空, 
+.参数 参数8, 整数型, 可空, 
+.参数 参数9, 整数型, 可空, 
+.参数 参数10, 整数型, 可空, 
+.参数 参数11, 整数型, 可空, 
+.参数 参数12, 整数型, 可空, 
+.参数 参数13, 整数型, 可空, 
+.参数 参数14, 整数型, 可空, 
+.参数 参数15, 整数型, 可空, 
+
+
+
+.子程序 调用子程序_, 逻辑型, , 
+.参数 子程序指针或子程序地址, 整数型, , 
+.参数 是否为C调用, 逻辑型, 可空, 
+.参数 返回值, 整数型, 参考 可空, 
+.参数 参数1, 整数型, 可空, 
+.参数 参数2, 整数型, 可空, 
+.参数 参数3, 整数型, 可空, 
+.参数 参数4, 整数型, 可空, 
+.参数 参数5, 整数型, 可空, 
+.参数 参数6, 整数型, 可空, 
+.参数 参数7, 整数型, 可空, 
+.参数 参数8, 整数型, 可空, 
+.参数 参数9, 整数型, 可空, 
+.参数 参数10, 整数型, 可空, 
+.参数 参数11, 整数型, 可空, 
+.参数 参数12, 整数型, 可空, 
+.参数 参数13, 整数型, 可空, 
+.参数 参数14, 整数型, 可空, 
+.参数 参数15, 整数型, 可空, 
+
+
+
+.子程序 _S, 整数型, , 
+.参数 变量或数据, 文本型, 参考, 
+
+
+
+.子程序 _Bin, 整数型, , 
+.参数 变量或数据, 字节集, 参考, 
+
+
+
+.子程序 _L, 整数型, , 
+.参数 变量或数据, 整数型, 参考, 
+
+
+
+.子程序 取子程序地址_, 整数型, , 
+.参数 欲获取其地址的子程序, 子程序指针, , 
+
+
+
+.子程序 _F1, 整数型, , *
+.参数 变量或数据, 双精度小数型, , 
+
+
+
+.子程序 _F2, 整数型, , *
+.参数 变量或数据, 双精度小数型, , 
+
+
+
+.子程序 _LL1, 整数型, , *
+.参数 变量或数据, 长整数型, , 
+
+
+
+.子程序 _LL2, 整数型, , *
+.参数 变量或数据, 长整数型, , 
+
+
+
+.子程序 Ulong, 长整数型, , 
+.参数 变量或数据, 整数型, , 
+
+
+
+.子程序 指针到字节, 字节型, , 
+.参数 内存数据指针, 整数型, , 
+
+
+
+.子程序 删首尾空_, 文本型, , 增加了删TAB制表符
+.参数 欲删除空格的文本, 文本型, , 
+
+
+
+.子程序 删首空_, 文本型, , 
+.参数 欲删除空格的文本, 文本型, , 
+
+
+
+.子程序 删尾空_, 文本型, , 
+.参数 欲删除空格的文本, 文本型, , 
+
+
+
+.子程序 取文本长度_, 整数型, , 
+.参数 文本数据, 文本型, , 
+
+
+
+.子程序 sscanf, 整数型, , 
+.参数 参数1, 整数型, 可空, 
+.参数 参数2, 整数型, 可空, 
+.参数 参数3, 整数型, 可空, 
+.参数 参数4, 整数型, 可空, 
+.参数 参数5, 整数型, 可空, 
+.参数 参数6, 整数型, 可空, 
+.参数 参数7, 整数型, 可空, 
+.参数 参数8, 整数型, 可空, 
+.参数 参数9, 整数型, 可空, 
+.参数 参数10, 整数型, 可空, 
+.参数 参数11, 整数型, 可空, 
+.参数 参数12, 整数型, 可空, 
+.参数 参数13, 整数型, 可空, 
+.参数 参数14, 整数型, 可空, 
+.参数 参数15, 整数型, 可空, 
+
+
+
+.子程序 _Bytes, 整数型, , 
+.参数 数组变量, 字节型, 数组, 
+
+
+
+.子程序 字节数组到整数, 整数型, , 
+.参数 数组变量, 字节型, 数组, 
+
+
+
+.子程序 指针到整数, 整数型, , 
+.参数 内存数据指针, 整数型, , 
+
+
+
+.子程序 指针到长整数, 长整数型, , 
+.参数 内存数据指针, 整数型, , 
+
+
+
+.子程序 短整数到整数, 整数型, , 
+.参数 变量或数据, 短整数型, , 
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

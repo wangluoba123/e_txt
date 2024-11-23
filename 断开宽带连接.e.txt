@@ -1,0 +1,127 @@
+ ' ÎÄ¼þÀàÐÍ£ºWindows´°¿Ú³ÌÐò
+
+ ' ³ÌÐòÃû³Æ£º
+ ' ³ÌÐòÃèÊö£º
+ ' ³ÌÐò×÷Õß£º±¾Ô´ÂëÀ´×ÔÒ×ÓïÑÔ×ÊÔ´Íø(www.5A5X.com)
+ ' ÓÊÕþ±àÂë£º
+ ' ÁªÏµµØÖ·£º
+ ' ÁªÏµµç»°£º
+ ' ´«ÕæºÅÂë£º
+ ' µç×ÓÐÅÏä£º
+ ' Ö÷Ò³µØÖ·£º
+ ' °æÈ¨ÉùÃ÷£º             Ò×ÓïÑÔ×ÊÔ´Íø×¢ÒâÊÂÏî
+--============   www.5A5X.com  =============--
+* Ò×ÓïÑÔ×ÊÔ´ÍøÎªÒ×ÓïÑÔ¹Ù·½Õ¾¡¢Ò×ÓïÑÔ¹Ù·½ÂÛÌ³Ìá¹©¸¨Öú×ÊÔ´Õ¾£»±¾Ò×ÓïÑÔ×ÊÔ´Íø( www.5A5X.com)ËùÓÐÈí¼þºÍ×ÊÁÏ¾ùÎªÈí¼þ×÷ÕßÌá¹©ºÍÍøÓÑÍÆ¼ö·¢²¼¶øÀ´£¬Æä°æÈ¨¹é¸ÃÈí¼þºÍ³ÌÐòÔ´ÂëµÄºÏ·¨ÓµÓÐÕßËùÓÐ£¬±¾Õ¾Ò×ÓïÑÔ×ÊÔ´ÍøÕûÀíÊÕ¼¯½ö¹©Ò×ÓïÑÔÓÃ»§Ñ§Ï°ºÍÒ×ÓïÑÔ¼¼ÊõÑÐ¾¿Ì½ÌÖÊ¹ÓÃ£¬²»µÃÓÃÓÚÈÎºÎÉÌÒµÓÃÍ¾¡£Èç¹ûÓÉÓÚÒÔÉÏÔ­ÒòÔì³ÉµÄ°æÈ¨¾À·×±¾Õ¾¸Å²»¸ºÔð£¡
+* ±¾Õ¾×ÊÔ´Î´¾­Ðí¿É,ÈÎºÎÍøÕ¾²»µÃ·Ç·¨µÁÁ´¼°³­Ï®±¾Õ¾×ÊÔ´£»ÈçÒýÓÃ£¬Çë×¢Ã÷À´×ÔÒ×ÓïÑÔ×ÊÔ´Íø£¬Ð»Ð»ºÏ×÷£¡
+--============   www.5A5X.com  =============--
+ ' °æ±¾ºÅ£º1.0
+ ' ´´½¨ºÅ£º0.0
+
+´°¿Ú _Æô¶¯´°¿Ú ' ÔÚ³ÌÐòÆô¶¯ºó×Ô¶¯µ÷Èë±¾´°¿Ú
+    ×ó±ß = 50
+    ¶¥±ß = 50
+    ¿í¶È = 170
+    ¸ß¶È = 92
+    Êó±êÖ¸Õë = { 0,0,0,0 }
+    ±ê¼Ç = ¡°¡±
+    ¿ÉÊÓ = Õæ
+    ½ûÖ¹ = ¼Ù
+
+
+
+
+
+ ' ËùÐèÒªµÄÖ§³Ö¿â£º
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 ÏµÍ³ºËÐÄÖ§³Ö¿â
+
+
+
+
+Êý¾ÝÀàÐÍ RASENTRYNAME, , È¡Á¬½ÓÐÅÏ¢ÓÃ½á¹¹
+    .³ÉÔ± dwSize, ÕûÊýÐÍ, , , ¸Ã½á¹¹Õ¼ÄÚ´æ´óÐ¡
+    .³ÉÔ± szEntryName, ×Ö½ÚÐÍ, , "255", ²¦ºÅÁ¬½ÓÃû³Æ
+    .³ÉÔ± lpcb, ×Ö½ÚÐÍ, , , »º³åÇøµÄ´óÐ¡
+    .³ÉÔ± lpcEntries, ÎÄ±¾ÐÍ, , , Êµ¼ÊµÄÁ¬½ÓµÄ¸öÊý
+
+
+.DLLÃüÁî API_RasHangUp, ÕûÊýÐÍ, "RasApi32.DLL", "RasHangUpA", , ¹Ò¶Ïµ±Ç°°ÎºÅÁ¬½Ó
+    .²ÎÊý hRasConn, ÕûÊýÐÍ, , Á¬½Ó¾ä±ú
+
+.DLLÃüÁî API_GlobalSize, ÕûÊýÐÍ, "kernel32.dll", "GlobalSize", , È¡½á¹¹³ß´ç
+    .²ÎÊý ½á¹¹, RASENTRYNAME, ´«Ö·, 
+
+.DLLÃüÁî API_RasEnumEntries, ÕûÊýÐÍ, "rasapi32.dll", "RasEnumEntriesA", , È¡Á¬½ÓÐÅÏ¢½á¹¹,Á¬½ÓÃû³Æ,ÊýÁ¿µÈµÈ
+    .²ÎÊý lpStrNull, ÕûÊýÐÍ, , ±£Áô×Ö¶Î,±ØÐëÎªNIL
+    .²ÎÊý lpszphonebook, ÕûÊýÐÍ, , µç»°±¾Ãû³Æ,ÔÚWin9XÏÂÎÞ×÷ÓÃ
+    .²ÎÊý lprasetryname, RASENTRYNAME, ´«Ö· Êý×é, RASENTRYNAMEÀàÐÍÊý×éµÄÖ¸Õë
+    .²ÎÊý lpcb, ÕûÊýÐÍ, ´«Ö·, ½ÓÊÕ²¦ºÅÁ¬½ÓÃû³ÆµÄ»º³åÇøµÄ´óÐ¡
+    .²ÎÊý lpcentries, ÕûÊýÐÍ, ´«Ö·, Êµ¼Ê»ñµÃµÄ²¦ºÅÁ¬½ÓÃû³ÆµÄÊýÄ¿
+
+.DLLÃüÁî _8, ¿Õ°×ÐÍ, "", "", , 
+    .²ÎÊý ÄäÃû²ÎÊý_49, ¿Õ°×ÐÍ, , 
+    .²ÎÊý ÿ, ¿Õ°×ÐÍ, , 
+    .²ÎÊý ÄäÃû²ÎÊý_51, ¿Õ°×ÐÍ, , .
+    .²ÎÊý ÄäÃû²ÎÊý_52, ¿Õ°×ÐÍ, , 
+
+.´°¿Ú³ÌÐò¼¯ ´°¿Ú³ÌÐò¼¯1, , , 
+
+.×Ó³ÌÐò __Æô¶¯´°¿Ú_´´½¨Íê±Ï, ¿Õ°×ÐÍ, , 
+.¾Ö²¿±äÁ¿ i, ÕûÊýÐÍ, , , 
+.¾Ö²¿±äÁ¿ k, ÎÄ±¾ÐÍ, , , 
+
+ ' --========  Ò×ÓïÑÔ×ÊÔ´Íø  (www.5A5X.com)  ======--
+ ' Å¬Á¦´´½¨ÍêÉÆ¡¢³ÖÐø¸üÐÂµÄÒ×ÓïÑÔÑ§Ï°Àý³ÌÔ´Âë×ÊÔ´Õ¾
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   Ò×ÓïÑÔ×ÊÔ´Íø×¢ÒâÊÂÏî  ================--
+ ' * Ò×ÓïÑÔ×ÊÔ´ÍøÎªÒ×ÓïÑÔ¹Ù·½Õ¾¡¢Ò×ÓïÑÔ¹Ù·½ÂÛÌ³Ìá¹©¸¨Öú×ÊÔ´Õ¾£»
+ ' ±¾Ò×ÓïÑÔ×ÊÔ´Íø( www.5A5X.com)ËùÓÐÈí¼þºÍ×ÊÁÏ¾ùÎªÈí¼þ×÷ÕßÌá
+ ' ¹©ºÍÍøÓÑÍÆ¼ö·¢²¼¶øÀ´£¬Æä°æÈ¨¹é¸ÃÈí¼þºÍ³ÌÐòÔ´ÂëµÄºÏ·¨ÓµÓÐÕßËù
+ ' ÓÐ£¬±¾Õ¾Ò×ÓïÑÔ×ÊÔ´ÍøÕûÀíÊÕ¼¯½ö¹©Ò×ÓïÑÔÓÃ»§Ñ§Ï°ºÍÒ×ÓïÑÔ¼¼ÊõÑÐ
+ ' ¾¿Ì½ÌÖÊ¹ÓÃ£¬²»µÃÓÃÓÚÈÎºÎÉÌÒµÓÃÍ¾¡£Èç¹ûÓÉÓÚÒÔÉÏÔ­ÒòÔì³ÉµÄ°æÈ¨
+ ' ¾À·×±¾Õ¾¸Å²»¸ºÔð£¡
+ ' * ±¾Õ¾×ÊÔ´Î´¾­Ðí¿É£¬ÈÎºÎÍøÕ¾²»µÃ·Ç·¨µÁÁ´¼°³­Ï®±¾Õ¾×ÊÔ´£»ÈçÒýÓÃ
+ ' Ò³Ãæ£¬Çë×¢Ã÷À´×ÔÒ×ÓïÑÔ×ÊÔ´Íø£¬Ð»Ð»ºÏ×÷£¡
+ ' --=====================   www.5A5X.com  ================--
+
+¸³Öµ (k, È¡²¦ºÅÁ¬½ÓÃû³Æ (1, ))
+
+¹Ò¶Ï²¦ºÅ (i, k)
+
+
+.×Ó³ÌÐò ¹Ò¶Ï²¦ºÅ, Âß¼­ÐÍ, ¹«¿ª, ¹Ò¶Ïµ±Ç°²¦ºÅÍøÂçÁ¬½Ó
+.²ÎÊý Á¬½Ó¾ä±ú, ÕûÊýÐÍ, , ÓÉ¿ªÊ¼²¦ºÅ·µ»ØµÄÁ¬½Ó¾ä±ú
+.²ÎÊý Á¬½ÓÃû³Æ, ÎÄ±¾ÐÍ, , 
+
+.Èç¹û (µÈÓÚ (API_RasHangUp (Á¬½Ó¾ä±ú), 0))
+    ·µ»Ø (Õæ)
+.·ñÔò
+    ·µ»Ø (ÔËÐÐ (Ïà¼Ó (¡°rasphone -h ¡±, Á¬½ÓÃû³Æ), ¼Ù, #Òþ²Ø´°¿Ú))
+.Èç¹û½áÊø
+ ' ±¾Ô´ÂëÀ´×ÔÒ×ÓïÑÔ×ÊÔ´Íø(www.5A5X.com)
+
+.×Ó³ÌÐò È¡²¦ºÅÁ¬½ÓÃû³Æ, ÎÄ±¾ÐÍ, ¹«¿ª, È¡³öÏµÍ³ÖÐ²¦ºÅÁ¬½ÓÃû³Æ
+.²ÎÊý ²¦ºÅÁ¬½ÓË÷Òý, ÕûÊýÐÍ, , ÖµÖ»ÄÜÔÚ1ÖÁ10
+.²ÎÊý È¡ËùÓÐÃû³Æ, ÎÄ±¾ÐÍ, ²Î¿¼ ¿É¿Õ Êý×é, 
+
+.¾Ö²¿±äÁ¿ EntryName, RASENTRYNAME, , "10", ¼ÙÉè×î¶à10¸öÁ¬½Ó
+.¾Ö²¿±äÁ¿ lpcb, ÕûÊýÐÍ, , , µç»°±¾Ãû³Æ,0
+.¾Ö²¿±äÁ¿ Á¬½ÓÊý, ÕûÊýÐÍ, , , 
+.¾Ö²¿±äÁ¿ i, ÕûÊýÐÍ, , , 
+
+.Èç¹ûÕæ (»òÕß (´óÓÚ (²¦ºÅÁ¬½ÓË÷Òý, 10), Ð¡ÓÚ (²¦ºÅÁ¬½ÓË÷Òý, 1)))
+    ·µ»Ø (¡°¡±)
+.Èç¹ûÕæ½áÊø
+¸³Öµ (EntryName [1].dwSize, API_GlobalSize (EntryName [1]))
+¸³Öµ (lpcb, Ïà³Ë (EntryName [1].dwSize, 256))
+API_RasEnumEntries (0, 0, EntryName, lpcb, Á¬½ÓÊý)
+.Èç¹ûÕæ (ÊÇ·ñÎª¿Õ (È¡ËùÓÐÃû³Æ))
+    ·µ»Ø (µ½ÎÄ±¾ (EntryName [²¦ºÅÁ¬½ÓË÷Òý], szEntryName))
+    ' ±¾Ô´ÂëÀ´×ÔÒ×ÓïÑÔ×ÊÔ´Íø(www.5A5X.com)
+.Èç¹ûÕæ½áÊø
+.¼Æ´ÎÑ­»·Ê× (Á¬½ÓÊý, i)
+    ¼ÓÈë³ÉÔ± (È¡ËùÓÐÃû³Æ, µ½ÎÄ±¾ (EntryName [i], szEntryName))
+.¼Æ´ÎÑ­»·Î² ()
+·µ»Ø (µ½ÎÄ±¾ (Á¬½ÓÊý))
+
+
+ ' ²»ÊôÓÚÈÎºÎÒ»¸ö³ÌÐò¼¯¡¢ÀàÄ£¿éµÄº¯Êý£º

@@ -1,0 +1,109 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：TreeAppend
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 , , , 
+.常量 TV_FIRST, "4352", , 
+.常量 TVM_INSERTITEM, "4352", , 
+.常量 , , , 
+.常量 TVI_ROOT, "-65536", , 
+.常量 TVI_FIRST, "-65535", , 
+.常量 TVI_LAST, "-65534", , 
+.常量 TVI_SORT, "-65533", , 
+.常量 , , , 
+.常量 TVIF_TEXT, "1", , 
+.常量 TVIF_IMAGE, "2", , 
+.常量 TVIF_PARAM, "4", , 
+.常量 TVIF_STATE, "8", , 
+.常量 TVIF_HANDLE, "16", , 
+.常量 TVIF_SELECTEDIMAGE, "32", , 
+.常量 TVIF_CHILDREN, "64", , 
+.常量 TVIF_INTEGRAL, "128", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 1 2 扩展界面支持库一
+
+
+
+
+数据类型 TVINSERTSTRUCTA, , 
+    .成员 hParent, 空白型, , , 
+    .成员 hInsertAfter, 空白型, , , 
+    .成员 匿名成员34, 空白型, , , 
+    .成员 mask, 空白型, , , 
+    .成员 hItem, 空白型, , , 
+    .成员 state, 空白型, , , 
+    .成员 stateMask, 空白型, , , 
+    .成员 pszText, 文本型, , , 
+    .成员 cchTextMax, 空白型, , , 
+    .成员 iImage, 空白型, , , 
+    .成员 iSelectedImage, 空白型, , , 
+    .成员 cChildren, 空白型, , , 
+    .成员 lParam, 空白型, , , 
+    .成员 匿名成员45, 空白型, , , 
+    .成员 iIntegral, 空白型, , , 
+
+
+.DLL命令 SendMsg_TreeInsert, 整数型, "", "SendMessageA", , 
+    .参数 hWnd, 空白型, , 
+    .参数 uMsg, 空白型, , 
+    .参数 wParam, 空白型, , 
+    .参数 lParam, TVINSERTSTRUCTA, , 
+
+.程序集 ec, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+.局部变量 a, 树型框, , , 
+
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+树型框_加入项目 (a)
+
+
+.程序集 程序集1, , , 
+
+.子程序 树型框_加入项目, 整数型, 公开, 
+.参数 树型框, 树型框, , 
+.参数 父项目索引, 空白型, 可空, 
+.参数 项目文本, 文本型, 可空, 
+.参数 图片索引, 空白型, 可空, 
+.参数 选中图片索引, 空白型, 可空, 
+.参数 项目数值, 空白型, 可空, 
+
+.局部变量 info, TVINSERTSTRUCTA, , , 
+
+检查 (是否已创建 (树型框))
+.如果真 (或者 (是否为空 (父项目索引), 等于 (父项目索引, -1)))
+    赋值 (父项目索引, #TVI_ROOT)
+.如果真结束
+赋值 (info.hParent, 父项目索引)
+赋值 (info.mask, 位或 (#TVIF_TEXT, #TVIF_IMAGE, #TVIF_SELECTEDIMAGE, #TVIF_PARAM))
+赋值 (info.hInsertAfter, #TVI_LAST)
+赋值 (info.pszText, 项目文本)
+赋值 (info.iImage, 图片索引)
+赋值 (info.iSelectedImage, 选中图片索引)
+赋值 (info.lParam, 项目数值)
+返回 (SendMsg_TreeInsert (树型框.取窗口句柄 (), #TVM_INSERTITEM, 0, info))
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

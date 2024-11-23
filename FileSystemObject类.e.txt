@@ -1,0 +1,247 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' spec A512548E76954B6E92C21055517615B0 3 1 特殊功能支持库
+
+
+
+
+
+.程序集 程序集1, , , 夜。。。未央 2011.10.30
+
+.程序集变量 abcd, FileSystemObject, , , 
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+ ' 本源码来自易语言资源网(www.5A5X.com)
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+.局部变量 file, 对象, , , 
+.局部变量 folder, 对象, , , 
+
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+调试输出 (abcd.是否成功创建 ())
+调试输出 (abcd.取文件名 (“D:\2.e”))
+调试输出 (abcd.取文件基本名 (“D:\2.e”))
+调试输出 (abcd.取文件扩展名 (“D:\2.e”))
+调试输出 (abcd.取规范路径名 (“2.e”))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+赋值 (file, abcd.取文件对象 (“D:\2.e”))
+调试输出 (file.读文本属性 (“Type”, ))
+赋值 (folder, abcd.取文件夹对象 (“D:\”))
+调试输出 (folder.读文本属性 (“Type”, ))
+调试输出 (folder.读逻辑属性 (“IsRootFolder”, ))
+
+
+.类模块 FileSystemObject, , , 
+
+.程序集变量 fso, 对象, , , 
+.程序集变量 bRet, 逻辑型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+赋值 (bRet, fso.创建 (“Scripting.FileSystemObject”, ))
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+fso.清除 ()
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 是否成功创建, 逻辑型, 公开, 
+返回 (bRet)
+
+.子程序 取属性, 对象, 公开, 返回对象(IDriveCollection)。
+返回 (fso.读对象型属性 (“Drives”, ))
+
+
+.子程序 创建路径, 文本型, 公开, 从现有的路径和名称生成一个路径
+.参数 Path, 文本型, , 
+.参数 Name, 文本型, , 
+
+返回 (fso.文本方法 (“BuildPath”, Path, Name))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 取驱动名, 文本型, 公开, 从路径返回驱动名
+.参数 Path, 文本型, , 
+
+返回 (fso.文本方法 (“GetDriveName”, Path))
+
+
+.子程序 取父文件夹名, 文本型, 公开, 返回路径父文件夹名称
+.参数 Path, 文本型, , 
+
+返回 (fso.文本方法 (“GetParentFolderName”, Path))
+
+
+.子程序 取文件名, 文本型, 公开, 返回路径文件名(包含格式后缀，如.exe)
+.参数 Path, 文本型, , 
+
+返回 (fso.文本方法 (“GetFileName”, Path))
+
+
+.子程序 取文件基本名, 文本型, 公开, 返回路径文件的基本名称(不包含格式后缀，如.exe)
+.参数 Path, 文本型, , 
+
+返回 (fso.文本方法 (“GetBaseName”, Path))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 取文件扩展名, 文本型, 公开, 返回路径文件的扩展,如exe
+.参数 Path, 文本型, , 
+
+返回 (fso.文本方法 (“GetExtensionName”, Path))
+
+
+.子程序 取规范路径名, 文本型, 公开, 返回规范的路径名。。。- -!
+.参数 Path, 文本型, , 
+
+返回 (fso.文本方法 (“GetAbsolutePathName”, Path))
+
+
+.子程序 取临时名称, 文本型, 公开, 生成一个临时文件名。（相当于随机文本）
+返回 (fso.文本方法 (“GetTempName”, ))
+
+
+.子程序 驱动是否存在, 逻辑型, 公开, 检查是否存在驱动或共享。
+.参数 DriveSpec, 文本型, , 
+
+返回 (fso.逻辑方法 (“DriveExists”, DriveSpec))
+
+
+.子程序 文件是否存在, 逻辑型, 公开, 检查文件是否存在。
+.参数 FileSpec, 文本型, , 
+
+返回 (fso.逻辑方法 (“FileExists”, FileSpec))
+
+.子程序 文件夹是否存在, 逻辑型, 公开, 检查路径是否存在。
+.参数 FolderSpec, 文本型, , 
+
+返回 (fso.逻辑方法 (“FolderExists”, FolderSpec))
+
+.子程序 取驱动对象, 对象, 公开, 取驱动或UNC共享。返回对象(IDrive)
+.参数 DriveSpec, 文本型, , 
+
+返回 (fso.对象型方法 (“GetDrive”, DriveSpec))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 取文件对象, 对象, 公开, 取文件。返回对象(IFile)
+.参数 FilePath, 文本型, , 
+
+返回 (fso.对象型方法 (“GetFile”, FilePath))
+
+.子程序 取文件夹对象, 对象, 公开, 取文件夹。返回对象(IFolder)
+.参数 FolderPath, 文本型, , 
+
+返回 (fso.对象型方法 (“GetFolder”, FolderPath))
+
+.子程序 取系统指定文件夹对象, 对象, 公开, 取指定系统目录。返回对象(IFolder)
+.参数 SpecialFolder, 整数型, ,  0、WindowsFolder； 1、SystemFolder； 2、TemporaryFolder。
+
+返回 (fso.对象型方法 (“GetSpecialFolder”, SpecialFolder))
+
+.子程序 删除文件, 空白型, 公开, 删除文件。
+.参数 FileSpec, 文本型, , 
+.参数 Force, 逻辑型, 可空, 参数默认值为“假”。
+
+fso.方法 (“DeleteFile”, FileSpec, Force)
+
+
+.子程序 删除文件夹, 空白型, 公开, 删除文件夹。
+.参数 FolderSpec, 文本型, , 
+.参数 Force, 逻辑型, 可空, 参数默认值为“假”。
+
+fso.方法 (“DeleteFolder”, FolderSpec, Force)
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 移动文件, 空白型, 公开, 移动文件。
+.参数 Source, 文本型, , 
+.参数 Destination, 文本型, , 
+
+fso.方法 (“MoveFile”, Source, Destination)
+
+.子程序 移动文件夹, 空白型, 公开, 移动文件夹。
+.参数 Source, 文本型, , 
+.参数 Destination, 文本型, , 
+
+fso.方法 (“MoveFolder”, Source, Destination)
+
+.子程序 复制文件, 空白型, 公开, 复制文件。
+.参数 Source, 文本型, , 
+.参数 Destination, 文本型, , 
+.参数 OverWriteFiles, 逻辑型, 可空, 参数默认值为“真”。
+
+fso.方法 (“CopyFile”, Source, Destination, OverWriteFiles)
+
+.子程序 复制文件夹, 空白型, 公开, 复制文件夹。
+.参数 Source, 文本型, , 
+.参数 Destination, 文本型, , 
+.参数 OverWriteFiles, 逻辑型, 可空, 参数默认值为“真”。
+
+fso.方法 (“CopyFolder”, Source, Destination, OverWriteFiles)
+
+.子程序 创建文件夹, 对象, 公开, 创建文件夹。返回对象(IFolder)
+.参数 Path, 文本型, , 
+
+返回 (fso.对象型方法 (“CreateFolder”, Path))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 创建文本文件, 对象, 公开, 创建一个文本流文件。返回对象(ITextStream)
+.参数 FileName, 文本型, , 
+.参数 Overwrite, 逻辑型, 可空, 参数默认值为“真”。
+.参数 Unicode, 逻辑型, 可空, 参数默认值为“假”。
+
+返回 (fso.对象型方法 (“CreateTextFile”, FileName, Overwrite, Unicode))
+' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 打开文本文件, 对象, 公开, 打开一个文本流文件。返回对象(ITextStream)
+.参数 FileName, 文本型, , 
+.参数 IOMode, 整数型, 可空, 1、ForReading； 2、ForWriting； 8、ForAppending。参数默认值为“1”。
+.参数 Create, 逻辑型, 可空, 参数默认值为“假”。
+.参数 Format, 整数型, 可空, -1、TristateTrue； 0、TristateFalse； -2、TristateUseDefault； -2、TristateMixed。参数默认值为“0”。
+
+返回 (fso.对象型方法 (“OpenTextFile”, FileName, IOMode, Create, Format))
+
+.子程序 取标准流对象, 对象, 公开, 检索标准输入、输出或错误流。返回对象(ITextStream)
+.参数 StandardStreamType, 整数型, ,  0、StdIn； 1、StdOut； 2、StdErr。
+.参数 Unicode, 逻辑型, 可空, 参数默认值为“假”
+
+返回 (fso.对象型方法 (“GetStandardStream”, StandardStreamType, Unicode))
+
+.子程序 取文件版本, 文本型, 公开, 取指定文件版本。- -。貌似取出的都是空...
+.参数 FileName, 文本型, , 
+
+返回 (fso.文本方法 (“GetFileVersion”, FileName))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

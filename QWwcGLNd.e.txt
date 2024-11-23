@@ -1,0 +1,194 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：转换图像格式
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 GMEM_FIXED, "0", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 GdiplusStartupInput, , 
+    .成员 GdiplusVersion, 整数型, , , 
+    .成员 DebugEventCallback, 整数型, , , 
+    .成员 SuppressBackgroundThread, 整数型, , , 
+    .成员 SuppressExternalCodecs, 整数型, , , 
+
+
+.DLL命令 GdiplusStartup, 整数型, "gdiplus.dll", "GdiplusStartup", , 
+    .参数 token, 整数型, 传址, 
+    .参数 inputbuf, 未知类型0x4101004C, , 
+    .参数 outputbuf, 整数型, , 
+
+.DLL命令 GdiplusShutdown, 空白型, "gdiplus.dll", "GdiplusShutdown", , 
+    .参数 token, 整数型, , 
+
+.DLL命令 MultiByteToWideChar, 整数型, "", "MultiByteToWideChar", , 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpWideCharStr, 字节集, , 
+    .参数 cchWideChar, 整数型, , 
+
+.DLL命令 GdipLoadImageFromFile, 整数型, "gdiplus.dll", "GdipLoadImageFromFile", , 
+    .参数 filename, 字节集, , 
+    .参数 image, 整数型, 传址, 
+
+.DLL命令 GdipSaveImageToFile, 整数型, "gdiplus.dll", "GdipSaveImageToFile", , 
+    .参数 image, 空白型, , 
+    .参数 filename, 字节集, , 
+    .参数 clsidEncoder, 字节集, , 
+    .参数 encoderParams, 整数型, , 
+
+.DLL命令 CLSIDFromString, 空白型, "ole32.dll", "CLSIDFromString", , 
+    .参数 lpsz, 字节集, , 
+    .参数 pclsid, 字节集, 传址, 
+
+.DLL命令 GdipDisposeImage, 整数型, "gdiplus.dll", "GdipDisposeImage", , 
+    .参数 image, 整数型, , 
+
+.DLL命令 CreateStreamOnHGlobal, 整数型, "ole32.dll", "CreateStreamOnHGlobal", , 
+    .参数 hGlobal, 空白型, , 
+    .参数 fDeleteOnRelease, 逻辑型, , 
+    .参数 ppstm, 对象, 传址, 
+
+.DLL命令 GetHGlobalFromStream, 空白型, "ole32.dll", "GetHGlobalFromStream", , 
+    .参数 pstm, 对象, , 未知类型：ISTREAM。
+    .参数 phglobal, 整数型, 传址, 
+
+.DLL命令 GlobalLock, 整数型, "", "", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 GlobalSize, 整数型, "", "", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 GlobalUnlock, 逻辑型, "", "", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 GlobalAlloc, 整数型, "", "GlobalAlloc", , 
+    .参数 uFlags, 空白型, , 
+    .参数 dwBytes, 空白型, , 
+
+.DLL命令 GetObjectPtr, 整数型, "", "lstrcpyn", , 
+    .参数 lpString1, 对象, 传址, 
+    .参数 lpString2, 对象, 传址, 
+    .参数 iMaxLength, 整数型, , 
+
+.DLL命令 GdipCreateBitmapFromStream, 整数型, "gdiplus.dll", "GdipCreateBitmapFromStream", , 
+    .参数 stream, 整数型, , 
+    .参数 bitmap, 空白型, 传址, 
+
+.DLL命令 GlobalFree, 整数型, "", "GlobalFree", , 
+    .参数 hMem, 空白型, , 
+
+.DLL命令 CreateStreamOnHGlobal_int, 整数型, "ole32.dll", "CreateStreamOnHGlobal", , 
+    .参数 hGlobal, 空白型, , 
+    .参数 fDeleteOnRelease, 逻辑型, , 
+    .参数 ppstm, 空白型, 传址, 
+
+.DLL命令 GdipSaveImageToStream_int, 整数型, "gdiplus.dll", "GdipSaveImageToStream", , 
+    .参数 image, 空白型, , 
+    .参数 stream, 空白型, , 
+    .参数 clsidEncoder, 字节集, , 
+    .参数 encoderParams, 空白型, , 
+
+.DLL命令 GetHGlobalFromStream_int, 空白型, "ole32.dll", "GetHGlobalFromStream", , 
+    .参数 pstm, 空白型, , 未知类型：ISTREAM。
+    .参数 phglobal, 整数型, 传址, 
+
+.DLL命令 GdipSaveImageToStream, 整数型, "gdiplus.dll", "GdipSaveImageToStream", , 
+    .参数 image, 空白型, , 
+    .参数 stream, 对象, , 
+    .参数 clsidEncoder, 字节集, , 
+    .参数 encoderParams, 空白型, , 
+
+.DLL命令 CopyMemory, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, 整数型, , 
+    .参数 cbCopy, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.程序集变量 Token, 整数型, , , 
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.子程序 转换图像格式, 逻辑型, 公开, 支持bmp、jpg、gif、tiff、png互转。
+.参数 图像数据, 字节集, , 被转换的图像数据
+.参数 转换格式, 整数型, , 转换后的图片格式。1、bmp；2、jpg；3、gif；4、tiff；5、png
+.参数 新图像, 字节集, 参考, 用于保存新图像的变量
+
+.局部变量 Clsid, 字节集, , , 
+.局部变量 pStr, 文本型, , , 
+.局部变量 nLength, 整数型, , , 
+.局部变量 hMem, 整数型, , , 
+.局部变量 Stream, 对象, , , 
+.局部变量 lpvoid, 整数型, , , 
+.局部变量 pStream, 整数型, , , 
+.局部变量 bitmap, 整数型, , , 
+.局部变量 DataStream, 对象, , , 
+.局部变量 hMemDataStream, 整数型, , , 
+.局部变量 pDataStream, 整数型, , , 
+.局部变量 nStreamSize, 整数型, , , 
+.局部变量 bRet, 逻辑型, , , 
+.局部变量 GpInput, 未知类型0x410100AC, , , 
+
+赋值 (GpInput., 1)
+未知函数_167837870 (GpInput, 0) ' 启动 GDI+
+
+.判断开始 (等于 (转换格式, 1)) ' bmp
+    赋值 (pStr, “{557CF400-1A04-11D3-9A73-0000F81EF32E}”)
+.判断 (等于 (转换格式, 2)) ' jpg
+    赋值 (pStr, “{557CF401-1A04-11D3-9A73-0000F81EF32E}”)
+.判断 (等于 (转换格式, 3)) ' gif
+    赋值 (pStr, “{557CF402-1A04-11D3-9A73-0000F81EF32E}”)
+.判断 (等于 (转换格式, 4)) ' tiff
+    赋值 (pStr, “{557CF405-1A04-11D3-9A73-0000F81EF32E}”)
+.判断 (等于 (转换格式, 5)) ' png
+    赋值 (pStr, “{557CF406-1A04-11D3-9A73-0000F81EF32E}”)
+.默认
+    
+.判断结束
+赋值 (Clsid, 取空白字节集 (16))
+未知函数_167837852 (未知函数_67174557 (pStr), Clsid) ' 获取图像格式对应的Clsid
+
+赋值 (nLength, 取字节集长度 (图像数据))
+赋值 (hMem)
+
+.子程序 A2W, 字节集, , 将Ansi转成Unicode
+.参数 欲转换的文本, 文本型, , 
+
+.局部变量 缓冲区, 字节集, , , 
+.局部变量 缓冲区大小, 整数型, , , 
+
+赋值 (缓冲区大小, 相乘 (未知函数_167837783 (0, 0, 欲转换的文本, -1, {  }, 0), 2))
+赋值 (缓冲区, 取空白字节集 (缓冲区大小))
+未知函数_167837783 (0, 0, 欲转换的文本, 取文本长度 (欲转换的文本), 缓冲区, 缓冲区大小)
+返回 (缓冲区)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

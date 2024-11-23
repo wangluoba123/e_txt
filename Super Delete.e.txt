@@ -1,0 +1,475 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 窗口1
+    左边 = 50
+    顶边 = 50
+    宽度 = 535
+    高度 = 372
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 6
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “Super Delete File”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “文件粉碎专家”
+    帮助文件名 = “”
+
+
+
+.常量 KillFile, "2236416", , 通信代码,自行定义
+.常量 UnLockFile, "2236420", , 
+.常量 , , , 
+.常量 GENERIC_READ, "2147483648", , 
+.常量 GENERIC_WRITE, "1073741824", , 
+.常量 OPEN_EXISTING, "3", , 
+.常量 GWL_WNDPROC, "-4", , 
+.常量 MAX_PATH, "260", , 
+.常量 WM_DROPFILES, "563", , 
+.常量 SE_DEBUG_NAME, "“SeDebugPrivilege”", , 
+.常量 SE_BACKUP_NAME, "“SeBackupPrivilege”", , 
+.常量 SE_RESTORE_NAME, "“SeRestorePrivilege”", , 
+.常量 SE_SHUTDOWN_NAME, "“SeShutdownPrivilege”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+ ' 所需要的模块
+ ' Driven tools C:\Documents and Settings\wodesoft-dj\桌面\驱动控制模块.ec
+
+
+数据类型 重叠操作_, , OVERLAPPED
+    .成员 内部保留参数, 整数型, , , Internal
+    .成员 内部高位保留参数, 整数型, , , InternalHigh
+    .成员 低32位, 整数型, , , offset
+    .成员 高32位, 整数型, , , offsethigh
+    .成员 事件句柄, 整数型, , , hevent
+
+数据类型 LuID, , 
+    .成员 lowpart, 整数型, , , 
+    .成员 highpart, 整数型, , , 
+
+数据类型 TOKEN_PRIVILEGES, , 
+    .成员 PrivilegeCount, 整数型, , , 
+    .成员 lowpart, 整数型, , , 
+    .成员 highpart, 整数型, , , 
+    .成员 Attributes, 整数型, , , 
+
+
+.DLL命令 CreateFileA, 整数型, "kernel32.dll", "CreateFileA", , 创建文件_,这是一个全功能的例程可打开和创建文件、管道、邮槽、通信服务、设备以及控制台 ——返回值:如执行成功则返回文件句柄.INVALID_HANDLE_VALUE表示出错会设置GetLastError.即使函数成功但若文件存在且指定了CREATE_ALWAYS 或 OPEN_ALWAYSGetLastError也会设为ERROR_ALREADY_EXISTS 例子：查看例程API程序自杀
+    .参数 打开文件名, 文本型, , lpFileName要打开的文件的名字
+    .参数 访问权限, 整数型, , dwDesiredAccess如果为 GENERIC_READ 表示允许对设备进行读访问;如果为 GENERIC_WRITE 表示允许对设备进行写访问（可组合使用）;如果为零表示只允许获取与一个设备有关的信息
+    .参数 共享方式, 整数型, , dwShareMode
+    .参数 安全特性, 整数型, , lpSecurityAttributes是指向SECURITY_ATTRIBUTES结构的指针，指定了目录的安全属性，但要求文件系统支持如NTFS的格式。Windows 98不支持此属性，在函数调用时应设置为NULL
+    .参数 创建方式, 整数型, , dwCreationDispositiondwCreationDisposition Long下述常数之一:
+    .参数 文件属性, 整数型, , dwFlagsAndAttributesdwFlagsAndAttributes Long一个或多个下述常数
+    .参数 从文件复制文件属性, 整数型, , hTemplateFile如果不为零则指定一个文件句柄.新文件将从这个文件中复制扩展属性
+
+.DLL命令 DeviceIoControl, 整数型, "kernel32.dll", "DeviceIoControl", , 设备操作_,对设备执行指定的操作
+    .参数 设备句柄, 整数型, , hDevice设备句柄
+    .参数 控制参数, 整数型, , dwIoControlCode带有 FSCTL_ 前缀的常数.参考设备控制选项的部分列表设备控制选项的部分列表——参考DeviceIoControl函数
+    .参数 参数一, 整数型, , lpInBuffer具体取决于dwIoControlCode参数.参考设备控制选项的部分列表
+    .参数 参数二, 整数型, , nInBufferSize输入缓冲区的长度
+    .参数 参数三, 整数型, , lpOutBuffer Anyany型根据实际需要修改 具体取决于dwIoControlCode参数.参考设备控制选项的部分列表
+    .参数 参数四, 整数型, , nOutBufferSize输出缓冲区的长度
+    .参数 缓冲区字节数, 整数型, , lpBytesReturned实际装载到输出缓冲区的字节数量
+    .参数 OVERLAPPED结构地址, 重叠操作_, , lpOverlappedOVERLAPPED这个结构用于重叠操作.针对同步操作请用ByVal As Long传递零值
+
+.DLL命令 CloseHandle, 整数型, "kernel32", "CloseHandle", , 关闭内核对象_,关闭一个内核对象.其中包括文件、文件映射、进程、线程、安全和同步对象等.涉及文件处理时这个函数通常与vb的close命令相似.应尽可能的使用close因为它支持vb的差错控制.注意这个函数使用的文件句柄与vb的文件编号是完全不同的  非零表示成功零表示失败.会设置GetLastError ——注解:除非对内核对象的所有引用都已关闭否则该对象不会实际删除
+    .参数 对象句柄, 整数型, , 欲关闭的一个对象的句柄;
+
+.DLL命令 MultiByteToWideChar, 整数型, "", "MultiByteToWideChar", , 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpWideCharStr, 字节集, , 
+    .参数 cchWideChar, 整数型, , 
+
+.DLL命令 SendMessageA, 整数型, "user32", "SendMessageA", , 
+    .参数 窗口句柄, 整数型, , 要接收消息的那个窗口的句柄
+    .参数 信息值, 整数型, , 消息的标识符
+    .参数 参数一, 整数型, , 具体取决于消息
+    .参数 参数二, 文本型, , 具体取决于消息;
+
+.DLL命令 SetWindowLongA, 子程序指针, "", "SetWindowLongA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+    .参数 dwNewLong, 子程序指针, , 
+
+.DLL命令 CallWindowProcA, 整数型, "", "CallWindowProcA", , 
+    .参数 lpPrevWndFunc, 子程序指针, , 
+    .参数 hWnd, 整数型, , 
+    .参数 Msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 DragAcceptFiles, 整数型, "shell32.dll", "DragAcceptFiles", , 
+    .参数 hWnd, 整数型, , 
+    .参数 fAccept, 逻辑型, , 
+
+.DLL命令 DragQueryFileA, 整数型, "shell32.dll", "DragQueryFileA", , 
+    .参数 hDrop, 整数型, , 
+    .参数 iFile, 整数型, , 
+    .参数 lpszFile, 文本型, , 
+    .参数 cch, 整数型, , 
+
+.DLL命令 DragFinish, 整数型, "shell32.dll", "DragFinish", , 结束拖放
+    .参数 hDrop, 整数型, , 
+
+.DLL命令 PathFindFileNameA, 文本型, "Shlwapi.dll", "PathFindFileNameA", , 取路径文件名1,返回一个路径的文件名
+    .参数 路径名, 文本型, , 原路径名
+
+.DLL命令 PathRemoveFileSpecA, 整数型, "shlwapi.dll", "PathRemoveFileSpecA", , 删除路径文件名_,PathRemoveFileSpecA的作用是删除路径文本串的文件名部分，保留路径部分。 如:"c:\windows\boot.ini"返回"c:\windows"
+    .参数 路径文本, 文本型, , 例子：
+
+.DLL命令 GetShortPathNameA, 整数型, "kernel32", "GetShortPathNameA", , 取短路径名_,获取指定文件的短路径名 ——返回值:装载到lpszShortPath缓冲区的字符数量.如lpszShortPath的长度不足不能容下文件名就返回需要的缓冲区长度
+    .参数 全路径名, 文本型, , 指定欲获取短路径名的那个文件的名字此参数其文件必须存在，否则取短文件名失败.可以是个完整路径或者由当前目录决定
+    .参数 短路径名, 文本型, , 指定一个缓冲区用于装载文件的短路径和文件名
+    .参数 短路径长度, 整数型, , lpszShortPath缓冲区长度
+
+.DLL命令 CreateEventA, 整数型, "kernel32.dll", "CreateEventA", , 创建事件同步对象,例子：创建事件同步对象 (0假假标识)
+    .参数 安全性结构, 整数型, , SECURITY_ATTRIBUTES指定一个结构用于设置对象的安全特性.如变成ByVal As Long并传递零值则表明使用对象默认的安全设置
+    .参数 人工或自动事件, 逻辑型, , bManualReset如果为TRUE表示创建一个人工重设事件;如果为FALSE表示创建一个自动重设事
+    .参数 是否内部触发, 逻辑型, , bInitialState如事件应内部进入触发状态则为TRUE
+    .参数 事件对象名, 文本型, , lpName定事件对象的名字.用vbNullString创建一个未命名事件对象.如已经存在拥有这个名字的一个事件则现有的命名事件就会打开.这个名字可能不与一个现有互斥体、信号机、可等待计时器或文件映射的名字相符(0假假标识)
+
+.DLL命令 OpenEventA, 整数型, "", "OpenEventA", , 打开事件同步对象_,打开事件同步对象 (2031619假“标识”) ≠ 0)  ' "myappname"可以是任何文本但是最好要长一点以保证和系统中已有其他事件对象的名称不相冲突
+    .参数 dwDesiredAccess, 整数型, , 2031619dwDesiredAccess Long下述常数之一:
+    .参数 bInheritHandle, 逻辑型, , 如希望子进程能够继承句柄则为TRUE（假）
+    .参数 lpName, 文本型, , 任何文本指定要打开的对象的名字
+
+.DLL命令 api_LookupPrivilegeValue, 逻辑型, "advapi32.dll", "LookupPrivilegeValueA", , 
+    .参数 lpSystemName, 文本型, , 
+    .参数 lpName, 文本型, , 
+    .参数 lpLuid, LuID, 传址, 
+
+.DLL命令 api_AdjustTokenPrivileges, 逻辑型, "advapi32.dll", "AdjustTokenPrivileges", , 
+    .参数 TokenHandle, 整数型, , 
+    .参数 DisableAllPrivileges, 整数型, , 
+    .参数 NewState, TOKEN_PRIVILEGES, 传址, 
+    .参数 BufferLength, 整数型, , 
+    .参数 PreviousState, TOKEN_PRIVILEGES, 传址, 
+    .参数 ReturnLength, 整数型, 传址, 
+
+.DLL命令 api_GetCurrentProcess, 整数型, "kernel32.dll", "GetCurrentProcess", , 
+
+.DLL命令 api_OpenProcessToken, 整数型, "advapi32.dll", "OpenProcessToken", , 
+    .参数 ProcessHandle, 整数型, , 
+    .参数 DesiredAccess, 整数型, , 
+    .参数 TokenHandle, 整数型, 传址, 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 本子程序在程序启动后最先执行
+载入 (窗口1, , 假)
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 取变量地址_整数型_, 整数型, , 
+.参数 整数变量, 整数型, 参考, 
+
+置入代码 ({ 139, 69, 8, 139, 229, 93, 194, 4, 0 })
+返回 (0)
+
+.子程序 取变量地址_文本型_, 整数型, , 
+.参数 文本变量, 文本型, , 
+
+置入代码 ({ 139, 69, 8, 139, 0, 139, 229, 93, 194, 4, 0 })
+返回 (0)
+
+.子程序 取变量地址_字节集型_, 整数型, , 
+.参数 字节集变量, 字节集, , 
+
+置入代码 ({ 139, 69, 8, 139, 0, 133, 192, 116, 3, 131, 192, 8, 139, 229, 93, 194, 4, 0 })
+返回 (0)
+
+.子程序 A2W, 字节集, , 
+.参数 ASCII文本, 文本型, , 
+
+.局部变量 ULen, 整数型, , , 
+.局部变量 UBin, 字节集, , , 
+
+赋值 (ULen, MultiByteToWideChar (936, 0, ASCII文本, -1, {  }, 0))
+赋值 (UBin, 取空白字节集 (相乘 (ULen, 2)))
+MultiByteToWideChar (936, 0, ASCII文本, -1, UBin, ULen)
+返回 (UBin)
+
+.子程序 提升进程权限, 逻辑型, , 成功返回真，失败返回假
+.参数 目标进程, 整数型, 可空, 要提升的进程,默认为本进程
+.参数 权限类别, 文本型, 可空, 要提升到的特权
+
+.局部变量 hdlProcessHandle, 整数型, , , 
+.局部变量 hdlTokenHandle, 整数型, , , 
+.局部变量 tmpLuid, LuID, , , 
+.局部变量 tkp, TOKEN_PRIVILEGES, , , 
+.局部变量 tkpNewButIgnored, TOKEN_PRIVILEGES, , , 
+
+.如果真 (不等于 (取操作系统类别 (), 3))
+    返回 (假)
+.如果真结束
+.如果真 (是否为空 (目标进程))
+    赋值 (hdlProcessHandle, api_GetCurrentProcess ())
+.如果真结束
+.如果真 (是否为空 (权限类别))
+    赋值 (权限类别, #SE_DEBUG_NAME)
+.如果真结束
+api_OpenProcessToken (hdlProcessHandle, 40, hdlTokenHandle)
+api_LookupPrivilegeValue (“”, 权限类别, tmpLuid)
+赋值 (tkp.PrivilegeCount, 1)
+赋值 (tkp.lowpart, tmpLuid.lowpart)
+赋值 (tkp.highpart, tmpLuid.highpart)
+赋值 (tkp.Attributes, 2)
+返回 (api_AdjustTokenPrivileges (hdlTokenHandle, 0, tkp, 28, tkpNewButIgnored, 0))
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 hDevice, 整数型, , , 
+.程序集变量 File, 文本型, , , 
+.程序集变量 原函数指针, 子程序指针, , , 
+.子程序 _窗口1_创建完毕, 空白型, , 
+提升进程权限 ()
+.如果 (不等于 (加载驱动 (相加 (取运行目录 (), “\KillFile.sys”)), -1))
+     ' --========  易语言资源网  (www.5A5X.com)  ======--
+     ' 努力创建完善、持续更新的易语言学习例程源码资源站
+     ' --================   www.5A5X.com  ===========--
+     ' --==================   易语言资源网注意事项  ================--
+     ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+     ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+     ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+     ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+     ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+     ' 纠纷本站概不负责！
+     ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+     ' 页面，请注明来自易语言资源网，谢谢合作！
+     ' --=====================   www.5A5X.com  ================--
+    
+.否则
+    
+.如果结束
+.如果 (不等于 (启动驱动 (相加 (取运行目录 (), “\KillFile.sys”)), -1))
+    赋值 (窗口1., “文件粉碎专家”)
+.否则
+    
+.如果结束
+赋值 (hDevice, CreateFileA (“\\.\KillFile”, 相加 (#GENERIC_READ, #GENERIC_WRITE), 0, 0, #OPEN_EXISTING, 0, 0))
+.如果真 (小于或等于 (hDevice, 0))
+    赋值 (窗口1., “文件粉碎专家 - 没加载驱动”)
+    信息框 (“驱动加载失败！！”, #错误图标, )
+.如果真结束
+DragAcceptFiles (取窗口句柄 (), 真)
+赋值 (原函数指针, SetWindowLongA (取窗口句柄 (), #GWL_WNDPROC, &WndProc))
+
+.子程序 删除目录_, 空白型, , 
+.参数 目录路径, 文本型, , 
+
+.局部变量 文件名, 文本型, , , 
+.局部变量 路径, 文本型, , , 
+.局部变量 目录, 文本型, , , 
+
+处理事件 ()
+赋值 (目录, 目录路径)
+.如果真 (不等于 (取文本右边 (目录路径, 1), “\”)) ' 设置完整的文件路径
+    赋值 (目录路径, 相加 (目录路径, “\”))
+.如果真结束
+赋值 (文件名, 寻找文件 (相加 (目录路径, “*.*”), ))
+.判断循环首 (不等于 (文件名, “”))
+    赋值 (路径, 相加 (目录路径, 文件名))
+    .如果 (KillFile (路径))
+         ' 本源码来自易语言资源网(www.5A5X.com)
+        相加 (路径, “     删除成功!”, #换行符).加入文本 ()
+    .否则
+        相加 (路径, “     删除失败!”, #换行符).加入文本 ()
+    .如果结束
+    赋值 (文件名, 寻找文件 ())
+.判断循环尾 ()
+赋值 (文件名, 寻找文件 (相加 (目录路径, “*.*”), #子目录))
+.判断循环首 (不等于 (文件名, “”))
+    .如果真 (并且 (不等于 (文件名, “.”), 不等于 (文件名, “..”)))
+        删除目录_ (相加 (目录路径, 文件名))
+    .如果真结束
+    赋值 (文件名, 寻找文件 (#子目录))
+.判断循环尾 ()
+.如果 (KillFile (目录)) ' 删除路径
+    相加 (目录, “     删除成功!”, #换行符).加入文本 ()
+.否则
+    相加 (目录, “     删除失败!”, #换行符).加入文本 ()
+.如果结束
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 WndProc, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 iMsg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 FilePath, 文本型, , , 
+.局部变量 Count, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 r, 整数型, , , 
+
+.如果真 (等于 (iMsg, #WM_DROPFILES))
+    赋值 (FilePath, 取空白文本 (#MAX_PATH))
+    赋值 (Count, DragQueryFileA (wParam, -1, FilePath, #MAX_PATH))
+    .变量循环首 (0, 相减 (Count, 1), 1, i)
+        DragQueryFileA (wParam, i, FilePath, #MAX_PATH)
+        赋值 (r, 取文件属性 (FilePath))
+        .如果 (不等于 (位与 (r, #子目录), 0))
+            删除目录_ (FilePath) ' 先删除目录中的文件,然后再删除文件夹
+        .否则
+            .如果 (KillFile (FilePath))
+                相加 (FilePath, “     删除成功!”, #换行符).加入文本 ()
+            .否则
+                相加 (FilePath, “     删除失败!”, #换行符).加入文本 ()
+            .如果结束
+             ' 本源码来自易语言资源网(www.5A5X.com)
+        .如果结束
+        处理事件 ()
+    .变量循环尾 ()
+    DragFinish (wParam)
+    返回 (0)
+.如果真结束
+返回 (CallWindowProcA (原函数指针, hWnd, iMsg, wParam, lParam))
+
+.子程序 _窗口1_将被销毁, 空白型, , 
+CloseHandle (hDevice)
+
+.子程序 驱动程序通信_, 整数型, 公开, 操作驱动程序,成功返回1
+.参数 驱动句柄, 整数型, , 加载驱动返回的句柄
+.参数 驱动控制码, 整数型, , 与驱动程序通信的控制码,十进制
+.参数 输入指针, 整数型, , 欲输入数据的指针,无用请写将此参数设置为0
+.参数 输入指针长度, 整数型, , 无用请写将此参数设置为0
+.参数 输出指针, 整数型, , 欲输出数据的指针,无用请写将此参数设置为0
+.参数 输出指针长度, 整数型, , 无用请写将此参数设置为0
+
+.局部变量 重叠操作_, 重叠操作_, , , 
+
+返回 (DeviceIoControl (驱动句柄, 驱动控制码, 输入指针, 输入指针长度, 输出指针, 输出指针长度, 0, 重叠操作_))
+
+.子程序 KillFile, 逻辑型, , 
+.参数 FilePath, 文本型, , 
+
+.局部变量 InPut, 字节集, , , 
+.局部变量 InPtr, 整数型, , , 
+.局部变量 InLen, 整数型, , , 
+.局部变量 OutPut, 整数型, , , 
+.局部变量 h, 整数型, , , 
+
+.如果真 (文件是否存在 (FilePath))
+    赋值 (InPut, A2W (相加 (“\??\”, FilePath)))
+    赋值 (InPtr, 取变量地址_字节集型_ (InPut))
+    赋值 (InLen, 取字节集长度 (InPut))
+    置文件属性 (FilePath, #存档文件) ' 去掉文件只读属性
+    赋值 (h, 打开文件 (FilePath, #读入, ))
+    .如果真 (等于 (h, 0))
+        驱动程序通信_ (hDevice, #UnLockFile, InPtr, InLen, 0, 0) ' 解锁文件
+        延时 (1) ' 本源码来自易语言资源网(www.5A5X.com)
+    .如果真结束
+    关闭文件 (h)
+    驱动程序通信_ (hDevice, #KillFile, InPtr, InLen, 取变量地址_整数型_ (OutPut), 4)
+.如果真结束
+返回 (不等于 (OutPut, 0))
+
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 加载驱动, 整数型, , 
+.参数 驱动路径, 文本型, , 
+
+
+
+.子程序 启动驱动, 整数型, , 
+.参数 驱动路径, 文本型, , 
+
+
+
+.子程序 停止驱动, 整数型, , 
+.参数 驱动路径, 文本型, , 
+
+
+
+.子程序 删除驱动, 整数型, , 
+.参数 驱动路径, 文本型, , 
+
+
+
+.子程序 连接驱动, 整数型, , 
+.参数 驱动句柄, 整数型, 可空, 
+.参数 驱动序号, 整数型, 可空, 
+.参数 输入指针, 整数型, 可空, 
+.参数 输入长度, 整数型, 可空, 
+.参数 输出指针, 整数型, 可空, 
+.参数 输出长度, 整数型, 可空, 
+
+
+
+.子程序 关闭句柄, 整数型, , 
+.参数 驱动句柄, 整数型, , 
+
+
+
+.子程序 取句柄号, 整数型, , 
+
+
+.子程序 取整数型指针, 整数型, , 
+.参数 数据, 整数型, 参考, 
+
+
+
+.子程序 取文本型指针, 整数型, , 
+.参数 数据, 文本型, 参考, 
+
+
+
+.子程序 取字节集指针, 整数型, , 
+.参数 数据, 字节集, 参考, 
+
+
+
+.子程序 执行程序, 整数型, , 
+.参数 函数名, 文本型, , 
+.参数 参数值, 整数型, 数组, 
+.参数 动态库, 文本型, 可空, 
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

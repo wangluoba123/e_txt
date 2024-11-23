@@ -1,0 +1,295 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：API调用演示
+ ' 程序描述：演示在易语言中如何调用Windows系统API及外部的DLL输出命令。
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 379
+    高度 = 384
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “调用API”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 DISPLAY_DEVICE, , 
+    .成员 cb, 整数型, , , 本数据类型的总字节数(168),使用前需初始化
+    .成员 DeviceName, 字节型, , "32", 
+    .成员 DeviceString, 字节型, , "128", 
+    .成员 StateFlags, 整数型, , , 
+
+数据类型 GUID, , 
+    .成员 a, 整数型, , , 
+    .成员 b, 短整数型, , , 
+    .成员 c, 短整数型, , , 
+    .成员 d, 字节型, , "8", 
+
+数据类型 DEVMODE, , 
+    .成员 dmDeviceName, 字节型, , "32", 
+    .成员 dmSpecVersion, 短整数型, , , 
+    .成员 dmDriverVersion, 短整数型, , , 
+    .成员 dmSize, 短整数型, , , 
+    .成员 dmDriverExtra, 短整数型, , , 
+    .成员 dmFields, 整数型, , , 
+    .成员 dmPositionX, 整数型, , , 
+    .成员 dmPositionY, 整数型, , , 
+    .成员 dmScale, 短整数型, , , 
+    .成员 dmCopies, 短整数型, , , 
+    .成员 dmDefaultSource, 短整数型, , , 
+    .成员 dmPrintQuality, 短整数型, , , 
+    .成员 dmColor, 短整数型, , , 
+    .成员 dmDuplex, 短整数型, , , 
+    .成员 dmYResolution, 短整数型, , , 
+    .成员 dmTTOption, 短整数型, , , 
+    .成员 dmCollate, 短整数型, , , 
+    .成员 dmFormName, 字节型, , "32", 
+    .成员 dmLogPixels, 短整数型, , , 
+    .成员 dmBitsPerPel, 整数型, , , 
+    .成员 dmPelsWidth, 整数型, , , 
+    .成员 dmPelsHeight, 整数型, , , 
+    .成员 dmDisplayFlags, 整数型, , , 
+    .成员 dmDisplayFrequency, 整数型, , , 
+    .成员 dmICMMethod, 整数型, , , 
+    .成员 dmICMIntent, 整数型, , , 
+    .成员 dmMediaType, 整数型, , , 
+    .成员 dmDitherType, 整数型, , , 
+    .成员 dmReserved1, 整数型, , , 
+    .成员 dmReserved2, 整数型, , , 
+    .成员 dmPanningWidth, 整数型, , , 
+    .成员 dmPanningHeight, 整数型, , , 
+
+数据类型 POINTAPI, , 
+    .成员 x, 整数型, , , 
+    .成员 y, 整数型, , , 
+
+数据类型 SIZEL, , 
+    .成员 cx, 整数型, , , 
+    .成员 cy, 整数型, , , 
+
+数据类型 RECTL, , 
+    .成员 x1, 整数型, , , 
+    .成员 y1, 整数型, , , 
+    .成员 x2, 整数型, , , 
+    .成员 y2, 整数型, , , 
+
+数据类型 tagOFN, , 
+    .成员 lStructSize, 整数型, , , win2k以上为88，以下为76
+    .成员 hwndOwner, 整数型, , , 
+    .成员 hInstance, 整数型, , , 
+    .成员 lpstrFilter, 字节集, , , 
+    .成员 lpstrCustomFilter, 文本型, , , 
+    .成员 nMaxCustFilter, 整数型, , , 
+    .成员 nFilterIndex, 整数型, , , 
+    .成员 lpstrFile, 字节集, , , 
+    .成员 nMaxFile, 整数型, , , 
+    .成员 lpstrFileTitle, 文本型, , , 
+    .成员 nMaxFileTitle, 整数型, , , 
+    .成员 lpstrInitialDir, 文本型, , , 
+    .成员 lpstrTitle, 文本型, , , 
+    .成员 Flags, 整数型, , , 
+    .成员 nFileOffset, 短整数型, , , 
+    .成员 nFileExtension, 短整数型, , , 
+    .成员 lpstrDefExt, 整数型, , , 
+    .成员 lCustData, 整数型, , , 
+    .成员 lpfnHook, 整数型, , , 
+    .成员 lpTemplateName, 整数型, , , 
+    .成员 pvReserved, 整数型, , , 
+    .成员 dwReserved, 整数型, , , 
+    .成员 FlagsEx, 整数型, , , 
+
+数据类型 BITMAP, , 
+    .成员 bmType, 整数型, , , 
+    .成员 bmWidth, 整数型, , , 
+    .成员 bmHeight, 整数型, , , 
+    .成员 bmWidthBytes, 整数型, , , 
+    .成员 bmPlanes, 短整数型, , , 
+    .成员 bmBitsPixel, 短整数型, , , 
+    .成员 bmBits, 字节集, 传址, , 
+
+数据类型 CPINFO, , 
+    .成员 MaxCharSize, 整数型, , , 
+    .成员 DefaultChar, 字节型, , "2", 
+    .成员 LeadByte, 字节型, , "12", 
+
+
+.DLL命令 EnumDisplayDevices, 逻辑型, "user32.dll", "EnumDisplayDevicesA", , 枚举显示设备
+    .参数 lpDevice, 文本型, , 
+    .参数 iDevNum, 整数型, , 
+    .参数 lpDisplayDevice, DISPLAY_DEVICE, 传址, 
+    .参数 dwFlags, 整数型, , 
+
+.DLL命令 EnumDisplaySettings, 逻辑型, "user32.dll", "EnumDisplaySettingsA", , 枚举显示设置
+    .参数 lpszDeviceName, 整数型, , 
+    .参数 iModeNum, 整数型, , 
+    .参数 lpDevMode, DEVMODE, 传址, 
+
+.DLL命令 CoCreateGuid, 整数型, "ole32", "CoCreateGuid", , 生成GUID
+    .参数 Guid, GUID, 传址, 
+
+.DLL命令 PolyBezier, 整数型, "gdi32", "PolyBezier", , 画贝赛尔曲线
+    .参数 hDC, 整数型, , 设备上下文句柄
+    .参数 lppt, POINTAPI, 传址 数组, 各点坐标
+    .参数 cPoints, 整数型, , 点的个数
+
+.DLL命令 GetDC, 整数型, "user32.dll", "GetDC", , 取指定窗口的设备上下文句柄
+    .参数 hWnd, 整数型, , 窗口句柄
+
+.DLL命令 ReleaseDC, 逻辑型, "user32.dll", "ReleaseDC", , 释放GetDC所获取的设备上下文句柄
+    .参数 hWnd, 整数型, , 
+    .参数 hDC, 整数型, , 
+
+.DLL命令 OpenPrinter, 逻辑型, "winspool.drv", "OpenPrinterA", , 
+    .参数 pPrinterName, 文本型, , 
+    .参数 phPrinter, 整数型, 传址, 
+    .参数 pDefault, 整数型, , 
+
+.DLL命令 ClosePrinter, 空白型, "winspool.drv", "ClosePrinter", , 
+    .参数 hPrinter, 整数型, , 
+
+.DLL命令 GetOpenFileName, 逻辑型, "Comdlg32", "GetOpenFileNameA", , 
+    .参数 lpofn, tagOFN, 传址, 
+
+.DLL命令 CommDlgExtendedError, 整数型, "Comdlg32", "CommDlgExtendedError", , 
+
+.窗口程序集 程序集一, , , 
+
+.程序集变量 执行结果, 逻辑型, , , 
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 p, DISPLAY_DEVICE, , , 
+
+赋值 (p.cb, 168)
+赋值 (执行结果, EnumDisplayDevices (字符 (0), 0, p, 0))
+检查 (执行结果)
+输出调试文本 (p.cb, 到文本 (p.DeviceName), 到文本 (p.DeviceString), p.StateFlags, “”)
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+.局部变量 dm, DEVMODE, , , 
+
+赋值 (执行结果, EnumDisplaySettings (0, -1, dm))
+检查 (执行结果)
+输出调试文本 (到文本 (dm.dmDeviceName), 到文本 (dm.dmFormName))
+
+
+.子程序 _按钮_生成GUID_被单击, 空白型, , 
+赋值 (., 生成GUID ())
+
+
+.子程序 生成GUID, 文本型, , Create a GUID and return it
+.局部变量 guid, GUID, , , 
+.局部变量 s, 文本型, , , 
+.局部变量 i, 整数型, , , 
+
+CoCreateGuid (guid)
+输出调试文本 (guid.a, guid.b, guid.c, “”)
+
+ ' 下面将生成的GUID转换为文本并返回
+赋值 (s, “”)
+赋值 (s, 相加 (s, 取文本右边 (相加 (“00000000”, 取十六进制文本 (guid.a)), 8), “-”))
+赋值 (s, 相加 (s, 取文本右边 (相加 (“0000”, 取十六进制文本 (guid.b)), 4), “-”))
+赋值 (s, 相加 (s, 到小写 (取文本右边 (相加 (“0000”, 取十六进制文本 (guid.c)), 4)), “-”)) ' GUID第三部分中的字母均为小写
+.计次循环首 (8, i)
+    赋值 (s, 相加 (s, 取文本右边 (相加 (“00”, 取十六进制文本 (guid.d [i])), 2)))
+    .如果真 (等于 (i, 2))
+        赋值 (s, 相加 (s, “-”))
+    .如果真结束
+    
+.计次循环尾 ()
+返回 (相加 (“{”, s, “}”))
+
+
+.子程序 _按钮_画贝赛尔曲线_被单击, 空白型, , 
+.局部变量 points, POINTAPI, , "7", 
+.局部变量 hDC, 整数型, , , 
+.局部变量 i, 整数型, , , 
+
+.清除 ()
+置随机数种子 ()
+.计次循环首 (取数组成员数 (points), i)
+    赋值 (points [i], x, 取随机数 (1, .))
+    赋值 (points [i], y, 取随机数 (1, .))
+.计次循环尾 ()
+赋值 (hDC, GetDC (取窗口句柄 ()))
+PolyBezier (hDC, points, 取数组成员数 (points))
+ReleaseDC (取窗口句柄 (), hDC)
+
+
+.子程序 _按钮3_被单击, 空白型, , 
+.局部变量 ofn, tagOFN, , , 
+
+赋值 (ofn.lStructSize, 76)
+赋值 (ofn.hwndOwner, _启动窗口.取窗口句柄 ())
+赋值 (ofn.hInstance, 0)
+赋值 (ofn.lpstrFilter, 相加 (到字节集 (“txt cpp file”), { 0 }, 到字节集 (“*.txt;*.cpp”), { 0 }, 到字节集 (“all file”), { 0 }, 到字节集 (“*.*”), { 0, 0 }))
+赋值 (ofn.lpstrCustomFilter, 字符 (0))
+赋值 (ofn.nMaxCustFilter, 0)
+赋值 (ofn.nFilterIndex, 2)
+赋值 (ofn.lpstrFile, 相加 ({ 0 }, 取空白字节集 (1024)))
+赋值 (ofn.nMaxFile, 1024)
+赋值 (ofn.lpstrFileTitle, 取空白文本 (1024))
+赋值 (ofn.nMaxFileTitle, 1024)
+赋值 (ofn.lpstrInitialDir, “c:\”)
+赋值 (ofn.lpstrTitle, “在易语言中调用API函数GetOpenFileName打开本对话框”)
+赋值 (ofn.Flags, 0)
+赋值 (ofn.lpstrDefExt, 0)
+
+.如果 (GetOpenFileName (ofn))
+    输出调试文本 (“--------------------------------------”)
+    输出调试文本 (相加 (“文件名：”, 到文本 (ofn.lpstrFile)))
+    输出调试文本 (相加 (“文件名和扩展名起始位置：”, 到文本 (ofn.nFileOffset), “，”, 到文本 (ofn.nFileExtension)))
+    输出调试文本 (相加 (“文件标题：”, ofn.lpstrFileTitle))
+    输出调试文本 (相加 (“Flags：”, 到文本 (ofn.Flags)))
+     ' 输出调试文本 (“用户选择的文件选择器：” ＋ ofn.lpstrCustomFilter)
+.否则
+    输出调试文本 (相加 (“用户取消或调用失败，错误值：”, 到文本 (CommDlgExtendedError ())))
+.如果结束
+
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

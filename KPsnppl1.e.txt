@@ -1,0 +1,289 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.wodesoft.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.wodesoft.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.wodesoft.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 386
+    高度 = 304
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 真
+    外形 = 0
+    总在最前 = 真
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “Hosts by:Jn-lNrF”
+    帮助文件名 = “”
+
+
+
+.常量 常量1, "“
+function count_date_time(time)
+{
+	var count_date = new Date();
+	var count_year = count_date.getFullYear();
+	var count_month = (count_date.getMonth()+1) >= 10 ? (count_date.getMonth()+1) : '0'+(count_date.getMonth()+1);
+	var count_day = count_date.getDate() >= 10 ? count_date.getDate() : '0'+count_date.getDate();
+	var count_hours = count_date.getHours() >= 10 ? count_date.getHours() : '0' + count_date.getHours();
+	var count_minutes = count_date.getMinutes() >= 10 ? count_date.getMinutes() : '0'+count_date.getMinutes();
+	var count_seconds = count_date.getSeconds() >= 10 ? count_date.getSeconds() : '0'+count_date.getSeconds();
+	var count_week = count_date.getDay();//星期
+	var count_milli_seconds = count_date.getMilliseconds();
+	var NowTime= count_hours + ':' + count_minutes + ':' + count_seconds;
+
+return(NowTime);
+
+}
+”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' RegEx 684944CB04624eb7BD5412A519421D34 2 0 正则表达式支持库
+ ' iext2 AF6AD80AA4244A59AFB3D83ECF5173CC 2 0 扩展界面支持库二
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 2 0 扩展界面支持库一
+ ' spec A512548E76954B6E92C21055517615B0 3 0 特殊功能支持库
+ ' script EDF19861DC454d15BA0B9E3FF9CA4F57 2 0 脚本语言支持组件
+
+
+
+
+数据类型 TOKEN_PRIVILEGES, , From:AdjustTokenPrivileges
+    .成员 PrivilegeCount, 整数型, , , 
+    .成员 lowpart, 整数型, , , 
+    .成员 highpart, 整数型, , , 
+    .成员 Attributes, 整数型, , , 
+
+数据类型 LuID, , 
+    .成员 lowpart, 整数型, , , 
+    .成员 highpart, 整数型, , , 
+
+
+.DLL命令 api_GetCurrentProcess, 整数型, "kernel32.dll", "GetCurrentProcess", , 获取线程
+
+.DLL命令 api_OpenProcessToken, 整数型, "advapi32.dll", "OpenProcessToken", , NT/XP关机操作
+    .参数 ProcessHandle, 整数型, , 
+    .参数 DesiredAccess, 整数型, , 
+    .参数 TokenHandle, 整数型, 传址, 
+
+.DLL命令 api_LookupPrivilegeValue, 逻辑型, "advapi32.dll", "LookupPrivilegeValueA", , 在NT/XP恢复权限
+    .参数 lpSystemName, 文本型, , 
+    .参数 lpName, 文本型, , 
+    .参数 lpLuid, LuID, 传址, 
+
+.DLL命令 api_AdjustTokenPrivileges, 逻辑型, "advapi32.dll", "AdjustTokenPrivileges", , 在NT/XP中拥有最高权限
+    .参数 TokenHandle, 整数型, , 
+    .参数 DisableAllPrivileges, 整数型, , 
+    .参数 NewState, TOKEN_PRIVILEGES, 传址, 
+    .参数 BufferLength, 整数型, , 
+    .参数 PreviousState, TOKEN_PRIVILEGES, 传址, 
+    .参数 ReturnLength, 整数型, 传址, 
+
+.DLL命令 SetWindowLongA, 整数型, "user32.dll", "SetWindowLongA", , 
+    .参数 HWND, 整数型, , 
+    .参数 nIndex, 整数型, , 
+    .参数 dwNewLong, 整数型, , 
+
+.DLL命令 CallWindowProcA, 整数型, "user32.dll", "CallWindowProcA", , 
+    .参数 lpPrevWndFunc, 整数型, , 
+    .参数 hWnd, 整数型, , 
+    .参数 Msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 bq01, 整数型, , , 
+.程序集变量 bq02, 整数型, , , 
+.程序集变量 bq03, 整数型, , , 
+.程序集变量 bq04, 整数型, , , 
+.子程序 打开, 空白型, , 
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+赋值 (.内容, 到文本 (读入文件 (相加 (读环境变量 (“windir”), “\system32\drivers\etc\hosts”))))
+赋值 (.起始选择位置, -1)
+
+.子程序 应用, 空白型, , 
+.如果真 (不等于 (.内容, “”))
+    .如果真 (等于 (.内容, 到文本 (读入文件 (“C:\WINDOWS\system32\drivers\etc\hosts”))))
+        状态条提示 (“内容未改变”)
+        返回 ()
+    .如果真结束
+    .如果真 (写到文件 (“C:\WINDOWS\system32\drivers\etc\hosts”, 到字节集 (.内容)))
+        状态条提示 (“文件保存成功”)
+        返回 ()
+    .如果真结束
+    状态条提示 (“文件保存失败”)
+     ' 本源码来自易语言资源网(www.wodesoft.com)
+.如果真结束
+
+
+
+.子程序 屏蔽, 空白型, , 
+.如果真 (不等于 (到文本 (.被选择文本), “”))
+    赋值 (.内容, 正则替换 (.内容, 到文本 (.被选择文本)))
+    赋值 (.起始选择位置, -1)
+.如果真结束
+
+
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+提升进程权限 ()
+赋值 (bq01, SetWindowLongA (取窗口句柄 (), -4, 到数值 (&单击)))
+赋值 (bq02, SetWindowLongA (取窗口句柄 (), -4, 到数值 (&单击)))
+赋值 (bq03, SetWindowLongA (取窗口句柄 (), -4, 到数值 (&单击)))
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+211.发送信息 (3, 相加 (3, 相乘 (65536, 3))) ' 设置光标距编辑框左右边界距离3 ＋ 65536 × 3
+
+.子程序 单击, 整数型, , 单击处理事件
+.参数 窗口句柄, 整数型, , 
+.参数 消息值, 整数型, , 
+.参数 参数1, 整数型, , 
+.参数 参数2, 整数型, , 
+
+.局部变量 a, 整数型, , , 
+
+.判断开始 (等于 (取窗口句柄 (), 窗口句柄))
+    赋值 (a, bq01)
+.判断 (等于 (取窗口句柄 (), 窗口句柄))
+    赋值 (a, bq02)
+.判断 (等于 (取窗口句柄 (), 窗口句柄))
+    赋值 (a, bq03)
+.默认
+     ' 本源码来自易语言资源网(www.wodesoft.com)
+.判断结束
+
+
+.如果真 (等于 (消息值, 33))
+    .判断开始 (等于 (取窗口句柄 (), 窗口句柄))
+        打开 ()
+    .判断 (等于 (取窗口句柄 (), 窗口句柄))
+        应用 ()
+    .判断 (等于 (取窗口句柄 (), 窗口句柄))
+        屏蔽 ()
+    .默认
+        
+    .判断结束
+    
+.如果真结束
+
+返回 (CallWindowProcA (a, 窗口句柄, 消息值, 参数1, 参数2))
+
+.子程序 _按钮1_被单击, 空白型, , 
+.如果真 (不等于 (.内容, “”))
+    选择 (等于 (., “”), “ 127.0.0.1”, .)
+    赋值 (.内容, 相加 (.内容, #换行符, ., 取空白文本 (7), .内容))
+    赋值 (.起始选择位置, -1)
+.如果真结束
+
+
+
+.子程序 _编辑框1_按下某键, 逻辑型, , 全选
+.参数 键代码, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.如果真 (并且 (等于 (键代码, #A键), 等于 (功能键状态, 1)))
+    赋值 (.被选择字符数, -1)
+    ' 本源码来自易语言资源网(www.wodesoft.com)
+.如果真结束
+
+
+.程序集 程序集1, , , 
+
+.子程序 提升进程权限, 逻辑型, , 
+.局部变量 hdlProcessHandle, 整数型, , , 
+.局部变量 权限类别, 文本型, , , 
+.局部变量 hdlTokenHandle, 整数型, , , 
+.局部变量 tmpLuid, LuID, , , 
+.局部变量 tkp, TOKEN_PRIVILEGES, , , 
+.局部变量 tkpNewButIgnored, TOKEN_PRIVILEGES, , , 
+
+赋值 (hdlProcessHandle, api_GetCurrentProcess ())
+赋值 (权限类别, “SeDebugPrivilege”)
+api_OpenProcessToken (hdlProcessHandle, 40, hdlTokenHandle)
+api_LookupPrivilegeValue (“”, 权限类别, tmpLuid)
+赋值 (tkp.PrivilegeCount, 1)
+赋值 (tkp.lowpart, tmpLuid.lowpart)
+赋值 (tkp.highpart, tmpLuid.highpart)
+赋值 (tkp.Attributes, 2)
+.如果 (等于 (api_AdjustTokenPrivileges (hdlTokenHandle, 0, tkp, 28, tkpNewButIgnored, 0), 真))
+    返回 (真)
+.否则
+    返回 (假)
+.如果结束
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 状态条提示, 空白型, , 
+.参数 提示文本, 文本型, 可空, 
+
+_启动窗口.未知支持库函数_0 (., #常量1)
+调试输出 (_启动窗口.未知支持库函数_3 (., “count_date_time”, ))
+_启动窗口.置文本 (., 0, 相加 (“ ”, _启动窗口.未知支持库函数_3 (., “count_date_time”, ), “ ”, 提示文本))
+
+.子程序 正则替换, 文本型, , 返回替换后的全文
+.参数 欲被替换的全文, 文本型, , 
+.参数 替换目标, 文本型, , 
+
+.局部变量 RegEx, 未知类型0x20001, , , 
+.局部变量 替换文本, 文本型, , , 
+
+RegEx.未知支持库函数_3 (替换目标, 假)
+赋值 (替换文本, 相加 (“#”, 替换目标))
+.如果真 (等于 (取文本左边 (替换目标, 1), “#”))
+    赋值 (替换文本, 取文本右边 (替换目标, 相减 (取文本长度 (替换目标), 1)))
+.如果真结束
+返回 (RegEx.未知支持库函数_15 (欲被替换的全文, 替换文本, 1, , 真, 真))
+' 本源码来自易语言资源网(www.wodesoft.com)
+
+.窗口程序集 窗口程序集2, , , 
+
+
+ ' 不属于任何一个程序集、类模块的函数：

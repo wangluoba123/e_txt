@@ -1,0 +1,156 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 577
+    高度 = 365
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “系统盘符修改器  By:叮咚茶 20080912”
+    帮助文件名 = “”
+
+
+
+.常量 MAX_PATH, "260", , 
+.常量 INVALID_HANDLE_VALUE, "-1", , 
+.常量 FILESYSNAMEBUFSIZE, "260", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 5 系统核心支持库
+
+
+
+
+
+.DLL命令 DeleteVolumeMountPoint, 整数型, "kernel32.dll", "DeleteVolumeMountPointA", , 
+    .参数 lpszVolumeMountPoint, 文本型, , 
+
+.DLL命令 GetVolumePathNamesForVolumeName, 整数型, "kernel32.dll", "GetVolumePathNamesForVolumeNameA", , 
+    .参数 lpszVolumeName, 文本型, , 
+    .参数 lpszVolumePathNames, 文本型, , 
+    .参数 cchBufferLength, 整数型, , 
+    .参数 lpcchReturnLength, 整数型, , 
+
+.DLL命令 SetVolumeMountPoint, 整数型, "kernel32.dll", "SetVolumeMountPointA", , 
+    .参数 lpszVolumeMountPoint, 文本型, , 
+    .参数 lpszVolumeName, 文本型, , 
+
+.DLL命令 FindFirstVolume, 整数型, "kernel32.dll", "FindFirstVolumeA", , 
+    .参数 lpszVolumeName, 文本型, , 
+    .参数 cchBufferLength, 整数型, , 
+
+.DLL命令 FindNextVolume, 整数型, "kernel32.dll", "FindNextVolumeA", , 
+    .参数 hFindVolume, 整数型, , 
+    .参数 lpszVolumeName, 文本型, , 
+    .参数 cchBufferLength, 整数型, , 
+
+.DLL命令 FindVolumeClose, 整数型, "kernel32.dll", "FindVolumeClose", , 
+    .参数 hFindVolume, 整数型, , 
+
+.DLL命令 MessageBox, 整数型, "user32.dll", "MessageBoxA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpText, 文本型, , 
+    .参数 lpCaption, 文本型, , 
+    .参数 wType, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 i, 整数型, , , 
+
+.变量循环首 (67, 90, 1, i)
+    相加 (字符 (i), “:\”).加入项目 ()
+.变量循环尾 ()
+遍历卷 ()
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 lpVolumeName, 文本型, , , 
+.局部变量 lpVolumeMountPoint, 文本型, , , 
+.局部变量 ret, 整数型, , , 
+
+.如果 (并且 (不等于 (., -1), 不等于 (., -1)))
+    .如果 (并且 (.是否被选中 (.), .是否被选中 (.)))
+        赋值 (lpVolumeName, 取空白文本 (50))
+        赋值 (lpVolumeMountPoint, 取空白文本 (#MAX_PATH))
+        DeleteVolumeMountPoint (.取项目文本 (.))
+        GetVolumePathNamesForVolumeName (.取项目文本 (.), lpVolumeMountPoint, #MAX_PATH, 0)
+        DeleteVolumeMountPoint (lpVolumeMountPoint)
+        赋值 (ret, SetVolumeMountPoint (.取项目文本 (.), .取项目文本 (.)))
+        .如果 (不等于 (ret, 0))
+            赋值 (., 相加 (.取项目文本 (.), “ 修改为 ”, .取项目文本 (.), “ 完成。”))
+        .否则
+            赋值 (., 相加 (.取项目文本 (.), “ 修改为 ”, .取项目文本 (.), “ 失败。”))
+        .如果结束
+        
+        遍历卷 ()
+    .否则
+        MessageBox (取窗口句柄 (), “请先选中驱动器卷名或要修改为的驱动名框前面的小原点，表示确认修改。”, “提示：”, 0)
+    .如果结束
+    
+.否则
+    MessageBox (取窗口句柄 (), “请先选中驱动器卷名或要修改为的驱动名”, “提示：”, 0)
+.如果结束
+
+
+.子程序 遍历卷, 空白型, , 
+.局部变量 lpVolumeMountPoint, 文本型, , , 
+.局部变量 hFindVolume, 整数型, , , 
+.局部变量 lpVolumeName, 文本型, , , 
+.局部变量 ret, 整数型, , , 
+
+清空 ()
+清空 ()
+赋值 (lpVolumeName, 取空白文本 (#MAX_PATH))
+赋值 (lpVolumeMountPoint, 取空白文本 (#MAX_PATH))
+赋值 (hFindVolume, FindFirstVolume (lpVolumeName, #MAX_PATH))
+.如果真 (不等于 (hFindVolume, #INVALID_HANDLE_VALUE))
+    .循环判断首 ()
+        lpVolumeName.加入项目 ()
+        GetVolumePathNamesForVolumeName (lpVolumeName, lpVolumeMountPoint, #MAX_PATH, 0)
+        lpVolumeMountPoint.加入项目 ()
+        赋值 (ret, FindNextVolume (hFindVolume, lpVolumeName, #MAX_PATH))
+    .循环判断尾 (不等于 (ret, 0))
+    FindVolumeClose (hFindVolume)
+.如果真结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

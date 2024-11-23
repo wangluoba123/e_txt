@@ -1,0 +1,350 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：使用GDI+旋转图像
+ ' 程序描述：
+ ' 程序作者：凌晨孤星
+ ' 邮政编码：528251
+ ' 联系地址：广东省佛山市南海区
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：lzj85@163.com
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 397
+    高度 = 145
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “凌晨孤星——使用GDI+旋转图像”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' shell 52F260023059454187AF826A3C07AF2A 1 0 操作系统界面功能支持库
+
+
+
+
+数据类型 GdiplusStartupInput, , 
+    .成员 GdiplusVersion, 整数型, , , 
+    .成员 DebugEventCallback, 整数型, , , 
+    .成员 SuppressBackgroundThread, 整数型, , , 
+    .成员 SuppressExternalCodecs, 整数型, , , 
+
+
+.DLL命令 GdiplusStartup, 整数型, "gdiplus.dll", "GdiplusStartup", , 
+    .参数 token, 整数型, 传址, 
+    .参数 inputbuf, GdiplusStartupInput, , 
+    .参数 outputbuf, 整数型, , 
+
+.DLL命令 GdiplusShutdown, 空白型, "gdiplus.dll", "GdiplusShutdown", , 
+    .参数 token, 整数型, , 
+
+.DLL命令 MultiByteToWideChar, 整数型, "", "MultiByteToWideChar", , 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpWideCharStr, 字节集, , 
+    .参数 cchWideChar, 整数型, , 
+
+.DLL命令 GdipLoadImageFromFile, 整数型, "gdiplus.dll", "GdipLoadImageFromFile", , 
+    .参数 filename, 字节集, , 
+    .参数 image, 整数型, 传址, 
+
+.DLL命令 GdipSaveImageToFile, 整数型, "gdiplus.dll", "GdipSaveImageToFile", , 
+    .参数 image, 空白型, , 
+    .参数 filename, 字节集, , 
+    .参数 clsidEncoder, 字节集, , 
+    .参数 encoderParams, 整数型, , 
+
+.DLL命令 CLSIDFromString, 空白型, "ole32.dll", "CLSIDFromString", , 
+    .参数 lpsz, 字节集, , 
+    .参数 pclsid, 字节集, 传址, 
+
+.DLL命令 GdipDisposeImage, 整数型, "gdiplus.dll", "GdipDisposeImage", , 
+    .参数 image, 整数型, , 
+
+.DLL命令 GdipGetImagePixelFormat, 整数型, "gdiplus.dll", "GdipGetImagePixelFormat", , 
+    .参数 image, 整数型, , 
+    .参数 format, 整数型, 传址, 
+
+.DLL命令 GdipGetImageGraphicsContext, 整数型, "gdiplus.dll", "GdipGetImageGraphicsContext", , 
+    .参数 image, 空白型, , 
+    .参数 graphics, 空白型, 传址, 
+
+.DLL命令 GdipRotateMatrix, 整数型, "gdiplus.dll", "GdipRotateMatrix", , 
+    .参数 matrix, 空白型, , 
+    .参数 angle, 小数型, , 
+    .参数 order, 空白型, , 
+
+.DLL命令 GdipCreateMatrix, 整数型, "gdiplus.dll", "GdipCreateMatrix", , 
+    .参数 matrix, 空白型, 传址, 
+
+.DLL命令 GdipTranslateMatrix, 整数型, "gdiplus.dll", "GdipTranslateMatrix", , 
+    .参数 matrix, 空白型, , 
+    .参数 offsetX, 小数型, , 
+    .参数 offsetY, 小数型, , 
+    .参数 order, 空白型, , 
+
+.DLL命令 GdipSetWorldTransform, 整数型, "gdiplus.dll", "GdipSetWorldTransform", , 
+    .参数 graphics, 整数型, , 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipSetSmoothingMode, 整数型, "gdiplus.dll", "GdipSetSmoothingMode", , 
+    .参数 graphics, 空白型, , 
+    .参数 smoothingMode, 空白型, , 
+
+.DLL命令 GdipDrawImageRect, 整数型, "gdiplus.dll", "GdipDrawImageRect", , 
+    .参数 graphics, 空白型, , 
+    .参数 image, 空白型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+
+.DLL命令 GdipCreateBitmapFromScan0, 整数型, "gdiplus.dll", "GdipCreateBitmapFromScan0", , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+    .参数 stride, 整数型, , 
+    .参数 format, 空白型, , 
+    .参数 scan0, 空白型, , 
+    .参数 bitmap, 空白型, 传址, 
+
+.DLL命令 GdipCreateSolidFill, 整数型, "gdiplus.dll", "GdipCreateSolidFill", , 
+    .参数 color, 空白型, , 
+    .参数 brush, 空白型, 传址, 
+
+.DLL命令 GdipFillRectangle, 整数型, "gdiplus.dll", "GdipFillRectangle", , 
+    .参数 graphics, 空白型, , 
+    .参数 brush, 空白型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+
+.DLL命令 GdipGetImageRawFormat, 整数型, "gdiplus.dll", "GdipGetImageRawFormat", , 
+    .参数 image, 空白型, , 
+    .参数 format, 字节集, 传址, 
+
+.DLL命令 GdipGetImageWidth, 整数型, "gdiplus.dll", "GdipGetImageWidth", , 
+    .参数 image, 空白型, , 
+    .参数 width, 整数型, 传址, 
+
+.DLL命令 GdipGetImageHeight, 整数型, "gdiplus.dll", "GdipGetImageHeight", , 
+    .参数 image, 空白型, , 
+    .参数 height, 整数型, 传址, 
+
+.DLL命令 GdipDeleteMatrix, 整数型, "gdiplus.dll", "GdipDeleteMatrix", , 
+    .参数 matrix, 空白型, , 
+
+.DLL命令 GdipDeleteBrush, 整数型, "gdiplus.dll", "GdipDeleteBrush", , 
+    .参数 brush, 空白型, , 
+
+.DLL命令 GdipDeleteGraphics, 整数型, "gdiplus.dll", "GdipDeleteGraphics", , 
+    .参数 graphics, 空白型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 IndexForImageFormat, 整数型, , , 
+.程序集变量 Token, 整数型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 GpInput, GdiplusStartupInput, , , 
+
+赋值 (GpInput.GdiplusVersion, 1)
+GdiplusStartup (Token, GpInput, 0) ' 启动 GDI+
+赋值 (IndexForImageFormat, 5)
+
+.子程序 __启动窗口_可否被关闭, 逻辑型, , 
+GdiplusShutdown (Token) ' 关闭 GDI+
+
+.子程序 _按钮2_被单击, 空白型, , 
+.局部变量 文本1, 文本型, , "0", 
+.局部变量 文本2, 文本型, , "0", 
+
+.如果真 (打开 ())
+    赋值 (.内容, .文件名)
+    赋值 (文本1, 分割文本 (.文件名, “\”, ))
+    赋值 (文本2, 分割文本 (文本1 [取数组成员数 (文本1)], “.”, ))
+    赋值 (.内容, 文本2 [1])
+.如果真结束
+
+
+.子程序 _按钮3_被单击, 空白型, , 
+.局部变量 目录, 文本型, , , 
+
+赋值 (目录, 未知支持库函数_2 (“选择保存文件的文件夹”, ))
+.如果真 (不等于 (目录, “”))
+    赋值 (.内容, 选择 (不等于 (取文本右边 (目录, 1), “\”), 相加 (目录, “\”), 目录))
+.如果真结束
+
+
+.子程序 _单选框1_被单击, 空白型, , 
+赋值 (.标题, “.bmp”)
+赋值 (IndexForImageFormat, 1)
+
+.子程序 _单选框2_被单击, 空白型, , 
+赋值 (.标题, “.jpg”)
+赋值 (IndexForImageFormat, 2)
+
+.子程序 _单选框3_被单击, 空白型, , 
+赋值 (.标题, “.gif”)
+赋值 (IndexForImageFormat, 3)
+
+.子程序 _单选框4_被单击, 空白型, , 
+赋值 (.标题, “.tiff”)
+赋值 (IndexForImageFormat, 4)
+
+.子程序 _单选框5_被单击, 空白型, , 
+ ' 赋值 (.标题, “.png”)
+赋值 (IndexForImageFormat, 5)
+
+
+.子程序 _按钮4_被单击, 空白型, , 
+.如果真 (或者 (等于 (.内容, “”), 等于 (.内容, “”), 等于 (.内容, “”)))
+    信息框 (“输入的信息不全，请输入所有信息”, 相加 (0, #信息图标), )
+    返回 ()
+.如果真结束
+
+.如果 (旋转图像 (.内容, 相加 (.内容, .内容, .标题), 到数值 (.内容), .颜色, IndexForImageFormat))
+    信息框 (相加 (“文件已成功保存到”, .内容, .内容, .标题), 0, “旋转成功！”)
+.否则
+    信息框 (“旋转失败！”, 0, “旋转失败！”)
+.如果结束
+
+
+.子程序 旋转图像, 逻辑型, , 成功返回真，失败返回假。
+.参数 源文件, 文本型, , 
+.参数 目标文件, 文本型, , 
+.参数 旋转角度, 小数型, , 顺时针的旋转角度
+.参数 图像底色, 整数型, 可空, 默认为黑色
+.参数 保存格式, 整数型, 可空, 旋转后的图片格式。1、bmp；2、jpg；3、gif；4、tiff；5、png
+
+.局部变量 Image, 整数型, , , 
+.局部变量 ImageFormat, 字节集, , , 
+.局部变量 StrClsid, 文本型, , , 
+.局部变量 Clsid, 字节集, , , 
+.局部变量 Width, 整数型, , , 
+.局部变量 Height, 整数型, , , 
+.局部变量 PixelFormat, 整数型, , , 
+.局部变量 NewWidth, 整数型, , , 
+.局部变量 NewHeight, 整数型, , , 
+.局部变量 Bitmap, 整数型, , , 
+.局部变量 Graphics, 整数型, , , 
+.局部变量 SolidBrush, 整数型, , , 
+.局部变量 Matrix, 整数型, , , 
+.局部变量 Ret, 整数型, , , 
+.局部变量 Color, 字节集, , , 
+
+未知函数_167838096 (未知函数_67174801 (源文件), Image) ' 加载图像
+.判断开始 (是否为空 (保存格式))
+    赋值 (取空白字节集 (16))
+    未知函数_167838098 ()
+    .判断开始 (等于 ({ 171, 60, 107, 185, 40, 7, 211, 17, 157, 123, 0, 0, 248, 30, 243, 46 })) ' ImageFormatBMP
+        赋值 (StrClsid, “{557CF400-1A04-11D3-9A73-0000F81EF32E}”)
+    .判断 (等于 ({ 174, 60, 107, 185, 40, 7, 211, 17, 157, 123, 0, 0, 248, 30, 243, 46 })) ' ImageFormatJPEG
+        赋值 (StrClsid, “{557CF401-1A04-11D3-9A73-0000F81EF32E}”)
+    .判断 (等于 ({ 176, 60, 107, 185, 40, 7, 211, 17, 157, 123, 0, 0, 248, 30, 243, 46 })) ' ImageFormatGIF
+        赋值 (StrClsid, “{557CF402-1A04-11D3-9A73-0000F81EF32E}”)
+    .判断 (等于 ({ 177, 60, 107, 185, 40, 7, 211, 17, 157, 123, 0, 0, 248, 30, 243, 46 })) ' ImageFormatTIFF
+        赋值 (StrClsid, “{557CF405-1A04-11D3-9A73-0000F81EF32E}”)
+    .判断 (等于 ({ 175, 60, 107, 185, 40, 7, 211, 17, 157, 123, 0, 0, 248, 30, 243, 46 })) ' ImageFormatPNG
+        赋值 (StrClsid, “{557CF406-1A04-11D3-9A73-0000F81EF32E}”)
+    .默认
+        
+    .判断结束
+    
+.默认
+    
+    .判断开始 (等于 (保存格式, 1)) ' bmp
+        赋值 (StrClsid, “{557CF400-1A04-11D3-9A73-0000F81EF32E}”)
+    .判断 (等于 (保存格式, 2)) ' jpg
+        赋值 (StrClsid, “{557CF401-1A04-11D3-9A73-0000F81EF32E}”)
+    .判断 (等于 (保存格式, 3)) ' gif
+        赋值 (StrClsid, “{557CF402-1A04-11D3-9A73-0000F81EF32E}”)
+    .判断 (等于 (保存格式, 4)) ' tiff
+        赋值 (StrClsid, “{557CF405-1A04-11D3-9A73-0000F81EF32E}”)
+    .判断 (等于 (保存格式, 5)) ' png
+        赋值 (StrClsid, “{557CF406-1A04-11D3-9A73-0000F81EF32E}”)
+    .默认
+        
+    .判断结束
+    
+.判断结束
+赋值 (取空白字节集 (16))
+CLSIDFromString (A2W (StrClsid), Clsid) ' 获取图像格式对应的Clsid
+GdipGetImageWidth (Image, Width) ' 获取图像宽度
+GdipGetImageHeight (Image, Height) ' 获取图像高度
+赋值 (NewWidth, 相加 (取绝对值 (相乘 (Height, 求正弦 (相除 (相乘 (旋转角度, #pi), 180)))), 取绝对值 (相乘 (Width, 求余弦 (相除 (相乘 (旋转角度, #pi), 180)))))) ' 计算转换的图像的宽度
+赋值 (NewHeight, 相加 (取绝对值 (相乘 (Height, 求余弦 (相除 (相乘 (旋转角度, #pi), 180)))), 取绝对值 (相乘 (Width, 求正弦 (相除 (相乘 (旋转角度, #pi), 180)))))) ' 计算转换后的图像的高度
+GdipGetImagePixelFormat (Image, PixelFormat) ' 获取图像像素格式
+GdipCreateBitmapFromScan0 (NewWidth, NewHeight, 0, PixelFormat, 0, Bitmap) ' 申请位图空间
+GdipGetImageGraphicsContext (Bitmap, Graphics) ' 创建Bitmap对应的Graphics对象
+赋值 (Color, 到字节集 (图像底色))
+赋值 (图像底色, 位或 (相加 (Color [3], 相乘 (Color [2], 256), 相乘 (Color [1], 65536)), 左移 (255, 24))) ' 转换成GDI+的颜色值
+GdipCreateSolidFill (图像底色, SolidBrush) ' 创建刷子对象
+GdipFillRectangle (Graphics, SolidBrush, 0, 0, NewWidth, NewHeight) ' 把背景刷成所设定的颜色
+GdipCreateMatrix (Matrix) ' 创建矩阵对象
+GdipTranslateMatrix (Matrix, 相除 (相减 (NewWidth, Width), 2), 相除 (相减 (NewHeight, Height), 2), 0) ' 偏移坐标，使新旧图像坐标中心中心重叠
+GdipTranslateMatrix (Matrix, 相除 (Width, 2), 相除 (Height, 2), 0) ' 偏移坐标，使旧图像左上角的点在新图像中心
+GdipRotateMatrix (Matrix, 旋转角度, 0) ' 旋转坐标
+GdipTranslateMatrix (Matrix, 相除 (负 (Width), 2), 相除 (负 (Height), 2), 0) ' 偏移坐标，使新旧图像坐标中心中心重新重叠
+GdipSetWorldTransform (Graphics, Matrix) ' 应用设定矩阵
+GdipSetSmoothingMode (Graphics, 4) ' 使图像抗锯齿画出
+GdipDrawImageRect (Graphics, Image, 0, 0, Width, Height) ' 把Image画到Bitmap
+赋值 (Ret, GdipSaveImageToFile (Bitmap, A2W (目标文件), Clsid, 0)) ' 用指定格式保存图像，如果没指定则按原格式保存
+GdipDeleteMatrix (Matrix) ' 释放矩阵对象
+GdipDeleteBrush (SolidBrush) ' 释放刷子对象
+GdipDeleteGraphics (Graphics) ' 释放图形对象
+GdipDisposeImage (Bitmap) ' 释放位图对象
+GdipDisposeImage (Image) ' 释放图像对象
+.如果真 (等于 (0))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+.子程序 A2W, 字节集, , 将Ansi转成Unicode
+.参数 欲转换的文本, 文本型, , 
+
+.局部变量 缓冲区, 字节集, , , 
+.局部变量 缓冲区大小, 整数型, , , 
+
+赋值 (缓冲区大小, 相乘 (未知函数_167838126 (0, 0, 欲转换的文本, -1, {  }, 0), 2))
+赋值 (缓冲区, 取空白字节集 (缓冲区大小))
+未知函数_167838126 (0, 0, 欲转换的文本, 取文本长度 (欲转换的文本), 缓冲区, 缓冲区大小)
+返回 (缓冲区)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

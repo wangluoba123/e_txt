@@ -1,0 +1,205 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 216
+    高度 = 217
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “”
+    帮助文件名 = “”
+
+
+
+.常量 SnowNumber, "260", , 雪点数量-1
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 8 系统核心支持库
+
+
+
+
+数据类型 SnowNode, , 
+    .成员 Point, TPoint, , , 雪点位置
+    .成员 Color, 整数型, , , 先前颜色
+    .成员 Speed, 整数型, , , 下落速率
+    .成员 nMove, 整数型, , , 下落距离
+    .成员 Stick, 整数型, , , '粘连'度
+
+数据类型 TPoint, , 雪点座标
+    .成员 x, 长整数型, , , x座标
+    .成员 y, 长整数型, , , y座标
+
+.全局变量 SnowNodes, SnowNode, , "0", 雪点数组
+.全局变量 hTimer, 空白型, , , '随机风向'时钟句柄
+.全局变量 CrWind, 空白型, , , 当前'风向' ( -1 ~ 1 )
+.全局变量 CrStep, 空白型, , , 当前循环步数(用于限速)
+.全局变量 ScreenWidth, 空白型, , , 屏幕尺寸(宽）
+.全局变量 ScreenHeight, 空白型, , , 屏幕尺寸（高）
+.全局变量 w, 字节型, , , 
+
+.DLL命令 CreateDC, 整数型, "gdi32", "CreateDCA", , 
+    .参数 lpDriverName, 文本型, , 
+    .参数 lpDeviceName, 文本型, , 
+    .参数 lpOutput, 文本型, , 
+    .参数 lpInitData, 文本型, , 
+
+.DLL命令 DeleteDC, 整数型, "gdi32", "DeleteDC", , 
+    .参数 hdc, 整数型, , 
+
+.DLL命令 GetPixel, 整数型, "gdi32", "GetPixel", , 
+    .参数 hdc, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+
+.DLL命令 SetPixel, 整数型, "gdi32", "SetPixel", , 
+    .参数 hdc, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 crColor, 整数型, , 
+
+.DLL命令 InvalidateRect, 整数型, "user32", "InvalidateRect", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpRect, 文本型, , 
+    .参数 bErase, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+重定义数组 (SnowNodes, 假, #SnowNumber)
+
+.子程序 GetScreenSize, 空白型, , 取屏幕尺寸 -> ScreenWidth, ScreenHeight
+赋值 (ScreenWidth, 取屏幕宽度 ())
+赋值 (ScreenHeight, 取屏幕高度 ())
+
+.子程序 InitSnowNodes, 空白型, , 
+.局部变量 hScreenDc, 整数型, , , 
+.局部变量 J, 整数型, , , 
+
+赋值 (hScreenDc, CreateDC (“DISPLAY”, “”, “”, “”))
+.变量循环首 (1, #SnowNumber, 1, J)
+    赋值 (SnowNodes [J], Point.x, 取随机数 (0, ScreenWidth))
+    赋值 (SnowNodes [J], Point.y, 取随机数 (0, ScreenHeight))
+    赋值 (SnowNodes [J], Color, GetPixel (hScreenDc, SnowNodes [J], Point.x, SnowNodes [J], Point.y))
+    赋值 (SnowNodes [J], Speed, 相加 (取随机数 (0, 5), 1))
+    赋值 (SnowNodes [J], nMove, 相加 (取随机数 (0, SnowNodes [J], Speed), 1))
+    赋值 (SnowNodes [J], Stick, 相减 (30, 取随机数 (0, SnowNodes [J], Speed)))
+.变量循环尾 ()
+DeleteDC (hScreenDc)
+
+.子程序 MoveSnowNodes, 空白型, , 移动雪点 ..
+.局部变量 hScreenDc, 整数型, , , 
+.局部变量 I, 整数型, , , 
+.局部变量 X, 整数型, , , 
+.局部变量 Y, 整数型, , , 
+
+赋值 (hScreenDc, CreateDC (“DISPLAY”, “”, “”, “”))
+.变量循环首 (1, #SnowNumber, 1, I)
+    .如果真 (不等于 (求余数 (CrStep, SnowNodes [I], Speed), 0)) ' 控制雪点下降速率
+        到循环尾 ()
+    .如果真结束
+    .如果真 (等于 (GetPixel (hScreenDc, SnowNodes [I], Point.x, SnowNodes [I], Point.y), 16777215)) ' 恢复上次被覆盖点
+        SetPixel (hScreenDc, SnowNodes [I], Point.x, SnowNodes [I], Point.y, SnowNodes [I], Color)
+    .如果真结束
+    赋值 (X, 相加 (相减 (相加 (SnowNodes [I], Point.x, 取随机数 (0, 3)), 1), CrWind)) ' 根据风向作随机飘落
+    赋值 (Y, 相加 (SnowNodes [I], Point.y, SnowNodes [I], nMove))
+    .如果 (并且 (等于 (求余数 (CrStep, SnowNodes [I], Stick), 0), 不等于 (GetPixel (hScreenDc, X, Y), GetPixel (hScreenDc, X, 相加 (Y, 1))), 不等于 (GetPixel (hScreenDc, 相减 (X, 1), Y), GetPixel (hScreenDc, 相减 (X, 1), 相加 (Y, 1))), 不等于 (GetPixel (hScreenDc, 相加 (X, 1), Y), GetPixel (hScreenDc, 相加 (X, 1), 相加 (Y, 1))))) ' 积雪(停留)效果处理
+        .如果 (等于 (GetPixel (hScreenDc, X, 相减 (Y, 1)), GetPixel (hScreenDc, X, 相减 (Y, 2))))
+            赋值 (Y, 相减 (Y, 1))
+        .否则
+            .如果真 (等于 (GetPixel (hScreenDc, X, 相加 (Y, 1)), GetPixel (hScreenDc, X, 相加 (Y, 2))))
+                赋值 (Y, 相加 (Y, 1))
+            .如果真结束
+            
+        .如果结束
+        赋值 (X, 相加 (X, CrWind))
+        SetPixel (hScreenDc, X, Y, 16777215)
+        SetPixel (hScreenDc, 相加 (X, 1), 相加 (Y, 1), 16777215)
+        SetPixel (hScreenDc, 相减 (X, 1), 相加 (Y, 1), 16777215)
+        赋值 (SnowNodes [I], Point.y, 取随机数 (0, 10))
+        赋值 (SnowNodes [I], Point.x, 取随机数 (0, ScreenWidth))
+        赋值 (SnowNodes [I], Color, GetPixel (hScreenDc, SnowNodes [I], Point.x, SnowNodes [I], Point.y))
+        
+    .否则
+        .如果 (或者 (小于 (X, 0), 大于 (X, ScreenWidth), 大于 (Y, ScreenHeight)))
+            赋值 (SnowNodes [I], Point.y, 取随机数 (0, 10))
+            赋值 (SnowNodes [I], Point.x, 取随机数 (0, ScreenWidth))
+            赋值 (SnowNodes [I], Color, GetPixel (hScreenDc, SnowNodes [I], Point.x, SnowNodes [I], Point.y))
+        .否则
+            赋值 (SnowNodes [I], Color, GetPixel (hScreenDc, X, Y))
+            SetPixel (hScreenDc, X, Y, 16777215)
+            赋值 (SnowNodes [I], Point.x, X)
+            赋值 (SnowNodes [I], Point.y, Y)
+        .如果结束
+        
+    .如果结束
+    
+.变量循环尾 ()
+DeleteDC (hScreenDc)
+赋值 (CrStep, 相加 (CrStep, 1))
+
+.子程序 _按钮1_被单击, 空白型, , 
+置随机数种子 ()
+GetScreenSize ()
+InitSnowNodes ()
+InvalidateRect (0, “”, 1)
+.循环判断首 ()
+    MoveSnowNodes ()
+    处理事件 ()
+    延时 (10) ' 使用可以大大减少CPU占用率，但下雪会不太连贯 不用CPU占用率100%  (Delphi编出的也一样)
+.循环判断尾 (不等于 (_启动窗口.取窗口句柄 (), 0))
+InvalidateRect (0, “”, 1)
+
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+InvalidateRect (0, “”, 1)
+结束 ()
+
+.子程序 _按钮2_被单击, 空白型, , 
+__启动窗口_将被销毁 ()
+
+.子程序 _按钮4_被单击, 空白型, , 
+赋值 (w, 1)
+赋值 (CrWind, w)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

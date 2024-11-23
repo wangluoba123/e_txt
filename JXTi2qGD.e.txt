@@ -1,0 +1,297 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.wodesoft.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.wodesoft.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.wodesoft.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 342
+    高度 = 374
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “水波效果算法测试-查表法 - By 神2 (谢栋)”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' BmpOperate 42305932-06E6-47a5-AC79-8BDCDC58DF61 2 0 位图操作支持库
+
+
+
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 PRECISION, 整数型, , , 
+.程序集变量 WAVE_LENGTH, 整数型, , , 
+.程序集变量 匿名程序集变量_100, 空白型, , , 
+.程序集变量 disp_index, 整数型, , , 
+.程序集变量 匿名程序集变量_26, 空白型, , , 
+.程序集变量 disp, 整数型, , "12", 
+.程序集变量 dist, 整数型, , "600,800", 
+.程序集变量 匿名程序集变量_47, 空白型, , , 
+.程序集变量 原始图形, 位图, , , 
+.程序集变量 初始图形, 位图, , , 
+.程序集变量 输出图形, 位图, , , 
+.程序集变量 匿名程序集变量_146, 空白型, , , 
+.程序集变量 _center_x, 整数型, , , 
+.程序集变量 _center_y, 整数型, , , 
+.程序集变量 匿名程序集变量_236, 空白型, , , 
+.程序集变量 dispLength, 整数型, , , 
+.程序集变量 匿名程序集变量_147, 空白型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+赋值 (PRECISION, 1000)
+赋值 (WAVE_LENGTH, 13)
+赋值 (dispLength, 60)
+赋值 (., 真)
+处理事件 ()
+原始图形.载入数据 (.取图片 (.宽度, .高度))
+初始图形.创建 (相加 (相乘 (dispLength, 2), 20), 相加 (相乘 (dispLength, 2), 20), 24, #白色)
+ ' SCREEN.创建窗口模式 (图片框1.取窗口句柄 (), 图片框1.宽度, 图片框1.高度)
+赋值 (disp_index, 相减 (WAVE_LENGTH, 1))
+重定义数组 (disp, 假, WAVE_LENGTH)
+重定义数组 (dist, 假, .高度, .宽度)
+
+_画板1_鼠标左键被按下 (98, 117, 0)
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+赋值 (.时钟周期, 70)
+
+
+.子程序 Build_Disp_Matrix, 逻辑型, , 
+.局部变量 i, 整数型, , , 
+
+.清除 ()
+.如果真 (等于 (假, 原始图形.复制到 (相减 (_center_x, dispLength, 10), 相减 (_center_y, dispLength, 10), 相加 (相乘 (dispLength, 2), 20), 相加 (相乘 (dispLength, 2), 20), 初始图形, 0, 0, )))
+    返回 (假)
+.如果真结束
+赋值 (输出图形, 初始图形)
+.计次循环首 (WAVE_LENGTH, i)
+    赋值 (disp [i], 相乘 (求正弦 (相除 (相乘 (i, 30, #pi), 360)), PRECISION))
+.计次循环尾 ()
+返回 (真)
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 Create_Ripple, 空白型, , 
+.参数 center_x, 整数型, , int center_x, int center_y, int force, int damp, int wave_length
+.参数 center_y, 整数型, , 
+.参数 force, 整数型, , 
+.参数 damp, 整数型, , 
+.参数 wave_length, 整数型, , 
+
+.局部变量 i, 整数型, , , 
+.局部变量 j, 整数型, , , 
+.局部变量 dist_x, 整数型, , , int dist_x, dist_y;
+.局部变量 dist_y, 整数型, , , 
+.局部变量 length, 整数型, , , 
+
+
+赋值 (center_x, 相加 (dispLength, 10))
+赋值 (center_y, 相加 (dispLength, 10))
+
+.计次循环首 (wave_length, i)
+    赋值 (disp [i], 相除 (相乘 (force, disp [i]), PRECISION))
+.计次循环尾 ()
+.计次循环首 (输出图形.取高度 (), i)
+    .计次循环首 (输出图形.取宽度 (), j)
+        赋值 (dist_y, 相减 (i, center_y))
+        赋值 (dist_x, 相减 (j, center_x))
+        赋值 (length, 求平方根 (相加 (相乘 (dist_x, dist_x), 相乘 (dist_y, dist_y))))
+        赋值 (dist [i] [j], 1)
+        .如果真 (小于 (length, dispLength))
+            赋值 (dist [i] [j], 求余数 (相加 (length, 0.5), wave_length))
+        .如果真结束
+         ' 本源码来自易语言资源网(www.wodesoft.com)
+    .计次循环尾 ()
+.计次循环尾 ()
+
+
+.子程序 Render_Ripple, 空白型, , 
+.局部变量 left, 空白型, , , int left,right,bottom,top;
+.局部变量 right, 空白型, , , 
+.局部变量 bottom, 空白型, , , 
+.局部变量 top, 空白型, , , 
+.局部变量 匿名局部变量_69, 空白型, , , 
+.局部变量 k, 空白型, , , int k = 0,l = 0;
+.局部变量 l, 空白型, , , 
+.局部变量 匿名局部变量_72, 空白型, , , 
+.局部变量 index_x, 空白型, , , int index_x,index_y;
+.局部变量 index_y, 空白型, , , 
+.局部变量 匿名局部变量_75, 空白型, , , 
+.局部变量 x_off, 空白型, , , int x_off,y_off;
+.局部变量 y_off, 空白型, , , 
+.局部变量 匿名局部变量_78, 空白型, , , 
+.局部变量 pos1, 空白型, , , int pos1,pos2;
+.局部变量 pos2, 空白型, , , 
+.局部变量 匿名局部变量_81, 空白型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 j, 整数型, , , 
+.局部变量 匿名局部变量_82, 空白型, , , 
+.局部变量 dist_y, 整数型, , , 
+.局部变量 dist_x, 整数型, , , 
+.局部变量 length, 整数型, , , 
+.局部变量 匿名局部变量_199, 空白型, , , 
+.局部变量 PointColor, 整数型, , , 
+.局部变量 PointColor2, 整数型, , , 
+.局部变量 匿名局部变量_205, 空白型, , , 
+.局部变量 Red, 空白型, , , 
+.局部变量 Green, 空白型, , , 
+.局部变量 Blue, 空白型, , , 
+.局部变量 Red2, 空白型, , , 
+.局部变量 Green2, 空白型, , , 
+.局部变量 Blue2, 空白型, , , 
+
+赋值 (k, 0)
+赋值 (l, 0)
+.如果真 (小于或等于 (disp_index, 1))
+    赋值 (disp_index, 相加 (WAVE_LENGTH, 1))
+.如果真结束
+赋值 (disp_index, 相减 (disp_index, 1))
+
+.变量循环首 (2, 相减 (初始图形.取高度 (), 2), 1, i)
+    .变量循环首 (2, 相减 (初始图形.取宽度 (), 2), 1, j)
+        
+        赋值 (dist_y, 相减 (i, 相加 (dispLength, 10)))
+        赋值 (dist_x, 相减 (j, 相加 (dispLength, 10)))
+        赋值 (length, 求平方根 (相加 (相乘 (dist_x, dist_x), 相乘 (dist_y, dist_y))))
+        
+        .如果真 (小于 (length, dispLength))
+            连续赋值 (disp_index, left, right, bottom, top)
+            
+            赋值 (left, 相加 (left, dist [i] [相减 (j, 1)]))
+            赋值 (left, 选择 (大于 (left, WAVE_LENGTH), 相减 (left, WAVE_LENGTH), left))
+            赋值 (right, 相加 (right, dist [i] [相加 (j, 1)]))
+            赋值 (right, 选择 (大于 (right, WAVE_LENGTH), 相减 (right, WAVE_LENGTH), right))
+            赋值 (bottom, 相加 (bottom, dist [相加 (i, 1)] [j]))
+            赋值 (bottom, 选择 (大于 (bottom, WAVE_LENGTH), 相减 (bottom, WAVE_LENGTH), bottom))
+            赋值 (top, 相加 (top, dist [相减 (i, 1)] [j]))
+            赋值 (top, 选择 (大于 (top, WAVE_LENGTH), 相减 (top, WAVE_LENGTH), top))
+            
+            .如果真 (或者 (小于 (left, 1), 小于 (right, 1), 小于 (top, 1), 小于 (bottom, 1)))
+                到循环尾 ()
+            .如果真结束
+            .如果真 (或者 (大于 (left, WAVE_LENGTH), 大于 (right, WAVE_LENGTH), 大于 (top, WAVE_LENGTH), 大于 (bottom, WAVE_LENGTH)))
+                到循环尾 ()
+            .如果真结束
+            
+            赋值 (x_off, 相减 (disp [left], disp [right]))
+            赋值 (y_off, 相减 (disp [top], disp [bottom]))
+             ' 本源码来自易语言资源网(www.wodesoft.com)
+            赋值 (index_x, 相加 (j, x_off))
+            赋值 (index_y, 相加 (i, y_off))
+            
+            赋值 (PointColor, 初始图形.取某点颜色 (index_x, index_y))
+            赋值 (PointColor2, 初始图形.取某点颜色 (j, i))
+            
+            赋值 (Red, 位与 (PointColor, 255))
+            赋值 (Green, 整除 (位与 (PointColor, 65280), 256))
+            赋值 (Blue, 整除 (位与 (PointColor, 16711680), 65536))
+            
+            赋值 (Red2, 位与 (PointColor2, 255))
+            赋值 (Green2, 整除 (位与 (PointColor2, 65280), 256))
+            赋值 (Blue2, 整除 (位与 (PointColor2, 16711680), 65536))
+            
+            赋值 (Red, 相加 (Red2, 相除 (相乘 (相减 (Red, Red2), 相减 (dispLength, length)), dispLength)))
+            赋值 (Green, 相加 (Green2, 相除 (相乘 (相减 (Green, Green2), 相减 (dispLength, length)), dispLength)))
+            赋值 (Blue, 相加 (Blue2, 相除 (相乘 (相减 (Blue, Blue2), 相减 (dispLength, length)), dispLength)))
+            
+            赋值 (Red, 选择 (小于 (Red, 0), 0, Red))
+            赋值 (Green, 选择 (小于 (Green, 0), 0, Green))
+            赋值 (Blue, 选择 (小于 (Blue, 0), 0, Blue))
+            
+            赋值 (Red, 选择 (大于 (Red, 255), 255, Red))
+            赋值 (Green, 选择 (大于 (Green, 255), 255, Green))
+            赋值 (Blue, 选择 (大于 (Blue, 255), 255, Blue))
+            
+            输出图形.置某点颜色 (j, i, 取颜色值 (Red, Green, Blue))
+            
+        .如果真结束
+        
+    .变量循环尾 ()
+.变量循环尾 ()
+载入图片 (输出图形.取位图数据 ()).画图片 (相减 (_center_x, dispLength, 10), 相减 (_center_y, dispLength, 10), , , #拷贝)
+
+
+.子程序 _画板1_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.局部变量 cxt, 空白型, , , 
+.局部变量 cyt, 空白型, , , 
+
+赋值 (cxt, _center_x)
+赋值 (cyt, _center_y)
+
+赋值 (_center_x, 横向位置)
+赋值 (_center_y, 纵向位置)
+
+.如果真 (等于 (Build_Disp_Matrix (), 假))
+    赋值 (_center_x, cxt)
+    赋值 (_center_y, cyt)
+    返回 ()
+.如果真结束
+Create_Ripple (横向位置, 纵向位置, 30, 0, WAVE_LENGTH)
+' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 _时钟1_周期事件, 空白型, , 
+Render_Ripple ()
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

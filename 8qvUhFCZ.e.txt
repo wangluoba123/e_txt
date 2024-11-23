@@ -1,0 +1,702 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.wodesoft.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.wodesoft.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.wodesoft.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 INVALID_HANDLE_VALUE, "-1", , 
+.常量 GENERIC_READ, "2147483648", , 
+.常量 GENERIC_WRITE, "1073741824", , 
+.常量 FILE_SHARE_READ, "1", , 
+.常量 FILE_SHARE_WRITE, "2", , 
+.常量 OPEN_EXISTING, "3", , 
+.常量 SMART_GET_VERSION, "475264", , 
+.常量 SMART_RCV_DRIVE_DATA, "508040", , 
+.常量 DFP_RECEIVE_DRIVE_DATA, "508040", , 
+.常量 IOCTL_SCSI_MINIPORT_IDENTIFY, "1770753", , 
+.常量 IOCTL_SCSI_MINIPORT, "315400", , 
+.常量 ATAPI_ID_CMD, "161", , 
+.常量 ID_CMD, "236", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' spec A512548E76954B6E92C21055517615B0 3 0 特殊功能支持库
+
+
+
+
+数据类型 SENDCMDINPARAMS, , 33-1
+    .成员 cBufferSize, 整数型, , , 
+    .成员 bFeaturesReg, 字节型, , , IDEREGS_Begin
+    .成员 bSectorCountReg, 字节型, , , 
+    .成员 bSectorNumberReg, 字节型, , , 
+    .成员 bCylLowReg, 字节型, , , 
+    .成员 bCylHighReg, 字节型, , , 
+    .成员 bDriveHeadReg, 字节型, , , 
+    .成员 bCommandReg, 字节型, , , 
+    .成员 bReserved1, 字节型, , , IDEREGS_End
+    .成员 bDriveNumber, 字节型, , , 
+    .成员 bReserved, 字节型, , "3", 
+    .成员 dwReserved, 整数型, , "4", 
+    .成员 bBuffer, 字节型, , , 
+
+数据类型 GETVERSIONINPARAMS, , 24
+    .成员 bVersion, 字节型, , , 
+    .成员 bRevision, 字节型, , , 
+    .成员 bReserved, 字节型, , , 
+    .成员 bIDEDeviceMap, 字节型, , , 
+    .成员 fCapabilities, 整数型, , , 
+    .成员 dwReserved, 整数型, , "4", 
+
+数据类型 SRB_IO_CONTROL, , 28+33-1
+    .成员 HeaderLength, 整数型, , , 
+    .成员 Signature, 字节型, , "8", 
+    .成员 Timeout, 整数型, , , 
+    .成员 ControlCode, 整数型, , , 
+    .成员 ReturnCode, 整数型, , , 
+    .成员 Length, 整数型, , , 
+    .成员 cBufferSize, 整数型, , , SENDCMDINPARAMS_Begin
+    .成员 bFeaturesReg, 字节型, , , IDEREGS_Begin
+    .成员 bSectorCountReg, 字节型, , , 
+    .成员 bSectorNumberReg, 字节型, , , 
+    .成员 bCylLowReg, 字节型, , , 
+    .成员 bCylHighReg, 字节型, , , 
+    .成员 bDriveHeadReg, 字节型, , , 
+    .成员 bCommandReg, 字节型, , , 
+    .成员 bReserved1, 字节型, , , IDEREGS_End
+    .成员 bDriveNumber, 字节型, , , 
+    .成员 bReserved, 字节型, , "3", 
+    .成员 dwReserved, 整数型, , "4", 
+    .成员 bBuffer, 字节型, , , SENDCMDINPARAMS_End
+
+数据类型 IDSECTOR, , 256
+    .成员 wGenConfig, 短整数型, , , 
+    .成员 wNumCyls, 短整数型, , , 
+    .成员 wReserved, 短整数型, , , 
+    .成员 wNumHeads, 短整数型, , , 
+    .成员 wBytesPerTrack, 短整数型, , , 
+    .成员 wBytesPerSector, 短整数型, , , 
+    .成员 wSectorsPerTrack, 短整数型, , , 
+    .成员 wVendorUnique, 短整数型, , "3", 
+    .成员 sSerialNumber, 字节型, , "20", 
+    .成员 wBufferType, 短整数型, , , 
+    .成员 wBufferSize, 短整数型, , , 
+    .成员 wECCSize, 短整数型, , , 
+    .成员 sFirmwareRev, 字节型, , "8", 
+    .成员 sModelNumber, 字节型, , "40", 
+    .成员 wMoreVendorUnique, 短整数型, , , 
+    .成员 wDoubleWordIO, 短整数型, , , 
+    .成员 wCapabilities, 短整数型, , , 
+    .成员 wReserved1, 短整数型, , , 
+    .成员 wPIOTiming, 短整数型, , , 
+    .成员 wDMATiming, 短整数型, , , 
+    .成员 wBS, 短整数型, , , 
+    .成员 wNumCurrentCyls, 短整数型, , , 
+    .成员 wNumCurrentHeads, 短整数型, , , 
+    .成员 wNumCurrentSectorsPerTrack, 短整数型, , , 
+    .成员 ulCurrentSectorCapacity, 整数型, , , 
+    .成员 wMultSectorStuff, 短整数型, , , 
+    .成员 ulTotalAddressableSectors, 整数型, , , 
+    .成员 wSingleWordDMA, 短整数型, , , 
+    .成员 wMultiWordDMA, 短整数型, , , 
+    .成员 bReserved, 字节型, , "128", 
+
+
+.DLL命令 CreateFile, 整数型, "kernel32.dll", "CreateFileA", , 这是一个全功能的例程，可打开和创建文件、管道、邮槽、通信服务、设备以及控制台  如执行成功，则返回文件句柄。INVALID_HANDLE_VALUE表示出错，会设置GetLastError。即使函数成功，但若文件存在，且指定了CREATE_ALWAYS ;    或 OPEN_ALWAYS，GetLastError也会设为ERROR_ALREADY_EXISTS
+    .参数 lpFileName, 文本型, , 要打开的文件的名字
+    .参数 dwDesiredAccess, 整数型, , 如果为 GENERIC_READ 表示允许对设备进行读访问；如果为 GENERIC_WRITE 表示允许对设备进行写访问（可组合使用）；如果为零，表示只允许获取与一个设备有关的信息
+    .参数 dwShareMode, 整数型, , 零表示不共享； FILE_SHARE_READ 和/或 FILE_SHARE_WRITE 表示允许对文件进行共享访问
+    .参数 lpSecurityAttributes, 整数型, , SECURITY_ATTRIBUTES，指向一个SECURITY_ATTRIBUTES结构的指针，定义了文件的安全特性（如果操作系统支持的话）
+    .参数 dwCreationDisposition, 整数型, , 下述常数之一：;CREATE_NEW：创建文件；如文件存在则会出错;CREATE_ALWAYS：创建文件，会改写前一个文件;OPEN_EXISTING：文件必须已经存在。由设备提出要求;OPEN_ALWAYS：如文件不存在则创建它;TRUNCATE_EXISTING：讲现有文件缩短为零长度
+    .参数 dwFlagsAndAttributes, 整数型, , 一个或多个下述常数;FILE_ATTRIBUTE_ARCHIVE：标记归档属性;FILE_ATTRIBUTE_COMPRESSED：将文件标记为已压缩，或者标记为文件在目录中的默认压缩方式;FILE_ATTRIBUTE_NORMAL：默认属性;FILE_ATTRIBUTE_HIDDEN：隐藏文件或目录;FILE_ATTRIBUTE_READONLY：文件为只读;FILE_ATTRIBUTE_SYSTEM：文件为系统文件;FILE_FLAG_WRITE_THROUGH：操作系统不得推迟对文件的写操作;FILE_FLAG_OVERLAPPED：允许对文件进行重叠操作;FILE_FLAG_NO_BUFFERING：禁止对文件进行缓冲处理。文件只能写入磁盘卷的扇区块;FILE_FLAG_RANDOM_ACCESS：针对随机访问对文件缓冲进行优化;FILE_FLAG_SEQUENTIAL_SCAN：针对连续访问对文件缓冲进行优化;FILE_FLAG_DELETE_ON_CLOSE：关闭了上一次打开的句柄后，将文件删除。特别适合临时文件也可在Windows NT下组合使用下述常数标记：SECURITY_ANONYMOUS， SECURITY_IDENTIFICATION， SECURITY_IMPERSONATION， SECURITY_DELEGATION， SECURITY_CONTEXT_TRACKING， SECURITY_EFFECTIVE_ONLY
+    .参数 hTemplateFile, 整数型, , 如果不为零，则指定一个文件句柄。新文件将从这个文件中复制扩展属性;
+
+.DLL命令 DeviceIoControl1, 整数型, "kernel32.dll", "DeviceIoControl", , 对设备执行指定的操作  非零表示成功，零表示失败。会设置GetLastError
+    .参数 hDevice, 整数型, , 设备句柄
+    .参数 dwIoControlCode, 整数型, , 带有 FSCTL_ 前缀的常数。参考设备控制选项的部分列表
+    .参数 lpInBuffer, 整数型, , 具体取决于dwIoControlCode参数。参考设备控制选项的部分列表
+    .参数 nInBufferSize, 整数型, , 输入缓冲区的长度
+    .参数 lpOutBuffer, GETVERSIONINPARAMS, 传址, 具体取决于dwIoControlCode参数。参考设备控制选项的部分列表
+    .参数 nOutBufferSize, 整数型, , 输出缓冲区的长度
+    .参数 lpBytesReturned, 整数型, 传址, 实际装载到输出缓冲区的字节数量
+    .参数 lpOverlapped, 整数型, , OVERLAPPED，这个结构用于重叠操作。针对同步操作，请用ByVal As Long传递零值;
+
+.DLL命令 DeviceIoControl2, 整数型, "kernel32.dll", "DeviceIoControl", , 对设备执行指定的操作  非零表示成功，零表示失败。会设置GetLastError
+    .参数 hDevice, 整数型, , 设备句柄
+    .参数 dwIoControlCode, 整数型, , 带有 FSCTL_ 前缀的常数。参考设备控制选项的部分列表
+    .参数 lpInBuffer, SENDCMDINPARAMS, 传址, 具体取决于dwIoControlCode参数。参考设备控制选项的部分列表
+    .参数 nInBufferSize, 整数型, , 输入缓冲区的长度
+    .参数 lpOutBuffer, 字节集, 传址, 具体取决于dwIoControlCode参数。参考设备控制选项的部分列表
+    .参数 nOutBufferSize, 整数型, , 输出缓冲区的长度
+    .参数 lpBytesReturned, 整数型, 传址, 实际装载到输出缓冲区的字节数量
+    .参数 lpOverlapped, 整数型, , OVERLAPPED，这个结构用于重叠操作。针对同步操作，请用ByVal As Long传递零值;
+
+.DLL命令 DeviceIoControl3, 整数型, "Kernel32.dll", "DeviceIoControl", , 
+    .参数 hDevice, 整数型, , 
+    .参数 dwIoControlCode, 整数型, , 
+    .参数 lpInBuffer, SRB_IO_CONTROL, 传址, 
+    .参数 nInBufferSize, 整数型, , 
+    .参数 lpOutBuffer, 字节集, 传址, 
+    .参数 nOutBufferSize, 整数型, , 
+    .参数 lpBytesReturned, 整数型, 传址, 
+    .参数 lpOverlapped, 整数型, , OVERLAPPED
+
+.DLL命令 CloseHandle, 整数型, "kernel32.dll", "CloseHandle", , 
+    .参数 对象句柄, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IDE, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 lpvDest, IDSECTOR, 传址, 
+    .参数 lpvSource, 字节集, , 
+    .参数 cbCopy, 整数型, , 
+
+.DLL命令 RtlMoveMemory_SCSI, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 lpvDest, 字节型, 传址 数组, 
+    .参数 lpvSource, 文本型, , 
+    .参数 cbCopy, 整数型, , 
+
+.DLL命令 LocalAlloc, 整数型, "kernel32.dll", "LocalAlloc", , 
+    .参数 uFlags, 整数型, , 
+    .参数 uBytes, 整数型, , 
+
+.DLL命令 LocalFree, 整数型, "kernel32.dll", "LocalFree", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 RtlMoveMemory_Int, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 lpvDest, 整数型, 传址, 
+    .参数 lpvSource, 整数型, , 
+    .参数 cbCopy, 整数型, , 
+
+.DLL命令 Sleep, 整数型, "kernel32.dll", "Sleep", , 公开
+    .参数 延时时间, 整数型, , 毫秒
+
+.DLL命令 FillMemory, 整数型, "kernel32.dll", "RtlFillMemory", , 填充内存字节
+    .参数 Destination, 整数型, , 指针地址
+    .参数 Length, 整数型, , 长度
+    .参数 Fill, 字节型, , 字节数据
+
+.DLL命令 GetProcAddress, 整数型, "kernel32.dll", "GetProcAddress", , 
+    .参数 hModule, 整数型, , 
+    .参数 lpProcName, 文本型, , 
+
+.DLL命令 GetModuleHandle, 整数型, "kernel32.dll", "GetModuleHandleA", , 
+    .参数 lpModuleName, 文本型, , 
+
+.DLL命令 lstrcpyn_Bin, 整数型, "kernel32.dll", "lstrcpyn", , 字节集
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 保留, 整数型, , 0
+
+.窗口程序集 _启动窗口程序集, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+调试输出 (特殊_取硬盘特征 ())
+调试输出 (取硬盘特征字 ())
+
+.子程序 特殊_取硬盘特征, 整数型, , IDE + SCSI
+.参数 iDrive, 整数型, 可空, 
+.参数 硬盘序列号, 文本型, 参考 可空, 
+.参数 硬盘模型号, 文本型, 参考 可空, 
+
+.局部变量 sFilePath, 文本型, , , 
+.局部变量 hDevice, 整数型, , , 
+.局部变量 InBufferIDE, SENDCMDINPARAMS, , , 
+.局部变量 OutBufferIDE, GETVERSIONINPARAMS, , , 
+.局部变量 InBufferSCSI, SRB_IO_CONTROL, , , 
+.局部变量 OutBuffer, 字节集, , , 
+.局部变量 BytesRet, 整数型, , , 
+.局部变量 IDEData, IDSECTOR, , , 
+
+.如果 (大于或等于 (系统_取操作系统类别 (), 4))
+    赋值 (sFilePath, 相加 (“\\.\PHYSICALDRIVE”, 整数型_到文本 (iDrive)))
+    赋值 (hDevice, CreateFile (sFilePath, 位或 (#GENERIC_READ, #GENERIC_WRITE), 位或 (#FILE_SHARE_READ, #FILE_SHARE_WRITE), 0, #OPEN_EXISTING, 0, 0))
+    .判断开始 (不等于 (hDevice, #INVALID_HANDLE_VALUE))
+        .如果真 (不等于 (DeviceIoControl1 (hDevice, #SMART_GET_VERSION, 0, 0, OutBufferIDE, 24, BytesRet, 0), 0))
+            赋值 (OutBuffer, 字节集_取空白 (544))
+            赋值 (InBufferIDE.cBufferSize, 512)
+            赋值 (InBufferIDE.bSectorCountReg, 1)
+            赋值 (InBufferIDE.bSectorNumberReg, 1)
+            .如果 (不等于 (位与 (iDrive, 1), 0))
+                赋值 (InBufferIDE.bDriveHeadReg, 176)
+            .否则
+                赋值 (InBufferIDE.bDriveHeadReg, 160)
+            .如果结束
+            .如果 (不等于 (iDrive, 0))
+                赋值 (InBufferIDE.bCommandReg, 相除 (OutBufferIDE.bIDEDeviceMap, 位与 (iDrive, 16)))
+            .否则
+                赋值 (InBufferIDE.bCommandReg, OutBufferIDE.bIDEDeviceMap)
+            .如果结束
+            .如果 (等于 (InBufferIDE.bCommandReg, 0))
+                赋值 (InBufferIDE.bCommandReg, #ATAPI_ID_CMD)
+            .否则
+                赋值 (InBufferIDE.bCommandReg, #ID_CMD)
+            .如果结束
+            .如果真 (等于 (DeviceIoControl2 (hDevice, #SMART_RCV_DRIVE_DATA, InBufferIDE, 32, OutBuffer, 544, BytesRet, 0), 0))
+                赋值 (InBufferIDE.bCommandReg, #ID_CMD)
+                DeviceIoControl2 (hDevice, #SMART_RCV_DRIVE_DATA, InBufferIDE, 32, OutBuffer, 544, BytesRet, 0)
+            .如果真结束
+            RtlMoveMemory_IDE (IDEData, 字节集_取中间 (OutBuffer, 17, 256), 256)
+        .如果真结束
+         ' 本源码来自易语言资源网(www.wodesoft.com)
+    .默认
+        CloseHandle (hDevice)
+        赋值 (sFilePath, 相加 (“\\.\SCSI”, 整数型_到文本 (iDrive), “:”))
+        赋值 (hDevice, CreateFile (sFilePath, 位或 (#GENERIC_READ, #GENERIC_WRITE), 位或 (#FILE_SHARE_READ, #FILE_SHARE_WRITE), 0, #OPEN_EXISTING, 0, 0))
+        .如果真 (不等于 (hDevice, #INVALID_HANDLE_VALUE))
+            赋值 (InBufferSCSI.HeaderLength, 28)
+            RtlMoveMemory_SCSI (InBufferSCSI.Signature, “SCSIDISK”, 8)
+            赋值 (InBufferSCSI.Timeout, 2)
+            赋值 (InBufferSCSI.Length, 544)
+            赋值 (InBufferSCSI.ControlCode, #IOCTL_SCSI_MINIPORT_IDENTIFY)
+            赋值 (InBufferSCSI.cBufferSize, 512)
+            赋值 (InBufferSCSI.bSectorCountReg, 1)
+            赋值 (InBufferSCSI.bSectorNumberReg, 1)
+            .如果 (不等于 (位与 (iDrive, 1), 0))
+                赋值 (InBufferSCSI.bDriveHeadReg, 176)
+            .否则
+                赋值 (InBufferSCSI.bDriveHeadReg, 160)
+            .如果结束
+            赋值 (InBufferSCSI.bCommandReg, #ID_CMD)
+            赋值 (OutBuffer, 字节集_取空白 (572))
+            .如果真 (不等于 (DeviceIoControl3 (hDevice, #IOCTL_SCSI_MINIPORT, InBufferSCSI, 60, OutBuffer, 572, BytesRet, 0), 0))
+                RtlMoveMemory_IDE (IDEData, 字节集_取中间 (OutBuffer, 45, 256), 256)
+            .如果真结束
+            
+        .如果真结束
+        
+    .判断结束
+    
+.否则
+    赋值 (sFilePath, “\\.\SMARTVSD”)
+    赋值 (hDevice, CreateFile (sFilePath, 0, 0, 0, 1, 0, 0))
+    .如果真 (不等于 (hDevice, #INVALID_HANDLE_VALUE))
+        赋值 (InBufferIDE.cBufferSize, 512)
+        赋值 (InBufferIDE.bSectorCountReg, 1)
+        赋值 (InBufferIDE.bSectorNumberReg, 1)
+        .如果 (不等于 (位与 (iDrive, 1), 0))
+            赋值 (InBufferIDE.bDriveHeadReg, 176)
+        .否则
+            赋值 (InBufferIDE.bDriveHeadReg, 160)
+        .如果结束
+        赋值 (InBufferIDE.bCommandReg, 236)
+        赋值 (OutBuffer, 字节集_取空白 (528))
+        .如果真 (不等于 (DeviceIoControl2 (hDevice, #DFP_RECEIVE_DRIVE_DATA, InBufferIDE, 32, OutBuffer, 528, BytesRet, 0), 0))
+            RtlMoveMemory_IDE (IDEData, 字节集_取中间 (OutBuffer, 17, 256), 256)
+        .如果真结束
+        ' 本源码来自易语言资源网(www.wodesoft.com)
+    .如果真结束
+    
+.如果结束
+CloseHandle (hDevice)
+.如果真 (等于 (是否为空 (硬盘序列号), 假))
+    赋值 (硬盘序列号, FixString (IDEData.sSerialNumber))
+.如果真结束
+.如果真 (等于 (是否为空 (硬盘模型号), 假))
+    赋值 (硬盘模型号, FixString (IDEData.sModelNumber))
+.如果真结束
+返回 (特征字计算 (IDEData))
+
+.子程序 FixString, 文本型, , 
+.参数 pwDiskData, 字节型, 数组, 
+
+.局部变量 DiskData, 字节集, , , 
+.局部变量 i, 整数型, , , 
+
+赋值 (DiskData, 字节集_取空白 (取数组成员数 (pwDiskData)))
+.变量循环首 (1, 取数组成员数 (pwDiskData), 2, i)
+    赋值 (DiskData [i], pwDiskData [相加 (i, 1)])
+    赋值 (DiskData [相加 (i, 1)], pwDiskData [i])
+.变量循环尾 ()
+赋值 (DiskData, 字节集_子替换 (DiskData, { 32 }))
+返回 (字节集_到文本 (DiskData))
+
+.子程序 特征字计算, 整数型, , 
+.参数 Data, IDSECTOR, , 
+
+.局部变量 Dword, 字节集, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 ToData, 整数型, , , 
+.局部变量 Total, 整数型, , , 
+.局部变量 返回值, 整数型, , , 
+
+赋值 (Dword, { 0, 0, 0, 0 })
+.计次循环首 (40, i)
+    .判断开始 (等于 (求余数 (i, 2), 0))
+        赋值 (Dword [2], Data.sModelNumber [i])
+        赋值 (Total, 相加 (Total, 字节集_到整数 (Dword)))
+    .默认
+        赋值 (Dword [1], Data.sModelNumber [i])
+    .判断结束
+    系统_延时 (0)
+.计次循环尾 ()
+.计次循环首 (8, i)
+    .判断开始 (等于 (求余数 (i, 2), 0))
+        赋值 (Dword [2], Data.sFirmwareRev [i])
+        赋值 (Total, 相加 (Total, 字节集_到整数 (Dword)))
+    .默认
+        赋值 (Dword [1], Data.sFirmwareRev [i])
+    .判断结束
+    系统_延时 (0)
+     ' 本源码来自易语言资源网(www.wodesoft.com)
+.计次循环尾 ()
+.计次循环首 (20, i)
+    .判断开始 (等于 (求余数 (i, 2), 0))
+        赋值 (Dword [2], Data.sSerialNumber [i])
+        赋值 (Total, 相加 (Total, 字节集_到整数 (Dword)))
+    .默认
+        赋值 (Dword [1], Data.sSerialNumber [i])
+    .判断结束
+    系统_延时 (0)
+.计次循环尾 ()
+赋值 (ToData, 相加 (Data.wBufferSize, Data.wSectorsPerTrack, Data.wNumHeads, Data.wNumCyls))
+.如果 (小于或等于 (相加 (相乘 (ToData, 65536), Total), 4294967295))
+    赋值 (返回值, 相加 (相乘 (ToData, 65536), Total))
+.否则
+    赋值 (返回值, 相加 (相乘 (相加 (求余数 (相减 (ToData, 1), 65535), 1), 65536), 求余数 (Total, 65535)))
+.如果结束
+返回 (返回值)
+
+.子程序 字节集_到文本, 文本型, , 
+.参数 字节集, 字节集, , 
+
+.局部变量 返回值, 文本型, , , 
+.局部变量 Temp, 字节集, , , 
+
+赋值 (Temp, 相加 (字节集, { 0 }))
+返回 (指针到文本 (字节集_取指针 (Temp)))
+
+.子程序 字节集_到整数, 整数型, , 
+.参数 字节集, 字节集, , 
+.参数 位置, 整数型, 可空, 默认为1
+
+.局部变量 返回值, 整数型, , , 
+.局部变量 Address, 整数型, , , 
+.局部变量 Len, 整数型, , , 
+
+赋值 (Address, 字节集_取指针 (字节集))
+赋值 (Len, 字节集_取长度 (字节集))
+.如果真 (等于 (是否为空 (位置), 真))
+    赋值 (位置, 1)
+.如果真结束
+.如果真 (或者 (大于 (位置, Len), 小于 (位置, 1)))
+    返回 (0)
+.如果真结束
+.如果 (小于 (相减 (Len, 位置), 4))
+    RtlMoveMemory_Int (返回值, 相减 (相加 (Address, 位置), 1), 相加 (相减 (Len, 位置), 1))
+.否则
+    RtlMoveMemory_Int (返回值, 相减 (相加 (Address, 位置), 1), 4)
+.如果结束
+返回 (返回值)
+
+.子程序 系统_延时, 空白型, , 本命令暂停当前程序的运行并等待指定的时间.本命令为初级命令.
+.参数 欲等待的时间, 整数型, , 本参数指定欲暂停程序执行的时间,单位为毫秒.
+
+Sleep (欲等待的时间)
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+
+.程序集 _内部功能程序集, , , 
+
+.子程序 系统_取操作系统类别, 整数型, , 返回值:0～8代表:“未知”, “Win95”, “Win98”, “WinME”, “ WinNT”, “Win2000”, “WinXP”, “Win2003”, “Vista”
+置入代码 ({ 83, 51, 192, 100, 139, 29, 24, 0, 0, 0, 100, 139, 13, 48, 0, 0, 0, 133, 201, 121, 32, 185, 0, 0, 83, 0, 57, 75, 88, 117, 4, 176, 1, 235, 83, 57, 75, 84, 117, 4, 176, 2, 235, 74, 57, 75, 124, 117, 69, 176, 3, 235, 65, 139, 153, 168, 0, 0, 0, 139, 137, 164, 0, 0, 0, 131, 249, 4, 119, 4, 176, 4, 235, 44, 131, 249, 5, 117, 27, 131, 251, 0, 117, 4, 176, 5, 235, 30, 131, 251, 1, 117, 4, 176, 6, 235, 21, 131, 251, 2, 117, 4, 176, 7, 235, 12, 131, 249, 6, 117, 7, 131, 251, 0, 117, 2, 176, 8, 91, 139, 229, 93, 195 })
+返回 (0)
+
+.子程序 整数型_到文本, 文本型, , ' 这里只是个测试,其实用汇编是很简单的.哈哈～～,来个动态调用API吧.
+.参数 整数, 整数型, , 
+
+.局部变量 返回值, 文本型, , , 
+.局部变量 参数, 整数型, , "1", 
+
+赋值 (返回值, 文本型_取空白 (4))
+赋值 (参数 [1], 整数)
+wsprintfA (返回值, “%d”, 参数)
+返回 (返回值)
+
+.子程序 字节集_取左边, 字节集, , 
+.参数 字节集, 字节集, , 
+.参数 欲取出字节的数目, 整数型, , 
+
+.局部变量 Len, 整数型, , , 
+.局部变量 Address, 整数型, , , 
+
+赋值 (Len, 字节集_取长度 (字节集))
+.如果真 (小于 (Len, 1))
+    返回 ({  })
+.如果真结束
+.判断开始 (小于 (欲取出字节的数目, 1))
+    返回 ({  })
+.判断 (大于 (欲取出字节的数目, Len))
+    赋值 (欲取出字节的数目, Len)
+.默认
+    
+.判断结束
+赋值 (Address, 字节集_取指针 (字节集))
+返回 (指针到字节集 (Address, 欲取出字节的数目))
+
+.子程序 字节集_取右边, 字节集, , 
+.参数 字节集, 字节集, , 
+.参数 欲取出字节的数目, 整数型, , 
+
+.局部变量 Len, 整数型, , , 
+.局部变量 Address, 整数型, , , 
+
+赋值 (Len, 字节集_取长度 (字节集))
+.如果真 (小于 (Len, 1))
+    返回 ({  })
+.如果真结束
+.判断开始 (小于 (欲取出字节的数目, 1))
+    返回 ({  })
+.判断 (大于 (欲取出字节的数目, Len))
+    赋值 (欲取出字节的数目, Len)
+.默认
+    
+.判断结束
+赋值 (Address, 相减 (相加 (字节集_取指针 (字节集), Len), 欲取出字节的数目))
+返回 (指针到字节集 (Address, 欲取出字节的数目))
+
+.子程序 字节集_取空白, 字节集, , 支持斩月,但速度不是最快,不过简单,哈～～
+.参数 Len, 整数型, , 
+
+.局部变量 Address, 整数型, , , 
+.局部变量 返回值, 字节集, , , 
+
+.如果真 (小于 (Len, 1))
+    返回 ({  })
+.如果真结束
+赋值 (Address, LocalAlloc (64, Len))
+.如果真 (等于 (Address, 0))
+    返回 ({  })
+.如果真结束
+赋值 (返回值, 指针到字节集 (Address, Len))
+LocalFree (Address)
+返回 (返回值)
+
+.子程序 字节集_取长度, 整数型, , 
+.参数 字节集, 字节集, , 
+
+.局部变量 返回值, 整数型, , , 
+.局部变量 Address, 整数型, , , 
+
+置入代码 ({ 139, 93, 8, 139, 27, 139, 91, 4, 137, 93, 252 }) ' 取字节集长度
+ ' 如果真 (字节集 ＝ {  })
+ ' 返回 (0)
+ ' Address ＝ 字节集_取指针 (字节集)
+ ' RtlMoveMemory_Int (返回值, Address － 4, 4)
+返回 (返回值)
+
+.子程序 字节集_取中间, 字节集, , 
+.参数 字节集, 字节集, , 
+.参数 起始取出位置, 整数型, , 
+.参数 欲取出字节的数目, 整数型, , 
+
+.局部变量 Len, 整数型, , , 
+.局部变量 Address, 整数型, , , 
+
+赋值 (Len, 字节集_取长度 (字节集))
+.如果真 (小于 (Len, 1))
+    返回 ({  })
+.如果真结束
+.判断开始 (小于 (起始取出位置, 1))
+    赋值 (起始取出位置, 1)
+.判断 (大于 (起始取出位置, Len))
+    返回 ({  })
+.默认
+    
+.判断结束
+.如果真 (小于 (欲取出字节的数目, 1))
+    返回 ({  })
+.如果真结束
+.如果真 (大于 (相减 (相加 (欲取出字节的数目, 起始取出位置), 1), Len))
+    赋值 (欲取出字节的数目, 相加 (相减 (Len, 起始取出位置), 1))
+.如果真结束
+赋值 (Address, 相减 (相加 (字节集_取指针 (字节集), 起始取出位置), 1))
+返回 (指针到字节集 (Address, 欲取出字节的数目))
+
+.子程序 字节集_替换, 字节集, 公开, 将指定字节集的某一部分用其它的字节集替换,然后返回替换后的结果.
+.参数 欲替换其部分的字节集, 字节集, , 
+.参数 起始替换位置, 整数型, , 替换的起始位置,1为首位置,2为第2个位置,如此类推.
+.参数 替换长度, 整数型, , 
+.参数 用作替换的字节集, 字节集, 可空, 可以被省略.如果本参数被省略,则删除字节集中的指定部分.
+
+.局部变量 Len_X, 整数型, , , 
+.局部变量 Temp1, 字节集, , , 
+.局部变量 Temp2, 字节集, , , 
+
+.如果真 (等于 (欲替换其部分的字节集, {  }))
+    返回 ({  })
+.如果真结束
+.如果真 (小于 (替换长度, 1))
+    返回 (欲替换其部分的字节集)
+.如果真结束
+赋值 (Len_X, 字节集_取长度 (欲替换其部分的字节集))
+.如果真 (小于 (起始替换位置, 1))
+    赋值 (起始替换位置, 1)
+.如果真结束
+.如果真 (大于 (起始替换位置, Len_X))
+    返回 (欲替换其部分的字节集)
+.如果真结束
+赋值 (Temp1, 字节集_取左边 (欲替换其部分的字节集, 相减 (起始替换位置, 1)))
+赋值 (Temp2, 字节集_取右边 (欲替换其部分的字节集, 相加 (相减 (Len_X, 相加 (起始替换位置, 替换长度)), 1)))
+返回 (相加 (Temp1, 用作替换的字节集, Temp2))
+
+.子程序 字节集_子替换, 字节集, , 返回一个字节集,该字节集中指定的子字节集已被替换成另一子字节集,并且替换发生的次数也是被指定的.
+.参数 欲被替换的字节集, 字节集, , 
+.参数 欲被替换的子字节集, 字节集, , 
+.参数 用作替换的子字节集, 字节集, 可空, 可以被省略.如果省略本参数,则默认为空字节集.
+.参数 进行替换的起始位置, 整数型, 可空, 可以被省略.被替换子字节集的起始搜索位置.如果省略,默认从1开始.
+.参数 替换进行的次数, 整数型, 可空, 可以被省略.对子字节集进行替换的次数.如果省略,默认进行所有可能的替换.
+
+.局部变量 offset, 整数型, , "0", 
+.局部变量 count, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 返回值, 字节集, , , 
+.局部变量 Len, 整数型, , , 
+
+.如果真 (或者 (等于 (欲被替换的字节集, {  }), 等于 (欲被替换的子字节集, {  })))
+    返回 ({  })
+.如果真结束
+.如果真 (是否为空 (进行替换的起始位置))
+    赋值 (进行替换的起始位置, 1)
+.如果真结束
+赋值 (count, 字节集_子寻找 (欲被替换的字节集, 欲被替换的子字节集, offset, 进行替换的起始位置))
+.如果真 (等于 (count, 0))
+    返回 (欲被替换的字节集)
+.如果真结束
+.如果真 (或者 (等于 (是否为空 (替换进行的次数), 真), 大于 (替换进行的次数, count)))
+    赋值 (替换进行的次数, count)
+.如果真结束
+赋值 (返回值, 欲被替换的字节集)
+赋值 (Len, 字节集_取长度 (欲被替换的子字节集))
+.变量循环首 (替换进行的次数, 1, -1, i)
+    赋值 (返回值, 字节集_替换 (返回值, offset [i], Len, 用作替换的子字节集))
+.变量循环尾 ()
+返回 (返回值)
+
+.子程序 字节集_寻找, 整数型, 公开, 返回一字节集在另一字节集中最先出现的位置,位置值从 1 开始.如果未找到,返回 -1.
+.参数 被搜寻的字节集, 字节集, , 
+.参数 欲寻找的字节集, 字节集, , 
+.参数 起始搜寻位置, 整数型, 可空, 1为首位置,2为第2个位置,如此类推,如果被省略,则“寻找字节集”命令默认从首部开始,“倒找字节集”命令默认从尾部开始.
+
+置入代码 ({ 83, 82, 86, 87, 139, 125, 8, 139, 63, 133, 255, 116, 119, 139, 95, 4, 131, 251, 0, 126, 111, 141, 87, 8, 139, 117, 12, 139, 54, 133, 246, 116, 99, 139, 78, 4, 131, 249, 0, 126, 91, 141, 70, 8, 137, 69, 244, 139, 69, 16, 72, 131, 248, 0, 125, 2, 49, 192, 137, 69, 16, 41, 195, 57, 217, 127, 65, 73, 137, 77, 248, 41, 203, 137, 93, 252, 1, 194, 139, 117, 244, 137, 215, 137, 217, 138, 38, 70, 227, 42, 138, 7, 71, 73, 48, 224, 117, 246, 137, 250, 137, 203, 139, 77, 248, 227, 15, 138, 38, 138, 7, 70, 71, 48, 224, 117, 217, 73, 227, 2, 235, 241, 139, 69, 16, 3, 69, 252, 41, 216, 235, 3, 131, 200, 255, 95, 94, 90, 91, 131, 196, 12, 137, 236, 93, 194, 16, 0 })
+返回 (0)
+
+.子程序 字节集_子寻找, 整数型, 公开, 分割字节集时用
+.参数 X, 字节集, , 
+.参数 Y, 字节集, , 
+.参数 Z, 整数型, 数组, 
+.参数 StartOffset, 整数型, 可空, 
+
+.局部变量 i, 整数型, , , 
+.局部变量 j, 整数型, , , 
+.局部变量 Len_Y, 整数型, , , 
+
+清除数组 (Z)
+赋值 (i, 1)
+.如果 (是否为空 (StartOffset))
+    赋值 (j, 1)
+.否则
+    赋值 (j, StartOffset)
+.如果结束
+赋值 (Len_Y, 字节集_取长度 (Y))
+.判断循环首 (不等于 (i, -1))
+    赋值 (i, 字节集_寻找 (X, Y, j))
+    .如果真 (不等于 (i, -1))
+        加入成员 (Z, i)
+        赋值 (j, 相加 (i, Len_Y))
+    .如果真结束
+    系统_延时 (0)
+.判断循环尾 ()
+返回 (取数组成员数 (Z))
+
+.子程序 文本型_取空白, 文本型, , 支持斩月,但速度不是最快,不过简单,哈～～
+.参数 Len, 整数型, , 
+
+.局部变量 Address, 整数型, , , 
+.局部变量 返回值, 文本型, , , 
+
+.如果真 (小于 (Len, 1))
+    返回 (“”)
+.如果真结束
+赋值 (Address, LocalAlloc (64, 相加 (Len, 1)))
+.如果真 (等于 (Address, 0))
+    返回 (“”)
+.如果真结束
+FillMemory (Address, Len, 32)
+赋值 (返回值, 指针到文本 (Address))
+LocalFree (Address)
+返回 (返回值)
+
+.子程序 字节集_取指针, 整数型, , 
+.参数 字节集, 字节集, , 
+
+返回 (lstrcpyn_Bin (字节集, 字节集, 0))
+
+.子程序 wsprintfA, 整数型, , user32.dll
+.参数 lpstr, 文本型, 参考, 
+.参数 lpcstr, 文本型, , 
+.参数 参数, 整数型, 数组, 
+
+.局部变量 Address, 整数型, , , 
+
+赋值 (Address, GetProcAddress (GetModuleHandle (“user32.dll”), “wsprintfA”))
+置入代码 ({ 139, 69, 16, 139, 0, 139, 88, 4, 131, 251, 1, 124, 7, 255, 116, 152, 4, 75, 235, 244, 139, 69, 12, 255, 48, 139, 69, 8, 255, 48, 255, 85, 252 })
+ ' MOV EAX, DWORD PTR SS:[EBP+10]
+ ' MOV EAX, DWORD PTR DS:[EAX]
+ ' MOV EBX, DWORD PTR DS:[EAX+4]
+ ' @Jump1:
+ ' CMP EBX, 1
+ ' JL SHORT Jump2
+ ' PUSH DWORD PTR DS:[EAX+EBX*4+4]
+ ' DEC EBX
+ ' JMP SHORT Jump1
+ ' @Jump2:
+ ' MOV EAX, DWORD PTR SS:[EBP+C]
+ ' PUSH DWORD PTR DS:[EAX]
+ ' MOV EAX, DWORD PTR SS:[EBP+8]
+ ' PUSH DWORD PTR DS:[EAX]
+ ' CALL DWORD PTR SS:[EBP-4]
+ ' MOV ESP, EBP
+ ' POP EBP
+ ' RETN 0C
+返回 (0)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

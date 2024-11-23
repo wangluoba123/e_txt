@@ -1,0 +1,402 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.5a5x.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5a5x.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5a5x.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5a5x.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 NO_ERROR, "0", , 
+.常量 SERVICE_ACCEPT_STOP, "1", , 
+.常量 SERVICE_START_PENDING, "2", , 
+.常量 SERVICE_WIN32_OWN_PROCESS, "16", , 
+.常量 SERVICE_INTERACTIVE_PROCESS, "256", , 
+.常量 SERVICE_ACCEPT_SHUTDOWN, "4", , 
+.常量 SERVICE_RUNNING, "4", , 
+.常量 SERVICE_WIN32_SHARE_PROCESS, "32", , 
+.常量 INTERNET_OPEN_TYPE_PRECONFIG, "0", , 
+.常量 INTERNET_SERVICE_HTTP, "3", , 
+.常量 INTERNET_FLAG_RELOAD, "2147483648", , 
+.常量 HTTP_ADDREQ_FLAG_REPLACE, "2147483648", , 
+.常量 HTTP_ADDREQ_FLAG_ADD, "536870912", , 
+.常量 INTERNET_OPEN_TYPE_DIRECT, "1", , 
+.常量 SERVICE_CONTROL_SHUTDOWN, "5", , 
+.常量 SERVICE_CONTROL_STOP, "1", , 
+.常量 SERVICE_STOPPED, "1", , 
+.常量 SERVICE_START, "16", , 
+.常量 SERVICE_DEMAND_START, "3", , 
+.常量 SERVICE_ERROR_IGNORE, "0", , 
+.常量 DELETE, "65536", , 
+.常量 SERVICE_STOP, "32", , 
+.常量 SC_MANAGER_CREATE_SERVICE, "2", , 
+.常量 SERVICE_AUTO_START, "2", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+ ' 所需要的模块
+ ' E.WinInet C:\Documents and Settings\Administrator\桌面\E.WinInet.ec
+ ' 多线程模块 C:\Documents and Settings\Administrator\桌面\多线程模块.ec
+
+
+数据类型 domain, , 
+    .成员 login_email, 文本型, , , 
+    .成员 login_password, 文本型, , , 
+    .成员 domain_id, 文本型, , , 
+    .成员 record_id, 文本型, , , 
+    .成员 sub_domain, 文本型, , , 
+
+数据类型 SERVICE_TABLE_ENTRY, , 
+    .成员 lpServiceName, 整数型, , , 
+    .成员 lpServiceProc, 整数型, , , 
+
+数据类型 SERVICE_STATUS, , 
+    .成员 dwServiceType, 整数型, , , 
+    .成员 dwCurrentState, 整数型, , , 
+    .成员 dwControlsAccepted, 整数型, , , 
+    .成员 dwWin32ExitCode, 整数型, , , 
+    .成员 dwServiceSpecificExitCode, 整数型, , , 
+    .成员 dwCheckPoint, 整数型, , , 
+    .成员 dwWaitHint, 整数型, , , 
+
+数据类型 多线程许可证, 公开, 
+    .成员 DebugInfo, 整数型, , , 
+    .成员 LockCount, 整数型, , , 
+    .成员 RecursionCount, 整数型, , , 
+    .成员 OwningThread, 整数型, , , 
+    .成员 LockSemaphore, 整数型, , , 
+    .成员 SpinCount, 整数型, , , 
+
+
+.DLL命令 StartServiceCtrlDispatcher, 逻辑型, "", "StartServiceCtrlDispatcherA", , 
+    .参数 SERVICE_TABLE_ENTRY, SERVICE_TABLE_ENTRY, 数组, 
+
+.DLL命令 RegisterServiceCtrlHandler, 整数型, "", "RegisterServiceCtrlHandlerA", , 
+    .参数 lpServiceName, 文本型, , 
+    .参数 lpHandlerProc, 整数型, , 
+
+.DLL命令 SetServiceStatus, 逻辑型, "", "", , 
+    .参数 hServiceStatus, 整数型, , 
+    .参数 lpServiceStatus, SERVICE_STATUS, , 
+
+.DLL命令 lstrcpyn, 整数型, "", "lstrcpynA", , 
+    .参数 lpString1, 文本型, , 
+    .参数 lpString2, 文本型, , 
+    .参数 iMaxLength, 整数型, , 
+
+.DLL命令 OpenSCManager, 整数型, "", "OpenSCManagerA", , 
+    .参数 lpMachineName, 整数型, , 
+    .参数 lpDatabaseName, 整数型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+
+.DLL命令 CreateService, 整数型, "", "CreateServiceA", , 
+    .参数 hSCManager, 整数型, , 
+    .参数 lpServiceName, 文本型, , 
+    .参数 lpDisplayName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwServiceType, 整数型, , 
+    .参数 dwStartType, 整数型, , 
+    .参数 dwErrorControl, 整数型, , 
+    .参数 lpBinaryPathName, 文本型, , 
+    .参数 lpLoadOrderGroup, 整数型, , 
+    .参数 lpdwTagId, 整数型, , 
+    .参数 lpDependencies, 整数型, , 
+    .参数 lpServiceStartName, 整数型, , 
+    .参数 lpPassword, 整数型, , 
+
+.DLL命令 OpenService, 整数型, "", "OpenServiceA", , 
+    .参数 hSCManager, 整数型, , 
+    .参数 lpServiceName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+
+.DLL命令 StartService, 逻辑型, "", "StartServiceA", , 
+    .参数 服务句柄, 整数型, , 
+    .参数 dwNumServiceArgs, 整数型, , 
+    .参数 lpServiceArgVectors, 整数型, , 
+
+.DLL命令 CloseServiceHandle, 逻辑型, "", "", , 
+    .参数 SC对象句柄, 整数型, , 
+
+.DLL命令 ControlService, 逻辑型, "", "", , 
+    .参数 hService, 整数型, , 
+    .参数 dwControl, 整数型, , 
+    .参数 lpServiceStatus, SERVICE_STATUS, 传址, 
+
+.DLL命令 DeleteService, 逻辑型, "", "", , 
+    .参数 hService, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 wininet, eWinInet, , , 
+.程序集变量 线程, 多线程类, , , 
+.程序集变量 域名, domain, , "0", 
+.程序集变量 域名数, 整数型, , , 
+.程序集变量 ServiceName, 文本型, , , 
+.程序集变量 hServiceStatus, 整数型, , , 
+.程序集变量 SERVICE_STATUS, SERVICE_STATUS, , , 
+.子程序 _启动子程序, 整数型, , 
+.局部变量 SERVICE_TABLE_ENTRY, SERVICE_TABLE_ENTRY, , "2", 
+.局部变量 命令行, 文本型, , "0", 
+
+ ' --========  易语言资源网  (www.5a5x.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5a5x.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5a5x.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5a5x.com  ================--
+
+取命令行 (命令行)
+赋值 (ServiceName, “Gddns_Service”) ' 服务名
+.如果真 (等于 (取数组成员数 (命令行), 1))
+    .判断开始 (等于 (命令行 [1], “-i”)) ' 安装服务
+        InService ()
+    .判断 (等于 (命令行 [1], “-u”)) ' 卸载服务
+        UnService ()
+    .判断 (等于 (命令行 [1], “-s”)) ' 启动服务(由服务管理器启动)
+        赋值 (SERVICE_TABLE_ENTRY [1].lpServiceName, lstrcpyn (ServiceName, ServiceName, 0))
+        赋值 (SERVICE_TABLE_ENTRY [1].lpServiceProc, 到整数 (&ServiceMain))
+        StartServiceCtrlDispatcher (SERVICE_TABLE_ENTRY)
+    .默认
+        
+    .判断结束
+    
+.如果真结束
+返回 (0)
+
+.子程序 InService, 空白型, , 
+.局部变量 hSCManager, 整数型, , , 
+.局部变量 hService, 整数型, , , 
+
+赋值 (hSCManager, OpenSCManager (0, 0, #SC_MANAGER_CREATE_SERVICE))
+.如果真 (不等于 (hSCManager, 0))
+    赋值 (hService, CreateService (hSCManager, ServiceName, ServiceName, #SERVICE_START, #SERVICE_WIN32_OWN_PROCESS, #SERVICE_AUTO_START, #SERVICE_ERROR_IGNORE, 相加 (取运行目录 (), “\”, 取执行文件名 (), “ -s”), 0, 0, 0, 0, 0))
+    .如果真 (不等于 (hService, 0))
+        StartService (hService, 0, 0)
+        CloseServiceHandle (hService)
+    .如果真结束
+    CloseServiceHandle (hSCManager)
+.如果真结束
+
+
+.子程序 UnService, 空白型, , 
+.局部变量 hSCManager, 整数型, , , 
+.局部变量 hService, 整数型, , , 
+
+赋值 (hSCManager, OpenSCManager (0, 0, #SC_MANAGER_CREATE_SERVICE))
+.如果真 (不等于 (hSCManager, 0))
+    赋值 (hService, OpenService (hSCManager, ServiceName, 位或 (#DELETE, #SERVICE_STOP)))
+    .如果真 (不等于 (hService, 0))
+        .如果真 (ControlService (hService, #SERVICE_CONTROL_STOP, SERVICE_STATUS))
+            DeleteService (hService)
+        .如果真结束
+        CloseServiceHandle (hService)
+    .如果真结束
+    CloseServiceHandle (hSCManager)
+.如果真结束
+ ' 本源码来自易语言资源网(www.5a5x.com)
+
+.子程序 ServiceMain, 空白型, , 
+.参数 dwArgc, 整数型, , 
+.参数 lpszArgv, 文本型, , 
+
+
+.如果 (StartService ())
+    赋值 (hServiceStatus, RegisterServiceCtrlHandler (ServiceName, 到整数 (&Handler)))
+    .如果 (等于 (hServiceStatus, 0))
+        赋值 (SERVICE_STATUS.dwCurrentState, #SERVICE_START_PENDING) ' 服务状态
+    .否则
+        赋值 (SERVICE_STATUS.dwCurrentState, #SERVICE_RUNNING) ' 服务状态
+    .如果结束
+    
+.否则
+    赋值 (SERVICE_STATUS.dwCurrentState, #SERVICE_START_PENDING) ' 服务状态
+.如果结束
+
+赋值 (SERVICE_STATUS.dwServiceType, #SERVICE_WIN32_SHARE_PROCESS)
+赋值 (SERVICE_STATUS.dwControlsAccepted, 位或 (#SERVICE_ACCEPT_SHUTDOWN, #SERVICE_ACCEPT_STOP)) ' 可接受的控制指令 SERVICE_ACCEPT_SHUTDOWN 关机时发送 , SERVICE_ACCEPT_STOP 停止服务时发送
+赋值 (SERVICE_STATUS.dwWin32ExitCode, #NO_ERROR)
+SetServiceStatus (hServiceStatus, SERVICE_STATUS) ' 设置服务状态
+
+.子程序 Handler, 空白型, , 
+.参数 fdwControl, 整数型, , 
+
+.如果真 (或者 (等于 (fdwControl, #SERVICE_CONTROL_SHUTDOWN), 等于 (fdwControl, #SERVICE_CONTROL_STOP)))
+    赋值 (SERVICE_STATUS.dwCurrentState, #SERVICE_STOPPED) ' 服务状态
+    线程.未知函数_67175355 ()
+.如果真结束
+SetServiceStatus (hServiceStatus, SERVICE_STATUS) ' 设置服务状态
+
+.子程序 StartService, 逻辑型, , 
+.局部变量 i, 整数型, , , 
+.局部变量 id, 文本型, , , 
+.局部变量 login_email, 文本型, , , 
+.局部变量 login_password, 文本型, , , 
+.局部变量 domain_id, 文本型, , , 
+.局部变量 record_id, 文本型, , , 
+.局部变量 sub_domain, 文本型, , , 
+
+.如果 (文件是否存在 (相加 (取运行目录 (), “\config.ini”)))
+    ' 本源码来自易语言资源网(www.5a5x.com)
+    .计次循环首 (10, i)
+        赋值 (id, 到文本 (i))
+        赋值 (login_email, 读配置项 (相加 (取运行目录 (), “\config.ini”), id, “login_email”, ))
+        
+        .如果真 (不等于 (login_email, “”))
+            赋值 (login_password, 读配置项 (相加 (取运行目录 (), “\config.ini”), id, “login_password”, ))
+            .如果真 (不等于 (login_password, “”))
+                赋值 (domain_id, 读配置项 (相加 (取运行目录 (), “\config.ini”), id, “domain_id”, ))
+                .如果真 (不等于 (domain_id, “”))
+                    赋值 (record_id, 读配置项 (相加 (取运行目录 (), “\config.ini”), id, “record_id”, ))
+                    .如果真 (不等于 (record_id, “”))
+                        赋值 (sub_domain, 读配置项 (相加 (取运行目录 (), “\config.ini”), id, “sub_domain”, ))
+                        赋值 (域名数, 相加 (域名数, 1))
+                        重定义数组 (域名, 真, 域名数)
+                        赋值 (域名 [域名数], login_email, login_email)
+                        赋值 (域名 [域名数], login_password, login_password)
+                        赋值 (域名 [域名数], domain_id, domain_id)
+                        赋值 (域名 [域名数], record_id, record_id)
+                        赋值 (域名 [域名数], sub_domain, sub_domain)
+                    .如果真结束
+                    
+                .如果真结束
+                
+            .如果真结束
+            
+        .如果真结束
+        
+    .计次循环尾 ()
+    .如果 (等于 (域名数, 0))
+        返回 (假)
+    .否则
+        返回 (线程.未知函数_67175354 (&Service))
+    .如果结束
+    
+.否则
+    返回 (假)
+.如果结束
+
+
+.子程序 Service, 空白型, , 
+.判断循环首 (真)
+    Update ()
+    延时 (60000)
+.判断循环尾 ()
+
+.子程序 Update, 空白型, , 
+.局部变量 tmp, 文本型, , , 
+.局部变量 ip, 文本型, 静态, , 
+.局部变量 i, 整数型, , , 
+
+赋值 (tmp, GetIP ())
+.如果真 (等于 (tmp, “”))
+    赋值 (tmp, “127.0.0.1”)
+.如果真结束
+
+.如果真 (不等于 (ip, tmp))
+    赋值 (ip, tmp)
+    ' 本源码来自易语言资源网(www.5a5x.com)
+    .计次循环首 (域名数, i)
+        wininet.未知函数_67175380 (“http://www.dnspod.com/API/Record.Modify”, 相加 (“login_email=”, 域名 [i], login_email, “&login_password=”, 域名 [i], login_password, “&format=xml&domain_id=”, 域名 [i], domain_id, “&record_id=”, 域名 [i], record_id, “&sub_domain=”, 域名 [i], sub_domain, “&record_type=A&record_line=default&value=”, ip, “&mx=1&ttl=15”))
+    .计次循环尾 ()
+.如果真结束
+
+
+
+.子程序 GetIP, 文本型, , 
+.局部变量 tmp, 文本型, , , 
+.局部变量 a, 整数型, , , 
+.局部变量 b, 整数型, , , 
+
+赋值 (tmp, 到文本 (wininet.未知函数_67175379 (“http://www.ip138.com/ips.asp”)))
+赋值 (a, 寻找文本 (tmp, “您的IP地址是：[”, , 假))
+.如果 (等于 (a, -1))
+    返回 (“”)
+.否则
+    赋值 (a, 相加 (a, 15))
+    赋值 (b, 寻找文本 (tmp, “]”, a, 假))
+    返回 (取文本中间 (tmp, a, 相减 (b, a)))
+.如果结束
+
+
+.类模块 eWinInet, , , 
+
+.子程序 读取数据, 字节集, , Get 成功返回 服务器的返回数据 , 失败返回空字节集
+.参数 读取地址, 文本型, , 完整地址 例: http://www.abc.com/index.php
+
+
+
+.子程序 提交数据, 字节集, , Post 成功返回 服务器的返回数据 , 失败返回空字节集
+.参数 提交地址, 文本型, , 完整地址 例: http://www.abc.com/post.php
+.参数 数据, 文本型, , 
+
+
+
+.类模块 多线程类, , , 
+
+.子程序 创建线程, 逻辑型, , 创建线程
+.参数 线程函数, 子程序指针, , 线程函数
+.参数 参数, 整数型, 可空, 线程函数的参数
+
+
+
+.子程序 结束线程, 逻辑型, , 关闭线程
+
+
+.子程序 挂起线程, 逻辑型, , 挂起线程
+
+
+.子程序 恢复运行, 逻辑型, , 恢复运行
+
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 创建进入许可证, 多线程许可证, , 创建一个多线程许可证
+
+
+.子程序 删除进入许可证, 空白型, , 删除一个多线程许可证
+.参数 进入许可证, 多线程许可证, , 
+
+
+
+.子程序 进入许可区, 空白型, , 进入许可区
+.参数 进入许可证, 多线程许可证, , 
+
+
+
+.子程序 退出许可区, 空白型, , 离开许可区
+.参数 进入许可证, 多线程许可证, , 
+
+
+
+.子程序 创建远线程, 整数型, , 
+.参数 进程句柄, 整数型, , 
+.参数 函数指针, 整数型, , 
+.参数 线程参数, 整数型, , 
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,87 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：监视Explorer模块
+ ' 程序描述：监视Explorer模块
+http://56q.5d6d.com
+lbkdn@qq.com
+ ' 程序作者：离不开电脑
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：lbkdn@qq.com
+ ' 主页地址：http://56q.5d6d.com
+ ' 版权声明：监视Explorer模块
+http://56q.5d6d.com
+lbkdn@qq.com
+ ' 版本号：1.1
+ ' 创建号：0.0
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+
+.DLL命令 CallWindowProc, 整数型, "user32", "CallWindowProcA", , 
+    .参数 lpPrevWndFunc, 子程序指针, , 
+    .参数 hWnd, 整数型, , 
+    .参数 Msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 SetWindowLong, 子程序指针, "user32", "SetWindowLongA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+    .参数 dwNewLong, 子程序指针, , 
+
+.DLL命令 RegisterWindowMessageA, 整数型, "", "RegisterWindowMessageA", , 
+    .参数 lpString, 文本型, , 
+
+.程序集 程序集1, , , 
+
+.程序集变量 procOld, 子程序指针, , , 
+.程序集变量 MyMsg, 整数型, , , 
+.程序集变量 Explorer, 子程序指针, , , 
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.子程序 监视Explorer, 空白型, 公开, 自动拦截explorer被重新启动的消息(Explorer.exe程序是系统的外壳程序，负责显示桌面、任务栏等等“任务”) 最好放在您的程序的启动完毕子程序下面,可以用来做托盘重新显示等等功能
+.参数 句柄, 整数型, , 主窗口句柄
+.参数 回调函数, 子程序指针, , 用于接该事件的子程序指针(例如:&Explorer处理),然后在你的程序建立一个名为"Explorer处理"的子程序，包含4个整数型参数
+
+赋值 (MyMsg, RegisterWindowMessageA (“TaskbarCreated”))
+赋值 (Explorer, 回调函数)
+赋值 (procOld, SetWindowLong (句柄, -4, &WindowProc))
+
+.子程序 WindowProc, 整数型, , 
+.参数 hwnd, 整数型, , 
+.参数 iMsg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.判断开始 (等于 (iMsg, MyMsg))
+    CallWindowProc (Explorer, hwnd, iMsg, wParam, lParam)
+.默认
+    
+.判断结束
+返回 (CallWindowProc (procOld, hwnd, iMsg, wParam, lParam))
+
+.子程序 停止监视Explorer, 空白型, 公开, 
+.参数 句柄, 整数型, , 窗口句柄
+
+SetWindowLong (句柄, -4, procOld)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

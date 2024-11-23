@@ -1,0 +1,145 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.图片 boot, " ' 已保存到：D:\易语言学习\Data\绝对磁盘读写--写软盘引导区.e\boot", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 安全性结构_, , SECURITY_ATTRIBUTES
+    .成员 nLength, 整数型, , , 
+    .成员 lpSecurityDescriptor, 整数型, , , 
+    .成员 bInheritHandle, 整数型, , , 
+
+
+.DLL命令 CreateFileA, 整数型, "kernel32.dll", "CreateFileA", , CreateFileA
+    .参数 打开文件名, 文本型, , lpFileName，要打开的文件的名字
+    .参数 访问权限, 整数型, , dwDesiredAccess，访问权限
+    .参数 共享方式, 整数型, , dwShareMode，共享方式
+    .参数 安全特性, 整数型, , lpSecurityAttributes，安全特性信息
+    .参数 创建方式, 整数型, , dwCreationDisposition，创建方式
+    .参数 文件属性, 整数型, , dwFlagsAndAttributes，参见相关帮助
+    .参数 从文件复制文件属性, 整数型, , hTemplateFile，参见相关帮助
+
+.DLL命令 关闭内核对象_, 整数型, "kernel32", "CloseHandle", , 关闭一个内核对象。其中包括文件、文件映射、进程、线程、安全和同步对象等。涉及文件处理时，这个函数通常与vb的close命令相似。应尽可能的使用close，因为它支持vb的差错控制。注意这个函数使用的文件句柄与vb的文件编号是完全不同的  非零表示成功，零表示失败。会设置GetLastError
+    .参数 对象句柄, 整数型, , 欲关闭的一个对象的句柄;
+
+.DLL命令 SetFilePointer, 整数型, "", "SetFilePointer", , 
+    .参数 hFile, 空白型, , 
+    .参数 lDistanceToMove, 空白型, , 
+    .参数 lpDistanceToMoveHigh, 空白型, , 
+    .参数 dwMoveMethod, 空白型, , 
+
+.DLL命令 WriteFile, 整数型, "", "WriteFile", , 
+    .参数 hFile, 空白型, , 
+    .参数 lpBuffer, 字节集, , 
+    .参数 nNumberOfBytesToWrite, 空白型, , 
+    .参数 lpNumberOfBytesWritten, 空白型, 传址, 
+    .参数 lpOverlapped, 空白型, , 
+
+.DLL命令 ReadFile, 整数型, "", "ReadFile", , 
+    .参数 hFile, 空白型, , 
+    .参数 lpBuffer, 字节集, , 
+    .参数 nNumberOfBytesToWrite, 空白型, , 
+    .参数 lpNumberOfBytesWritten, 空白型, 传址, 
+    .参数 lpOverlapped, 空白型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 r, 逻辑型, , , 
+.局部变量 tmp, 字节集, , , 
+.局部变量 文本, 文本型, , , 
+
+赋值 (tmp, 取字节集左边 (#boot, 30))
+赋值 (文本, 取文本左边 (., 255))
+赋值 (tmp, 相加 (tmp, 到字节集 (文本), 取空白字节集 (相减 (512, 30, 取文本长度 (文本), 2)), { 85, 170 }))
+赋值 (r, 写入A盘引导区 (tmp))
+信息框 (到文本 (r), 0, )
+
+
+.子程序 写入A盘引导区, 逻辑型, , 
+.参数 字节集, 字节集, , 
+
+.局部变量 hDevice, 空白型, , , 
+.局部变量 dwBytesWritten, 整数型, , , 
+.局部变量 tmp, 字节集, , , 
+.局部变量 dwBytesRead, 整数型, , , 
+
+
+赋值 (hDevice, CreateFileA (“\\.\A:”, 3221225472, 3, 0, 3, 0, 0))
+ ' GENERIC_READ = 80000000h | GENERIC_WRITE = 40000000h  = 3221225472,
+ ' FILE_SHARE_READ = 1 | FILE_SHARE_WRITE = 2,
+ ' NULL,
+ ' OPEN_EXISTING = 3,
+ ' 0,
+ ' NULL);
+
+.如果真 (等于 (hDevice, -1)) ' INVALID_HANDLE_VALUE=-1
+     ' 信息框 (“失败!”, 0, )
+    返回 (假)
+    
+.如果真结束
+
+
+ ' // setting the file pointer to the start of the
+ ' //     sector we want to read .
+ ' //移动文件指针到需要读取位置
+SetFilePointer (hDevice, 0, 0, 0) ' FILE_BEGIN=0
+
+
+.如果真 (等于 (WriteFile (hDevice, 字节集, 取字节集长度 (字节集), dwBytesWritten, 0), 0))
+     ' 信息框 (“写入失败!”, 0, )
+    返回 (假)
+.如果真结束
+
+ ' // setting the file pointer to the start of the
+ ' //     sector we want to read .
+ ' //移动文件指针到需要读取位置
+ ' // reading sector(s) ...
+ ' //读数据
+
+ ' SetFilePointer (hDevice, 0, 0, 0)
+ ' tmp ＝ 取空白字节集 (取字节集长度 (字节集))
+ ' 如果真 (ReadFile (hDevice, tmp, 取字节集长度 (tmp), dwBytesRead, 0) ＝ 0)
+ ' 信息框 (“读出失败”, 0, )
+ ' 返回 (假)
+
+
+ ' //关闭
+关闭内核对象_ (hDevice)
+
+ ' 信息框 (“成功！”, 0, “Floppy writer”)
+返回 (真)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

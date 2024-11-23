@@ -1,0 +1,385 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：WaitProcessTerminateSelf
+ ' 程序描述：无DLL远程执行代码第二弹！
+
+远程让一个进程等待另一个进程退出并退出自己,自己进程不参数监视.
+
+BY：路过已错过
+Date：20080924
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 MEM_RELEASE, "32768", , 
+.常量 MEM_COMMIT, "4096", , 
+.常量 PAGE_EXECUTE_READWRITE, "64", 公开, 
+.常量 , , , 
+.常量 SYNCHRONIZE, "1048576", , 同步标记,用于等待信号
+.常量 PROCESS_TERMINATE, "1", , 可销毁标记
+.常量 PROCESS_CREATE_THREAD, "2", , 
+.常量 PROCESS_VM_OPERATION, "8", , 
+.常量 PROCESS_VM_READ, "16", , 
+.常量 PROCESS_VM_WRITE, "32", , 
+.常量 PROCESS_QUERY_INFORMATION, "1024", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 Info, , 
+    .成员 Addr, 整数型, , , 函数地址
+    .成员 Mem, 整数型, , , 远程指令地址
+    .成员 Code, 字节集, , , 构造的指令
+    .成员 lpCode, 整数型, , , 指令地址的指针
+    .成员 Len, 整数型, , , 指令长度
+
+
+.DLL命令 CreateRemoteThread, 整数型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 整数型, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, 传址, 
+
+.DLL命令 WaitForSingleObject, 整数型, "", "", , 
+    .参数 hHandle, 整数型, , 
+    .参数 dwMilliseconds, 整数型, , 
+
+.DLL命令 LoadLibraryA, 整数型, "", "", , 
+    .参数 lpFileName, 文本型, , ;
+
+.DLL命令 GetProcAddress, 整数型, "", "", , 
+    .参数 hModule, 整数型, , 
+    .参数 lpProcName, 文本型, , 
+
+.DLL命令 GetExitCodeThread, 整数型, "", "", , 
+    .参数 hThread, 整数型, , 
+    .参数 lpExitCode, 整数型, 传址, 
+
+.DLL命令 _P_BIN, 整数型, "", "lstrcatA", , 
+    .参数 lpString1, 字节集, 传址, 
+    .参数 lpString2, 整数型, 传址, 
+
+.DLL命令 OpenProcess, 整数型, "", "", 公开, 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 逻辑型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 CloseHandle, 逻辑型, "", "", 公开, 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 VirtualAllocEx, 整数型, "", "", 公开, 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+    .参数 flProtect, 整数型, , 
+
+.DLL命令 VirtualFreeEx, 逻辑型, "", "", 公开, 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+
+.DLL命令 VirtualProtectEx, 逻辑型, "", "", 公开, 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flNewProtect, 整数型, , 
+    .参数 lpflOldProtect, 整数型, 传址, 
+
+.DLL命令 ReadProcessMemory, 逻辑型, "", "", 公开, 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 整数型, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, , 
+
+.DLL命令 WriteProcessMemory, 逻辑型, "", "", 公开, 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 整数型, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, 传址, 
+
+.程序集 LocalFunction, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+ ' C_PID,B进程关闭后,C进程将自动关闭.
+ ' B_PID,用于让C进程监视.
+ ' WaitProcessTerminateSelf (C_PID, B_PID)
+
+.子程序 WaitProcessTerminateSelf, 逻辑型, , 
+.参数 hRemoteProcessId, 整数型, , 需要监视等待[hWaitProcessId]并关闭自己的主进程句柄
+.参数 hWaitProcessId, 整数型, , 需要等待进程退出的句柄
+
+.局部变量 hProcess, 整数型, , , 
+.局部变量 rhProcess, 整数型, , , 
+.局部变量 匿名局部变量_222, 空白型, , , 
+.局部变量 Wait, Info, , , 
+.局部变量 Close, Info, , , 
+.局部变量 Terminate, Info, , , 
+.局部变量 匿名局部变量_273, 空白型, , , 
+.局部变量 Code, 字节集, , , 
+.局部变量 Arg, 整数型, , "0", 
+.局部变量 lpAddr, 整数型, , , 
+.局部变量 hThread, 整数型, , , 
+
+ ' 思路解析
+ ' 示例：当前我们自己为A进程
+ ' 我们需要让B进程退出时C进程也跟着退出。
+ ' 达到我们不需要监控，自动退出的目的。
+ ' 请看代码一步步的操作和解释。
+ ' hC = A->Open(C)
+赋值 (hProcess, 未知函数_67174403 (hRemoteProcessId)) ' 因为需要C等待B关闭了退出，C就是主动监视B进程了，我们打开C进程。
+.如果真 (等于 (hProcess, 0))
+    返回 (假)
+.如果真结束
+ ' hB = C->Open(B)
+赋值 (rhProcess, RemoteOpenProcess (hProcess, 位或 (#PROCESS_TERMINATE, #SYNCHRONIZE), 假, hWaitProcessId)) ' 让C进程打开B进程，我们得到的返回值就为C进程打开的B进程句柄
+.如果真 (等于 (rhProcess, 0))
+    未知函数_67174408 (rhProcess)
+    返回 (假)
+.如果真结束
+
+ ' 构造等待函数指令
+重定义数组 (Arg, 假, 2) ' 重新定义WaitForSingleObject的参数数量
+赋值 (Arg [1], rhProcess) ' 参数为C进程打开的B进程句柄。
+赋值 (Arg [2], -1) ' 无限等待时间
+赋值 (Wait.Addr, GetAddress (“kernel32.dll”, “WaitForSingleObject”))
+赋值 (Wait.Code, MakeCallCode (Wait.Addr, Arg))
+
+ ' 构造关闭句柄指令
+重定义数组 (Arg, 假, 1) ' 重新定义CloseHandle的参数数量
+赋值 (Arg [1], rhProcess) ' 参数为C进程打开的B进程句柄。
+赋值 (Close.Addr, GetAddress (“kernel32.dll”, “CloseHandle”))
+赋值 (Close.Code, MakeCallCode (Close.Addr, Arg))
+
+ ' 构造终止进程函数指令
+重定义数组 (Arg, 假, 2) ' 重新定义WaitForSingleObject的参数数量
+赋值 (Arg [1], -1) ' 为C进程自己的伪句柄
+赋值 (., 未知函数_67174657 (“kernel32.dll”, “TerminateProcess”))
+赋值 (Terminate.Code, MakeCallCode (Terminate.Addr, Arg))
+
+ ' 修改指令
+ ' 每构造一个函数调用指令,最后的代码为返回retn
+ ' 因为我们在Wait后不能返回,Close也不能返回,Terminate后才能返回
+ ' 所以要修改指令,替换掉Wait后两个的retn和nop指令,
+
+赋值 (Wait.Code, 取字节集左边 (Wait.Code, 相减 (取字节集长度 (Wait.Code), 2)))
+赋值 (Close.Code, 取字节集左边 (Close.Code, 相减 (取字节集长度 (Close.Code), 2)))
+赋值 (Code, 相加 (Wait.Code, Close.Code, Terminate.Code)) ' 合并指令
+ ' 当前为止,用函数来表达就是下面的意思
+ ' ----------表达为C进程里调用的函数.
+ ' hProcess = OpenProcess (位或 (#PROCESS_TERMINATE, #SYNCHRONIZE), 假, hB_PID) '打开B进程,我们已经事先远程实现了
+ ' '如下为远程调用的指令
+ ' WaitForSingleObject (hProcess, -1) '等待远程进程关闭
+ ' CloseHandle (hProcess) '关闭打开的进程句柄
+ ' TerminateProcess (GetCurrentProcess(), 0) '结束自己
+ ' 返回() '自己都已经结束自己了,哪还来的这句~~@_@
+ ' ----------
+ ' 在C进程分配空间,来存放指令
+赋值 (lpAddr, 未知函数_67174404 (hProcess, 取字节集长度 (Code)))
+.如果真 (等于 (lpAddr, 0)) ' 如果分配失败
+    RemoteCloseHandle (hProcess, rhProcess) ' 在C进程关闭打开的B进程句柄
+    未知函数_67174408 (hProcess) ' 关闭C进程句柄
+    返回 (假)
+.如果真结束
+ ' 将指令写入到C进程
+.如果真 (等于 (未知函数_67174406 (hProcess, lpAddr, GetBinPtr (Code), 取字节集长度 (Code)), 假)) ' 如果分配失败
+    未知函数_67174407 (hProcess, lpAddr) ' 释放C进程的指令空间
+    RemoteCloseHandle (hProcess, rhProcess)
+    未知函数_67174687 ()
+    返回 (假)
+.如果真结束
+ ' 创建远程线程,运行这段指令,让C进程进入等待B的操作
+赋值 (hThread, CreateRemoteThread (hProcess, 0, 0, lpAddr, 0, 0, 0)) ' 创建远程线程,让C进程执行指令
+未知函数_167837707 (hThread)
+未知函数_67174408 (hProcess)
+ ' 明眼人看到这里也许就看得出一个BUG了,
+ ' 对了,没有释放远程内存lpAddr~
+ ' 可一释放,指令还怎么运行呢? 留给windows的垃圾回收吧.^_^
+返回 (真)
+
+.子程序 CreateProcessThread, 整数型, , 
+.参数 hProcess, 整数型, , 
+.参数 lpStartAddress, 整数型, , 
+.参数 lpParameter, 整数型, 可空, 
+
+.局部变量 hThread, 整数型, , , 
+.局部变量 ret, 整数型, , , 
+
+赋值 (hThread, 未知函数_167837907 (hProcess, 0, 0, lpStartAddress, lpParameter, 0, 0)) ' 创建远程线程
+未知函数_167837908 (hThread, -1) ' 等待线程执行完毕
+未知函数_167837909 (hThread, ret) ' 获取返回值
+未知函数_167837910 (hThread) ' 关闭线程内核对象
+返回 (ret)
+
+.子程序 GetBinPtr, 整数型, , 
+.参数 lpBin, 字节集, 参考, 
+
+返回 (未知函数_167837911 (lpBin, 0))
+
+.程序集 MakeCode, , , 
+
+.子程序 MakeOpenProcess, 空白型, , 
+.参数 hProcess, 整数型, , 
+.参数 Info, 未知类型0x41010067, 参考, 
+.参数 dwDesiredAccess, 整数型, , 
+.参数 bInheritHandle, 逻辑型, , 
+.参数 dwProcessId, 整数型, , 
+
+.局部变量 Arg, 整数型, , "3", 
+
+赋值 (Arg [1], dwDesiredAccess)
+赋值 (Arg [2], 到整数 (bInheritHandle))
+赋值 (Arg [3], dwProcessId)
+赋值 (Info., 未知函数_67174506 (“kernel32.dll”, “OpenProcess”))
+赋值 (Info., 未知函数_67174504 (Info., Arg))
+未知函数_67174505 (hProcess, Info., Info., Info., Info.)
+
+.子程序 MakeCloseHandle, 空白型, , 
+.参数 hProcess, 整数型, , 
+.参数 Info, 未知类型0x410100A6, 参考, 
+.参数 hObject, 整数型, , 
+
+.局部变量 Arg, 整数型, , "1", 
+
+赋值 (Arg [1], hObject)
+赋值 (Info., 未知函数_67174569 (“kernel32.dll”, “CloseHandle”))
+赋值 (Info., 未知函数_67174568 (Info., Arg))
+未知函数_67174567 (hProcess, Info., Info., Info., Info.)
+
+.子程序 InitMemSingle, 整数型, , 
+.参数 hProcess, 整数型, , 
+.参数 Code, 字节集, 参考, 
+.参数 hMem, 整数型, 参考, 
+.参数 nSize, 整数型, 参考, 
+.参数 lpCode, 整数型, 参考, 
+
+赋值 (lpCode, 未知函数_67174538 (Code))
+赋值 (nSize, 取字节集长度 (Code))
+.如果真 (不等于 (hMem, 0))
+    未知函数_67174540 (hProcess, hMem)
+.如果真结束
+赋值 (hMem, 未知函数_67174539 (hProcess, nSize))
+.如果真 (等于 (hMem, 0))
+    返回 (0)
+.如果真结束
+.如果真 (等于 (未知函数_67174541 (hProcess, hMem, lpCode, nSize), 假))
+    返回 (0)
+.如果真结束
+返回 (hMem)
+
+.子程序 GetAddress, 整数型, , 
+.参数 lpFileName, 文本型, , ;
+.参数 lpProcName, 文本型, , 
+
+返回 (未知函数_167837816 (未知函数_167837817 (lpFileName), lpProcName))
+
+.子程序 MakeCallCode, 字节集, , 
+.参数 addr, 整数型, , 
+.参数 args, 整数型, 可空 数组, 
+
+.局部变量 i, 整数型, , , 
+.局部变量 code, 字节集, , , 
+
+赋值 (code, 相加 ({ 184 }, 到字节集 (addr)))
+.变量循环首 (取数组成员数 (args), 1, -1, i)
+    赋值 (code, 相加 (code, { 104 }, 到字节集 (args [i])))
+.变量循环尾 ()
+赋值 (code, 相加 (code, { 255, 208, 195, 144 }))
+返回 (code)
+
+.程序集 RemoteFunction, , , 
+
+.子程序 RemoteOpenProcess, 整数型, , 
+.参数 hProcess, 整数型, , 本地打开的远程进程
+.参数 dwDesiredAccess, 整数型, , 
+.参数 bInheritHandle, 逻辑型, , 
+.参数 dwProcessId, 整数型, , 
+
+.局部变量 OpenProcess, 未知类型0x4101009B, , , 
+.局部变量 RhProcess, 整数型, , , 
+
+未知函数_67174556 (hProcess, OpenProcess, dwDesiredAccess, bInheritHandle, dwProcessId)
+赋值 (RhProcess, 未知函数_67174557 (hProcess, OpenProcess.))
+未知函数_67174558 (hProcess, OpenProcess.)
+返回 (RhProcess)
+
+.子程序 RemoteCloseHandle, 逻辑型, , 
+.参数 hProcess, 整数型, , 
+.参数 hObject, 整数型, , 
+
+.局部变量 CloseHandle, 未知类型0x4101009B, , , 
+.局部变量 Ret, 逻辑型, , , 
+
+未知函数_67174560 (hProcess, CloseHandle, hObject) ' 构造远程执行的[CloseHandle]指令
+赋值 (Ret, 不等于 (未知函数_67174557 (hProcess, CloseHandle.), 0)) ' 执行远程[CloseHandle]指令
+未知函数_67174558 (hProcess, CloseHandle.) ' 释放远程创建的指令内存空间
+返回 (Ret) ' 返回执行结果
+
+.程序集 VirtualMemory, , , 
+
+.子程序 VOpen, 整数型, , 
+.参数 hProcessId, 整数型, , 
+
+返回 ()
+
+.子程序 VAlloc, 整数型, , 
+.参数 hProcess, 整数型, , 
+.参数 dwSize, 整数型, , 
+
+返回 ()
+
+.子程序 VRead, 逻辑型, , 
+.参数 hProcess, 整数型, , 
+.参数 lpBaseAddress, 整数型, , 
+.参数 lpBuffer, 整数型, , 
+.参数 nSize, 整数型, , 
+
+返回 (未知函数_167838023 (hProcess, lpBaseAddress, lpBuffer, nSize, 0))
+
+.子程序 VWrite, 逻辑型, , 
+.参数 hProcess, 整数型, , 
+.参数 lpBaseAddress, 整数型, , 
+.参数 lpBuffer, 整数型, , 
+.参数 nSize, 整数型, , 
+
+返回 (未知函数_167838024 (hProcess, lpBaseAddress, lpBuffer, nSize, 0))
+
+.子程序 VFree, 逻辑型, , 
+.参数 hProcess, 整数型, , 
+.参数 lpAddress, 整数型, , 
+
+返回 ()
+
+.子程序 VClose, 逻辑型, , 
+.参数 hProcess, 整数型, , 
+
+返回 (未知函数_167838027 (hProcess))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

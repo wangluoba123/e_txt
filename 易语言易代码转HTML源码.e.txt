@@ -1,0 +1,1133 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：BJbJR_别崇拜哥_哥只是个传说_SDrGw
+ ' 程序描述：IMoQE_别崇拜哥_哥只是个传说_VKxWu
+@备注:
+fequC_别崇拜哥_哥只是个传说_XEGCT
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：vjpSv_别崇拜哥_哥只是个传说_TRDGH
+ ' 联系地址：BQYYK_别崇拜哥_哥只是个传说_fNfkA
+ ' 联系电话：idEmn_别崇拜哥_哥只是个传说_URRox
+ ' 传真号码：BhrtA_别崇拜哥_哥只是个传说_hQsaB
+ ' 电子信箱：LsDya_别崇拜哥_哥只是个传说_TsRzY
+ ' 主页地址：EdSrL_别崇拜哥_哥只是个传说_skeZC
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：2.2
+ ' 创建号：0.0
+
+窗口 QrGWc_SQtXO ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 820
+    高度 = 530
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 0
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 真
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “Test”
+    帮助文件名 = “”
+
+
+
+.常量 ANqjf_别崇拜哥_哥只是个传说_qmNgo, "“.版本 2
+.支持库 BmpOperate
+.支持库 EdirectX
+.支持库 Test
+
+.程序集 测试程序集
+.程序集变量 aaaaa, 文本型
+.程序集变量 bbbbb, 整数型, , "9"
+
+.子程序 编码, 文本型, 公开, BASE64编码处理(返回编码后的文本)
+.参数 待编码数据, 字节集, , 待编码字节集
+.局部变量 余数
+.局部变量 临时, 字节型, , "3"
+.局部变量 变量
+.局部变量 集合, 字节集
+.局部变量 长度, 整数型
+.局部变量 字符, 字节集
+.局部变量 i
+
+长度 ＝ 取字节集长度 (待编码数据)
+.如果真 (长度 ＜ 1)
+    返回 (“”)
+.如果真结束
+余数 ＝ 长度 ％ 3
+.如果真 (余数 ＞ 0)
+    待编码数据 ＝ 待编码数据 ＋ 取空白字节集 (3 － 余数)
+.如果真结束
+长度 ＝ 取字节集长度 (待编码数据)
+字符 ＝ 取空白字节集 (长度 × 4 ÷ 3)
+i ＝ 1
+集合 ＝ 到字节集 (“ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/”)
+.变量循环首 (1, 长度, 3, 变量)
+    临时 [1] ＝ 待编码数据 [变量]
+    临时 [2] ＝ 待编码数据 [变量 ＋ 1]
+    临时 [3] ＝ 待编码数据 [变量 ＋ 2]
+    字符 [i] ＝ 集合 [右移 (临时 [1], 2) ＋ 1]
+    字符 [i ＋ 1] ＝ 集合 [左移 (位与 (临时 [1], 3), 4) ＋ 右移 (临时 [2], 4) ＋ 1]
+    字符 [i ＋ 2] ＝ 集合 [左移 (位与 (临时 [2], 15), 2) ＋ 右移 (临时 [3], 6) ＋ 1]
+    字符 [i ＋ 3] ＝ 集合 [位与 (临时 [3], 63) ＋ 1]
+    i ＝ i ＋ 4
+.变量循环尾 ()
+.如果真 (余数 ＞ 0)
+    长度 ＝ 取字节集长度 (字符)
+    .如果 (余数 ＝ 1)
+        字符 [长度 － 1] ＝ 取代码 (“=”, )
+        字符 [长度] ＝ 取代码 (“=”, )
+    .否则
+        字符 [长度] ＝ 取代码 (“=”, )
+    .如果结束
+
+.如果真结束
+返回 (到文本 (字符))
+
+.子程序 解码, 字节集, 公开, BASE64解码处理(返回解码后的字节集数据)
+.参数 编码文本, 文本型, 参考, 待解码的文本
+.局部变量 文本长度
+.局部变量 整倍数
+.局部变量 三字节组, 字节型, , "3"
+.局部变量 四字节组, 字节型, , "4"
+.局部变量 编码值
+.局部变量 X
+.局部变量 n
+.局部变量 二进制数据, 字节集
+
+编码文本 ＝ 删全部空 (编码文本)
+编码文本 ＝ 子文本替换 (编码文本, #换行符, , , , 真)
+文本长度 ＝ 取文本长度 (编码文本)
+整倍数 ＝ 文本长度 ＼ 4
+.如果真 (文本长度 ％ 4 ≠ 0)
+    整倍数 ＝ 整倍数 ＋ 1
+.如果真结束
+.计次循环首 (整倍数, X)
+    .计次循环首 (4, n)
+        四字节组 [n] ＝ 取代码 (编码文本, (X － 1) × 4 ＋ n)
+        编码值 ＝ 寻找文本 (“ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/”, 字符 (四字节组 [n]), , 假)
+        .如果真 (编码值 ＝ -1)
+            跳出循环 ()
+        .如果真结束
+        四字节组 [n] ＝ 编码值 － 1
+    .计次循环尾 ()
+    三字节组 [1] ＝ 位或 (四字节组 [1] × 4, 四字节组 [2] ÷ 16)
+    三字节组 [2] ＝ 位或 (四字节组 [2] × 16, 四字节组 [3] ÷ 4)
+    三字节组 [3] ＝ 位或 (四字节组 [3] × 64, 四字节组 [4])
+    二进制数据 ＝ 二进制数据 ＋ 到字节集 (三字节组)
+    处理事件 ()
+.计次循环尾 ()
+.如果真 (n ＜ 5)  ' 最后一组4字符是提前退出的,截取字节集
+    n ＝ 5 － n
+    二进制数据 ＝ 取字节集左边 (二进制数据, 取字节集长度 (二进制数据) － n)
+.如果真结束
+返回 (二进制数据)”", , IXzsd_别崇拜哥_哥只是个传说_YoRyP
+.常量 LcWHf_别崇拜哥_哥只是个传说_NjDrE, "“.版本 2
+
+.数据类型 窗口位置
+    .成员 左边, 整数型
+    .成员 顶边, 整数型
+    .成员 宽度, 整数型
+    .成员 高度, 整数型
+”", , LZuRc_别崇拜哥_哥只是个传说_JtYgh
+.常量 NpOyw_别崇拜哥_哥只是个传说_QRzpe, "“.版本 2
+
+.常量 cc, "“啊啊啊啊”", 公开, 啊啊
+.常量 dd, "45767", , 啊啊
+”", , DyYmw_别崇拜哥_哥只是个传说_XcBpK
+.常量 aEvBM_别崇拜哥_哥只是个传说_rxGPC, "“.版本 2
+
+.DLL命令 清除图标_, 整数型, "user32.dll", "DestroyIcon", 公开, 清除图标
+    .参数 图标句柄, 整数型, 传址, hIcon,图标句柄
+
+.DLL命令 设置字符间距_, 整数型, "gdi32", "SetTextCharacterExtra", 公开
+    .参数 设备场景, 整数型, 数组
+    .参数 间距, 整数型, 传址
+
+.DLL命令 指定画笔位置_, 整数型, "gdi32.dll", "MoveToEx", 公开
+    .参数 设备场景, 整数型, , hdc，指向一个设备场景的句柄
+    .参数 横坐标, 整数型, , x，采用逻辑坐标表示的新画笔位置
+    .参数 纵坐标, 整数型, , y，采用逻辑坐标表示的新画笔位置
+    .参数 画笔位置, 坐标_, , lpPoint，用于保存前一个画笔位置
+
+.DLL命令 载入图象_, 整数型, "user32.dll", "LoadImageA", , 载入一个位图、图标或指针
+    .参数 实例句柄, 整数型, , hInst,要从其中载入图象的DLL或应用程序模块或实例句柄
+    .参数 图象标志符, 文本型, , lpsz,欲载入图象的名字
+    .参数 图象类型, 整数型, , un1,指定了欲载入的图象类型
+    .参数 图象宽度, 整数型, , n1,要求的图象宽度
+    .参数 图象高度, 整数型, , n2,要求的图象高度
+    .参数 常数组合, 整数型, , un2,常数的任意组合
+
+.DLL命令 结束路径分支_, 整数型, "gdi32.dll", "EndPath", 公开, 停止定义一个路径
+    .参数 设备场景句柄, 整数型, 传址 数组, hdc,设备场景句柄
+
+.DLL命令 创建画笔扩展_, 整数型, "gdi32", "ExtCreatePen"
+    .参数 笔风格, 整数型
+    .参数 笔尖宽度, 整数型
+    .参数 笔刷定义结构, 刷子结构_
+    .参数 自定义段数, 整数型
+    .参数 自定义线, 整数型
+
+.DLL命令 取窗口全部设备场景_, 整数型, "user32.dll", "GetWindowDC"
+    .参数 窗口句柄, 整数型
+
+.DLL命令 取标题文本长度_, 整数型, "user32.dll", "GetWindowTextLengthA"
+    .参数 窗口句柄, 整数型
+
+.DLL命令 释放缓冲区指针_, 整数型, "netapi32.dll", "NetApiBufferFree"
+    .参数 缓冲区指针, 整数型, , Buffer
+
+.DLL命令 取混音设备数量_, 整数型, "winmm.dll", "mixerGetNumDevs", , 获取当前混合设备数量
+
+.DLL命令 增加声音输入设备缓冲区_, 逻辑型, "winmm.dll", "waveInAddBuffer"
+    .参数 波形设备句柄, 整数型, , hWaveIn
+    .参数 声音输入设备头结构, 波形数据块_, , lpWaveInHdr
+    .参数 结构长度, 整数型, , uSize
+
+.DLL命令 读Internet文件_, 整数型, "wininet.dll", "InternetReadFile", , InternetReadFile*
+    .参数 Internet地址句柄, 整数型, , hFile
+    .参数 数据缓冲区, 文本型, , sBuffer
+    .参数 读取大小, 整数型, , lNumBytesToRead
+    .参数 读取首地址, 整数型, 传址, lNumberOfBytesRead
+
+.DLL命令 取设备灰度斜坡_, 整数型, "gdi32.dll", "GetDeviceGammaRamp", , 获取显示器的辉度系数
+    .参数 设备场景句柄, 整数型, , hdc
+    .参数 结构缓冲区地址, 短整数型, 传址, lpv
+
+.DLL命令 置颜色调节器_, 整数型, "gdi32.dll", "SetColorAdjustment", , 调整颜色
+    .参数 设备场景句柄, 整数型, , hdc
+    .参数 颜色调节器结构, 颜色调节器_, , lpca
+”", , Cpala_别崇拜哥_哥只是个传说_nVckv
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' HtmlView 5014D8FA6DCA40b68FA626D8183666EB 2 0 超文本浏览框支持库
+ ' iext2 AF6AD80AA4244A59AFB3D83ECF5173CC 2 0 扩展界面支持库二
+
+
+
+
+数据类型 bHHQA_别崇拜哥_哥只是个传说_ZFZuR, , ZccsY_别崇拜哥_哥只是个传说_BguGf
+    .成员 ZqMlM_别崇拜哥_哥只是个传说_CMmhR, 整数型, , , pTqNR_别崇拜哥_哥只是个传说_tTDxy
+    .成员 QeTdk_别崇拜哥_哥只是个传说_rLRtM, 整数型, , , AguWn_别崇拜哥_哥只是个传说_GhCnY
+    .成员 uaiqB_别崇拜哥_哥只是个传说_xyntE, 整数型, , , Ppuju_别崇拜哥_哥只是个传说_BtoRB
+    .成员 mqoOO_别崇拜哥_哥只是个传说_QGTJi, 整数型, , , aVJnv_别崇拜哥_哥只是个传说_pTeMt
+
+数据类型 易代码网页秀_转换方案, 公开, 
+    .成员 只转换函数声明, 逻辑型, , , 不转换代码只转换函数声明
+
+数据类型 xYEQR_别崇拜哥_哥只是个传说_CmhnG, , QYpRg_别崇拜哥_哥只是个传说_lGRly
+    .成员 syEFC_别崇拜哥_哥只是个传说_ECYVm, 整数型, , , HJTFj_别崇拜哥_哥只是个传说_DsacL
+    .成员 Khtki_别崇拜哥_哥只是个传说_CVdEw, 整数型, , , waYFx_别崇拜哥_哥只是个传说_WKiIo
+    .成员 BRlDc_别崇拜哥_哥只是个传说_gXiKs, 整数型, , , iePSU_别崇拜哥_哥只是个传说_cxXXJ
+    .成员 VdGaq_别崇拜哥_哥只是个传说_EbCDA, 整数型, , , EKSTz_别崇拜哥_哥只是个传说_svrSz
+    .成员 NtIAz_别崇拜哥_哥只是个传说_izLNu, 整数型, , , nsiMk_别崇拜哥_哥只是个传说_SxpCB
+    .成员 GmOpU_别崇拜哥_哥只是个传说_BODVJ, 整数型, , , cUruP_别崇拜哥_哥只是个传说_KOXYS
+    .成员 HGXRj_别崇拜哥_哥只是个传说_jzOam, 整数型, , , tYcVB_别崇拜哥_哥只是个传说_ZLsWt
+    .成员 ftQML_别崇拜哥_哥只是个传说_CSEHs, 整数型, , , RsPPU_别崇拜哥_哥只是个传说_rZuBu
+    .成员 ZVFaZ_别崇拜哥_哥只是个传说_LJtjq, 整数型, , , gSlbz_别崇拜哥_哥只是个传说_VNlvF
+    .成员 dkHEL_别崇拜哥_哥只是个传说_TNoRb, 整数型, , , EMNRS_别崇拜哥_哥只是个传说_Zdaat
+    .成员 sPfJm_别崇拜哥_哥只是个传说_oQeIa, 整数型, , , rMWxH_别崇拜哥_哥只是个传说_pIaEh
+
+数据类型 LGIHK_别崇拜哥_哥只是个传说_XhGvQ, , MHdwr_别崇拜哥_哥只是个传说_SRThB
+    .成员 MlGMm_别崇拜哥_哥只是个传说_XaSxh, 文本型, , , Sgida_别崇拜哥_哥只是个传说_lFVlb
+    .成员 QOyEw_别崇拜哥_哥只是个传说_boGnm, 文本型, , , EDRRw_别崇拜哥_哥只是个传说_zhHNg
+    .成员 eVfYd_别崇拜哥_哥只是个传说_KjLJn, 文本型, , , tjyxC_别崇拜哥_哥只是个传说_KOKSm
+    .成员 JBsMh_别崇拜哥_哥只是个传说_yvpRa, 文本型, , , nLYeN_别崇拜哥_哥只是个传说_DpMoC
+    .成员 JYlWQ_别崇拜哥_哥只是个传说_tnFcC, 文本型, , , khOIa_别崇拜哥_哥只是个传说_OURzx
+    .成员 BCLIb_别崇拜哥_哥只是个传说_DUlXW, 文本型, , , HsbxG_别崇拜哥_哥只是个传说_hdBcE
+    .成员 OtvPP_别崇拜哥_哥只是个传说_OrYhB, 文本型, , , HJwcL_别崇拜哥_哥只是个传说_tSmzP
+    .成员 Stvge_别崇拜哥_哥只是个传说_nOUgt, 文本型, , , jhxHk_别崇拜哥_哥只是个传说_CHoMF
+    .成员 GAEvV_别崇拜哥_哥只是个传说_tkHvR, 整数型, , , goDcr_别崇拜哥_哥只是个传说_BxoiL
+    .成员 TLFRU_别崇拜哥_哥只是个传说_dKyOx, 整数型, , , otExr_别崇拜哥_哥只是个传说_zxQmo
+    .成员 QuiLU_别崇拜哥_哥只是个传说_LRMep, 整数型, , , qwfSP_别崇拜哥_哥只是个传说_qzdFi
+    .成员 xAWMe_别崇拜哥_哥只是个传说_nbjdp, 整数型, , , DrPpR_别崇拜哥_哥只是个传说_gBkJc
+    .成员 sItEk_别崇拜哥_哥只是个传说_obaEL, 整数型, , , xjAms_别崇拜哥_哥只是个传说_qgNFy
+    .成员 HyXkU_别崇拜哥_哥只是个传说_xnSlO, 文本型, , "9", qYCHM_别崇拜哥_哥只是个传说_Jeajw
+    .成员 dKwzd_别崇拜哥_哥只是个传说_SNWcx, 逻辑型, , , gDtNf_别崇拜哥_哥只是个传说_SxRHw
+
+数据类型 bhwnj_别崇拜哥_哥只是个传说_OLPhY, , GzNzR_别崇拜哥_哥只是个传说_KTtRh
+    .成员 WXCve_别崇拜哥_哥只是个传说_uSoqT, 整数型, , , fiEHv_别崇拜哥_哥只是个传说_owHRt
+    .成员 ldvAo_别崇拜哥_哥只是个传说_wTIVT, 整数型, , , hnKiR_别崇拜哥_哥只是个传说_Dfeid
+    .成员 HTHHG_别崇拜哥_哥只是个传说_zeRec, 整数型, , , HhVcr_别崇拜哥_哥只是个传说_ILcmF
+
+.全局变量 易代码网页秀, 易代码网页秀类, 公开, , 
+
+.DLL命令 ZXnhS_眭灿辉_我操你妈死全家_LucIA, 整数型, "user32", "OpenClipboard", , Tllak_眭灿辉_我操你妈死全家_nWdFi
+    .参数 bxRRf_眭灿辉_我操你妈死全家_cbFEw, 整数型, , srsdr_眭灿辉_我操你妈死全家_tLkWx
+
+.DLL命令 olboz_眭灿辉_我操你妈死全家_ugTBQ, 整数型, "user32", "EmptyClipboard", , KPhfY_眭灿辉_我操你妈死全家_OcDFj
+
+.DLL命令 lPUzQ_眭灿辉_我操你妈死全家_zwosi, 整数型, "kernel32", "GlobalAlloc", , OpCRC_眭灿辉_我操你妈死全家_hYWSg
+    .参数 HVGcs_眭灿辉_我操你妈死全家_ifDrr, 整数型, , bANMZ_眭灿辉_我操你妈死全家_iLzau
+    .参数 BDRhS_眭灿辉_我操你妈死全家_zfaCw, 整数型, , EGuhH_眭灿辉_我操你妈死全家_ooWHV
+
+.DLL命令 augMo_眭灿辉_我操你妈死全家_QOJPF, 整数型, "kernel32", "lstrlenA", , EfnXT_眭灿辉_我操你妈死全家_JYBXQ
+    .参数 rbVac_眭灿辉_我操你妈死全家_ugiuZ, 文本型, , Tqrai_眭灿辉_我操你妈死全家_PWjfc
+
+.DLL命令 KUrZo_眭灿辉_我操你妈死全家_FEbrw, 整数型, "kernel32", "GlobalLock", , skxVd_眭灿辉_我操你妈死全家_OwtEp
+    .参数 avrgw_眭灿辉_我操你妈死全家_QuZKM, 整数型, , KSvhB_眭灿辉_我操你妈死全家_WaSZs
+
+.DLL命令 gijFz_眭灿辉_我操你妈死全家_YGiWB, 空白型, "kernel32", "RtlMoveMemory", , KRTZV_眭灿辉_我操你妈死全家_RLdgM
+    .参数 rnRjH_眭灿辉_我操你妈死全家_JkTSw, 整数型, , AAACR_眭灿辉_我操你妈死全家_CCdTR
+    .参数 wdDfm_眭灿辉_我操你妈死全家_tPPrR, 文本型, , kBlMx_眭灿辉_我操你妈死全家_IaYnK
+    .参数 HpoBZ_眭灿辉_我操你妈死全家_RUUMW, 整数型, , uucpK_眭灿辉_我操你妈死全家_Zoyen
+
+.DLL命令 VRHWV_眭灿辉_我操你妈死全家_ncDFk, 整数型, "", "SetClipboardData", , WNubs_眭灿辉_我操你妈死全家_SttBs
+    .参数 bawws_眭灿辉_我操你妈死全家_QRunx, 整数型, , iOsid_眭灿辉_我操你妈死全家_XZJNN
+    .参数 qOpzy_眭灿辉_我操你妈死全家_CobWi, 整数型, , aKdiB_眭灿辉_我操你妈死全家_mgnlK
+
+.DLL命令 Evvln_眭灿辉_我操你妈死全家_wcfyR, 整数型, "user32", "RegisterClipboardFormatA", , xlerP_眭灿辉_我操你妈死全家_aHpyK
+    .参数 onrAc_眭灿辉_我操你妈死全家_yhorQ, 文本型, , ULtAd_眭灿辉_我操你妈死全家_bGyeJ
+
+.DLL命令 AfUiW_眭灿辉_我操你妈死全家_dTTRR, 整数型, "kernel32", "GlobalFree", , ITpSQ_眭灿辉_我操你妈死全家_GLvLy
+    .参数 whHwo_眭灿辉_我操你妈死全家_jVPPq, 整数型, , zrsBX_眭灿辉_我操你妈死全家_RvJFN
+
+.DLL命令 MlOVK_眭灿辉_我操你妈死全家_pzxqf, 整数型, "user32", "CloseClipboard", , RNtRF_眭灿辉_我操你妈死全家_wcehe
+
+.窗口程序集 gAPPW_NUpCt, , , CuFQZ_bvhsd
+
+.程序集变量 heKGD_TnUEL, bHHQA_别崇拜哥_哥只是个传说_ZFZuR, , , MpBsY_ewEfK
+.程序集变量 RCVGa_VJmHv, 逻辑型, , , JHdbI_vJFER
+.程序集变量 mUCsH_BaOCP, 逻辑型, , , CINuA_mMZHa
+.程序集变量 CurEj_NGhjV, 易代码网页秀类, , , aRHea_cvRgx
+.子程序 _QrGWc_SQtXO_创建完毕, 空白型, , 
+赋值 (.内容, 相加 (#ANqjf_别崇拜哥_哥只是个传说_qmNgo, #aEvBM_别崇拜哥_哥只是个传说_rxGPC, #NpOyw_别崇拜哥_哥只是个传说_QRzpe, #LcWHf_别崇拜哥_哥只是个传说_NjDrE))
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+
+.子程序 _QrGWc_SQtXO_尺寸被改变, 空白型, , 
+赋值 (.左边, 相减 (., .宽度))
+赋值 (.宽度, .)
+赋值 (.高度, .)
+赋值 (.高度, .)
+赋值 (.左边, 相减 (., 3))
+赋值 (.顶边, 相减 (.高度, 3))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+赋值 (.顶边, .顶边)
+赋值 (.左边, 相减 (., 3))
+赋值 (.顶边, .顶边)
+赋值 (.宽度, .)
+.移动 (472)
+相加 (.宽度, .左边).移动 ()
+相加 (., .).移动 (相减 (取用户区宽度 (), 6, .宽度, .), )
+
+.子程序 _wApEt_cwkCs_被单击, 空白型, , 
+销毁 ()
+
+.子程序 _IUnIQ_bSPXK_被单击, 空白型, , 
+.如果真 (等于 (QrGWc_SQtXO., 25))
+    返回 ()
+.如果真结束
+.如果 (RCVGa_VJmHv)
+    赋值 (QrGWc_SQtXO., heKGD_TnUEL.ZqMlM_别崇拜哥_哥只是个传说_CMmhR)
+    赋值 (QrGWc_SQtXO., heKGD_TnUEL.QeTdk_别崇拜哥_哥只是个传说_rLRtM)
+    赋值 (QrGWc_SQtXO., heKGD_TnUEL.uaiqB_别崇拜哥_哥只是个传说_xyntE)
+    赋值 (QrGWc_SQtXO., heKGD_TnUEL.mqoOO_别崇拜哥_哥只是个传说_QGTJi)
+    赋值 (RCVGa_VJmHv, 假)
+    ' 本源码来自易语言资源网(www.5A5X.com)
+.否则
+    赋值 (heKGD_TnUEL.ZqMlM_别崇拜哥_哥只是个传说_CMmhR, QrGWc_SQtXO.)
+    赋值 (heKGD_TnUEL.QeTdk_别崇拜哥_哥只是个传说_rLRtM, QrGWc_SQtXO.)
+    赋值 (heKGD_TnUEL.uaiqB_别崇拜哥_哥只是个传说_xyntE, QrGWc_SQtXO.)
+    赋值 (heKGD_TnUEL.mqoOO_别崇拜哥_哥只是个传说_QGTJi, QrGWc_SQtXO.)
+    QrGWc_SQtXO.移动 (0, 0, 取屏幕宽度 (), 取屏幕高度 ())
+    赋值 (RCVGa_VJmHv, 真)
+.如果结束
+
+
+.子程序 _WKlRd_wWhpm_被单击, 空白型, , 
+.如果真 (RCVGa_VJmHv)
+    返回 ()
+.如果真结束
+.如果 (等于 (QrGWc_SQtXO., 25))
+    赋值 (QrGWc_SQtXO., heKGD_TnUEL.ZqMlM_别崇拜哥_哥只是个传说_CMmhR)
+    赋值 (QrGWc_SQtXO., heKGD_TnUEL.QeTdk_别崇拜哥_哥只是个传说_rLRtM)
+    赋值 (QrGWc_SQtXO., heKGD_TnUEL.uaiqB_别崇拜哥_哥只是个传说_xyntE)
+    赋值 (QrGWc_SQtXO., heKGD_TnUEL.mqoOO_别崇拜哥_哥只是个传说_QGTJi)
+    赋值 (QrGWc_SQtXO.总在最前, 真)
+    ' 本源码来自易语言资源网(www.5A5X.com)
+.否则
+    赋值 (heKGD_TnUEL.ZqMlM_别崇拜哥_哥只是个传说_CMmhR, QrGWc_SQtXO.)
+    赋值 (heKGD_TnUEL.QeTdk_别崇拜哥_哥只是个传说_rLRtM, QrGWc_SQtXO.)
+    赋值 (heKGD_TnUEL.uaiqB_别崇拜哥_哥只是个传说_xyntE, QrGWc_SQtXO.)
+    赋值 (heKGD_TnUEL.mqoOO_别崇拜哥_哥只是个传说_QGTJi, QrGWc_SQtXO.)
+    赋值 (QrGWc_SQtXO., 25)
+    赋值 (QrGWc_SQtXO., 假)
+.如果结束
+
+
+.子程序 _QrGWc_SQtXO_位置被改变, 空白型, , 
+.如果真 (等于 (QrGWc_SQtXO., 25))
+    赋值 (heKGD_TnUEL.ZqMlM_别崇拜哥_哥只是个传说_CMmhR, QrGWc_SQtXO.)
+    赋值 (heKGD_TnUEL.QeTdk_别崇拜哥_哥只是个传说_rLRtM, QrGWc_SQtXO.)
+.如果真结束
+
+
+.子程序 _CZpfk_rJadD_内容被改变, 空白型, , 
+.局部变量 RcoaT_别崇拜哥_哥只是个传说_yElVF, 易代码网页秀_转换方案, , , 
+
+赋值 (RcoaT_别崇拜哥_哥只是个传说_yElVF.只转换函数声明, .选中)
+CurEj_NGhjV.转换 (.内容, RcoaT_别崇拜哥_哥只是个传说_yElVF)
+写到文件 (相加 (取运行目录 (), “\”, “$temp.html”), 到字节集 (相加 (“<body style='border:0px none #CCCCCC;'>”, CurEj_NGhjV.取HTML (.选中), “</body>”)))
+' 本源码来自易语言资源网(www.5A5X.com)
+赋值 (., 相加 (取运行目录 (), “\”, “$temp.html”))
+
+.子程序 _UZnWZ_juHdR_被拖动, 空白型, , 
+.参数 原位置, 整数型, , 
+.参数 目的位置, 整数型, , 
+
+.移动 (目的位置, )
+_QrGWc_SQtXO_尺寸被改变 ()
+
+.子程序 _UZnWZ_juHdR_被双击, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.局部变量 FaZMs_gdgha, 整数型, 静态, , RmwtH_qTnCP
+
+.如果 (等于 (.宽度, 0))
+     ' 本源码来自易语言资源网(www.5A5X.com)
+    赋值 (.宽度, FaZMs_gdgha)
+.否则
+    赋值 (FaZMs_gdgha, .宽度)
+    赋值 (.宽度, 0)
+.如果结束
+_QrGWc_SQtXO_尺寸被改变 ()
+
+.子程序 _vOlRy_upVup_被单击, 空白型, , 
+_CZpfk_rJadD_内容被改变 ()
+
+.子程序 _uKdcw_rCkGx_被单击, 空白型, , 
+_CZpfk_rJadD_内容被改变 ()
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 _MVIcO_qtYwE_被单击, 空白型, , 
+置剪辑板文本 (CurEj_NGhjV.取HTML (.选中))
+
+.子程序 _RIXPc_hjqdj_被单击, 空白型, , 
+.局部变量 eMsPC_MqhfA, 文本型, , , AobrK_aqiag
+.局部变量 sLolk_RVmFX, 整数型, , , ltTVS_eSYUk
+.局部变量 fJfUd_zdAez, 整数型, , , vEUjK_NKsJu
+.局部变量 TyUGV_qHuxG, 整数型, , , YGreU_dFOaG
+
+赋值 (eMsPC_MqhfA, CurEj_NGhjV.取HTML (.选中))
+.如果真 (不等于 (ZXnhS_眭灿辉_我操你妈死全家_LucIA (0), 0))
+    olboz_眭灿辉_我操你妈死全家_ugTBQ ()
+    赋值 (TyUGV_qHuxG, lPUzQ_眭灿辉_我操你妈死全家_zwosi (66, augMo_眭灿辉_我操你妈死全家_QOJPF (eMsPC_MqhfA)))
+    赋值 (fJfUd_zdAez, KUrZo_眭灿辉_我操你妈死全家_FEbrw (TyUGV_qHuxG))
+    gijFz_眭灿辉_我操你妈死全家_YGiWB (fJfUd_zdAez, eMsPC_MqhfA, augMo_眭灿辉_我操你妈死全家_QOJPF (eMsPC_MqhfA))
+    赋值 (sLolk_RVmFX, VRHWV_眭灿辉_我操你妈死全家_ncDFk (Evvln_眭灿辉_我操你妈死全家_wcfyR (“HTML Format”), TyUGV_qHuxG))
+    KUrZo_眭灿辉_我操你妈死全家_FEbrw (fJfUd_zdAez)
+    AfUiW_眭灿辉_我操你妈死全家_dTTRR (TyUGV_qHuxG)
+    MlOVK_眭灿辉_我操你妈死全家_pzxqf ()
+.如果真结束
+' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 _QrGWc_SQtXO_将被销毁, 空白型, , 
+删除文件 (相加 (取运行目录 (), “\”, “$temp.html”))
+
+.子程序 _CZpfk_rJadD_被双击, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (.被选择字符数, -1)
+返回 (假)
+' 本源码来自易语言资源网(www.5A5X.com)
+
+.类模块 易代码网页秀类, , , LImGY_别崇拜哥_哥只是个传说_iJuXq
+
+.程序集变量 CHFOB_别崇拜哥_哥只是个传说_AmAtt, 文本型, , , kzYjw_别崇拜哥_哥只是个传说_vBGJc
+.程序集变量 Kwqat_别崇拜哥_哥只是个传说_FKRGQ, 文本型, , , xjSEc_别崇拜哥_哥只是个传说_uuyAB
+.程序集变量 DOOAC_别崇拜哥_哥只是个传说_XsOzJ, 文本型, , , YQzuk_别崇拜哥_哥只是个传说_fRzyJ
+.程序集变量 JCgyG_别崇拜哥_哥只是个传说_xDuMB, 文本型, , , xWCIG_别崇拜哥_哥只是个传说_obbrw
+.程序集变量 Uzzrh_别崇拜哥_哥只是个传说_zJYFq, 文本型, , , uidVs_别崇拜哥_哥只是个传说_iAqNy
+.程序集变量 xvUGu_别崇拜哥_哥只是个传说_FnKdG, 文本型, , , jIirx_别崇拜哥_哥只是个传说_mekas
+.程序集变量 zfxgx_别崇拜哥_哥只是个传说_jrkvS, 易代码网页秀_转换方案, , , yajIP_别崇拜哥_哥只是个传说_mVjbP
+.程序集变量 rjEyJ_别崇拜哥_哥只是个传说_HzEFK, 文本型, , "0", oxZUD_别崇拜哥_哥只是个传说_qsTcb
+.程序集变量 QmjLn_别崇拜哥_哥只是个传说_aBRNa, 整数型, , , rvcRF_别崇拜哥_哥只是个传说_lbyXJ
+.程序集变量 GcFZp_别崇拜哥_哥只是个传说_ndamP, 文本型, , "0", aBLMI_别崇拜哥_哥只是个传说_hwngj
+.程序集变量 eXrBM_别崇拜哥_哥只是个传说_zSlNS, 文本型, , "0", lSTrM_别崇拜哥_哥只是个传说_crmpZ
+.程序集变量 aLzBu_别崇拜哥_哥只是个传说_YnOkH, 逻辑型, , , pQQRK_别崇拜哥_哥只是个传说_WAGma
+.程序集变量 fpbst_别崇拜哥_哥只是个传说_bGfGf, xYEQR_别崇拜哥_哥只是个传说_CmhnG, , , uhwas_别崇拜哥_哥只是个传说_oleoq
+.程序集变量 RNiau_别崇拜哥_哥只是个传说_lTQwo, LGIHK_别崇拜哥_哥只是个传说_XhGvQ, , , hlWwv_别崇拜哥_哥只是个传说_tkFfY
+.程序集变量 TXjEh_别崇拜哥_哥只是个传说_SgvUY, bhwnj_别崇拜哥_哥只是个传说_OLPhY, , , jjiIU_别崇拜哥_哥只是个传说_AVWTw
+.子程序 _初始化, 空白型, , joTRy_别崇拜哥_哥只是个传说_RwFeb
+赋值 (GcFZp_别崇拜哥_哥只是个传说_ndamP, { “.计次循环首 ”, “.计次循环尾 ”, “.判断循环首 ”, “.判断循环尾 ”, “.变量循环首 ”, “.变量循环尾 ”, “.循环判断首 ”, “.循环判断尾 ”, “.如果 ”, “.否则”, “.如果结束”, “.如果真 ”, “.如果真结束”, “.判断开始 ”, “.判断 ”, “.默认”, “.判断结束” })
+赋值 (eXrBM_别崇拜哥_哥只是个传说_zSlNS, 分割文本 (“BmpOperate=位图操作支持库|btdownload=BT下载支持库|CallFuncLib=动态调用库函数支持库|CnCalendar=农历日期支持库|cncnv=文字编码转换支持库|CodeStyleEdit=代码编辑框支持库|commobj=通用对象支持库|console=控制台操作支持库|dhtmled=超文本编辑框|DialogEx=通用对话框扩展|downlib=网络传送支持库|dp1=数据操作支持库一|eAPI=应用接口支持库|eCalc=数值计算支持库|EChartBar=数据图表支持库|eCompress=压缩解压支持库|EDataStructure=数据结构支持库|eDB=数据库操作支持库|EdirectX=DirectX支持库|eDirTree=目录树支持库|edroptarget=拖放支持库|eExcel2000=EXCEL2000支持库|eGrid=高级表格支持库|eImgConverter=图像格式转换支持库|EInterProcess=进程通讯支持库|eLIB=eLIB++EX|eLIBpp=eLIB++|ELogoPanel=易Logo支持库|eMMedia=多媒体支持库|eNetIntercept=网络拦截支持库|eOALib=办公组件支持库|ePPT2000=PowerPoint2000支持库|ERawSock=网络通讯支持库二|eSkin=易语言皮肤支持库|ESpeechEngine=文本语音转换支持库|ESSLayer=保密通讯支持库|EThread=多线程支持库|EVectorAFrame=矢量动画框|eWinSock=TCP/UDP网络通信支持库|ewizard=易向导支持库|eWord2000=WORD2000支持库|EXMLParser=XML解析支持库|Exmlrpc=远程服务支持库|ExtMenu=超级菜单支持库|Figures=自定义图形支持库|Flash9=ShockwaveFlashObjects|GIF89a=GIF动画全操作支持库|HtmlView=超文本浏览框支持库|HYExtLib=海洋扩展支持库|iconv=编码转换支持库|iext=扩展界面支持库一|iext2=扩展界面支持库二|iext3=扩展界面支持库三|iext5=扩展界面支持库五|iext6=扩展界面支持库六|internet=互联网支持库|isapi=互联网服务支持库|Javalib=Java支持库|krnln=系统核心支持库|MDI=多文档界面(MDI)支持库|MDIlib=多文档界面支持库|MSINET=InetCtlsObjects|mysql=MySql支持库|ogrelib=DirectX3D支持库|OLEDispatch=COM对象操作支持库|OPenGL=OPenGL支持库|PhoneCortrol=电话语音支持库|pop3=邮件接收支持库|portio=端口访问支持库|RegEx=正则表达式支持库|script=脚本语言支持组件|shdocvw=SHDocVw|shell=操作系统界面功能支持库|shellEx=扩展功能支持库一|SkinLib=换肤支持库|sock=网络通讯支持库|spec=特殊功能支持库|SqliteDB=Sqlite数据库支持库|Tooltiplib=提示工具支持库|twain=数码设备支持库|WebBrowser=网页浏览框|WebBrowser2=WEB浏览器|web浏览器=SHDocVw|wmp9=Windows媒体播放器|WNet=局域网操作支持库|xplib=XP风格界面库|YunImage=云外归鸟的图像处理支持库|YunMDIWnd=云外归鸟的MDI窗口支持库”, “|”, ))
+
+.子程序 _销毁, 空白型, , gZVjT_别崇拜哥_哥只是个传说_DXoOl
+
+
+.子程序 取HTML, 文本型, , 
+.参数 添加版权, 逻辑型, 可空, 
+
+.局部变量 LwyUM_别崇拜哥_哥只是个传说_Rfoyf, 文本型, , , JnKUs_别崇拜哥_哥只是个传说_DWExq
+.局部变量 ChGPz_别崇拜哥_哥只是个传说_byqlc, 文本型, , , isHRa_别崇拜哥_哥只是个传说_ZEaOs
+
+.如果真 (并且 (添加版权, 不等于 (aLzBu_别崇拜哥_哥只是个传说_YnOkH, 真)))
+    赋值 (LwyUM_别崇拜哥_哥只是个传说_Rfoyf, 相加 (“<br /><table width=300 border=0 cellpadding=4 cellspacing=1 bgcolor=#999999 style='font-size: 9pt;color: #000000;'><tr style='background-color:#E6EDE4;color: green;'><td colspan=2><font face=Webdings color=red>i</font>以上代码采用”, #左引号, “易代码网页秀”, #右引号, “生成</td></tr><tr bgcolor=#FFFFFF><td>易吧</td><td><a href=http://www.cne8.net target=_blank><font color=#0000FF>www.cne8.net</font></a></td></tr></table>”))
+.如果真结束
+.如果真 (不等于 (DOOAC_别崇拜哥_哥只是个传说_XsOzJ, “”))
+    .如果真 (不等于 (取文本右边 (DOOAC_别崇拜哥_哥只是个传说_XsOzJ, 8), “</table>”))
+        赋值 (DOOAC_别崇拜哥_哥只是个传说_XsOzJ, 相加 (DOOAC_别崇拜哥_哥只是个传说_XsOzJ, “</table>”))
+    .如果真结束
+    赋值 (ChGPz_别崇拜哥_哥只是个传说_byqlc, 相加 (ChGPz_别崇拜哥_哥只是个传说_byqlc, “<br />”, DOOAC_别崇拜哥_哥只是个传说_XsOzJ))
+.如果真结束
+.如果真 (不等于 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, “”))
+    .如果真 (不等于 (取文本右边 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, 8), “</table>”))
+        赋值 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, 相加 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, “</table>”))
+    .如果真结束
+    赋值 (ChGPz_别崇拜哥_哥只是个传说_byqlc, 相加 (ChGPz_别崇拜哥_哥只是个传说_byqlc, “<br />”, JCgyG_别崇拜哥_哥只是个传说_xDuMB))
+.如果真结束
+.如果真 (不等于 (Kwqat_别崇拜哥_哥只是个传说_FKRGQ, “”))
+    .如果真 (不等于 (取文本右边 (Kwqat_别崇拜哥_哥只是个传说_FKRGQ, 8), “</table>”))
+        赋值 (Kwqat_别崇拜哥_哥只是个传说_FKRGQ, 相加 (Kwqat_别崇拜哥_哥只是个传说_FKRGQ, “</table>”))
+    .如果真结束
+    赋值 (ChGPz_别崇拜哥_哥只是个传说_byqlc, 相加 (ChGPz_别崇拜哥_哥只是个传说_byqlc, “<br />”, Kwqat_别崇拜哥_哥只是个传说_FKRGQ))
+.如果真结束
+.如果真 (不等于 (Uzzrh_别崇拜哥_哥只是个传说_zJYFq, “”))
+    赋值 (ChGPz_别崇拜哥_哥只是个传说_byqlc, 相加 (ChGPz_别崇拜哥_哥只是个传说_byqlc, “<br />”, Uzzrh_别崇拜哥_哥只是个传说_zJYFq))
+.如果真结束
+.如果真 (不等于 (LwyUM_别崇拜哥_哥只是个传说_Rfoyf, “”))
+    赋值 (ChGPz_别崇拜哥_哥只是个传说_byqlc, 相加 (ChGPz_别崇拜哥_哥只是个传说_byqlc, LwyUM_别崇拜哥_哥只是个传说_Rfoyf))
+.如果真结束
+.如果真 (等于 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “”))
+    赋值 (ChGPz_别崇拜哥_哥只是个传说_byqlc, 取文本右边 (ChGPz_别崇拜哥_哥只是个传说_byqlc, 相减 (取文本长度 (ChGPz_别崇拜哥_哥只是个传说_byqlc), 取文本长度 (“<br />”))))
+.如果真结束
+返回 (相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, ChGPz_别崇拜哥_哥只是个传说_byqlc))
+
+.子程序 转换, 空白型, , 
+.参数 代码文本, 文本型, , 
+.参数 转换方案, 易代码网页秀_转换方案, 可空, 
+
+.局部变量 fLksx_别崇拜哥_哥只是个传说_PNjLs, 逻辑型, , , eFGBm_别崇拜哥_哥只是个传说_OazdC
+
+赋值 (QmjLn_别崇拜哥_哥只是个传说_aBRNa, 取启动时间 ())
+赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK, 分割文本 (代码文本, #换行符, ))
+赋值 (zfxgx_别崇拜哥_哥只是个传说_jrkvS, 转换方案)
+连续赋值 (“”, CHFOB_别崇拜哥_哥只是个传说_AmAtt, Uzzrh_别崇拜哥_哥只是个传说_zJYFq, xvUGu_别崇拜哥_哥只是个传说_FnKdG, JCgyG_别崇拜哥_哥只是个传说_xDuMB, Kwqat_别崇拜哥_哥只是个传说_FKRGQ, DOOAC_别崇拜哥_哥只是个传说_XsOzJ)
+连续赋值 (假, aLzBu_别崇拜哥_哥只是个传说_YnOkH)
+.计次循环首 (取数组成员数 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK), TXjEh_别崇拜哥_哥只是个传说_SgvUY.WXCve_别崇拜哥_哥只是个传说_uSoqT)
+    .判断开始 (等于 (取文本左边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 8), “.程序集 ”))
+        赋值 (fLksx_别崇拜哥_哥只是个传说_PNjLs, VxXXh_别崇拜哥_哥只是个传说_JFfku ())
+    .判断 (等于 (取文本左边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 12), “.程序集变量 ”))
+        赋值 (fLksx_别崇拜哥_哥只是个传说_PNjLs, RRFHH_别崇拜哥_哥只是个传说_txpiP ())
+    .判断 (等于 (取文本左边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 8), “.子程序 ”))
+        赋值 (fLksx_别崇拜哥_哥只是个传说_PNjLs, ZLqJH_别崇拜哥_哥只是个传说_QQIIr ())
+    .判断 (等于 (取文本左边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 6), “.参数 ”))
+        赋值 (fLksx_别崇拜哥_哥只是个传说_PNjLs, HolDB_别崇拜哥_哥只是个传说_clpBX ())
+    .判断 (等于 (取文本左边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 10), “.局部变量 ”))
+        赋值 (fLksx_别崇拜哥_哥只是个传说_PNjLs, AFqzG_别崇拜哥_哥只是个传说_jOOCv ())
+    .判断 (等于 (取文本左边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 10), “.数据类型 ”))
+        赋值 (fLksx_别崇拜哥_哥只是个传说_PNjLs, OUdiF_别崇拜哥_哥只是个传说_GwniN ())
+    .判断 (等于 (取文本左边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 10), “    .成员 ”))
+        赋值 (fLksx_别崇拜哥_哥只是个传说_PNjLs, HrteA_别崇拜哥_哥只是个传说_iTwrP ())
+    .判断 (等于 (取文本左边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 9), “.DLL命令 ”))
+        赋值 (fLksx_别崇拜哥_哥只是个传说_PNjLs, VFZJo_别崇拜哥_哥只是个传说_jXCqQ ())
+    .判断 (等于 (取文本左边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 10), “    .参数 ”))
+        赋值 (fLksx_别崇拜哥_哥只是个传说_PNjLs, IfLSK_别崇拜哥_哥只是个传说_EDVdh ())
+    .判断 (等于 (取文本左边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 6), “.常量 ”))
+        赋值 (fLksx_别崇拜哥_哥只是个传说_PNjLs, QiqZO_别崇拜哥_哥只是个传说_MnlCO ())
+    .判断 (等于 (取文本左边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 1), “”))
+        
+    .判断 (等于 (取文本左边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 1), “”))
+        
+    .判断 (等于 (取文本左边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 1), “”))
+        
+    .判断 (等于 (删首尾空 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT), “”))
+        赋值 (fLksx_别崇拜哥_哥只是个传说_PNjLs, tnGGS_别崇拜哥_哥只是个传说_ZiLWa ())
+    .默认
+        赋值 (fLksx_别崇拜哥_哥只是个传说_PNjLs, BrdnG_别崇拜哥_哥只是个传说_TyMRu ())
+    .判断结束
+    .如果真 (等于 (取数组成员数 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK), TXjEh_别崇拜哥_哥只是个传说_SgvUY.WXCve_别崇拜哥_哥只是个传说_uSoqT))
+        .如果真 (或者 (等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.syEFC_别崇拜哥_哥只是个传说_ECYVm, 1), 等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.Khtki_别崇拜哥_哥只是个传说_CVdEw, 1)))
+            赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “</table>”))
+        .如果真结束
+        .如果真 (等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.GmOpU_别崇拜哥_哥只是个传说_BODVJ, 1))
+            赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “</table>”))
+        .如果真结束
+        .如果真 (或者 (等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.HGXRj_别崇拜哥_哥只是个传说_jzOam, 1), 等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.ftQML_别崇拜哥_哥只是个传说_CSEHs, 1)))
+            赋值 (DOOAC_别崇拜哥_哥只是个传说_XsOzJ, 相加 (DOOAC_别崇拜哥_哥只是个传说_XsOzJ, “</table>”))
+        .如果真结束
+        .如果真 (等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.ZVFaZ_别崇拜哥_哥只是个传说_LJtjq, 1))
+            赋值 (Kwqat_别崇拜哥_哥只是个传说_FKRGQ, 相加 (Kwqat_别崇拜哥_哥只是个传说_FKRGQ, “</table>”))
+        .如果真结束
+        .如果真 (或者 (等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.dkHEL_别崇拜哥_哥只是个传说_TNoRb, 1), 等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.sPfJm_别崇拜哥_哥只是个传说_oQeIa, 1)))
+            赋值 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, 相加 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, “</table>”))
+        .如果真结束
+        
+    .如果真结束
+    .如果真 (aLzBu_别崇拜哥_哥只是个传说_YnOkH)
+        跳出循环 ()
+    .如果真结束
+    连续赋值 (“”, RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, RNiau_别崇拜哥_哥只是个传说_lTQwo.BCLIb_别崇拜哥_哥只是个传说_DUlXW, RNiau_别崇拜哥_哥只是个传说_lTQwo.OtvPP_别崇拜哥_哥只是个传说_OrYhB, RNiau_别崇拜哥_哥只是个传说_lTQwo.Stvge_别崇拜哥_哥只是个传说_nOUgt)
+    连续赋值 (0, RNiau_别崇拜哥_哥只是个传说_lTQwo.GAEvV_别崇拜哥_哥只是个传说_tkHvR, RNiau_别崇拜哥_哥只是个传说_lTQwo.TLFRU_别崇拜哥_哥只是个传说_dKyOx, RNiau_别崇拜哥_哥只是个传说_lTQwo.QuiLU_别崇拜哥_哥只是个传说_LRMep, RNiau_别崇拜哥_哥只是个传说_lTQwo.xAWMe_别崇拜哥_哥只是个传说_nbjdp, RNiau_别崇拜哥_哥只是个传说_lTQwo.sItEk_别崇拜哥_哥只是个传说_obaEL)
+    连续赋值 (假, RNiau_别崇拜哥_哥只是个传说_lTQwo.dKwzd_别崇拜哥_哥只是个传说_SNWcx)
+    清除数组 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO)
+.计次循环尾 ()
+.如果 (aLzBu_别崇拜哥_哥只是个传说_YnOkH)
+    赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (“<table width=400 border=0 cellpadding=4 cellspacing=1 bgcolor=#999999 style='font-size: 9pt;color: #000000;'><tr style='background-color:#E6EDE4;color: green;'><td colspan=2><font face=Webdings color=red>i</font>转换过程中遇到致命错误，请检查代码的完整性，建议直接从易语言IDE中复制代码进行转换，请不要手动编辑代码，以免产生转换错误！</td></tr></table><br />”, CHFOB_别崇拜哥_哥只是个传说_AmAtt))
+.否则
+    .如果真 (不等于 (xvUGu_别崇拜哥_哥只是个传说_FnKdG, “”))
+        赋值 (Uzzrh_别崇拜哥_哥只是个传说_zJYFq, 相加 (Uzzrh_别崇拜哥_哥只是个传说_zJYFq, “<table width=300 border=0 cellpadding=4 cellspacing=1 bgcolor=#999999 style='font-size: 9pt;color: #000000;'><tr><td bgcolor=#E6EDE4 colspan=2><font face=Webdings color=red>i</font>本程序使用的支持库列表</td></tr>”, xvUGu_别崇拜哥_哥只是个传说_FnKdG, “</table>”))
+    .如果真结束
+    
+.如果结束
+连续赋值 (0, fpbst_别崇拜哥_哥只是个传说_bGfGf.syEFC_别崇拜哥_哥只是个传说_ECYVm, fpbst_别崇拜哥_哥只是个传说_bGfGf.Khtki_别崇拜哥_哥只是个传说_CVdEw, fpbst_别崇拜哥_哥只是个传说_bGfGf.BRlDc_别崇拜哥_哥只是个传说_gXiKs, fpbst_别崇拜哥_哥只是个传说_bGfGf.VdGaq_别崇拜哥_哥只是个传说_EbCDA, fpbst_别崇拜哥_哥只是个传说_bGfGf.NtIAz_别崇拜哥_哥只是个传说_izLNu, fpbst_别崇拜哥_哥只是个传说_bGfGf.GmOpU_别崇拜哥_哥只是个传说_BODVJ, fpbst_别崇拜哥_哥只是个传说_bGfGf.HGXRj_别崇拜哥_哥只是个传说_jzOam, fpbst_别崇拜哥_哥只是个传说_bGfGf.ftQML_别崇拜哥_哥只是个传说_CSEHs, fpbst_别崇拜哥_哥只是个传说_bGfGf.ZVFaZ_别崇拜哥_哥只是个传说_LJtjq, fpbst_别崇拜哥_哥只是个传说_bGfGf.dkHEL_别崇拜哥_哥只是个传说_TNoRb, fpbst_别崇拜哥_哥只是个传说_bGfGf.sPfJm_别崇拜哥_哥只是个传说_oQeIa)
+
+.子程序 VxXXh_别崇拜哥_哥只是个传说_JFfku, 逻辑型, , vlxTm_别崇拜哥_哥只是个传说_jRRQF
+.如果 (不等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.syEFC_别崇拜哥_哥只是个传说_ECYVm, 1))
+    赋值 (fpbst_别崇拜哥_哥只是个传说_bGfGf.syEFC_别崇拜哥_哥只是个传说_ECYVm, 1)
+    赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<table border=0 cellpadding=4 cellspacing=1 bgcolor=#999999 style='font-size: 9pt;color: #000000;'><tr style='background-color:#F0F0F0;'><td>程序集名</td><td>保留</td><td>保留</td><td>备注</td></tr>”))
+.否则
+    赋值 (aLzBu_别崇拜哥_哥只是个传说_YnOkH, 真)
+    返回 (假)
+.如果结束
+赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 取文本中间 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 8, 999))
+.如果 (等于 (寻找文本 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “,”, , 假), -1))
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, 相加 (“<font color=#000080>”, rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “</font>”))
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “&nbsp;”)
+.否则
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, 取文本左边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 相减 (寻找文本 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “,”, , 假), 1)))
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, 相加 (“<font color=#008000>”, 取文本中间 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 相加 (倒找文本 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “,”, , 假), 1), 999), “</font>”))
+.如果结束
+赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<tr bgcolor=#FFFFFF><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, “</td><td>&nbsp;</td><td>&nbsp;</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “</td></tr>”))
+返回 (真)
+
+.子程序 RRFHH_别崇拜哥_哥只是个传说_txpiP, 逻辑型, , pzQwa_别崇拜哥_哥只是个传说_XJxNA
+.如果真 (不等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.syEFC_别崇拜哥_哥只是个传说_ECYVm, 1))
+    赋值 (aLzBu_别崇拜哥_哥只是个传说_YnOkH, 真)
+    返回 (假)
+.如果真结束
+.如果真 (不等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.Khtki_别崇拜哥_哥只是个传说_CVdEw, 1))
+    赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<tr style='background-color:#F0F0F0;'><td>变量名</td><td>类型</td><td>数组</td><td>备注</td></tr>”))
+    赋值 (fpbst_别崇拜哥_哥只是个传说_bGfGf.Khtki_别崇拜哥_哥只是个传说_CVdEw, 1)
+.如果真结束
+赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 取文本中间 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 12, 999))
+赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO, 分割文本 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “,”, ))
+赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [1])
+.如果 (大于或等于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 2))
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, 相加 (“<font color=#0000FF>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [2], “</font>”))
+    .如果 (大于或等于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 4))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, 取文本中间 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [4], 3, 相减 (取文本长度 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [4]), 3)))
+        .如果 (大于或等于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 5))
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, 相加 (“<font color=#008000>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [5], “</font>”))
+        .否则
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “&nbsp;”)
+        .如果结束
+        
+    .否则
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “&nbsp;”)
+    .如果结束
+    
+.否则
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “&nbsp;”)
+.如果结束
+赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<tr  bgcolor=#FFFFFF><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “</td></tr>”))
+返回 (真)
+
+.子程序 ZLqJH_别崇拜哥_哥只是个传说_QQIIr, 逻辑型, , yWBuU_别崇拜哥_哥只是个传说_FMIPm
+.如果真 (或者 (等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.syEFC_别崇拜哥_哥只是个传说_ECYVm, 1), 等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.Khtki_别崇拜哥_哥只是个传说_CVdEw, 1)))
+    赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “</table><br />”))
+.如果真结束
+.如果真 (等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.BRlDc_别崇拜哥_哥只是个传说_gXiKs, 1))
+    .如果 (等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.GmOpU_别崇拜哥_哥只是个传说_BODVJ, 1))
+        赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “</table>”))
+    .否则
+        赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “</table><br />”))
+    .如果结束
+    连续赋值 (0, fpbst_别崇拜哥_哥只是个传说_bGfGf.NtIAz_别崇拜哥_哥只是个传说_izLNu, fpbst_别崇拜哥_哥只是个传说_bGfGf.GmOpU_别崇拜哥_哥只是个传说_BODVJ, fpbst_别崇拜哥_哥只是个传说_bGfGf.VdGaq_别崇拜哥_哥只是个传说_EbCDA)
+.如果真结束
+赋值 (fpbst_别崇拜哥_哥只是个传说_bGfGf.BRlDc_别崇拜哥_哥只是个传说_gXiKs, 1)
+赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<table border=0 cellpadding=4 cellspacing=1 bgcolor=#999999 style='font-size: 9pt;color: #000000;'><tr style='background-color:#E6EDE4;'><td>子程序名</td><td>返回值类型</td><td>公开</td><td colspan=3>备注</td></tr>”))
+赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 取文本中间 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 8, 999))
+.如果 (等于 (寻找文本 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “,”, , 假), -1))
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, 相加 (“<font color=#000080> ”, rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “</font>”))
+    连续赋值 (“”, RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa)
+.否则
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO, 分割文本 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “,”, ))
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, 相加 (“<font color=#000080> ”, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [1], “</font>”))
+    .如果 (大于或等于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 2))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, 相加 (“<font color=#0000FF> ”, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [2], “</font>”))
+        .如果 (大于或等于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 3))
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [3])
+            .如果 (不等于 (寻找文本 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “公开”, , 假), -1))
+                赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “<font color=maroon><b><center>√</center></b></font>”)
+            .否则
+                赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “&nbsp;”)
+            .如果结束
+            .如果 (大于或等于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 4))
+                赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, 相加 (“<font color=#008000> ”, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [4], “</font>”))
+            .否则
+                赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “&nbsp;”)
+            .如果结束
+            
+        .否则
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “&nbsp;”)
+        .如果结束
+        
+    .否则
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “&nbsp;”)
+    .如果结束
+    
+.如果结束
+赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<tr bgcolor=#FFFFFF><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “</td><td> ”, RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “</td><td colspan=3> ”, RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “</td></tr>”))
+返回 (真)
+
+.子程序 HolDB_别崇拜哥_哥只是个传说_clpBX, 逻辑型, , qnPse_别崇拜哥_哥只是个传说_QHPvL
+.如果 (等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.BRlDc_别崇拜哥_哥只是个传说_gXiKs, 1))
+    .如果真 (不等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.VdGaq_别崇拜哥_哥只是个传说_EbCDA, 1))
+        赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<tr style='background-color:#E6EDE4;'><td>参数名</td><td>类型</td><td>参考</td><td>可空</td><td>数组</td><td>备注</td></tr>”))
+        赋值 (fpbst_别崇拜哥_哥只是个传说_bGfGf.VdGaq_别崇拜哥_哥只是个传说_EbCDA, 1)
+    .如果真结束
+    
+.否则
+    返回 (假)
+.如果结束
+赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 取文本中间 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 6, 999))
+赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO, 分割文本 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “,”, ))
+赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [1])
+.如果 (大于或等于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 2))
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, 相加 (“<font color=#0000FF> ”, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [2], “</font>”))
+    .如果 (大于或等于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 3))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [3])
+        .如果 (不等于 (寻找文本 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “参考”, , 假), -1))
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “<font color=maroon><b><center>√</center></b></font>”)
+        .否则
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “&nbsp;”)
+        .如果结束
+        .如果 (不等于 (寻找文本 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “可空”, , 假), -1))
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “<font color=maroon><b><center>√</center></b></font>”)
+        .否则
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “&nbsp;”)
+        .如果结束
+        .如果 (不等于 (寻找文本 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “数组”, , 假), -1))
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.BCLIb_别崇拜哥_哥只是个传说_DUlXW, “<font color=maroon><b><center>√</center></b></font>”)
+        .否则
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.BCLIb_别崇拜哥_哥只是个传说_DUlXW, “&nbsp;”)
+        .如果结束
+        .如果 (大于或等于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 4))
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.OtvPP_别崇拜哥_哥只是个传说_OrYhB, 相加 (“<font color=#008000> ”, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [4], “</font>”))
+        .否则
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.OtvPP_别崇拜哥_哥只是个传说_OrYhB, “&nbsp;”)
+        .如果结束
+        
+    .否则
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “&nbsp;”)
+    .如果结束
+    
+.否则
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “&nbsp;”)
+.如果结束
+赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<tr bgcolor=#FFFFFF><td> ”, RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.BCLIb_别崇拜哥_哥只是个传说_DUlXW, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.OtvPP_别崇拜哥_哥只是个传说_OrYhB, “</td></tr>”))
+返回 (真)
+
+.子程序 AFqzG_别崇拜哥_哥只是个传说_jOOCv, 逻辑型, , WmNbq_别崇拜哥_哥只是个传说_OwpQh
+.如果真 (zfxgx_别崇拜哥_哥只是个传说_jrkvS.只转换函数声明)
+    返回 (假)
+.如果真结束
+.如果真 (不等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.BRlDc_别崇拜哥_哥只是个传说_gXiKs, 1))
+    返回 (假)
+.如果真结束
+.如果真 (等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.VdGaq_别崇拜哥_哥只是个传说_EbCDA, 1))
+    赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “</table>”))
+    连续赋值 (0, fpbst_别崇拜哥_哥只是个传说_bGfGf.VdGaq_别崇拜哥_哥只是个传说_EbCDA)
+.如果真结束
+.如果真 (不等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.NtIAz_别崇拜哥_哥只是个传说_izLNu, 1))
+    赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<table border=0><tr><td height=3></td></tr></table>”))
+    赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<table border=0 cellpadding=4 cellspacing=1 bgcolor=#999999 style='font-size: 9pt;color: #000000;'><tr style='background-color:#D9E3F0;'><td>变量名</td><td>类型</td><td>静态</td><td>数组</td><td>备注</td></tr>”))
+    赋值 (fpbst_别崇拜哥_哥只是个传说_bGfGf.NtIAz_别崇拜哥_哥只是个传说_izLNu, 1)
+.如果真结束
+赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 取文本中间 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 10, 999))
+赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO, 分割文本 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “,”, ))
+赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [1])
+.如果 (大于或等于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 2))
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, 相加 (“<font color=#0000FF>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [2], “</font>”))
+    .如果 (大于或等于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 3))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [3])
+        .如果真 (不等于 (寻找文本 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “静态”, , 假), -1))
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “<font color=maroon><b><center>√</center></b></font>”)
+        .如果真结束
+        .如果 (大于或等于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 4))
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, 取文本中间 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [4], 3, 相减 (取文本长度 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [4]), 3)))
+            .如果 (大于或等于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 5))
+                赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, 相加 (“<font color=#008000>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [5], “</font>”))
+            .否则
+                赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “&nbsp;”)
+            .如果结束
+            
+        .否则
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “&nbsp;”)
+        .如果结束
+        
+    .否则
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “&nbsp;”)
+    .如果结束
+    
+.否则
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “&nbsp;”)
+.如果结束
+赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<tr bgcolor=#FFFFFF><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “</td></tr>”))
+返回 (真)
+
+.子程序 OUdiF_别崇拜哥_哥只是个传说_GwniN, 逻辑型, , wvbQL_别崇拜哥_哥只是个传说_QXVEI
+.如果真 (或者 (等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.HGXRj_别崇拜哥_哥只是个传说_jzOam, 1), 等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.ftQML_别崇拜哥_哥只是个传说_CSEHs, 1)))
+    赋值 (DOOAC_别崇拜哥_哥只是个传说_XsOzJ, 相加 (DOOAC_别崇拜哥_哥只是个传说_XsOzJ, “</table><br />”))
+    连续赋值 (0, fpbst_别崇拜哥_哥只是个传说_bGfGf.HGXRj_别崇拜哥_哥只是个传说_jzOam, fpbst_别崇拜哥_哥只是个传说_bGfGf.ftQML_别崇拜哥_哥只是个传说_CSEHs)
+.如果真结束
+.如果真 (不等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.HGXRj_别崇拜哥_哥只是个传说_jzOam, 1))
+    赋值 (DOOAC_别崇拜哥_哥只是个传说_XsOzJ, 相加 (DOOAC_别崇拜哥_哥只是个传说_XsOzJ, “<table border=0 cellpadding=4 cellspacing=1 bgcolor=#999999 style='font-size: 9pt;color: #000000;'><tr style='background-color:#E6EDE4;'><td>数据类型名</td><td>公开</td><td colspan=3>备注</td></tr>”))
+    赋值 (fpbst_别崇拜哥_哥只是个传说_bGfGf.HGXRj_别崇拜哥_哥只是个传说_jzOam, 1)
+.如果真结束
+赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 取文本中间 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 10, 999))
+赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO, 分割文本 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “,”, ))
+赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [1])
+.如果 (大于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 1))
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “<font color=maroon><b>√</b></font>”)
+    .如果 (大于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 2))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, 相加 (“<font color=#008000>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [3], “</font>”))
+    .否则
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “&nbsp;”)
+    .如果结束
+    
+.否则
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “&nbsp;”)
+.如果结束
+赋值 (DOOAC_别崇拜哥_哥只是个传说_XsOzJ, 相加 (DOOAC_别崇拜哥_哥只是个传说_XsOzJ, “<tr bgcolor=#FFFFFF><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “</td><td colspan=3>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “</td></tr>”))
+赋值 (DOOAC_别崇拜哥_哥只是个传说_XsOzJ, 相加 (DOOAC_别崇拜哥_哥只是个传说_XsOzJ, “<tr style='background-color:#E6EDE4;'><td>成员名</td><td>类型</td><td>传址</td><td>数组</td><td>备注</td></tr>”))
+返回 (真)
+
+.子程序 HrteA_别崇拜哥_哥只是个传说_iTwrP, 逻辑型, , cPXSF_别崇拜哥_哥只是个传说_Odayo
+.如果真 (不等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.HGXRj_别崇拜哥_哥只是个传说_jzOam, 1))
+    赋值 (aLzBu_别崇拜哥_哥只是个传说_YnOkH, 真)
+    返回 (假)
+.如果真结束
+赋值 (fpbst_别崇拜哥_哥只是个传说_bGfGf.ftQML_别崇拜哥_哥只是个传说_CSEHs, 1)
+赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 取文本中间 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 10, 999))
+赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO, 分割文本 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “,”, ))
+赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [1])
+.如果 (大于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 1))
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, 相加 (“<font color=#0000FF>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [2], “</font>”))
+    .如果 (大于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 2))
+        .如果真 (不等于 (寻找文本 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [3], “传址”, , 假), -1))
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “<font color=maroon><b>√</b>”)
+        .如果真结束
+        .如果 (大于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 3))
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, 取文本中间 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [4], 3, 相减 (取文本长度 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [4]), 3)))
+            .如果 (大于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 4))
+                赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [5])
+            .否则
+                赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “&nbsp;”)
+            .如果结束
+            
+        .否则
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “&nbsp;”)
+        .如果结束
+        
+    .否则
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “&nbsp;”)
+    .如果结束
+    
+.否则
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “&nbsp;”)
+.如果结束
+赋值 (DOOAC_别崇拜哥_哥只是个传说_XsOzJ, 相加 (DOOAC_别崇拜哥_哥只是个传说_XsOzJ, “<tr bgcolor=#FFFFFF><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “</td></tr>”))
+返回 (真)
+
+.子程序 QiqZO_别崇拜哥_哥只是个传说_MnlCO, 逻辑型, , eUVCt_别崇拜哥_哥只是个传说_QdzYR
+.如果真 (不等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.ZVFaZ_别崇拜哥_哥只是个传说_LJtjq, 1))
+    赋值 (Kwqat_别崇拜哥_哥只是个传说_FKRGQ, 相加 (Kwqat_别崇拜哥_哥只是个传说_FKRGQ, “<table border=0 cellpadding=4 cellspacing=1 bgcolor=#999999 style='font-size: 9pt;color: #000000;'>”, “<tr style='background-color:#E6EDE4;'><td>常量名称</td><td>常量值</td><td>公开</td><td>备注</td></tr>”))
+    赋值 (fpbst_别崇拜哥_哥只是个传说_bGfGf.ZVFaZ_别崇拜哥_哥只是个传说_LJtjq, 1)
+.如果真结束
+赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 取文本中间 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 6, 999))
+赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO, 分割文本 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “,”, ))
+赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [1])
+.如果 (大于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 1))
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, 取文本中间 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [2], 3, 相减 (取文本长度 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [2]), 3)))
+    .如果 (大于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 2))
+        .如果真 (不等于 (寻找文本 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [3], “公开”, , 假), -1))
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “<font color=maroon><b>√</b></font>”)
+        .如果真结束
+        .如果 (大于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 3))
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, 相加 (“<font color=#008000>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [4], “</font>”))
+        .否则
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “&nbsp;”)
+        .如果结束
+        
+    .否则
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “&nbsp;”)
+    .如果结束
+    
+.否则
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “&nbsp;”)
+.如果结束
+赋值 (Kwqat_别崇拜哥_哥只是个传说_FKRGQ, 相加 (Kwqat_别崇拜哥_哥只是个传说_FKRGQ, “<tr bgcolor=#FFFFFF><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “</td></tr>”))
+返回 (真)
+
+.子程序 VFZJo_别崇拜哥_哥只是个传说_jXCqQ, 逻辑型, , voAIe_别崇拜哥_哥只是个传说_jPVMq
+.如果真 (或者 (等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.dkHEL_别崇拜哥_哥只是个传说_TNoRb, 1), 等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.sPfJm_别崇拜哥_哥只是个传说_oQeIa, 1)))
+    赋值 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, 相加 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, “</table><br />”))
+    连续赋值 (0, fpbst_别崇拜哥_哥只是个传说_bGfGf.dkHEL_别崇拜哥_哥只是个传说_TNoRb, fpbst_别崇拜哥_哥只是个传说_bGfGf.sPfJm_别崇拜哥_哥只是个传说_oQeIa)
+.如果真结束
+赋值 (fpbst_别崇拜哥_哥只是个传说_bGfGf.dkHEL_别崇拜哥_哥只是个传说_TNoRb, 1)
+赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 取文本中间 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 9, 999))
+赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO, 分割文本 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “,”, ))
+赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, 相加 (“<font color=#000080>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [1], “</font>”))
+.如果 (大于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 1))
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, 相加 (“<font color=#0000FF>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [2], “</font>”))
+    .如果 (大于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 2))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, 相加 (“<font color=maroon>”, 取文本中间 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [3], 3, 相减 (取文本长度 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [3]), 3)), “</font>”))
+        .如果 (大于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 3))
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, 相加 (“<font color=maroon>”, 取文本中间 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [4], 3, 相减 (取文本长度 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [4]), 3)), “</font>”))
+            .如果 (大于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 4))
+                .如果真 (不等于 (寻找文本 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [5], “公开”, , 假), -1))
+                    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “<font color=maroon><b>√</b></font>”)
+                .如果真结束
+                .如果 (大于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 5))
+                    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.BCLIb_别崇拜哥_哥只是个传说_DUlXW, 相加 (“<font color=#008000>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [6], “</font>”))
+                .否则
+                    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.BCLIb_别崇拜哥_哥只是个传说_DUlXW, “&nbsp;”)
+                .如果结束
+                
+            .否则
+                赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “&nbsp;”)
+            .如果结束
+            
+        .否则
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “&nbsp;”)
+        .如果结束
+        
+    .否则
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “&nbsp;”)
+    .如果结束
+    
+.否则
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “&nbsp;”)
+.如果结束
+赋值 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, 相加 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, “<table border=0 cellpadding=4 cellspacing=1 bgcolor=#999999 style='font-size: 9pt;color: #000000;'>”, “<tr style='background-color:#E6EDE4;'><td>DLL命令名</td><td>返回值数据类型</td><td>公开</td><td colspan=3>备注</td></tr>”))
+赋值 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, 相加 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, “<tr  bgcolor=#FFFFFF><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “</td><td colspan=2>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.BCLIb_别崇拜哥_哥只是个传说_DUlXW, “</td></tr>”))
+赋值 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, 相加 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, “<tr style='background-color:#E6EDE4;'><td colspan=5>DLL库文件名</td></tr><tr bgcolor=#FFFFFF><td colspan=5>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “</td></tr>”))
+赋值 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, 相加 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, “<tr style='background-color:#E6EDE4;'><td colspan=5>在DLL库中对应命令名</td></tr><tr bgcolor=#FFFFFF><td colspan=5>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “</td></tr>”))
+赋值 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, 相加 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, “<tr style='background-color:#E6EDE4;'><td>参数名</td><td>类型</td><td>传址</td><td>数组</td><td>备注</td></tr>”))
+返回 (真)
+
+.子程序 IfLSK_别崇拜哥_哥只是个传说_EDVdh, 逻辑型, , xmJTd_别崇拜哥_哥只是个传说_GmUZE
+.如果真 (不等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.dkHEL_别崇拜哥_哥只是个传说_TNoRb, 1))
+    赋值 (aLzBu_别崇拜哥_哥只是个传说_YnOkH, 真)
+    返回 (假)
+.如果真结束
+赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 取文本中间 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 10, 999))
+赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO, 分割文本 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “,”, ))
+赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [1])
+.如果 (大于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 1))
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, 相加 (“<font color=#0000FF>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [2], “</font>”))
+    .如果 (大于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 2))
+        .如果 (不等于 (寻找文本 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [3], “传址”, , 假), -1))
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “<font color=maroon><b>√</b></font>”)
+        .否则
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “&nbsp;”)
+        .如果结束
+        .如果 (不等于 (寻找文本 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [3], “数组”, , 假), -1))
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “<font color=maroon><b>√</b></font>”)
+        .否则
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “&nbsp;”)
+        .如果结束
+        .如果 (大于 (取数组成员数 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO), 3))
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, 相加 (“<font color=#008000>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [4], “</font>”))
+        .否则
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “&nbsp;”)
+        .如果结束
+        
+    .否则
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “&nbsp;”)
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “&nbsp;”)
+    .如果结束
+    
+.否则
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “&nbsp;”)
+.如果结束
+赋值 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, 相加 (JCgyG_别崇拜哥_哥只是个传说_xDuMB, “<tr bgcolor=#FFFFFF><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.MlGMm_别崇拜哥_哥只是个传说_XaSxh, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.eVfYd_别崇拜哥_哥只是个传说_KjLJn, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.JBsMh_别崇拜哥_哥只是个传说_yvpRa, “</td><td>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “</td></tr>”))
+返回 (真)
+
+.子程序 BrdnG_别崇拜哥_哥只是个传说_TyMRu, 逻辑型, , lRPaX_别崇拜哥_哥只是个传说_cfQon
+.局部变量 sFQFl_别崇拜哥_哥只是个传说_WUbGa, 逻辑型, , , VrqDz_别崇拜哥_哥只是个传说_Qlhkk
+
+.如果真 (zfxgx_别崇拜哥_哥只是个传说_jrkvS.只转换函数声明)
+    返回 (假)
+.如果真结束
+.如果真 (等于 (取文本左边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 5), “.版本”))
+    返回 (假)
+.如果真结束
+.如果真 (等于 (取文本左边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 8), “.支持库 ”))
+    赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 删首尾空 (取文本中间 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 8, 999)))
+    .计次循环首 (取数组成员数 (eXrBM_别崇拜哥_哥只是个传说_zSlNS), TXjEh_别崇拜哥_哥只是个传说_SgvUY.HTHHG_别崇拜哥_哥只是个传说_zeRec)
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO, 分割文本 (eXrBM_别崇拜哥_哥只是个传说_zSlNS [TXjEh_别崇拜哥_哥只是个传说_SgvUY].HTHHG_别崇拜哥_哥只是个传说_zeRec, “=”, ))
+        .如果真 (等于 (RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [1], rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT))
+            赋值 (xvUGu_别崇拜哥_哥只是个传说_FnKdG, 相加 (xvUGu_别崇拜哥_哥只是个传说_FnKdG, “<tr bgcolor=#FFFFFF><td>”, rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “</td><td><font color=#008000>(”, RNiau_别崇拜哥_哥只是个传说_lTQwo.HyXkU_别崇拜哥_哥只是个传说_xnSlO [2], “)</font></td></tr>”))
+            赋值 (sFQFl_别崇拜哥_哥只是个传说_WUbGa, 真)
+            跳出循环 ()
+        .如果真结束
+        
+    .计次循环尾 ()
+    .如果 (sFQFl_别崇拜哥_哥只是个传说_WUbGa)
+        赋值 (sFQFl_别崇拜哥_哥只是个传说_WUbGa, 假)
+        返回 (假)
+    .否则
+        赋值 (xvUGu_别崇拜哥_哥只是个传说_FnKdG, 相加 (xvUGu_别崇拜哥_哥只是个传说_FnKdG, “<tr bgcolor=#FFFFFF><td>”, rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “</td><td><font color=red>(未知的支持库)</font></td></tr>”))
+        返回 (假)
+    .如果结束
+    
+.如果真结束
+.如果真 (不等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.GmOpU_别崇拜哥_哥只是个传说_BODVJ, 1))
+    .如果 (等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.BRlDc_别崇拜哥_哥只是个传说_gXiKs, 1))
+        赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “</table>”))
+        赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<table border=0 cellpadding=0 cellspacing=0 bgcolor=#FFFFFF style='font-size: 9pt;color: #000000;font-family: 宋体;'>”))
+        赋值 (fpbst_别崇拜哥_哥只是个传说_bGfGf.GmOpU_别崇拜哥_哥只是个传说_BODVJ, 1)
+    .否则
+        赋值 (aLzBu_别崇拜哥_哥只是个传说_YnOkH, 真)
+        返回 (假)
+    .如果结束
+    
+.如果真结束
+赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 子文本替换 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “<”, “&lt;”, , , 真))
+赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 子文本替换 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “>”, “&gt;”, , , 真))
+.判断循环首 (不等于 (RNiau_别崇拜哥_哥只是个传说_lTQwo.Stvge_别崇拜哥_哥只是个传说_nOUgt, “aa”))
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.TLFRU_别崇拜哥_哥只是个传说_dKyOx, 寻找文本 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, #左引号, 相加 (RNiau_别崇拜哥_哥只是个传说_lTQwo.xAWMe_别崇拜哥_哥只是个传说_nbjdp, 1), 假))
+    .如果 (等于 (RNiau_别崇拜哥_哥只是个传说_lTQwo.TLFRU_别崇拜哥_哥只是个传说_dKyOx, -1))
+        跳出循环 ()
+    .否则
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QuiLU_别崇拜哥_哥只是个传说_LRMep, 寻找文本 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, #右引号, 相加 (RNiau_别崇拜哥_哥只是个传说_lTQwo.TLFRU_别崇拜哥_哥只是个传说_dKyOx, 1), 假))
+        .如果真 (等于 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QuiLU_别崇拜哥_哥只是个传说_LRMep, -1))
+            跳出循环 ()
+        .如果真结束
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.Stvge_别崇拜哥_哥只是个传说_nOUgt, 取文本中间 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, RNiau_别崇拜哥_哥只是个传说_lTQwo.TLFRU_别崇拜哥_哥只是个传说_dKyOx, 相加 (相减 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QuiLU_别崇拜哥_哥只是个传说_LRMep, RNiau_别崇拜哥_哥只是个传说_lTQwo.TLFRU_别崇拜哥_哥只是个传说_dKyOx), 2)))
+        赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 子文本替换 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, RNiau_别崇拜哥_哥只是个传说_lTQwo.Stvge_别崇拜哥_哥只是个传说_nOUgt, 相加 (“###char_color###”, RNiau_别崇拜哥_哥只是个传说_lTQwo.Stvge_别崇拜哥_哥只是个传说_nOUgt, “###char_color_end###”), RNiau_别崇拜哥_哥只是个传说_lTQwo.TLFRU_别崇拜哥_哥只是个传说_dKyOx, , 真))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.xAWMe_别崇拜哥_哥只是个传说_nbjdp, 相加 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QuiLU_别崇拜哥_哥只是个传说_LRMep, 37))
+    .如果结束
+    
+.判断循环尾 ()
+赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, 删首尾空 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT))
+.如果真 (或者 (等于 (取文本左边 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, 1), “'”), 等于 (取文本左边 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, 2), “.'”)))
+    赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 子文本替换 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “ ”, “&nbsp;”, , , 真))
+    赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<tr><td height=22><font color=#008000>”, rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “</font></td></tr>”))
+    返回 (假)
+.如果真结束
+.如果 (等于 (取文本左边 (RNiau_别崇拜哥_哥只是个传说_lTQwo.QOyEw_别崇拜哥_哥只是个传说_boGnm, 1), “.”))
+    .计次循环首 (取数组成员数 (GcFZp_别崇拜哥_哥只是个传说_ndamP), TXjEh_别崇拜哥_哥只是个传说_SgvUY.ldvAo_别崇拜哥_哥只是个传说_wTIVT)
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.GAEvV_别崇拜哥_哥只是个传说_tkHvR, 寻找文本 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, GcFZp_别崇拜哥_哥只是个传说_ndamP [TXjEh_别崇拜哥_哥只是个传说_SgvUY].ldvAo_别崇拜哥_哥只是个传说_wTIVT, , 假))
+        .如果 (不等于 (RNiau_别崇拜哥_哥只是个传说_lTQwo.GAEvV_别崇拜哥_哥只是个传说_tkHvR, -1))
+            赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 子文本替换 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, GcFZp_别崇拜哥_哥只是个传说_ndamP [TXjEh_别崇拜哥_哥只是个传说_SgvUY].ldvAo_别崇拜哥_哥只是个传说_wTIVT, 相加 (“###color###”, 取文本中间 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 相加 (RNiau_别崇拜哥_哥只是个传说_lTQwo.GAEvV_别崇拜哥_哥只是个传说_tkHvR, 1), 相减 (取文本长度 (GcFZp_别崇拜哥_哥只是个传说_ndamP [TXjEh_别崇拜哥_哥只是个传说_SgvUY].ldvAo_别崇拜哥_哥只是个传说_wTIVT), 1)), “###color_end###”), RNiau_别崇拜哥_哥只是个传说_lTQwo.GAEvV_别崇拜哥_哥只是个传说_tkHvR, , 真))
+            赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.dKwzd_别崇拜哥_哥只是个传说_SNWcx, 真)
+            到循环尾 ()
+        .否则
+            
+        .如果结束
+        
+    .计次循环尾 ()
+    .如果真 (等于 (RNiau_别崇拜哥_哥只是个传说_lTQwo.dKwzd_别崇拜哥_哥只是个传说_SNWcx, 假))
+        赋值 (aLzBu_别崇拜哥_哥只是个传说_YnOkH, 真)
+        返回 (假)
+    .如果真结束
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.GAEvV_别崇拜哥_哥只是个传说_tkHvR, 倒找文本 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “'”, , 假))
+    .如果 (不等于 (RNiau_别崇拜哥_哥只是个传说_lTQwo.GAEvV_别崇拜哥_哥只是个传说_tkHvR, -1))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, 取文本左边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 相加 (RNiau_别崇拜哥_哥只是个传说_lTQwo.GAEvV_别崇拜哥_哥只是个传说_tkHvR, 1)))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.BCLIb_别崇拜哥_哥只是个传说_DUlXW, 取文本右边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 相减 (取文本长度 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT), RNiau_别崇拜哥_哥只是个传说_lTQwo.GAEvV_别崇拜哥_哥只是个传说_tkHvR)))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, 子文本替换 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “ ”, “&nbsp;”, , , 真))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.BCLIb_别崇拜哥_哥只是个传说_DUlXW, 子文本替换 (RNiau_别崇拜哥_哥只是个传说_lTQwo.BCLIb_别崇拜哥_哥只是个传说_DUlXW, “ ”, “&nbsp;”, , , 真))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, 子文本替换 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “###color###”, “<font color=#0000FF>”, , , 真))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, 子文本替换 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “###color_end###”, “</font>”, , , 真))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, 子文本替换 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “###char_color###”, “<font color=#008080>”, , , 真))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, 子文本替换 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “###char_color_end###”, “</font>”, , , 真))
+        赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<tr><td height=22>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “<font color=#008000>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.BCLIb_别崇拜哥_哥只是个传说_DUlXW, “</font>”, “</td></tr>”))
+    .否则
+        赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 子文本替换 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “ ”, “&nbsp;”, , , 真))
+        赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 子文本替换 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “###color###”, “<font color=#0000FF>”, , , 真))
+        赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 子文本替换 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “###color_end###”, “</font>”, , , 真))
+        赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 子文本替换 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “###char_color###”, “<font color=#008080>”, , , 真))
+        赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 子文本替换 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “###char_color_end###”, “</font>”, , , 真))
+        赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<tr><td height=22>”, rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “</td></tr>”))
+    .如果结束
+    
+.否则
+    赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.GAEvV_别崇拜哥_哥只是个传说_tkHvR, 倒找文本 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “'”, , 假))
+    .如果 (不等于 (RNiau_别崇拜哥_哥只是个传说_lTQwo.GAEvV_别崇拜哥_哥只是个传说_tkHvR, -1))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, 取文本左边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 相加 (RNiau_别崇拜哥_哥只是个传说_lTQwo.GAEvV_别崇拜哥_哥只是个传说_tkHvR, 1)))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.BCLIb_别崇拜哥_哥只是个传说_DUlXW, 取文本右边 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 相减 (取文本长度 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT), RNiau_别崇拜哥_哥只是个传说_lTQwo.GAEvV_别崇拜哥_哥只是个传说_tkHvR)))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, 子文本替换 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “ ”, “&nbsp;”, , , 真))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.BCLIb_别崇拜哥_哥只是个传说_DUlXW, 子文本替换 (RNiau_别崇拜哥_哥只是个传说_lTQwo.BCLIb_别崇拜哥_哥只是个传说_DUlXW, “ ”, “&nbsp;”, , , 真))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, 子文本替换 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “###char_color###”, “<font color=#008080>”, , , 真))
+        赋值 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, 子文本替换 (RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “###char_color_end###”, “</font>”, , , 真))
+        赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<tr><td height=22>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.JYlWQ_别崇拜哥_哥只是个传说_tnFcC, “<font color=#008000>”, RNiau_别崇拜哥_哥只是个传说_lTQwo.BCLIb_别崇拜哥_哥只是个传说_DUlXW, “</font>”, “</td></tr>”))
+        返回 (假)
+    .否则
+        赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 子文本替换 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “ ”, “&nbsp;”, , , 真))
+        赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 子文本替换 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “###char_color###”, “<font color=#008080>”, , , 真))
+        赋值 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, 子文本替换 (rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “###char_color_end###”, “</font>”, , , 真))
+        赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<tr><td height=22>”, rjEyJ_别崇拜哥_哥只是个传说_HzEFK [TXjEh_别崇拜哥_哥只是个传说_SgvUY].WXCve_别崇拜哥_哥只是个传说_uSoqT, “</td></tr>”))
+    .如果结束
+    
+.如果结束
+返回 (真)
+
+.子程序 tnGGS_别崇拜哥_哥只是个传说_ZiLWa, 逻辑型, , Yssdm_别崇拜哥_哥只是个传说_RFAgj
+.如果真 (zfxgx_别崇拜哥_哥只是个传说_jrkvS.只转换函数声明)
+    返回 (假)
+.如果真结束
+.如果真 (等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.GmOpU_别崇拜哥_哥只是个传说_BODVJ, 1))
+    赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<tr><td height=22>&nbsp;</td></tr>”))
+.如果真结束
+.如果真 (等于 (fpbst_别崇拜哥_哥只是个传说_bGfGf.NtIAz_别崇拜哥_哥只是个传说_izLNu, 1))
+    赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “</table>”))
+    赋值 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, 相加 (CHFOB_别崇拜哥_哥只是个传说_AmAtt, “<table border=0><tr><td height=5></td></tr></table>”))
+    赋值 (fpbst_别崇拜哥_哥只是个传说_bGfGf.NtIAz_别崇拜哥_哥只是个传说_izLNu, 0)
+.如果真结束
+返回 (真)
+
+.程序集 WMCyJ_NRTLb, , , 
+
+.子程序 _启动子程序, 整数型, 公开, 
+载入 (QrGWc_SQtXO, , 假)
+返回 (0)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

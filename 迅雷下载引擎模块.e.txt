@@ -1,0 +1,177 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：迅雷下载引擎
+ ' 程序描述：QQ513739292
+@备注:
+由xmnew封装
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：xmnew@qq.com
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+
+.DLL命令 XLContinueTask, 整数型, "XLDownload.dll", "XLContinueTask", , 恢复已暂停的任务
+    .参数 TaskId, 整数型, , 任务编号
+
+.DLL命令 XLContinueTaskFromTdFile, 整数型, "XLDownload.dll", "XLContinueTaskFromTdFile", , 从指定的TD文件开始新任务
+    .参数 TdFileFullPath, 字节集, , TD文件的完整路径及文件名
+    .参数 TaskId, 整数型, 传址, 任务编号
+
+.DLL命令 XLInitDownloadEngine, 逻辑型, "XLDownload.dll", "XLInitDownloadEngine", , 初始化下载引擎
+
+.DLL命令 XLUninitDownloadEngine, 逻辑型, "XLDownload.dll", "XLUninitDownloadEngine", , 卸载下载引擎
+
+.DLL命令 XLPauseTask, 整数型, "XLDownload.dll", "XLPauseTask", , 
+    .参数 TaskId, 整数型, , 
+    .参数 NewTaskId, 整数型, 传址, 
+
+.DLL命令 XLQueryTaskInfo, 整数型, "XLDownload.dll", "XLQueryTaskInfo", ,  
+    .参数 TaskId, 整数型, , 
+    .参数 Status, 整数型, 传址, 
+    .参数 FileSize, 长整数型, 传址, 
+    .参数 RecvSize, 长整数型, 传址, 
+
+.DLL命令 XLStopTask, 空白型, "XLDownload.dll", "XLStopTask", , 停止指定任务
+    .参数 TaskId, 整数型, , 
+
+.DLL命令 XLURLDownloadToFile, 整数型, "XLDownload.dll", "XLURLDownloadToFile", , 
+    .参数 FileName, 字节集, , 
+    .参数 Url, 字节集, , 
+    .参数 RefUrl, 字节集, , 
+    .参数 TaskId, 整数型, 传址, 
+
+.DLL命令 MultiByteToWideChar, 整数型, "", "MultiByteToWideChar", , 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpWideCharStr, 字节集, , 
+    .参数 cchWideChar, 整数型, , 
+
+.程序集 迅雷下载引擎, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+
+
+.子程序 迅雷引擎_初始化下载引擎, 逻辑型, 公开, 
+返回 (XLInitDownloadEngine ())
+
+
+.子程序 迅雷引擎_卸载下载引擎, 逻辑型, 公开, 
+返回 (XLUninitDownloadEngine ())
+
+
+.子程序 迅雷引擎_暂停指定任务, 逻辑型, 公开, 返回XL_SUCCESS表示成功、返回其他值表示失败
+.参数 TaskId, 整数型, , 
+.参数 NewTaskId, 整数型, 参考, 
+
+.局部变量 局部_返回内容, 整数型, , , 
+
+ ' 本源码来自易语言资源网(www.5A5X.com)
+赋值 (局部_返回内容, XLPauseTask (TaskId, NewTaskId))
+.判断开始 (等于 (局部_返回内容, 0))
+    返回 (真)
+.默认
+    返回 (假)
+.判断结束
+
+
+
+.子程序 迅雷引擎_查询指定任务的当前状态, 整数型, 公开, 返回任务的当前状态。0=已经建立连接  2=开始下载  10=暂停  11=成功下载  12=下载失败
+.参数 TaskId, 整数型, , 
+.参数 Status, 整数型, 参考, 
+.参数 FileSize, 长整数型, 参考, 
+.参数 RecvSize, 长整数型, 参考, 
+
+ ' 本源码来自易语言资源网(www.5A5X.com)
+返回 (XLQueryTaskInfo (TaskId, Status, FileSize, RecvSize))
+
+
+.子程序 迅雷引擎_停止指定任务, 空白型, 公开, 
+.参数 TaskId, 整数型, , 
+
+XLStopTask (TaskId)
+
+
+.子程序 迅雷引擎_开始下载, 整数型, 公开, 
+.参数 FileName, 文本型, , 
+.参数 URL, 文本型, ,  
+.参数 RefUrl, 文本型, 可空, 
+.参数 TaskId, 整数型, 参考, 
+
+返回 (XLURLDownloadToFile (Ansi转Unicode (FileName), Ansi转Unicode (URL), Ansi转Unicode (RefUrl), TaskId))
+
+
+.子程序 迅雷引擎_恢复已暂停的任务, 整数型, 公开, 返回XL_SUCCESS表示成功、返回其他值表示失败
+.参数 TaskId, 整数型, , 
+
+返回 (XLContinueTask (TaskId))
+
+
+.子程序 迅雷引擎_从TD文件开始任务, 整数型, 公开, 返回XL_SUCCESS表示成功、返回其他值表示失败
+.参数 TdFileFullPath, 文本型, , 
+
+.局部变量 TaskId, 整数型, , , 
+
+ ' 本源码来自易语言资源网(www.5A5X.com)
+XLContinueTaskFromTdFile (Ansi转Unicode (TdFileFullPath), TaskId)
+返回 (TaskId)
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.子程序 Ansi转Unicode, 字节集, , 
+.参数 Ansi文本, 文本型, , 
+
+.局部变量 len, 整数型, , , 单位: Word
+.局部变量 Unicode字节集, 字节集, , , 
+
+赋值 (len, MultiByteToWideChar (936, 0, Ansi文本, -1, {  }, 0))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+赋值 (Unicode字节集, 取空白字节集 (相乘 (len, 2)))
+MultiByteToWideChar (936, 0, Ansi文本, -1, Unicode字节集, 相乘 (len, 2))
+返回 (Unicode字节集)
+ ' 936 表示简体中文代码页; -1 表示以"0"作为文本终止符
+ ' 如果要去掉转换后Unicode字节集末尾的{0,0}，则Unicode长度再减去1
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

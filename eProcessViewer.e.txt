@@ -1,0 +1,401 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：eProcessViewer
+ ' 程序描述：
+ ' 程序作者：Tekken
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：sunjianhua_kki@sina.com
+ ' 主页地址：http://blog.csdn.net/sun_jianhua
+ ' 版权声明：
+ ' 版本号：1.1
+ ' 创建号：0.0
+
+窗口 _MainForm ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 630
+    高度 = 490
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “eProcessViewer”
+    帮助文件名 = “”
+
+
+
+.常量 MAX_PATH, "260", , 
+.常量 , , , 
+.常量 PROCESS_TERMINATE, "1", , 
+.常量 PROCESS_VM_READ, "16", , 
+.常量 PROCESS_QUERY_INFORMATION, "1024", , 
+.常量 , , , 
+.常量 SE_DEBUG_NAME, "“SeDebugPrivilege”", , 
+.常量 , , , 
+.常量 SE_PRIVILEGE_ENABLED, "2", , 
+.常量 , , , 
+.常量 TOKEN_ADJUST_PRIVILEGES, "32", , 
+.常量 TOKEN_READ, "131080", , 
+.常量 , , , 
+.常量 STILL_ACTIVE, "259", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 Kernel
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 1 2 Extended UI I
+
+
+
+
+数据类型 LUID, , 
+    .成员 LowPart, 整数型, , , 
+    .成员 HighPart, 整数型, , , 
+
+数据类型 LUID_AND_ATTRIBUTES, , 
+    .成员 lpLuid, LUID, , , 
+    .成员 Attributes, 整数型, , , 
+
+数据类型 TOKEN_PRIVILEGES, , 
+    .成员 PrivilegeCount, 整数型, , , 
+    .成员 Privileges, LUID_AND_ATTRIBUTES, , "2", 
+
+.全局变量 WindowsDirectory, 文本型, 公开, , 
+.全局变量 CurrentProcess, 整数型, 公开, , 
+.全局变量 IdleProcess, 文本型, 公开, , 
+.全局变量 SystemProcess, 文本型, 公开, , 
+
+.DLL命令 ShellAbout, 整数型, "shell32.dll", "ShellAboutA", , 显示标准关于对话框
+    .参数 hWnd, 整数型, , 所有者窗体句柄
+    .参数 szApp, 文本型, , 应用程序名称
+    .参数 szOther, 文本型, , 其它文本信息
+    .参数 hIcon, 整数型, , 图标句柄
+
+.DLL命令 TerminateProcess, 逻辑型, "kernel32.dll", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 nExitCode, 整数型, , 
+
+.DLL命令 GetExitCodeProcess, 空白型, "kernel32.dll", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 nExitCode, 整数型, 传址, 
+
+.DLL命令 EnumProcesses, 整数型, "psapi.dll", "", , 
+    .参数 lpProcesses, 整数型, 传址 数组, 
+    .参数 nSize, 整数型, , 
+    .参数 nReturnSize, 整数型, 传址, 
+
+.DLL命令 EnumProcessModules, 整数型, "psapi.dll", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpModules, 整数型, 传址 数组, 
+    .参数 nSize, 整数型, , 
+    .参数 nReturnSize, 整数型, 传址, 
+
+.DLL命令 GetFileTitle, 整数型, "comdlg32.dll", "GetFileTitleA", , 
+    .参数 lpFileName, 文本型, , 
+    .参数 lpFileTitle, 文本型, 传址, 
+    .参数 nSize, 整数型, , 
+
+.DLL命令 GetModuleBaseName, 整数型, "psapi.dll", "GetModuleBaseNameA", , 
+    .参数 hProcess, 整数型, , 
+    .参数 hModule, 整数型, , 
+    .参数 lpModuleName, 文本型, 传址, 
+    .参数 nSize, 整数型, , 
+
+.DLL命令 GetModuleFileNameEx, 整数型, "psapi.dll", "GetModuleFileNameExA", , 
+    .参数 hProcess, 整数型, , 
+    .参数 hModule, 整数型, , 
+    .参数 hFileName, 文本型, , 
+    .参数 nSize, 整数型, , 
+
+.DLL命令 OpenProcess, 整数型, "kernel32.dll", "", , 
+    .参数 dwDesireAccess, 整数型, , 
+    .参数 bInheritHandle, 逻辑型, , 
+    .参数 dwProcessID, 整数型, , 
+
+.DLL命令 GetModuleHandle, 整数型, "kernel32.dll", "GetModuleHandleA", , 获取模块句柄，这里要获取的是当前程序，所以无需释放
+    .参数 hModuleFileName, 整数型, , 如为当前模块可用零表示
+
+.DLL命令 LoadIcon, 整数型, "user32.dll", "LoadIconA", , 装载模块中的图标
+    .参数 hModule, 整数型, , 模块句柄
+    .参数 uIcon, 整数型, , 图标编号或图标名称
+
+.DLL命令 CloseHandle, 整数型, "kernel32.dll", "", , 关闭句柄，这里用来关闭已装载的图标
+    .参数 hObject, 整数型, , 欲关闭的对象
+
+.DLL命令 OpenProcessToken, 整数型, "advapi32.dll", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 dwDesireAccess, 整数型, , 
+    .参数 hToken, 整数型, 传址, 
+
+.DLL命令 LookupPrivilegeValue, 整数型, "advapi32.dll", "LookupPrivilegeValueA", , 
+    .参数 lpSystemName, 整数型, , 
+    .参数 lpName, 文本型, , 
+    .参数 lpLuid, LUID, 传址, 
+
+.DLL命令 AdjustTokenPrivileges, 整数型, "advapi32.dll", "", , 
+    .参数 hToken, 整数型, , 
+    .参数 hDisableAllPrivilege, 逻辑型, , 
+    .参数 tpNewState, TOKEN_PRIVILEGES, 传址, 
+    .参数 nSize, 整数型, , 
+    .参数 lpPrevState, 整数型, , 
+    .参数 nReturnSize, 整数型, , 
+
+.DLL命令 GetCurrentProcess, 整数型, "kernel32.dll", "", , 
+
+.DLL命令 LocalSize, 整数型, "kernel32.dll", "", , 
+    .参数 tp, TOKEN_PRIVILEGES, , 
+
+.DLL命令 GetWindowsDirectory, 整数型, "kernel32.dll", "GetWindowsDirectoryA", , 
+    .参数 lpBuffer, 文本型, 传址, 
+    .参数 nSize, 整数型, , 
+
+.窗口程序集 frmMain, , , 
+
+.程序集变量 iCurrentItem, 整数型, , , 
+.子程序 __MainForm_AfterCreate, 空白型, , 
+未知支持库函数_52 (_MainForm., 未知支持库函数_19 (_MainForm., “ v1.01”))
+未知支持库函数_52 (WindowsDirectory, 未知支持库函数_97 (#MAX_PATH))
+GetWindowsDirectory (WindowsDirectory, #MAX_PATH)
+未知支持库函数_52 (IdleProcess, “System Idle Process”)
+未知支持库函数_52 (SystemProcess, “System”)
+GetProcesses ()
+
+
+.子程序 _mnuHelpAbout_Click, 空白型, , 
+.局部变量 hIcon, 整数型, , , 
+
+ ' 不知道易语言的默认图标为什么要搞成 129，害得我拿 1 试了半天
+未知支持库函数_52 (hIcon, LoadIcon (GetModuleHandle (0), 129))
+ShellAbout (_MainForm.未知支持库函数_215 (), _MainForm., 未知支持库函数_19 (“Welcome to Tekken's Blog.”, 未知支持库函数_80 (13), 未知支持库函数_80 (10), “http://blog.csdn.net/sun_jianhua”), hIcon)
+CloseHandle (hIcon)
+
+
+.子程序 _mnuFileExit_Click, 空白型, , 
+未知支持库函数_14 ()
+
+
+.子程序 GetProcessName, 文本型, , 根据进程编号获取其进程名称
+.参数 hProcessID, 整数型, , 
+
+.局部变量 hProcess, 整数型, , , 
+.局部变量 lpProcessName, 文本型, , , 
+.局部变量 hModules, 整数型, , "1024", 
+.局部变量 iNeededSize, 整数型, , , 
+
+.未知支持库函数_0 (未知支持库函数_38 (hProcessID, 0))
+    未知支持库函数_13 (IdleProcess)
+.否则
+    .未知支持库函数_1 (未知支持库函数_38 (CurrentProcess, 1)) ' 即第二个进程
+        未知支持库函数_13 (SystemProcess)
+    .如果真结束
+    
+.如果结束
+未知支持库函数_52 (hProcess, OpenProcess (未知支持库函数_19 (#PROCESS_QUERY_INFORMATION, #PROCESS_VM_READ), 假, hProcessID))
+.未知支持库函数_1 (未知支持库函数_39 (hProcess, 0))
+    .未知支持库函数_1 (未知支持库函数_39 (EnumProcessModules (hProcess, hModules, 未知支持库函数_15 (4, 1024), iNeededSize), 0))
+        未知支持库函数_52 (lpProcessName, 未知支持库函数_97 (#MAX_PATH))
+         ' 获取第一个模块名称，即本进程名称
+        GetModuleFileNameEx (hProcess, hModules [1], lpProcessName, #MAX_PATH)
+    .如果真结束
+    
+.如果真结束
+ ' 去除 \??\ 符号以及替换 \SystemRoot 为 Windows 目录名称
+未知支持库函数_52 (lpProcessName, 未知支持库函数_96 (lpProcessName, “\??\”, , 1, 未知支持库函数_76 (lpProcessName), 真))
+.未知支持库函数_1 (未知支持库函数_38 (未知支持库函数_77 (lpProcessName, 11), “\SystemRoot”))
+    未知支持库函数_52 (lpProcessName, 未知支持库函数_19 (WindowsDirectory, 未知支持库函数_79 (lpProcessName, 12, 未知支持库函数_20 (未知支持库函数_76 (lpProcessName), 11))))
+.如果真结束
+未知支持库函数_13 (lpProcessName)
+
+
+.子程序 _tbMain_Click, 空白型, , 
+.参数 ButtonIndex, 整数型, , 
+
+.局部变量 strBtnName, 文本型, , , 
+
+未知支持库函数_52 (strBtnName, ButtonIndex.未知支持库函数_40 ())
+.未知支持库函数_1 (未知支持库函数_38 (strBtnName, “End eProcessViewer”))
+    _mnuFileExit_Click ()
+.如果真结束
+.未知支持库函数_1 (未知支持库函数_38 (strBtnName, “Refresh Processes”))
+    _mnuRefreshProcesses_Click ()
+.如果真结束
+.未知支持库函数_1 (未知支持库函数_38 (strBtnName, “Refresh Modules”))
+    _mnuRefreshModules_Click ()
+.如果真结束
+.未知支持库函数_1 (未知支持库函数_38 (strBtnName, “Terminate Process”))
+    .未知支持库函数_0 (未知支持库函数_38 (., -1))
+        未知支持库函数_13 ()
+    .否则
+        .未知支持库函数_0 (未知支持库函数_38 (未知支持库函数_47 (EndProcess (.未知支持库函数_52 (.))), 真))
+            未知支持库函数_192 (“无法结束该进程，可能权限不够或该进程已不存在！”, #, “操作失败”)
+        .否则
+            GetProcesses ()
+        .如果结束
+        
+    .如果结束
+    
+.如果真结束
+
+
+.子程序 EndProcess, 逻辑型, , 
+.参数 hProcessID, 整数型, , 
+
+.局部变量 hToken, 整数型, , , 
+.局部变量 hProcess, 整数型, , , 
+.局部变量 bReturn, 逻辑型, , , 
+.局部变量 nExitCode, 整数型, , , 
+
+未知支持库函数_52 (hToken, EnablePrivilege (#SE_DEBUG_NAME, 真))
+未知支持库函数_52 (hProcess, OpenProcess (未知支持库函数_19 (#PROCESS_TERMINATE, #PROCESS_QUERY_INFORMATION), 假, hProcessID))
+未知支持库函数_52 (bReturn, TerminateProcess (hProcess, 0))
+
+ ' 适当延时一下，否则列表框刷新时进程可能还没完全结束
+.未知支持库函数_5 ()
+    GetExitCodeProcess (hProcess, nExitCode)
+    未知支持库函数_415 (100)
+     ' 如果成功结束进程但退出代码仍为活动状态则继续延时
+.未知支持库函数_6 (未知支持库函数_45 (未知支持库函数_38 (nExitCode, #STILL_ACTIVE), 未知支持库函数_38 (bReturn, 真)))
+
+.未知支持库函数_1 (未知支持库函数_39 (hProcess, 0))
+    CloseHandle (hProcess)
+.如果真结束
+.未知支持库函数_1 (未知支持库函数_39 (hToken, 0))
+    CloseHandle (hToken)
+.如果真结束
+未知支持库函数_13 (bReturn)
+
+
+.子程序 GetProcesses, 空白型, , 
+.局部变量 hProcessIDs, 整数型, , "1024", 
+.局部变量 iNeededSize, 整数型, , , 
+.局部变量 iProcessCount, 整数型, , , 
+.局部变量 iProcessIndex, 整数型, , , 
+.局部变量 szFullFileName, 文本型, , , 
+.局部变量 szFileName, 文本型, , , 
+.局部变量 hToken, 整数型, , , 
+
+未知支持库函数_66 ()
+未知支持库函数_52 (hToken, EnablePrivilege (#SE_DEBUG_NAME, 真)) ' 先提升本进程权限，不然某些进程将不能访问
+EnumProcesses (hProcessIDs, 未知支持库函数_15 (4, 1024), iNeededSize)
+未知支持库函数_52 (iProcessCount, 未知支持库函数_16 (iNeededSize, 4))
+.未知支持库函数_9 (1, iProcessCount, 1, iProcessIndex)
+    未知支持库函数_52 (szFullFileName, GetProcessName (hProcessIDs [iProcessIndex]))
+    .未知支持库函数_1 (未知支持库函数_39 (szFullFileName, “”))
+        未知支持库函数_52 (szFileName, 未知支持库函数_97 (#MAX_PATH))
+        GetFileTitle (szFullFileName, szFileName, #MAX_PATH)
+    .如果真结束
+    .未知支持库函数_64 (szFileName, , , , hProcessIDs [iProcessIndex])
+    未知支持库函数_20 (未知支持库函数_63 (), 1).未知支持库函数_53 (1, 未知支持库函数_90 (hProcessIDs [iProcessIndex]))
+    .未知支持库函数_1 (未知支持库函数_45 (未知支持库函数_39 (szFullFileName, IdleProcess), 未知支持库函数_39 (szFullFileName, SystemProcess)))
+        未知支持库函数_20 (未知支持库函数_63 (), 1).未知支持库函数_53 (2, szFullFileName)
+    .如果真结束
+    未知支持库函数_52 (CurrentProcess, iProcessIndex)
+.未知支持库函数_10 ()
+.未知支持库函数_1 (未知支持库函数_39 (hToken, 0))
+    CloseHandle (hToken)
+.如果真结束
+.未知支持库函数_1 (未知支持库函数_40 (iCurrentItem, 未知支持库函数_63 ()))
+    未知支持库函数_52 (., iCurrentItem)
+    iCurrentItem.未知支持库函数_69 ()
+.如果真结束
+
+
+.子程序 GetModules, 空白型, , 
+.参数 hProcessID, 整数型, , 
+
+.局部变量 hProcess, 整数型, , , 
+.局部变量 hModules, 整数型, , "1024", 
+.局部变量 iNeededSize, 整数型, , , 
+.局部变量 iModuleCount, 整数型, , , 
+.局部变量 szModuleName, 文本型, , , 
+.局部变量 iModuleIndex, 整数型, , , 
+.局部变量 hToken, 整数型, , , 
+
+未知支持库函数_66 ()
+未知支持库函数_52 (hToken, EnablePrivilege (#SE_DEBUG_NAME, 真)) ' 先提升本进程权限，不然某些进程将不能访问
+未知支持库函数_52 (hProcess, OpenProcess (未知支持库函数_19 (#PROCESS_QUERY_INFORMATION, #PROCESS_VM_READ), 假, hProcessID))
+.未知支持库函数_1 (未知支持库函数_39 (EnumProcessModules (hProcess, hModules, 未知支持库函数_15 (4, 1024), iNeededSize), 0))
+    未知支持库函数_52 (iModuleCount, 未知支持库函数_16 (iNeededSize, 4))
+    .未知支持库函数_9 (1, iModuleCount, 1, iModuleIndex)
+        未知支持库函数_52 (szModuleName, 未知支持库函数_97 (#MAX_PATH))
+        GetModuleFileNameEx (hProcess, hModules [iModuleIndex], szModuleName, #MAX_PATH)
+        .未知支持库函数_64 (szModuleName, , , , hModules [iModuleIndex])
+        未知支持库函数_20 (未知支持库函数_63 (), 1).未知支持库函数_53 (1, 未知支持库函数_90 (hModules [iModuleIndex]))
+    .未知支持库函数_10 ()
+.如果真结束
+.未知支持库函数_1 (未知支持库函数_39 (hProcess, 0))
+    CloseHandle (hProcess)
+.如果真结束
+.未知支持库函数_1 (未知支持库函数_39 (hToken, 0))
+    CloseHandle (hToken)
+.如果真结束
+
+
+.子程序 _lstProcesses_ItemChange, 空白型, , 
+未知支持库函数_52 (iCurrentItem, .)
+GetModules (.未知支持库函数_52 (.))
+
+
+.子程序 _mnuViewOnTop_Click, 空白型, , 
+未知支持库函数_52 (., 未知支持库函数_47 (.))
+未知支持库函数_52 (_MainForm., .)
+
+
+.子程序 _mnuRefreshProcesses_Click, 空白型, , 
+GetProcesses ()
+
+
+.子程序 _mnuRefreshModules_Click, 空白型, , 
+GetModules (.未知支持库函数_52 (.))
+
+.子程序 _lstModules_ItemChange, 空白型, , 
+
+
+.程序集 PublicFunction, , , 
+
+.子程序 EnablePrivilege, 整数型, 公开, 允许或禁用特权
+.参数 szPrivilege, 文本型, , 
+.参数 bAllow, 逻辑型, , 
+
+.局部变量 hToken, 整数型, , , 
+.局部变量 lpPrivilege, TOKEN_PRIVILEGES, , , 
+.局部变量 lpLuid, LUID, , , 
+
+.未知支持库函数_1 (未知支持库函数_39 (OpenProcessToken (GetCurrentProcess (), 未知支持库函数_19 (#TOKEN_ADJUST_PRIVILEGES, #TOKEN_READ), hToken), 0))
+    .未知支持库函数_1 (未知支持库函数_39 (LookupPrivilegeValue (0, szPrivilege, lpPrivilege.Privileges [1].lpLuid), 0))
+        未知支持库函数_52 (lpPrivilege.Privileges [1].Attributes, 0)
+        .未知支持库函数_1 (bAllow)
+            未知支持库函数_52 (lpPrivilege.PrivilegeCount, 1)
+            未知支持库函数_52 (lpPrivilege.Privileges [1].Attributes, #SE_PRIVILEGE_ENABLED)
+        .如果真结束
+        AdjustTokenPrivileges (hToken, 假, lpPrivilege, LocalSize (lpPrivilege), 0, 0)
+    .如果真结束
+    未知支持库函数_13 (hToken)
+.如果真结束
+未知支持库函数_13 (0)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

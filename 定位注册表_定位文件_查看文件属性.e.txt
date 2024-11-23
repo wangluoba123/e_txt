@@ -1,0 +1,265 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：定位注册表\定位文件\查看文件属性
+ ' 程序描述：定位注册表\定位文件\查看文件属性
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 SW_NORMAL, "1", , 
+.常量 SW_SHOW, "5", , 
+.常量 SEE_MASK_NOCLOSEPROCESS, "64", , 
+.常量 WM_KEYDOWN, "256", , 
+.常量 WM_CHAR, "258", , 
+.常量 VK_LEFT, "37", , 
+.常量 VK_RIGHT, "39", , 
+.常量 VK_HOME, "36", , 
+.常量 SYNCHRONIZE, "1048576", , 
+.常量 INFINITE, "-1", , 
+.常量 STANDARD_RIGHTS_REQUIRED, "983040", , 
+.常量 PROCESS_ALL_ACCESS, "2035711", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 设定执行文件信息_, , SHELLEXECUTEINFO
+    .成员 结构大小, 整数型, , , cbSize
+    .成员 标志, 整数型, , , fMask
+    .成员 窗口句柄, 整数型, , , hwnd
+    .成员 操作命令, 文本型, , , lpVerb
+    .成员 文件名, 文本型, , , lpFile
+    .成员 应用程序参数, 文本型, , , lpParameters
+    .成员 目录, 文本型, , , lpDirectory
+    .成员 显示标志, 整数型, , , nShow
+    .成员 实例句柄, 整数型, , , hInstApp
+    .成员 项目标识符列表结构指针, 整数型, , , lpIDList
+    .成员 文件类别, 文本型, , , lpClass
+    .成员 热键句柄, 整数型, , , hkeyClass
+    .成员 热键, 整数型, , , dwHotKey
+    .成员 图标句柄, 整数型, , , hIcon
+    .成员 进程句柄, 整数型, , , hProcess
+
+数据类型 SHELLEXECUTEINFO, , 
+    .成员 cbSize, 整数型, , , 60
+    .成员 fMask, 整数型, , , 
+    .成员 hwnd, 整数型, , , 
+    .成员 lpVerb, 文本型, , , 
+    .成员 lpFile, 文本型, , , 
+    .成员 lpParameters, 文本型, , , 
+    .成员 lpDirectory, 文本型, , , 
+    .成员 nShow, 整数型, , , 
+    .成员 hInstApp, 整数型, , , fields
+    .成员 lpIDList, 整数型, , , 
+    .成员 lpClass, 文本型, , , 
+    .成员 hkeyClass, 整数型, , , 
+    .成员 dwHotKey, 整数型, , , 
+    .成员 hIcon, 整数型, , , 
+    .成员 hProcess, 整数型, , , 
+
+
+.DLL命令 ShellExecuteEx, 整数型, "shell32.dll", "", , 
+    .参数 lpExecInfo, SHELLEXECUTEINFO, 传址, 
+
+.DLL命令 FindWindow, 整数型, "user32.dll", "FindWindowA", , 
+    .参数 lpClassName, 文本型, , 
+    .参数 lpWindowName, 整数型, , 呵呵
+
+.DLL命令 FindWindowEx, 整数型, "user32.dll", "FindWindowExA", , 
+    .参数 hWnd1, 整数型, , 
+    .参数 hWnd2, 整数型, , 
+    .参数 lpsz1, 文本型, , 
+    .参数 lpsz2, 整数型, , 
+
+.DLL命令 SetForegroundWindow, 整数型, "user32.dll", "", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 ShowWindow, 整数型, "user32.dll", "", , 
+    .参数 hwnd, 整数型, , 
+    .参数 nCmdShow, 整数型, , 
+
+.DLL命令 SetFocus, 整数型, "user32.dll", "", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 SendMessage, 整数型, "user32.dll", "SendMessageA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, 传址, 
+
+.DLL命令 GetWindowThreadProcessId, 整数型, "user32.dll", "", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpdwProcessId, 整数型, 传址, 
+
+.DLL命令 OpenProcess, 整数型, "kernel32.dll", "", , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 整数型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 CloseHandle, 整数型, "kernel32.dll", "", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 WaitForInputIdle, 整数型, "user32.dll", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 dwMilliseconds, 整数型, , 
+
+.DLL命令 设定执行文件_, 整数型, "shell32.dll", "ShellExecuteEx", , 
+    .参数 设定执行文件信息结构, 设定执行文件信息_, , 
+
+.DLL命令 Sleep, 空白型, "kernel32.dll", "", , 
+    .参数 dwMilliseconds, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 定位注册表, 空白型, 公开, 
+.参数 strRegKey, 文本型, , Registry key to open  注册项路径
+.参数 strValueName, 文本型, , Registry Value name to select[optional] 键名
+
+.局部变量 hndRegEdit, 整数型, , , 
+.局部变量 hndTreeView, 整数型, , , 
+.局部变量 hndListView, 整数型, , , 
+.局部变量 hndProcess, 整数型, , , 
+.局部变量 SHInfo, SHELLEXECUTEINFO, , , 
+.局部变量 j, 整数型, , , 
+.局部变量 strTmp, 文本型, , , 
+.局部变量 lngVK, 整数型, , , 
+.局部变量 ret, 整数型, , , 
+
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+ ' 以下regedit.exe = 注册表编辑器，还是英文容易打点，NND
+ ' 此代码为翻译VB代码实现，并删除一些自认为无用的代码，不用openprocess regedit.exe进程了
+
+赋值 (hndRegEdit, FindWindow (“RegEdit_RegEdit”, 0))
+.如果真 (等于 (hndRegEdit, 0)) ' 如果找不到注册表编辑器窗口就自己运行一个
+    赋值 (SHInfo.cbSize, 60)
+    赋值 (SHInfo.lpVerb, “open”)
+    赋值 (SHInfo.lpFile, “regedit.exe”)
+    赋值 (SHInfo.fMask, #SEE_MASK_NOCLOSEPROCESS)
+    赋值 (SHInfo.nShow, #SW_NORMAL)
+    ShellExecuteEx (SHInfo) ' ShellExecute RegEdit
+.如果真结束
+ ' 这里的 ShellExecuteEx regedit.exe也可以用易语言的 运行（）
+
+Sleep (750) ' 休息一下，等等注册表编辑器
+赋值 (hndRegEdit, FindWindow (“RegEdit_RegEdit”, 0)) ' 再找一遍注册表编辑器
+
+.如果真 (等于 (hndRegEdit, 0)) ' 如果再找不到那就直接报错，一般正常系统应该不会报错的
+    返回 ()
+    
+.如果真结束
+
+赋值 (ret, ShowWindow (hndRegEdit, #SW_SHOW))
+ ' 赋值 (ret, SetForegroundWindow (hndRegEdit))
+
+赋值 (hndTreeView, FindWindowEx (hndRegEdit, 0, “SysTreeView32”, 0)) ' 查找regedit.exe的树形框得到句柄
+
+赋值 (ret, SetForegroundWindow (hndTreeView)) ' 把regedit.exe的窗口设置为前台窗口
+ ' 赋值 (ret, SetFocus (hndTreeView)) ' 令树形框获取焦点，好操作
+
+.变量循环首 (1, 30, 1, j) ' 貌似：刚好发送30个右击到树形框（regedit.exe左边那东东）
+    赋值 (ret, SendMessage (hndTreeView, #WM_KEYDOWN, #VK_RIGHT, 0))
+.变量循环尾 ()
+
+.变量循环首 (1, 取文本长度 (strRegKey), 1, j) ' 下面是展开注册表编辑器，注册项路径部分
+    赋值 (strTmp, 取文本中间 (strRegKey, j, 1)) ' Get a char
+     ' If '\' then send 'Right'
+    .如果 (等于 (strTmp, “\”))
+        赋值 (ret, SendMessage (hndTreeView, #WM_KEYDOWN, #VK_RIGHT, 0))
+    .否则
+        赋值 (lngVK, 取代码 (到大写 (strTmp), )) ' Asc=取代码 'Send VirtualKey Code
+        赋值 (ret, SendMessage (hndTreeView, #WM_CHAR, lngVK, 0))
+    .如果结束
+    
+.变量循环尾 ()
+
+.如果真 (不等于 (strValueName, “”)) ' 这里判断是否还要选中指定项  键名选中
+    赋值 (hndListView, FindWindowEx (hndRegEdit, 0, “SysListView32”, 0))
+    赋值 (ret, SetForegroundWindow (hndListView))
+    赋值 (ret, SetFocus (hndListView))
+    Sleep (100) ' 时间短点，反应快点，原来的代码是1秒，感觉太慢了
+    赋值 (ret, SendMessage (hndListView, #WM_KEYDOWN, #VK_HOME, 0)) ' 发送鼠标按下的消息
+    .变量循环首 (1, 取文本长度 (strValueName), 1, j)
+        赋值 (lngVK, 取代码 (到大写 (strValueName), ))
+        赋值 (ret, SendMessage (hndListView, #WM_CHAR, lngVK, 0)) ' 发送按键消息
+    .变量循环尾 ()
+.如果真结束
+
+ ' 设置窗口为前台窗口，并获取焦点
+赋值 (ret, SetForegroundWindow (hndRegEdit))
+赋值 (ret, SetFocus (hndRegEdit))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+
+.子程序 定位文件, 逻辑型, 公开, 
+.参数 文件路径, 文本型, , 
+
+.如果 (运行 (相加 (“explorer.exe /select,”, 文件路径), 假, ))
+    返回 (真)
+    
+.否则
+    返回 (假)
+    
+.如果结束
+
+
+.子程序 查看文件属性, 空白型, 公开, 
+.参数 文件路径, 文本型, , 
+
+属性对话框 (文件路径, 0)
+' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 属性对话框, 整数型, , 
+.参数 参数_文件名, 文本型, , 
+.参数 参数_取窗口句柄, 整数型, , 
+
+.局部变量 局部_设定执行文件信息, 设定执行文件信息_, , , 
+.局部变量 局部_文件信息, 整数型, , , 
+.局部变量 局部_返回值, 整数型, , , 
+
+赋值 (局部_设定执行文件信息.结构大小, 60)
+赋值 (局部_设定执行文件信息.标志, 1100)
+赋值 (局部_设定执行文件信息.窗口句柄, 参数_取窗口句柄)
+赋值 (局部_设定执行文件信息.操作命令, “properties”)
+赋值 (局部_设定执行文件信息.文件名, 参数_文件名)
+赋值 (局部_设定执行文件信息.应用程序参数, “”)
+赋值 (局部_设定执行文件信息.目录, “”)
+赋值 (局部_设定执行文件信息.显示标志, 0)
+赋值 (局部_设定执行文件信息.实例句柄, 0)
+赋值 (局部_设定执行文件信息.项目标识符列表结构指针, 0)
+赋值 (局部_文件信息, 设定执行文件_ (局部_设定执行文件信息))
+返回 (局部_设定执行文件信息.实例句柄)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

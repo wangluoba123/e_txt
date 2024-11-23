@@ -1,0 +1,144 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 413
+    高度 = 261
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “近在眼前－打乱键盘布局（键盘钩子）”
+    帮助文件名 = “”
+
+
+
+.常量 WM_KEYDOWN, "256", , 
+.常量 WH_JOURNALRECORD, "0", , 
+.常量 HC_ACTION, "0", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' xplib 7F54B9CE8887428dBA9CEEB94CEF4C72 1 6 XP风格界面库
+
+
+
+
+数据类型 MSG, , 
+    .成员 message, 整数型, , , 
+    .成员 paramL, 整数型, , , 
+    .成员 paramH, 整数型, , , 
+    .成员 time, 整数型, , , 
+    .成员 hwnd, 整数型, , , 
+
+
+.DLL命令 GetModuleHandle, 整数型, "", "GetModuleHandleA", , 
+    .参数 lpModuleName, 整数型, , 
+
+.DLL命令 CallNextHookEx, 整数型, "", "CallNextHookEx", , 
+    .参数 hhk, 整数型, , 
+    .参数 nCode, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 SetWindowsHookEx, 整数型, "", "SetWindowsHookExA", , 
+    .参数 idHook, 整数型, , 
+    .参数 lpfn, 子程序指针, , 
+    .参数 hmod, 整数型, , 
+    .参数 dwThreadId, 整数型, , 
+
+.DLL命令 UnHookWindowsHookEx, 逻辑型, "", "UnhookWindowsHookEx", , 
+    .参数 hhk, 整数型, , 
+
+.DLL命令 CopyMemory1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 未知类型0x41010069, 传址, 
+    .参数 Length, 整数型, , 
+
+.DLL命令 CopyMemory, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 未知类型0x41010069, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 Hook, 整数型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+未知支持库函数_0 (1)
+赋值 (Hook, SetWindowsHookEx (#WH_JOURNALRECORD, &处理, GetModuleHandle (0), 0))
+
+.子程序 处理, 空白型, , 
+.参数 nCode, 整数型, , 
+.参数 Wparam, 整数型, , 
+.参数 Lparam, 整数型, , 
+
+.局部变量 key, 字节集, , , 
+.局部变量 MSG, 未知类型0x41010045, , , 
+
+.如果真 (等于 (nCode, #HC_ACTION))
+    未知函数_167837768 (MSG, Lparam, 20)
+    .如果真 (等于 (MSG.message, #WM_KEYDOWN))
+        赋值 (key, 到字节集 (.))
+        .判断开始 (等于 (key [1], 65))
+            赋值 (key [1], 66)
+            赋值 (., 取字节集数据 (key, 3, ))
+            未知函数_167837766 (Lparam, , 20)
+        .判断 (等于 (key [1], 83))
+            赋值 (key [1], 68)
+            赋值 (., 取字节集数据 (key, 3, ))
+            未知函数_167837766 (Lparam, MSG, 20)
+        .判断 (等于 (key [1], 70))
+            赋值 (key [1], 112)
+            赋值 (., 取字节集数据 (key, 3, ))
+            未知函数_167837766 (Lparam, MSG, 20)
+        .默认
+            
+        .判断结束
+        
+    .如果真结束
+    
+.如果真结束
+CallNextHookEx (Hook, nCode, Wparam, Lparam)
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+UnHookWindowsHookEx (Hook)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

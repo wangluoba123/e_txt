@@ -1,0 +1,452 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：数据库操作类
+ ' 程序描述：
+ ' 程序作者：易尔软件开发工作室
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 5 系统核心支持库
+
+
+
+
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+输出调试文本 (相加 (“╔══════════════════════╗”, #换行符))
+输出调试文本 (相加 (“║模块调用：数据库操作类                      ║”, #换行符))
+输出调试文本 (相加 (“║模块说明：采用对象操作数据库                ║”, #换行符))
+ ' 输出调试文本 (相加 (“║设计开发：改编自 彬·泪闯天涯               ║”, #换行符))
+输出调试文本 (相加 (“║版权所有：易尔软件开发工作室                ║”, #换行符))
+输出调试文本 (相加 (“╚══════════════════════╝”, #换行符))
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+.局部变量 ado, 数据库连接类, , , 
+.局部变量 rs, 记录集类, , , 
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+
+ado.连接ACCESS (相加 (取运行目录 (), “\data\db.mdb”), “”)
+rs.查询 (“select * from Ftype”, ado.取数据库连接对象 (), 3, 1, 1)
+
+ ' rs.取记录集对象 ().查看 ()
+赋值 (Fields, rs.取记录集对象 ().对象型方法 (“Fields”, ))
+Fields.查看 ()
+输出调试文本 (Fields.读数值属性 (“Count”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 0))
+输出调试文本 (rs.取字段名称 (1))
+输出调试文本 (rs.取字段类型 (1))
+输出调试文本 (rs.取字段定义长度 (0))
+输出调试文本 (相加 (“取记录总数”, 到文本 (rs.取记录总数 ())))
+ ' 输出调试文本 (“取记录总数” ＋ 到文本 (rs.取记录总数 ()))
+ ' 输出调试文本 (Item.读数值属性 (“type”, ))
+ ' Item.查看 ()
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.类模块 数据库连接类, , , 
+
+.程序集变量 Conn, 对象, , , 
+.程序集变量 Errors, 文本型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+Conn.创建 (“ADODB.Connection”, )
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+Conn.方法 (“close”, )
+Conn.清除 ()
+
+
+.子程序 连接ACCESS, 逻辑型, 公开, 
+.参数 私_数据库文件, 文本型, , 要连接的MDB数据库文件
+.参数 密码, 文本型, , 
+
+ ' Driver={Microsoft Access Driver (*.mdb)};Dbq=C:\mydatabase.mdb;Uid=Admin;Pwd=;
+Conn.方法 (“open”, 相加 (“DBQ=”, 私_数据库文件, “;DRIVER={Microsoft Access Driver (*.mdb)};Uid=Admin;Pwd=”, 密码, “;”))
+.如果真 (大于 (Conn.读数值属性 (“State”, ), 0))
+    赋值 (Errors, “”)
+    返回 (真)
+.如果真结束
+赋值 (Errors, Conn.读文本属性 (“Errors”, ))
+返回 (假)
+
+
+
+.子程序 连接MSSQL, 逻辑型, 公开, 
+.参数 服务器, 文本型, , 
+.参数 数据库, 文本型, , 
+.参数 用户名, 文本型, , 
+.参数 密码, 文本型, , 
+
+.局部变量 ADO连接文本, 文本型, , , 
+
+赋值 (ADO连接文本, 相加 (“Provider=SQLOLEDB.1;Password=”, 密码, “;Persist Security Info=True;Initial Catalog=”, 数据库, “;User ID=”, 用户名, “;Data Source=”, 服务器))
+
+Conn.方法 (“open”, ADO连接文本)
+.如果真 (大于 (Conn.读数值属性 (“State”, ), 0))
+    赋值 (Errors, “”)
+    返回 (真)
+.如果真结束
+赋值 (Errors, Conn.读文本属性 (“Errors”, ))
+返回 (假)
+
+
+.子程序 执行, 对象, 公开, 
+.参数 CommandText, 文本型, , 
+.参数 RecordsAffected, 变体型, 参考 可空, 类型为“变体型”，需要提供变量以取回方法所返回的数据
+.参数 Options, 整数型, 可空, 参数默认值为“-1”
+
+.如果真 (是否为空 (Options))
+    赋值 (Options, -1)
+.如果真结束
+返回 (Conn.对象型方法 (“Execute”, CommandText, RecordsAffected, Options))
+
+.子程序 断开, 空白型, 公开, 断开数据库连接
+Conn.方法 (“Close”, )
+
+.子程序 取最后错误, 文本型, 公开, 
+返回 (Errors)
+
+
+
+.子程序 取数据库连接对象, 对象, 公开, 
+返回 (Conn)
+
+
+.子程序 回滚事务, 空白型, 公开, 
+Conn.方法 (“RollbackTrans”, )
+
+.子程序 开始事务, 空白型, 公开, 
+Conn.数值方法 (“BeginTrans”, )
+
+.子程序 提交事务, 空白型, 公开, 
+Conn.方法 (“CommitTrans”, )
+
+.类模块 记录集类, , , 
+
+.程序集变量 Rs, 对象, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+Rs.创建 (“ADODB.RecordSet”, )
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+Rs.方法 (“close”, )
+Rs.清除 ()
+
+
+.子程序 置数据连接, 逻辑型, , 还没测试准确
+.参数 Conn, 对象, , 
+
+返回 (Rs.写属性 (“ActiveConnection”, Conn))
+
+.子程序 查询, 逻辑型, 公开, 
+.参数 SQL, 文本型, , 
+.参数 conn, 对象, , 数据库连接对象
+.参数 CursorType, 整数型, , 
+.参数 LockType, 整数型, , 
+.参数 Options, 整数型, , 
+
+.局部变量 变体型参数1, 变体型, , , 
+.局部变量 变体型参数2, 变体型, , , 
+
+ ' 方法调用格式： 〈无返回值〉 对象．方法 （"Open"，Source，ActiveConnection，CursorType，LockType，Options）
+ ' 参数<1>的名称为“Source”，类型为“变体型”。
+ ' 参数<2>的名称为“ActiveConnection”，类型为“变体型”。
+ ' 参数<3>的名称为“CursorType”，类型为“整数型”，参数默认值为“-1”，参数值为以下值之一： -1、adOpenUnspecified； 0、adOpenForwardOnly； 1、adOpenKeyset； 2、adOpenDynamic； 3、adOpenStatic。
+ ' 参数<4>的名称为“LockType”，类型为“整数型”，参数默认值为“-1”，参数值为以下值之一： -1、adLockUnspecified； 1、adLockReadOnly； 2、adLockPessimistic； 3、adLockOptimistic； 4、adLockBatchOptimistic。
+ ' 参数<5>的名称为“Options”，类型为“整数型”，参数默认值为“-1”。
+
+变体型参数1.赋值 (SQL, )
+变体型参数2.赋值 (conn, )
+Rs.方法 (“open”, 变体型参数1, 变体型参数2, CursorType, LockType, Options)
+
+.如果真 (大于 (Rs.读数值属性 (“State”, ), 0))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+
+.子程序 移动, 空白型, 公开, Move
+.参数 NumRecords, 整数型, , 
+
+Rs.方法 (“Move”, NumRecords)
+
+.子程序 移动到上一条, 空白型, 公开, MovePrevious
+Rs.方法 (“MovePrevious”, )
+
+.子程序 移动到下一条, 空白型, 公开, MoveNext
+Rs.方法 (“MoveNext”, )
+
+.子程序 移动到首记录, 空白型, 公开, MoveFirst
+Rs.方法 (“MoveFirst”, )
+
+.子程序 移动到尾记录, 空白型, , MoveLast
+Rs.方法 (“MoveLast”, )
+
+.子程序 更新, 空白型, 公开, UpDate
+Rs.方法 (“UpDate”, )
+
+.子程序 关闭, 空白型, 公开, 关闭查询时打开的表
+Rs.方法 (“Close”, )
+
+.子程序 GetRows, 变体型, 公开, 
+.参数 Rows, 整数型, 可空, 
+.参数 Start, 整数型, 可空, 
+.参数 Fields, 整数型, 可空, 
+
+.如果真 (是否为空 (Rows))
+    赋值 (Rows, -1)
+.如果真结束
+返回 (Rs.通用方法 (“GetRows”, Rows, Start, Fields))
+
+.子程序 断开, 空白型, 公开, 断开数据库连接
+Rs.方法 (“Close”, )
+
+.子程序 添加, 空白型, 公开, 
+Rs.方法 (“AddNew”, )
+
+.子程序 尾记录后, 逻辑型, 公开, 
+返回 (Rs.读逻辑属性 (“eof”, ))
+
+
+.子程序 首记录前, 逻辑型, 公开, 
+返回 (Rs.读逻辑属性 (“bof”, ))
+
+.子程序 取记录数, 整数型, 公开, 
+返回 (Rs.读数值属性 (“RecordCount”, ))
+
+.子程序 取记录集对象, 对象, 公开, 
+返回 (Rs)
+
+.子程序 读文本, 文本型, 公开, 
+.参数 字段名, 文本型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+
+赋值 (Fields, Rs.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+返回 (Item.读文本属性 (“Value”, ))
+
+
+.子程序 读整数, 整数型, 公开, 
+.参数 字段名, 文本型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+
+赋值 (Fields, Rs.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+返回 (Item.读数值属性 (“Value”, ))
+
+.子程序 读小数, 双精度小数型, 公开, 
+.参数 字段名, 文本型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+
+赋值 (Fields, Rs.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+返回 (Item.读数值属性 (“Value”, ))
+
+.子程序 读逻辑值, 逻辑型, 公开, 
+.参数 字段名, 文本型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+
+赋值 (Fields, Rs.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+返回 (Item.读逻辑属性 (“Value”, ))
+
+.子程序 读日期时间, 日期时间型, , 
+.参数 字段名, 文本型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+
+赋值 (Fields, Rs.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+返回 (Item.读日期属性 (“Value”, ))
+
+.子程序 读字节集, 字节集, 公开, 
+.参数 字段名, 文本型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, Rs.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+赋值 (Vairant, Item.读属性 (“Value”, ))
+返回 (Vairant.取字节集 ())
+
+.子程序 读变体型, 变体型, 公开, 
+.参数 字段名, 文本型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, Rs.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+赋值 (Vairant, Item.读属性 (“Value”, ))
+返回 (Vairant)
+
+.子程序 写文本, 空白型, , 
+.参数 字段名, 文本型, , 
+.参数 写入文本, 文本型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, Rs.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+Vairant.赋值 (写入文本, )
+Item.写属性 (“Value”, Vairant)
+
+.子程序 写整数, 空白型, , 
+.参数 字段名, 文本型, , 
+.参数 写入值, 整数型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, Rs.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+Vairant.赋值 (写入值, )
+Item.写属性 (“Value”, Vairant)
+
+.子程序 写小数, 空白型, , 
+.参数 字段名, 文本型, , 
+.参数 写入值, 双精度小数型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, Rs.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+Vairant.赋值 (写入值, )
+Item.写属性 (“Value”, Vairant)
+
+.子程序 写日期时间, 空白型, 公开, 
+.参数 字段名, 文本型, , 
+.参数 写入值, 日期时间型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, Rs.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+Vairant.赋值 (写入值, )
+Item.写属性 (“Value”, Vairant)
+
+.子程序 写字节集, 空白型, 公开, 
+.参数 字段名, 文本型, , 
+.参数 写入值, 字节集, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, Rs.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+Vairant.赋值 (写入值, )
+Item.写属性 (“Value”, Vairant)
+
+.子程序 写变体型, 空白型, 公开, 
+.参数 字段名, 文本型, , 
+.参数 写入值, 变体型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, Rs.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+Item.写属性 (“Value”, 写入值)
+
+
+
+.子程序 取字段名称, 文本型, 公开, 
+.参数 索引, 整数型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, Rs.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 索引))
+返回 (Item.读文本属性 (“Name”, ))
+
+
+.子程序 取字段类型, 整数型, 公开, 
+.参数 索引, 整数型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, Rs.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 索引))
+返回 (Item.读数值属性 (“Type”, ))
+
+
+
+.子程序 取字段定义长度, 整数型, 公开, 
+.参数 索引, 整数型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, Rs.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 索引))
+返回 (Item.读数值属性 (“DefinedSize”, ))
+
+
+
+.子程序 取字段实际长度, 整数型, 公开, 
+.参数 索引, 整数型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, Rs.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 索引))
+返回 (Item.读数值属性 (“ActualSize”, ))
+
+
+.子程序 取记录总数, 整数型, , ‘对象．读数值属性 （"RecordCount"）
+返回 (Rs.读数值属性 (“RecordCount”, )) ' 重复了
+
+
+.子程序 取字段数, 整数型, 公开, 
+.局部变量 Fields, 对象, , , 
+
+赋值 (Fields, Rs.对象型方法 (“Fields”, ))
+返回 (Fields.读数值属性 (“Count”, ))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

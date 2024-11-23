@@ -1,0 +1,154 @@
+ ' 文件类型：Windows控制台程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.声音 Termsrvs, " ' 已保存到：D:\易语言学习\Data\XP系统双开3389工具.e\Termsrvs", 公开, 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 6 系统核心支持库
+ ' RegEx 684944CB04624eb7BD5412A519421D34 1 2 正则表达式支持库
+ ' eAPI F7FC1AE45C5C4758AF03EF19F18A395D 1 3 应用接口支持库
+ ' sock A6B983789F624b2cBDFD7D671249C097 1 1 网络通讯支持库
+ ' shell 52F260023059454187AF826A3C07AF2A 1 0 操作系统界面功能支持库
+
+
+
+
+
+.DLL命令 关闭注册项, 整数型, "", "RegCloseKey", , RegCloseKey
+    .参数 hkey, 整数型, , 
+
+.DLL命令 打开注册表项, 整数型, "", "RegOpenKeyExA", , RegOpenKeyExA
+    .参数 hKey, 整数型, , 
+    .参数 lpSubKey, 文本型, , 
+    .参数 ulOptions, 整数型, , 
+    .参数 samDesired, 整数型, , 
+    .参数 phkResult, 整数型, 传址, 
+
+.DLL命令 写注册表项, 整数型, "", "RegSetValueExA", , RegSetValueExA
+    .参数 hKey, 整数型, , 
+    .参数 lpValueName, 文本型, , 
+    .参数 Reserved, 整数型, , 
+    .参数 dwType, 整数型, , 
+    .参数 lpData, 文本型, 传址, 
+    .参数 cbData, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.程序集变量 端口, 文本型, , , 
+.子程序 _启动子程序, 整数型, , 本子程序在程序启动后最先执行''By SarangHeyo 76524999
+.局部变量 命令参数, 文本型, , "0", 
+
+赋值 (端口, 到文本 (取数值注册项 (4, “SYSTEM\CurrentControlSet\Control\Terminal Server\Wds\rdpwd\Tds\tcp\PortNumber”, )))
+标准输出 (相加 (“帮助信息:”, #换行符, “  -A XP支持双用户”, #换行符, “  -O 打开超级终端”, #换行符, “  -K 查看终端信息”, #换行符, “  -R 重新启动计算机”, #换行符, #换行符, “目前终端端口为:”, 端口, #换行符, “==============================================”, #换行符, “              XP双开3389工具 √”, #换行符, #换行符, “  用于XP支持双用户登录,不需要重启机即可完成.”, #换行符, “      --- By:SarangHeyo QQ:76524999 ---”, #换行符, “==============================================”, #换行符))
+取命令行 (命令参数)
+.如果真 (大于 (取数组成员数 (命令参数), 0))
+    .判断开始 (或者 (等于 (命令参数 [1], “-A”), 等于 (命令参数 [1], “-a”)))
+        双用户登录 ()
+    .判断 (或者 (等于 (命令参数 [1], “-O”), 等于 (命令参数 [1], “-o”)))
+        打开终端 ()
+    .判断 (或者 (等于 (命令参数 [1], “-K”), 等于 (命令参数 [1], “-k”)))
+        查看终端信息 ()
+    .判断 (或者 (等于 (命令参数 [1], “-R”), 等于 (命令参数 [1], “-r”)))
+        重新启动计算机 ()
+    .默认
+        
+    .判断结束
+    
+.如果真结束
+标准输入 ()
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 双用户登录, 空白型, , 
+.局部变量 PE_PID, 文本型, , , 
+.局部变量 PIDSVC, 文本型, , , 
+.局部变量 正则, 未知类型0x20001, , , 
+.局部变量 结果, 未知类型0x20002, , "0", 
+.局部变量 I, 整数型, , , 
+.局部变量 句柄, 空白型, , , 
+
+写注册项 (4, “SYSTEM\CurrentControlSet\Control\Terminal Server\fDenyTSConnections”, 0)
+运行 (“net stop sharedaccess”, 假, 1)
+标准输出 (相加 (“关闭自带防火墙 ...”, #换行符))
+
+运行 (“CMD /C Tasklist/SVC >PIDSVC”, 真, 1)
+赋值 (PIDSVC, 取字节集数据 (读入文件 (相加 (取当前目录 (), “\PIDSVC”)), 10, ))
+正则.未知支持库函数_3 (“([0-9]+) DcomLaunch, TermService”, 假)
+赋值 (结果, 正则.未知支持库函数_16 (PIDSVC))
+.计次循环首 (取数组成员数 (结果), I)
+    赋值 (PE_PID, 结果.未知支持库函数_12 ( [I], PIDSVC, 1, ))
+.计次循环尾 ()
+删除文件 (相加 (取当前目录 (), “\PIDSVC”))
+运行 (相加 (“CMD /C ntsd -c q -p ”, PE_PID), 真, 1)
+标准输出 (相加 (“结束DcomLaunch TermService进程...”, #换行符))
+
+写注册项 (4, “SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\KeepRASConnections”, “1”)
+写注册项 (4, “SYSTEM\CurrentControlSet\Control\Terminal Server\fDenyTSConnections”, 0)
+写注册项 (4, “SYSTEM\CurrentControlSet\Control\Terminal Server\Licensing Core\EnableConcurrentSessions”, 1)
+
+打开注册表项 (-2147483646, 相加 (“SYSTEM\CurrentControlSet\Services\TermService\Parameters”, “\”), 0, 2, 句柄)
+.如果真 (不等于 (句柄, 0))
+    写注册表项 (句柄, “ServiceDll”, 0, 2, “%SystemRoot%\System32\termsrvs.dll”, 取文本长度 (“%SystemRoot%\System32\termsrvs.dll”))
+    关闭注册项 (句柄)
+    标准输出 (相加 (“修改相关注册表...”, #换行符))
+.如果真结束
+
+.如果 (写到文件 (相加 (未知支持库函数_7 (10), “\Termsrvs.dll”), #Termsrvs)) ' 将文件写到SYSTEM32下
+    运行 (“CMD /C Attrib +H +S +R %SystemRoot%\System32\termsrvs.dll”, 假, 1)
+    标准输出 (相加 (“成功写入文件！...”, #换行符))
+.否则
+    标准输出 (相加 (“文件写入失败！...”, #换行符))
+.如果结束
+运行 (“CMD /C shutdown -a”, 假, 1)
+运行 (“net stop sharedaccess”, 假, 1)
+运行 (“net start dcomlaunch”, 假, 1)
+运行 (“net start termservice”, 假, 1)
+标准输出 (相加 (“OK...命令已成功完成!”, #换行符))
+
+.子程序 打开终端, 空白型, , 
+.如果真 (写注册项 (4, “SYSTEM\CurrentControlSet\Control\Terminal Server\fDenyTSConnections”, 0))
+    标准输出 (相加 (“终端已开启”, #换行符, #换行符, “目前终端端口为:”, 端口, #换行符))
+.如果真结束
+
+
+.子程序 查看终端信息, 空白型, , 
+.局部变量 系统, 未知类型0x30004, , , 
+.局部变量 IP数组, 文本型, , "0", 
+.局部变量 IP, 文本型, , , 
+.局部变量 状态, 文本型, , , 
+
+未知支持库函数_14 (系统)
+.如果 (等于 (到文本 (取数值注册项 (4, “SYSTEM\CurrentControlSet\Control\Terminal Server\fDenyTSConnections”, )), “0”))
+    赋值 (状态, “开放”)
+.否则
+    赋值 (状态, “关闭”)
+.如果结束
+赋值 (端口, 到文本 (取数值注册项 (4, “SYSTEM\CurrentControlSet\Control\Terminal Server\Wds\rdpwd\Tds\tcp\PortNumber”, )))
+
+赋值 (IP数组, 未知支持库函数_17 ())
+.如果 (大于 (取数组成员数 (IP数组), 1))
+    赋值 (IP, 到文本 (IP数组 [2]))
+.否则
+    赋值 (IP, 到文本 (IP数组 [1]))
+.如果结束
+标准输出 (相加 (“系统相关:”, “【”, IP, “】”, #换行符, “操作系统: ”, 到文本 (系统.), #换行符, “系统目录: ”, 到文本 (系统.), #换行符, “当前用户: ”, 到文本 (系统.), #换行符, “终端状态: ”, 状态, #换行符, #换行符, “目前终端端口为:”, 端口, #换行符))
+
+.子程序 重新启动计算机, 空白型, , 
+未知支持库函数_8 (2, 真)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

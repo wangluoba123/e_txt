@@ -1,0 +1,350 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：IAT注入
+ ' 程序描述：IAT注入
+@备注:
+IAT注入
+ ' 程序作者：李光
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：www.lgblog.org
+ ' 版权声明：李光<www.lgblog.org>
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 IMAGE_DOS_SIGNATURE, "23117", , 
+.常量 IMAGE_NT_SIGNATURE, "17744", , 
+.常量 IMAGE_ORDINAL_FLAG32, "2147483648", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' eAPI F7FC1AE45C5C4758AF03EF19F18A395D 3 0 应用接口支持库
+
+
+
+
+数据类型 IMAGE_DOS_HEADER, , 
+    .成员 e_magic, 短整数型, , , 
+    .成员 e_cblp, 短整数型, , , 
+    .成员 e_cp, 短整数型, , , 
+    .成员 e_crlc, 短整数型, , , 
+    .成员 e_cparhdr, 短整数型, , , 
+    .成员 e_minalloc, 短整数型, , , 
+    .成员 e_maxalloc, 短整数型, , , 
+    .成员 e_ss, 短整数型, , , 
+    .成员 e_sp, 短整数型, , , 
+    .成员 e_csum, 短整数型, , , 
+    .成员 e_ip, 短整数型, , , 
+    .成员 e_cs, 短整数型, , , 
+    .成员 e_lfarlc, 短整数型, , , 
+    .成员 e_ovno, 短整数型, , , 
+    .成员 e_res, 短整数型, , "4", 
+    .成员 e_oemid, 短整数型, , , 
+    .成员 e_oeminfo, 短整数型, , , 
+    .成员 e_res2, 短整数型, , "10", 
+    .成员 e_lfanew, 整数型, , , 
+
+数据类型 IMAGE_NT_HEADERS, , 
+    .成员 Signature, 整数型, , , 
+    .成员 FileHeader, IMAGE_FILE_HEADER, , , 
+    .成员 OptionalHeader, IMAGE_OPTIONAL_HEADER, , , 
+
+数据类型 IMAGE_FILE_HEADER, , 
+    .成员 Machine, 短整数型, , , 
+    .成员 NumberOfSections, 短整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 PointerToSymbolTable, 整数型, , , 
+    .成员 NumberOfSymbols, 整数型, , , 
+    .成员 SizeOfOptionalHeader, 短整数型, , , 
+    .成员 Characteristics, 短整数型, , , 
+
+数据类型 IMAGE_OPTIONAL_HEADER, , 
+    .成员 Magic, 短整数型, , , 
+    .成员 MajorLinkerVersion, 字节型, , , 
+    .成员 MinorLinkerVersion, 字节型, , , 
+    .成员 SizeOfCode, 整数型, , , 
+    .成员 SizeOfInitializedData, 整数型, , , 
+    .成员 SizeOfUninitializedData, 整数型, , , 
+    .成员 AddressOfEntryPoint, 整数型, , , 
+    .成员 BaseOfCode, 整数型, , , 
+    .成员 BaseOfData, 整数型, , , 
+    .成员 ImageBase, 整数型, , , 
+    .成员 SectionAlignment, 整数型, , , 
+    .成员 FileAlignment, 整数型, , , 
+    .成员 MajorOperatingSystemVersion, 短整数型, , , 
+    .成员 MinorOperatingSystemVersion, 短整数型, , , 
+    .成员 MajorImageVersion, 短整数型, , , 
+    .成员 MinorImageVersion, 短整数型, , , 
+    .成员 MajorSubsystemVersion, 短整数型, , , 
+    .成员 MinorSubsystemVersion, 短整数型, , , 
+    .成员 Win32VersionValue, 整数型, , , 
+    .成员 SizeOfImage, 整数型, , , 
+    .成员 SizeOfHeaders, 整数型, , , 
+    .成员 CheckSum, 整数型, , , 
+    .成员 Subsystem, 短整数型, , , 
+    .成员 DllCharacteristics, 短整数型, , , 
+    .成员 SizeOfStackReserve, 整数型, , , 
+    .成员 SizeOfStackCommit, 整数型, , , 
+    .成员 SizeOfHeapReserve, 整数型, , , 
+    .成员 SizeOfHeapCommit, 整数型, , , 
+    .成员 LoaderFlags, 整数型, , , 
+    .成员 NumberOfRvaAndSizes, 整数型, , , 
+    .成员 DataDirectory, IMAGE_DATA_DIRECTORY, , "16", 
+
+数据类型 IMAGE_DATA_DIRECTORY, , 
+    .成员 VirtualAddress, 整数型, , , 
+    .成员 Size, 整数型, , , 
+
+数据类型 IMAGE_IMPORT_DESCRIPTOR, , 
+    .成员 OriginalFirstThunk, 整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 ForwarderChain, 整数型, , , 
+    .成员 Name, 整数型, , , 
+    .成员 FirstThunk, 整数型, , , 
+
+数据类型 IMAGE_SECTION_HEADER, , 
+    .成员 Name, 字节型, , "8", 
+    .成员 Misc, 整数型, , , 
+    .成员 VirtualAddress, 整数型, , , 
+    .成员 SizeOfRawData, 整数型, , , 
+    .成员 PointerToRawData, 整数型, , , 
+    .成员 PointerToRelocations, 整数型, , , 
+    .成员 PointerToLinenumbers, 整数型, , , 
+    .成员 NumberOfRelocations, 短整数型, , , 
+    .成员 NumberOfLinenumbers, 短整数型, , , 
+    .成员 Characteristics, 整数型, , , 
+
+
+.DLL命令 RtlMoveMemory_IMAGE_DOS_HEADER, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_DOS_HEADER, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_NT_HEADERS_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_NT_HEADERS, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_NT_HEADERS_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, IMAGE_NT_HEADERS, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_IMPORT_DESCRIPTOR_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_IMPORT_DESCRIPTOR, 数组, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_IMPORT_DESCRIPTOR_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, IMAGE_IMPORT_DESCRIPTOR, 数组, 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_SECTION_HEADER_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, IMAGE_SECTION_HEADER, 数组, 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_SECTION_HEADER_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_SECTION_HEADER, 数组, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_字节集, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 字节集, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 lstrcpyn_字节集, 整数型, "", "lstrcpynA", , 
+    .参数 lpString1, 字节集, , 
+    .参数 lpString2, 字节集, , 
+    .参数 iMaxLength, 整数型, , 
+
+.程序集 IAT, , , 
+
+.子程序 IAT注入, 逻辑型, , 
+.参数 PE文件, 字节集, 参考, 
+.参数 DLL文件名, 文本型, , 
+.参数 DLL函数名, 文本型, , 
+
+.局部变量 数据长度, 整数型, , , 
+.局部变量 数据地址, 整数型, , , 
+.局部变量 DOS头, IMAGE_DOS_HEADER, , , 
+.局部变量 PE头, IMAGE_NT_HEADERS, , , 
+.局部变量 输入表地址, 整数型, , , 
+.局部变量 匿名局部变量_235, 空白型, , , 
+.局部变量 输入表, 字节集, , , 
+.局部变量 自定义区段, IMAGE_SECTION_HEADER, , , 
+.局部变量 区段数组, IMAGE_SECTION_HEADER, , "0", 
+.局部变量 i, 整数型, , , 
+
+
+赋值 (数据长度, 取字节集长度 (PE文件))
+赋值 (数据地址, lstrcpyn_字节集 (PE文件, PE文件, 0))
+
+RtlMoveMemory_IMAGE_DOS_HEADER (DOS头, 数据地址, 64)
+.如果真 (不等于 (DOS头.e_magic, #IMAGE_DOS_SIGNATURE)) ' MZ
+    返回 (假)
+.如果真结束
+.如果真 (小于 (数据长度, 相加 (DOS头.e_lfanew, 248)))
+    返回 (假)
+.如果真结束
+
+
+RtlMoveMemory_IMAGE_NT_HEADERS_1 (PE头, 相加 (数据地址, DOS头.e_lfanew), 248)
+.如果真 (不等于 (PE头.Signature, #IMAGE_NT_SIGNATURE)) ' PE
+    返回 (假)
+.如果真结束
+
+赋值 (输入表地址, PE头.OptionalHeader.DataDirectory [2].VirtualAddress)
+.如果真 (等于 (输入表地址, 0))
+    返回 (假)
+.如果真结束
+
+
+
+赋值 (输入表, 指针到字节集 (相加 (数据地址, 输入表地址), 相减 (PE头.OptionalHeader.DataDirectory [2].Size, 20)))
+
+重定义数组 (区段数组, 假, PE头.FileHeader.NumberOfSections)
+RtlMoveMemory_IMAGE_SECTION_HEADER_2 (区段数组, 相加 (数据地址, DOS头.e_lfanew, 248), 相乘 (PE头.FileHeader.NumberOfSections, 40))
+
+
+.计次循环首 (取数组成员数 (区段数组), i)
+    .如果真 (并且 (大于或等于 (输入表地址, 区段数组 [i], VirtualAddress), 小于或等于 (输入表地址, 相加 (区段数组 [i], VirtualAddress, 区段数组 [i], Misc))))
+        赋值 (区段数组 [i], Characteristics, 2147483648)
+        跳出循环 ()
+    .如果真结束
+    
+.计次循环尾 ()
+
+
+文本到字节 (“.gdata”, 自定义区段.Name)
+赋值 (自定义区段.Misc, 相加 (PE头.OptionalHeader.DataDirectory [2].Size, 20, 8, 取文本长度 (DLL文件名), 1, 2, 取文本长度 (DLL函数名), 1))
+赋值 (自定义区段.VirtualAddress, PE头.OptionalHeader.SizeOfImage)
+赋值 (自定义区段.SizeOfRawData, 自定义区段.Misc)
+赋值 (自定义区段.PointerToRawData, 数据长度)
+赋值 (自定义区段.Characteristics, 2147483648)
+加入成员 (区段数组, 自定义区段)
+
+
+赋值 (PE头.FileHeader.NumberOfSections, 相加 (PE头.FileHeader.NumberOfSections, 1))
+赋值 (PE头.OptionalHeader.DataDirectory [2].Size, 相加 (PE头.OptionalHeader.DataDirectory [2].Size, 20))
+赋值 (PE头.OptionalHeader.DataDirectory [2].VirtualAddress, 自定义区段.VirtualAddress)
+赋值 (PE头.OptionalHeader.SizeOfImage, 相加 (PE头.OptionalHeader.SizeOfImage, 自定义区段.Misc))
+
+RtlMoveMemory_IMAGE_SECTION_HEADER_1 (相加 (数据地址, DOS头.e_lfanew, 248), 区段数组, 相乘 (PE头.FileHeader.NumberOfSections, 40))
+RtlMoveMemory_IMAGE_NT_HEADERS_2 (相加 (数据地址, DOS头.e_lfanew), PE头, 248)
+
+赋值 (输入表, 相加 (输入表, 取空白字节集 (12), 到字节集 (到整数 (相加 (自定义区段.VirtualAddress, PE头.OptionalHeader.DataDirectory [2].Size, 8))), 到字节集 (到整数 (相加 (自定义区段.VirtualAddress, PE头.OptionalHeader.DataDirectory [2].Size))), 取空白字节集 (20), 到字节集 (到整数 (相加 (自定义区段.VirtualAddress, PE头.OptionalHeader.DataDirectory [2].Size, 8, 取文本长度 (DLL文件名), 1))), { 0, 0, 0, 0 }, 到字节集 (DLL文件名), { 0, 0, 0 }, 到字节集 (DLL函数名), { 0 }))
+
+
+赋值 (PE文件, 相加 (PE文件, 输入表))
+
+
+返回 (真)
+
+.子程序 文本到字节, 空白型, , 
+.参数 文本, 文本型, , 
+.参数 字节, 字节型, 参考 数组, 
+
+.局部变量 tmp, 字节集, , , 
+.局部变量 len, 整数型, , , 
+.局部变量 i, 整数型, , , 
+
+赋值 (tmp, 到字节集 (文本))
+赋值 (len, 取字节集长度 (tmp))
+.计次循环首 (取数组成员数 (字节), i)
+    .如果真 (大于 (i, len))
+        跳出循环 ()
+    .如果真结束
+    赋值 (字节 [i], tmp [i])
+.计次循环尾 ()
+
+.子程序 读取输入表, 逻辑型, , 
+.参数 PE文件, 字节集, , 
+
+.局部变量 数据长度, 整数型, , , 
+.局部变量 数据地址, 整数型, , , 
+.局部变量 DOS头, IMAGE_DOS_HEADER, , , 
+.局部变量 PE头, IMAGE_NT_HEADERS, , , 
+.局部变量 输入表数组, IMAGE_IMPORT_DESCRIPTOR, , "0", 
+.局部变量 输入表地址, 整数型, , , 
+.局部变量 输入表数目, 整数型, , , 
+.局部变量 数组索引, 整数型, , , 
+.局部变量 模块名, 整数型, , , 
+.局部变量 地址表, 整数型, , , 
+.局部变量 名称表, 整数型, , , 
+.局部变量 名称, 整数型, , , 
+.局部变量 匿名局部变量_278, 空白型, , , 
+.局部变量 输入表, 字节集, , , 
+
+
+
+赋值 (数据长度, 取字节集长度 (PE文件))
+赋值 (数据地址, lstrcpyn_字节集 (PE文件, PE文件, 0))
+
+RtlMoveMemory_IMAGE_DOS_HEADER (DOS头, 数据地址, 64)
+.如果真 (不等于 (DOS头.e_magic, #IMAGE_DOS_SIGNATURE)) ' MZ
+    返回 (假)
+.如果真结束
+.如果真 (小于 (数据长度, 相加 (DOS头.e_lfanew, 248)))
+    返回 (假)
+.如果真结束
+
+
+RtlMoveMemory_IMAGE_NT_HEADERS_1 (PE头, 相加 (数据地址, DOS头.e_lfanew), 248)
+.如果真 (不等于 (PE头.Signature, #IMAGE_NT_SIGNATURE)) ' PE
+    返回 (假)
+.如果真结束
+
+赋值 (输入表地址, PE头.OptionalHeader.DataDirectory [2].VirtualAddress)
+.如果真 (等于 (输入表地址, 0))
+    返回 (假)
+.如果真结束
+
+赋值 (输入表数目, 相除 (PE头.OptionalHeader.DataDirectory [2].Size, 20)) ' 每张表 20个字节 IMAGE_IMPORT_DESCRIPTOR 结构.
+重定义数组 (输入表数组, 假, 输入表数目)
+RtlMoveMemory_IMAGE_IMPORT_DESCRIPTOR_1 (输入表数组, 相加 (数据地址, 输入表地址), 相乘 (输入表数目, 20))
+
+
+.计次循环首 (相减 (输入表数目, 1), 数组索引)
+    赋值 (模块名, 相加 (数据地址, 输入表数组 [数组索引], Name))
+    输出调试文本 (未知支持库函数_84 (“DLL文件名: %s”, 模块名))
+    
+    赋值 (地址表, 相加 (数据地址, 输入表数组 [数组索引], FirstThunk)) ' IAT Hook 就是在 地址表中写入自己的函数地址的.
+    赋值 (名称, 取字节集数据 (指针到字节集 (地址表, 4), #整数型, )) ' PE被加载前 地址表中记录的是名称的偏移, 加载后会被填充为函数地址.
+    
+    
+    .判断循环首 (不等于 (名称, 0)) ' 地址表中最后一个成员是 0.
+        
+        .如果 (等于 (位与 (名称, #IMAGE_ORDINAL_FLAG32), 0)) ' 判断是名称还是序号.
+            赋值 (名称, 相加 (数据地址, 名称, 2))
+            输出调试文本 (未知支持库函数_84 (“函数名称: %s”, 名称))
+        .否则
+            赋值 (名称, 位与 (名称, 65535))
+            输出调试文本 (未知支持库函数_84 (“函数序号: %d”, 名称))
+        .如果结束
+        
+        
+        赋值 (地址表, 相加 (地址表, 4)) ' 地址是4个字节 因此后移 4个字节.
+        赋值 (名称, 取字节集数据 (指针到字节集 (地址表, 4), #整数型, ))
+        
+    .判断循环尾 ()
+    
+.计次循环尾 ()
+
+返回 (真)
+
+.窗口程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 
+返回 (0)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

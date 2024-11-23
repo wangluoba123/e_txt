@@ -1,0 +1,105 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 GWL_EXSTYLE, "-20", , 
+.常量 GWLP_WNDPROC, "-4", , 
+.常量 WS_EX_CONTEXTHELP, "1024", , 
+.常量 WM_HELP, "83", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 6 系统核心支持库
+ ' eAPI F7FC1AE45C5C4758AF03EF19F18A395D 1 1 应用接口支持库
+ ' iext5 {E5000198-4471-40e2-92BC-D0BA075BDBB2} 1 5 扩展界面支持库五
+
+
+
+
+数据类型 HELPINFO, , 32
+    .成员 cbSize, 整数型, , , 
+    .成员 iContextType, 整数型, , , 
+    .成员 iCtrlId, 整数型, , , 
+    .成员 hItemHandle, 整数型, , , 
+    .成员 dwContextId, 整数型, , , 
+    .成员 MousePos, POINTAPI, , , 
+
+数据类型 POINTAPI, , 
+    .成员 x, 整数型, , , 
+    .成员 y, 整数型, , , 
+
+
+.DLL命令 GetWindowLong, 整数型, "user32", "GetWindowLongA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+
+.DLL命令 SetWindowLong, 整数型, "user32", "SetWindowLongA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+    .参数 dwNewLong, 整数型, , 
+
+.DLL命令 CallWindowProc, 整数型, "user32", "CallWindowProcA", , 
+    .参数 lpPrevWndFunc, 整数型, , 
+    .参数 hwnd, 整数型, , 
+    .参数 msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 RtlMoveMemory, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, HELPINFO, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 oldProc, 整数型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 EXstyle, 整数型, , , 
+
+赋值 (EXstyle, GetWindowLong (取窗口句柄 (), #GWL_EXSTYLE))
+SetWindowLong (取窗口句柄 (), #GWL_EXSTYLE, 位或 (EXstyle, #WS_EX_CONTEXTHELP))
+赋值 (oldProc, SetWindowLong (取窗口句柄 (), #GWLP_WNDPROC, 到整数 (&MyWndProc)))
+
+.子程序 MyWndProc, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 lpHelpInfo, HELPINFO, , , 
+
+.判断开始 (等于 (Msg, #WM_HELP))
+    RtlMoveMemory (lpHelpInfo, lParam, 32)
+    lpHelpInfo.未知支持库函数_26 (.MousePos.x, lpHelpInfo.MousePos.y, 相加 (“标题名:”, 未知支持库函数_76 (lpHelpInfo.hItemHandle), “|类名:”, 未知支持库函数_77 (lpHelpInfo.hItemHandle)), -1, 真)
+.默认
+    
+.判断结束
+
+返回 (CallWindowProc (oldProc, hWnd, Msg, wParam, lParam))
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,7226 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：自绘导航
+ ' 程序描述：缘起小筑 - http://www.woxl.cn
+@备注:
+Gdiplus类源码来自易论坛
+ ' 程序作者：小路
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 测试
+    左边 = 50
+    顶边 = 50
+    宽度 = 444
+    高度 = 223
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = 16777215 '  0xFFFFFF
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “自绘导航条 - BY:woxl”
+    帮助文件名 = “”
+
+窗口 窗口2
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 GWL_WNDPROC, "-4", 公开, 
+.常量 WM_PAINT, "15", 公开, 
+.常量 WM_KEYDOWN, "256", , 
+.常量 WM_KEYUP, "257", , 
+.常量 WM_SYSKEYDOWN, "260", , 按下Alt
+.常量 WM_SYSKEYUP, "261", , 释放Alt
+.常量 WM_CONTEXTMENU, "123", , 当用户某个窗口中点击了一下右键就发送此消息给这个窗口
+.常量 WM_MOUSEMOVE, "512", , 移动鼠标
+.常量 WM_LBUTTONDBLCLK, "515", , 双击鼠标左键
+.常量 , , , QualityMode------------------
+.常量 QualityMode_Invalid, "-1", , 指定一个无效模式。 
+.常量 QualityMode_Default, "0", , 指定默认模式。 
+.常量 QualityMode_Low, "1", , 指定低质量、高速度呈现。 
+.常量 QualityMode_High, "2", , 指定高质量、低速度呈现。 
+.常量 , , , SmoothingMode------呈现模式----------
+.常量 呈现模式_无效, "-1", 公开, 指定一个无效模式。
+.常量 呈现模式_默认, "0", 公开, 指定默认模式。
+.常量 呈现模式_高速度低质量, "1", 公开, 指定高速度、低质量呈现。
+.常量 呈现模式_高质量低速度, "2", 公开, 指定高质量、低速度呈现。
+.常量 呈现模式_不消除锯齿, "3", 公开, 指定不消除锯齿。
+.常量 呈现模式_消除锯齿, "4", 公开, 指定消除锯齿的呈现。
+.常量 , , , TextRenderingHint------文本呈现模式------
+.常量 文本呈现模式_SystemDefault, "0", 公开, 指定在有系统默认呈现提示的情况下使用每个字符的标志符号位图来绘制字符。将采用用户为系统选择的所有字体修匀设置来绘制文本。
+.常量 文本呈现模式_SingleBitPerPixelGridFit, "1", 公开, 指定使用每个字符的标志符号位图来绘制字符。提示用于改善字符在主干和弯曲部分的外观。
+.常量 文本呈现模式_SingleBitPerPixel, "2", 公开, 指定使用每个字符的标志符号位图来绘制字符。不使用提示。
+.常量 文本呈现模式_AntiAliasGridFit, "3", 公开, 指定在有提示的情况下使用每个字符的 AntiAlias 标志符号位图来绘制字符。由于采用了 AntiAlias，质量会得到大大改善，但同时会增加性能成本。
+.常量 文本呈现模式_AntiAlias, "4", 公开, 指定在无提示的情况下使用每个字符的 AntiAlias 标志符号位图来绘制字符。由于采用了 AntiAlias，质量会得到改善。由于关闭了提示，主干宽度差可能会比较明显。
+.常量 文本呈现模式_ClearTypeGridFit, "5", 公开, 指定在有提示的情况下使用每个字符的标志符号 CT 位图来绘制字符。这是质量最高的设置。用于利用 ClearType 字体功能。
+.常量 , , , Unit------度量单位------------------
+.常量 单位_世界坐标, "0", 公开, // 0 -- World coordinate (non-physical unit)
+.常量 单位_Display, "1", 公开, // 1 -- Variable -- for PageTransform only
+.常量 单位_像素, "2", 公开, // 2 -- Each unit is one device pixel.像素
+.常量 单位_点, "3", 公开, // 3 -- Each unit is a printer's point 点
+.常量 单位_英寸, "4", 公开, // 4 -- Each unit is 1 inch.英寸
+.常量 单位_Document, "5", 公开, // 5 -- Each unit is 1/300 inch.
+.常量 单位_毫米, "6", 公开, // 6 -- Each unit is 1 millimeter.毫米
+.常量 , , , FontStyle---字体风格---------------------------
+.常量 字体风格_普通, "0", 公开, 
+.常量 字体风格_加粗, "1", 公开, 
+.常量 字体风格_倾斜, "2", 公开, 
+.常量 字体风格_加粗倾斜, "3", 公开, 
+.常量 字体风格_带下划线, "4", 公开, 
+.常量 字体风格_带中间线, "8", 公开, 
+.常量 , , , FillMode----填充模式
+.常量 填充模式_交替, "0", 公开, Alternate 指定交替填充模式。  
+.常量 填充模式_环绕, "1", 公开, Winding 指定环绕填充模式。  
+.常量 , , , LineCap-----线帽样式
+.常量 线帽样式_平线帽, "0", 公开, 0 // 指定平线帽。
+.常量 线帽样式_方线帽, "1", 公开, 1 // 指定方线帽。
+.常量 线帽样式_圆线帽, "2", 公开, 2 // 指定圆线帽。
+.常量 线帽样式_三角线帽, "3", 公开, 3 // 指定三角线帽。
+.常量 线帽样式_没有锚, "16", 公开, 0x10 // 指定没有锚。
+.常量 线帽样式_方锚头帽, "17", 公开, 0x11 // 指定方锚头帽。
+.常量 线帽样式_圆锚头帽, "18", 公开, 0x12 // 指定圆锚头帽。
+.常量 线帽样式_菱形锚头帽, "19", 公开, 0x13 // 指定菱形锚头帽。
+.常量 线帽样式_箭头状锚头帽, "20", 公开, 0x14 // 指定箭头状锚头帽。
+.常量 线帽样式_自定义线帽, "255", 公开, 0xff // 指定自定义线帽。
+.常量 线帽样式_AnchorMask, "240", 公开, 0xf0 // 指定用于检查线帽是否为锚头帽的掩码。
+.常量 , , , CustomLineCapType-----
+.常量 CustomLineCapType_Default, "0", 公开, 
+.常量 CustomLineCapType_AdjustableArrow, "1", 公开, 
+.常量 , , , LineJoin----线条联接方式
+.常量 线条联接方式_Miter, "0", 公开, 指定斜联接。这将产生一个锐角或切除角，具体取决于斜联接的长度是否超过斜联接限制。
+.常量 线条联接方式_斜角, "1", 公开, 指定成斜角的联接。这将产生一个斜角。
+.常量 线条联接方式_圆角, "2", 公开, 指定圆形联接。这将在两条线之间产生平滑的圆弧。
+.常量 线条联接方式_MiterClipped, "3", 公开, 指定斜联接。这将产生一个锐角或斜角，具体取决于斜联接的长度是否超过斜联接限制。
+.常量 , , , DashCap----虚线线帽样式
+.常量 虚线线帽样式_方线帽, "0", 公开, 
+.常量 虚线线帽样式_圆线帽, "2", 公开, 
+.常量 虚线线帽样式_三角线帽, "3", 公开, 
+.常量 , , , PenAlignment----画笔对齐方式
+.常量 画笔对齐方式_中心, "0", 公开, 
+.常量 画笔对齐方式_内侧, "1", 公开, 
+.常量 画笔对齐方式_外侧, "2", 公开, 
+.常量 画笔对齐方式_左侧, "3", 公开, 
+.常量 画笔对齐方式_右侧, "4", 公开, 
+.常量 , , , PenType----画笔类型
+.常量 画笔类型_固定色, "0", 公开, 
+.常量 画笔类型_阴影, "1", 公开, 
+.常量 画笔类型_位图纹理, "2", 公开, 
+.常量 画笔类型_路径渐变, "3", 公开, 
+.常量 画笔类型_线性渐变, "4", 公开, 
+.常量 画笔类型_未知, "-1", 公开, 
+.常量 , , , DashStyle----虚线风格
+.常量 虚线风格_实线, "0", 公开, 
+.常量 虚线风格_划线, "1", 公开, 
+.常量 虚线风格_点, "2", 公开, 
+.常量 虚线风格_划线点, "3", 公开, 
+.常量 虚线风格_划线点点, "4", 公开, 
+.常量 虚线风格_自定义, "5", 公开, 
+.常量 , , , BrushType----画刷类型
+.常量 画刷类型_固定色, "0", 公开, 
+.常量 画刷类型_阴影, "1", 公开, 
+.常量 画刷类型_位图纹理, "2", 公开, 
+.常量 画刷类型_路径渐变, "3", 公开, 
+.常量 画刷类型_线性渐变, "4", 公开, 
+.常量 , , , HatchStyle--阴影风格
+.常量 阴影风格_水平线, "0", 公开, Horizontal 水平线的图案。
+.常量 阴影风格_垂直线, "1", 公开, Vertical 垂直线的图案。
+.常量 阴影风格_左斜线, "2", 公开, ForwardDiagonal 从左上到右下的对角线的线条图案。
+.常量 阴影风格_右斜线, "3", 公开, BackwardDiagonal 从右上到左下的对角线的线条图案。
+.常量 阴影风格_十字线, "4", 公开, Cross 指定交叉的水平线和垂直线。
+.常量 阴影风格_交叉斜线, "5", 公开, DiagonalCross 指定互相交叉的正向对角线和反向对角线。这些直线是锯齿消除的。
+.常量 阴影风格_百分05阴影, "6", 公开, Percent05 指定 5% 阴影。前景色与背景色的比例为 5:100。
+.常量 阴影风格_百分10阴影, "7", 公开, Percent10 指定 10% 阴影。前景色与背景色的比例为 10:100。
+.常量 阴影风格_百分20阴影, "8", 公开, Percent20 指定 20% 阴影。前景色与背景色的比例为 20:100。
+.常量 阴影风格_百分25阴影, "9", 公开, Percent25 指定 25% 阴影。前景色与背景色的比例为 25:100。
+.常量 阴影风格_百分30阴影, "10", 公开, Percent30 指定 30% 阴影。前景色与背景色的比例为 30:100。
+.常量 阴影风格_百分40阴影, "11", 公开, Percent40 指定 40% 阴影。前景色与背景色的比例为 40:100。
+.常量 阴影风格_百分50阴影, "12", 公开, Percent50 指定 50% 阴影。前景色与背景色的比例为 50:100。
+.常量 阴影风格_百分60阴影, "13", 公开, Percent60 指定 60% 阴影。前景色与背景色的比例为 60:100。
+.常量 阴影风格_百分70阴影, "14", 公开, Percent70 指定 70% 阴影。前景色与背景色的比例为 70:100。
+.常量 阴影风格_百分75阴影, "15", 公开, Percent75 指定 75% 阴影。前景色与背景色的比例为 75:100。
+.常量 阴影风格_百分80阴影, "16", 公开, Percent80 指定 80% 阴影。前景色与背景色的比例为 80:100。
+.常量 阴影风格_百分90阴影, "17", 公开, Percent90 指定 90% 阴影。前景色与背景色的比例为 90:100。
+.常量 阴影风格_细向下对角线, "18", 公开, LightDownwardDiagonal
+.常量 阴影风格_细向上对角线, "19", 公开, LightUpwardDiagonal 指定从顶点到底点向左倾斜的对角线，其两边夹角比 BackwardDiagonal 小 50%，但这些直线不是锯齿消除的。
+.常量 阴影风格_粗向下对角线, "20", 公开, DarkDownwardDiagonal 指定从顶点到底点向右倾斜的对角线，其两边夹角比 ForwardDiagonal 小 50%，宽度是其两倍。此阴影图案不是锯齿消除的。
+.常量 阴影风格_粗向上对角线, "21", 公开, DarkUpwardDiagonal 指定从顶点到底点向左倾斜的对角线，其两边夹角比 BackwardDiagonal 小 50%，宽度是其两倍，但这些直线不是锯齿消除的。
+.常量 阴影风格_宽向下对角线, "22", 公开, WideDownwardDiagonal 指定从顶点到底点向右倾斜的对角线，其间距与阴影样式 ForwardDiagonal 相同，宽度是其三倍，但它们不是锯齿消除的。
+.常量 阴影风格_宽向上对角线, "23", 公开, WideUpwardDiagonal 指定从顶点到底点向左倾斜的对角线，其间距与阴影样式 BackwardDiagonal 相同，宽度是其三倍，但它们不是锯齿消除的。
+.常量 阴影风格_细垂直线, "24", 公开, LightVertical 指定垂直线的两边夹角比 Vertical 小 50%。
+.常量 阴影风格_细水平线, "25", 公开, LightHorizontal 指定水平线，其两边夹角比 Horizontal 小 50%。
+.常量 阴影风格_密垂直线, "26", 公开, NarrowVertical 指定垂直线的两边夹角比阴影样式 Vertical 小 75%（或者比 LightVertical 小 25%）。
+.常量 阴影风格_密水平线, "27", 公开, NarrowHorizontal 指定水平线的两边夹角比阴影样式 Horizontal 小 75%（或者比 LightHorizontal 小 25%）。
+.常量 阴影风格_粗垂直线, "28", 公开, DarkVertical 指定垂直线的两边夹角比 Vertical 小 50% 并且宽度是其两倍。
+.常量 阴影风格_粗水平线, "29", 公开, DarkHorizontal 指定水平线的两边夹角比水平小 50% 并且宽度是 HatchStyleHorizontal 的两倍。
+.常量 阴影风格_右斜虚线, "30", 公开, DashedDownwardDiagonal 指定虚线对角线，这些对角线从顶点到底点向右倾斜。
+.常量 阴影风格_左斜虚线, "31", 公开, DashedUpwardDiagonal 指定虚线对角线，这些对角线从顶点到底点向左倾斜。
+.常量 阴影风格_水平虚线, "32", 公开, DashedHorizontal 指定虚线水平线。
+.常量 阴影风格_垂直虚线, "33", 公开, DashedVertical 指定虚线垂直线。
+.常量 阴影风格_五彩纸屑, "34", 公开, SmallConfetti 指定带有五彩纸屑外观的阴影。
+.常量 阴影风格_大五彩纸屑, "35", 公开, LargeConfetti 指定具有五彩纸屑外观的阴影，并且它是由比 SmallConfetti 更大的片构成的。
+.常量 阴影风格_波浪线, "36", 公开, ZigZag 指定由 Z 字形构成的水平线。
+.常量 阴影风格_波浪号水平线, "37", 公开, Wave 指定由代字号“~”构成的水平线。
+.常量 阴影风格_左斜分层砖块, "38", 公开, DiagonalBrick 指定具有分层砖块外观的阴影，它从顶点到底点向左倾斜。
+.常量 阴影风格_水平分层砖块, "39", 公开, HorizontalBrick 指定具有水平分层砖块外观的阴影。
+.常量 阴影风格_织物外观, "40", 公开, Weave 指定具有织物外观的阴影。
+.常量 阴影风格_格子花呢材料, "41", 公开, Plaid 指定具有格子花呢材料外观的阴影。
+.常量 阴影风格_草皮层, "42", 公开, Divot 指定具有草皮层外观的阴影。
+.常量 阴影风格_十字点线, "43", 公开, DottedGrid 指定互相交叉的水平线和垂直线，每一直线都是由点构成的。
+.常量 阴影风格_交叉点线, "44", 公开, DottedDiamond 指定互相交叉的正向对角线和反向对角线，每一对角线都是由点构成的。
+.常量 阴影风格_对角分层鹅卵石, "45", 公开, Shingle 指定带有对角分层鹅卵石外观的阴影，它从顶点到底点向右倾斜。
+.常量 阴影风格_网格, "46", 公开, Trellis 指定具有格架外观的阴影。
+.常量 阴影风格_球体相邻放置, "47", 公开, Sphere 指定具有球体彼此相邻放置的外观的阴影。
+.常量 阴影风格_小网格, "48", 公开, SmallGrid 指定互相交叉的水平线和垂直线，其两边夹角比阴影样式 Cross 小 50%。
+.常量 阴影风格_小棋盘, "49", 公开, SmallCheckerBoard 指定带有棋盘外观的阴影。
+.常量 阴影风格_大棋盘, "50", 公开, LargeCheckerBoard 指定具有棋盘外观的阴影，棋盘所具有的方格大小是 SmallCheckerBoard 大小的两倍。
+.常量 阴影风格_有锯齿交叉斜线, "51", 公开, OutlinedDiamond 指定互相交叉的正向对角线和反向对角线，但这些对角线不是锯齿消除的。
+.常量 阴影风格_对角棋盘, "52", 公开, SolidDiamond 指定具有对角放置的棋盘外观的阴影。
+.常量 阴影风格_Total, "53", , 
+.常量 阴影风格_大网格, "4", 公开, LargeGrid 指定阴影样式 Cross。
+.常量 阴影风格_Min, "0", 公开, Min 指定阴影样式 Horizonal。
+.常量 阴影风格_Max, "52", 公开, Max 指定阴影样式 SolidDiamond。
+.常量 , , , WrapMode----环绕模式
+.常量 环绕模式_平铺, "0", 公开, Tile 平铺渐变或纹理。
+.常量 环绕模式_水平反转后平铺, "1", 公开, TileFlipX 水平反转纹理或渐变，然后平铺该纹理或渐变。
+.常量 环绕模式_垂直反转后平铺, "2", 公开, TileFlipY 垂直反转纹理或渐变，然后平铺该纹理或渐变。
+.常量 环绕模式_水平垂直反转后平铺, "3", 公开, TileFlipXY 水平和垂直反转纹理或渐变，然后平铺该纹理或渐变。
+.常量 环绕模式_不平铺, "4", 公开, Clamp 纹理或渐变没有平铺。
+.常量 , , , LinearGradientMode----线性渐变模式
+.常量 线性渐变模式_从左到右, "0", 公开, Horizontal 指定从左到右的渐变。
+.常量 线性渐变模式_从上到下, "1", 公开, Vertical 指定从上到下的渐变。
+.常量 线性渐变模式_从左上到右下, "2", 公开, ForwardDiagonal 指定从左上到右下的渐变。
+.常量 线性渐变模式_从右上到左下, "3", 公开, BackwardDiagonal 指定从右上到左下的渐变。
+.常量 , , , PathPointType----路径点类型
+.常量 路径点类型_Start, "0", 公开, Start GraphicsPath 对象的起始点。
+.常量 路径点类型_Line, "1", 公开, Line 连线线段。
+.常量 路径点类型_Bezier, "3", 公开, Bezier 默认贝塞尔曲线。
+.常量 路径点类型_PathTypeMask, "7", 公开, PathTypeMask 遮盖点。
+.常量 路径点类型_DashMode, "16", 公开, DashMode 对应线段为虚线。
+.常量 路径点类型_PathMarker, "32", 公开, PathMarker 路径标记。
+.常量 路径点类型_CloseSubpath, "128", 公开, CloseSubpath 子路径的终结点。
+.常量 路径点类型_Bezier3, "3", 公开, Bezier3 立体贝塞尔曲线。
+.常量 , , , CombineMode----合并模式
+.常量 合并模式_替代, "0", 公开, Replace 一个剪辑区域被另一个剪辑区域替代。
+.常量 合并模式_交集, "1", 公开, Intersect 通过采用两个剪辑区域的交集组合两个剪辑区域。
+.常量 合并模式_并集, "2", 公开, Union 通过采用两个剪辑区域的联合组合两个剪辑区域。
+.常量 合并模式_并集减交集, "3", 公开, Xor 两者的并集减去两者的交集。通过只采纳单独由其中一个区域（而非两个区域一起）包括的范围来组合两个剪辑区域。
+.常量 合并模式_排除新区域, "4", 公开, Exclude 指定由从现有区域移除的新区域的结果替代现有区域。换言之，从现有区域中排除新区域。
+.常量 合并模式_排除旧区域, "5", 公开, Complement 指定由从新区域移除的现有区域的结果替代现有区域。换言之，从新区域中排除现有区域。
+.常量 , , , ImageType----图像类型
+.常量 图像类型_Unknown, "0", 公开, 
+.常量 图像类型_Bitmap, "1", 公开, 
+.常量 图像类型_Metafile, "2", 公开, 
+.常量 , , , PixelFormat----像素格式: 指定图像中每个像素的颜色数据的格式。
+.常量 像素格式_Indexed, "65536", 公开, Indexed 该像素数据包含颜色索引值，这意味着这些值是系统颜色表中颜色的索引，而不是单个颜色值。
+.常量 像素格式_GDI, "131072", 公开, Gdi 像素数据包含 GDI 颜色。
+.常量 像素格式_Alpha, "262144", 公开, Alpha 像素数据包含没有进行过自左乘的 alpha 值。
+.常量 像素格式_PAlpha, "524288", 公开, PAlpha 像素格式包含自左乘的 alpha 值。
+.常量 像素格式_Extended, "1048576", 公开, Extended 保留。
+.常量 像素格式_Canonical, "2097152", 公开, Canonical 保留。
+.常量 像素格式_Undefined, "0", 公开, Undefined 未定义像素格式。
+.常量 像素格式_DontCare, "0", 公开, DontCare 没有指定像素格式。
+.常量 像素格式_1bppIndexed, "196865", 公开, Format1bppIndexed 指定像素格式为每像素 1 位，并指定它使用索引颜色。因此颜色表中有两种颜色。
+.常量 像素格式_4bppIndexed, "197634", 公开, Format4bppIndexed 指定格式为每像素 4 位而且已创建索引。
+.常量 像素格式_8bppIndexed, "198659", 公开, Format8bppIndexed 指定格式为每像素 8 位而且已创建索引。因此颜色表中有 256 种颜色。
+.常量 像素格式_16bppGrayScale, "1052676", 公开, Format16bppGrayScale 像素格式为每像素 16 位。该颜色信息指定 65536 种灰色调。
+.常量 像素格式_16bppRGB555, "135173", 公开, Format16bppRgb555 指定格式为每像素 16 位；红色、绿色和蓝色分量各使用 5 位。剩余的 1 位未使用。
+.常量 像素格式_16bppRGB565, "135174", 公开, Format16bppRgb565 指定格式为每像素 16 位；红色分量使用 5 位，绿色分量使用 6 位，蓝色分量使用 5 位。
+.常量 像素格式_16bppARGB1555, "397319", 公开, Format16bppArgb1555 像素格式为每像素 16 位。该颜色信息指定 32
+.常量 像素格式_24bppRGB, "137224", 公开, Format24bppRgb 指定格式为每像素 24 位；红色、绿色和蓝色分量各使用 8 位。
+.常量 像素格式_32bppRGB, "139273", 公开, Format32bppRgb 指定格式为每像素 32 位；红色、绿色和蓝色分量各使用 8 位。剩余的 8 位未使用。
+.常量 像素格式_32bppARGB, "2498570", 公开, Format32bppArgb 指定格式为每像素 32 位；alpha、红色、绿色和蓝色分量各使用 8 位。
+.常量 像素格式_32bppPARGB, "925707", 公开, Format32bppPArgb 指定格式为每像素 32 位；alpha、红色、绿色和蓝色分量各使用 8 位。根据 alpha 分量，对红色、绿色和蓝色分量进行自左乘。
+.常量 像素格式_48bppRGB, "1060876", 公开, Format48bppRgb 指定格式为每像素 48 位；红色、绿色和蓝色分量各使用 16 位。
+.常量 像素格式_64bppARGB, "3424269", 公开, Format64bppArgb 指定格式为每像素 64 位；alpha、红色、绿色和蓝色分量各使用 16 位。
+.常量 像素格式_64bppPARGB, "1851406", 公开, Format64bppPArgb 指定格式为每像素 64 位；alpha、红色、绿色和蓝色分量各使用 16 位。根据 alpha 分量，对红色、绿色和蓝色分量进行自左乘。
+.常量 像素格式_Max, "15", 公开, Max 此枚举的最大值。
+.常量 , , , MatrixOrder----矩阵顺序
+.常量 矩阵顺序_预先计算, "0", 公开, Prepend 在旧操作前应用新操作。 
+.常量 矩阵顺序_追加, "1", 公开, Append 在旧操作后应用新操作。 
+.常量 , , , WarpMode----扭曲模式
+.常量 扭曲模式_透视环绕, "0", 公开, Perspective 指定透视环绕。 
+.常量 扭曲模式_双线性环绕, "1", 公开, Bilinear 指定双线性环绕。 
+.常量 , , , 
+.常量 编码器CLSID_Bmp, "“{557CF400-1A04-11D3-9A73-0000F81EF32E}”", 公开, 其他查阅：http://www.com.it-berater.org/gdiplus/noframes/GdiPlus_constants.htm
+.常量 编码器CLSID_Jpg, "“{557CF401-1A04-11D3-9A73-0000F81EF32E}”", 公开, 其他查阅：http://www.com.it-berater.org/gdiplus/noframes/GdiPlus_constants.htm
+.常量 编码器CLSID_Gif, "“{557CF402-1A04-11D3-9A73-0000F81EF32E}”", 公开, 其他查阅：http://www.com.it-berater.org/gdiplus/noframes/GdiPlus_constants.htm
+.常量 编码器CLSID_Tiff, "“{557CF405-1A04-11D3-9A73-0000F81EF32E}”", 公开, 其他查阅：http://www.com.it-berater.org/gdiplus/noframes/GdiPlus_constants.htm
+.常量 编码器CLSID_Png, "“{557CF406-1A04-11D3-9A73-0000F81EF32E}”", 公开, 其他查阅：http://www.com.it-berater.org/gdiplus/noframes/GdiPlus_constants.htm
+.图片 路过, " ' 已保存到：D:\易语言学习\Data\自绘导航类.e\路过", , 
+.图片 选择, " ' 已保存到：D:\易语言学习\Data\自绘导航类.e\选择", , 
+.图片 图标, " ' 已保存到：D:\易语言学习\Data\自绘导航类.e\图标", , 
+.图片 背景, " ' 已保存到：D:\易语言学习\Data\自绘导航类.e\背景", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 GdiplusStartupInput, , 
+    .成员 GdiplusVersion, 整数型, , , 
+    .成员 DebugEventCallback, 整数型, , , 
+    .成员 SuppressBackgroundThread, 整数型, , , 
+    .成员 SuppressExternalCodecs, 整数型, , , 
+
+数据类型 PointF, 公开, 
+    .成员 x, 小数型, , , 
+    .成员 y, 小数型, , , 
+
+数据类型 Point, 公开, 
+    .成员 x, 整数型, , , 
+    .成员 y, 整数型, , , 
+
+数据类型 RectF, 公开, 
+    .成员 X, 小数型, , , 
+    .成员 Y, 小数型, , , 
+    .成员 Width, 小数型, , , 
+    .成员 Height, 小数型, , , 
+
+数据类型 Rect, 公开, 
+    .成员 X, 整数型, , , 
+    .成员 Y, 整数型, , , 
+    .成员 Width, 整数型, , , 
+    .成员 Height, 整数型, , , 
+
+数据类型 SizeF, 公开, 
+    .成员 Width, 小数型, , , 
+    .成员 Height, 小数型, , , 
+
+数据类型 Size, 公开, 
+    .成员 Width, 整数型, , , 
+    .成员 Height, 整数型, , , 
+
+数据类型 PathData, 公开, 
+    .成员 Count, 整数型, , , 路径中点的数量
+    .成员 Points, 整数型, , , Count个成员的PointF数组内存地址
+    .成员 Types, 整数型, , , Count个字节的内存地址
+
+数据类型 ImageCodecInfo, 公开, 图像编解码器信息
+    .成员 Clsid, 字节型, , "16", 
+    .成员 FormatID, 字节型, , "16", 
+    .成员 CodecName, 文本型, , , WCHAR*
+    .成员 DllName, 文本型, , , WCHAR*
+    .成员 FormatDescription, 文本型, , , WCHAR*
+    .成员 FilenameExtension, 文本型, , , WCHAR*
+    .成员 MimeType, 文本型, , , WCHAR*
+    .成员 Flags, 整数型, , , 
+    .成员 Version, 整数型, , , 
+    .成员 SigCount, 整数型, , , 
+    .成员 SigSize, 整数型, , , 
+    .成员 SigPattern, 字节集, , , BYTE*
+    .成员 SigMask, 字节集, , , BYTE*
+
+数据类型 EncoderParameter, , 编码器参数
+    .成员 Guid, 字节型, , "16", 
+    .成员 NumberOfValues, 整数型, , , 
+    .成员 Type, 整数型, , , 
+    .成员 Value, 整数型, , , 
+
+数据类型 GUID, 公开, 
+    .成员 guid, 字节型, , "16", 
+
+数据类型 导航信息, , 
+    .成员 状态, 整数型, , , 
+    .成员 标题, 文本型, , , 
+    .成员 图标, 字节集, , , 
+
+数据类型 矩形, , 
+    .成员 左边, 整数型, , , 
+    .成员 顶边, 整数型, , , 
+    .成员 右边, 整数型, , , 
+    .成员 底边, 整数型, , , 
+    .成员 宽度, 整数型, , , 
+    .成员 高度, 整数型, , , 
+
+数据类型 事件, , 
+    .成员 左键, 子程序指针, , , 
+    .成员 右键, 子程序指针, , , 
+    .成员 移动, 子程序指针, , , 
+
+数据类型 导航数据, , 
+    .成员 目标句柄, 整数型, , , 
+    .成员 背景图片, 字节集, , , 
+    .成员 背景颜色, 整数型, , , 
+    .成员 窗口矩形, 矩形, , , 
+    .成员 消息句柄, 整数型, , , 
+    .成员 当前所选, 整数型, , , 
+    .成员 将被河蟹, 整数型, , , 
+    .成员 当前焦点, 整数型, , , 
+    .成员 窗口宽度, 整数型, , , 
+    .成员 窗口高度, 整数型, , , 
+    .成员 字颜颜色, 整数型, , , 
+    .成员 禁止状态, 逻辑型, , , 
+
+.全局变量 g_Token, 整数型, , , 
+.全局变量 GDI, 整数型, , , 
+.全局变量 导航, 导航, 公开, , 
+.全局变量 信息, 导航信息, , "0", 
+.全局变量 参数, 导航数据, , , 
+
+.DLL命令 SetWindowLongA, 子程序指针, "", "SetWindowLongA", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+    .参数 dwNewLong, 子程序指针, , 
+
+.DLL命令 CallWindowProcA, 整数型, "", "CallWindowProcA", 公开, 
+    .参数 lpPrevWndFunc, 子程序指针, , 
+    .参数 hWnd, 整数型, , 
+    .参数 Msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 RtlMoveMemory, 整数型, "", "RtlMoveMemory", 公开, 
+    .参数 lpDest, 整数型, , 
+    .参数 lpSource, 整数型, , 
+    .参数 cBytes, 整数型, , 
+
+.DLL命令 GlobalSize, 整数型, "", "GlobalSize", 公开, 
+    .参数 hMem, 空白型, , 
+
+.DLL命令 GlobalReAlloc, 整数型, "", "GlobalReAlloc", 公开, 
+    .参数 hMem, 空白型, , 
+    .参数 dwBytes, 空白型, , 
+    .参数 uFlags, 空白型, , 
+
+.DLL命令 CreateStreamOnHGlobal, 整数型, "Ole32.dll", "CreateStreamOnHGlobal", 公开, 
+    .参数 hGlobal, 整数型, , 
+    .参数 fDeleteOnRelease, 整数型, , 
+    .参数 ppstm, 整数型, 传址, 
+
+.DLL命令 DeleteObject, 逻辑型, "", "DeleteObject", 公开, 
+    .参数 GDI对象句柄, 整数型, , 
+
+.DLL命令 WideCharToMultiByte, 整数型, "", "WideCharToMultiByte", 公开, 返回 MultiByte字符数目,包括结尾0
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpWideCharStr, 整数型, , 
+    .参数 cchWideChar, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 unknow, 整数型, , 
+    .参数 unknow, 整数型, , 
+
+.DLL命令 GlobalAlloc, 整数型, "", "GlobalAlloc", 公开, 
+    .参数 wFlags, 整数型, , 
+    .参数 dwBytes, 整数型, , 
+
+.DLL命令 GlobalLock, 整数型, "", "GlobalLock", 公开, 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 GlobalUnlock, 整数型, "", "GlobalUnlock", 公开, 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 GlobalFree, 整数型, "", "GlobalFree", 公开, 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 CLSIDFromString, 整数型, "ole32.dll", "CLSIDFromString", 公开, 
+    .参数 lpsz, 字节集, , 
+    .参数 pclsid, 字节集, , 
+
+.DLL命令 MultiByteToWideChar, 整数型, "", "MultiByteToWideChar", 公开, 返回 WideChar字符数目,包括结尾0
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpWideCharStr, 字节集, , 
+    .参数 cchWideChar, 整数型, , 
+
+.DLL命令 GdipAlloc, 整数型, "GdiPlus.dll", "GdipAlloc", 公开, 
+    .参数 size, 整数型, , 
+
+.DLL命令 GdipFree, 空白型, "GdiPlus.dll", "GdipFree", 公开, 
+    .参数 ptr, 整数型, , 
+
+.DLL命令 GdipFlush, 整数型, "GdiPlus.dll", "GdipFlush", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 intention, 整数型, , 
+
+.DLL命令 GdipCreateFromHDC, 整数型, "GdiPlus.dll", "GdipCreateFromHDC", 公开, 
+    .参数 hdc, 整数型, , 
+    .参数 graphics, 整数型, 传址, 
+
+.DLL命令 GdipCreateFromHDC2, 整数型, "GdiPlus.dll", "GdipCreateFromHDC2", 公开, 
+    .参数 hdc, 整数型, , 
+    .参数 hDevice, 整数型, , 
+    .参数 graphics, 整数型, 传址, 
+
+.DLL命令 GdipCreateFromHWND, 整数型, "GdiPlus.dll", "GdipCreateFromHWND", 公开, 
+    .参数 hwnd, 整数型, , 
+    .参数 graphics, 整数型, 传址, 
+
+.DLL命令 GdipCreateFromHWNDICM, 整数型, "GdiPlus.dll", "GdipCreateFromHWNDICM", 公开, 
+    .参数 hwnd, 整数型, , 
+    .参数 graphics, 整数型, 传址, 
+
+.DLL命令 GdipDeleteGraphics, 整数型, "GdiPlus.dll", "GdipDeleteGraphics", 公开, 
+    .参数 graphics, 整数型, , 
+
+.DLL命令 GdipGetDC, 整数型, "GdiPlus.dll", "GdipGetDC", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 hdc, 整数型, 传址, 
+
+.DLL命令 GdipReleaseDC, 整数型, "GdiPlus.dll", "GdipReleaseDC", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 hdc, 整数型, , 
+
+.DLL命令 GdipSetCompositingMode, 整数型, "GdiPlus.dll", "GdipSetCompositingMode", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 compositingMode, 整数型, , 
+
+.DLL命令 GdipGetCompositingMode, 整数型, "GdiPlus.dll", "GdipGetCompositingMode", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 compositingMode, 整数型, , 
+
+.DLL命令 GdipSetRenderingOrigin, 整数型, "GdiPlus.dll", "GdipSetRenderingOrigin", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+
+.DLL命令 GdipGetRenderingOrigin, 整数型, "GdiPlus.dll", "GdipGetRenderingOrigin", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 x, 整数型, 传址, 
+    .参数 y, 整数型, 传址, 
+
+.DLL命令 GdipSetCompositingQuality, 整数型, "GdiPlus.dll", "GdipSetCompositingQuality", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 compositingQuality, 整数型, , 
+
+.DLL命令 GdipGetCompositingQuality, 整数型, "GdiPlus.dll", "GdipGetCompositingQuality", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 compositingQuality, 整数型, , 
+
+.DLL命令 GdipSetSmoothingMode, 整数型, "GdiPlus.dll", "GdipSetSmoothingMode", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 smoothingMode, 整数型, , 
+
+.DLL命令 GdipGetSmoothingMode, 整数型, "GdiPlus.dll", "GdipGetSmoothingMode", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 smoothingMode, 整数型, 传址, 
+
+.DLL命令 GdipSetPixelOffsetMode, 整数型, "GdiPlus.dll", "GdipSetPixelOffsetMode", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pixelOffsetMode, 整数型, , 
+
+.DLL命令 GdipGetPixelOffsetMode, 整数型, "GdiPlus.dll", "GdipGetPixelOffsetMode", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pixelOffsetMode, 整数型, 传址, 
+
+.DLL命令 GdipSetTextRenderingHint, 整数型, "GdiPlus.dll", "GdipSetTextRenderingHint", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 mode, 整数型, , 
+
+.DLL命令 GdipGetTextRenderingHint, 整数型, "GdiPlus.dll", "GdipGetTextRenderingHint", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 mode, 整数型, 传址, 
+
+.DLL命令 GdipSetTextContrast, 整数型, "GdiPlus.dll", "GdipSetTextContrast", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 contrast, 整数型, , 
+
+.DLL命令 GdipGetTextContrast, 整数型, "GdiPlus.dll", "GdipGetTextContrast", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 contrast, 整数型, 传址, 
+
+.DLL命令 GdipSetInterpolationMode, 整数型, "GdiPlus.dll", "GdipSetInterpolationMode", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 interpolationMode, 整数型, , 
+
+.DLL命令 GdipGetInterpolationMode, 整数型, "GdiPlus.dll", "GdipGetInterpolationMode", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 interpolationMode, 整数型, 传址, 
+
+.DLL命令 GdipSetWorldTransform, 整数型, "GdiPlus.dll", "GdipSetWorldTransform", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipResetWorldTransform, 整数型, "GdiPlus.dll", "GdipResetWorldTransform", 公开, 
+    .参数 graphics, 整数型, , 
+
+.DLL命令 GdipMultiplyWorldTransform, 整数型, "GdiPlus.dll", "GdipMultiplyWorldTransform", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 matrix, 整数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipTranslateWorldTransform, 整数型, "GdiPlus.dll", "GdipTranslateWorldTransform", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 dx, 小数型, , 
+    .参数 dy, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipScaleWorldTransform, 整数型, "GdiPlus.dll", "GdipScaleWorldTransform", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 sx, 小数型, , 
+    .参数 sy, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipRotateWorldTransform, 整数型, "GdiPlus.dll", "GdipRotateWorldTransform", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 angle, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipGetWorldTransform, 整数型, "GdiPlus.dll", "GdipGetWorldTransform", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipResetPageTransform, 整数型, "GdiPlus.dll", "GdipResetPageTransform", 公开, 
+    .参数 graphics, 整数型, , 
+
+.DLL命令 GdipGetPageUnit, 整数型, "GdiPlus.dll", "GdipGetPageUnit", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 unit, 整数型, 传址, 
+
+.DLL命令 GdipGetPageScale, 整数型, "GdiPlus.dll", "GdipGetPageScale", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 scale, 小数型, 传址, 
+
+.DLL命令 GdipSetPageUnit, 整数型, "GdiPlus.dll", "GdipSetPageUnit", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 unit, 整数型, , 
+
+.DLL命令 GdipSetPageScale, 整数型, "GdiPlus.dll", "GdipSetPageScale", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 scale, 小数型, , 
+
+.DLL命令 GdipGetDpiX, 整数型, "GdiPlus.dll", "GdipGetDpiX", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 dpi, 小数型, 传址, 
+
+.DLL命令 GdipGetDpiY, 整数型, "GdiPlus.dll", "GdipGetDpiY", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 dpi, 小数型, 传址, 
+
+.DLL命令 GdipTransformPoints, 整数型, "GdiPlus.dll", "GdipTransformPoints", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 destSpace, 整数型, , 
+    .参数 srcSpace, 整数型, , 
+    .参数 points, PointF, , 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipTransformPointsI, 整数型, "GdiPlus.dll", "GdipTransformPointsI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 destSpace, 整数型, , 
+    .参数 srcSpace, 整数型, , 
+    .参数 points, Point, , 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipGetNearestColor, 整数型, "GdiPlus.dll", "GdipGetNearestColor", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 整数型, 整数型, 传址, 
+
+.DLL命令 GdipCreateHalftonePalette, 整数型, "GdiPlus.dll", "GdipCreateHalftonePalette", 公开, 
+
+.DLL命令 GdipDrawLine, 整数型, "GdiPlus.dll", "GdipDrawLine", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 x1, 小数型, , 
+    .参数 y1, 小数型, , 
+    .参数 x2, 小数型, , 
+    .参数 y2, 小数型, , 
+
+.DLL命令 GdipDrawLineI, 整数型, "GdiPlus.dll", "GdipDrawLineI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 x1, 整数型, , 
+    .参数 y1, 整数型, , 
+    .参数 x2, 整数型, , 
+    .参数 y2, 整数型, , 
+
+.DLL命令 GdipDrawLines, 整数型, "GdiPlus.dll", "GdipDrawLines", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipDrawLinesI, 整数型, "GdiPlus.dll", "GdipDrawLinesI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 points, Point, , 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipDrawArc, 整数型, "GdiPlus.dll", "GdipDrawArc", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+    .参数 startAngle, 小数型, , 
+    .参数 sweepAngle, 小数型, , 
+
+.DLL命令 GdipDrawArcI, 整数型, "GdiPlus.dll", "GdipDrawArcI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+    .参数 startAngle, 小数型, , 
+    .参数 sweepAngle, 小数型, , 
+
+.DLL命令 GdipDrawBezier, 整数型, "GdiPlus.dll", "GdipDrawBezier", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 x1, 小数型, , 
+    .参数 y1, 小数型, , 
+    .参数 x2, 小数型, , 
+    .参数 y2, 小数型, , 
+    .参数 x3, 小数型, , 
+    .参数 y3, 小数型, , 
+    .参数 x4, 小数型, , 
+    .参数 y4, 小数型, , 
+
+.DLL命令 GdipDrawBezierI, 整数型, "GdiPlus.dll", "GdipDrawBezierI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 x1, 整数型, , 
+    .参数 y1, 整数型, , 
+    .参数 x2, 整数型, , 
+    .参数 y2, 整数型, , 
+    .参数 x3, 整数型, , 
+    .参数 y3, 整数型, , 
+    .参数 x4, 整数型, , 
+    .参数 y4, 整数型, , 
+
+.DLL命令 GdipDrawBeziers, 整数型, "GdiPlus.dll", "GdipDrawBeziers", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipDrawBeziersI, 整数型, "GdiPlus.dll", "GdipDrawBeziersI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 points, Point, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipDrawRectangle, 整数型, "GdiPlus.dll", "GdipDrawRectangle", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+
+.DLL命令 GdipDrawRectangleI, 整数型, "GdiPlus.dll", "GdipDrawRectangleI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+
+.DLL命令 GdipDrawRectangles, 整数型, "GdiPlus.dll", "GdipDrawRectangles", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 rects, RectF, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipDrawRectanglesI, 整数型, "GdiPlus.dll", "GdipDrawRectanglesI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 rects, Rect, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipDrawEllipse, 整数型, "GdiPlus.dll", "GdipDrawEllipse", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+
+.DLL命令 GdipDrawEllipseI, 整数型, "GdiPlus.dll", "GdipDrawEllipseI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+
+.DLL命令 GdipDrawPie, 整数型, "GdiPlus.dll", "GdipDrawPie", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+    .参数 startAngle, 小数型, , 
+    .参数 sweepAngle, 小数型, , 
+
+.DLL命令 GdipDrawPieI, 整数型, "GdiPlus.dll", "GdipDrawPieI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+    .参数 startAngle, 小数型, , 
+    .参数 sweepAngle, 小数型, , 
+
+.DLL命令 GdipDrawPolygon, 整数型, "GdiPlus.dll", "GdipDrawPolygon", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipDrawPolygonI, 整数型, "GdiPlus.dll", "GdipDrawPolygonI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 points, Point, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipDrawPath, 整数型, "GdiPlus.dll", "GdipDrawPath", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 path, 整数型, , 
+
+.DLL命令 GdipDrawCurve, 整数型, "GdiPlus.dll", "GdipDrawCurve", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 points, PointF, , 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipDrawCurveI, 整数型, "GdiPlus.dll", "GdipDrawCurveI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 points, Point, , 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipDrawCurve2, 整数型, "GdiPlus.dll", "GdipDrawCurve2", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 points, PointF, , 
+    .参数 count, 整数型, , 
+    .参数 tension, 小数型, , 
+
+.DLL命令 GdipDrawCurve2I, 整数型, "GdiPlus.dll", "GdipDrawCurve2I", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 points, Point, , 
+    .参数 count, 整数型, , 
+    .参数 tension, 小数型, , 
+
+.DLL命令 GdipDrawCurve3, 整数型, "GdiPlus.dll", "GdipDrawCurve3", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+    .参数 offset, 整数型, , 
+    .参数 numberOfSegments, 整数型, , 
+    .参数 tension, 小数型, , 
+
+.DLL命令 GdipDrawCurve3I, 整数型, "GdiPlus.dll", "GdipDrawCurve3I", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 points, Point, , 
+    .参数 count, 整数型, , 
+    .参数 offset, 整数型, , 
+    .参数 numberOfSegments, 整数型, , 
+    .参数 tension, 小数型, , 
+
+.DLL命令 GdipDrawClosedCurve, 整数型, "GdiPlus.dll", "GdipDrawClosedCurve", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 points, PointF, , 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipDrawClosedCurveI, 整数型, "GdiPlus.dll", "GdipDrawClosedCurveI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 points, Point, , 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipDrawClosedCurve2, 整数型, "GdiPlus.dll", "GdipDrawClosedCurve2", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+    .参数 tension, 小数型, , 
+
+.DLL命令 GdipDrawClosedCurve2I, 整数型, "GdiPlus.dll", "GdipDrawClosedCurve2I", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 points, Point, , 
+    .参数 count, 整数型, , 
+    .参数 tension, 小数型, , 
+
+.DLL命令 GdipGraphicsClear, 整数型, "GdiPlus.dll", "GdipGraphicsClear", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 color, 整数型, , 
+
+.DLL命令 GdipFillRectangle, 整数型, "GdiPlus.dll", "GdipFillRectangle", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+
+.DLL命令 GdipFillRectangleI, 整数型, "GdiPlus.dll", "GdipFillRectangleI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+
+.DLL命令 GdipFillRectangles, 整数型, "GdiPlus.dll", "GdipFillRectangles", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 rects, RectF, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipFillRectanglesI, 整数型, "GdiPlus.dll", "GdipFillRectanglesI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 rects, Rect, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipFillPolygon, 整数型, "GdiPlus.dll", "GdipFillPolygon", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+    .参数 fillMode, 整数型, , 
+
+.DLL命令 GdipFillPolygonI, 整数型, "GdiPlus.dll", "GdipFillPolygonI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 points, Point, 数组, 
+    .参数 count, 整数型, , 
+    .参数 fillMode, 整数型, , 
+
+.DLL命令 GdipFillPolygon2, 整数型, "GdiPlus.dll", "GdipFillPolygon2", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipFillPolygon2I, 整数型, "GdiPlus.dll", "GdipFillPolygon2I", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 points, Point, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipFillEllipse, 整数型, "GdiPlus.dll", "GdipFillEllipse", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+
+.DLL命令 GdipFillEllipseI, 整数型, "GdiPlus.dll", "GdipFillEllipseI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+
+.DLL命令 GdipFillPie, 整数型, "GdiPlus.dll", "GdipFillPie", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+    .参数 startAngle, 小数型, , 
+    .参数 sweepAngle, 小数型, , 
+
+.DLL命令 GdipFillPieI, 整数型, "GdiPlus.dll", "GdipFillPieI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+    .参数 startAngle, 小数型, , 
+    .参数 sweepAngle, 小数型, , 
+
+.DLL命令 GdipFillPath, 整数型, "GdiPlus.dll", "GdipFillPath", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 path, 整数型, , 
+
+.DLL命令 GdipFillClosedCurve, 整数型, "GdiPlus.dll", "GdipFillClosedCurve", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipFillClosedCurveI, 整数型, "GdiPlus.dll", "GdipFillClosedCurveI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 points, Point, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipFillClosedCurve2, 整数型, "GdiPlus.dll", "GdipFillClosedCurve2", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+    .参数 tension, 小数型, , 
+    .参数 fillMode, 整数型, , 
+
+.DLL命令 GdipFillClosedCurve2I, 整数型, "GdiPlus.dll", "GdipFillClosedCurve2I", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 points, Point, 数组, 
+    .参数 count, 整数型, , 
+    .参数 tension, 小数型, , 
+    .参数 fillMode, 整数型, , 
+
+.DLL命令 GdipFillRegion, 整数型, "GdiPlus.dll", "GdipFillRegion", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 region, 整数型, , 
+
+.DLL命令 GdipDrawImage, 整数型, "GdiPlus.dll", "GdipDrawImage", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 image, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+
+.DLL命令 GdipDrawImageI, 整数型, "GdiPlus.dll", "GdipDrawImageI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 image, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+
+.DLL命令 GdipDrawImageRect, 整数型, "GdiPlus.dll", "GdipDrawImageRect", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 image, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+
+.DLL命令 GdipDrawImageRectI, 整数型, "GdiPlus.dll", "GdipDrawImageRectI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 image, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+
+.DLL命令 GdipDrawImagePoints, 整数型, "GdiPlus.dll", "GdipDrawImagePoints", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 image, 整数型, , 
+    .参数 dstpoints, PointF, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipDrawImagePointsI, 整数型, "GdiPlus.dll", "GdipDrawImagePointsI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 image, 整数型, , 
+    .参数 dstpoints, Point, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipDrawImagePointRect, 整数型, "GdiPlus.dll", "GdipDrawImagePointRect", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 image, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 srcx, 小数型, , 
+    .参数 srcy, 小数型, , 
+    .参数 srcwidth, 小数型, , 
+    .参数 srcheight, 小数型, , 
+    .参数 srcUnit, 整数型, , 
+
+.DLL命令 GdipDrawImagePointRectI, 整数型, "GdiPlus.dll", "GdipDrawImagePointRectI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 image, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 srcx, 整数型, , 
+    .参数 srcy, 整数型, , 
+    .参数 srcwidth, 整数型, , 
+    .参数 srcheight, 整数型, , 
+    .参数 srcUnit, 整数型, , 
+
+.DLL命令 GdipDrawImageRectRect, 整数型, "GdiPlus.dll", "GdipDrawImageRectRect", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 image, 整数型, , 
+    .参数 dstx, 小数型, , 
+    .参数 dsty, 小数型, , 
+    .参数 dstwidth, 小数型, , 
+    .参数 dstheight, 小数型, , 
+    .参数 srcx, 小数型, , 
+    .参数 srcy, 小数型, , 
+    .参数 srcwidth, 小数型, , 
+    .参数 srcheight, 小数型, , 
+    .参数 srcUnit, 整数型, , 
+    .参数 imageAttributes, 整数型, , 
+    .参数 callback, 整数型, , 
+    .参数 callbackData, 整数型, 传址, 
+
+.DLL命令 GdipDrawImageRectRectI, 整数型, "GdiPlus.dll", "GdipDrawImageRectRectI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 image, 整数型, , 
+    .参数 dstx, 整数型, , 
+    .参数 dsty, 整数型, , 
+    .参数 dstwidth, 整数型, , 
+    .参数 dstheight, 整数型, , 
+    .参数 srcx, 整数型, , 
+    .参数 srcy, 整数型, , 
+    .参数 srcwidth, 整数型, , 
+    .参数 srcheight, 整数型, , 
+    .参数 srcUnit, 整数型, , 
+    .参数 imageAttributes, 整数型, , 
+    .参数 callback, 整数型, , 
+    .参数 callbackData, 整数型, 传址, 
+
+.DLL命令 GdipDrawImagePointsRect, 整数型, "GdiPlus.dll", "GdipDrawImagePointsRect", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 image, 整数型, , 
+    .参数 points, PointF, , 
+    .参数 count, 整数型, , 
+    .参数 srcx, 小数型, , 
+    .参数 srcy, 小数型, , 
+    .参数 srcwidth, 小数型, , 
+    .参数 srcheight, 小数型, , 
+    .参数 srcUnit, 整数型, , 
+    .参数 imageAttributes, 整数型, , 
+    .参数 callback, 整数型, , 
+    .参数 callbackData, 整数型, 传址, 
+
+.DLL命令 GdipDrawImagePointsRectI, 整数型, "GdiPlus.dll", "GdipDrawImagePointsRectI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 image, 整数型, , 
+    .参数 points, Point, , 
+    .参数 count, 整数型, , 
+    .参数 srcx, 整数型, , 
+    .参数 srcy, 整数型, , 
+    .参数 srcwidth, 整数型, , 
+    .参数 srcheight, 整数型, , 
+    .参数 srcUnit, 整数型, , 
+    .参数 imageAttributes, 整数型, , 
+    .参数 callback, 整数型, , 
+    .参数 callbackData, 整数型, 传址, 
+
+.DLL命令 GdipEnumerateMetafileDestPoint, 整数型, "GdiPlus.dll", "GdipEnumerateMetafileDestPoint", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 metafile, 整数型, , 
+    .参数 destPoint, PointF, , 
+    .参数 callback, 整数型, , 
+    .参数 callbackData, 整数型, 传址, 
+    .参数 imageAttributes, 整数型, , 
+
+.DLL命令 GdipEnumerateMetafileDestPointI, 整数型, "GdiPlus.dll", "GdipEnumerateMetafileDestPointI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 metafile, 整数型, , 
+    .参数 destPoint, Point, , 
+    .参数 callback, 整数型, , 
+    .参数 callbackData, 整数型, 传址, 
+    .参数 imageAttributes, 整数型, , 
+
+.DLL命令 GdipEnumerateMetafileDestRect, 整数型, "GdiPlus.dll", "GdipEnumerateMetafileDestRect", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 metafile, 整数型, , 
+    .参数 destRect, RectF, , 
+    .参数 callback, 整数型, , 
+    .参数 callbackData, 整数型, 传址, 
+    .参数 imageAttributes, 整数型, , 
+
+.DLL命令 GdipEnumerateMetafileDestRectI, 整数型, "GdiPlus.dll", "GdipEnumerateMetafileDestRectI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 metafile, 整数型, , 
+    .参数 destRect, Rect, , 
+    .参数 callback, 整数型, , 
+    .参数 callbackData, 整数型, 传址, 
+    .参数 imageAttributes, 整数型, , 
+
+.DLL命令 GdipEnumerateMetafileDestPoints, 整数型, "GdiPlus.dll", "GdipEnumerateMetafileDestPoints", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 metafile, 整数型, , 
+    .参数 destPoints, PointF, , 
+    .参数 count, 整数型, , 
+    .参数 callback, 整数型, , 
+    .参数 callbackData, 整数型, 传址, 
+    .参数 imageAttributes, 整数型, , 
+
+.DLL命令 GdipEnumerateMetafileDestPointsI, 整数型, "GdiPlus.dll", "GdipEnumerateMetafileDestPointsI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 metafile, 整数型, , 
+    .参数 destPoints, Point, , 
+    .参数 count, 整数型, , 
+    .参数 callback, 整数型, , 
+    .参数 callbackData, 整数型, 传址, 
+    .参数 imageAttributes, 整数型, , 
+
+.DLL命令 GdipEnumerateMetafileSrcRectDestPoint, 整数型, "GdiPlus.dll", "GdipEnumerateMetafileSrcRectDestPoint", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 metafile, 整数型, , 
+    .参数 destPoint, PointF, , 
+    .参数 srcRect, RectF, , 
+    .参数 srcUnit, 整数型, , 
+    .参数 callback, 整数型, , 
+    .参数 callbackData, 整数型, 传址, 
+    .参数 imageAttributes, 整数型, , 
+
+.DLL命令 GdipEnumerateMetafileSrcRectDestPointI, 整数型, "GdiPlus.dll", "GdipEnumerateMetafileSrcRectDestPointI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 metafile, 整数型, , 
+    .参数 destPoint, Point, , 
+    .参数 srcRect, Rect, , 
+    .参数 srcUnit, 整数型, , 
+    .参数 callback, 整数型, , 
+    .参数 callbackData, 整数型, 传址, 
+    .参数 imageAttributes, 整数型, , 
+
+.DLL命令 GdipEnumerateMetafileSrcRectDestRect, 整数型, "GdiPlus.dll", "GdipEnumerateMetafileSrcRectDestRect", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 metafile, 整数型, , 
+    .参数 destRect, RectF, , 
+    .参数 srcRect, RectF, , 
+    .参数 srcUnit, 整数型, , 
+    .参数 callback, 整数型, , 
+    .参数 callbackData, 整数型, 传址, 
+    .参数 imageAttributes, 整数型, , 
+
+.DLL命令 GdipEnumerateMetafileSrcRectDestRectI, 整数型, "GdiPlus.dll", "GdipEnumerateMetafileSrcRectDestRectI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 metafile, 整数型, , 
+    .参数 destRect, Rect, , 
+    .参数 srcRect, Rect, , 
+    .参数 srcUnit, 整数型, , 
+    .参数 callback, 整数型, , 
+    .参数 callbackData, 整数型, 传址, 
+    .参数 imageAttributes, 整数型, , 
+
+.DLL命令 GdipEnumerateMetafileSrcRectDestPoints, 整数型, "GdiPlus.dll", "GdipEnumerateMetafileSrcRectDestPoints", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 metafile, 整数型, , 
+    .参数 destPoints, PointF, , 
+    .参数 count, 整数型, , 
+    .参数 srcRect, RectF, , 
+    .参数 srcUnit, 整数型, , 
+    .参数 callback, 整数型, , 
+    .参数 callbackData, 整数型, 传址, 
+    .参数 imageAttributes, 整数型, , 
+
+.DLL命令 GdipEnumerateMetafileSrcRectDestPointsI, 整数型, "GdiPlus.dll", "GdipEnumerateMetafileSrcRectDestPointsI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 metafile, 整数型, , 
+    .参数 destPoints, Point, , 
+    .参数 count, 整数型, , 
+    .参数 srcRect, Rect, , 
+    .参数 srcUnit, 整数型, , 
+    .参数 callback, 整数型, , 
+    .参数 callbackData, 整数型, 传址, 
+    .参数 imageAttributes, 整数型, , 
+
+.DLL命令 GdipPlayMetafileRecord, 整数型, "GdiPlus.dll", "GdipPlayMetafileRecord", 公开, 
+    .参数 metafile, 整数型, , 
+    .参数 recordType, 整数型, , 
+    .参数 flags, 整数型, , 
+    .参数 dataSize, 整数型, , 
+    .参数 data, 字节集, , 
+
+.DLL命令 GdipSetClipGraphics, 整数型, "GdiPlus.dll", "GdipSetClipGraphics", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 srcgraphics, 整数型, , 
+    .参数 combineMode, 整数型, , 
+
+.DLL命令 GdipSetClipRect, 整数型, "GdiPlus.dll", "GdipSetClipRect", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+    .参数 combineMode, 整数型, , 
+
+.DLL命令 GdipSetClipRectI, 整数型, "GdiPlus.dll", "GdipSetClipRectI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+    .参数 combineMode, 整数型, , 
+
+.DLL命令 GdipSetClipPath, 整数型, "GdiPlus.dll", "GdipSetClipPath", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 path, 整数型, , 
+    .参数 combineMode, 整数型, , 
+
+.DLL命令 GdipSetClipRegion, 整数型, "GdiPlus.dll", "GdipSetClipRegion", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 region, 整数型, , 
+    .参数 combineMode, 整数型, , 
+
+.DLL命令 GdipSetClipHrgn, 整数型, "GdiPlus.dll", "GdipSetClipHrgn", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 hRgn, 整数型, , 
+    .参数 combineMode, 整数型, , 
+
+.DLL命令 GdipResetClip, 整数型, "GdiPlus.dll", "GdipResetClip", 公开, 
+    .参数 graphics, 整数型, , 
+
+.DLL命令 GdipTranslateClip, 整数型, "GdiPlus.dll", "GdipTranslateClip", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 dx, 小数型, , 
+    .参数 dy, 小数型, , 
+
+.DLL命令 GdipTranslateClipI, 整数型, "GdiPlus.dll", "GdipTranslateClipI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 dx, 整数型, , 
+    .参数 dy, 整数型, , 
+
+.DLL命令 GdipGetClip, 整数型, "GdiPlus.dll", "GdipGetClip", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 region, 整数型, , 
+
+.DLL命令 GdipGetClipBounds, 整数型, "GdiPlus.dll", "GdipGetClipBounds", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 rect, RectF, , 
+
+.DLL命令 GdipGetClipBoundsI, 整数型, "GdiPlus.dll", "GdipGetClipBoundsI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 rect, Rect, , 
+
+.DLL命令 GdipIsClipEmpty, 整数型, "GdiPlus.dll", "GdipIsClipEmpty", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 result, 逻辑型, 传址, 
+
+.DLL命令 GdipGetVisibleClipBounds, 整数型, "GdiPlus.dll", "GdipGetVisibleClipBounds", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 rect, RectF, , 
+
+.DLL命令 GdipGetVisibleClipBoundsI, 整数型, "GdiPlus.dll", "GdipGetVisibleClipBoundsI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 rect, Rect, , 
+
+.DLL命令 GdipIsVisibleClipEmpty, 整数型, "GdiPlus.dll", "GdipIsVisibleClipEmpty", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 result, 逻辑型, 传址, 
+
+.DLL命令 GdipIsVisiblePoint, 整数型, "GdiPlus.dll", "GdipIsVisiblePoint", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 result, 逻辑型, 传址, 
+
+.DLL命令 GdipIsVisiblePointI, 整数型, "GdiPlus.dll", "GdipIsVisiblePointI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 result, 整数型, 传址, 
+
+.DLL命令 GdipIsVisibleRect, 整数型, "GdiPlus.dll", "GdipIsVisibleRect", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+    .参数 result, 逻辑型, 传址, 
+
+.DLL命令 GdipIsVisibleRectI, 整数型, "GdiPlus.dll", "GdipIsVisibleRectI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+    .参数 result, 整数型, 传址, 
+
+.DLL命令 GdipSaveGraphics, 整数型, "GdiPlus.dll", "GdipSaveGraphics", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 state, 整数型, , 
+
+.DLL命令 GdipRestoreGraphics, 整数型, "GdiPlus.dll", "GdipRestoreGraphics", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 state, 整数型, , 
+
+.DLL命令 GdipBeginContainer, 整数型, "GdiPlus.dll", "GdipBeginContainer", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 dstrect, RectF, , 
+    .参数 srcrect, RectF, , 
+    .参数 unit, 整数型, , 
+    .参数 state, 整数型, , 
+
+.DLL命令 GdipBeginContainerI, 整数型, "GdiPlus.dll", "GdipBeginContainerI", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 dstrect, Rect, , 
+    .参数 srcrect, Rect, , 
+    .参数 unit, 整数型, , 
+    .参数 state, 整数型, , 
+
+.DLL命令 GdipBeginContainer2, 整数型, "GdiPlus.dll", "GdipBeginContainer2", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 state, 整数型, , 
+
+.DLL命令 GdipEndContainer, 整数型, "GdiPlus.dll", "GdipEndContainer", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 state, 整数型, , 
+
+.DLL命令 GdipGetMetafileHeaderFromWmf, 整数型, "GdiPlus.dll", "GdipGetMetafileHeaderFromWmf", 公开, 
+    .参数 hWmf, 整数型, , 
+    .参数 wmfPlaceableFileHeader, 整数型, , 
+    .参数 header, 整数型, , 
+
+.DLL命令 GdipGetMetafileHeaderFromEmf, 整数型, "GdiPlus.dll", "GdipGetMetafileHeaderFromEmf", 公开, 
+    .参数 hEmf, 整数型, , 
+    .参数 header, 整数型, , 
+
+.DLL命令 GdipGetMetafileHeaderFromFile, 整数型, "GdiPlus.dll", "GdipGetMetafileHeaderFromFile", 公开, 
+    .参数 filename, 整数型, , 
+    .参数 header, 整数型, , 
+
+.DLL命令 GdipGetMetafileHeaderFromStream, 整数型, "GdiPlus.dll", "GdipGetMetafileHeaderFromStream", 公开, 
+    .参数 stream, 整数型, , 
+    .参数 header, 整数型, , 
+
+.DLL命令 GdipGetMetafileHeaderFromMetafile, 整数型, "GdiPlus.dll", "GdipGetMetafileHeaderFromMetafile", 公开, 
+    .参数 metafile, 整数型, , 
+    .参数 header, 整数型, , 
+
+.DLL命令 GdipGetHemfFromMetafile, 整数型, "GdiPlus.dll", "GdipGetHemfFromMetafile", 公开, 
+    .参数 metafile, 整数型, , 
+    .参数 hEmf, 整数型, , 
+
+.DLL命令 GdipCreateStreamOnFile, 整数型, "GdiPlus.dll", "GdipCreateStreamOnFile", 公开, 
+    .参数 filename, 整数型, , 
+    .参数 access, 整数型, , 
+    .参数 stream, 整数型, , 
+
+.DLL命令 GdipCreateMetafileFromWmf, 整数型, "GdiPlus.dll", "GdipCreateMetafileFromWmf", 公开, 
+    .参数 hWmf, 整数型, , 
+    .参数 deleteWmf, 整数型, , 
+    .参数 wmfPlaceableFileHeader, 整数型, , 
+    .参数 metafile, 整数型, 传址, 
+
+.DLL命令 GdipCreateMetafileFromEmf, 整数型, "GdiPlus.dll", "GdipCreateMetafileFromEmf", 公开, 
+    .参数 hEmf, 整数型, , 
+    .参数 deleteEmf, 整数型, , 
+    .参数 metafile, 整数型, 传址, 
+
+.DLL命令 GdipCreateMetafileFromFile, 整数型, "GdiPlus.dll", "GdipCreateMetafileFromFile", 公开, 
+    .参数 file, 整数型, , 
+    .参数 metafile, 整数型, 传址, 
+
+.DLL命令 GdipCreateMetafileFromWmfFile, 整数型, "GdiPlus.dll", "GdipCreateMetafileFromWmfFile", 公开, 
+    .参数 file, 整数型, , 
+    .参数 wmfPlaceableFileHeader, 整数型, , 
+    .参数 metafile, 整数型, 传址, 
+
+.DLL命令 GdipCreateMetafileFromStream, 整数型, "GdiPlus.dll", "GdipCreateMetafileFromStream", 公开, 
+    .参数 stream, 整数型, , 
+    .参数 metafile, 整数型, 传址, 
+
+.DLL命令 GdipRecordMetafile, 整数型, "GdiPlus.dll", "GdipRecordMetafile", 公开, 
+    .参数 referenceHdc, 整数型, , 
+    .参数 type, 整数型, , 
+    .参数 frameRect, RectF, , 
+    .参数 frameUnit, 整数型, , 
+    .参数 description, 整数型, , 
+    .参数 metafile, 整数型, 传址, 
+
+.DLL命令 GdipRecordMetafileI, 整数型, "GdiPlus.dll", "GdipRecordMetafileI", 公开, 
+    .参数 referenceHdc, 整数型, , 
+    .参数 type, 整数型, , 
+    .参数 frameRect, Rect, , 
+    .参数 frameUnit, 整数型, , 
+    .参数 description, 整数型, , 
+    .参数 metafile, 整数型, 传址, 
+
+.DLL命令 GdipRecordMetafileFileName, 整数型, "GdiPlus.dll", "GdipRecordMetafileFileName", 公开, 
+    .参数 fileName, 整数型, , 
+    .参数 referenceHdc, 整数型, , 
+    .参数 type, 整数型, , 
+    .参数 frameRect, RectF, , 
+    .参数 frameUnit, 整数型, , 
+    .参数 description, 整数型, , 
+    .参数 metafile, 整数型, 传址, 
+
+.DLL命令 GdipRecordMetafileFileNameI, 整数型, "GdiPlus.dll", "GdipRecordMetafileFileNameI", 公开, 
+    .参数 fileName, 整数型, , 
+    .参数 referenceHdc, 整数型, , 
+    .参数 type, 整数型, , 
+    .参数 frameRect, Rect, , 
+    .参数 frameUnit, 整数型, , 
+    .参数 description, 整数型, , 
+    .参数 metafile, 整数型, 传址, 
+
+.DLL命令 GdipRecordMetafileStream, 整数型, "GdiPlus.dll", "GdipRecordMetafileStream", 公开, 
+    .参数 stream, 整数型, , 
+    .参数 referenceHdc, 整数型, , 
+    .参数 type, 整数型, , 
+    .参数 frameRect, RectF, , 
+    .参数 frameUnit, 整数型, , 
+    .参数 description, 整数型, , 
+    .参数 metafile, 整数型, 传址, 
+
+.DLL命令 GdipRecordMetafileStreamI, 整数型, "GdiPlus.dll", "GdipRecordMetafileStreamI", 公开, 
+    .参数 stream, 整数型, , 
+    .参数 referenceHdc, 整数型, , 
+    .参数 type, 整数型, , 
+    .参数 frameRect, Rect, , 
+    .参数 frameUnit, 整数型, , 
+    .参数 description, 整数型, , 
+    .参数 metafile, 整数型, 传址, 
+
+.DLL命令 GdipSetMetafileDownLevelRasterizationLimit, 整数型, "GdiPlus.dll", "GdipSetMetafileDownLevelRasterizationLimit", 公开, 
+    .参数 metafile, 整数型, , 
+    .参数 metafileRasterizationLimitDpi, 整数型, , 
+
+.DLL命令 GdipGetMetafileDownLevelRasterizationLimit, 整数型, "GdiPlus.dll", "GdipGetMetafileDownLevelRasterizationLimit", 公开, 
+    .参数 metafile, 整数型, , 
+    .参数 metafileRasterizationLimitDpi, 整数型, 传址, 
+
+.DLL命令 GdipGetImageDecodersSize, 整数型, "GdiPlus.dll", "GdipGetImageDecodersSize", 公开, 
+    .参数 numDecoders, 整数型, , 
+    .参数 size, 整数型, 传址, 
+
+.DLL命令 GdipGetImageDecoders, 整数型, "GdiPlus.dll", "GdipGetImageDecoders", 公开, 
+    .参数 numDecoders, 整数型, , 
+    .参数 size, 整数型, , 
+    .参数 decoders, 整数型, 传址, 
+
+.DLL命令 GdipGetImageEncodersSize, 整数型, "GdiPlus.dll", "GdipGetImageEncodersSize", 公开, 
+    .参数 numEncoders, 整数型, 传址, 
+    .参数 size, 整数型, 传址, 
+
+.DLL命令 GdipGetImageEncoders, 整数型, "GdiPlus.dll", "GdipGetImageEncoders", 公开, 
+    .参数 numEncoders, 整数型, , 
+    .参数 size, 整数型, , 
+    .参数 encoders, 字节集, , 
+
+.DLL命令 GdipComment, 整数型, "GdiPlus.dll", "GdipComment", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 sizeData, 整数型, , 
+    .参数 data, 整数型, , 
+
+.DLL命令 GdipCloneBrush, 整数型, "GdiPlus.dll", "GdipCloneBrush", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 cloneBrush, 整数型, 传址, 
+
+.DLL命令 GdipDeleteBrush, 整数型, "GdiPlus.dll", "GdipDeleteBrush", 公开, 
+    .参数 brush, 整数型, , 
+
+.DLL命令 GdipGetBrushType, 整数型, "GdiPlus.dll", "GdipGetBrushType", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 type, 整数型, 传址, 
+
+.DLL命令 GdipCreateSolidFill, 整数型, "GdiPlus.dll", "GdipCreateSolidFill", 公开, 
+    .参数 color, 整数型, , 
+    .参数 brush, 整数型, 传址, 
+
+.DLL命令 GdipSetSolidFillColor, 整数型, "GdiPlus.dll", "GdipSetSolidFillColor", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 color, 整数型, , 
+
+.DLL命令 GdipGetSolidFillColor, 整数型, "GdiPlus.dll", "GdipGetSolidFillColor", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 color, 整数型, 传址, 
+
+.DLL命令 GdipCreatePen1, 整数型, "GdiPlus.dll", "GdipCreatePen1", 公开, 
+    .参数 color, 整数型, , 
+    .参数 width, 小数型, , 
+    .参数 unit, 整数型, , 
+    .参数 pen, 整数型, 传址, 
+
+.DLL命令 GdipCreatePen2, 整数型, "GdiPlus.dll", "GdipCreatePen2", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 width, 小数型, , 
+    .参数 unit, 整数型, , 
+    .参数 pen, 整数型, 传址, 
+
+.DLL命令 GdipClonePen, 整数型, "GdiPlus.dll", "GdipClonePen", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 clonepen, 整数型, 传址, 
+
+.DLL命令 GdipDeletePen, 整数型, "GdiPlus.dll", "GdipDeletePen", 公开, 
+    .参数 pen, 整数型, , 
+
+.DLL命令 GdipSetPenWidth, 整数型, "GdiPlus.dll", "GdipSetPenWidth", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 width, 小数型, , 
+
+.DLL命令 GdipGetPenWidth, 整数型, "GdiPlus.dll", "GdipGetPenWidth", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 width, 小数型, 传址, 
+
+.DLL命令 GdipSetPenUnit, 整数型, "GdiPlus.dll", "GdipSetPenUnit", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 unit, 整数型, , 
+
+.DLL命令 GdipGetPenUnit, 整数型, "GdiPlus.dll", "GdipGetPenUnit", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 unit, 整数型, 传址, 
+
+.DLL命令 GdipSetPenLineCap197819, 整数型, "GdiPlus.dll", "GdipSetPenLineCap197819", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 startCap, 整数型, , 
+    .参数 endCap, 整数型, , 
+    .参数 dashCap, 整数型, , 
+
+.DLL命令 GdipSetPenStartCap, 整数型, "GdiPlus.dll", "GdipSetPenStartCap", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 startCap, 整数型, , 
+
+.DLL命令 GdipSetPenEndCap, 整数型, "GdiPlus.dll", "GdipSetPenEndCap", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 endCap, 整数型, , 
+
+.DLL命令 GdipSetPenDashCap197819, 整数型, "GdiPlus.dll", "GdipSetPenDashCap197819", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 dashCap, 整数型, , 
+
+.DLL命令 GdipGetPenStartCap, 整数型, "GdiPlus.dll", "GdipGetPenStartCap", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 startCap, 整数型, 传址, 
+
+.DLL命令 GdipGetPenEndCap, 整数型, "GdiPlus.dll", "GdipGetPenEndCap", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 endCap, 整数型, 传址, 
+
+.DLL命令 GdipGetPenDashCap197819, 整数型, "GdiPlus.dll", "GdipGetPenDashCap197819", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 dashCap, 整数型, 传址, 
+
+.DLL命令 GdipSetPenLineJoin, 整数型, "GdiPlus.dll", "GdipSetPenLineJoin", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 lineJoin, 整数型, , 
+
+.DLL命令 GdipGetPenLineJoin, 整数型, "GdiPlus.dll", "GdipGetPenLineJoin", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 lineJoin, 整数型, 传址, 
+
+.DLL命令 GdipSetPenCustomStartCap, 整数型, "GdiPlus.dll", "GdipSetPenCustomStartCap", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 customCap, 整数型, , 
+
+.DLL命令 GdipGetPenCustomStartCap, 整数型, "GdiPlus.dll", "GdipGetPenCustomStartCap", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 customCap, 整数型, 传址, 
+
+.DLL命令 GdipSetPenCustomEndCap, 整数型, "GdiPlus.dll", "GdipSetPenCustomEndCap", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 customCap, 整数型, , 
+
+.DLL命令 GdipGetPenCustomEndCap, 整数型, "GdiPlus.dll", "GdipGetPenCustomEndCap", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 customCap, 整数型, 传址, 
+
+.DLL命令 GdipSetPenMiterLimit, 整数型, "GdiPlus.dll", "GdipSetPenMiterLimit", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 miterLimit, 小数型, , 
+
+.DLL命令 GdipGetPenMiterLimit, 整数型, "GdiPlus.dll", "GdipGetPenMiterLimit", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 miterLimit, 小数型, 传址, 
+
+.DLL命令 GdipSetPenMode, 整数型, "GdiPlus.dll", "GdipSetPenMode", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 penMode, 整数型, , 
+
+.DLL命令 GdipGetPenMode, 整数型, "GdiPlus.dll", "GdipGetPenMode", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 penMode, 整数型, 传址, 
+
+.DLL命令 GdipSetPenTransform, 整数型, "GdiPlus.dll", "GdipSetPenTransform", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipGetPenTransform, 整数型, "GdiPlus.dll", "GdipGetPenTransform", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipResetPenTransform, 整数型, "GdiPlus.dll", "GdipResetPenTransform", 公开, 
+    .参数 pen, 整数型, , 
+
+.DLL命令 GdipMultiplyPenTransform, 整数型, "GdiPlus.dll", "GdipMultiplyPenTransform", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 matrix, 整数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipTranslatePenTransform, 整数型, "GdiPlus.dll", "GdipTranslatePenTransform", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 dx, 小数型, , 
+    .参数 dy, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipScalePenTransform, 整数型, "GdiPlus.dll", "GdipScalePenTransform", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 sx, 小数型, , 
+    .参数 sy, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipRotatePenTransform, 整数型, "GdiPlus.dll", "GdipRotatePenTransform", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 angle, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipSetPenColor, 整数型, "GdiPlus.dll", "GdipSetPenColor", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 argb, 整数型, , 
+
+.DLL命令 GdipGetPenColor, 整数型, "GdiPlus.dll", "GdipGetPenColor", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 argb, 整数型, 传址, 
+
+.DLL命令 GdipSetPenBrushFill, 整数型, "GdiPlus.dll", "GdipSetPenBrushFill", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 brush, 整数型, , 
+
+.DLL命令 GdipGetPenBrushFill, 整数型, "GdiPlus.dll", "GdipGetPenBrushFill", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 brush, 整数型, 传址, 
+
+.DLL命令 GdipGetPenFillType, 整数型, "GdiPlus.dll", "GdipGetPenFillType", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 type, 整数型, 传址, 
+
+.DLL命令 GdipGetPenDashStyle, 整数型, "GdiPlus.dll", "GdipGetPenDashStyle", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 dashstyle, 整数型, 传址, 
+
+.DLL命令 GdipSetPenDashStyle, 整数型, "GdiPlus.dll", "GdipSetPenDashStyle", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 dashstyle, 整数型, , 
+
+.DLL命令 GdipGetPenDashOffset, 整数型, "GdiPlus.dll", "GdipGetPenDashOffset", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 offset, 小数型, 传址, 
+
+.DLL命令 GdipSetPenDashOffset, 整数型, "GdiPlus.dll", "GdipSetPenDashOffset", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 offset, 小数型, , 
+
+.DLL命令 GdipGetPenDashCount, 整数型, "GdiPlus.dll", "GdipGetPenDashCount", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 count, 整数型, 传址, 
+
+.DLL命令 GdipSetPenDashArray, 整数型, "GdiPlus.dll", "GdipSetPenDashArray", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 dash, 小数型, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipGetPenDashArray, 整数型, "GdiPlus.dll", "GdipGetPenDashArray", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 dash, 小数型, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipGetPenCompoundCount, 整数型, "GdiPlus.dll", "GdipGetPenCompoundCount", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 count, 整数型, 传址, 
+
+.DLL命令 GdipSetPenCompoundArray, 整数型, "GdiPlus.dll", "GdipSetPenCompoundArray", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 dash, 小数型, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipGetPenCompoundArray, 整数型, "GdiPlus.dll", "GdipGetPenCompoundArray", 公开, 
+    .参数 pen, 整数型, , 
+    .参数 dash, 小数型, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipCreateFontFamilyFromName, 整数型, "GdiPlus.dll", "GdipCreateFontFamilyFromName", 公开, 
+    .参数 name, 字节集, , 
+    .参数 fontCollection, 整数型, , 
+    .参数 FontFamily, 整数型, 传址, 
+
+.DLL命令 GdipDeleteFontFamily, 整数型, "GdiPlus.dll", "GdipDeleteFontFamily", 公开, 
+    .参数 FontFamily, 整数型, , 
+
+.DLL命令 GdipCloneFontFamily, 整数型, "GdiPlus.dll", "GdipCloneFontFamily", 公开, 
+    .参数 FontFamily, 整数型, , 
+    .参数 clonedFontFamily, 整数型, 传址, 
+
+.DLL命令 GdipGetGenericFontFamilySansSerif, 整数型, "GdiPlus.dll", "GdipGetGenericFontFamilySansSerif", 公开, 
+    .参数 nativeFamily, 整数型, 传址, 
+
+.DLL命令 GdipGetGenericFontFamilySerif, 整数型, "GdiPlus.dll", "GdipGetGenericFontFamilySerif", 公开, 
+    .参数 nativeFamily, 整数型, 传址, 
+
+.DLL命令 GdipGetGenericFontFamilyMonospace, 整数型, "GdiPlus.dll", "GdipGetGenericFontFamilyMonospace", 公开, 
+    .参数 nativeFamily, 整数型, 传址, 
+
+.DLL命令 GdipGetFamilyName, 整数型, "GdiPlus.dll", "GdipGetFamilyName", 公开, 
+    .参数 family, 整数型, , 
+    .参数 language, 整数型, , 
+
+.DLL命令 GdipIsStyleAvailable, 整数型, "GdiPlus.dll", "GdipIsStyleAvailable", 公开, 
+    .参数 family, 整数型, , 
+    .参数 style, 整数型, , 
+    .参数 IsStyleAvailable, 整数型, 传址, 
+
+.DLL命令 GdipFontCollectionEnumerable, 整数型, "GdiPlus.dll", "GdipFontCollectionEnumerable", 公开, 
+    .参数 fontCollection, 整数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 numFound, 整数型, 传址, 
+
+.DLL命令 GdipFontCollectionEnumerate, 整数型, "GdiPlus.dll", "GdipFontCollectionEnumerate", 公开, 
+    .参数 fontCollection, 整数型, , 
+    .参数 numSought, 整数型, , 
+    .参数 gpfamilies, 整数型, 传址 数组, 
+    .参数 numFound, 整数型, 传址, 
+    .参数 graphics, 整数型, , 
+
+.DLL命令 GdipGetEmHeight, 整数型, "GdiPlus.dll", "GdipGetEmHeight", 公开, 
+    .参数 family, 整数型, , 
+    .参数 style, 整数型, , 
+    .参数 EmHeight, 整数型, 传址, 
+
+.DLL命令 GdipGetCellAscent, 整数型, "GdiPlus.dll", "GdipGetCellAscent", 公开, 
+    .参数 family, 整数型, , 
+    .参数 style, 整数型, , 
+    .参数 CellAscent, 整数型, 传址, 
+
+.DLL命令 GdipGetCellDescent, 整数型, "GdiPlus.dll", "GdipGetCellDescent", 公开, 
+    .参数 family, 整数型, , 
+    .参数 style, 整数型, , 
+    .参数 CellDescent, 整数型, 传址, 
+
+.DLL命令 GdipGetLineSpacing, 整数型, "GdiPlus.dll", "GdipGetLineSpacing", 公开, 
+    .参数 family, 整数型, , 
+    .参数 style, 整数型, , 
+    .参数 LineSpacing, 整数型, 传址, 
+
+.DLL命令 GdipCreateFontFromDC, 整数型, "GdiPlus.dll", "GdipCreateFontFromDC", 公开, 
+    .参数 hdc, 整数型, , 
+    .参数 font, 整数型, 传址, 
+
+.DLL命令 GdipCreateFontFromLogfontA, 整数型, "GdiPlus.dll", "GdipCreateFontFromLogfontA", 公开, 
+    .参数 hdc, 整数型, , 
+    .参数 logfont, 整数型, , 
+    .参数 font, 整数型, 传址, 
+
+.DLL命令 GdipCreateFontFromLogfontW, 整数型, "GdiPlus.dll", "GdipCreateFontFromLogfontW", 公开, 
+    .参数 hdc, 整数型, , 
+    .参数 logfont, 整数型, , 
+    .参数 font, 整数型, 传址, 
+
+.DLL命令 GdipCreateFont, 整数型, "GdiPlus.dll", "GdipCreateFont", 公开, 
+    .参数 fontFamily, 整数型, , 
+    .参数 emSize, 小数型, , 
+    .参数 style, 整数型, , 
+    .参数 unit, 整数型, , 
+    .参数 font, 整数型, 传址, 
+
+.DLL命令 GdipCloneFont, 整数型, "GdiPlus.dll", "GdipCloneFont", 公开, 
+    .参数 font, 整数型, , 
+    .参数 cloneFont, 整数型, 传址, 
+
+.DLL命令 GdipDeleteFont, 整数型, "GdiPlus.dll", "GdipDeleteFont", 公开, 
+    .参数 font, 整数型, , 
+
+.DLL命令 GdipGetFamily, 整数型, "GdiPlus.dll", "GdipGetFamily", 公开, 
+    .参数 font, 整数型, , 
+    .参数 family, 整数型, 传址, 
+
+.DLL命令 GdipGetFontStyle, 整数型, "GdiPlus.dll", "GdipGetFontStyle", 公开, 
+    .参数 font, 整数型, , 
+    .参数 style, 整数型, 传址, 
+
+.DLL命令 GdipGetFontSize, 整数型, "GdiPlus.dll", "GdipGetFontSize", 公开, 
+    .参数 font, 整数型, , 
+    .参数 size, 小数型, 传址, 
+
+.DLL命令 GdipGetFontUnit, 整数型, "GdiPlus.dll", "GdipGetFontUnit", 公开, 
+    .参数 font, 整数型, , 
+    .参数 unit, 整数型, 传址, 
+
+.DLL命令 GdipGetFontHeight, 整数型, "GdiPlus.dll", "GdipGetFontHeight", 公开, 
+    .参数 font, 整数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 height, 小数型, 传址, 
+
+.DLL命令 GdipGetFontHeightGivenDPI, 整数型, "GdiPlus.dll", "GdipGetFontHeightGivenDPI", 公开, 
+    .参数 font, 整数型, , 
+    .参数 dpi, 小数型, , 
+    .参数 height, 小数型, 传址, 
+
+.DLL命令 GdipGetLogFontA, 整数型, "GdiPlus.dll", "GdipGetLogFontA", 公开, 
+    .参数 font, 整数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 logfontA, 整数型, 传址, 
+
+.DLL命令 GdipGetLogFontW, 整数型, "GdiPlus.dll", "GdipGetLogFontW", 公开, 
+    .参数 font, 整数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 logfontW, 整数型, 传址, 
+
+.DLL命令 GdipNewInstalledFontCollection, 整数型, "GdiPlus.dll", "GdipNewInstalledFontCollection", 公开, 
+    .参数 fontCollection, 整数型, 传址, 
+
+.DLL命令 GdipNewPrivateFontCollection, 整数型, "GdiPlus.dll", "GdipNewPrivateFontCollection", 公开, 
+    .参数 fontCollection, 整数型, 传址, 
+
+.DLL命令 GdipDeletePrivateFontCollection, 整数型, "GdiPlus.dll", "GdipDeletePrivateFontCollection", 公开, 
+    .参数 fontCollection, 整数型, 传址, 
+
+.DLL命令 GdipGetFontCollectionFamilyCount, 整数型, "GdiPlus.dll", "GdipGetFontCollectionFamilyCount", 公开, 
+    .参数 fontCollection, 整数型, , 
+    .参数 numFound, 整数型, 传址, 
+
+.DLL命令 GdipGetFontCollectionFamilyList, 整数型, "GdiPlus.dll", "GdipGetFontCollectionFamilyList", 公开, 
+    .参数 fontCollection, 整数型, , 
+    .参数 numSought, 整数型, , 
+    .参数 numFound, 整数型, 传址, 
+
+.DLL命令 GdipPrivateAddFontFile, 整数型, "GdiPlus.dll", "GdipPrivateAddFontFile", 公开, 
+    .参数 fontCollection, 整数型, , 
+    .参数 filename, 整数型, , 
+
+.DLL命令 GdiplusShutdown, 整数型, "GdiPlus.dll", "GdiplusShutdown", 公开, 
+    .参数 token, 整数型, , 
+
+.DLL命令 GdiplusStartup, 整数型, "GdiPlus.dll", "GdiplusStartup", 公开, 
+    .参数 token, 整数型, 传址, 
+    .参数 inputbuf, GdiplusStartupInput, , 
+    .参数 outputbuf, 整数型, , 
+
+.DLL命令 GdipPrivateAddMemoryFont, 整数型, "GdiPlus.dll", "GdipPrivateAddMemoryFont", 公开, 
+    .参数 fontCollection, 整数型, , 
+    .参数 memory, 整数型, , 
+    .参数 length, 整数型, , 
+
+.DLL命令 GdipDrawString, 整数型, "GdiPlus.dll", "GdipDrawString", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 string, 字节集, , 
+    .参数 length, 整数型, , 
+    .参数 font, 整数型, , 
+    .参数 layoutRect, RectF, , 
+    .参数 stringFormat, 整数型, , 
+    .参数 brush, 整数型, , 
+
+.DLL命令 GdipMeasureString, 整数型, "GdiPlus.dll", "GdipMeasureString", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 string, 字节集, , 
+    .参数 length, 整数型, , 
+    .参数 font, 整数型, , 
+    .参数 layoutRect, RectF, , 
+    .参数 stringFormat, 整数型, , 
+    .参数 boundingBox, RectF, , 
+    .参数 codepointsFitted, 整数型, 传址, 
+    .参数 linesFilled, 整数型, 传址, 
+
+.DLL命令 GdipMeasureCharacterRanges, 整数型, "GdiPlus.dll", "GdipMeasureCharacterRanges", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 string, 字节集, , 
+    .参数 length, 整数型, , 
+    .参数 font, 整数型, , 
+    .参数 stringFormat, 整数型, , 
+    .参数 regionCount, 整数型, , 
+    .参数 regions, 整数型, 传址, 
+
+.DLL命令 GdipDrawDriverString, 整数型, "GdiPlus.dll", "GdipDrawDriverString", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 text, 整数型, 传址, 
+    .参数 length, 整数型, , 
+    .参数 font, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 positions, PointF, , 
+    .参数 flags, 整数型, , 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipMeasureDriverString, 整数型, "GdiPlus.dll", "GdipMeasureDriverString", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 text, 整数型, 传址, 
+    .参数 length, 整数型, , 
+    .参数 font, 整数型, , 
+    .参数 positions, PointF, , 
+    .参数 flags, 整数型, , 
+    .参数 matrix, 整数型, , 
+    .参数 boundingBox, RectF, , 
+
+.DLL命令 GdipCreatePath, 整数型, "GdiPlus.dll", "GdipCreatePath", 公开, 
+    .参数 brushMode, 整数型, , 
+    .参数 path, 整数型, 传址, 
+
+.DLL命令 GdipCreatePath2, 整数型, "GdiPlus.dll", "GdipCreatePath2", 公开, 
+    .参数 points, PointF, 数组, 
+    .参数 types, 字节型, 数组, 
+    .参数 count, 整数型, , 
+    .参数 fillMode, 整数型, , 
+    .参数 path, 整数型, 传址, 
+
+.DLL命令 GdipCreatePath2I, 整数型, "GdiPlus.dll", "GdipCreatePath2I", 公开, 
+    .参数 path, 整数型, 传址, 
+
+.DLL命令 GdipClonePath, 整数型, "GdiPlus.dll", "GdipClonePath", 公开, 
+    .参数 path, 整数型, , 
+    .参数 clonePath, 整数型, 传址, 
+
+.DLL命令 GdipDeletePath, 整数型, "GdiPlus.dll", "GdipDeletePath", 公开, 
+    .参数 path, 整数型, , 
+
+.DLL命令 GdipResetPath, 整数型, "GdiPlus.dll", "GdipResetPath", 公开, 
+    .参数 path, 整数型, , 
+
+.DLL命令 GdipGetPointCount, 整数型, "GdiPlus.dll", "GdipGetPointCount", 公开, 
+    .参数 path, 整数型, , 
+    .参数 count, 整数型, 传址, 
+
+.DLL命令 GdipGetPathTypes, 整数型, "GdiPlus.dll", "GdipGetPathTypes", 公开, 
+    .参数 path, 整数型, , 
+    .参数 types, 字节型, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipGetPathPoints, 整数型, "GdiPlus.dll", "GdipGetPathPoints", 公开, 
+    .参数 path, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipGetPathPointsI, 整数型, "GdiPlus.dll", "GdipGetPathPointsI", 公开, 
+    .参数 points, Point, , 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipGetPathFillMode, 整数型, "GdiPlus.dll", "GdipGetPathFillMode", 公开, 
+    .参数 path, 整数型, , 
+    .参数 fillmode, 整数型, 传址, 
+
+.DLL命令 GdipSetPathFillMode, 整数型, "GdiPlus.dll", "GdipSetPathFillMode", 公开, 
+    .参数 path, 整数型, , 
+    .参数 fillmode, 整数型, , 
+
+.DLL命令 GdipGetPathData, 整数型, "GdiPlus.dll", "GdipGetPathData", 公开, 
+    .参数 path, 整数型, , 
+    .参数 pathData, PathData, , 
+
+.DLL命令 GdipStartPathFigure, 整数型, "GdiPlus.dll", "GdipStartPathFigure", 公开, 
+    .参数 path, 整数型, , 
+
+.DLL命令 GdipClosePathFigure, 整数型, "GdiPlus.dll", "GdipClosePathFigure", 公开, 
+    .参数 path, 整数型, , 
+
+.DLL命令 GdipClosePathFigures, 整数型, "GdiPlus.dll", "GdipClosePathFigures", 公开, 
+    .参数 path, 整数型, , 
+
+.DLL命令 GdipSetPathMarker, 整数型, "GdiPlus.dll", "GdipSetPathMarker", 公开, 
+    .参数 path, 整数型, , 
+
+.DLL命令 GdipClearPathMarkers, 整数型, "GdiPlus.dll", "GdipClearPathMarkers", 公开, 
+    .参数 path, 整数型, , 
+
+.DLL命令 GdipReversePath, 整数型, "GdiPlus.dll", "GdipReversePath", 公开, 
+    .参数 path, 整数型, , 
+
+.DLL命令 GdipGetPathLastPoint, 整数型, "GdiPlus.dll", "GdipGetPathLastPoint", 公开, 
+    .参数 path, 整数型, , 
+    .参数 lastPoint, PointF, , 
+
+.DLL命令 GdipAddPathLine, 整数型, "GdiPlus.dll", "GdipAddPathLine", 公开, 
+    .参数 path, 整数型, , 
+    .参数 x1, 小数型, , 
+    .参数 y1, 小数型, , 
+    .参数 x2, 小数型, , 
+    .参数 y2, 小数型, , 
+
+.DLL命令 GdipAddPathLine2, 整数型, "GdiPlus.dll", "GdipAddPathLine2", 公开, 
+    .参数 path, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipAddPathArc, 整数型, "GdiPlus.dll", "GdipAddPathArc", 公开, 
+    .参数 path, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+    .参数 startAngle, 小数型, , 
+    .参数 sweepAngle, 小数型, , 
+
+.DLL命令 GdipAddPathBezier, 整数型, "GdiPlus.dll", "GdipAddPathBezier", 公开, 
+    .参数 path, 整数型, , 
+    .参数 x1, 小数型, , 
+    .参数 y1, 小数型, , 
+    .参数 x2, 小数型, , 
+    .参数 y2, 小数型, , 
+    .参数 x3, 小数型, , 
+    .参数 y3, 小数型, , 
+    .参数 x4, 小数型, , 
+    .参数 y4, 小数型, , 
+
+.DLL命令 GdipAddPathBeziers, 整数型, "GdiPlus.dll", "GdipAddPathBeziers", 公开, 
+    .参数 path, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipAddPathCurve, 整数型, "GdiPlus.dll", "GdipAddPathCurve", 公开, 
+    .参数 path, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipAddPathCurve2, 整数型, "GdiPlus.dll", "GdipAddPathCurve2", 公开, 
+    .参数 path, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+    .参数 tension, 小数型, , 
+
+.DLL命令 GdipAddPathCurve3, 整数型, "GdiPlus.dll", "GdipAddPathCurve3", 公开, 
+    .参数 path, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+    .参数 offset, 整数型, , 
+    .参数 numberOfSegments, 整数型, , 
+    .参数 tension, 小数型, , 
+
+.DLL命令 GdipAddPathClosedCurve, 整数型, "GdiPlus.dll", "GdipAddPathClosedCurve", 公开, 
+    .参数 path, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipAddPathClosedCurve2, 整数型, "GdiPlus.dll", "GdipAddPathClosedCurve2", 公开, 
+    .参数 path, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+    .参数 tension, 小数型, , 
+
+.DLL命令 GdipAddPathRectangle, 整数型, "GdiPlus.dll", "GdipAddPathRectangle", 公开, 
+    .参数 path, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+
+.DLL命令 GdipAddPathRectangles, 整数型, "GdiPlus.dll", "GdipAddPathRectangles", 公开, 
+    .参数 path, 整数型, , 
+    .参数 rects, RectF, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipAddPathEllipse, 整数型, "GdiPlus.dll", "GdipAddPathEllipse", 公开, 
+    .参数 path, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+
+.DLL命令 GdipAddPathPie, 整数型, "GdiPlus.dll", "GdipAddPathPie", 公开, 
+    .参数 path, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+    .参数 startAngle, 小数型, , 
+    .参数 sweepAngle, 小数型, , 
+
+.DLL命令 GdipAddPathPolygon, 整数型, "GdiPlus.dll", "GdipAddPathPolygon", 公开, 
+    .参数 path, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipAddPathPath, 整数型, "GdiPlus.dll", "GdipAddPathPath", 公开, 
+    .参数 path, 整数型, , 
+    .参数 addingPath, 整数型, , 
+    .参数 connect, 逻辑型, , 
+
+.DLL命令 GdipAddPathString, 整数型, "GdiPlus.dll", "GdipAddPathString", 公开, 
+    .参数 path, 整数型, , 
+    .参数 string, 字节集, , 
+    .参数 length, 整数型, , 
+    .参数 family, 整数型, , 
+    .参数 style, 整数型, , 
+    .参数 emSize, 小数型, , 
+    .参数 layoutRect, RectF, , 
+    .参数 format, 整数型, , 
+
+.DLL命令 GdipAddPathStringI, 整数型, "GdiPlus.dll", "GdipAddPathStringI", 公开, 
+    .参数 path, 整数型, , 
+    .参数 string, 整数型, , 
+    .参数 length, 整数型, , 
+    .参数 family, 整数型, , 
+    .参数 style, 整数型, , 
+    .参数 emSize, 小数型, , 
+    .参数 layoutRect, Rect, , 
+    .参数 format, 整数型, , 
+
+.DLL命令 GdipAddPathLineI, 整数型, "GdiPlus.dll", "GdipAddPathLineI", 公开, 
+    .参数 path, 整数型, , 
+    .参数 x1, 整数型, , 
+    .参数 y1, 整数型, , 
+    .参数 x2, 整数型, , 
+    .参数 y2, 整数型, , 
+
+.DLL命令 GdipAddPathLine2I, 整数型, "GdiPlus.dll", "GdipAddPathLine2I", 公开, 
+    .参数 path, 整数型, , 
+    .参数 points, Point, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipAddPathArcI, 整数型, "GdiPlus.dll", "GdipAddPathArcI", 公开, 
+    .参数 path, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+    .参数 startAngle, 小数型, , 
+    .参数 sweepAngle, 小数型, , 
+
+.DLL命令 GdipAddPathBezierI, 整数型, "GdiPlus.dll", "GdipAddPathBezierI", 公开, 
+    .参数 path, 整数型, , 
+    .参数 x1, 整数型, , 
+    .参数 y1, 整数型, , 
+    .参数 x2, 整数型, , 
+    .参数 y2, 整数型, , 
+    .参数 x3, 整数型, , 
+    .参数 y3, 整数型, , 
+    .参数 x4, 整数型, , 
+    .参数 y4, 整数型, , 
+
+.DLL命令 GdipAddPathBeziersI, 整数型, "GdiPlus.dll", "GdipAddPathBeziersI", 公开, 
+    .参数 path, 整数型, , 
+    .参数 points, Point, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipAddPathCurveI, 整数型, "GdiPlus.dll", "GdipAddPathCurveI", 公开, 
+    .参数 path, 整数型, , 
+    .参数 points, Point, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipAddPathCurve2I, 整数型, "GdiPlus.dll", "GdipAddPathCurve2I", 公开, 
+    .参数 path, 整数型, , 
+    .参数 points, Point, 数组, 
+    .参数 count, 整数型, , 
+    .参数 tension, 小数型, , 
+
+.DLL命令 GdipAddPathCurve3I, 整数型, "GdiPlus.dll", "GdipAddPathCurve3I", 公开, 
+    .参数 path, 整数型, , 
+    .参数 points, Point, 数组, 
+    .参数 count, 整数型, , 
+    .参数 offset, 整数型, , 
+    .参数 numberOfSegments, 整数型, , 
+    .参数 tension, 小数型, , 
+
+.DLL命令 GdipAddPathClosedCurveI, 整数型, "GdiPlus.dll", "GdipAddPathClosedCurveI", 公开, 
+    .参数 path, 整数型, , 
+    .参数 points, Point, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipAddPathClosedCurve2I, 整数型, "GdiPlus.dll", "GdipAddPathClosedCurve2I", 公开, 
+    .参数 path, 整数型, , 
+    .参数 points, Point, 数组, 
+    .参数 count, 整数型, , 
+    .参数 tension, 小数型, , 
+
+.DLL命令 GdipAddPathRectangleI, 整数型, "GdiPlus.dll", "GdipAddPathRectangleI", 公开, 
+    .参数 path, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+
+.DLL命令 GdipAddPathRectanglesI, 整数型, "GdiPlus.dll", "GdipAddPathRectanglesI", 公开, 
+    .参数 path, 整数型, , 
+    .参数 rects, Rect, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipAddPathEllipseI, 整数型, "GdiPlus.dll", "GdipAddPathEllipseI", 公开, 
+    .参数 path, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+
+.DLL命令 GdipAddPathPieI, 整数型, "GdiPlus.dll", "GdipAddPathPieI", 公开, 
+    .参数 path, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+    .参数 startAngle, 小数型, , 
+    .参数 sweepAngle, 小数型, , 
+
+.DLL命令 GdipAddPathPolygonI, 整数型, "GdiPlus.dll", "GdipAddPathPolygonI", 公开, 
+    .参数 path, 整数型, , 
+    .参数 points, Point, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipFlattenPath, 整数型, "GdiPlus.dll", "GdipFlattenPath", 公开, 
+    .参数 path, 整数型, , 
+    .参数 matrix, 整数型, , 
+    .参数 flatness, 小数型, , 
+
+.DLL命令 GdipWindingModeOutline, 整数型, "GdiPlus.dll", "GdipWindingModeOutline", 公开, 
+    .参数 path, 整数型, , 
+    .参数 matrix, 整数型, , 
+    .参数 flatness, 小数型, , 
+
+.DLL命令 GdipWidenPath, 整数型, "GdiPlus.dll", "GdipWidenPath", 公开, 
+    .参数 nativePath, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 matrix, 整数型, , 
+    .参数 flatness, 小数型, , 
+
+.DLL命令 GdipWarpPath, 整数型, "GdiPlus.dll", "GdipWarpPath", 公开, 
+    .参数 path, 整数型, , 
+    .参数 matrix, 整数型, , 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+    .参数 srcx, 小数型, , 
+    .参数 srcy, 小数型, , 
+    .参数 srcwidth, 小数型, , 
+    .参数 srcheight, 小数型, , 
+    .参数 warpMode, 整数型, , 
+    .参数 flatness, 小数型, , 
+
+.DLL命令 GdipTransformPath, 整数型, "GdiPlus.dll", "GdipTransformPath", 公开, 
+    .参数 path, 整数型, , 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipGetPathWorldBounds, 整数型, "GdiPlus.dll", "GdipGetPathWorldBounds", 公开, 
+    .参数 path, 整数型, , 
+    .参数 bounds, RectF, , 
+    .参数 matrix, 整数型, , 
+    .参数 pen, 整数型, , 
+
+.DLL命令 GdipGetPathWorldBoundsI, 整数型, "GdiPlus.dll", "GdipGetPathWorldBoundsI", 公开, 
+    .参数 path, 整数型, , 
+    .参数 bounds, Rect, , 
+    .参数 matrix, 整数型, , 
+    .参数 pen, 整数型, , 
+
+.DLL命令 GdipIsVisiblePathPoint, 整数型, "GdiPlus.dll", "GdipIsVisiblePathPoint", 公开, 
+    .参数 path, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 result, 逻辑型, 传址, 
+
+.DLL命令 GdipIsVisiblePathPointI, 整数型, "GdiPlus.dll", "GdipIsVisiblePathPointI", 公开, 
+    .参数 path, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 result, 整数型, 传址, 
+
+.DLL命令 GdipIsOutlineVisiblePathPoint, 整数型, "GdiPlus.dll", "GdipIsOutlineVisiblePathPoint", 公开, 
+    .参数 path, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 pen, 整数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 result, 逻辑型, 传址, 
+
+.DLL命令 GdipIsOutlineVisiblePathPointI, 整数型, "GdiPlus.dll", "GdipIsOutlineVisiblePathPointI", 公开, 
+    .参数 path, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 pen, 整数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 result, 整数型, 传址, 
+
+.DLL命令 GdipCreatePathIter, 整数型, "GdiPlus.dll", "GdipCreatePathIter", 公开, 
+    .参数 iterator, 整数型, 传址, 
+    .参数 path, 整数型, , 
+
+.DLL命令 GdipDeletePathIter, 整数型, "GdiPlus.dll", "GdipDeletePathIter", 公开, 
+    .参数 iterator, 整数型, , 
+
+.DLL命令 GdipPathIterNextSubpath, 整数型, "GdiPlus.dll", "GdipPathIterNextSubpath", 公开, 
+    .参数 iterator, 整数型, , 
+    .参数 resultCount, 整数型, 传址, 
+    .参数 startIndex, 整数型, 传址, 
+    .参数 endIndex, 整数型, 传址, 
+    .参数 isClosed, 整数型, 传址, 
+
+.DLL命令 GdipPathIterNextSubpathPath, 整数型, "GdiPlus.dll", "GdipPathIterNextSubpathPath", 公开, 
+    .参数 iterator, 整数型, , 
+    .参数 resultCount, 整数型, 传址, 
+    .参数 path, 整数型, , 
+    .参数 isClosed, 整数型, 传址, 
+
+.DLL命令 GdipPathIterNextPathType, 整数型, "GdiPlus.dll", "GdipPathIterNextPathType", 公开, 
+    .参数 iterator, 整数型, , 
+    .参数 resultCount, 整数型, 传址, 
+    .参数 pathType, 整数型, 传址, 
+    .参数 startIndex, 整数型, 传址, 
+    .参数 endIndex, 整数型, 传址, 
+
+.DLL命令 GdipPathIterNextMarker, 整数型, "GdiPlus.dll", "GdipPathIterNextMarker", 公开, 
+    .参数 iterator, 整数型, , 
+    .参数 resultCount, 整数型, 传址, 
+    .参数 startIndex, 整数型, 传址, 
+    .参数 endIndex, 整数型, 传址, 
+
+.DLL命令 GdipPathIterNextMarkerPath, 整数型, "GdiPlus.dll", "GdipPathIterNextMarkerPath", 公开, 
+    .参数 iterator, 整数型, , 
+    .参数 resultCount, 整数型, 传址, 
+    .参数 path, 整数型, , 
+
+.DLL命令 GdipPathIterGetCount, 整数型, "GdiPlus.dll", "GdipPathIterGetCount", 公开, 
+    .参数 iterator, 整数型, , 
+    .参数 count, 整数型, 传址, 
+
+.DLL命令 GdipPathIterGetSubpathCount, 整数型, "GdiPlus.dll", "GdipPathIterGetSubpathCount", 公开, 
+    .参数 iterator, 整数型, , 
+    .参数 count, 整数型, 传址, 
+
+.DLL命令 GdipPathIterIsValid, 整数型, "GdiPlus.dll", "GdipPathIterIsValid", 公开, 
+    .参数 iterator, 整数型, , 
+    .参数 valid, 整数型, 传址, 
+
+.DLL命令 GdipPathIterHasCurve, 整数型, "GdiPlus.dll", "GdipPathIterHasCurve", 公开, 
+    .参数 iterator, 整数型, , 
+    .参数 hasCurve, 整数型, 传址, 
+
+.DLL命令 GdipPathIterRewind, 整数型, "GdiPlus.dll", "GdipPathIterRewind", 公开, 
+    .参数 iterator, 整数型, , 
+
+.DLL命令 GdipPathIterEnumerate, 整数型, "GdiPlus.dll", "GdipPathIterEnumerate", 公开, 
+    .参数 iterator, 整数型, , 
+    .参数 resultCount, 整数型, 传址, 
+    .参数 points, PointF, , 
+    .参数 types, 整数型, 传址, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipPathIterCopyData, 整数型, "GdiPlus.dll", "GdipPathIterCopyData", 公开, 
+    .参数 iterator, 整数型, , 
+    .参数 resultCount, 整数型, 传址, 
+    .参数 points, PointF, , 
+    .参数 types, 整数型, 传址, 
+    .参数 startIndex, 整数型, , 
+    .参数 endIndex, 整数型, , 
+
+.DLL命令 GdipCreateMatrix, 整数型, "GdiPlus.dll", "GdipCreateMatrix", 公开, 
+    .参数 matrix, 整数型, 传址, 
+
+.DLL命令 GdipCreateMatrix2, 整数型, "GdiPlus.dll", "GdipCreateMatrix2", 公开, 
+    .参数 m11, 小数型, , 
+    .参数 m12, 小数型, , 
+    .参数 m21, 小数型, , 
+    .参数 m22, 小数型, , 
+    .参数 dx, 小数型, , 
+    .参数 dy, 小数型, , 
+    .参数 matrix, 整数型, 传址, 
+
+.DLL命令 GdipCreateMatrix3, 整数型, "GdiPlus.dll", "GdipCreateMatrix3", 公开, 
+    .参数 rect, RectF, , 
+    .参数 dstplg, PointF, , 
+    .参数 matrix, 整数型, 传址, 
+
+.DLL命令 GdipCreateMatrix3I, 整数型, "GdiPlus.dll", "GdipCreateMatrix3I", 公开, 
+    .参数 rect, Rect, , 
+    .参数 dstplg, Point, , 
+    .参数 matrix, 整数型, 传址, 
+
+.DLL命令 GdipCloneMatrix, 整数型, "GdiPlus.dll", "GdipCloneMatrix", 公开, 
+    .参数 matrix, 整数型, , 
+    .参数 cloneMatrix, 整数型, 传址, 
+
+.DLL命令 GdipDeleteMatrix, 整数型, "GdiPlus.dll", "GdipDeleteMatrix", 公开, 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipSetMatrixElements, 整数型, "GdiPlus.dll", "GdipSetMatrixElements", 公开, 
+    .参数 matrix, 整数型, , 
+    .参数 m11, 小数型, , 
+    .参数 m12, 小数型, , 
+    .参数 m21, 小数型, , 
+    .参数 m22, 小数型, , 
+    .参数 dx, 小数型, , 
+    .参数 dy, 小数型, , 
+
+.DLL命令 GdipMultiplyMatrix, 整数型, "GdiPlus.dll", "GdipMultiplyMatrix", 公开, 
+    .参数 matrix, 整数型, , 
+    .参数 matrix2, 整数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipTranslateMatrix, 整数型, "GdiPlus.dll", "GdipTranslateMatrix", 公开, 
+    .参数 matrix, 整数型, , 
+    .参数 offsetX, 小数型, , 
+    .参数 offsetY, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipScaleMatrix, 整数型, "GdiPlus.dll", "GdipScaleMatrix", 公开, 
+    .参数 matrix, 整数型, , 
+    .参数 scaleX, 小数型, , 
+    .参数 scaleY, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipRotateMatrix, 整数型, "GdiPlus.dll", "GdipRotateMatrix", 公开, 
+    .参数 matrix, 整数型, , 
+    .参数 angle, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipShearMatrix, 整数型, "GdiPlus.dll", "GdipShearMatrix", 公开, 
+    .参数 matrix, 整数型, , 
+    .参数 shearX, 小数型, , 
+    .参数 shearY, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipInvertMatrix, 整数型, "GdiPlus.dll", "GdipInvertMatrix", 公开, 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipTransformMatrixPoints, 整数型, "GdiPlus.dll", "GdipTransformMatrixPoints", 公开, 
+    .参数 matrix, 整数型, , 
+    .参数 pts, PointF, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipTransformMatrixPointsI, 整数型, "GdiPlus.dll", "GdipTransformMatrixPointsI", 公开, 
+    .参数 matrix, 整数型, , 
+    .参数 pts, Point, , 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipVectorTransformMatrixPoints, 整数型, "GdiPlus.dll", "GdipVectorTransformMatrixPoints", 公开, 
+    .参数 matrix, 整数型, , 
+    .参数 pts, PointF, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipVectorTransformMatrixPointsI, 整数型, "GdiPlus.dll", "GdipVectorTransformMatrixPointsI", 公开, 
+    .参数 matrix, 整数型, , 
+    .参数 pts, Point, , 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipGetMatrixElements, 整数型, "GdiPlus.dll", "GdipGetMatrixElements", 公开, 
+    .参数 matrix, 整数型, , 
+    .参数 matrixOut, 小数型, 数组, 
+
+.DLL命令 GdipIsMatrixInvertible, 整数型, "GdiPlus.dll", "GdipIsMatrixInvertible", 公开, 
+    .参数 matrix, 整数型, , 
+    .参数 result, 逻辑型, 传址, 
+
+.DLL命令 GdipIsMatrixIdentity, 整数型, "GdiPlus.dll", "GdipIsMatrixIdentity", 公开, 
+    .参数 matrix, 整数型, , 
+    .参数 result, 逻辑型, 传址, 
+
+.DLL命令 GdipIsMatrixEqual, 整数型, "GdiPlus.dll", "GdipIsMatrixEqual", 公开, 
+    .参数 matrix, 整数型, , 
+    .参数 matrix2, 整数型, , 
+    .参数 result, 逻辑型, 传址, 
+
+.DLL命令 GdipCreateRegion, 整数型, "GdiPlus.dll", "GdipCreateRegion", 公开, 
+    .参数 region, 整数型, 传址, 
+
+.DLL命令 GdipCreateRegionRect, 整数型, "GdiPlus.dll", "GdipCreateRegionRect", 公开, 
+    .参数 rect, RectF, , 
+    .参数 region, 整数型, 传址, 
+
+.DLL命令 GdipCreateRegionRectI, 整数型, "GdiPlus.dll", "GdipCreateRegionRectI", 公开, 
+    .参数 rect, Rect, , 
+    .参数 region, 整数型, 传址, 
+
+.DLL命令 GdipCreateRegionPath, 整数型, "GdiPlus.dll", "GdipCreateRegionPath", 公开, 
+    .参数 path, 整数型, , 
+    .参数 region, 整数型, 传址, 
+
+.DLL命令 GdipCreateRegionRgnData, 整数型, "GdiPlus.dll", "GdipCreateRegionRgnData", 公开, 
+    .参数 regionData, 字节型, 数组, 
+    .参数 size, 整数型, , 
+    .参数 region, 整数型, 传址, 
+
+.DLL命令 GdipCreateRegionHrgn, 整数型, "GdiPlus.dll", "GdipCreateRegionHrgn", 公开, 
+    .参数 hRgn, 整数型, , 
+    .参数 region, 整数型, 传址, 
+
+.DLL命令 GdipCloneRegion, 整数型, "GdiPlus.dll", "GdipCloneRegion", 公开, 
+    .参数 region, 整数型, , 
+    .参数 cloneRegion, 整数型, 传址, 
+
+.DLL命令 GdipDeleteRegion, 整数型, "GdiPlus.dll", "GdipDeleteRegion", 公开, 
+    .参数 region, 整数型, , 
+
+.DLL命令 GdipSetInfinite, 整数型, "GdiPlus.dll", "GdipSetInfinite", 公开, 
+    .参数 region, 整数型, , 
+
+.DLL命令 GdipSetEmpty, 整数型, "GdiPlus.dll", "GdipSetEmpty", 公开, 
+    .参数 region, 整数型, , 
+
+.DLL命令 GdipCombineRegionRect, 整数型, "GdiPlus.dll", "GdipCombineRegionRect", 公开, 
+    .参数 region, 整数型, , 
+    .参数 rect, RectF, , 
+    .参数 combineMode, 整数型, , 
+
+.DLL命令 GdipCombineRegionRectI, 整数型, "GdiPlus.dll", "GdipCombineRegionRectI", 公开, 
+    .参数 region, 整数型, , 
+    .参数 rect, Rect, , 
+    .参数 combineMode, 整数型, , 
+
+.DLL命令 GdipCombineRegionPath, 整数型, "GdiPlus.dll", "GdipCombineRegionPath", 公开, 
+    .参数 region, 整数型, , 
+    .参数 path, 整数型, , 
+    .参数 combineMode, 整数型, , 
+
+.DLL命令 GdipCombineRegionRegion, 整数型, "GdiPlus.dll", "GdipCombineRegionRegion", 公开, 
+    .参数 region, 整数型, , 
+    .参数 region2, 整数型, , 
+    .参数 combineMode, 整数型, , 
+
+.DLL命令 GdipTranslateRegion, 整数型, "GdiPlus.dll", "GdipTranslateRegion", 公开, 
+    .参数 region, 整数型, , 
+    .参数 dx, 小数型, , 
+    .参数 dy, 小数型, , 
+
+.DLL命令 GdipTranslateRegionI, 整数型, "GdiPlus.dll", "GdipTranslateRegionI", 公开, 
+    .参数 region, 整数型, , 
+    .参数 dx, 整数型, , 
+    .参数 dy, 整数型, , 
+
+.DLL命令 GdipTransformRegion, 整数型, "GdiPlus.dll", "GdipTransformRegion", 公开, 
+    .参数 region, 整数型, , 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipGetRegionBounds, 整数型, "GdiPlus.dll", "GdipGetRegionBounds", 公开, 
+    .参数 region, 整数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 rect, RectF, , 
+
+.DLL命令 GdipGetRegionBoundsI, 整数型, "GdiPlus.dll", "GdipGetRegionBoundsI", 公开, 
+    .参数 region, 整数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 rect, Rect, , 
+
+.DLL命令 GdipGetRegionHRgn, 整数型, "GdiPlus.dll", "GdipGetRegionHRgn", 公开, 
+    .参数 region, 整数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 hRgn, 整数型, 传址, 
+
+.DLL命令 GdipIsEmptyRegion, 整数型, "GdiPlus.dll", "GdipIsEmptyRegion", 公开, 
+    .参数 region, 整数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 result, 逻辑型, 传址, 
+
+.DLL命令 GdipIsInfiniteRegion, 整数型, "GdiPlus.dll", "GdipIsInfiniteRegion", 公开, 
+    .参数 region, 整数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 result, 逻辑型, 传址, 
+
+.DLL命令 GdipIsEqualRegion, 整数型, "GdiPlus.dll", "GdipIsEqualRegion", 公开, 
+    .参数 region, 整数型, , 
+    .参数 region2, 整数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 result, 逻辑型, 传址, 
+
+.DLL命令 GdipGetRegionDataSize, 整数型, "GdiPlus.dll", "GdipGetRegionDataSize", 公开, 
+    .参数 region, 整数型, , 
+    .参数 bufferSize, 整数型, 传址, 
+
+.DLL命令 GdipGetRegionData, 整数型, "GdiPlus.dll", "GdipGetRegionData", 公开, 
+    .参数 region, 整数型, , 
+    .参数 buffer, 字节型, 数组, 
+    .参数 bufferSize, 整数型, , 
+    .参数 sizeFilled, 整数型, 传址, 
+
+.DLL命令 GdipIsVisibleRegionPoint, 整数型, "GdiPlus.dll", "GdipIsVisibleRegionPoint", 公开, 
+    .参数 region, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 result, 逻辑型, 传址, 
+
+.DLL命令 GdipIsVisibleRegionPointI, 整数型, "GdiPlus.dll", "GdipIsVisibleRegionPointI", 公开, 
+    .参数 region, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 result, 逻辑型, 传址, 
+
+.DLL命令 GdipIsVisibleRegionRect, 整数型, "GdiPlus.dll", "GdipIsVisibleRegionRect", 公开, 
+    .参数 region, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 result, 逻辑型, 传址, 
+
+.DLL命令 GdipIsVisibleRegionRectI, 整数型, "GdiPlus.dll", "GdipIsVisibleRegionRectI", 公开, 
+    .参数 region, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 result, 整数型, 传址, 
+
+.DLL命令 GdipGetRegionScansCount, 整数型, "GdiPlus.dll", "GdipGetRegionScansCount", 公开, 
+    .参数 region, 整数型, , 
+    .参数 count, 整数型, 传址, 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipGetRegionScans, 整数型, "GdiPlus.dll", "GdipGetRegionScans", 公开, 
+    .参数 region, 整数型, , 
+    .参数 rects, RectF, 数组, 
+    .参数 count, 整数型, 传址, 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipGetRegionScansI, 整数型, "GdiPlus.dll", "GdipGetRegionScansI", 公开, 
+    .参数 region, 整数型, , 
+    .参数 rects, Rect, , 
+    .参数 count, 整数型, , 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipCreateHatchBrush, 整数型, "GdiPlus.dll", "GdipCreateHatchBrush", 公开, 
+    .参数 hatchstyle, 整数型, , 
+    .参数 forecol, 整数型, , 
+    .参数 backcol, 整数型, , 
+    .参数 brush, 整数型, 传址, 
+
+.DLL命令 GdipGetHatchStyle, 整数型, "GdiPlus.dll", "GdipGetHatchStyle", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 hatchstyle, 整数型, 传址, 
+
+.DLL命令 GdipGetHatchForegroundColor, 整数型, "GdiPlus.dll", "GdipGetHatchForegroundColor", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 forecol, 整数型, 传址, 
+
+.DLL命令 GdipGetHatchBackgroundColor, 整数型, "GdiPlus.dll", "GdipGetHatchBackgroundColor", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 backcol, 整数型, 传址, 
+
+.DLL命令 GdipCreateTexture, 整数型, "GdiPlus.dll", "GdipCreateTexture", 公开, 
+    .参数 image, 整数型, , 
+    .参数 wrapmode, 整数型, , 
+    .参数 texture, 整数型, 传址, 
+
+.DLL命令 GdipCreateTexture2, 整数型, "GdiPlus.dll", "GdipCreateTexture2", 公开, 
+    .参数 image, 整数型, , 
+    .参数 wrapmode, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+    .参数 texture, 整数型, 传址, 
+
+.DLL命令 GdipCreateTextureIA, 整数型, "GdiPlus.dll", "GdipCreateTextureIA", 公开, 
+    .参数 image, 整数型, , 
+    .参数 imageAttributes, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+    .参数 texture, 整数型, 传址, 
+
+.DLL命令 GdipCreateTexture2I, 整数型, "GdiPlus.dll", "GdipCreateTexture2I", 公开, 
+    .参数 image, 整数型, , 
+    .参数 wrapmode, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+    .参数 texture, 整数型, 传址, 
+
+.DLL命令 GdipCreateTextureIAI, 整数型, "GdiPlus.dll", "GdipCreateTextureIAI", 公开, 
+    .参数 image, 整数型, , 
+    .参数 imageAttributes, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+    .参数 texture, 整数型, 传址, 
+
+.DLL命令 GdipGetTextureTransform, 整数型, "GdiPlus.dll", "GdipGetTextureTransform", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipSetTextureTransform, 整数型, "GdiPlus.dll", "GdipSetTextureTransform", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipResetTextureTransform, 整数型, "GdiPlus.dll", "GdipResetTextureTransform", 公开, 
+    .参数 brush, 整数型, , 
+
+.DLL命令 GdipMultiplyTextureTransform, 整数型, "GdiPlus.dll", "GdipMultiplyTextureTransform", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 matrix, 整数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipTranslateTextureTransform, 整数型, "GdiPlus.dll", "GdipTranslateTextureTransform", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 dx, 小数型, , 
+    .参数 dy, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipScaleTextureTransform, 整数型, "GdiPlus.dll", "GdipScaleTextureTransform", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 sx, 小数型, , 
+    .参数 sy, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipRotateTextureTransform, 整数型, "GdiPlus.dll", "GdipRotateTextureTransform", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 angle, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipSetTextureWrapMode, 整数型, "GdiPlus.dll", "GdipSetTextureWrapMode", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 wrapmode, 整数型, , 
+
+.DLL命令 GdipGetTextureWrapMode, 整数型, "GdiPlus.dll", "GdipGetTextureWrapMode", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 wrapmode, 整数型, 传址, 
+
+.DLL命令 GdipGetTextureImage, 整数型, "GdiPlus.dll", "GdipGetTextureImage", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 image, 整数型, 传址, 
+
+.DLL命令 GdipCreateLineBrush, 整数型, "GdiPlus.dll", "GdipCreateLineBrush", 公开, 
+    .参数 point1, PointF, , 
+    .参数 point2, PointF, , 
+    .参数 color1, 整数型, , 
+    .参数 color2, 整数型, , 
+    .参数 wrapMode, 整数型, , 
+    .参数 lineGradient, 整数型, 传址, 
+
+.DLL命令 GdipCreateLineBrushI, 整数型, "GdiPlus.dll", "GdipCreateLineBrushI", 公开, 
+    .参数 point1, Point, , 
+    .参数 point2, Point, , 
+    .参数 color1, 整数型, , 
+    .参数 color2, 整数型, , 
+    .参数 wrapMode, 整数型, , 
+    .参数 lineGradient, 整数型, 传址, 
+
+.DLL命令 GdipCreateLineBrushFromRect, 整数型, "GdiPlus.dll", "GdipCreateLineBrushFromRect", 公开, 
+    .参数 rect, RectF, , 
+    .参数 color1, 整数型, , 
+    .参数 color2, 整数型, , 
+    .参数 mode, 整数型, , 
+    .参数 wrapMode, 整数型, , 
+    .参数 lineGradient, 整数型, 传址, 
+
+.DLL命令 GdipCreateLineBrushFromRectI, 整数型, "GdiPlus.dll", "GdipCreateLineBrushFromRectI", 公开, 
+    .参数 rect, Rect, , 
+    .参数 color1, 整数型, , 
+    .参数 color2, 整数型, , 
+    .参数 mode, 整数型, , 
+    .参数 wrapMode, 整数型, , 
+    .参数 lineGradient, 整数型, 传址, 
+
+.DLL命令 GdipCreateLineBrushFromRectWithAngle, 整数型, "GdiPlus.dll", "GdipCreateLineBrushFromRectWithAngle", 公开, 
+    .参数 rect, RectF, , 
+    .参数 color1, 整数型, , 
+    .参数 color2, 整数型, , 
+    .参数 angle, 小数型, , 
+    .参数 isAngleScalable, 逻辑型, , 
+    .参数 wrapMode, 整数型, , 
+    .参数 lineGradient, 整数型, 传址, 
+
+.DLL命令 GdipCreateLineBrushFromRectWithAngleI, 整数型, "GdiPlus.dll", "GdipCreateLineBrushFromRectWithAngleI", 公开, 
+    .参数 rect, Rect, , 
+    .参数 color1, 整数型, , 
+    .参数 color2, 整数型, , 
+    .参数 angle, 小数型, , 
+    .参数 isAngleScalable, 逻辑型, , 
+    .参数 wrapMode, 整数型, , 
+    .参数 lineGradient, 整数型, 传址, 
+
+.DLL命令 GdipSetLineColors, 整数型, "GdiPlus.dll", "GdipSetLineColors", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 color1, 整数型, , 
+    .参数 color2, 整数型, , 
+
+.DLL命令 GdipGetLineColors, 整数型, "GdiPlus.dll", "GdipGetLineColors", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 colors, 整数型, 数组, 
+
+.DLL命令 GdipGetLineRect, 整数型, "GdiPlus.dll", "GdipGetLineRect", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 rect, RectF, , 
+
+.DLL命令 GdipGetLineRectI, 整数型, "GdiPlus.dll", "GdipGetLineRectI", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 rect, Rect, , 
+
+.DLL命令 GdipSetLineGammaCorrection, 整数型, "GdiPlus.dll", "GdipSetLineGammaCorrection", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 useGammaCorrection, 逻辑型, , 
+
+.DLL命令 GdipGetLineGammaCorrection, 整数型, "GdiPlus.dll", "GdipGetLineGammaCorrection", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 useGammaCorrection, 逻辑型, 传址, 
+
+.DLL命令 GdipGetLineBlendCount, 整数型, "GdiPlus.dll", "GdipGetLineBlendCount", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 count, 整数型, 传址, 
+
+.DLL命令 GdipGetLineBlend, 整数型, "GdiPlus.dll", "GdipGetLineBlend", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 blend, 小数型, 数组, 
+    .参数 positions, 小数型, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipSetLineBlend, 整数型, "GdiPlus.dll", "GdipSetLineBlend", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 blend, 小数型, 数组, 
+    .参数 positions, 小数型, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipGetLinePresetBlendCount, 整数型, "GdiPlus.dll", "GdipGetLinePresetBlendCount", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 count, 整数型, 传址, 
+
+.DLL命令 GdipGetLinePresetBlend, 整数型, "GdiPlus.dll", "GdipGetLinePresetBlend", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 blend, 整数型, 数组, 
+    .参数 positions, 小数型, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipSetLinePresetBlend, 整数型, "GdiPlus.dll", "GdipSetLinePresetBlend", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 blend, 整数型, 数组, 
+    .参数 positions, 小数型, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipSetLineSigmaBlend, 整数型, "GdiPlus.dll", "GdipSetLineSigmaBlend", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 focus, 小数型, , 
+    .参数 scale, 小数型, , 
+
+.DLL命令 GdipSetLineLinearBlend, 整数型, "GdiPlus.dll", "GdipSetLineLinearBlend", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 focus, 小数型, , 
+    .参数 scale, 小数型, , 
+
+.DLL命令 GdipSetLineWrapMode, 整数型, "GdiPlus.dll", "GdipSetLineWrapMode", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 wrapmode, 整数型, , 
+
+.DLL命令 GdipGetLineWrapMode, 整数型, "GdiPlus.dll", "GdipGetLineWrapMode", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 wrapmode, 整数型, 传址, 
+
+.DLL命令 GdipGetLineTransform, 整数型, "GdiPlus.dll", "GdipGetLineTransform", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipSetLineTransform, 整数型, "GdiPlus.dll", "GdipSetLineTransform", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipResetLineTransform, 整数型, "GdiPlus.dll", "GdipResetLineTransform", 公开, 
+    .参数 brush, 整数型, , 
+
+.DLL命令 GdipMultiplyLineTransform, 整数型, "GdiPlus.dll", "GdipMultiplyLineTransform", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 matrix, 整数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipTranslateLineTransform, 整数型, "GdiPlus.dll", "GdipTranslateLineTransform", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 dx, 小数型, , 
+    .参数 dy, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipScaleLineTransform, 整数型, "GdiPlus.dll", "GdipScaleLineTransform", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 sx, 小数型, , 
+    .参数 sy, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipRotateLineTransform, 整数型, "GdiPlus.dll", "GdipRotateLineTransform", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 angle, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipCreatePathGradient, 整数型, "GdiPlus.dll", "GdipCreatePathGradient", 公开, 
+    .参数 points, PointF, 数组, 
+    .参数 count, 整数型, , 
+    .参数 wrapMode, 整数型, , 
+    .参数 polyGradient, 整数型, 传址, 
+
+.DLL命令 GdipCreatePathGradientI, 整数型, "GdiPlus.dll", "GdipCreatePathGradientI", 公开, 
+    .参数 points, Point, , 
+    .参数 count, 整数型, , 
+    .参数 wrapMode, 整数型, , 
+    .参数 polyGradient, 整数型, 传址, 
+
+.DLL命令 GdipCreatePathGradientFromPath, 整数型, "GdiPlus.dll", "GdipCreatePathGradientFromPath", 公开, 
+    .参数 path, 整数型, , 
+    .参数 polyGradient, 整数型, 传址, 
+
+.DLL命令 GdipGetPathGradientCenterColor, 整数型, "GdiPlus.dll", "GdipGetPathGradientCenterColor", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 colors, 整数型, 传址, 
+
+.DLL命令 GdipSetPathGradientCenterColor, 整数型, "GdiPlus.dll", "GdipSetPathGradientCenterColor", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 colors, 整数型, , 
+
+.DLL命令 GdipGetPathGradientSurroundColorsWithCount, 整数型, "GdiPlus.dll", "GdipGetPathGradientSurroundColorsWithCount", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 color, 整数型, 传址, 
+    .参数 count, 整数型, 传址, 
+
+.DLL命令 GdipSetPathGradientSurroundColorsWithCount, 整数型, "GdiPlus.dll", "GdipSetPathGradientSurroundColorsWithCount", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 color, 整数型, 传址, 
+    .参数 count, 整数型, 传址, 
+
+.DLL命令 GdipGetPathGradientPath, 整数型, "GdiPlus.dll", "GdipGetPathGradientPath", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 path, 整数型, , 
+
+.DLL命令 GdipSetPathGradientPath, 整数型, "GdiPlus.dll", "GdipSetPathGradientPath", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 path, 整数型, , 
+
+.DLL命令 GdipGetPathGradientCenterPoint, 整数型, "GdiPlus.dll", "GdipGetPathGradientCenterPoint", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 points, PointF, , 
+
+.DLL命令 GdipGetPathGradientCenterPointI, 整数型, "GdiPlus.dll", "GdipGetPathGradientCenterPointI", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 points, Point, , 
+
+.DLL命令 GdipSetPathGradientCenterPoint, 整数型, "GdiPlus.dll", "GdipSetPathGradientCenterPoint", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 points, PointF, , 
+
+.DLL命令 GdipSetPathGradientCenterPointI, 整数型, "GdiPlus.dll", "GdipSetPathGradientCenterPointI", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 points, Point, , 
+
+.DLL命令 GdipGetPathGradientRect, 整数型, "GdiPlus.dll", "GdipGetPathGradientRect", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 rect, RectF, , 
+
+.DLL命令 GdipGetPathGradientRectI, 整数型, "GdiPlus.dll", "GdipGetPathGradientRectI", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 rect, Rect, , 
+
+.DLL命令 GdipGetPathGradientPointCount, 整数型, "GdiPlus.dll", "GdipGetPathGradientPointCount", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 count, 整数型, 传址, 
+
+.DLL命令 GdipGetPathGradientSurroundColorCount, 整数型, "GdiPlus.dll", "GdipGetPathGradientSurroundColorCount", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 count, 整数型, 传址, 
+
+.DLL命令 GdipSetPathGradientGammaCorrection, 整数型, "GdiPlus.dll", "GdipSetPathGradientGammaCorrection", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 useGammaCorrection, 逻辑型, , 
+
+.DLL命令 GdipGetPathGradientGammaCorrection, 整数型, "GdiPlus.dll", "GdipGetPathGradientGammaCorrection", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 useGammaCorrection, 整数型, 传址, 
+
+.DLL命令 GdipGetPathGradientBlendCount, 整数型, "GdiPlus.dll", "GdipGetPathGradientBlendCount", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 count, 整数型, 传址, 
+
+.DLL命令 GdipGetPathGradientBlend, 整数型, "GdiPlus.dll", "GdipGetPathGradientBlend", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 blend, 小数型, 传址, 
+    .参数 positions, 小数型, 传址, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipSetPathGradientBlend, 整数型, "GdiPlus.dll", "GdipSetPathGradientBlend", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 blend, 小数型, 传址, 
+    .参数 positions, 小数型, 传址, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipGetPathGradientPresetBlendCount, 整数型, "GdiPlus.dll", "GdipGetPathGradientPresetBlendCount", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 count, 整数型, 传址, 
+
+.DLL命令 GdipGetPathGradientPresetBlend, 整数型, "GdiPlus.dll", "GdipGetPathGradientPresetBlend", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 blend, 整数型, 传址, 
+    .参数 positions, 小数型, 传址, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipSetPathGradientPresetBlend, 整数型, "GdiPlus.dll", "GdipSetPathGradientPresetBlend", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 blend, 整数型, , 
+    .参数 positions, 小数型, , 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipSetPathGradientSigmaBlend, 整数型, "GdiPlus.dll", "GdipSetPathGradientSigmaBlend", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 focus, 小数型, , 
+    .参数 scale, 小数型, , 
+
+.DLL命令 GdipSetPathGradientLinearBlend, 整数型, "GdiPlus.dll", "GdipSetPathGradientLinearBlend", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 focus, 小数型, , 
+    .参数 scale, 小数型, , 
+
+.DLL命令 GdipGetPathGradientWrapMode, 整数型, "GdiPlus.dll", "GdipGetPathGradientWrapMode", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 wrapmode, 整数型, 传址, 
+
+.DLL命令 GdipSetPathGradientWrapMode, 整数型, "GdiPlus.dll", "GdipSetPathGradientWrapMode", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 wrapmode, 整数型, , 
+
+.DLL命令 GdipGetPathGradientTransform, 整数型, "GdiPlus.dll", "GdipGetPathGradientTransform", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipSetPathGradientTransform, 整数型, "GdiPlus.dll", "GdipSetPathGradientTransform", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 matrix, 整数型, , 
+
+.DLL命令 GdipResetPathGradientTransform, 整数型, "GdiPlus.dll", "GdipResetPathGradientTransform", 公开, 
+    .参数 brush, 整数型, , 
+
+.DLL命令 GdipMultiplyPathGradientTransform, 整数型, "GdiPlus.dll", "GdipMultiplyPathGradientTransform", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 matrix, 整数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipTranslatePathGradientTransform, 整数型, "GdiPlus.dll", "GdipTranslatePathGradientTransform", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 dx, 小数型, , 
+    .参数 dy, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipScalePathGradientTransform, 整数型, "GdiPlus.dll", "GdipScalePathGradientTransform", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 sx, 小数型, , 
+    .参数 sy, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipRotatePathGradientTransform, 整数型, "GdiPlus.dll", "GdipRotatePathGradientTransform", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 angle, 小数型, , 
+    .参数 order, 整数型, , 
+
+.DLL命令 GdipGetPathGradientFocusScales, 整数型, "GdiPlus.dll", "GdipGetPathGradientFocusScales", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 xScale, 小数型, 传址, 
+    .参数 yScale, 小数型, 传址, 
+
+.DLL命令 GdipSetPathGradientFocusScales, 整数型, "GdiPlus.dll", "GdipSetPathGradientFocusScales", 公开, 
+    .参数 brush, 整数型, , 
+    .参数 xScale, 小数型, , 
+    .参数 yScale, 小数型, , 
+
+.DLL命令 GdipCreateCustomLineCap, 整数型, "GdiPlus.dll", "GdipCreateCustomLineCap", 公开, 
+    .参数 fillPath, 整数型, , 
+    .参数 strokePath, 整数型, , 
+    .参数 baseCap, 整数型, , 
+    .参数 baseInset, 小数型, , 
+    .参数 customCap, 整数型, 传址, 
+
+.DLL命令 GdipDeleteCustomLineCap, 整数型, "GdiPlus.dll", "GdipDeleteCustomLineCap", 公开, 
+    .参数 customCap, 整数型, , 
+
+.DLL命令 GdipCloneCustomLineCap, 整数型, "GdiPlus.dll", "GdipCloneCustomLineCap", 公开, 
+    .参数 customCap, 整数型, , 
+    .参数 clonedCap, 整数型, 传址, 
+
+.DLL命令 GdipGetCustomLineCapType, 整数型, "GdiPlus.dll", "GdipGetCustomLineCapType", 公开, 
+    .参数 customCap, 整数型, , 
+    .参数 capType, 整数型, 传址, 
+
+.DLL命令 GdipSetCustomLineCapStrokeCaps, 整数型, "GdiPlus.dll", "GdipSetCustomLineCapStrokeCaps", 公开, 
+    .参数 customCap, 整数型, , 
+    .参数 startCap, 整数型, , 
+    .参数 endCap, 整数型, , 
+
+.DLL命令 GdipGetCustomLineCapStrokeCaps, 整数型, "GdiPlus.dll", "GdipGetCustomLineCapStrokeCaps", 公开, 
+    .参数 customCap, 整数型, , 
+    .参数 startCap, 整数型, 传址, 
+    .参数 endCap, 整数型, 传址, 
+
+.DLL命令 GdipSetCustomLineCapStrokeJoin, 整数型, "GdiPlus.dll", "GdipSetCustomLineCapStrokeJoin", 公开, 
+    .参数 customCap, 整数型, , 
+    .参数 lineJoin, 整数型, , 
+
+.DLL命令 GdipGetCustomLineCapStrokeJoin, 整数型, "GdiPlus.dll", "GdipGetCustomLineCapStrokeJoin", 公开, 
+    .参数 customCap, 整数型, , 
+    .参数 lineJoin, 整数型, 传址, 
+
+.DLL命令 GdipSetCustomLineCapBaseCap, 整数型, "GdiPlus.dll", "GdipSetCustomLineCapBaseCap", 公开, 
+    .参数 customCap, 整数型, , 
+    .参数 baseCap, 整数型, , 
+
+.DLL命令 GdipGetCustomLineCapBaseCap, 整数型, "GdiPlus.dll", "GdipGetCustomLineCapBaseCap", 公开, 
+    .参数 customCap, 整数型, , 
+    .参数 baseCap, 整数型, 传址, 
+
+.DLL命令 GdipSetCustomLineCapBaseInset, 整数型, "GdiPlus.dll", "GdipSetCustomLineCapBaseInset", 公开, 
+    .参数 customCap, 整数型, , 
+    .参数 inset, 小数型, , 
+
+.DLL命令 GdipGetCustomLineCapBaseInset, 整数型, "GdiPlus.dll", "GdipGetCustomLineCapBaseInset", 公开, 
+    .参数 customCap, 整数型, , 
+    .参数 inset, 小数型, 传址, 
+
+.DLL命令 GdipSetCustomLineCapWidthScale, 整数型, "GdiPlus.dll", "GdipSetCustomLineCapWidthScale", 公开, 
+    .参数 customCap, 整数型, , 
+    .参数 widthScale, 小数型, , 
+
+.DLL命令 GdipGetCustomLineCapWidthScale, 整数型, "GdiPlus.dll", "GdipGetCustomLineCapWidthScale", 公开, 
+    .参数 customCap, 整数型, , 
+    .参数 widthScale, 小数型, 传址, 
+
+.DLL命令 GdipCreateAdjustableArrowCap, 整数型, "GdiPlus.dll", "GdipCreateAdjustableArrowCap", 公开, 
+    .参数 height, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 isFilled, 逻辑型, , 
+    .参数 cap, 整数型, 传址, 
+
+.DLL命令 GdipSetAdjustableArrowCapHeight, 整数型, "GdiPlus.dll", "GdipSetAdjustableArrowCapHeight", 公开, 
+    .参数 cap, 整数型, , 
+    .参数 height, 小数型, , 
+
+.DLL命令 GdipGetAdjustableArrowCapHeight, 整数型, "GdiPlus.dll", "GdipGetAdjustableArrowCapHeight", 公开, 
+    .参数 cap, 整数型, , 
+    .参数 height, 小数型, 传址, 
+
+.DLL命令 GdipSetAdjustableArrowCapWidth, 整数型, "GdiPlus.dll", "GdipSetAdjustableArrowCapWidth", 公开, 
+    .参数 cap, 整数型, , 
+    .参数 width, 小数型, , 
+
+.DLL命令 GdipGetAdjustableArrowCapWidth, 整数型, "GdiPlus.dll", "GdipGetAdjustableArrowCapWidth", 公开, 
+    .参数 cap, 整数型, , 
+    .参数 width, 小数型, 传址, 
+
+.DLL命令 GdipSetAdjustableArrowCapMiddleInset, 整数型, "GdiPlus.dll", "GdipSetAdjustableArrowCapMiddleInset", 公开, 
+    .参数 cap, 整数型, , 
+    .参数 middleInset, 小数型, , 
+
+.DLL命令 GdipGetAdjustableArrowCapMiddleInset, 整数型, "GdiPlus.dll", "GdipGetAdjustableArrowCapMiddleInset", 公开, 
+    .参数 cap, 整数型, , 
+    .参数 middleInset, 小数型, 传址, 
+
+.DLL命令 GdipSetAdjustableArrowCapFillState, 整数型, "GdiPlus.dll", "GdipSetAdjustableArrowCapFillState", 公开, 
+    .参数 cap, 整数型, , 
+    .参数 fillState, 逻辑型, , 
+
+.DLL命令 GdipGetAdjustableArrowCapFillState, 整数型, "GdiPlus.dll", "GdipGetAdjustableArrowCapFillState", 公开, 
+    .参数 cap, 整数型, , 
+    .参数 fillState, 整数型, 传址, 
+
+.DLL命令 GdipLoadImageFromStream, 整数型, "GdiPlus.dll", "GdipLoadImageFromStream", 公开, 
+    .参数 stream, 整数型, , 
+    .参数 image, 整数型, 传址, 
+
+.DLL命令 GdipLoadImageFromFile, 整数型, "GdiPlus.dll", "GdipLoadImageFromFile", 公开, 
+    .参数 filename, 字节集, , 
+    .参数 image, 整数型, 传址, 
+
+.DLL命令 GdipLoadImageFromStreamICM, 整数型, "GdiPlus.dll", "GdipLoadImageFromStreamICM", 公开, 
+    .参数 stream, 整数型, , 
+    .参数 image, 整数型, 传址, 
+
+.DLL命令 GdipLoadImageFromFileICM, 整数型, "GdiPlus.dll", "GdipLoadImageFromFileICM", 公开, 
+    .参数 filename, 整数型, , 
+    .参数 image, 整数型, 传址, 
+
+.DLL命令 GdipCloneImage, 整数型, "GdiPlus.dll", "GdipCloneImage", 公开, 
+    .参数 image, 整数型, , 
+    .参数 cloneImage, 整数型, 传址, 
+
+.DLL命令 GdipDisposeImage, 整数型, "GdiPlus.dll", "GdipDisposeImage", 公开, 
+    .参数 image, 整数型, , 
+
+.DLL命令 GdipSaveImageToFile, 整数型, "GdiPlus.dll", "GdipSaveImageToFile", 公开, 
+    .参数 image, 整数型, , 
+    .参数 filename, 字节集, , 
+    .参数 clsidEncoder, 字节集, , 
+    .参数 encoderParams, 整数型, , 
+
+.DLL命令 GdipSaveImageToStream, 整数型, "GdiPlus.dll", "GdipSaveImageToStream", 公开, 
+    .参数 image, 整数型, , 
+    .参数 stream, 整数型, , 
+    .参数 clsidEncoder, 字节集, , 
+    .参数 encoderParams, 整数型, , 
+
+.DLL命令 GdipSaveAdd, 整数型, "GdiPlus.dll", "GdipSaveAdd", 公开, 
+    .参数 image, 整数型, , 
+    .参数 encoderParams, 整数型, , 
+
+.DLL命令 GdipSaveAddImage, 整数型, "GdiPlus.dll", "GdipSaveAddImage", 公开, 
+    .参数 image, 整数型, , 
+    .参数 newImage, 整数型, , 
+    .参数 encoderParams, 整数型, , 
+
+.DLL命令 GdipGetImageGraphicsContext, 整数型, "GdiPlus.dll", "GdipGetImageGraphicsContext", 公开, 
+    .参数 image, 整数型, , 
+    .参数 graphics, 整数型, 传址, 
+
+.DLL命令 GdipGetImageBounds, 整数型, "GdiPlus.dll", "GdipGetImageBounds", 公开, 
+    .参数 image, 整数型, , 
+    .参数 srcRect, RectF, , 
+    .参数 srcUnit, 整数型, 传址, 
+
+.DLL命令 GdipGetImageDimension, 整数型, "GdiPlus.dll", "GdipGetImageDimension", 公开, 
+    .参数 image, 整数型, , 
+    .参数 width, 小数型, 传址, 
+    .参数 height, 小数型, 传址, 
+
+.DLL命令 GdipGetImageType, 整数型, "GdiPlus.dll", "GdipGetImageType", 公开, 
+    .参数 image, 整数型, , 
+    .参数 type, 整数型, 传址, 
+
+.DLL命令 GdipGetImageWidth, 整数型, "GdiPlus.dll", "GdipGetImageWidth", 公开, 
+    .参数 image, 整数型, , 
+    .参数 width, 整数型, 传址, 
+
+.DLL命令 GdipGetImageHeight, 整数型, "GdiPlus.dll", "GdipGetImageHeight", 公开, 
+    .参数 image, 整数型, , 
+    .参数 height, 整数型, 传址, 
+
+.DLL命令 GdipGetImageHorizontalResolution, 整数型, "GdiPlus.dll", "GdipGetImageHorizontalResolution", 公开, 
+    .参数 image, 整数型, , 
+    .参数 resolution, 小数型, 传址, 
+
+.DLL命令 GdipGetImageVerticalResolution, 整数型, "GdiPlus.dll", "GdipGetImageVerticalResolution", 公开, 
+    .参数 image, 整数型, , 
+    .参数 resolution, 小数型, 传址, 
+
+.DLL命令 GdipGetImageFlags, 整数型, "GdiPlus.dll", "GdipGetImageFlags", 公开, 
+    .参数 image, 整数型, , 
+    .参数 flags, 整数型, 传址, 
+
+.DLL命令 GdipGetImageRawFormat, 整数型, "GdiPlus.dll", "GdipGetImageRawFormat", 公开, 
+    .参数 image, 整数型, , 
+    .参数 format, 字节集, , 
+
+.DLL命令 GdipGetImagePixelFormat, 整数型, "GdiPlus.dll", "GdipGetImagePixelFormat", 公开, 
+    .参数 image, 整数型, , 
+    .参数 format, 整数型, 传址, 
+
+.DLL命令 GdipGetImage整数型, 整数型, "GdiPlus.dll", "GdipGetImage整数型", 公开, 
+    .参数 image, 整数型, , 
+    .参数 format, 整数型, 传址, 
+
+.DLL命令 GdipGetImageThumbnail, 整数型, "GdiPlus.dll", "GdipGetImageThumbnail", 公开, 
+    .参数 image, 整数型, , 
+    .参数 thumbWidth, 整数型, , 
+    .参数 thumbHeight, 整数型, , 
+    .参数 thumbImage, 整数型, 传址, 
+    .参数 callback, 整数型, , 
+    .参数 callbackData, 整数型, 传址, 
+
+.DLL命令 GdipGetEncoderParameterListSize, 整数型, "GdiPlus.dll", "GdipGetEncoderParameterListSize", 公开, 
+    .参数 image, 整数型, , 
+    .参数 clsidEncoder, 字节集, , 
+    .参数 size, 整数型, 传址, 
+
+.DLL命令 GdipGetEncoderParameterList, 整数型, "GdiPlus.dll", "GdipGetEncoderParameterList", 公开, 
+    .参数 image, 整数型, , 
+    .参数 clsidEncoder, 字节集, , 
+    .参数 size, 整数型, , 
+    .参数 buffer, 字节集, , 
+
+.DLL命令 GdipImageGetFrameDimensionsCount, 整数型, "GdiPlus.dll", "GdipImageGetFrameDimensionsCount", 公开, 
+    .参数 image, 整数型, , 
+    .参数 count, 整数型, 传址, 
+
+.DLL命令 GdipImageGetFrameDimensionsList, 整数型, "GdiPlus.dll", "GdipImageGetFrameDimensionsList", 公开, 
+    .参数 image, 整数型, , 
+    .参数 dimensionIDs, GUID, 数组, 
+    .参数 count, 整数型, , 
+
+.DLL命令 GdipImageGetFrameCount, 整数型, "GdiPlus.dll", "GdipImageGetFrameCount", 公开, 
+    .参数 image, 整数型, , 
+    .参数 dimensionID, GUID, , 
+    .参数 count, 整数型, 传址, 
+
+.DLL命令 GdipImageSelectActiveFrame, 整数型, "GdiPlus.dll", "GdipImageSelectActiveFrame", 公开, 
+    .参数 image, 整数型, , 
+    .参数 dimensionID, 字节集, , 
+    .参数 frameIndex, 整数型, , 
+
+.DLL命令 GdipImageRotateFlip, 整数型, "GdiPlus.dll", "GdipImageRotateFlip", 公开, 
+    .参数 image, 整数型, , 
+    .参数 rfType, 整数型, , 
+
+.DLL命令 GdipGetImagePalette, 整数型, "GdiPlus.dll", "GdipGetImagePalette", 公开, 
+    .参数 image, 整数型, , 
+    .参数 palette, 整数型, 传址, 
+    .参数 size, 整数型, , 
+
+.DLL命令 GdipSetImagePalette, 整数型, "GdiPlus.dll", "GdipSetImagePalette", 公开, 
+    .参数 image, 整数型, , 
+    .参数 palette, 整数型, , 
+
+.DLL命令 GdipGetImagePaletteSize, 整数型, "GdiPlus.dll", "GdipGetImagePaletteSize", 公开, 
+    .参数 image, 整数型, , 
+    .参数 size, 整数型, 传址, 
+
+.DLL命令 GdipGetPropertyCount, 整数型, "GdiPlus.dll", "GdipGetPropertyCount", 公开, 
+    .参数 image, 整数型, , 
+    .参数 numOfProperty, 整数型, 传址, 
+
+.DLL命令 GdipGetPropertyIdList, 整数型, "GdiPlus.dll", "GdipGetPropertyIdList", 公开, 
+    .参数 image, 整数型, , 
+    .参数 numOfProperty, 整数型, , 
+    .参数 list, 整数型, 传址, 
+
+.DLL命令 GdipGetPropertyItemSize, 整数型, "GdiPlus.dll", "GdipGetPropertyItemSize", 公开, 
+    .参数 image, 整数型, , 
+    .参数 propId, 整数型, , 
+    .参数 size, 整数型, 传址, 
+
+.DLL命令 GdipGetPropertyItem, 整数型, "GdiPlus.dll", "GdipGetPropertyItem", 公开, 
+    .参数 image, 整数型, , 
+    .参数 propId, 整数型, , 
+    .参数 propSize, 整数型, , 
+    .参数 buffer, 字节集, , 
+
+.DLL命令 GdipGetPropertySize, 整数型, "GdiPlus.dll", "GdipGetPropertySize", 公开, 
+    .参数 image, 整数型, , 
+    .参数 totalBufferSize, 整数型, 传址, 
+    .参数 numProperties, 整数型, 传址, 
+
+.DLL命令 GdipGetAllPropertyItems, 整数型, "GdiPlus.dll", "GdipGetAllPropertyItems", 公开, 
+    .参数 image, 整数型, , 
+    .参数 totalBufferSize, 整数型, , 
+    .参数 numProperties, 整数型, , 
+    .参数 allItems, 整数型, 传址, 
+
+.DLL命令 GdipRemovePropertyItem, 整数型, "GdiPlus.dll", "GdipRemovePropertyItem", 公开, 
+    .参数 image, 整数型, , 
+    .参数 propId, 整数型, , 
+
+.DLL命令 GdipSetPropertyItem, 整数型, "GdiPlus.dll", "GdipSetPropertyItem", 公开, 
+    .参数 image, 整数型, , 
+    .参数 item, 整数型, , 
+
+.DLL命令 GdipImageForceValidation, 整数型, "GdiPlus.dll", "GdipImageForceValidation", 公开, 
+    .参数 image, 整数型, , 
+
+.DLL命令 GdipCreateBitmapFromStream, 整数型, "GdiPlus.dll", "GdipCreateBitmapFromStream", 公开, 
+    .参数 stream, 整数型, , 
+    .参数 bitmap, 整数型, 传址, 
+
+.DLL命令 GdipCreateBitmapFromFile, 整数型, "GdiPlus.dll", "GdipCreateBitmapFromFile", 公开, 
+    .参数 filename, 字节集, , 
+    .参数 bitmap, 整数型, 传址, 
+
+.DLL命令 GdipCreateBitmapFromStreamICM, 整数型, "GdiPlus.dll", "GdipCreateBitmapFromStreamICM", 公开, 
+    .参数 stream, 整数型, , 
+    .参数 bitmap, 整数型, 传址, 
+
+.DLL命令 GdipCreateBitmapFromFileICM, 整数型, "GdiPlus.dll", "GdipCreateBitmapFromFileICM", 公开, 
+    .参数 filename, 整数型, , 
+    .参数 bitmap, 整数型, 传址, 
+
+.DLL命令 GdipCreateBitmapFromScan0, 整数型, "GdiPlus.dll", "GdipCreateBitmapFromScan0", 公开, 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+    .参数 stride, 整数型, , 
+    .参数 format, 整数型, , 
+    .参数 scan0, 整数型, , 
+    .参数 bitmap, 整数型, 传址, 
+
+.DLL命令 GdipCreateBitmapFromGraphics, 整数型, "GdiPlus.dll", "GdipCreateBitmapFromGraphics", 公开, 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+    .参数 target, 整数型, , 
+    .参数 bitmap, 整数型, 传址, 
+
+.DLL命令 GdipCreateBitmapFromDirectDrawSurface, 整数型, "GdiPlus.dll", "GdipCreateBitmapFromDirectDrawSurface", 公开, 
+    .参数 surface, 整数型, , 
+    .参数 bitmap, 整数型, 传址, 
+
+.DLL命令 GdipCreateBitmapFromGdiDib, 整数型, "GdiPlus.dll", "GdipCreateBitmapFromGdiDib", 公开, 
+    .参数 gdiBitmapInfo, 整数型, , 
+    .参数 gdiBitmapData, 整数型, , 
+    .参数 bitmap, 整数型, 传址, 
+
+.DLL命令 GdipCreateBitmapFromHBITMAP, 整数型, "GdiPlus.dll", "GdipCreateBitmapFromHBITMAP", 公开, 
+    .参数 hbm, 整数型, , 
+    .参数 hpal, 整数型, , 
+    .参数 bitmap, 整数型, 传址, 
+
+.DLL命令 GdipCreateHBITMAPFromBitmap, 整数型, "GdiPlus.dll", "GdipCreateHBITMAPFromBitmap", 公开, 
+    .参数 bitmap, 整数型, , 
+    .参数 hbmReturn, 整数型, 传址, 
+    .参数 background, 整数型, , 
+
+.DLL命令 GdipCreateBitmapFromHICON, 整数型, "GdiPlus.dll", "GdipCreateBitmapFromHICON", 公开, 
+    .参数 hicon, 整数型, , 
+    .参数 bitmap, 整数型, 传址, 
+
+.DLL命令 GdipCreateHICONFromBitmap, 整数型, "GdiPlus.dll", "GdipCreateHICONFromBitmap", 公开, 
+    .参数 bitmap, 整数型, , 
+    .参数 hbmReturn, 整数型, 传址, 
+
+.DLL命令 GdipCreateBitmapFromResource, 整数型, "GdiPlus.dll", "GdipCreateBitmapFromResource", 公开, 
+    .参数 hInstance, 整数型, , 
+    .参数 lpBitmapName, 整数型, , 
+    .参数 bitmap, 整数型, 传址, 
+
+.DLL命令 GdipCloneBitmapArea, 整数型, "GdiPlus.dll", "GdipCloneBitmapArea", 公开, 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+    .参数 format, 整数型, , 
+    .参数 srcBitmap, 整数型, , 
+    .参数 dstBitmap, 整数型, 传址, 
+
+.DLL命令 GdipCloneBitmapAreaI, 整数型, "GdiPlus.dll", "GdipCloneBitmapAreaI", 公开, 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+    .参数 format, 整数型, , 
+    .参数 srcBitmap, 整数型, , 
+    .参数 dstBitmap, 整数型, 传址, 
+
+.DLL命令 GdipBitmapLockBits, 整数型, "GdiPlus.dll", "GdipBitmapLockBits", 公开, 
+    .参数 bitmap, 整数型, , 
+    .参数 rect, Rect, , 
+    .参数 flags, 整数型, , 
+    .参数 format, 整数型, , 
+    .参数 lockedBitmapData, 整数型, , 
+
+.DLL命令 GdipBitmapUnlockBits, 整数型, "GdiPlus.dll", "GdipBitmapUnlockBits", 公开, 
+    .参数 bitmap, 整数型, , 
+    .参数 lockedBitmapData, 整数型, , 
+
+.DLL命令 GdipBitmapGetPixel, 整数型, "GdiPlus.dll", "GdipBitmapGetPixel", 公开, 
+    .参数 bitmap, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 color, 整数型, 传址, 
+
+.DLL命令 GdipBitmapSetPixel, 整数型, "GdiPlus.dll", "GdipBitmapSetPixel", 公开, 
+    .参数 bitmap, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 color, 整数型, , 
+
+.DLL命令 GdipBitmapSetResolution, 整数型, "GdiPlus.dll", "GdipBitmapSetResolution", 公开, 
+    .参数 bitmap, 整数型, , 
+    .参数 xdpi, 小数型, , 
+    .参数 ydpi, 小数型, , 
+
+.DLL命令 GdipCreateImageAttributes, 整数型, "GdiPlus.dll", "GdipCreateImageAttributes", 公开, 
+    .参数 imageattr, 整数型, 传址, 
+
+.DLL命令 GdipCloneImageAttributes, 整数型, "GdiPlus.dll", "GdipCloneImageAttributes", 公开, 
+    .参数 imageattr, 整数型, , 
+    .参数 cloneImageattr, 整数型, 传址, 
+
+.DLL命令 GdipDisposeImageAttributes, 整数型, "GdiPlus.dll", "GdipDisposeImageAttributes", 公开, 
+    .参数 imageattr, 整数型, , 
+
+.DLL命令 GdipSetImageAttributesToIdentity, 整数型, "GdiPlus.dll", "GdipSetImageAttributesToIdentity", 公开, 
+    .参数 imageattr, 整数型, , 
+    .参数 type, 整数型, , 
+
+.DLL命令 GdipResetImageAttributes, 整数型, "GdiPlus.dll", "GdipResetImageAttributes", 公开, 
+    .参数 imageattr, 整数型, , 
+    .参数 type, 整数型, , 
+
+.DLL命令 GdipSetImageAttributesColorMatrix, 整数型, "GdiPlus.dll", "GdipSetImageAttributesColorMatrix", 公开, 
+    .参数 imageattr, 整数型, , 
+    .参数 type, 整数型, , 
+    .参数 enableFlag, 逻辑型, , 
+    .参数 colorMatrix, 整数型, , 
+    .参数 grayMatrix, 整数型, , 
+    .参数 flags, 整数型, , 
+
+.DLL命令 GdipSetImageAttributesThreshold, 整数型, "GdiPlus.dll", "GdipSetImageAttributesThreshold", 公开, 
+    .参数 imageattr, 整数型, , 
+    .参数 type, 整数型, , 
+    .参数 enableFlag, 逻辑型, , 
+    .参数 threshold, 小数型, , 
+
+.DLL命令 GdipSetImageAttributesGamma, 整数型, "GdiPlus.dll", "GdipSetImageAttributesGamma", 公开, 
+    .参数 imageattr, 整数型, , 
+    .参数 type, 整数型, , 
+    .参数 enableFlag, 逻辑型, , 
+    .参数 gamma, 小数型, , 
+
+.DLL命令 GdipSetImageAttributesNoOp, 整数型, "GdiPlus.dll", "GdipSetImageAttributesNoOp", 公开, 
+    .参数 imageattr, 整数型, , 
+    .参数 type, 整数型, , 
+    .参数 enableFlag, 逻辑型, , 
+
+.DLL命令 GdipSetImageAttributesColorKeys, 整数型, "GdiPlus.dll", "GdipSetImageAttributesColorKeys", 公开, 
+    .参数 imageattr, 整数型, , 
+    .参数 type, 整数型, , 
+    .参数 enableFlag, 逻辑型, , 
+    .参数 colorLow, 整数型, , 
+    .参数 colorHigh, 整数型, , 
+
+.DLL命令 GdipSetImageAttributesOutputChannel, 整数型, "GdiPlus.dll", "GdipSetImageAttributesOutputChannel", 公开, 
+    .参数 imageattr, 整数型, , 
+    .参数 type, 整数型, , 
+    .参数 enableFlag, 逻辑型, , 
+    .参数 channelFlags, 整数型, , 
+
+.DLL命令 GdipSetImageAttributesOutputChannelColorProfile, 整数型, "GdiPlus.dll", "GdipSetImageAttributesOutputChannelColorProfile", 公开, 
+    .参数 imageattr, 整数型, , 
+    .参数 type, 整数型, , 
+    .参数 enableFlag, 逻辑型, , 
+    .参数 colorProfileFilename, 整数型, , 
+
+.DLL命令 GdipSetImageAttributesRemapTable, 整数型, "GdiPlus.dll", "GdipSetImageAttributesRemapTable", 公开, 
+    .参数 imageattr, 整数型, , 
+    .参数 type, 整数型, , 
+    .参数 enableFlag, 整数型, , 
+    .参数 mapSize, 整数型, , 
+    .参数 map, 整数型, , 
+
+.DLL命令 GdipSetImageAttributesWrapMode, 整数型, "GdiPlus.dll", "GdipSetImageAttributesWrapMode", 公开, 
+    .参数 imageAttr, 整数型, , 
+    .参数 wrap, 整数型, , 
+    .参数 整数型, 整数型, , 
+    .参数 clamp, 逻辑型, , 
+
+.DLL命令 GdipSetImageAttributesICMMode, 整数型, "GdiPlus.dll", "GdipSetImageAttributesICMMode", 公开, 
+    .参数 imageAttr, 整数型, , 
+    .参数 on, 逻辑型, , 
+
+.DLL命令 GdipGetImageAttributesAdjustedPalette, 整数型, "GdiPlus.dll", "GdipGetImageAttributesAdjustedPalette", 公开, 
+    .参数 imageAttr, 整数型, , 
+    .参数 colorPalette, 整数型, 传址, 
+    .参数 colorAdjustType, 整数型, , 
+
+.DLL命令 GdipCreateStringFormat, 整数型, "GdiPlus.dll", "GdipCreateStringFormat", 公开, 
+    .参数 formatAttributes, 整数型, , 
+    .参数 language, 整数型, , 
+    .参数 format, 整数型, 传址, 
+
+.DLL命令 GdipStringFormatGetGenericDefault, 整数型, "GdiPlus.dll", "GdipStringFormatGetGenericDefault", 公开, 
+    .参数 format, 整数型, , 
+
+.DLL命令 GdipStringFormatGetGenericTypographic, 整数型, "GdiPlus.dll", "GdipStringFormatGetGenericTypographic", 公开, 
+    .参数 format, 整数型, , 
+
+.DLL命令 GdipDeleteStringFormat, 整数型, "GdiPlus.dll", "GdipDeleteStringFormat", 公开, 
+    .参数 format, 整数型, , 
+
+.DLL命令 GdipCloneStringFormat, 整数型, "GdiPlus.dll", "GdipCloneStringFormat", 公开, 
+    .参数 format, 整数型, , 
+    .参数 newFormat, 整数型, 传址, 
+
+.DLL命令 GdipSetStringFormatFlags, 整数型, "GdiPlus.dll", "GdipSetStringFormatFlags", 公开, 
+    .参数 format, 整数型, , 
+    .参数 flags, 整数型, , 
+
+.DLL命令 GdipGetStringFormatFlags, 整数型, "GdiPlus.dll", "GdipGetStringFormatFlags", 公开, 
+    .参数 format, 整数型, , 
+    .参数 flags, 整数型, 传址, 
+
+.DLL命令 GdipSetStringFormatAlign, 整数型, "GdiPlus.dll", "GdipSetStringFormatAlign", 公开, 
+    .参数 format, 整数型, , 
+    .参数 align, 整数型, , 
+
+.DLL命令 GdipGetStringFormatAlign, 整数型, "GdiPlus.dll", "GdipGetStringFormatAlign", 公开, 
+    .参数 format, 整数型, , 
+    .参数 align, 整数型, 传址, 
+
+.DLL命令 GdipSetStringFormatLineAlign, 整数型, "GdiPlus.dll", "GdipSetStringFormatLineAlign", 公开, 
+    .参数 format, 整数型, , 
+    .参数 align, 整数型, , 
+
+.DLL命令 GdipGetStringFormatLineAlign, 整数型, "GdiPlus.dll", "GdipGetStringFormatLineAlign", 公开, 
+    .参数 format, 整数型, , 
+    .参数 align, 整数型, 传址, 
+
+.DLL命令 GdipSetStringFormatTrimming, 整数型, "GdiPlus.dll", "GdipSetStringFormatTrimming", 公开, 
+    .参数 format, 整数型, , 
+    .参数 trimming, 整数型, , 
+
+.DLL命令 GdipGetStringFormatTrimming, 整数型, "GdiPlus.dll", "GdipGetStringFormatTrimming", 公开, 
+    .参数 format, 整数型, , 
+    .参数 trimming, 整数型, 传址, 
+
+.DLL命令 GdipSetStringFormatHotkeyPrefix, 整数型, "GdiPlus.dll", "GdipSetStringFormatHotkeyPrefix", 公开, 
+    .参数 format, 整数型, , 
+    .参数 hotkeyPrefix, 整数型, , 
+
+.DLL命令 GdipGetStringFormatHotkeyPrefix, 整数型, "GdiPlus.dll", "GdipGetStringFormatHotkeyPrefix", 公开, 
+    .参数 format, 整数型, , 
+    .参数 hotkeyPrefix, 整数型, 传址, 
+
+.DLL命令 GdipSetStringFormatTabStops, 整数型, "GdiPlus.dll", "GdipSetStringFormatTabStops", 公开, 
+    .参数 format, 整数型, , 
+    .参数 firstTabOffset, 小数型, , 
+    .参数 count, 整数型, , 
+    .参数 tabStops, 小数型, 传址, 
+
+.DLL命令 GdipGetStringFormatTabStops, 整数型, "GdiPlus.dll", "GdipGetStringFormatTabStops", 公开, 
+    .参数 format, 整数型, , 
+    .参数 count, 整数型, , 
+    .参数 firstTabOffset, 小数型, 传址, 
+    .参数 tabStops, 小数型, 传址, 
+
+.DLL命令 GdipGetStringFormatTabStopCount, 整数型, "GdiPlus.dll", "GdipGetStringFormatTabStopCount", 公开, 
+    .参数 format, 整数型, , 
+    .参数 count, 整数型, 传址, 
+
+.DLL命令 GdipSetStringFormatDigitSubstitution, 整数型, "GdiPlus.dll", "GdipSetStringFormatDigitSubstitution", 公开, 
+    .参数 format, 整数型, , 
+    .参数 language, 整数型, , 
+    .参数 substitute, 整数型, , 
+
+.DLL命令 GdipGetStringFormatDigitSubstitution, 整数型, "GdiPlus.dll", "GdipGetStringFormatDigitSubstitution", 公开, 
+    .参数 format, 整数型, , 
+    .参数 language, 整数型, 传址, 
+    .参数 substitute, 整数型, 传址, 
+
+.DLL命令 GdipGetStringFormatMeasurableCharacterRangeCount, 整数型, "GdiPlus.dll", "GdipGetStringFormatMeasurableCharacterRangeCount", 公开, 
+    .参数 format, 整数型, , 
+    .参数 count, 整数型, 传址, 
+
+.DLL命令 GdipSetStringFormatMeasurableCharacterRanges, 整数型, "GdiPlus.dll", "GdipSetStringFormatMeasurableCharacterRanges", 公开, 
+    .参数 format, 整数型, , 
+    .参数 rangeCount, 整数型, , 
+    .参数 ranges, 整数型, , 
+
+.DLL命令 GdipCreateCachedBitmap, 整数型, "GdiPlus.dll", "GdipCreateCachedBitmap", 公开, 
+    .参数 bitmap, 整数型, , 
+    .参数 graphics, 整数型, , 
+    .参数 cachedBitmap, 整数型, 传址, 
+
+.DLL命令 GdipDeleteCachedBitmap, 整数型, "GdiPlus.dll", "GdipDeleteCachedBitmap", 公开, 
+    .参数 cachedBitmap, 整数型, , 
+
+.DLL命令 GdipDrawCachedBitmap, 整数型, "GdiPlus.dll", "GdipDrawCachedBitmap", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 cachedBitmap, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+
+.DLL命令 GdipEmfToWmfBits, 整数型, "GdiPlus.dll", "GdipEmfToWmfBits", 公开, 
+    .参数 hemf, 整数型, , 
+    .参数 cbData16, 整数型, , 
+    .参数 pData16, 整数型, , 
+    .参数 iMapMode, 整数型, , 
+    .参数 eFlags, 整数型, , 
+
+.DLL命令 GdipSetImageAttributesCachedBackground, 整数型, "GdiPlus.dll", "GdipSetImageAttributesCachedBackground", 公开, 
+    .参数 imageattr, 整数型, , 
+    .参数 enableFlag, 逻辑型, , 
+
+.DLL命令 GdipTestControl, 整数型, "GdiPlus.dll", "GdipTestControl", 公开, 
+    .参数 control, 整数型, , 
+    .参数 param, 整数型, , 
+
+.DLL命令 GdiplusNotificationHook, 整数型, "GdiPlus.dll", "GdiplusNotificationHook", 公开, 
+    .参数 token, 整数型, 传址, 
+
+.DLL命令 GdiplusNotificationUnhook, 整数型, "GdiPlus.dll", "GdiplusNotificationUnhook", 公开, 
+    .参数 token, 整数型, , 
+
+.DLL命令 文本绘图_, 整数型, "gdi32.dll", "TextOutA", 公开, Long，非零表示成功，零表示失败。会设置GetLastError
+    .参数 设备场景, 整数型, , hdc，设备场景的句柄
+    .参数 横, 整数型, , x，绘图的起点，采用逻辑坐标
+    .参数 纵, 整数型, , y，绘图的起点，采用逻辑坐标
+    .参数 内容, 文本型, , lpstring，欲描绘的字串
+    .参数 内容数量, 整数型, , ncount，字串中要描绘的字符数量
+
+.DLL命令 GetWindowRect, 整数型, "user32", "GetWindowRect", , 获得整个窗口的范围矩形，窗口的边框、标题栏、滚动条及菜单等都在这个矩形内  非零表示成功，零表示失败。会设置GetLastError
+    .参数 窗口句柄, 整数型, , 想获得范围矩形的那个窗口的句柄
+    .参数 矩形区域, 矩形, , RECT，屏幕坐标中随同窗口装载的矩形
+
+.DLL命令 API_SetWindowLong, 整数型, "user32", "SetWindowLongA", , 在窗口结构中为指定的窗口设置信息　指定数据的前一个值
+    .参数 hwnd, 整数型, , 欲为其取得信息的窗口的句柄
+    .参数 nIndex, 整数型, , 请参考GetWindowLong函数的nIndex参数的说明
+    .参数 dwNewLong, 整数型, , 由nIndex指定的窗口信息的新值;
+
+.DLL命令 API_CallWindowProc, 整数型, "user32", "CallWindowProcA", , 将消息传答窗口函数　
+    .参数 lpPrevWndFunc, 整数型, , 
+    .参数 hwnd, 整数型, , 
+    .参数 msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 API_调用子程序, 整数型, "user32.dll", "CallWindowProcA", , 
+    .参数 机器码, 字节集, , 
+    .参数 程序指针, 子程序指针, , 
+    .参数 参数1, 文本型, , 
+    .参数 参数2, 文本型, , 
+    .参数 参数3, 文本型, , 
+
+.DLL命令 GetDC, 整数型, "user32", "GetDC", , 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 ReleaseDC, 整数型, "user32", "ReleaseDC", , 
+    .参数 hWnd, 整数型, , 
+    .参数 hDC, 整数型, , 
+
+.程序集 启动程序集, , , 
+
+.子程序 _启动子程序, 整数型, , 
+载入 (测试, , 假)
+返回 (0)
+
+.子程序 GDIPlus装载, 整数型, , 整个程序只能调用一次
+.局部变量 GpInput, GdiplusStartupInput, , , 
+
+赋值 (GpInput.GdiplusVersion, 1)
+返回 (GdiplusStartup (g_Token, GpInput, 0))
+
+.子程序 GDIPlus卸载, 整数型, 公开, 整个程序只能调用一次
+返回 (GdiplusShutdown (g_Token))
+
+.子程序 A2W, 字节集, , 将Ansi转成Unicode
+.参数 欲转换的文本, 文本型, , 
+
+.局部变量 缓冲区, 字节集, , , 
+.局部变量 字符数目, 整数型, , , 包括结尾0
+
+赋值 (字符数目, MultiByteToWideChar (0, 0, 欲转换的文本, -1, {  }, 0)) ' 返回字符数目
+ ' 输出调试文本 (字符数目)
+赋值 (缓冲区, 取空白字节集 (相乘 (字符数目, 2)))
+MultiByteToWideChar (0, 0, 欲转换的文本, -1, 缓冲区, 字符数目)
+返回 (缓冲区)
+ ' BOOL MByteToWChar(LPCSTR lpcszStr, LPWSTR lpwszStr, DWORD dwSize)
+ ' {
+ ' // Get the required size of the buffer that receives the Unicode' // string.
+ ' DWORD dwMinSize;
+ ' dwMinSize = MultiByteToWideChar (CP_ACP, 0, lpcszStr, -1, NULL, 0);
+
+ ' if(dwSize < dwMinSize)
+ ' {' return FALSE;' }
+
+ ' // Convert headers from ASCII to Unicode.
+ ' MultiByteToWideChar (CP_ACP, 0, lpcszStr, -1, lpwszStr, dwMinSize);
+ ' return TRUE;
+ ' }
+
+
+
+.子程序 W2A, 文本型, , 将Unicode转成Ansi
+.参数 欲转换的文本, 整数型, , Unicode文本内存地址
+
+.局部变量 缓冲区, 文本型, , , 
+.局部变量 字符数目, 整数型, , , 包括结尾0
+
+赋值 (字符数目, WideCharToMultiByte (1, 0, 欲转换的文本, -1, “”, 0, 0, 0))
+ ' 输出调试文本 (字符数目)
+赋值 (缓冲区, 取空白文本 (字符数目))
+WideCharToMultiByte (1, 0, 欲转换的文本, -1, 缓冲区, 字符数目, 0, 0)
+返回 (缓冲区)
+ ' BOOL WCharToMByte(LPCWSTR lpcwszStr, LPSTR lpszStr, DWORD dwSize)
+ ' {
+ ' DWORD dwMinSize;
+ ' dwMinSize = WideCharToMultiByte(CP_OEMCP,NULL,lpcwszStr,-1,NULL,0,NULL,FALSE);
+ ' if(dwSize < dwMinSize)
+ ' {return FALSE;}
+ ' WideCharToMultiByte(CP_OEMCP,NULL,lpcwszStr,-1,lpszStr,dwSize,NULL,FALSE);
+ ' return TRUE;
+ ' }
+
+
+.子程序 RGB到ARGB, 整数型, , 
+.参数 RGB颜色, 整数型, , 
+.参数 透明度, 整数型, , 
+
+.局部变量 Color, 字节集, , , 
+
+赋值 (Color, 到字节集 (RGB颜色))
+赋值 (RGB颜色, 位或 (相加 (Color [3], 相乘 (Color [2], 256), 相乘 (Color [1], 65536)), 左移 (透明度, 24))) ' 转换成GDI+的颜色值
+返回 (RGB颜色)
+
+
+.子程序 取错误描述, 文本型, , 
+.参数 返回码, 空白型, , 
+
+ ' enum Status
+.判断开始 (等于 (返回码, 0))
+    返回 (“Ok = 0”)
+.判断 (等于 (返回码, 1))
+    返回 (“GenericError = 1”)
+.判断 (等于 (返回码, 2))
+    返回 (“InvalidParameter = 2”)
+.判断 (等于 (返回码, 3))
+    返回 (“OutOfMemory = 3”)
+.判断 (等于 (返回码, 4))
+    返回 (“ObjectBusy = 4”)
+.判断 (等于 (返回码, 5))
+    返回 (“InsufficientBuffer = 5”)
+.判断 (等于 (返回码, 6))
+    返回 (“NotImplemented = 6”)
+.判断 (等于 (返回码, 7))
+    返回 (“Win32Error = 7”)
+.判断 (等于 (返回码, 8))
+    返回 (“WrongState = 8”)
+.判断 (等于 (返回码, 9))
+    返回 (“Aborted = 9”)
+.判断 (等于 (返回码, 10))
+    返回 (“FileNotFound = 10”)
+.判断 (等于 (返回码, 11))
+    返回 (“ValueOverflow = 11”)
+.判断 (等于 (返回码, 12))
+    返回 (“AccessDenied = 12”)
+.判断 (等于 (返回码, 13))
+    返回 (“UnknownImageFormat = 13”)
+.判断 (等于 (返回码, 14))
+    返回 (“FontFamilyNotFound = 14”)
+.判断 (等于 (返回码, 15))
+    返回 (“FontStyleNotFound = 15”)
+.判断 (等于 (返回码, 16))
+    返回 (“NotTrueTypeFont = 16”)
+.判断 (等于 (返回码, 17))
+    返回 (“UnsupportedGdiplusVersion = 17”)
+.判断 (等于 (返回码, 18))
+    返回 (“GdiplusNotInitialized = 18”)
+.判断 (等于 (返回码, 19))
+    返回 (“PropertyNotFound = 19”)
+.判断 (等于 (返回码, 20))
+    返回 (“PropertyNotSupported = 20”)
+.默认
+    返回 (“未知错误”)
+.判断结束
+
+
+
+
+.子程序 错误检测, 整数型, , 
+.参数 返回码, 整数型, , 
+.参数 实例信息, 文本型, 可空, 
+
+.如果真 (不等于 (返回码, 0))
+    信息框 (相加 (实例信息, “  ”, 取错误描述 (返回码)), 0, )
+.如果真结束
+
+返回 (返回码)
+
+
+.子程序 输出调试文本_字节集, 空白型, , 
+.参数 字节集, 字节集, , 
+
+.局部变量 a, 整数型, , , 
+.局部变量 str, 文本型, , , 
+
+.计次循环首 (取字节集长度 (字节集), a)
+    赋值 (str, 相加 (str, 取十六进制文本 (字节集 [a]), “,”))
+.计次循环尾 ()
+输出调试文本 (str)
+
+
+.类模块 Gdiplus图形, Gdiplus, , 
+
+.程序集变量 nativeGraphics, 空白型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+销毁 ()
+
+.子程序 销毁, 空白型, , 
+.如果真 (不等于 (nativeGraphics, 0))
+    GdipDeleteGraphics (nativeGraphics)
+    赋值 (nativeGraphics, 0)
+.如果真结束
+
+
+.子程序 SetNativeGraphics, 空白型, , 
+.参数 graphics, 整数型, , 
+
+销毁 ()
+赋值 (nativeGraphics, graphics)
+
+
+.子程序 创建_自图像, 整数型, , 
+.参数 image, Gdiplus图像, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipGetImageGraphicsContext (image.GetNativeImage (), n))
+SetNativeGraphics (n)
+返回 (r)
+
+.子程序 创建_自HWND, 整数型, , 返回0成功,用 取错误描述() 来获取错误信息
+.参数 hwnd, 整数型, , 
+
+.局部变量 n, 整数型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateFromHWND (hwnd, n))
+SetNativeGraphics (n)
+返回 (r)
+
+
+.子程序 GetNativeGraphics, 整数型, , 
+返回 (nativeGraphics)
+
+
+.子程序 画曲线, 整数型, , 绘制经过一组指定的 Point 结构的基数样条。
+.参数 pen, Gdiplus画笔, , 线条画笔
+.参数 points, PointF, 数组, 点数组,
+.参数 count, 空白型, 可空, 点数组成员数
+.参数 offset, 空白型, 可空, 点数组中,开始绘制的点位置,从0开始计算
+.参数 numberOfSegments, 空白型, 可空, 点数组中,结束绘制的点位置,
+.参数 tension, 小数型, 可空, 张力
+
+.如果真 (是否为空 (count))
+    赋值 (count, 取数组成员数 (points))
+.如果真结束
+.如果真 (是否为空 (offset))
+    赋值 (offset, 0)
+.如果真结束
+.如果真 (是否为空 (numberOfSegments))
+    赋值 (numberOfSegments, 相减 (count, 1))
+.如果真结束
+.如果真 (是否为空 (tension))
+    赋值 (tension, 0.5)
+.如果真结束
+
+返回 (GdipDrawCurve3 (nativeGraphics, pen.GetNativePen (), points, count, offset, numberOfSegments, tension))
+
+
+.子程序 画直线组, 整数型, , 绘制一系列连接一组 Point 结构的线段。 
+.参数 pen, Gdiplus画笔, , 
+.参数 points, PointF, 数组, 
+.参数 count, 空白型, 可空, 
+
+.如果真 (是否为空 (count))
+    赋值 (count, 取数组成员数 (points))
+.如果真结束
+
+返回 (GdipDrawLines (nativeGraphics, pen.GetNativePen (), points, count))
+
+.子程序 画直线, 整数型, , 绘制一条连接由坐标对指定的两个点的线条。 
+.参数 pen, Gdiplus画笔, , 
+.参数 x1, 小数型, , 
+.参数 y1, 小数型, , 
+.参数 x2, 小数型, , 
+.参数 y2, 小数型, , 
+
+
+返回 (GdipDrawLine (nativeGraphics, pen.GetNativePen (), x1, y1, x2, y2))
+
+
+
+
+.子程序 置呈现模式, 整数型, , 
+.参数 SmoothingMode, 空白型, , 
+
+返回 (GdipSetSmoothingMode (nativeGraphics, SmoothingMode))
+
+
+.子程序 取呈现模式, 整数型, , 
+.参数 取回模式代码, 整数型, 参考, 提供一个整数型变量以接收取回模式代码
+
+赋值 (取回模式代码, -1)
+返回 (GdipGetSmoothingMode (nativeGraphics, 取回模式代码))
+
+
+.子程序 置文本呈现模式, 整数型, , 
+.参数 TextRenderingHint, 空白型, , 
+
+返回 (GdipSetTextRenderingHint (nativeGraphics, TextRenderingHint))
+
+
+.子程序 取文本呈现模式, 整数型, , 
+.参数 取回模式代码, 整数型, 参考, 提供一个整数型变量以接收取回模式代码
+
+返回 (GdipGetTextRenderingHint (nativeGraphics, 取回模式代码))
+
+
+.子程序 画文本, 整数型, , 
+.参数 string, 文本型, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 font, Gdiplus字体, , 
+.参数 brush, Gdiplus画刷, , 
+
+.局部变量 w, 字节集, , , 
+.局部变量 layoutRect, RectF, , , 
+
+赋值 (w, A2W (string))
+赋值 (layoutRect.X, x)
+赋值 (layoutRect.Y, y)
+赋值 (layoutRect.Width, 0)
+赋值 (layoutRect.Height, 0)
+返回 (GdipDrawString (nativeGraphics, w, 相减 (相除 (取字节集长度 (w), 2), 1), font.GetNativeFont (), layoutRect, 0, brush.GetNativeBrush ()))
+
+
+.子程序 获取HDC, 整数型, , 
+.参数 取回设备场景句柄, 整数型, 参考, 提供一个整数型变量以接收取回HDC,不用后请释放设备场景句柄
+
+返回 (GdipGetDC (nativeGraphics, 取回设备场景句柄))
+
+
+.子程序 释放HDC, 整数型, , 
+.参数 hdc, 整数型, , 
+
+返回 (GdipReleaseDC (nativeGraphics, hdc))
+
+
+.子程序 填充矩形, 整数型, , 
+.参数 brush, Gdiplus画刷, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 width, 小数型, , 
+.参数 height, 小数型, , 
+
+返回 (GdipFillRectangle (nativeGraphics, brush.GetNativeBrush (), x, y, width, height))
+
+
+.子程序 清除, 整数型, , 清除整个绘图面并以指定背景色填充。 
+.参数 ARGB颜色, 整数型, , 
+
+返回 (GdipGraphicsClear (nativeGraphics, ARGB颜色))
+
+
+.子程序 画闭合曲线, 整数型, , 
+.参数 pen, Gdiplus画笔, , 
+.参数 points, PointF, 数组, 
+.参数 count, 整数型, 可空, 
+.参数 tension, 小数型, 可空, 
+
+.如果真 (是否为空 (count))
+    赋值 (count, 取数组成员数 (points))
+.如果真结束
+.如果真 (是否为空 (tension))
+    赋值 (tension, 0.5)
+.如果真结束
+
+返回 (GdipDrawClosedCurve2 (nativeGraphics, pen.GetNativePen (), points, count, tension))
+
+
+.子程序 画圆弧, 整数型, , 
+.参数 pen, Gdiplus画笔, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 width, 小数型, , 
+.参数 height, 小数型, , 
+.参数 startAngle, 小数型, , 
+.参数 sweepAngle, 小数型, , 
+
+返回 (GdipDrawArc (nativeGraphics, pen.GetNativePen (), x, y, width, height, startAngle, sweepAngle))
+
+
+.子程序 画贝赛尔曲线, 整数型, , 
+.参数 pen, Gdiplus画笔, , 
+.参数 x1, 小数型, , 
+.参数 y1, 小数型, , 
+.参数 x2, 小数型, , 
+.参数 y2, 小数型, , 
+.参数 x3, 小数型, , 
+.参数 y3, 小数型, , 
+.参数 x4, 小数型, , 
+.参数 y4, 小数型, , 
+
+返回 (GdipDrawBezier (nativeGraphics, pen.GetNativePen (), x1, y1, x2, y2, x3, y3, x4, y4))
+
+
+.子程序 画贝赛尔曲线组, 整数型, , 
+.参数 pen, Gdiplus画笔, , 
+.参数 points, PointF, 数组, 
+.参数 count, 整数型, , 
+
+返回 (GdipDrawBeziers (nativeGraphics, pen.GetNativePen (), points, count))
+
+
+.子程序 画矩形, 整数型, , 
+.参数 pen, Gdiplus画笔, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 width, 小数型, , 
+.参数 height, 小数型, , 
+
+返回 (GdipDrawRectangle (nativeGraphics, pen.GetNativePen (), x, y, width, height))
+
+
+.子程序 画矩形组, 整数型, , 
+.参数 pen, Gdiplus画笔, , 
+.参数 rects, RectF, 数组, 矩形数组
+.参数 count, 整数型, , 矩形数组成员数
+
+返回 (GdipDrawRectangles (nativeGraphics, pen.GetNativePen (), rects, count))
+
+
+.子程序 画椭圆, 整数型, , 
+.参数 pen, Gdiplus画笔, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 width, 小数型, , 
+.参数 height, 小数型, , 
+
+返回 (GdipDrawEllipse (nativeGraphics, pen.GetNativePen (), x, y, width, height))
+
+
+.子程序 画圆饼, 整数型, , 
+.参数 pen, Gdiplus画笔, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 width, 小数型, , 
+.参数 height, 小数型, , 
+.参数 startAngle, 小数型, , 
+.参数 sweepAngle, 小数型, , 
+
+返回 (GdipDrawPie (nativeGraphics, pen.GetNativePen (), x, y, width, height, startAngle, sweepAngle))
+
+
+.子程序 画多边形, 整数型, , 
+.参数 pen, Gdiplus画笔, , 
+.参数 points, PointF, 数组, 
+.参数 count, 整数型, , 
+
+返回 (GdipDrawPolygon (nativeGraphics, pen.GetNativePen (), points, count))
+
+
+.子程序 填充矩形组, 整数型, , 
+.参数 brush, Gdiplus画刷, , 
+.参数 rects, RectF, 数组, 
+.参数 count, 整数型, , 
+
+返回 (GdipFillRectangles (nativeGraphics, brush.GetNativeBrush (), rects, count))
+
+
+.子程序 填充多边形, 整数型, , 
+.参数 brush, Gdiplus画刷, , 
+.参数 points, PointF, 数组, 
+.参数 count, 整数型, , 
+.参数 fillMode, 整数型, , 
+
+返回 (GdipFillPolygon (nativeGraphics, brush.GetNativeBrush (), points, count, fillMode))
+
+
+.子程序 填充椭圆, 整数型, , 
+.参数 brush, Gdiplus画刷, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 width, 小数型, , 
+.参数 height, 小数型, , 
+
+返回 (GdipFillEllipse (nativeGraphics, brush.GetNativeBrush (), x, y, width, height))
+
+
+.子程序 填充圆饼, 整数型, , 
+.参数 brush, Gdiplus画刷, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 width, 小数型, , 
+.参数 height, 小数型, , 
+.参数 startAngle, 小数型, , 
+.参数 sweepAngle, 小数型, , 
+
+返回 (GdipFillPie (nativeGraphics, brush.GetNativeBrush (), x, y, width, height, startAngle, sweepAngle))
+
+
+.子程序 填充闭合曲线, 整数型, , 
+.参数 brush, Gdiplus画刷, , 
+.参数 points, PointF, 数组, 
+.参数 count, 整数型, , 
+.参数 tension, 小数型, , 默认 0.5
+.参数 fillMode, 整数型, , 默认 #填充模式_交替
+
+返回 (GdipFillClosedCurve2 (nativeGraphics, brush.GetNativeBrush (), points, count, tension, fillMode))
+
+
+.子程序 画路径, 整数型, , 
+.参数 pen, Gdiplus画笔, , 
+.参数 path, Gdiplus路径, , 
+
+返回 (GdipDrawPath (nativeGraphics, pen.GetNativePen (), path.GetNativePath ()))
+
+
+.子程序 填充路径, 整数型, , 
+.参数 brush, Gdiplus画刷, , 
+.参数 path, Gdiplus路径, , 
+
+返回 (GdipFillPath (nativeGraphics, brush.GetNativeBrush (), path.GetNativePath ()))
+
+
+.子程序 填充区域, 整数型, , 
+.参数 brush, Gdiplus画刷, , 
+.参数 region, Gdiplus区域, , 
+
+返回 (GdipFillRegion (nativeGraphics, brush.GetNativeBrush (), region.GetNativeRegion ()))
+
+
+.子程序 画图像, 整数型, , 画为原始大小图像
+.参数 image, Gdiplus图像, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+
+返回 (GdipDrawImage (nativeGraphics, image.GetNativeImage (), x, y))
+
+
+.子程序 画图像_缩放, 整数型, , 画为宽高可变的矩形
+.参数 image, Gdiplus图像, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 width, 小数型, , 
+.参数 height, 小数型, , 
+
+返回 (GdipDrawImageRect (nativeGraphics, image.GetNativeImage (), x, y, width, height))
+
+
+.子程序 画图像_扭曲, 整数型, , 画为一个平行四边形。
+.参数 image, Gdiplus图像, , 
+.参数 左上角x, 小数型, , 图片左上角画出位置
+.参数 左上角y, 小数型, , 
+.参数 右上角x, 小数型, , 图片右上角画出位置
+.参数 右上角y, 小数型, , 
+.参数 左下角x, 小数型, , 图片左下角画出位置
+.参数 左下角y, 小数型, , 
+
+.局部变量 dstpoints, PointF, 静态, "4", 
+.局部变量 count, 整数型, , , 头文件中可以为4,实际不行,待定
+
+赋值 (dstpoints [1].x, 左上角x)
+赋值 (dstpoints [1].y, 左上角y)
+赋值 (dstpoints [2].x, 右上角x)
+赋值 (dstpoints [2].y, 右上角y)
+赋值 (dstpoints [3].x, 左下角x)
+赋值 (dstpoints [3].y, 左下角y)
+赋值 (count, 3)
+返回 (GdipDrawImagePoints (nativeGraphics, image.GetNativeImage (), dstpoints, count))
+
+
+.子程序 画图像_局部, 逻辑型, , 可以画出源图像的一部分或全部。
+.参数 参数_图像, Gdiplus图像, , 
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_原图左边, 小数型, , 
+.参数 参数_原图顶边, 小数型, , 
+.参数 参数_原图宽度, 小数型, , 
+.参数 参数_原图高度, 小数型, , 
+.参数 参数_单位, 整数型, 可空, 默认为“单位_像素”
+
+.如果真 (是否为空 (参数_单位))
+    赋值 (参数_单位, #单位_像素)
+.如果真结束
+返回 (等于 (GdipDrawImagePointRect (nativeGraphics, 参数_图像.GetNativeImage (), 参数_左边, 参数_顶边, 参数_原图左边, 参数_原图顶边, 参数_原图宽度, 参数_原图高度, 参数_单位), 0))
+
+.子程序 置剪辑区域_自图形, 整数型, , 将此 图形 的剪辑区域设置为指定 图形 的 剪辑区域 属性。
+.参数 srcgraphics, Gdiplus图形, , 从该对象中获取新剪辑区域。
+.参数 combineMode, 整数型, 可空, #合并模式_XXXX
+
+.如果真 (是否为空 (combineMode))
+    赋值 (combineMode, #合并模式_替代)
+.如果真结束
+返回 (GdipSetClipGraphics (nativeGraphics, srcgraphics.GetNativeGraphics (), combineMode))
+
+
+.子程序 置剪辑区域_自矩形, 整数型, , 将此 图形 的剪辑区域设置为指定的矩形。
+.参数 x, 小数型, , 表示新的剪辑区域x
+.参数 y, 小数型, , 表示新的剪辑区域y
+.参数 width, 小数型, , 表示新的剪辑区域宽
+.参数 height, 小数型, , 表示新的剪辑区域高
+.参数 combineMode, 整数型, 可空, #合并模式_XXXX
+
+.如果真 (是否为空 (combineMode))
+    赋值 (combineMode, #合并模式_替代)
+.如果真结束
+返回 (GdipSetClipRect (nativeGraphics, x, y, width, height, combineMode))
+
+
+.子程序 置剪辑区域_自路径, 整数型, , 将此 图形 的剪辑区域设置为指定的 路径。
+.参数 path, Gdiplus路径, , 表示新的剪辑区域。
+.参数 combineMode, 整数型, 可空, #合并模式_XXXX
+
+.如果真 (是否为空 (combineMode))
+    赋值 (combineMode, #合并模式_替代)
+.如果真结束
+返回 (GdipSetClipPath (nativeGraphics, path.GetNativePath (), combineMode))
+
+
+.子程序 置剪辑区域_自区域, 整数型, , 将此 图形 的剪辑区域设置为指定的 区域。
+.参数 region, Gdiplus区域, , 表示新的剪辑区域
+.参数 combineMode, 整数型, 可空, #合并模式_XXXX
+
+.如果真 (是否为空 (combineMode))
+    赋值 (combineMode, #合并模式_替代)
+.如果真结束
+返回 (GdipSetClipRegion (nativeGraphics, region.GetNativeRegion (), combineMode))
+
+
+.子程序 置剪辑区域_自HRGN, 整数型, , 将此 图形 的剪辑区域设置为指定的 hRgn
+.参数 hRgn, 整数型, , 表示新的剪辑区域
+.参数 combineMode, 整数型, 可空, #合并模式_XXXX
+
+.如果真 (是否为空 (combineMode))
+    赋值 (combineMode, #合并模式_替代)
+.如果真结束
+返回 (GdipSetClipHrgn (nativeGraphics, hRgn, combineMode))
+
+
+.子程序 重置剪辑区域, 整数型, , 将此 图形 的剪辑区域重置为无限区域。
+返回 (GdipResetClip (nativeGraphics))
+
+
+.子程序 平移剪辑区域, 整数型, , 将此 图形 的剪辑区域沿水平方向和垂直方向平移指定的量。
+.参数 dx, 小数型, , 
+.参数 dy, 小数型, , 
+
+返回 (GdipTranslateClip (nativeGraphics, dx, dy))
+
+
+.子程序 取剪辑区域, 整数型, , 
+.参数 region, Gdiplus区域, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipGetClip (nativeGraphics, region.GetNativeRegion ()))
+返回 (r)
+
+
+.子程序 取剪辑区域矩形边界, 整数型, , 
+.参数 rect, RectF, , 提供RectF变量取返回值
+
+返回 (GdipGetClipBounds (nativeGraphics, rect))
+
+
+.子程序 是否为空_剪辑区域, 整数型, , 
+.参数 是否为空, 逻辑型, 参考, 提供逻辑型变量取返回值
+
+赋值 (是否为空, 假)
+返回 (GdipIsClipEmpty (nativeGraphics, 是否为空))
+
+
+.子程序 取可见剪辑区域矩形边界, 整数型, , 获取或设置此 Graphics 对象的可见剪辑区域的边框。
+.参数 rect, RectF, , 提供一个变量取返回值
+
+返回 (GdipGetVisibleClipBounds (nativeGraphics, rect))
+
+
+.子程序 是否为空_可见剪辑区域, 整数型, , 获取一个值，该值指示此 Graphics 对象的可见剪辑区域是否为空。
+.参数 是否为空, 逻辑型, 参考, 提供一个变量取返回值
+
+赋值 (是否为空, 假)
+返回 (GdipIsVisibleClipEmpty (nativeGraphics, 是否为空))
+
+
+.子程序 是否可见_点, 整数型, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 是否可见, 逻辑型, 参考, 提供一个变量取返回值
+
+赋值 (是否可见, 假)
+返回 (GdipIsVisiblePoint (nativeGraphics, x, y, 是否可见))
+
+
+.子程序 是否可见_矩形, 整数型, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 width, 小数型, , 
+.参数 height, 小数型, , 
+.参数 是否可见, 逻辑型, 参考, 提供一个变量取返回值
+
+赋值 (是否可见, 假)
+返回 (GdipIsVisibleRect (nativeGraphics, x, y, width, height, 是否可见))
+
+
+.子程序 变形_置矩阵, 整数型, , 
+.参数 matrix, Gdiplus矩阵, , 
+
+返回 (GdipSetWorldTransform (nativeGraphics, matrix.GetNativeMatrix ()))
+
+
+.子程序 变形_取矩阵, 整数型, , 
+.参数 matrix, Gdiplus矩阵, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipGetWorldTransform (nativeGraphics, matrix.GetNativeMatrix ()))
+返回 (r)
+
+
+.子程序 变形_重置, 整数型, , 
+返回 (GdipResetWorldTransform (nativeGraphics))
+
+
+.子程序 变形_平移, 整数型, , 
+.参数 dx, 小数型, , 
+.参数 dy, 小数型, , 
+.参数 order, 整数型, 可空, 默认 #矩阵顺序_预先计算
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipTranslateWorldTransform (nativeGraphics, dx, dy, order))
+
+
+.子程序 变形_缩放, 整数型, , 
+.参数 sx, 小数型, , 
+.参数 sy, 小数型, , 
+.参数 order, 整数型, 可空, 默认 #矩阵顺序_预先计算
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipScaleWorldTransform (nativeGraphics, sx, sy, order))
+
+
+.子程序 变形_旋转, 整数型, , 
+.参数 角度, 小数型, , 
+.参数 order, 整数型, 可空, 默认 #矩阵顺序_预先计算
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipRotateWorldTransform (nativeGraphics, 角度, order))
+
+
+.子程序 变形_相乘, 整数型, , 
+.参数 matrix, Gdiplus矩阵, , 
+.参数 order, 整数型, 可空, 
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipMultiplyWorldTransform (nativeGraphics, matrix.GetNativeMatrix (), order)) ' 未测试
+
+
+.子程序 取水平分辨率, 整数型, , 
+.参数 dpi, 小数型, 参考, 
+
+返回 (GdipGetDpiX (nativeGraphics, dpi))
+
+.子程序 取垂直分辨率, 整数型, , 
+.参数 dpi, 小数型, 参考, 
+
+返回 (GdipGetDpiY (nativeGraphics, dpi))
+
+.类模块 Gdiplus画笔, Gdiplus, , 
+
+.程序集变量 nativePen, 空白型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+销毁 ()
+
+.子程序 销毁, 空白型, , 
+.如果真 (不等于 (nativePen, 0))
+    GdipDeletePen (nativePen)
+    赋值 (nativePen, 0)
+.如果真结束
+
+
+
+.子程序 创建_自颜色, 整数型, 公开, 
+.参数 ARGB颜色, 整数型, , 要通过 RGB到ARGB() 转换
+.参数 宽度, 小数型, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreatePen1 (ARGB颜色, 宽度, #单位_世界坐标, n))
+SetNativePen (n)
+返回 (r)
+
+
+.子程序 创建_自画刷, 整数型, 公开, 
+.参数 画刷, Gdiplus画刷, , 
+.参数 宽度, 小数型, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreatePen2 (画刷.GetNativeBrush (), 宽度, #单位_世界坐标, n))
+SetNativePen (n)
+返回 (r)
+
+
+.子程序 复制到, 整数型, 公开, 
+.参数 要复制到的画笔, Gdiplus画笔, , 
+
+.局部变量 clonepen, 整数型, , , 
+.局部变量 r, 整数型, , , 
+
+赋值 (r, GdipClonePen (nativePen, clonepen))
+要复制到的画笔.SetNativePen (clonepen)
+返回 (r)
+
+
+.子程序 GetNativePen, 整数型, 公开, 
+返回 (nativePen)
+
+
+.子程序 SetNativePen, 空白型, 公开, 
+.参数 pen, 整数型, , 
+
+销毁 ()
+赋值 (nativePen, pen)
+
+
+
+.子程序 置宽度, 整数型, 公开, 
+.参数 画笔宽度, 小数型, , 
+
+返回 (GdipSetPenWidth (nativePen, 画笔宽度))
+
+
+.子程序 取宽度, 整数型, 公开, 
+.参数 取回宽度, 小数型, 参考, 提供一个小数型变量以接收取回宽度
+
+返回 (GdipGetPenWidth (nativePen, 取回宽度))
+
+
+.子程序 置线帽, 整数型, 公开, 
+.参数 startCap, 整数型, , 使用 #线帽样式_ 开头的常量
+.参数 endCap, 整数型, , 使用 #线帽样式_ 开头的常量
+.参数 dashCap, 整数型, , 使用 #虚线线帽样式_ 开头的常量
+
+返回 (GdipSetPenLineCap197819 (nativePen, startCap, endCap, dashCap))
+
+
+.子程序 置起点线帽, 整数型, 公开, 
+.参数 startCap, 整数型, , 使用 #线帽样式_ 开头的常量
+
+返回 (GdipSetPenStartCap (nativePen, startCap))
+
+
+.子程序 置终点线帽, 整数型, 公开, 
+.参数 endCap, 整数型, , 使用 #线帽样式_ 开头的常量
+
+返回 (GdipSetPenEndCap (nativePen, endCap))
+
+
+.子程序 置虚线线帽, 整数型, 公开, 
+.参数 dashCap, 整数型, , 使用 #虚线线帽样式_ 开头的常量
+
+返回 (GdipSetPenDashCap197819 (nativePen, dashCap))
+
+
+.子程序 取起点线帽, 整数型, 公开, 
+.参数 startCap, 整数型, 参考, 提供一个整数型变量以取得返回的数值
+
+返回 (GdipGetPenStartCap (nativePen, startCap))
+
+
+.子程序 取终点线帽, 整数型, 公开, 
+.参数 endCap, 整数型, 参考, 提供一个整数型变量以取得返回的数值
+
+返回 (GdipGetPenEndCap (nativePen, endCap))
+
+
+.子程序 取虚线线帽, 整数型, 公开, 
+.参数 dashCap, 整数型, 参考, 提供一个整数型变量以取得返回的数值
+
+返回 (GdipGetPenDashCap197819 (nativePen, dashCap))
+
+
+.子程序 置线条联接方式, 整数型, 公开, 
+.参数 lineJoin, 整数型, , 以 #线条联接方式_ 开头的常量
+
+返回 (GdipSetPenLineJoin (nativePen, lineJoin))
+
+
+.子程序 取线条联接方式, 整数型, 公开, 
+.参数 lineJoin, 整数型, 参考, 提供一个整数型变量以取得返回的数值
+
+返回 (GdipGetPenLineJoin (nativePen, lineJoin))
+
+
+.子程序 置斜接长度限制, 整数型, 公开, 设置斜接角上联接宽度的限制。 
+.参数 miterLimit, 小数型, , 
+
+返回 (GdipSetPenMiterLimit (nativePen, miterLimit))
+
+
+.子程序 取斜接长度限制, 整数型, 公开, 获取斜接角上联接宽度的限制。 
+.参数 miterLimit, 小数型, 参考, 
+
+返回 (GdipGetPenMiterLimit (nativePen, miterLimit))
+
+
+.子程序 置画笔对齐方式, 整数型, 公开, 
+.参数 penMode, 整数型, , 以 #画笔对齐方式_ 开头的常量
+
+返回 (GdipSetPenMode (nativePen, penMode))
+
+
+.子程序 取画笔对齐方式, 整数型, 公开, 
+.参数 penMode, 整数型, 参考, 提供一个整数型变量以取得返回的数值
+
+返回 (GdipGetPenMode (nativePen, penMode))
+
+
+.子程序 取画笔填充类型, 整数型, 公开, 
+.参数 type, 整数型, 参考, 提供一个整数型变量以取得返回的数值,为以 #画笔类型_ 开头的常量
+
+返回 (GdipGetPenFillType (nativePen, type))
+
+
+.子程序 置颜色, 整数型, 公开, 
+.参数 ARGB颜色, 整数型, , 
+
+返回 (GdipSetPenColor (nativePen, ARGB颜色))
+
+
+.子程序 取颜色, 整数型, 公开, 
+.参数 ARGB颜色, 整数型, 参考, 提供一个整数型变量以取得返回的数值
+
+返回 (GdipGetPenColor (nativePen, ARGB颜色))
+
+
+.子程序 置画刷, 整数型, 公开, 
+.参数 brush, Gdiplus画刷, , 
+
+返回 (GdipSetPenBrushFill (nativePen, brush.GetNativeBrush ()))
+
+
+.子程序 取画刷, 整数型, 公开, 
+.参数 brush, Gdiplus画刷, , 取出的画刷
+
+.局部变量 r, 整数型, , , 
+.局部变量 br, 整数型, , , 
+
+赋值 (r, GdipGetPenBrushFill (nativePen, br))
+brush.SetNativeBrush (br)
+返回 (r)
+
+
+.子程序 置虚线风格, 整数型, 公开, 设置划出的是否虚线
+.参数 dashstyle, 整数型, , 以 #虚线风格_ 开头的常量
+
+返回 (GdipSetPenDashStyle (nativePen, dashstyle))
+
+
+.子程序 取虚线风格, 整数型, 公开, 
+.参数 dashstyle, 整数型, 参考, 提供一个整数型变量以取得返回的数值
+
+返回 (GdipGetPenDashStyle (nativePen, dashstyle))
+
+
+.子程序 置虚线偏移, 整数型, 公开, 获取或设置直线的起点到短划线图案起始处的距离。
+.参数 offset, 小数型, , 
+
+返回 (GdipSetPenDashOffset (nativePen, offset))
+
+
+.子程序 取虚线偏移, 整数型, 公开, 获取或设置直线的起点到短划线图案起始处的距离。
+.参数 offset, 小数型, 参考, 提供一个小数型变量以取得返回的数值
+
+返回 (GdipGetPenDashOffset (nativePen, offset))
+
+
+.子程序 置虚线格式, 整数型, 公开, 获取或设置自定义的短划线和空白区域的数组。
+.参数 dashArray, 小数型, 数组, 
+.参数 count, 整数型, , 
+
+返回 (GdipSetPenDashArray (nativePen, dashArray, count))
+
+
+.子程序 取虚线格式, 整数型, 公开, 获取或设置自定义的短划线和空白区域的数组。
+.参数 dashArray, 小数型, 数组, 
+.参数 count, 整数型, , 
+
+返回 (GdipGetPenDashArray (nativePen, dashArray, count))
+
+
+.子程序 取虚线格式数, 整数型, 公开, 
+.参数 count, 整数型, 参考, 提供一个整数型变量以取得返回的数值
+
+返回 (GdipGetPenDashCount (nativePen, count))
+
+
+.子程序 置复合数组, 整数型, 公开, 获取或设置用于指定复合钢笔的值数组。复合钢笔绘制由平行直线和空白区域组成的复合直线。 
+.参数 compoundArray, 小数型, 数组, 用于指定复合数组的实数组。该数组中的元素必须按升序排列，不能小于 0，也不能大于 1。
+.参数 count, 整数型, , 
+
+返回 (GdipSetPenCompoundArray (nativePen, compoundArray, count))
+
+
+.子程序 取复合数组, 整数型, 公开, 获取或设置用于指定复合钢笔的值数组。复合钢笔绘制由平行直线和空白区域组成的复合直线。
+.参数 compoundArray, 小数型, 数组, 
+.参数 count, 整数型, , 
+
+返回 (GdipGetPenCompoundArray (nativePen, compoundArray, count))
+
+
+.子程序 取复合数组数, 整数型, 公开, 
+.参数 count, 整数型, 参考, 
+
+返回 (GdipGetPenCompoundCount (nativePen, count))
+
+
+.子程序 置单位, 整数型, , C++类中未封装,不公开
+.参数 unit, 整数型, , 
+
+返回 (GdipSetPenUnit (nativePen, unit))
+
+
+.子程序 取单位, 整数型, , C++类中未封装,不公开
+.参数 unit, 整数型, 参考, 
+
+返回 (GdipGetPenUnit (nativePen, unit))
+
+
+.子程序 变形_置矩阵, 整数型, 公开, 
+.参数 matrix, Gdiplus矩阵, , 
+
+返回 (GdipSetPenTransform (nativePen, matrix.GetNativeMatrix ())) ' 未测试
+
+
+.子程序 变形_取矩阵, 整数型, 公开, 
+.参数 matrix, Gdiplus矩阵, , 
+
+返回 (GdipGetPenTransform (nativePen, matrix.GetNativeMatrix ())) ' 未测试
+
+
+.子程序 变形_重置, 整数型, 公开, 
+返回 (GdipResetPenTransform (nativePen)) ' 未测试
+
+
+.子程序 变形_相乘, 整数型, 公开, 
+.参数 matrix, Gdiplus矩阵, , 
+.参数 order, 整数型, 可空, 
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipMultiplyPenTransform (nativePen, matrix.GetNativeMatrix (), order)) ' 未测试
+
+
+.子程序 变形_平移, 整数型, 公开, 
+.参数 dx, 小数型, , 
+.参数 dy, 小数型, , 
+.参数 order, 整数型, 可空, 
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipTranslatePenTransform (nativePen, dx, dy, order)) ' 未测试
+
+
+.子程序 变形_缩放, 整数型, 公开, 
+.参数 sx, 小数型, , 
+.参数 sy, 小数型, , 
+.参数 order, 整数型, 可空, 
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipScalePenTransform (nativePen, sx, sy, order)) ' 未测试
+
+
+.子程序 变形_旋转, 整数型, 公开, 
+.参数 angle, 小数型, , 
+.参数 order, 整数型, 可空, 
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipRotatePenTransform (nativePen, angle, order)) ' 未测试
+
+
+.类模块 Gdiplus, , , 
+
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.类模块 Gdiplus画刷, Gdiplus, , 
+
+.程序集变量 nativeBrush, 空白型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+销毁 ()
+
+.子程序 销毁, 空白型, , 
+.如果真 (不等于 (nativeBrush, 0))
+    GdipDeleteBrush (nativeBrush)
+    赋值 (nativeBrush, 0)
+.如果真结束
+
+
+.子程序 创建_固色画刷, 整数型, 公开, 
+.参数 ARGB颜色, 空白型, , 要通过 RGB到ARGB() 转换
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateSolidFill (ARGB颜色, n))
+SetNativeBrush (n)
+返回 (r)
+
+
+.子程序 GetNativeBrush, 整数型, 公开, 
+返回 (nativeBrush)
+
+
+.子程序 SetNativeBrush, 空白型, 公开, 
+.参数 brush, 整数型, , 
+
+销毁 ()
+赋值 (nativeBrush, brush)
+
+
+.子程序 复制到, 整数型, 公开, 
+.参数 要复制到的画刷, Gdiplus画刷, , 
+
+.局部变量 clonebrush, 整数型, , , 
+.局部变量 r, 整数型, , , 
+
+赋值 (r, GdipCloneBrush (nativeBrush, clonebrush))
+要复制到的画刷.SetNativeBrush (clonebrush)
+返回 (r)
+
+.子程序 取画刷类型, 整数型, 公开, 
+.参数 type, 整数型, 参考, 提供一个整数型变量以取得返回的数值,为以 #画刷类型_ 开头的常数
+
+返回 (GdipGetBrushType (nativeBrush, type))
+
+
+.子程序 置固色画刷颜色, 整数型, , 
+.参数 ARGB颜色, 整数型, , 
+
+返回 (GdipSetSolidFillColor (nativeBrush, ARGB颜色))
+
+
+.子程序 取固色画刷颜色, 整数型, , 
+.参数 ARGB颜色, 整数型, 参考, 
+
+返回 (GdipGetSolidFillColor (nativeBrush, ARGB颜色))
+
+
+.子程序 创建_阴影画刷, 整数型, , 
+.参数 阴影风格, 整数型, , 以 #阴影风格_ 开头的常量
+.参数 前景ARGB颜色, 整数型, , 要通过 RGB到ARGB() 转换
+.参数 背景ARGB颜色, 整数型, , 要通过 RGB到ARGB() 转换
+
+.局部变量 n, 整数型, , , 
+.局部变量 r, 整数型, , , 
+
+赋值 (r, GdipCreateHatchBrush (阴影风格, 前景ARGB颜色, 背景ARGB颜色, n))
+SetNativeBrush (n)
+返回 (r)
+
+
+.子程序 取阴影风格, 整数型, , 
+.参数 hatchstyle, 整数型, 参考, 提供一个整数型变量以接受返回数值
+
+返回 (GdipGetHatchStyle (nativeBrush, hatchstyle))
+
+
+.子程序 取阴影前景色, 整数型, , 
+.参数 ARGB颜色, 整数型, 参考, 提供一个整数型变量以接受返回数值
+
+返回 (GdipGetHatchForegroundColor (nativeBrush, ARGB颜色))
+
+
+.子程序 取阴影背景色, 整数型, , 
+.参数 ARGB颜色, 整数型, 参考, 提供一个整数型变量以接受返回数值
+
+返回 (GdipGetHatchBackgroundColor (nativeBrush, ARGB颜色))
+
+
+.子程序 创建_线性渐变画刷, 整数型, 公开, 
+.参数 起始点, PointF, , 线性渐变起始点
+.参数 终结点, PointF, , 线性渐变终结点
+.参数 起始ARGB颜色, 整数型, , 线性渐变起始色
+.参数 结束ARGB颜色, 整数型, , 线性渐变结束色
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateLineBrush (起始点, 终结点, 起始ARGB颜色, 结束ARGB颜色, #环绕模式_平铺, n))
+SetNativeBrush (n)
+返回 (r)
+
+
+.子程序 创建_线性渐变画刷_自矩形, 整数型, 公开, 
+.参数 线性渐变界限矩形, RectF, , 线性渐变的界限。 
+.参数 起始ARGB颜色, 整数型, , 线性渐变起始色
+.参数 结束ARGB颜色, 整数型, , 线性渐变结束色
+.参数 线性渐变模式, 整数型, , #线性渐变模式_XXXX
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateLineBrushFromRect (线性渐变界限矩形, 起始ARGB颜色, 结束ARGB颜色, 线性渐变模式, #环绕模式_平铺, n))
+SetNativeBrush (n)
+返回 (r)
+
+
+.子程序 创建_线性渐变画刷_自矩形角度, 整数型, 公开, 
+.参数 线性渐变界限矩形, RectF, , 线性渐变的界限
+.参数 起始ARGB颜色, 整数型, , 线性渐变起始色
+.参数 结束ARGB颜色, 整数型, , 线性渐变结束色
+.参数 角度, 小数型, , 渐变方向线的角度（从 X 轴以顺时针角度计算）。
+.参数 角度缩放, 逻辑型, , 设置为真，指定角度受与此 线性渐变画刷 关联的变换所影响；否则为 假。
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateLineBrushFromRectWithAngle (线性渐变界限矩形, 起始ARGB颜色, 结束ARGB颜色, 角度, 角度缩放, #环绕模式_平铺, n))
+未知函数_18373482 ()
+
+.子程序 置线性渐变颜色, 整数型, 公开, 
+.参数 起始ARGB颜色, 整数型, , 线性渐变起始色
+.参数 结束ARGB颜色, 整数型, , 线性渐变结束色
+
+返回 (GdipSetLineColors (nativeBrush, 起始ARGB颜色, 结束ARGB颜色))
+
+
+.子程序 取线性渐变颜色, 整数型, 公开, 
+.参数 起始ARGB颜色, 整数型, 参考, 提供一个整数型变量接受返回数值
+.参数 结束ARGB颜色, 整数型, 参考, 提供一个整数型变量接受返回数值
+
+.局部变量 argb, 整数型, , "2", 
+.局部变量 r, 整数型, , , 
+
+赋值 (r, GdipGetLineColors (nativeBrush, argb))
+赋值 (起始ARGB颜色, argb [1])
+赋值 (结束ARGB颜色, argb [2])
+返回 (r)
+
+
+.子程序 取线性渐变矩形, 整数型, 公开, 
+.参数 线性渐变界限矩形, RectF, , 
+
+返回 (GdipGetLineRect (nativeBrush, 线性渐变界限矩形))
+
+
+.子程序 置线性渐变灰度校正, 整数型, 公开, 
+.参数 是否启用灰度校正, 逻辑型, , 设置为真,为该 线性渐变画刷 启用了灰度校正。
+
+返回 (GdipSetLineGammaCorrection (nativeBrush, 是否启用灰度校正))
+
+
+.子程序 取线性渐变灰度校正, 整数型, 公开, 
+.参数 是否启用灰度校正, 逻辑型, 参考, 提供一个逻辑型变量接受返回数值
+
+返回 (GdipGetLineGammaCorrection (nativeBrush, 是否启用灰度校正))
+
+
+.子程序 取线性渐变自定过渡数, 整数型, 公开, 
+.参数 数量, 整数型, 参考, 
+
+返回 (GdipGetLineBlendCount (nativeBrush, 数量))
+
+
+.子程序 置线性渐变自定过渡, 整数型, 公开, 一个 Blend，表示渐变的自定义过渡 ，其中包含混合因子和位置的相应数组。混合因子指定在相应位置处使用的起始色和结束色的百分比。该位置作为沿渐变线的距离的百分比给出。
+.参数 自定过渡因子, 小数型, 数组, 
+.参数 自定过渡位置, 小数型, 数组, 
+.参数 数量, 整数型, , 
+
+
+返回 (GdipSetLineBlend (nativeBrush, 自定过渡因子, 自定过渡位置, 数量))
+
+
+.子程序 取线性渐变自定过渡, 整数型, 公开, 获取或设置一个 Blend，它指定定义渐变自定义过渡的位置和因子。 
+.参数 自定过渡因子, 小数型, 数组, 
+.参数 自定过渡位置, 小数型, 数组, 
+.参数 数量, 整数型, , 
+
+返回 (GdipGetLineBlend (nativeBrush, 自定过渡因子, 自定过渡位置, 数量))
+
+
+.子程序 取线性渐变插值颜色数, 整数型, 公开, 
+.参数 count, 整数型, 参考, 
+
+返回 (GdipGetLinePresetBlendCount (nativeBrush, count))
+
+
+.子程序 置线性渐变插值颜色, 整数型, 公开, 一个 ColorBlend，定义多色线性渐变,包含颜色和位置的相应数组。这些位置是介于 0 到 1 之间的值，指定沿定位相应颜色的渐变线的距离的百分比。设置该属性将在沿渐变线的每一位置创建具有一种颜色的多色渐变。设置该属性将使该 线性渐变画刷 以前的所有颜色、位置和过渡设置无效。
+.参数 argbs, 整数型, 数组, 
+.参数 blendPositions, 小数型, 数组, 
+.参数 count, 整数型, , 
+
+返回 (GdipSetLinePresetBlend (nativeBrush, argbs, blendPositions, count))
+
+
+.子程序 取线性渐变插值颜色, 整数型, 公开, 一个 ColorBlend，定义多色线性渐变,包含颜色和位置的相应数组。这些位置是介于 0 到 1 之间的值，指定沿定位相应颜色的渐变线的距离的百分比。设置该属性将在沿渐变线的每一位置创建具有一种颜色的多色渐变。设置该属性将使该 线性渐变画刷 以前的所有颜色、位置和过渡设置无效。
+.参数 argbs, 整数型, 数组, 
+.参数 blendPositions, 小数型, 数组, 
+.参数 count, 整数型, , 
+
+返回 (GdipGetLinePresetBlend (nativeBrush, argbs, blendPositions, count))
+
+
+
+.子程序 置线性渐变钟形共混, 整数型, 公开, 创建基于钟形曲线的渐变过渡过程。 
+.参数 focus, 小数型, , 介于 0 到 1 之间的一个值，它指定渐变中心（渐变中只由结束色构成的点）。 
+.参数 scale, 小数型, , 介于 0 到 1 之间的一个值，它指定颜色从 focus 过渡的过渡速度。
+
+返回 (GdipSetLineSigmaBlend (nativeBrush, focus, scale))
+
+
+.子程序 置线性渐变线性共混, 整数型, 公开, 创建一个从中心色向两端单个颜色线性过渡的线性渐变过程。
+.参数 focus, 小数型, , 介于 0 到 1 之间的一个值，它指定渐变中心（渐变中只由结束色构成的点）。 
+.参数 scale, 小数型, , 介于 0 到 1 之间的一个值，它指定颜色从起始色过渡到 focus（结束色）的过渡速度。 
+
+返回 (GdipSetLineLinearBlend (nativeBrush, focus, scale))
+
+
+.子程序 置线性渐变环绕模式, 整数型, 公开, 
+.参数 wrapmode, 整数型, , 以 #环绕模式_ 开头的常量
+
+返回 (GdipSetLineWrapMode (nativeBrush, wrapmode))
+
+
+.子程序 取线性渐变环绕模式, 整数型, 公开, 
+.参数 wrapmode, 整数型, 参考, 提供一个整数型变量接受返回数值
+
+返回 (GdipGetLineWrapMode (nativeBrush, wrapmode))
+
+
+.子程序 创建_图像纹理画刷, 整数型, 公开, 
+.参数 image, Gdiplus图像, , 
+.参数 wrapmode, 整数型, 可空, #环绕模式_XXXX,指定此 TextureBrush 对象的平铺方式。 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+.如果真 (是否为空 (wrapmode))
+    赋值 (wrapmode, #环绕模式_平铺)
+.如果真结束
+赋值 (r, GdipCreateTexture (image.GetNativeImage (), wrapmode, n))
+SetNativeBrush (n)
+返回 (r)
+
+
+.子程序 创建_图像纹理画刷_局部, 整数型, 公开, 把图像的一部分创建为画刷
+.参数 image, Gdiplus图像, , 
+.参数 wrapmode, 整数型, 可空, #环绕模式_XXXX,指定此 TextureBrush 对象的平铺方式。
+.参数 x, 小数型, , 图像局部起点x
+.参数 y, 小数型, , 图像局部起点y
+.参数 width, 小数型, , 图像局部宽度
+.参数 height, 小数型, , 图像局部高度
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+.如果真 (是否为空 (wrapmode))
+    赋值 (wrapmode, #环绕模式_平铺)
+.如果真结束
+赋值 (r, GdipCreateTexture2 (image.GetNativeImage (), wrapmode, x, y, width, height, n))
+SetNativeBrush (n)
+返回 (r)
+
+
+.子程序 置图像纹理环绕模式, 整数型, 公开, 
+.参数 wrapmode, 整数型, , #环绕模式_XXXX
+
+返回 (GdipSetTextureWrapMode (nativeBrush, wrapmode))
+
+
+.子程序 取图像纹理环绕模式, 整数型, 公开, 
+.参数 wrapmode, 整数型, 参考, 提供整数变量取返回值,#环绕模式_XXXX
+
+返回 (GdipGetTextureWrapMode (nativeBrush, wrapmode))
+
+
+.子程序 取图像纹理画刷图像, 整数型, 公开, 
+.参数 image, Gdiplus图像, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipGetTextureImage (nativeBrush, n))
+image.SetNativeImage (n)
+返回 (r)
+
+
+.子程序 变形_图像纹理_置矩阵, 整数型, 公开, 
+.参数 matrix, Gdiplus矩阵, , 
+
+返回 (GdipSetTextureTransform (nativeBrush, matrix.GetNativeMatrix ())) ' 未测试
+
+
+.子程序 变形_图像纹理_取矩阵, 整数型, 公开, 
+.参数 matrix, Gdiplus矩阵, , 
+
+返回 (GdipGetTextureTransform (nativeBrush, matrix.GetNativeMatrix ())) ' 未测试
+
+
+.子程序 变形_图像纹理_重置, 整数型, 公开, 
+返回 (GdipResetTextureTransform (nativeBrush))
+
+
+.子程序 变形_图像纹理_相乘, 整数型, 公开, 
+.参数 matrix, Gdiplus矩阵, , 
+.参数 order, 整数型, 可空, 
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipMultiplyTextureTransform (nativeBrush, matrix.GetNativeMatrix (), order)) ' 未测试
+
+
+.子程序 变形_图像纹理_平移, 整数型, 公开, 
+.参数 dx, 小数型, , 
+.参数 dy, 小数型, , 
+.参数 order, 整数型, 可空, 
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipTranslateTextureTransform (nativeBrush, dx, dy, order)) ' 未测试
+
+
+.子程序 变形_图像纹理_缩放, 整数型, 公开, 
+.参数 sx, 小数型, , 
+.参数 sy, 小数型, , 
+.参数 order, 整数型, 可空, 
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipScaleTextureTransform (nativeBrush, sx, sy, order)) ' 未测试
+
+
+.子程序 变形_图像纹理_旋转, 整数型, 公开, 
+.参数 angle, 小数型, , 
+.参数 order, 整数型, 可空, 
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipRotateTextureTransform (nativeBrush, angle, order)) ' 未测试
+
+
+.子程序 变形_线性渐变_置矩阵, 整数型, 公开, 
+.参数 matrix, Gdiplus矩阵, , 
+
+返回 (GdipSetLineTransform (nativeBrush, matrix.GetNativeMatrix ())) ' 未测试
+
+
+.子程序 变形_线性渐变_取矩阵, 整数型, 公开, 
+.参数 matrix, Gdiplus矩阵, , 
+
+返回 (GdipGetLineTransform (nativeBrush, matrix.GetNativeMatrix ())) ' 未测试
+
+
+.子程序 变形_线性渐变_重置, 整数型, 公开, 
+返回 (GdipResetLineTransform (nativeBrush)) ' 未测试
+
+
+.子程序 变形_线性渐变_相乘, 整数型, 公开, 
+.参数 matrix, Gdiplus矩阵, , 
+.参数 order, 整数型, 可空, 
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipMultiplyLineTransform (nativeBrush, matrix.GetNativeMatrix (), order)) ' 未测试
+
+
+.子程序 变形_线性渐变_平移, 整数型, 公开, 
+.参数 dx, 小数型, , 
+.参数 dy, 小数型, , 
+.参数 order, 整数型, 可空, 
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipTranslateLineTransform (nativeBrush, dx, dy, order)) ' 未测试
+
+
+.子程序 变形_线性渐变_缩放, 整数型, 公开, 
+.参数 sx, 小数型, , 
+.参数 sy, 小数型, , 
+.参数 order, 整数型, 可空, 
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipScaleLineTransform (nativeBrush, sx, sy, order)) ' 未测试
+
+
+.子程序 变形_线性渐变_旋转, 整数型, 公开, 
+.参数 angle, 小数型, , 
+.参数 order, 整数型, 可空, 
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipRotateLineTransform (nativeBrush, angle, order)) ' 未测试
+
+
+.子程序 创建_路径渐变画刷, 整数型, 公开, 
+.参数 points, PointF, 数组, 
+.参数 count, 整数型, , 
+.参数 wrapMode, 整数型, 可空, #环绕模式_XXXX,指定此 TextureBrush 对象的平铺方式。 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+.如果真 (是否为空 (wrapMode))
+    赋值 (wrapMode, #环绕模式_不平铺)
+.如果真结束
+赋值 (r, GdipCreatePathGradient (points, count, wrapMode, n))
+SetNativeBrush (n)
+返回 (r)
+
+
+.子程序 创建_路径渐变画刷_自路径, 整数型, 公开, 
+.参数 path, Gdiplus路径, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreatePathGradientFromPath (path.GetNativePath (), n))
+SetNativeBrush (n)
+返回 (r)
+
+
+.子程序 置路径渐变中心点颜色, 整数型, 公开, 
+.参数 中心点ARGB颜色, 整数型, , 
+
+返回 (GdipSetPathGradientCenterColor (nativeBrush, 中心点ARGB颜色))
+
+
+.子程序 取路径渐变中心点颜色, 整数型, 公开, 
+.参数 中心点ARGB颜色, 整数型, 参考, 
+
+返回 (GdipGetPathGradientCenterColor (nativeBrush, 中心点ARGB颜色))
+
+
+.子程序 变形_路径渐变_取矩阵, 整数型, 公开, 
+.参数 matrix, Gdiplus矩阵, , 
+
+返回 (GdipGetPathGradientTransform (nativeBrush, matrix.GetNativeMatrix ())) ' 未测试
+
+
+.子程序 变形_路径渐变_置矩阵, 整数型, 公开, 
+.参数 matrix, Gdiplus矩阵, , 
+
+返回 (GdipSetPathGradientTransform (nativeBrush, matrix.GetNativeMatrix ())) ' 未测试
+
+
+.子程序 变形_路径渐变_重置, 整数型, 公开, 
+返回 (GdipResetPathGradientTransform (nativeBrush)) ' 未测试
+
+
+.子程序 变形_路径渐变_相乘, 整数型, 公开, 
+.参数 matrix, Gdiplus矩阵, , 
+.参数 order, 整数型, 可空, 
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipMultiplyPathGradientTransform (nativeBrush, matrix.GetNativeMatrix (), order)) ' 未测试
+
+
+.子程序 变形_路径渐变_平移, 整数型, 公开, 
+.参数 dx, 小数型, , 
+.参数 dy, 小数型, , 
+.参数 order, 整数型, 可空, 
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipTranslatePathGradientTransform (nativeBrush, dx, dy, order)) ' 未测试
+
+
+.子程序 变形_路径渐变_缩放, 整数型, 公开, 
+.参数 sx, 小数型, , 
+.参数 sy, 小数型, , 
+.参数 order, 整数型, 可空, 
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipScalePathGradientTransform (nativeBrush, sx, sy, order)) ' 未测试
+
+
+.子程序 变形_路径渐变_旋转, 整数型, 公开, 
+.参数 angle, 小数型, , 
+.参数 order, 整数型, 可空, 
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipRotatePathGradientTransform (nativeBrush, angle, order)) ' 未测试
+
+
+.子程序 置路径渐变路径, 整数型, 公开, 
+.参数 path, Gdiplus路径, , 
+
+返回 (GdipSetPathGradientPath (nativeBrush, path.GetNativePath ())) ' 未测试
+
+
+.子程序 取路径渐变路径, 整数型, 公开, 
+.参数 path, Gdiplus路径, , 
+
+返回 (GdipGetPathGradientPath (nativeBrush, path.GetNativePath ())) ' 未测试
+
+
+.子程序 置路径渐变中心点, 整数型, 公开, 
+.参数 points, PointF, , 
+
+返回 (GdipSetPathGradientCenterPoint (nativeBrush, points)) ' 未测试
+
+
+.子程序 取路径渐变中心点, 整数型, 公开, 
+.参数 points, PointF, , 
+
+返回 (GdipGetPathGradientCenterPoint (nativeBrush, points)) ' 未测试
+
+
+.子程序 取路径渐变矩形边界, 整数型, 公开, 
+.参数 rect, RectF, , 
+
+返回 (GdipGetPathGradientRect (nativeBrush, rect)) ' 未测试
+
+
+.子程序 置路径渐变环绕模式, 整数型, 公开, 
+.参数 wrapmode, 整数型, , 
+
+返回 (GdipSetPathGradientWrapMode (nativeBrush, wrapmode)) ' 未测试
+
+
+.子程序 取路径渐变环绕模式, 整数型, 公开, 
+.参数 wrapmode, 整数型, 参考, 
+
+返回 (GdipGetPathGradientWrapMode (nativeBrush, wrapmode)) ' 未测试
+
+
+.类模块 Gdiplus字体, Gdiplus, , 
+
+.程序集变量 nativeFont, 空白型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+销毁 ()
+
+.子程序 销毁, 空白型, , 
+.如果真 (不等于 (nativeFont, 0))
+    GdipDeleteFont (nativeFont)
+    赋值 (nativeFont, 0)
+.如果真结束
+
+
+.子程序 创建, 整数型, 公开, 
+.参数 name, 文本型, , 字体名称
+.参数 emSize, 小数型, , 字体尺寸
+.参数 style, 整数型, , 字体风格
+.参数 unit, 整数型, , 字体度量单位
+
+.局部变量 family, GdiplusFontFamily, , , 
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+family.创建_自名称 (name)
+赋值 (r, GdipCreateFont (family.GetNativeFamily (), emSize, style, unit, n))
+SetNativeFont (n)
+返回 (r)
+
+.子程序 创建_自HDC, 整数型, 公开, 
+.参数 hdc, 空白型, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateFontFromDC (hdc, n))
+SetNativeFont (n)
+返回 (r)
+
+
+.子程序 GetNativeFont, 整数型, , 
+返回 (nativeFont)
+
+
+.子程序 SetNativeFont, 空白型, , 
+.参数 Font, 整数型, , 
+
+销毁 ()
+赋值 (nativeFont, Font)
+
+.子程序 取字体风格, 整数型, 公开, 
+.参数 style, 整数型, 参考, 
+
+返回 (GdipGetFontStyle (nativeFont, style))
+
+
+.子程序 取字体尺寸, 整数型, 公开, 
+.参数 size, 小数型, 参考, 
+
+返回 (GdipGetFontSize (nativeFont, size))
+
+
+.子程序 取字体单位, 整数型, 公开, 
+.参数 unit, 整数型, 参考, 
+
+返回 (GdipGetFontUnit (nativeFont, unit))
+
+
+.子程序 取字体高度, 整数型, 公开, 
+.参数 graphics, Gdiplus图形, , 
+.参数 height, 小数型, 参考, 
+
+返回 (GdipGetFontHeight (nativeFont, graphics.GetNativeGraphics (), height))
+
+
+.类模块 GdiplusFontFamily, Gdiplus, , 
+
+.程序集变量 nativeFamily, 空白型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+销毁 ()
+
+.子程序 销毁, 空白型, , 
+.如果真 (不等于 (nativeFamily, 0))
+    GdipDeleteFontFamily (nativeFamily)
+    赋值 (nativeFamily, 0)
+.如果真结束
+
+
+.子程序 创建_自名称, 整数型, 公开, 
+.参数 name, 文本型, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateFontFamilyFromName (A2W (name), 0, n))
+SetNativeFamily (n)
+返回 (r)
+
+
+.子程序 GetNativeFamily, 整数型, 公开, 
+返回 (nativeFamily)
+
+
+.子程序 SetNativeFamily, 空白型, 公开, 
+.参数 Family, 整数型, , 
+
+销毁 ()
+赋值 (nativeFamily, Family)
+
+.类模块 Gdiplus自定义线帽, Gdiplus, , 
+
+.程序集变量 nativeCap, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+销毁 ()
+
+.子程序 销毁, 空白型, , 
+.如果真 (不等于 (nativeCap, 0))
+    GdipDeleteCustomLineCap (nativeCap)
+    赋值 (nativeCap, 0)
+.如果真结束
+
+
+.类模块 Gdiplus路径, Gdiplus, , 
+
+.程序集变量 nativePath, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+销毁 ()
+
+.子程序 销毁, 空白型, , 
+.如果真 (不等于 (nativePath, 0))
+    GdipDeletePath (nativePath)
+    赋值 (nativePath, 0)
+.如果真结束
+
+
+.子程序 GetNativePath, 整数型, , 
+返回 (nativePath)
+
+
+.子程序 SetNativePath, 空白型, , 
+.参数 path, 整数型, , 
+
+销毁 ()
+赋值 (nativePath, path)
+
+
+.子程序 创建, 整数型, 公开, 
+.参数 填充模式, 整数型, 可空, 以 #填充模式_ 开头的常量, 默认 #填充模式_交替
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+.如果真 (是否为空 (填充模式))
+    赋值 (填充模式, #填充模式_交替)
+.如果真结束
+赋值 (r, GdipCreatePath (填充模式, n))
+SetNativePath (n)
+返回 (r)
+
+
+.子程序 创建2, 整数型, 公开, 
+.参数 points, PointF, 数组, 
+.参数 types, 字节型, 数组, 
+.参数 count, 整数型, , 
+.参数 fillMode, 整数型, 可空, 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+.如果真 (是否为空 (fillMode))
+    赋值 (fillMode, #填充模式_交替)
+.如果真结束
+赋值 (r, GdipCreatePath2 (points, types, count, fillMode, n)) ' 未测试
+SetNativePath (n)
+返回 (r)
+
+
+.子程序 加入直线, 整数型, 公开, 
+.参数 x1, 小数型, , 
+.参数 y1, 小数型, , 
+.参数 x2, 小数型, , 
+.参数 y2, 小数型, , 
+
+返回 (GdipAddPathLine (nativePath, x1, y1, x2, y2))
+
+
+.子程序 加入直线组, 整数型, 公开, 
+.参数 points, PointF, 数组, 
+.参数 count, 整数型, , 
+
+返回 (GdipAddPathLine2 (nativePath, points, count))
+
+
+.子程序 加入圆弧, 整数型, 公开, 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 width, 小数型, , 
+.参数 height, 小数型, , 
+.参数 startAngle, 小数型, , 
+.参数 sweepAngle, 小数型, , 
+
+返回 (GdipAddPathArc (nativePath, x, y, width, height, startAngle, sweepAngle))
+
+
+.子程序 加入贝赛尔曲线, 整数型, 公开, 
+.参数 x1, 小数型, , 
+.参数 y1, 小数型, , 
+.参数 x2, 小数型, , 
+.参数 y2, 小数型, , 
+.参数 x3, 小数型, , 
+.参数 y3, 小数型, , 
+.参数 x4, 小数型, , 
+.参数 y4, 小数型, , 
+
+返回 (GdipAddPathBezier (nativePath, x1, y1, x2, y2, x3, y3, x4, y4))
+
+
+.子程序 加入贝赛尔曲线组, 整数型, 公开, 
+.参数 points, PointF, 数组, 
+.参数 count, 整数型, , 
+
+返回 (GdipAddPathBeziers (nativePath, points, count))
+
+
+.子程序 加入曲线, 整数型, 公开, 
+.参数 points, PointF, 数组, 
+.参数 count, 整数型, 可空, 
+.参数 offset, 整数型, 可空, 
+.参数 numberOfSegments, 整数型, 可空, 
+.参数 tension, 小数型, 可空, 
+
+.如果真 (是否为空 (count))
+    赋值 (count, 取数组成员数 (points))
+.如果真结束
+.如果真 (是否为空 (offset))
+    赋值 (offset, 0)
+.如果真结束
+.如果真 (是否为空 (numberOfSegments))
+    赋值 (numberOfSegments, 相减 (count, 1))
+.如果真结束
+.如果真 (是否为空 (tension))
+    赋值 (tension, 0.5)
+.如果真结束
+返回 (GdipAddPathCurve3 (nativePath, points, count, offset, numberOfSegments, tension))
+
+
+.子程序 加入闭合曲线, 整数型, 公开, 
+.参数 points, PointF, 数组, 
+.参数 count, 整数型, 可空, 
+.参数 tension, 小数型, 可空, 
+
+.如果真 (是否为空 (count))
+    赋值 (count, 取数组成员数 (points))
+.如果真结束
+.如果真 (是否为空 (tension))
+    赋值 (tension, 0.5)
+.如果真结束
+返回 (GdipAddPathClosedCurve2 (nativePath, points, count, tension))
+
+
+.子程序 加入矩形, 整数型, 公开, 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 width, 小数型, , 
+.参数 height, 小数型, , 
+
+返回 (GdipAddPathRectangle (nativePath, x, y, width, height))
+
+
+.子程序 加入矩形组, 整数型, 公开, 
+.参数 rects, RectF, 数组, 
+.参数 count, 整数型, , 
+
+返回 (GdipAddPathRectangles (nativePath, rects, count))
+
+
+.子程序 加入椭圆, 整数型, 公开, 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 width, 小数型, , 
+.参数 height, 小数型, , 
+
+返回 (GdipAddPathEllipse (nativePath, x, y, width, height))
+
+
+.子程序 加入圆饼, 整数型, 公开, 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 width, 小数型, , 
+.参数 height, 小数型, , 
+.参数 startAngle, 小数型, , 
+.参数 sweepAngle, 小数型, , 
+
+返回 (GdipAddPathPie (nativePath, x, y, width, height, startAngle, sweepAngle))
+
+
+.子程序 加入多边形, 整数型, 公开, 
+.参数 points, PointF, 数组, 
+.参数 count, 整数型, , 
+
+返回 (GdipAddPathPolygon (nativePath, points, count))
+
+
+.子程序 加入路径, 整数型, 公开, 
+.参数 addingPath, Gdiplus路径, , 
+.参数 connect, 逻辑型, , 指定添加的路径中的第一个图形是否是该路径中最后一个图形的一部分。为 真 指定（如果可能）添加的路径中的第一个图形是该路径中最后一个图形的一部分。为 假 指定添加的路径中的第一个图形与该路径中最后一个图形不同。
+
+返回 (GdipAddPathPath (nativePath, addingPath.GetNativePath (), connect))
+
+
+.子程序 加入文本, 整数型, 公开, 
+.参数 string, 文本型, , 
+.参数 x, 整数型, , 
+.参数 y, 整数型, , 
+.参数 fontname, 文本型, , 
+.参数 style, 整数型, , 
+.参数 emSize, 小数型, , 
+
+.局部变量 w, 字节集, , , 
+.局部变量 family, GdiplusFontFamily, , , 
+.局部变量 layoutRect, RectF, , , 
+.局部变量 length, 整数型, , , 
+.局部变量 format, 整数型, , , 
+
+赋值 (w, A2W (string))
+赋值 (length, 相减 (相除 (取字节集长度 (w), 2), 1))
+赋值 (layoutRect.X, x)
+赋值 (layoutRect.Y, y)
+赋值 (layoutRect.Width, 0)
+赋值 (layoutRect.Height, 0)
+赋值 (format, 0)
+family.创建_自名称 (fontname)
+返回 (GdipAddPathString (nativePath, w, length, family.GetNativeFamily (), style, emSize, layoutRect, format))
+
+
+.子程序 复制到, 整数型, 公开, 
+.参数 clonePath, Gdiplus路径, , 
+
+.局部变量 n, 整数型, , , 
+.局部变量 r, 整数型, , , 
+
+赋值 (r, GdipClonePath (nativePath, n))
+clonePath.SetNativePath (n)
+返回 (r)
+
+
+.子程序 重设路径, 整数型, 公开, 清空 PathPoints 和 PathTypes 数组并将 FillMode 设置为 Alternate。
+返回 (GdipResetPath (nativePath))
+
+
+.子程序 置填充模式, 整数型, 公开, 
+.参数 fillmode, 整数型, , #填充模式_XXXX
+
+返回 (GdipSetPathFillMode (nativePath, fillmode))
+
+
+.子程序 取填充模式, 整数型, 公开, 
+.参数 fillmode, 整数型, 参考, 提供一个整数型变量接受返回数值
+
+.局部变量 n, 空白型, , , 
+
+赋值 (fillmode, #填充模式_交替)
+返回 (GdipGetPathFillMode (nativePath, fillmode))
+
+
+
+.子程序 取点数量, 整数型, 公开, 
+.参数 count, 整数型, 参考, 
+
+返回 (GdipGetPointCount (nativePath, count))
+
+
+.子程序 取路径数据, 整数型, 公开, 
+.参数 pathData, PathData, , 
+
+返回 (GdipGetPathData (nativePath, pathData))
+
+
+.子程序 开始新图形, 整数型, 公开, 不闭合当前图形即开始一个新图形。后面添加到该路径的所有点都被添加到此新图形中。 
+返回 (GdipStartPathFigure (nativePath))
+
+
+.子程序 闭合当前图形, 整数型, 公开, 闭合当前图形并开始新的图形。如果当前图形包含一系列相互连接的直线和曲线，该方法通过连接一条从终结点到起始点的直线，闭合该环回。
+返回 (GdipClosePathFigure (nativePath))
+
+.子程序 闭合所有图形, 整数型, 公开, 闭合此路径中所有开放的图形并开始一个新图形。它通过连接一条从图形的终结点到起始点的直线，闭合每一开放的图形。 
+返回 (GdipClosePathFigures (nativePath))
+
+
+
+.子程序 设置标记, 整数型, 公开, 创建路径上的标记，标记可用于分隔该路径的各部分。然后可以使用 NextMarker 方法循环访问路径中的标记。标记用来分隔各组子路径。在路径的两个标记间可含有一个或多个子路径。
+返回 (GdipSetPathMarker (nativePath))
+
+
+.子程序 清除标记, 整数型, 公开, 清除此路径的所有标记。 
+返回 (GdipClearPathMarkers (nativePath))
+
+
+.子程序 反转路径点顺序, 整数型, 公开, 反转此 GraphicsPath 的 PathPoints 数组中各点的顺序。
+返回 (GdipReversePath (nativePath))
+
+
+.子程序 取最终点, 整数型, 公开, 获取此 GraphicsPath 的 PathPoints 数组中的最后的点。 
+.参数 lastPoint, PointF, , 提供一个PointF变量接受返回值
+
+返回 (GdipGetPathLastPoint (nativePath, lastPoint))
+
+
+.子程序 取路径点类型数组, 整数型, 公开, 获取 PathPoints 数组中相应点的类型。指定路径中相应点的类型的字节数组。 
+.参数 types, 字节型, 数组, 
+.参数 count, 整数型, , 
+
+重定义数组 (types, 假, count)
+返回 (GdipGetPathTypes (nativePath, types, count))
+
+
+.子程序 取路径点坐标数组, 整数型, 公开, 
+.参数 points, PointF, 数组, 
+.参数 count, 整数型, , 
+
+重定义数组 (points, 假, count)
+返回 (GdipGetPathPoints (nativePath, points, count))
+
+
+.子程序 是否在路径内部, 整数型, 公开, 指示指定点是否包含在此 GraphicsPath 内，它位于指定的 Graphics 的可见剪辑区域内。
+.参数 x, 小数型, , 测试点的 X 坐标。
+.参数 y, 小数型, , 测试点的 Y 坐标。
+.参数 graphics, Gdiplus图形, , 要对其测试可见性的 Graphics。
+.参数 result, 逻辑型, 参考, 提供一个逻辑型变量接受返回值
+
+返回 (GdipIsVisiblePathPoint (nativePath, x, y, graphics.GetNativeGraphics (), result))
+
+
+.子程序 是否在路径轮廓, 整数型, 公开, 指示当使用指定的 Pen 和 Graphics 绘制此 GraphicsPath 时，指定点是否包含在后者的轮廓内（下）。 
+.参数 x, 小数型, , 测试点的 X 坐标。
+.参数 y, 小数型, , 测试点的 Y 坐标。
+.参数 pen, Gdiplus画笔, , 要测试的 Pen。绘制路径边界的画笔粗细
+.参数 graphics, Gdiplus图形, , 要对其测试可见性的 Graphics。
+.参数 result, 逻辑型, 参考, 提供一个逻辑型变量接受返回值
+
+返回 (GdipIsOutlineVisiblePathPoint (nativePath, x, y, pen.GetNativePen (), graphics.GetNativeGraphics (), result))
+
+
+.子程序 平展路径, 整数型, 公开, 此 GraphicsPath 对象中的各段曲线转换成相连的线段序列。
+.参数 matrix, Gdiplus矩阵, 可空, 用来在展平前对此 GraphicsPath 进行变形的 Matrix 对象。
+.参数 flatness, 小数型, 可空, 指定曲线和其展平的近似直线之间的最大允许误差。值 0.25 是默认值。降低该展平值将增加近似直线中线段的数目。
+
+.局部变量 nativeMatrix, 空白型, , , 
+
+.如果真 (是否为空 (flatness))
+    赋值 (flatness, 0.25)
+.如果真结束
+.如果 (是否为空 (matrix))
+    赋值 (nativeMatrix, 0)
+.否则
+    赋值 (nativeMatrix, matrix.GetNativeMatrix ())
+.如果结束
+返回 (GdipFlattenPath (nativePath, nativeMatrix, flatness))
+
+
+.子程序 变换路径, 整数型, 公开, 
+.参数 matrix, Gdiplus矩阵, , 
+
+返回 (GdipTransformPath (nativePath, matrix.GetNativeMatrix ()))
+
+
+.子程序 取路径矩形边界, 整数型, 公开, 取得限定此 GraphicsPath 对象的矩形。
+.参数 bounds, RectF, , 
+.参数 matrix, Gdiplus矩阵, 可空, 
+.参数 pen, Gdiplus画笔, 可空, 
+
+.局部变量 nativeMatrix, 空白型, , , 
+.局部变量 nativePen, 空白型, , , 
+
+.如果 (是否为空 (matrix))
+    赋值 (nativeMatrix, 0)
+.否则
+    赋值 (nativeMatrix, matrix.GetNativeMatrix ())
+.如果结束
+.如果 (是否为空 (pen))
+    赋值 (nativePen, 0)
+.否则
+    赋值 (nativePen, pen.GetNativePen ())
+.如果结束
+返回 (GdipGetPathWorldBounds (nativePath, bounds, nativeMatrix, nativePen))
+
+
+.子程序 扩展路径, 整数型, 公开, 在用指定的画笔绘制此路径时，用包含所填充区域的曲线代替此路径。
+.参数 pen, Gdiplus画笔, , 指定路径原始轮廓和此方法创建的新轮廓之间的宽度。 
+.参数 matrix, Gdiplus矩阵, 可空, 指定扩展前应用于路径的变形。
+.参数 flatness, 小数型, 可空, 指定曲线展平的值。
+
+.局部变量 nativeMatrix, 空白型, , , 
+
+.如果 (是否为空 (matrix))
+    赋值 (nativeMatrix, 0)
+.否则
+    赋值 (nativeMatrix, matrix.GetNativeMatrix ())
+.如果结束
+.如果真 (是否为空 (flatness))
+    赋值 (flatness, 0.25)
+.如果真结束
+返回 (GdipWidenPath (nativePath, pen.GetNativePen (), nativeMatrix, flatness))
+
+
+.子程序 轮廓, 整数型, 公开, 
+.参数 matrix, Gdiplus矩阵, 可空, 
+.参数 flatness, 小数型, 可空, 
+
+.局部变量 nativeMatrix, 整数型, , , 
+
+.如果 (是否为空 (matrix))
+    赋值 (nativeMatrix, 0)
+.否则
+    赋值 (nativeMatrix, matrix.GetNativeMatrix ())
+.如果结束
+.如果真 (是否为空 (flatness))
+    赋值 (flatness, 0.25)
+.如果真结束
+返回 (GdipWindingModeOutline (nativePath, nativeMatrix, flatness)) ' 未测试
+
+
+.子程序 扭曲路径, 整数型, 公开, 一个 PointF 结构的数组，它们定义由 srcRect 定义的矩形将变形到的平行四边形。该数组可以包含三个或四个元素。如果该数组包含三个元素，则平行四边形的右下角位置的点可从前三个点导出。
+.参数 matrix, Gdiplus矩阵, 可空, 
+.参数 points, PointF, 数组, 一个 PointF 结构的数组，它们定义由 srcRect 定义的矩形将变形到的平行四边形。该数组可以包含三个或四个元素。如果该数组包含三个元素，则平行四边形的右下角位置的点可从前三个点导出。
+.参数 count, 整数型, , PointF 数组成员数
+.参数 srcx, 小数型, , 一个 RectangleF 结构，它表示将变形为 destPoints 定义的平行四边形的矩形。 
+.参数 srcy, 小数型, , 同上
+.参数 srcwidth, 小数型, , 同上
+.参数 srcheight, 小数型, , 同上
+.参数 warpMode, 整数型, 可空, 一个 WarpMode 枚举，它指定此扭曲操作是使用透视模式还是双线性模式。 
+.参数 flatness, 小数型, 可空, 一个介于 0 到 1 之间的值，它指定如何展平最终路径。
+
+.局部变量 nativeMatrix, 整数型, , , 
+
+.如果 (是否为空 (matrix))
+    赋值 (nativeMatrix, 0)
+.否则
+    赋值 (nativeMatrix, matrix.GetNativeMatrix ())
+.如果结束
+.如果真 (是否为空 (flatness))
+    赋值 (flatness, 0.25)
+.如果真结束
+.如果真 (是否为空 (warpMode))
+    赋值 (warpMode, #扭曲模式_透视环绕)
+.如果真结束
+返回 (GdipWarpPath (nativePath, nativeMatrix, points, count, srcx, srcy, srcwidth, srcheight, warpMode, flatness))
+
+
+.类模块 Gdiplus区域, Gdiplus, , 
+
+.程序集变量 nativeRegion, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+销毁 ()
+
+.子程序 销毁, 空白型, , 
+.如果真 (不等于 (nativeRegion, 0))
+    GdipDeleteRegion (nativeRegion)
+    赋值 (nativeRegion, 0)
+.如果真结束
+
+
+.子程序 GetNativeRegion, 整数型, , 
+返回 (nativeRegion)
+
+
+.子程序 SetNativeRegion, 空白型, , 
+.参数 region, 整数型, , 
+
+销毁 ()
+赋值 (nativeRegion, region)
+
+
+.子程序 创建_无限区域, 整数型, 公开, 创建一个无限大小的区域
+.局部变量 n, 整数型, , , 
+.局部变量 r, 整数型, , , 
+
+赋值 (r, GdipCreateRegion (n))
+SetNativeRegion (n)
+返回 (r)
+
+
+.子程序 创建_自矩形, 整数型, 公开, 
+.参数 rect, RectF, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateRegionRect (rect, n))
+SetNativeRegion (n)
+返回 (r)
+
+
+.子程序 创建_自路径, 整数型, 公开, 
+.参数 path, Gdiplus路径, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateRegionPath (path.GetNativePath (), n))
+SetNativeRegion (n)
+返回 (r)
+
+
+.子程序 创建_自区域数据, 整数型, 公开, 
+.参数 regionData, 字节型, 数组, 区域数据数组
+.参数 size, 整数型, , 数组大小
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateRegionRgnData (regionData, size, n))
+SetNativeRegion (n)
+返回 (r)
+
+.子程序 创建_自HRGN, 整数型, 公开, 
+.参数 hRgn, 整数型, , 区域句柄
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateRegionHrgn (hRgn, n))
+SetNativeRegion (n)
+返回 (r)
+
+
+.子程序 复制到, 整数型, 公开, 
+.参数 cloneRegion, Gdiplus区域, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCloneRegion (nativeRegion, n))
+cloneRegion.SetNativeRegion (n)
+返回 (r)
+
+
+.子程序 合并路径, 整数型, 公开, 
+.参数 path, Gdiplus路径, , 要合并的路径
+.参数 合并模式, 整数型, , 以 #合并模式_ 开头的常量
+
+返回 (GdipCombineRegionPath (nativeRegion, path.GetNativePath (), 合并模式))
+
+
+.子程序 合并矩形, 整数型, 公开, 
+.参数 rect, RectF, , 要合并的矩形
+.参数 合并模式, 整数型, , 以 #合并模式_ 开头的常量
+
+返回 (GdipCombineRegionRect (nativeRegion, rect, 合并模式))
+
+
+.子程序 合并区域, 整数型, 公开, 
+.参数 region, Gdiplus区域, , 要合并的区域
+.参数 合并模式, 整数型, , 以 #合并模式_ 开头的常量
+
+返回 (GdipCombineRegionRegion (nativeRegion, region.GetNativeRegion (), 合并模式))
+
+
+.子程序 置为无限, 整数型, 公开, 将此 区域 初始化为无限大小的内部。
+返回 (GdipSetInfinite (nativeRegion))
+
+
+.子程序 置为空, 整数型, 公开, 将此 区域 初始化为空内部。
+返回 (GdipSetEmpty (nativeRegion))
+
+
+.子程序 平移区域, 整数型, 公开, 使此 区域 的坐标偏移指定的量。
+.参数 dx, 小数型, , 水平偏移的量。
+.参数 dy, 小数型, , 垂直偏移的量。
+
+返回 (GdipTranslateRegion (nativeRegion, dx, dy))
+
+
+.子程序 取区域矩形边界, 整数型, 公开, 获取一个表示矩形的 RectangleF 结构，该矩形形成 Graphics 对象的绘制表面上此 Region 对象的边界。
+.参数 graphics, Gdiplus图形, , 区域所在的图形对象
+.参数 rect, RectF, , 提供一个RectF变量接受返回值
+
+返回 (GdipGetRegionBounds (nativeRegion, graphics.GetNativeGraphics (), rect))
+
+
+.子程序 取区域HRGN, 整数型, 公开, 返回指定图形上下文中此 Region 对象的 Windows 句柄。
+.参数 graphics, Gdiplus图形, , 区域所在的图形对象
+.参数 hRgn, 整数型, 参考, 提供一个整数型变量接受返回值
+
+返回 (GdipGetRegionHRgn (nativeRegion, graphics.GetNativeGraphics (), hRgn))
+
+
+.子程序 是否空区域, 整数型, 公开, 测试此 Region 对象在指定的绘制表面上是否有空的内部。
+.参数 graphics, Gdiplus图形, , 区域所在的图形对象
+.参数 是否为空, 逻辑型, 参考, 提供一个逻辑型变量接受返回值
+
+返回 (GdipIsEmptyRegion (nativeRegion, graphics.GetNativeGraphics (), 是否为空))
+
+
+.子程序 是否无限区域, 整数型, 公开, 测试此 Region 对象在指定的绘制表面上是否有无限内部。
+.参数 graphics, Gdiplus图形, , 
+.参数 是否为无限, 逻辑型, 参考, 提供一个逻辑型变量接受返回值
+
+返回 (GdipIsInfiniteRegion (nativeRegion, graphics.GetNativeGraphics (), 是否为无限))
+
+
+.子程序 是否相等, 整数型, 公开, 比较两个区域是否相等
+.参数 region, Gdiplus区域, , 要比较的区域
+.参数 graphics, Gdiplus图形, , 区域所在的图形对象
+.参数 是否相等, 逻辑型, 参考, 提供一个逻辑型变量接受返回值
+
+返回 (GdipIsEqualRegion (nativeRegion, region.GetNativeRegion (), graphics.GetNativeGraphics (), 是否相等))
+
+
+.子程序 取区域数据尺寸, 整数型, 公开, 
+.参数 bufferSize, 整数型, 参考, 提供一个整数型变量接受返回值
+
+返回 (GdipGetRegionDataSize (nativeRegion, bufferSize))
+
+
+.子程序 取区域数据, 整数型, 公开, 
+.参数 buffer, 字节型, 数组, 取回数据的存放数组
+.参数 bufferSize, 整数型, , 要取回多少个数据
+.参数 sizeFilled, 整数型, 参考, 真实取回多少个数据, 提供一个整数型变量接受返回值
+
+重定义数组 (buffer, 假, bufferSize)
+返回 (GdipGetRegionData (nativeRegion, buffer, bufferSize, sizeFilled))
+
+
+.子程序 是否在区域内_点, 整数型, 公开, 判断一个点是否在区域内
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 graphics, Gdiplus图形, , 
+.参数 是否在内, 逻辑型, 参考, 提供一个逻辑型变量接受返回值
+
+返回 (GdipIsVisibleRegionPoint (nativeRegion, x, y, graphics.GetNativeGraphics (), 是否在内))
+
+
+.子程序 是否在区域内_矩形, 整数型, 公开, 判断一个矩形是否在区域内,只要有任何重叠,就认为是真
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 width, 小数型, , 
+.参数 height, 小数型, , 
+.参数 graphics, Gdiplus图形, , 
+.参数 是否在内, 逻辑型, 参考, 提供一个逻辑型变量接受返回值
+
+返回 (GdipIsVisibleRegionRect (nativeRegion, x, y, width, height, graphics.GetNativeGraphics (), 是否在内))
+
+
+.子程序 变换区域, 整数型, 公开, 用指定的 Matrix 对象变换此 Region 对象。
+.参数 matrix, Gdiplus矩阵, , 
+
+返回 (GdipTransformRegion (nativeRegion, matrix.GetNativeMatrix ()))
+
+
+.子程序 取区域扫描矩形数组, 整数型, 公开, 返回与此 Region 对象近似的 RectangleF 结构的数组。
+.参数 rects, RectF, 数组, 
+.参数 count, 整数型, 参考, 
+.参数 matrix, Gdiplus矩阵, , 
+
+重定义数组 (rects, 假, count)
+返回 (GdipGetRegionScans (nativeRegion, rects, count, matrix.GetNativeMatrix ()))
+
+
+.子程序 取区域扫描矩形数量, 整数型, 公开, 
+.参数 count, 整数型, 参考, 
+.参数 matrix, Gdiplus矩阵, , 
+
+返回 (GdipGetRegionScansCount (nativeRegion, count, matrix.GetNativeMatrix ()))
+
+
+.类模块 Gdiplus图像, Gdiplus, , 
+
+.程序集变量 流, 字节流, , , 
+.程序集变量 nativeImage, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+销毁 ()
+
+.子程序 销毁, 空白型, , 
+.如果真 (不等于 (nativeImage, 0))
+    GdipDisposeImage (nativeImage)
+    赋值 (nativeImage, 0)
+.如果真结束
+
+
+.子程序 GetNativeImage, 整数型, , 
+返回 (nativeImage)
+
+
+.子程序 SetNativeImage, 空白型, , 
+.参数 Image, 整数型, , 
+
+销毁 ()
+赋值 (nativeImage, Image)
+
+
+.子程序 载入图像_自文件, 整数型, , 
+.参数 文件名, 文本型, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipLoadImageFromFile (A2W (文件名), n))
+SetNativeImage (n)
+返回 (r)
+
+
+.子程序 载入图像_自字节集, 整数型, 公开, 
+.参数 图像字节集, 字节集, , 
+
+.局部变量 stream, 整数型, , , 
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+流.创建字节流 (图像字节集)
+赋值 (stream, 流.取字节流指针 ())
+
+赋值 (r, GdipLoadImageFromStream (stream, n))
+SetNativeImage (n)
+返回 (r)
+
+
+.子程序 保存图像_到字节集, 整数型, , 
+.参数 取回图像数据, 字节集, , 
+.参数 编码器CLSID, 文本型, , 可查阅常量
+.参数 编码器参数, EncoderParameter, 可空 数组, 
+
+.局部变量 流1, 字节流, , , 
+.局部变量 stream, 空白型, , , 
+.局部变量 r, 空白型, , , 
+.局部变量 Guid, 字节集, , , 
+
+流1.创建字节流 ()
+赋值 (stream, 流1.取字节流指针 ())
+
+赋值 (Guid, 取空白字节集 (16))
+CLSIDFromString (A2W (编码器CLSID), Guid)
+
+赋值 (r, GdipSaveImageToStream (nativeImage, stream, Guid, 0)) ' 暂未实现处理 编码器参数
+赋值 (取回图像数据, 流1.取出字节集 ())
+返回 (r)
+
+.子程序 取图像类型, 整数型, , 
+.参数 type, 整数型, 参考, 提供一个整数型变量接受返回值,是以 #图像类型_ 开头的常量
+
+返回 (GdipGetImageType (nativeImage, type))
+
+
+.子程序 创建位图_自文件, 整数型, , 
+.参数 filename, 文本型, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateBitmapFromFile (A2W (filename), n))
+SetNativeImage (n)
+返回 (r)
+
+
+.子程序 取图像宽度, 整数型, , 
+.参数 width, 整数型, 参考, 提供一个整数型变量接受返回值
+
+返回 (GdipGetImageWidth (nativeImage, width))
+
+.子程序 取图像高度, 整数型, , 
+.参数 height, 整数型, 参考, 提供一个整数型变量接受返回值
+
+返回 (GdipGetImageHeight (nativeImage, height))
+
+.子程序 创建位图_自图形, 整数型, , 
+.参数 width, 整数型, , 
+.参数 height, 整数型, , 
+.参数 target, Gdiplus图形, , 以此图形的分辨率初始化位图。 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateBitmapFromGraphics (width, height, target.GetNativeGraphics (), n))
+SetNativeImage (n)
+返回 (r)
+
+
+.子程序 创建位图, 整数型, , 
+.参数 width, 整数型, , 宽度
+.参数 height, 整数型, , 高度
+.参数 stride, 整数型, , 指定相邻扫描行开始处之间字节偏移量的整数。这通常（但不一定）是以像素格式表示的字节数（例如，2 表示每像素 16 位）乘以位图的宽度。传递给此参数的值必须为 4 的倍数。
+.参数 format, 整数型, , #像素格式_XXXX
+.参数 scan0, 整数型, , 像素数据字节集地址
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateBitmapFromScan0 (width, height, stride, format, scan0, n))
+SetNativeImage (n)
+返回 (r)
+
+
+.子程序 创建位图_自HBITMAP, 整数型, , 
+.参数 hBitmap, 整数型, , 要从其创建 Bitmap 对象的 GDI 位图句柄。 
+.参数 hpal, 整数型, , 如果在 hBitmap 参数中指定的位图不是与设备无关的位图 (DIB)，则为用于定义位图颜色的 GDI 调色板的句柄。
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateBitmapFromHBITMAP (hBitmap, hpal, n)) ' 未测试
+SetNativeImage (n)
+返回 (r)
+
+
+.子程序 创建位图_自HICON, 整数型, , 
+.参数 hicon, 整数型, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateBitmapFromHICON (hicon, n)) ' 未测试
+SetNativeImage (n)
+返回 (r)
+
+
+.子程序 取位图HBITMAP, 整数型, , 需要调用 DeleteObject 以释放 hBitmap。
+.参数 返回hBitmap, 整数型, 参考, 提供一个整数型变量接受返回值
+.参数 背景ARGB颜色, 整数型, 可空, 指定背景色。如果位图完全不透明，则忽略此参数。
+
+.如果真 (是否为空 (背景ARGB颜色))
+    赋值 (背景ARGB颜色, 0)
+.如果真结束
+返回 (GdipCreateHBITMAPFromBitmap (nativeImage, 返回hBitmap, 背景ARGB颜色))
+
+
+.子程序 取位图HICON, 整数型, , 
+.参数 返回hBitmap, 整数型, 参考, 提供一个整数型变量接受返回值
+
+返回 (GdipCreateHICONFromBitmap (nativeImage, 返回hBitmap)) ' 未测试
+
+
+.子程序 置位图点, 整数型, , 
+.参数 x, 整数型, , 
+.参数 y, 整数型, , 
+.参数 ARGB颜色, 整数型, , 
+
+返回 (GdipBitmapSetPixel (nativeImage, x, y, ARGB颜色))
+
+
+.子程序 取位图点, 整数型, , 
+.参数 x, 整数型, , 
+.参数 y, 整数型, , 
+.参数 ARGB颜色, 整数型, 参考, 
+
+返回 (GdipBitmapGetPixel (nativeImage, x, y, ARGB颜色))
+
+
+.子程序 置位图分辨率, 整数型, , 
+.参数 xdpi, 小数型, , Bitmap 的水平分辨率，以每英寸的点数为单位。 
+.参数 ydpi, 小数型, , Bitmap 的垂直分辨率，以每英寸的点数为单位。 
+
+返回 (GdipBitmapSetResolution (nativeImage, xdpi, ydpi)) ' 未测试
+
+
+.子程序 取图像原始格式, 整数型, , 
+.参数 format, 字节集, , 提供一个字节集接受返回值
+
+赋值 (format, 取空白字节集 (16))
+返回 (GdipGetImageRawFormat (nativeImage, format))
+
+
+.子程序 保存图像_到文件, 整数型, 公开, 
+.参数 文件名, 文本型, , 
+.参数 编码器CLSID, 文本型, , 可查阅常量
+.参数 编码器参数, EncoderParameter, 可空 数组, 
+
+.局部变量 Guid, 字节集, , , 
+
+赋值 (Guid, 取空白字节集 (16))
+CLSIDFromString (A2W (编码器CLSID), Guid)
+
+返回 (GdipSaveImageToFile (nativeImage, A2W (文件名), Guid, 0)) ' 暂未实现编码器参数
+
+.子程序 取图像编码器参数, 整数型, , 
+.参数 clsidEncoder, 字节集, , 
+.参数 buffer, EncoderParameter, 数组, 
+
+.局部变量 r, 空白型, , , 
+.局部变量 size, 整数型, , , 
+.局部变量 bn, 字节集, , , 
+.局部变量 count, 空白型, , , 
+.局部变量 n, 空白型, , , 
+.局部变量 a, 空白型, , , 
+.局部变量 i, 整数型, , , 
+
+赋值 (r, GdipGetEncoderParameterListSize (nativeImage, clsidEncoder, size)) ' 未完成
+.如果真 (不等于 (r, 0))
+    返回 (r)
+.如果真结束
+
+赋值 (bn, 取空白字节集 (size))
+赋值 (r, GdipGetEncoderParameterList (nativeImage, clsidEncoder, size, bn)) ' 未完成
+赋值 (n, 1)
+赋值 (count, 取字节集数据 (bn, #整数型, n))
+ ' 输出调试文本_字节集 (bn)
+
+重定义数组 (buffer, 假, count)
+.计次循环首 (count, a)
+    .计次循环首 (16, i)
+        赋值 (buffer [a], Guid [i], 取字节集数据 (bn, #字节型, n))
+    .计次循环尾 ()
+    赋值 (buffer [a], NumberOfValues, 取字节集数据 (bn, #整数型, n))
+    赋值 (buffer [a], Type, 取字节集数据 (bn, #整数型, n))
+    赋值 (buffer [a], Value, 取字节集数据 (bn, #整数型, n))
+.计次循环尾 ()
+返回 (r)
+
+
+.子程序 取图像物理尺寸, 整数型, , 获取此图像的宽度和高度。
+.参数 width, 小数型, 参考, 提供小数型变量取返回值
+.参数 height, 小数型, 参考, 提供小数型变量取返回值
+
+返回 (GdipGetImageDimension (nativeImage, width, height))
+
+
+.子程序 取图像边界矩形, 整数型, , 以指定的单位获取此 Image 对象的边框。
+.参数 srcRect, RectF, , 提供RectF变量取返回值
+.参数 srcUnit, 整数型, 参考, 提供整数型变量取返回值,指定该矩形的单位。#单位_XXXX
+
+返回 (GdipGetImageBounds (nativeImage, srcRect, srcUnit))
+
+
+.子程序 取图像水平分辨率, 整数型, , 获取此 Image 对象的水平分辨率（以“像素/英寸”为单位）。
+.参数 resolution, 小数型, 参考, 提供小数型变量取返回值
+
+返回 (GdipGetImageHorizontalResolution (nativeImage, resolution))
+
+.子程序 取图像垂直分辨率, 整数型, , 获取此 Image 对象的垂直分辨率（以“像素/英寸”为单位）。
+.参数 resolution, 小数型, 参考, 提供小数型变量取返回值
+
+返回 (GdipGetImageVerticalResolution (nativeImage, resolution))
+
+
+.子程序 取图像属性标记, 整数型, , 获取此 Image 对象的属性标记。
+.参数 flags, 整数型, 参考, 提供整数型变量取返回值
+
+赋值 (flags, 0)
+返回 (GdipGetImageFlags (nativeImage, flags))
+
+
+.子程序 取图像像素格式, 整数型, 公开, 指定图像中每个像素的颜色数据的格式。
+.参数 format, 整数型, 参考, 提供整数型变量取返回值。#像素格式_XXXX
+
+返回 (GdipGetImagePixelFormat (nativeImage, format))
+
+
+.子程序 取图像编码器信息, 整数型, , 
+.参数 encoders, ImageCodecInfo, 数组, 
+
+.局部变量 numEncoders, 整数型, , , 
+.局部变量 size, 整数型, , , 
+.局部变量 bn, 字节集, , , 
+.局部变量 r, 空白型, , , 
+.局部变量 a, 整数型, , , 
+.局部变量 n, 空白型, , , 
+.局部变量 i, 整数型, , , 
+
+ ' 取图像编码器尺寸
+赋值 (r, GdipGetImageEncodersSize (numEncoders, size))
+.如果真 (不等于 (r, 0))
+    返回 (r)
+.如果真结束
+
+赋值 (bn, 取空白字节集 (size))
+赋值 (r, GdipGetImageEncoders (numEncoders, size, bn))
+重定义数组 (encoders, 假, numEncoders)
+.计次循环首 (numEncoders, a)
+    赋值 (n, 相加 (相乘 (相减 (a, 1), 76), 1))
+    .计次循环首 (16, i)
+        赋值 (encoders [a], Clsid [i], bn [n])
+        赋值 (n, 相加 (n, 1))
+    .计次循环尾 ()
+    .计次循环首 (16, i)
+        赋值 (encoders [a], FormatID [i], bn [n])
+        赋值 (n, 相加 (n, 1))
+    .计次循环尾 ()
+    
+    赋值 (encoders [a], CodecName, W2A (取字节集数据 (bn, #整数型, n)))
+    赋值 (encoders [a], DllName, W2A (取字节集数据 (bn, #整数型, n)))
+    赋值 (encoders [a], FormatDescription, W2A (取字节集数据 (bn, #整数型, n)))
+    赋值 (encoders [a], FilenameExtension, W2A (取字节集数据 (bn, #整数型, n)))
+    赋值 (encoders [a], MimeType, W2A (取字节集数据 (bn, #整数型, n)))
+    赋值 (encoders [a], Flags, 取字节集数据 (bn, #整数型, n))
+    赋值 (encoders [a], Version, 取字节集数据 (bn, #整数型, n))
+    赋值 (encoders [a], SigCount, 取字节集数据 (bn, #整数型, n))
+    赋值 (encoders [a], SigSize, 取字节集数据 (bn, #整数型, n))
+    赋值 (encoders [a], SigPattern, 指针到字节集 (取字节集数据 (bn, #整数型, n), 相乘 (encoders [a], SigCount, encoders [a], SigSize)))
+    赋值 (encoders [a], SigMask, 指针到字节集 (取字节集数据 (bn, #整数型, n), 相乘 (encoders [a], SigCount, encoders [a], SigSize)))
+    
+.计次循环尾 ()
+返回 (r)
+
+
+.子程序 SaveAdd, 整数型, 公开, 
+.参数 encoderParams, 整数型, 可空, 
+
+.如果真 (是否为空 (encoderParams))
+    赋值 (encoderParams, 0)
+.如果真结束
+返回 (GdipSaveAdd (nativeImage, encoderParams)) ' 未测试
+
+
+.子程序 SaveAddImage, 整数型, 公开, 
+.参数 newImage, Gdiplus图像, , 
+.参数 encoderParams, 整数型, 可空, 
+
+.如果真 (是否为空 (encoderParams))
+    赋值 (encoderParams, 0)
+.如果真结束
+返回 (GdipSaveAddImage (nativeImage, newImage.GetNativeImage (), encoderParams)) ' 未测试
+
+
+.子程序 取图像各帧延时, 整数型, 公开, 时间 × 10 才为毫秒
+.参数 各帧延时数组, 整数型, 数组, 
+
+.局部变量 size, 空白型, , , 
+.局部变量 numProperties, 空白型, , , 
+.局部变量 字节集1, 字节集, , , 
+.局部变量 tmp, 空白型, , , 
+.局部变量 a, 空白型, , , 
+.局部变量 b, 空白型, , , 
+.局部变量 r, 空白型, , , 
+.局部变量 帧数, 整数型, , , 
+
+赋值 (numProperties, 20736) ' PropertyTagFrameDelay = 0x5100
+GdipGetPropertyItemSize (nativeImage, numProperties, size)
+ ' 输出调试文本 (size)
+
+赋值 (字节集1, 取空白字节集 (size))
+赋值 (r, GdipGetPropertyItem (nativeImage, numProperties, size, 字节集1))
+赋值 (a, 1)
+赋值 (tmp, 取字节集数据 (字节集1, #整数型, a))
+赋值 (tmp, 取字节集数据 (字节集1, #整数型, a))
+赋值 (tmp, 取字节集数据 (字节集1, #整数型, a))
+赋值 (tmp, 取字节集数据 (字节集1, #整数型, a))
+
+清除数组 (各帧延时数组)
+取图像帧数 (帧数)
+.计次循环首 (帧数, b)
+    赋值 (tmp, 取字节集数据 (字节集1, #整数型, a))
+    加入成员 (各帧延时数组, tmp)
+.计次循环尾 ()
+
+ ' 调试输出 (各帧延时数组)
+ ' 调试输出 (字节集1)
+返回 (r)
+
+.子程序 取图像帧数, 整数型, 公开, 
+.参数 帧数, 整数型, 参考, 
+
+.局部变量 count, 空白型, , , 
+.局部变量 guid, GUID, , "0", 
+
+
+GdipImageGetFrameDimensionsCount (nativeImage, count)
+
+重定义数组 (guid, 假, count)
+GdipImageGetFrameDimensionsList (nativeImage, guid, count)
+
+返回 (GdipImageGetFrameCount (nativeImage, guid [1], 帧数))
+
+
+.子程序 设置活动帧, 整数型, 公开, 
+.参数 dimensionID, 字节集, , 
+.参数 frameIndex, 整数型, , 帧位置，从零开始。
+
+返回 (GdipImageSelectActiveFrame (nativeImage, dimensionID, frameIndex))
+
+
+.类模块 字节流, , , 
+
+.程序集变量 hMem, 空白型, , , 
+.程序集变量 stream, 空白型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+释放字节流 ()
+
+.子程序 释放字节流, 空白型, , 
+.如果真 (不等于 (hMem, 0))
+    GlobalFree (hMem)
+    赋值 (hMem, 0)
+.如果真结束
+
+
+.子程序 创建字节流, 整数型, , 返回流指针
+.参数 字节集, 字节集, 可空, 
+
+.局部变量 p, 空白型, , , 
+.局部变量 n, 空白型, , , 
+
+释放字节流 ()
+.如果 (是否为空 (字节集))
+    赋值 (hMem, GlobalAlloc (2, 0)) ' GMEM_MOVEABLE=2
+    CreateStreamOnHGlobal (hMem, 1, stream)
+    
+.否则
+    赋值 (n, 取字节集长度 (字节集))
+    赋值 (hMem, GlobalAlloc (0, n)) ' GMEM_FIXED=0
+    赋值 (p, GlobalLock (hMem))
+    写到内存 (字节集, p, n)
+    GlobalUnlock (hMem)
+    CreateStreamOnHGlobal (hMem, 0, stream)
+.如果结束
+
+
+返回 (stream)
+
+.子程序 取字节流指针, 整数型, , 
+返回 (stream)
+
+
+.子程序 取字节流尺寸, 整数型, , 
+返回 (GlobalSize (hMem))
+
+
+.子程序 取出字节集, 字节集, , 
+.局部变量 字节集, 字节集, , , 
+.局部变量 p, 空白型, , , 
+.局部变量 n, 空白型, , , 
+
+赋值 (n, 取字节流尺寸 ())
+赋值 (p, GlobalLock (hMem))
+赋值 (字节集, 指针到字节集 (p, n))
+GlobalUnlock (hMem)
+返回 (字节集)
+
+
+.类模块 Gdiplus矩阵, Gdiplus, , 
+
+.程序集变量 nativeMatrix, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+销毁 ()
+
+.子程序 销毁, 空白型, , 
+.如果真 (不等于 (nativeMatrix, 0))
+    GdipDeleteMatrix (nativeMatrix)
+    赋值 (nativeMatrix, 0)
+.如果真结束
+
+
+.子程序 GetNativeMatrix, 整数型, , 
+返回 (nativeMatrix)
+
+
+.子程序 SetNativeMatrix, 空白型, , 
+.参数 Matrix, 整数型, , 
+
+销毁 ()
+赋值 (nativeMatrix, Matrix)
+
+
+.子程序 创建, 整数型, 公开, 
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateMatrix (n))
+SetNativeMatrix (n)
+返回 (r)
+
+
+.子程序 创建2, 整数型, 公开, 
+.参数 m11, 小数型, , 
+.参数 m12, 小数型, , 
+.参数 m21, 小数型, , 
+.参数 m22, 小数型, , 
+.参数 dx, 小数型, , 
+.参数 dy, 小数型, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateMatrix2 (m11, m12, m21, m22, dx, dy, n)) ' 未测试
+SetNativeMatrix (n)
+返回 (r)
+
+
+.子程序 创建3, 整数型, 公开, 
+.参数 rect, RectF, , 
+.参数 dstplg, PointF, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateMatrix3 (rect, dstplg, n)) ' 未测试
+SetNativeMatrix (n)
+返回 (r)
+
+
+.子程序 复制到, 整数型, 公开, 
+.参数 cloneMatrix, Gdiplus矩阵, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCloneMatrix (nativeMatrix, n))
+cloneMatrix.SetNativeMatrix (n)
+返回 (r)
+
+
+.子程序 平移, 整数型, 公开, 按指定的顺序将指定的转换向量应用到此 Matrix 对象。
+.参数 offsetX, 小数型, , 
+.参数 offsetY, 小数型, , 
+.参数 order, 整数型, 可空, 默认 #矩阵顺序_预先计算
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipTranslateMatrix (nativeMatrix, offsetX, offsetY, order))
+
+
+.子程序 旋转, 整数型, 公开, 
+.参数 角度, 小数型, , 
+.参数 order, 整数型, 可空, 默认 #矩阵顺序_预先计算
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipRotateMatrix (nativeMatrix, 角度, order))
+
+
+.子程序 逆转, 整数型, 公开, 
+返回 (GdipInvertMatrix (nativeMatrix))
+
+
+.子程序 缩放, 整数型, 公开, 
+.参数 scaleX, 小数型, , 
+.参数 scaleY, 小数型, , 
+.参数 order, 整数型, 可空, 默认 #矩阵顺序_预先计算
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipScaleMatrix (nativeMatrix, scaleX, scaleY, order))
+
+
+.子程序 相乘, 整数型, 公开, 如果指定的顺序是 MatrixOrder.Prepend，则按预先计算的顺序将此 Matrix 对象乘以指定的矩阵。如果指定的顺序是 MatrixOrder.Append，则按追加的顺序将此 Matrix 对象乘以指定的矩阵。
+.参数 matrix, Gdiplus矩阵, , 
+.参数 order, 整数型, 可空, 默认 #矩阵顺序_预先计算
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipMultiplyMatrix (nativeMatrix, matrix.GetNativeMatrix (), order))
+
+
+.子程序 切变, 整数型, 公开, 仅当其中一个参数为 0 时此方法中应用的变形才是纯切变。当 shearY 因子为 0 时，应用于原始矩形的变形将下边缘水平移动矩形高度的 shearX 倍。当 shearX 因子为 0 时，会将右边缘垂直移动矩形宽度的 shearY 倍。请注意两个参数均不为零时这种情况，因为结果很难预料。例如，如果两个因子均为 1，则变形非常特殊（因此不可逆），将整个平面挤压成一条直线。
+.参数 shearX, 小数型, , 
+.参数 shearY, 小数型, , 
+.参数 order, 整数型, 可空, 默认 #矩阵顺序_预先计算
+
+.如果真 (是否为空 (order))
+    赋值 (order, #矩阵顺序_预先计算)
+.如果真结束
+返回 (GdipShearMatrix (nativeMatrix, shearX, shearY, order))
+
+
+.子程序 置矩阵元素, 整数型, 公开, 
+.参数 m11, 小数型, , 
+.参数 m12, 小数型, , 
+.参数 m21, 小数型, , 
+.参数 m22, 小数型, , 
+.参数 dx, 小数型, , 
+.参数 dy, 小数型, , 
+
+返回 (GdipSetMatrixElements (nativeMatrix, m11, m12, m21, m22, dx, dy))
+
+
+.子程序 取矩阵元素, 整数型, 公开, 
+.参数 matrixOut, 小数型, 数组, 提供小数数组接受返回值
+
+重定义数组 (matrixOut, 假, 6)
+返回 (GdipGetMatrixElements (nativeMatrix, matrixOut))
+
+
+.子程序 重置矩阵, 整数型, 公开, 
+返回 (置矩阵元素 (1, 0, 0, 1, 0, 0))
+
+
+.子程序 转换点数组, 整数型, 公开, 
+.参数 pts, PointF, 数组, 
+.参数 count, 整数型, 可空, 
+
+.如果真 (是否为空 (count))
+    赋值 (count, 取数组成员数 (pts))
+.如果真结束
+返回 (GdipTransformMatrixPoints (nativeMatrix, pts, count)) ' 未测试
+
+
+.子程序 转换矢量数组, 整数型, 公开, 将数组中的每个矢量与矩阵相乘。该矩阵的转换元素（第三行）被忽略。
+.参数 pts, PointF, 数组, 
+.参数 count, 整数型, 可空, 
+
+.如果真 (是否为空 (count))
+    赋值 (count, 取数组成员数 (pts))
+.如果真结束
+返回 (GdipVectorTransformMatrixPoints (nativeMatrix, pts, count)) ' 未测试
+
+
+.子程序 是否可逆转, 整数型, 公开, 
+.参数 result, 逻辑型, 参考, 提供逻辑变量取返回值
+
+赋值 (result, 假)
+返回 (GdipIsMatrixInvertible (nativeMatrix, result)) ' 未测试
+
+
+.子程序 是否单位矩阵, 整数型, 公开, 
+.参数 result, 逻辑型, 参考, 提供逻辑变量取返回值
+
+赋值 (result, 假)
+返回 (GdipIsMatrixIdentity (nativeMatrix, result)) ' 未测试
+
+
+.子程序 是否相等, 整数型, 公开, 
+.参数 matrix, Gdiplus矩阵, , 
+.参数 result, 逻辑型, 参考, 提供逻辑变量取返回值
+
+赋值 (result, 假)
+返回 (GdipIsMatrixEqual (nativeMatrix, matrix.GetNativeMatrix (), result)) ' 未测试
+
+
+.类模块 窗口子类化, , , 
+
+.程序集变量 m_旧程序过程, 子程序指针, , , 
+.程序集变量 m_窗口句柄, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+还原 ()
+
+.子程序 还原, 整数型, 公开, 
+.局部变量 r, 整数型, , , 
+
+赋值 (r, 到整数 (SetWindowLongA (m_窗口句柄, #GWL_WNDPROC, m_旧程序过程)))
+ ' m_旧程序过程 ＝ 0
+赋值 (m_窗口句柄, 0)
+返回 (r)
+
+.子程序 初始化, 整数型, 公开, 
+.参数 窗口句柄, 整数型, , 
+.参数 新窗口过程, 子程序指针, , 
+
+赋值 (m_窗口句柄, 窗口句柄)
+赋值 (m_旧程序过程, SetWindowLongA (m_窗口句柄, #GWL_WNDPROC, 新窗口过程))
+返回 (到数值 (m_旧程序过程))
+
+
+.子程序 调用旧窗口过程, 整数型, 公开, 
+.参数 窗口句柄, 整数型, , 
+.参数 消息号, 整数型, , 
+.参数 参数一, 整数型, , 
+.参数 参数二, 整数型, , 
+
+返回 (CallWindowProcA (m_旧程序过程, 窗口句柄, 消息号, 参数一, 参数二))
+
+
+.窗口程序集 测试程序集, , , 
+
+.子程序 _测试_创建完毕, 空白型, , 
+.局部变量 i, 整数型, , , 
+
+导航.创建 (取窗口句柄 (), , 80, 80, #白色, &移动, &按下, &右键)
+.计次循环首 (5, i)
+    导航.添加导航 (#图标, 相加 (“我是按钮”, 到文本 (i)))
+    到文本 (i).加入项目 (i)
+.计次循环尾 ()
+赋值 (., 0)
+
+.子程序 _颜色选择器1_颜色被改变, 空白型, , 
+导航.置背景颜色 (.)
+
+.子程序 按下, 空白型, , 
+赋值 (., 相加 (“你选择了第”, 到文本 (导航.取选中 ()), “个按钮,标题为”, 导航.取标题 ()))
+
+.子程序 _按钮1_被单击, 空白型, , 
+导航.置背景图片 (#背景)
+
+.子程序 _按钮6_被单击, 空白型, , 
+导航.置标题 (.取项目数值 (.), .)
+
+.子程序 _按钮2_被单击, 空白型, , 
+.如果真 (不等于 (., 0))
+    导航.置选中 (.取项目数值 (.))
+.如果真结束
+
+
+.子程序 移动, 空白型, , 
+赋值 (., 相加 (“第”, 到文本 (导航.取焦点 ()), “个按钮获得焦点,标题为”, 导航.取标题 (导航.取焦点 ())))
+
+.子程序 右键, 空白型, , 
+赋值 (., “鼠标右键按下”)
+
+.类模块 导航, , , 
+
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+.如果真 (等于 (GDI, 0))
+    赋值 (GDI, GDIPlus装载 ())
+.如果真结束
+
+
+.子程序 _销毁, 空白型, , 
+GDIPlus卸载 ()
+
+.子程序 创建, 空白型, , 
+.参数 句柄, 整数型, , 
+.参数 背景色, 整数型, 可空, 
+.参数 按钮宽度, 整数型, 可空, 
+.参数 按钮高度, 整数型, 可空, 
+.参数 标题颜色, 整数型, 可空, 
+.参数 位置被移动, 子程序指针, 可空, 
+.参数 左键被按下, 子程序指针, 可空, 
+.参数 右键被按下, 子程序指针, 可空, 
+
+.局部变量 a, 导航信息, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 事件, 事件, , , 
+
+赋值 (参数.窗口宽度, 选择 (等于 (按钮宽度, 0), 80, 按钮宽度))
+赋值 (参数.窗口高度, 选择 (等于 (按钮高度, 0), 80, 按钮高度))
+赋值 (参数.字颜颜色, 选择 (是否为空 (标题颜色), #白色, 标题颜色))
+赋值 (参数.目标句柄, 句柄)
+赋值 (参数.窗口矩形, 取窗口矩形 (句柄))
+赋值 (参数.消息句柄, API_SetWindowLong (句柄, -4, 到整数 (&消息处理)))
+.如果真 (是否为空 (背景色))
+    赋值 (背景色, 12607488)
+.如果真结束
+赋值 (参数.背景颜色, 背景色)
+置事件 (位置被移动, 左键被按下, 右键被按下)
+
+.子程序 置背景颜色, 空白型, , 
+.参数 颜色, 整数型, , 
+
+赋值 (参数.背景图片, {  })
+赋值 (参数.背景颜色, 颜色)
+
+.子程序 取背景颜色, 整数型, , 
+
+返回 (参数.背景颜色)
+
+.子程序 置背景图片, 空白型, , 
+.参数 图片, 字节集, , 
+
+赋值 (参数.背景图片, 图片)
+
+.子程序 取背景图片, 字节集, , 
+返回 (参数.背景图片)
+
+.子程序 添加导航, 逻辑型, , 
+.参数 图标, 字节集, , 
+.参数 标题, 文本型, , 
+
+.局部变量 a, 导航信息, , , 
+
+.如果真 (大于 (相乘 (取数量 (), 83), 相减 (参数.窗口矩形.宽度, 83)))
+    返回 (假)
+.如果真结束
+赋值 (a.图标, 图标)
+赋值 (a.标题, 标题)
+加入成员 (信息, a)
+返回 (真)
+
+.子程序 取标题, 文本型, , 
+.参数 ID, 整数型, 可空, 
+
+.如果真 (是否为空 (ID))
+    赋值 (ID, 参数.当前所选)
+.如果真结束
+.如果真 (等于 (ID, 0))
+    返回 (“”)
+.如果真结束
+返回 (信息 [ID], 标题)
+
+.子程序 置图标, 空白型, , 
+.参数 ID, 整数型, 可空, 
+.参数 新的图标, 字节集, , 
+
+.如果真 (是否为空 (ID))
+    赋值 (ID, 参数.当前所选)
+.如果真结束
+.如果真 (等于 (ID, 0))
+    返回 ()
+.如果真结束
+赋值 (信息 [ID], 图标, 新的图标)
+
+.子程序 取图标, 字节集, , 
+.参数 ID, 整数型, 可空, 
+
+.如果真 (是否为空 (ID))
+    赋值 (ID, 参数.当前所选)
+.如果真结束
+.如果真 (等于 (ID, 0))
+    返回 ({  })
+.如果真结束
+返回 (信息 [ID], 图标)
+
+.子程序 取选中, 整数型, , 
+返回 (参数.当前所选)
+
+.子程序 置选中, 空白型, , 
+.参数 ID, 整数型, , 
+
+.如果真 (并且 (不等于 (参数.当前所选, 0), 不等于 (参数.当前所选, ID)))
+    赋值 (参数.将被河蟹, 参数.当前所选)
+.如果真结束
+状态处理 (ID, 2)
+赋值 (参数.当前所选, ID)
+
+.子程序 取数量, 整数型, , 
+返回 (取数组成员数 (信息))
+
+.子程序 置标题, 空白型, , 
+.参数 ID, 整数型, 可空, 
+.参数 新的标题, 文本型, , 
+
+.如果真 (是否为空 (ID))
+    赋值 (ID, 参数.当前所选)
+.如果真结束
+.如果真 (等于 (ID, 0))
+    返回 ()
+.如果真结束
+赋值 (信息 [ID], 标题, 新的标题)
+
+.子程序 取焦点, 整数型, , 
+返回 (参数.当前焦点)
+
+.子程序 禁止, 空白型, 公开, 
+.参数 是否禁止, 逻辑型, 可空, 
+
+赋值 (参数.禁止状态, 是否禁止)
+
+.程序集 自绘, , , 
+
+.程序集变量 事件, 事件, , , 
+.子程序 消息处理, 空白型, , 
+.参数 句柄, 整数型, , 
+.参数 消息, 整数型, , 
+.参数 A, 整数型, , 
+.参数 B, 整数型, , 
+
+.局部变量 i, 整数型, , , 
+.局部变量 x, 整数型, , , 
+.局部变量 y, 整数型, , , 
+.局部变量 id, 整数型, , , 
+.局部变量 DC, 整数型, , , 
+
+.如果真 (参数.禁止状态)
+    返回 ()
+.如果真结束
+.如果真 (等于 (DC, 0))
+    赋值 (DC, GetDC (句柄))
+.如果真结束
+.如果真 (等于 (消息, 15))
+    重画 ()
+    ReleaseDC (句柄, DC)
+    返回 ()
+.如果真结束
+赋值 (x, 取鼠标水平位置 ())
+赋值 (y, 取鼠标垂直位置 ())
+.如果真 (等于 (消息, 132)) ' 鼠标移动
+    赋值 (参数.窗口矩形, 取窗口矩形 (参数.目标句柄))
+    赋值 (x, 相减 (x, 参数.窗口矩形.左边))
+    赋值 (y, 相减 (y, 参数.窗口矩形.顶边))
+    .判断开始 (并且 (大于 (y, 10), 小于 (y, 参数.窗口高度), 小于 (x, 相乘 (取数量 (), 参数.窗口宽度)), 大于 (x, 10)))
+        赋值 (id, 相加 (相除 (x, 参数.窗口宽度), 1))
+        .如果真 (并且 (小于或等于 (id, 取数组成员数 (信息)), 大于 (id, 0)))
+            .如果真 (不等于 (信息 [id], 状态, 2))
+                赋值 (参数.将被河蟹, 0)
+                .如果真 (并且 (不等于 (到整数 (事件.移动), 0), 不等于 (参数.当前焦点, id)))
+                    呼叫子程序 (事件.移动)
+                .如果真结束
+                赋值 (参数.当前焦点, id)
+                状态处理 (id, 1)
+            .如果真结束
+            
+        .如果真结束
+        
+    .默认
+        状态处理 (参数.当前所选, 2)
+    .判断结束
+    
+.如果真结束
+.如果真 (等于 (消息, 514)) ' 左键按下
+    赋值 (参数.窗口矩形, 取窗口矩形 (参数.目标句柄))
+    赋值 (x, 相减 (x, 参数.窗口矩形.左边))
+    赋值 (y, 相减 (y, 参数.窗口矩形.顶边))
+    .如果真 (并且 (大于 (y, 10), 小于 (y, 参数.窗口高度)))
+        赋值 (id, 相加 (相除 (x, 参数.窗口宽度), 1))
+        .如果真 (并且 (小于或等于 (id, 取数组成员数 (信息)), 大于 (id, 0)))
+            .如果真 (并且 (不等于 (参数.当前所选, 0), 不等于 (参数.当前所选, id)))
+                赋值 (参数.将被河蟹, 参数.当前所选)
+            .如果真结束
+            赋值 (参数.当前所选, id)
+            .如果真 (不等于 (到整数 (事件.左键), 0))
+                呼叫子程序 (事件.左键)
+            .如果真结束
+            状态处理 (id, 2)
+        .如果真结束
+        
+    .如果真结束
+    
+.如果真结束
+.如果真 (等于 (消息, 516)) ' 右键按下
+    .如果真 (不等于 (到整数 (事件.右键), 0))
+        呼叫子程序 (事件.右键)
+    .如果真结束
+    
+.如果真结束
+ReleaseDC (句柄, DC)
+API_CallWindowProc (参数.消息句柄, 句柄, 消息, A, B)
+
+.子程序 呼叫子程序, 整数型, , 
+.参数 子程序, 子程序指针, , 
+
+置入代码 ({ 201, 88, 135, 4, 36, 255, 224 })
+返回 (0)
+
+.子程序 重画, 空白型, , 
+.局部变量 图像, Gdiplus图像, , , 
+.局部变量 临时图像, Gdiplus图像, , , 
+.局部变量 临时图形, Gdiplus图形, , , 
+.局部变量 图形, Gdiplus图形, , , 
+.局部变量 字体, Gdiplus字体, , , 
+.局部变量 刷子, Gdiplus画刷, , , 
+.局部变量 画笔, Gdiplus画笔, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 x, 整数型, , , 
+.局部变量 宽, 整数型, , , 
+.局部变量 高, 整数型, , , 
+
+延时 (1)
+图像.创建位图 (参数.窗口矩形.宽度, 参数.窗口矩形.高度, 0, 139273, 0)
+临时图形.创建_自图像 (图像)
+临时图形.置呈现模式 (2)
+赋值 (宽, 参数.窗口宽度)
+赋值 (高, 参数.窗口高度)
+.判断开始 (不等于 (参数.背景图片, {  }))
+    临时图像.载入图像_自字节集 (参数.背景图片)
+    临时图形.画图像_缩放 (临时图像, 0, 0, 参数.窗口矩形.宽度, 参数.窗口矩形.高度)
+.默认
+    刷子.创建_固色画刷 (RGB到ARGB (参数.背景颜色, 255))
+    临时图形.填充矩形 (刷子, 0, 0, 参数.窗口矩形.宽度, 参数.窗口矩形.高度)
+.判断结束
+.计次循环首 (取数组成员数 (信息), i)
+    .如果真 (等于 (信息 [i], 状态, 2))
+        临时图像.载入图像_自字节集 (#选择)
+        临时图形.画图像_缩放 (临时图像, 相加 (x, 10), 10, 宽, 高)
+    .如果真结束
+    .如果真 (等于 (信息 [i], 状态, 1))
+        临时图像.载入图像_自字节集 (#路过)
+        临时图形.画图像_缩放 (临时图像, 相加 (x, 10), 10, 宽, 高)
+    .如果真结束
+    临时图像.载入图像_自字节集 (信息 [i], 图标)
+    临时图形.画图像_缩放 (临时图像, 相加 (25, x), 15, 相减 (宽, 30), 相减 (高, 30))
+    字体.创建 (“宋体”, 12, 0, 2)
+    刷子.创建_固色画刷 (RGB到ARGB (参数.字颜颜色, 255))
+    临时图形.画文本 (信息 [i], 标题, 相加 (相减 (相除 (宽, 2.5), 取文本长度 (信息 [i], 标题)), x), 相减 (高, 10), 字体, 刷子)
+    
+    刷子.创建_固色画刷 (RGB到ARGB (相除 (参数.背景颜色, 1.2), 55)) ' 画标题阴影效果,同时也可避免标题颜色与背景颜色一样
+    临时图形.画文本 (信息 [i], 标题, 相加 (相减 (相除 (宽, 2.5), 取文本长度 (信息 [i], 标题)), x), 相减 (高, 8), 字体, 刷子)
+    赋值 (x, 相加 (x, 宽))
+.计次循环尾 ()
+图形.创建_自HWND (参数.目标句柄)
+图形.画图像 (图像, 0, 0)
+
+.子程序 取窗口矩形, 矩形, , 
+.参数 句柄, 整数型, , 
+
+.局部变量 窗口矩形, 矩形, , , 
+
+GetWindowRect (句柄, 窗口矩形)
+赋值 (窗口矩形.宽度, 相减 (窗口矩形.右边, 窗口矩形.左边))
+赋值 (窗口矩形.高度, 相减 (窗口矩形.底边, 窗口矩形.顶边))
+返回 (窗口矩形)
+
+.子程序 状态处理, 空白型, , 
+.参数 保留ID, 整数型, , 
+.参数 事件类型, 整数型, , 1移动,2点击
+
+.局部变量 i, 整数型, , , 
+
+.计次循环首 (取数组成员数 (信息), i)
+    .判断开始 (并且 (不等于 (i, 保留ID), 不等于 (信息 [i], 状态, 2)))
+        .判断开始 (不等于 (i, 参数.当前所选))
+            赋值 (信息 [i], 状态, 0)
+        .默认
+            赋值 (信息 [i], 状态, 2)
+        .判断结束
+        
+    .默认
+        赋值 (信息 [i], 状态, 事件类型)
+    .判断结束
+    
+.计次循环尾 ()
+.如果真 (不等于 (参数.将被河蟹, 0))
+    赋值 (信息 [参数].将被河蟹, 状态, 0)
+.如果真结束
+
+
+.子程序 置事件, 空白型, , 
+.参数 移动, 子程序指针, 可空, 
+.参数 左键, 子程序指针, 可空, 
+.参数 右键, 子程序指针, 可空, 
+
+赋值 (事件.左键, 左键)
+赋值 (事件.移动, 移动)
+赋值 (事件.右键, 右键)
+
+.子程序 取数量, 整数型, , 
+返回 (导航.取数量 ())
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _窗口2_创建完毕, 空白型, , 
+输出调试文本 (1)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,5593 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 窗口1
+    左边 = 50
+    顶边 = 50
+    宽度 = 350
+    高度 = 268
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “仿心电图”
+    帮助文件名 = “”
+
+
+
+.常量 光栅运算_与, "8913094", 隐藏, 
+.常量 光栅运算_复制, "13369376", 隐藏, 
+.常量 光栅运算_反色, "4457256", 隐藏, 
+.常量 光栅运算_异或, "6684742", 隐藏, 
+.常量 光栅运算_或, "15597702", 隐藏, 
+.常量 画笔样式1_实线, "0", 隐藏, 
+.常量 画笔样式1_虚线, "1", 隐藏, 使用本样式，画笔宽度必须为1
+.常量 画笔样式1_点线, "2", 隐藏, 使用本样式，画笔宽度必须为1
+.常量 画笔样式1_点划线, "3", 隐藏, 使用本样式，画笔宽度必须为1
+.常量 画笔样式1_点点划线, "4", 隐藏, 使用本样式，画笔宽度必须为1
+.常量 画笔样式1_空笔, "5", 隐藏, 使用本样式，画笔无法绘图！
+.常量 画笔样式1_内实线, "6", 隐藏, 画笔在由椭圆、矩形、圆角矩形、饼图以及弦等生成的封闭对象框中画图。
+.常量 画笔样式2_装饰画笔, "0", 隐藏, 
+.常量 画笔样式2_几何画笔, "65536", 隐藏, 画笔宽度必须为1
+.常量 画笔样式3_圆形笔尖, "0", 隐藏, 
+.常量 画笔样式3_方形笔尖, "256", 隐藏, 
+.常量 画笔样式3_平坦笔尖, "512", 隐藏, 
+.常量 画笔样式4_圆形连接, "0", 隐藏, 
+.常量 画笔样式4_尖角连接, "4096", 隐藏, 
+.常量 刷子花纹_横线, "0", 隐藏, 
+.常量 刷子花纹_左上右下连线, "2", 隐藏, 
+.常量 刷子花纹_方格, "4", 隐藏, 
+.常量 刷子花纹_右上左下连线, "3", 隐藏, 
+.常量 刷子花纹_纵线, "1", 隐藏, 
+.常量 刷子花纹_菱形, "5", 隐藏, 
+.常量 图片_位图, "0", 隐藏, bitmap（*.BMP）
+.常量 图片_图标, "1", 隐藏, icon（*.ICO）
+.常量 图片_光标, "2", 隐藏, cursor（*.CUR）
+.常量 载入图片_常规, "0", 隐藏, 
+.常量 载入图片_替换像素, "32", 隐藏, 与图象中第一个像素相符的所有像素都由系统替换
+.常量 载入图片_单色, "1", 隐藏, 转换为单色图片
+.常量 字形_默认, "0", 隐藏, 
+.常量 字形_瘦, "100", 隐藏, 
+.常量 字形_超轻, "200", 隐藏, 
+.常量 字形_轻, "300", 隐藏, 
+.常量 字形_标准, "400", 隐藏, 
+.常量 字形_中等, "500", 隐藏, 
+.常量 字形_半粗体, "600", 隐藏, 
+.常量 字形_粗体, "700", 隐藏, 
+.常量 字形_超粗体, "800", 隐藏, 
+.常量 字形_重体, "900", 隐藏, 
+.常量 字形_黑体, "900", 隐藏, 
+.常量 写出文本_底对齐, "8", 隐藏, 必须是单行文本写出时可用，因此必须同时利用位或同时与 写出文本_单行文本 设置。
+.常量 写出文本_自动大小, "1024", 隐藏, 
+.常量 写出文本_水平居中, "1", 隐藏, 
+.常量 写出文本_左对齐, "0", 隐藏, 
+.常量 写出文本_右对齐, "2", 隐藏, 
+.常量 写出文本_单行文本, "32", 隐藏, 
+.常量 写出文本_纵向居中, "4", 隐藏, 
+.常量 写出文本_顶对齐, "0", 隐藏, 
+.常量 写出文本_禁止and字符, "8", 隐藏, 通常，认为 & 字符表示应为下一个字符加上下划线。该标志禁止这种行为
+.常量 写出文本_自动换行, "16", 隐藏, 
+.常量 写出文本_隐藏超出部分, "8192", 隐藏, 对一个多行编辑控件进行模拟。不显示部分可见的行
+.常量 写出文本_省略号省略超出, "32768", 隐藏, 倘若字串不能在矩形里全部容下，就在末尾显示省略号
+.常量 写出文本_省略号省略路径, "16384", 隐藏, 如字串包含了 \ 字符，就用省略号替换字串内容，使其能在矩形中全部容下
+.常量 刷子样式_纯色, "0", 隐藏, 
+.常量 刷子样式_空刷子, "1", 隐藏, 
+.常量 刷子样式_花纹, "2", 隐藏, 
+.常量 填充模式_交替填充, "1", 隐藏, 
+.常量 填充模式_按绘制方向填充, "2", 隐藏, 
+.常量 合并方式_交集, "1", 隐藏, And，保留两区域重叠交差区域为当前区域
+.常量 合并方式_并集, "2", 隐藏, Or，两区域结合起来为当前区域
+.常量 合并方式_差集, "4", 隐藏, Diff，用区域1减去区域2，保留剩下区域为当前区域
+.常量 合并方式_非交集, "3", 隐藏, Xor，两区域的并集减去两区域的交集即为当前区域
+.常量 渐变类型_横向, "0", 隐藏, 在该模式下，两个端点表示一个矩形。该矩形被定义成左右边界具有固定颜色（由TRIVERTEX结构指定）。GDI从上至下插入颜色，并填充内部区域。
+.常量 渐变类型_纵向, "1", 隐藏, 在该模式下，两个端点表示一个矩形。该矩形定义其顶部和底部边界的颜色为固定值（通过TRIVERTEX结构指定），GDI从顶至底部边界插入颜色，并填充内部区域。
+.常量 镜像类型_垂直, "0", 隐藏, 
+.常量 镜像类型_水平, "1", 隐藏, 
+.常量 镜像类型_中心, "2", 隐藏, 即水平且垂直
+.常量 GWL_WNDPROC, "-4", 隐藏, 
+.常量 WM_PAINT, "15", 隐藏, 
+.常量 混合模式_替换, "0", 隐藏, CompositingModeSourceOver
+.常量 混合模式_复制, "1", 隐藏, CompositingModeSourceCopy
+.常量 混合品质_无效, "-1", 隐藏, CompositingQualityInvalid
+.常量 混合品质_默认, "0", 隐藏, CompositingQualityDefault
+.常量 混合品质_最佳性能, "1", 隐藏, CompositingQualityHighSpeed
+.常量 混合品质_最佳质量, "2", 隐藏, CompositingQualityHighQuality
+.常量 混合品质_伽玛校正, "3", 隐藏, CompositingQualityGammaCorrected
+.常量 混合品质_假定线性, "4", 隐藏, CompositingQualityAssumeLinear
+.常量 平滑模式_无效, "-1", 隐藏, SmoothingModeInvalid
+.常量 平滑模式_默认, "0", 隐藏, SmoothingModeDefault
+.常量 平滑模式_最佳性能, "1", 隐藏, SmoothingModeHighSpeed
+.常量 平滑模式_最佳质量, "2", 隐藏, SmoothingModeHighQuality
+.常量 平滑模式_不抗锯齿, "3", 隐藏, SmoothingModeNone
+.常量 平滑模式_抗锯齿, "4", 隐藏, SmoothingModeAntiAlias
+.常量 文本渲染模式_系统默认, "0", 隐藏, TextRenderingHintSystemDefault
+.常量 文本渲染模式_符号位图和hinting技术, "1", 隐藏, TextRenderingHintSingleBitPerPixelGridFit
+.常量 文本渲染模式_符号位图, "2", 隐藏, TextRenderingHintSingleBitPerPixel
+.常量 文本渲染模式_抗锯齿和hinting技术, "3", 隐藏, TextRenderingHintAntiAliasGridFit
+.常量 文本渲染模式_抗锯齿, "4", 隐藏, TextRenderingHintAntiAlias
+.常量 文本渲染模式_ClearType文本和hinting技术, "5", 隐藏, TextRenderingHintClearTypeGridFit
+.常量 算法模式_无效, "-1", 隐藏, InterpolationModeInvalid
+.常量 算法模式_默认, "0", 隐藏, InterpolationModeDefault
+.常量 算法模式_低质量, "1", 隐藏, InterpolationModeLowQuality
+.常量 算法模式_高质量, "2", 隐藏, InterpolationModeHighQuality
+.常量 算法模式_双线性, "3", 隐藏, InterpolationModeBilinear
+.常量 算法模式_双三次, "4", 隐藏, InterpolationModeBicubic
+.常量 算法模式_邻近, "5", 隐藏, InterpolationModeNearestNeighbor
+.常量 算法模式_高质量双线性, "6", 隐藏, InterpolationModeHighQualityBilinear
+.常量 算法模式_高质量双三次, "7", 隐藏, InterpolationModeHighQualityBicubic
+.常量 像素偏移模式_无效, "-1", 隐藏, PixelOffsetModeInvalid
+.常量 像素偏移模式_默认, "0", 隐藏, PixelOffsetModeDefault
+.常量 像素偏移模式_高性能, "1", 隐藏, PixelOffsetModeHighSpeed
+.常量 像素偏移模式_高质量, "2", 隐藏, PixelOffsetModeHighQuality
+.常量 像素偏移模式_不偏移, "3", 隐藏, PixelOffsetModeNone
+.常量 像素偏移模式_一半, "4", 隐藏, PixelOffsetModeHalf
+.常量 单位_世界坐标, "0", 隐藏, UnitWorld
+.常量 单位_显示器, "1", 隐藏, UnitDisplay
+.常量 单位_像素, "2", 隐藏, UnitPixel
+.常量 单位_点, "3", 隐藏, UnitPoint
+.常量 单位_英寸, "4", 隐藏, UnitInch
+.常量 单位_文档, "5", 隐藏, UnitDocument。1/300英寸
+.常量 单位_毫米, "6", 隐藏, UnitMillimeter。
+.常量 坐标空间_世界, "0", 隐藏, CoordinateSpaceWorld
+.常量 坐标空间_页, "1", 隐藏, CoordinateSpacePage
+.常量 坐标空间_设备, "2", 隐藏, CoordinateSpaceDevice
+.常量 字体风格_普通, "0", 隐藏, 
+.常量 字体风格_加粗, "1", 隐藏, 
+.常量 字体风格_倾斜, "2", 隐藏, 
+.常量 字体风格_加粗倾斜, "3", 隐藏, 
+.常量 字体风格_下划线, "4", 隐藏, 
+.常量 字体风格_删除线, "8", 隐藏, 
+.常量 填充模式_交替, "0", 隐藏, Alternate 指定交替填充模式。  
+.常量 填充模式_环绕, "1", 隐藏, Winding 指定环绕填充模式。  
+.常量 合并模式_替代, "0", 隐藏, Replace 一个剪辑区域被另一个剪辑区域替代。
+.常量 合并模式_交集, "1", 隐藏, Intersect 通过采用两个剪辑区域的交集组合两个剪辑区域。
+.常量 合并模式_并集, "2", 隐藏, Union 通过采用两个剪辑区域的联合组合两个剪辑区域。
+.常量 合并模式_并集减交集, "3", 隐藏, Xor 两者的并集减去两者的交集。通过只采纳单独由其中一个区域（而非两个区域一起）包括的范围来组合两个剪辑区域。
+.常量 合并模式_排除新区域, "4", 隐藏, Exclude 指定由从现有区域移除的新区域的结果替代现有区域。换言之，从现有区域中排除新区域。
+.常量 合并模式_排除旧区域, "5", 隐藏, Complement 指定由从新区域移除的现有区域的结果替代现有区域。换言之，从新区域中排除现有区域。
+.常量 颜色调整类型_默认, "0", 隐藏, ColorAdjustTypeDefault
+.常量 颜色调整类型_位图, "1", 隐藏, ColorAdjustTypeBitmap
+.常量 颜色调整类型_画刷, "2", 隐藏, ColorAdjustTypeBrush
+.常量 颜色调整类型_画笔, "3", 隐藏, ColorAdjustTypePen
+.常量 颜色调整类型_文本, "4", 隐藏, ColorAdjustTypeText
+.常量 颜色调整类型_总数, "5", 隐藏, ColorAdjustTypeCount，内部使用，用于记录色彩调整的种类
+.常量 颜色调整类型_通用, "6", 隐藏, ColorAdjustTypeAny，保留，不使用
+.常量 输出通道_C, "0", 隐藏, ColorChannelFlagsC
+.常量 输出通道_M, "1", 隐藏, ColorChannelFlagsM
+.常量 输出通道_Y, "2", 隐藏, ColorChannelFlagsY
+.常量 输出通道_K, "3", 隐藏, ColorChannelFlagsK
+.常量 输出通道_Last, "4", 隐藏, ColorChannelFlagsLast
+.常量 调色板标志_含透明色, "1", 隐藏, PaletteFlagsHasAlpha
+.常量 调色板标志_灰度, "2", 隐藏, PaletteFlagsGrayScale
+.常量 调色板标志_半色, "4", 隐藏, PaletteFlagsHalftone
+.常量 矩阵顺序_预先计算, "0", 隐藏, Prepend 在旧操作前应用新操作。 
+.常量 矩阵顺序_追加, "1", 隐藏, Append 在旧操作后应用新操作。 
+.常量 颜色矩阵标志_默认, "0", 隐藏, ColorMatrixFlagsDefault。所有的颜色值（包括灰度）是由相同的颜色调整矩阵调整的指定
+.常量 颜色矩阵标志_忽略灰度, "1", 隐藏, ColorMatrixFlagsSkipGrays。不对灰度进行调整
+.常量 颜色矩阵标志_分别, "2", 隐藏, ColorMatrixFlagsAltGray。颜色是一个矩阵，灰度是另一个矩阵。
+.常量 图像格式_内存BMP, "“{B96B3CAA-0728-11D3-9D7B-0000F81EF32E}”", 隐藏, ImageFormatMemoryBMP
+.常量 图像格式_BMP, "“{B96B3CAB-0728-11D3-9D7B-0000F81EF32E}”", 隐藏, ImageFormatBMP
+.常量 图像格式_JPEG, "“{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}”", 隐藏, ImageFormatJPEG
+.常量 图像格式_GIF, "“{B96B3CB0-0728-11D3-9D7B-0000F81EF32E}”", 隐藏, ImageFormatGIF
+.常量 图像格式_EMF, "“{B96B3CAC-0728-11D3-9D7B-0000F81EF32E}”", 隐藏, ImageFormatEMF
+.常量 图像格式_WMF, "“{B96B3CAD-0728-11D3-9D7B-0000F81EF32E}”", 隐藏, ImageFormatWMF
+.常量 图像格式_TIFF, "“{B96B3CB1-0728-11D3-9D7B-0000F81EF32E}”", 隐藏, ImageFormatTIFF
+.常量 图像格式_PNG, "“{B96B3CAF-0728-11D3-9D7B-0000F81EF32E}”", 隐藏, ImageFormatPNG
+.常量 图像格式_ICO, "“{B96B3CB5-0728-11D3-9D7B-0000F81EF32E}”", 隐藏, ImageFormatIcon
+.常量 图像类型_未知, "0", 隐藏, ImageTypeUnknown
+.常量 图像类型_位图, "1", 隐藏, ImageTypeBitmap
+.常量 图像类型_图元文件, "2", 隐藏, ImageTypeMetafile
+.常量 图像属性_无, "0", 隐藏, ImageFlagsNone
+.常量 图像属性_可缩放, "1", 隐藏, ImageFlagsScalable
+.常量 图像属性_含透明, "2", 隐藏, ImageFlagsHasAlpha
+.常量 图像属性_含半透明, "4", 隐藏, ImageFlagsHasTranslucent
+.常量 图像属性_可部分缩放, "8", 隐藏, ImageFlagsPartiallyScalable
+.常量 图像属性_色彩空间RGB, "16", 隐藏, ImageFlagsColorSpaceRGB
+.常量 图像属性_色彩空间CMYK, "32", 隐藏, ImageFlagsColorSpaceCMYK
+.常量 图像属性_色彩空间灰度, "64", 隐藏, ImageFlagsColorSpaceGRAY
+.常量 图像属性_色彩空间YCBCR, "128", 隐藏, ImageFlagsColorSpaceYCBCR
+.常量 图像属性_色彩空间YCCK, "256", 隐藏, ImageFlagsColorSpaceYCCK
+.常量 图像属性_含DPI, "4096", 隐藏, ImageFlagsHasRealDPI
+.常量 图像属性_含像素尺寸, "8192", 隐藏, ImageFlagsHasRealPixelSize
+.常量 图像属性_只读, "65536", 隐藏, ImageFlagsReadOnly
+.常量 图像属性_高速缓存, "131072", 隐藏, ImageFlagsCaching
+.常量 像素格式_Indexed, "65536", 隐藏, Indexed 该像素数据包含颜色索引值，这意味着这些值是系统颜色表中颜色的索引，而不是单个颜色值。
+.常量 像素格式_GDI, "131072", 隐藏, Gdi 像素数据包含 GDI 颜色。
+.常量 像素格式_Alpha, "262144", 隐藏, Alpha 像素数据包含没有进行过自左乘的 alpha 值。
+.常量 像素格式_PAlpha, "524288", 隐藏, PAlpha 像素格式包含自左乘的 alpha 值。
+.常量 像素格式_Extended, "1048576", 隐藏, Extended 保留。
+.常量 像素格式_Canonical, "2097152", 隐藏, Canonical 保留。
+.常量 像素格式_Undefined, "0", 隐藏, Undefined 未定义像素格式。
+.常量 像素格式_DontCare, "0", 隐藏, DontCare 没有指定像素格式。
+.常量 像素格式_1bppIndexed, "196865", 隐藏, Format1bppIndexed 指定像素格式为每像素 1 位，并指定它使用索引颜色。因此颜色表中有两种颜色。
+.常量 像素格式_4bppIndexed, "197634", 隐藏, Format4bppIndexed 指定格式为每像素 4 位而且已创建索引。
+.常量 像素格式_8bppIndexed, "198659", 隐藏, Format8bppIndexed 指定格式为每像素 8 位而且已创建索引。因此颜色表中有 256 种颜色。
+.常量 像素格式_16bppGrayScale, "1052676", 隐藏, Format16bppGrayScale 像素格式为每像素 16 位。该颜色信息指定 65536 种灰色调。
+.常量 像素格式_16bppRGB555, "135173", 隐藏, Format16bppRgb555 指定格式为每像素 16 位；红色、绿色和蓝色分量各使用 5 位。剩余的 1 位未使用。
+.常量 像素格式_16bppRGB565, "135174", 隐藏, Format16bppRgb565 指定格式为每像素 16 位；红色分量使用 5 位，绿色分量使用 6 位，蓝色分量使用 5 位。
+.常量 像素格式_16bppARGB1555, "397319", 隐藏, Format16bppArgb1555 像素格式为每像素 16 位。该颜色信息指定 32
+.常量 像素格式_24bppRGB, "137224", 隐藏, Format24bppRgb 指定格式为每像素 24 位；红色、绿色和蓝色分量各使用 8 位。
+.常量 像素格式_32bppRGB, "139273", 隐藏, Format32bppRgb 指定格式为每像素 32 位；红色、绿色和蓝色分量各使用 8 位。剩余的 8 位未使用。
+.常量 像素格式_32bppARGB, "2498570", 隐藏, Format32bppArgb 指定格式为每像素 32 位；alpha、红色、绿色和蓝色分量各使用 8 位。
+.常量 像素格式_32bppPARGB, "925707", 隐藏, Format32bppPArgb 指定格式为每像素 32 位；alpha、红色、绿色和蓝色分量各使用 8 位。根据 alpha 分量，对红色、绿色和蓝色分量进行自左乘。
+.常量 像素格式_48bppRGB, "1060876", 隐藏, Format48bppRgb 指定格式为每像素 48 位；红色、绿色和蓝色分量各使用 16 位。
+.常量 像素格式_64bppARGB, "3424269", 隐藏, Format64bppArgb 指定格式为每像素 64 位；alpha、红色、绿色和蓝色分量各使用 16 位。
+.常量 像素格式_64bppPARGB, "1851406", 隐藏, Format64bppPArgb 指定格式为每像素 64 位；alpha、红色、绿色和蓝色分量各使用 16 位。根据 alpha 分量，对红色、绿色和蓝色分量进行自左乘。
+.常量 像素格式_Max, "16", 隐藏, Max 此枚举的最大值。
+.常量 帧维面_时间, "“{6AEDBD6D-3FB5-418A-83A6-7F45229DC872}”", 隐藏, 
+.常量 帧维面_分辨率, "“{84236F7B-3BD3-428F-8DAB-4EA1439CA315}”", 隐藏, 
+.常量 帧维面_页, "“{7462DC86-6180-4C7E-8E3F-EE7333A7A483}”", 隐藏, 
+.常量 属性值类型_字节型数组, "1", 隐藏, PropertyTagTypeByte
+.常量 属性值类型_文本型, "2", 隐藏, PropertyTagTypeASCII
+.常量 属性值类型_短整数型数组, "3", 隐藏, PropertyTagTypeShort
+.常量 属性值类型_整数型数组, "4", 隐藏, PropertyTagTypeLong
+.常量 属性值类型_整数型对数组, "5", 隐藏, PropertyTagTypeRational。表示成对的整数数组
+.常量 属性值类型_字节集型, "7", 隐藏, PropertyTagTypeUndefined
+.常量 属性值类型_小数型数组, "9", 隐藏, PropertyTagTypeSLONG
+.常量 属性值类型_小数型对数组, "10", 隐藏, PropertyTagTypeSRational。表示成对的小数数组
+.常量 属性标签_新子文件, "254", 隐藏, PropertyTagNewSubfileType
+.常量 属性标签_子文件, "255", 隐藏, PropertyTagSubfileType
+.常量 属性标签_图像宽度, "256", 隐藏, PropertyTagImageWidth
+.常量 属性标签_图像高度, "257", 隐藏, PropertyTagImageHeight
+.常量 属性标签_位深, "258", 隐藏, PropertyTagBitsPerSample
+.常量 属性标签_压缩, "259", 隐藏, PropertyTagCompression
+.常量 属性标签_光度测量解释, "262", 隐藏, PropertyTagPhotometricInterp
+.常量 属性标签_分离黑白, "263", 隐藏, PropertyTagThreshHolding
+.常量 属性标签_抖动或半色调宽, "264", 隐藏, PropertyTagCellWidth
+.常量 属性标签_抖动或半色调高, "265", 隐藏, PropertyTagCellHeight
+.常量 属性标签_填充顺序, "266", 隐藏, PropertyTagFillOrder
+.常量 属性标签_文档名称, "269", 隐藏, PropertyTagDocumentName
+.常量 属性标签_图像描述, "270", 隐藏, PropertyTagImageDescription
+.常量 属性标签_设备制造商, "271", 隐藏, PropertyTagEquipMake
+.常量 属性标签_设备型号, "272", 隐藏, PropertyTagEquipModel
+.常量 属性标签_字节偏移量, "273", 隐藏, PropertyTagStripOffsets
+.常量 属性标签_方向定位, "274", 隐藏, PropertyTagOrientation
+.常量 属性标签_每像素颜色分量, "277", 隐藏, PropertyTagSamplesPerPixel
+.常量 属性标签_每行字节数, "278", 隐藏, PropertyTagRowsPerStrip
+.常量 属性标签_字节总数, "279", 隐藏, PropertyTagStripBytesCount
+.常量 属性标签_最小采样值, "280", 隐藏, PropertyTagMinSampleValue
+.常量 属性标签_最大采样值, "281", 隐藏, PropertyTagMaxSampleValue
+.常量 属性标签_水平分辨率, "282", 隐藏, PropertyTagXResolution
+.常量 属性标签_垂直分辨率, "283", 隐藏, PropertyTagYResolution
+.常量 属性标签_数据配置, "284", 隐藏, PropertyTagPlanarConfig
+.常量 属性标签_页名称, "285", 隐藏, PropertyTagPageName
+.常量 属性标签_水平位置, "286", 隐藏, PropertyTagXPosition
+.常量 属性标签_垂直位置, "287", 隐藏, PropertyTagYPosition
+.常量 属性标签_释放偏移, "288", 隐藏, PropertyTagFreeOffset
+.常量 属性标签_释放字节偏移, "289", 隐藏, PropertyTagFreeByteCounts
+.常量 属性标签_灰度单位, "290", 隐藏, PropertyTagGrayResponseUnit
+.常量 属性标签_灰度密度, "291", 隐藏, PropertyTagGrayResponseCurve
+.常量 属性标签_T4选项, "292", 隐藏, PropertyTagT4Option
+.常量 属性标签_T6选项, "293", 隐藏, PropertyTagT6Option
+.常量 属性标签_分辨率单位, "296", 隐藏, PropertyTagResolutionUnit
+.常量 属性标签_页码, "297", 隐藏, PropertyTagPageNumber
+.常量 属性标签_传输功能, "301", 隐藏, PropertyTagTransferFuncition
+.常量 属性标签_软件名, "305", 隐藏, PropertyTagSoftwareUsed
+.常量 属性标签_创建时间, "306", 隐藏, PropertyTagDateTime
+.常量 属性标签_作者, "315", 隐藏, PropertyTagArtist
+.常量 属性标签_主机名, "316", 隐藏, PropertyTagHostComputer
+.常量 属性标签_预测, "317", 隐藏, PropertyTagPredictor
+.常量 属性标签_白点色度, "318", 隐藏, PropertyTagWhitePoint
+.常量 属性标签_重要颜色, "319", 隐藏, PropertyTagPrimaryChromaticities
+.常量 属性标签_调色板, "320", 隐藏, PropertyTagColorMap
+.常量 属性标签_半色调, "321", 隐藏, PropertyTagHalftoneHints
+.常量 属性标签_平铺宽度, "322", 隐藏, PropertyTagTileWidth
+.常量 属性标签_平铺长度, "323", 隐藏, PropertyTagTileLength
+.常量 属性标签_平铺偏移量, "324", 隐藏, PropertyTagTileOffset
+.常量 属性标签_平铺字节总数, "325", 隐藏, PropertyTagTileByteCounts
+.常量 属性标签_置墨水, "332", 隐藏, PropertyTagInkSet
+.常量 属性标签_墨水名, "333", 隐藏, PropertyTagInkNames
+.常量 属性标签_墨水数, "334", 隐藏, PropertyTagNumberOfInks
+.常量 属性标签_颜色成分, "336", 隐藏, PropertyTagDotRange
+.常量 属性标签_打印环境, "337", 隐藏, PropertyTagTargetPrinter
+.常量 属性标签_额外颜色分量, "338", 隐藏, PropertyTagExtraSamples
+.常量 属性标签_采样格式, "339", 隐藏, PropertyTagSampleFormat
+.常量 属性标签_采样最小值, "340", 隐藏, PropertyTagSMinSampleValue
+.常量 属性标签_采样最大值, "341", 隐藏, PropertyTagSMaxSampleValue
+.常量 属性标签_传输范围, "342", 隐藏, PropertyTagTransferRange
+.常量 属性标签_JPEG压缩, "512", 隐藏, PropertyTagJPEGProc
+.常量 属性标签_JPEG格式, "513", 隐藏, PropertyTagJPEGInterFormat
+.常量 属性标签_JPEG长度, "514", 隐藏, PropertyTagJPEGInterLength
+.常量 属性标签_JPEG重置间隔, "515", 隐藏, PropertyTagJPEGRestartInterval
+.常量 属性标签_JPEG无损预测, "517", 隐藏, PropertyTagJPEGLosslessPredictors
+.常量 属性标签_JPEG点变化值, "518", 隐藏, PropertyTagJPEGPointTransforms
+.常量 属性标签_JPEG量化表, "519", 隐藏, PropertyTagJPEGQTables
+.常量 属性标签_JPEGdc表, "520", 隐藏, PropertyTagJPEGDCTables
+.常量 属性标签_JPEGac表, "521", 隐藏, PropertyTagJPEGACTables
+.常量 属性标签_伽玛值, "769", 隐藏, PropertyTagGamma
+.常量 属性标签_ICC配置文件, "770", 隐藏, PropertyTagICCProfileDescriptor
+.常量 属性标签_SRGB渲染, "771", 隐藏, PropertyTagSRGBRenderingIntent
+.常量 属性标签_图像标题, "800", 隐藏, PropertyTagImageTitle
+.常量 属性标签_版权, "33432", 隐藏, PropertyTagCopyright
+.常量 属性标签_水平分辨率单位, "20481", 隐藏, PropertyTagResolutionXUnit。1、每英寸，2.每厘米
+.常量 属性标签_垂直分辨率单位, "20482", 隐藏, PropertyTagResolutionYUnit。1、每英寸，2.每厘米
+.常量 属性标签_宽度单位, "20483", 隐藏, PropertyTagResolutionXLengthUnit。1、英寸，2、厘米，3、点，4、派卡，5、列
+.常量 属性标签_高度单位, "20484", 隐藏, PropertyTagResolutionYLengthUnit。1、英寸，2、厘米，3、点，4、派卡，5、列
+.常量 属性标签_打印选项, "20485", 隐藏, PropertyTagPrintFlags
+.常量 属性标签_打印版本, "20486", 隐藏, PropertyTagPrintFlagsVersion
+.常量 属性标签_打印裁剪标志, "20487", 隐藏, PropertyTagPrintFlagsCrop
+.常量 属性标签_打印宽度, "20488", 隐藏, PropertyTagPrintFlagsBleedWidth
+.常量 属性标签_打印宽度比例, "20489", 隐藏, PropertyTagPrintFlagsBleedWidthScale
+.常量 属性标签_网格频率, "20490", 隐藏, PropertyTagHalftoneLPI
+.常量 属性标签_网格频率单位, "20491", 隐藏, PropertyTagHalftoneLPIUnit
+.常量 属性标签_网格角度, "20492", 隐藏, PropertyTagHalftoneDegree
+.常量 属性标签_网格形状, "20493", 隐藏, PropertyTagHalftoneShape
+.常量 属性标签_网格杂项, "20494", 隐藏, PropertyTagHalftoneMisc
+.常量 属性标签_网格是否默认屏幕, "20495", 隐藏, PropertyTagHalftoneScreen
+.常量 属性标签_JPEG品质_Adobe, "20496", 隐藏, PropertyTagJPEGQuality
+.常量 属性标签_网格大小, "20497", 隐藏, PropertyTagGridSize
+.常量 属性标签_缩略图格式, "20498", 隐藏, PropertyTagThumbnailFormat。0、原始RGB，1、JPEG
+.常量 属性标签_缩略图宽度, "20499", 隐藏, PropertyTagThumbnailWidth
+.常量 属性标签_缩略图高度, "20500", 隐藏, PropertyTagThumbnailHeight
+.常量 属性标签_缩略图位深, "20501", 隐藏, PropertyTagThumbnailColorDepth
+.常量 属性标签_缩略图色板数量, "20502", 隐藏, PropertyTagThumbnailPlanes
+.常量 属性标签_缩略图行字节数, "20503", 隐藏, PropertyTagThumbnailRawBytes
+.常量 属性标签_缩略图大小, "20504", 隐藏, PropertyTagThumbnailSize。总字节大小。
+.常量 属性标签_缩略图压缩大小, "20505", 隐藏, PropertyTagThumbnailCompressedSize。
+.常量 属性标签_颜色传输功能, "20506", 隐藏, PropertyTagColorTransferFunction
+.常量 属性标签_缩略图数据, "20507", 隐藏, PropertyTagThumbnailData
+.常量 属性标签_缩略图_宽度, "20512", 隐藏, PropertyTagThumbnailImageWidth
+.常量 属性标签_缩略图_高度, "20513", 隐藏, PropertyTagThumbnailImageHeight
+.常量 属性标签_缩略图_位深, "20514", 隐藏, PropertyTagThumbnailBitsPerSample
+.常量 属性标签_缩略图_压缩, "20515", 隐藏, PropertyTagThumbnailCompression
+.常量 属性标签_缩略图_光度测量解释, "20516", 隐藏, PropertyTagThumbnailPhotometricInterp
+.常量 属性标签_缩略图_描述, "20517", 隐藏, PropertyTagThumbnailImageDescription
+.常量 属性标签_缩略图_设备制造商, "20518", 隐藏, PropertyTagThumbnailEquipMake
+.常量 属性标签_缩略图_设备制型号, "20519", 隐藏, PropertyTagThumbnailEquipModel
+.常量 属性标签_缩略图_字节偏移量, "20520", 隐藏, PropertyTagThumbnailStripOffsets
+.常量 属性标签_缩略图_方向定位, "20521", 隐藏, PropertyTagThumbnailOrientation
+.常量 属性标签_缩略图_每像素颜色分量, "20522", 隐藏, PropertyTagThumbnailSamplesPerPixel
+.常量 属性标签_缩略图_每行字节数, "20523", 隐藏, PropertyTagThumbnailRowsPerStrip
+.常量 属性标签_缩略图_字节总数, "20524", 隐藏, PropertyTagThumbnailStripBytesCount
+.常量 属性标签_缩略图_水平分辨率, "20525", 隐藏, PropertyTagThumbnailResolutionX
+.常量 属性标签_缩略图_垂直分辨率, "20526", 隐藏, PropertyTagThumbnailResolutionY
+.常量 属性标签_缩略图_数据配置, "20527", 隐藏, PropertyTagThumbnailPlanarConfig
+.常量 属性标签_缩略图_分辨率单位, "20528", 隐藏, PropertyTagThumbnailResolutionUnit
+.常量 属性标签_缩略图_传输功能, "20529", 隐藏, PropertyTagThumbnailTransferFunction
+.常量 属性标签_缩略图_软件名, "20530", 隐藏, PropertyTagThumbnailSoftwareUsed
+.常量 属性标签_缩略图_更改时间, "20531", 隐藏, PropertyTagThumbnailDateTime
+.常量 属性标签_缩略图_作者, "20532", 隐藏, PropertyTagThumbnailArtist
+.常量 属性标签_缩略图_白点色度, "20533", 隐藏, PropertyTagThumbnailWhitePoint
+.常量 属性标签_缩略图_重要颜色, "20534", 隐藏, PropertyTagThumbnailPrimaryChromaticities
+.常量 属性标签_缩略图_YCbCr数据, "20535", 隐藏, PropertyTagThumbnailYCbCrCoefficients
+.常量 属性标签_缩略图_YCbCr采样, "20536", 隐藏, PropertyTagThumbnailYCbCrSubsampling
+.常量 属性标签_缩略图_YCbCr配置, "20537", 隐藏, PropertyTagThumbnailYCbCrPositioning
+.常量 属性标签_缩略图_黑白参考, "20538", 隐藏, PropertyTagThumbnailRefBlackWhite
+.常量 属性标签_缩略图_版权信息, "20539", 隐藏, PropertyTagThumbnailCopyRight
+.常量 属性标签_亮度表, "20624", 隐藏, PropertyTagLuminanceTable
+.常量 属性标签_色度表, "20625", 隐藏, PropertyTagChrominanceTable
+.常量 属性标签_帧延时, "20736", 隐藏, PropertyTagFrameDelay
+.常量 属性标签_循环次数, "20737", 隐藏, PropertyTagLoopCount。0、无限。
+.常量 属性标签_像素单位, "20752", 隐藏, PropertyTagPixelUnit
+.常量 属性标签_水平像素单位, "20753", 隐藏, PropertyTagPixelPerUnitX
+.常量 属性标签_垂直像素单位, "20754", 隐藏, PropertyTagPixelPerUnitY
+.常量 属性标签_直方图调色板, "20755", 隐藏, PropertyTagPaletteHistogram
+.常量 属性标签_曝光时间, "33434", 隐藏, PropertyTagLuminanceTable。单位秒
+.常量 属性标签_焦距, "33437", 隐藏, PropertyTagExifFNumber
+.常量 属性标签_曝光模式, "34850", 隐藏, PropertyTagExifExposureProg。0.没有定义，1.手动，2.正常程序，3.光圈优先，4.快门优先，5.创意程序，6.运动模式，7.人像模式，8.风景模式
+.常量 属性标签_测光, "34852", 隐藏, PropertyTagExifSpectralSense
+.常量 属性标签_感光度, "34855", 隐藏, PropertyTagExifISOSpeed
+.常量 属性标签_光转换能力, "34856", 隐藏, PropertyTagExifOECF
+.常量 属性标签_版本, "36864", 隐藏, PropertyTagExifVer
+.常量 属性标签_原始时间, "36867", 隐藏, PropertyTagExifDTOrig
+.常量 属性标签_数字时间, "36868", 隐藏, PropertyTagExifDTDigitized
+.常量 属性标签_扩展压缩, "37121", 隐藏, PropertyTagExifCompConfig
+.常量 属性标签_压缩BPP, "37122", 隐藏, PropertyTagExifCompBPP
+.常量 属性标签_快门速度, "37377", 隐藏, PropertyTagExifShutterSpeed
+.常量 属性标签_光圈, "37378", 隐藏, PropertyTagExifAperture
+.常量 属性标签_亮度, "37379", 隐藏, PropertyTagExifBrightness。-99.99到99.99
+.常量 属性标签_曝光偏差, "37380", 隐藏, PropertyTagExifExposureBias。-99.99到99.99
+.常量 属性标签_最大光圈, "37381", 隐藏, PropertyTagExifMaxAperture。00.00到99.99
+.常量 属性标签_自动对焦, "37382", 隐藏, PropertyTagExifSubjectDist
+.常量 属性标签_测光模式, "37383", 隐藏, PropertyTagExifMeteringMode。0.未知，1.正常，2.中央重点测光，3.点测光，4.多分区，5.平均测光，6.局部测光。
+.常量 属性标签_白平衡, "37384", 隐藏, PropertyTagExifLightSource。0.未知，1.日光，2.荧光灯，3.钨丝灯，17.标准A，18.标准B，19.标准C，20.D55，21.D65，22.D75。
+.常量 属性标签_闪光灯, "37385", 隐藏, PropertyTagExifFlash
+.常量 属性标签_实际焦距, "37386", 隐藏, PropertyTagExifFocalLength
+.常量 属性标签_制造商记录, "37500", 隐藏, PropertyTagExifMakerNote
+.常量 属性标签_注释标记, "37510", 隐藏, PropertyTagExifUserComment
+.常量 属性标签_创建时间2, "37520", 隐藏, PropertyTagExifDTSubsec
+.常量 属性标签_原始时间2, "37521", 隐藏, PropertyTagExifDTOrigSS
+.常量 属性标签_数字时间2, "37522", 隐藏, PropertyTagExifDTDigSS
+.常量 属性标签_格式版本, "40960", 隐藏, PropertyTagExifFPXVer
+.常量 属性标签_颜色空间, "40961", 隐藏, PropertyTagExifColorSpace
+.常量 属性标签_有效宽度, "40962", 隐藏, PropertyTagExifPixXDim
+.常量 属性标签_有效高度, "40963", 隐藏, PropertyTagExifPixYDim
+.常量 属性标签_相关音频文件, "40964", 隐藏, PropertyTagExifRelatedWav
+.常量 属性标签_偏移块, "40965", 隐藏, PropertyTagExifInterop
+.常量 属性标签_闪光量, "41483", 隐藏, PropertyTagExifFlashEnergy
+.常量 属性标签_空间频率表, "41484", 隐藏, PropertyTagExifSpatialFR
+.常量 属性标签_焦平面X分辨率, "41486", 隐藏, PropertyTagExifFocalXRes
+.常量 属性标签_焦平面Y分辨率, "41487", 隐藏, PropertyTagExifFocalYRes
+.常量 属性标签_焦平面分辨率单位, "41488", 隐藏, PropertyTagExifFocalResUnit
+.常量 属性标签_主要线路, "41492", 隐藏, PropertyTagExifSubjectLoc
+.常量 属性标签_曝光指数, "41493", 隐藏, PropertyTagExifExposureIndex
+.常量 属性标签_感光元件, "41495", 隐藏, PropertyTagExifSensingMethod。1.未定义，2.单芯片，3.双芯片，4.三芯片，5.连续色彩，7.三线，8.线性连续色彩
+.常量 属性标签_图像源, "41728", 隐藏, PropertyTagExifFileSource
+.常量 属性标签_作品类型, "41729", 隐藏, PropertyTagExifSceneType
+.常量 属性标签_色彩滤镜阵列, "41730", 隐藏, PropertyTagExifCfaPattern
+.常量 旋转翻转_不旋转不翻转, "0", 隐藏, RotateNoneFlipNone
+.常量 旋转翻转_旋转90度不翻转, "1", 隐藏, Rotate90FlipNone
+.常量 旋转翻转_旋转180度不翻转, "2", 隐藏, Rotate180FlipNone
+.常量 旋转翻转_旋转270度不翻转, "3", 隐藏, Rotate270FlipNone
+.常量 旋转翻转_不旋转水平翻转, "4", 隐藏, RotateNoneFlipX
+.常量 旋转翻转_旋转90度水平翻转, "5", 隐藏, Rotate90FlipX
+.常量 旋转翻转_旋转180度水平翻转, "6", 隐藏, Rotate180FlipX
+.常量 旋转翻转_旋转270度水平翻转, "7", 隐藏, Rotate270FlipX
+.常量 旋转翻转_不旋转垂直翻转, "6", 隐藏, RotateNoneFlipY
+.常量 旋转翻转_旋转90度垂直翻转, "7", 隐藏, Rotate90FlipY
+.常量 旋转翻转_旋转180度垂直翻转, "4", 隐藏, Rotate180FlipY
+.常量 旋转翻转_旋转270度垂直翻转, "5", 隐藏, Rotate270FlipY
+.常量 旋转翻转_不旋转水平和垂直翻转, "2", 隐藏, RotateNoneFlipXY
+.常量 旋转翻转_旋转90度水平和垂直翻转, "3", 隐藏, Rotate90FlipXY
+.常量 旋转翻转_旋转180度水平和垂直翻转, "0", 隐藏, Rotate180FlipXY
+.常量 旋转翻转_旋转270度水平和垂直翻转, "1", 隐藏, Rotate270FlipXY
+.常量 编码器_压缩, "“{E09D739D-CCD4-44EE-8EBA-3FBF8BE4FC58}”", 隐藏, EncoderCompression
+.常量 编码器_色深, "“{66087055-AD66-4C7C-9A18-38A2310B8337}”", 隐藏, EncoderColorDepth
+.常量 编码器_扫描方式, "“{3A4E2661-3109-4E56-8536-42C156E7DCFA}”", 隐藏, EncoderScanMethod
+.常量 编码器_版本, "“{24D18C76-814A-41A4-BF53-1C219CCCF797}”", 隐藏, EncoderVersion
+.常量 编码器_呈现方式, "“{6D42C53A-229A-4825-8BB7-5C99E2B9A8B8}”", 隐藏, EncoderRenderMethod
+.常量 编码器_品质, "“{1D5BE4B5-FA4A-452D-9CDD-5DB35105E7EB}”", 隐藏, EncoderQuality
+.常量 编码器_转换, "“{8D0EB2D1-A58E-4EA8-AA14-108074B7B6F9}”", 隐藏, EncoderTransformation
+.常量 编码器_亮度表, "“{EDB33BCE-0266-4A77-B904-27216099E717}”", 隐藏, EncoderLuminanceTable
+.常量 编码器_色度表, "“{F2E455DC-09B3-4316-8260-676ADA32481C}”", 隐藏, EncoderChrominanceTable
+.常量 编码器_保存标志, "“{292266FC-AC40-47BF-8CFC-A85B89A655DE}”", 隐藏, EncoderSaveFlag
+.常量 编码器参数值类型_字节型, "1", 隐藏, EncoderParameterValueTypeByte
+.常量 编码器参数值类型_字符型, "2", 隐藏, EncoderParameterValueTypeASCII
+.常量 编码器参数值类型_短整数型, "3", 隐藏, EncoderParameterValueTypeShort
+.常量 编码器参数值类型_整数型, "4", 隐藏, EncoderParameterValueTypeLong
+.常量 编码器参数值类型_整数对, "5", 隐藏, EncoderParameterValueTypeRational。为整数型数组，有两个成员。第一个表示最小值，第二个表示最大值。
+.常量 编码器参数值类型_整数范围, "6", 隐藏, EncoderParameterValueTypeLongRange。为整数型数组，有两个成员。第一个表示低32位，第二个表示高32位。
+.常量 编码器参数值类型_未定义, "7", 隐藏, EncoderParameterValueTypeUndefined。
+.常量 编码器参数值类型_整数对范围, "8", 隐藏, EncoderParameterValueTypeRationalRange。
+.常量 编码器值_颜色类型CMYK, "0", 隐藏, EncoderValueColorTypeCMYK。GDI+1.0没有使用。
+.常量 编码器值_颜色类型YCCK, "1", 隐藏, EncoderValueColorTypeYCCK。GDI+1.0没有使用。
+.常量 编码器值_压缩LZW, "2", 隐藏, EncoderValueCompressionLZW。对于TIF图像的LZW压缩方法
+.常量 编码器值_压缩CCITT3, "3", 隐藏, EncoderValueCompressionCCITT3。对于TIF图像的CCITT3压缩方法
+.常量 编码器值_压缩CCITT4, "4", 隐藏, EncoderValueCompressionCCITT4。对于TIF图像的CCITT4压缩方法
+.常量 编码器值_压缩RLE, "5", 隐藏, EncoderValueCompressionRle。对于TIF图像的RLE压缩方法
+.常量 编码器值_压缩无, "6", 隐藏, EncoderValueCompressionNone。对于TIF图像指定无压缩
+.常量 编码器值_扫描方式隔行扫描, "7", 隐藏, EncoderValueScanMethodInterlaced。GDI+1.0没有使用。
+.常量 编码器值_扫描方式逐行扫描, "8", 隐藏, EncoderValueScanMethodNonInterlaced。GDI+1.0没有使用。
+.常量 编码器值_版本GIF87, "9", 隐藏, EncoderValueVersionGif87。GDI+1.0没有使用。
+.常量 编码器值_版本GIF89, "10", 隐藏, EncoderValueVersionGif89。GDI+1.0没有使用。
+.常量 编码器值_渲染, "11", 隐藏, EncoderValueRenderProgressive。GDI+1.0没有使用。
+.常量 编码器值_不渲染, "12", 隐藏, EncoderValueRenderNonProgressive。GDI+1.0没有使用。
+.常量 编码器值_旋转90度, "13", 隐藏, EncoderValueTransformRotate90。对于JPEG图像无损逆时针旋转90度。
+.常量 编码器值_旋转180度, "14", 隐藏, EncoderValueTransformRotate180。对于JPEG图像无损旋转180度
+.常量 编码器值_旋转270度, "15", 隐藏, EncoderValueTransformRotate270。对于JPEG图像无损逆时针旋转270度。
+.常量 编码器值_水平翻转, "16", 隐藏, EncoderValueTransformFlipHorizontal。对于JPEG图像无损水平翻转。
+.常量 编码器值_垂直翻转, "17", 隐藏, EncoderValueTransformFlipVertical。对于JPEG图像无损垂直翻转。
+.常量 编码器值_多帧编码, "18", 隐藏, EncoderValueMultiFrame
+.常量 编码器值_最后一帧, "19", 隐藏, EncoderValueLastFrame
+.常量 编码器值_关闭, "20", 隐藏, EncoderValueFlush。指定的编码对象是被关闭的
+.常量 编码器值_帧维面延时, "21", 隐藏, EncoderValueFrameDimensionTime。GDI+1.0没有使用。
+.常量 编码器值_帧维面分辨率, "22", 隐藏, EncoderValueFrameDimensionResolution。GDI+1.0没有使用。
+.常量 编码器值_帧维面页, "23", 隐藏, EncoderValueFrameDimensionPage。对于TIF图像指定页。
+.常量 画刷类型_固定色, "0", 隐藏, BrushTypeSolidColor
+.常量 画刷类型_阴影, "1", 隐藏, BrushTypeHatchFill
+.常量 画刷类型_图像纹理, "2", 隐藏, BrushTypeTextureFill
+.常量 画刷类型_路径渐变, "3", 隐藏, BrushTypePathGradient
+.常量 画刷类型_线性渐变, "4", 隐藏, BrushTypeLinearGradient
+.常量 阴影风格_水平线, "0", 隐藏, Horizontal 水平线的图案。
+.常量 阴影风格_垂直线, "1", 隐藏, Vertical 垂直线的图案。
+.常量 阴影风格_左斜线, "2", 隐藏, ForwardDiagonal 从左上到右下的对角线的线条图案。
+.常量 阴影风格_右斜线, "3", 隐藏, BackwardDiagonal 从右上到左下的对角线的线条图案。
+.常量 阴影风格_十字线, "4", 隐藏, Cross 指定交叉的水平线和垂直线。
+.常量 阴影风格_交叉斜线, "5", 隐藏, DiagonalCross 指定互相交叉的正向对角线和反向对角线。这些直线是锯齿消除的。
+.常量 阴影风格_百分05阴影, "6", 隐藏, Percent05 指定 5% 阴影。前景色与背景色的比例为 5:100。
+.常量 阴影风格_百分10阴影, "7", 隐藏, Percent10 指定 10% 阴影。前景色与背景色的比例为 10:100。
+.常量 阴影风格_百分20阴影, "8", 隐藏, Percent20 指定 20% 阴影。前景色与背景色的比例为 20:100。
+.常量 阴影风格_百分25阴影, "9", 隐藏, Percent25 指定 25% 阴影。前景色与背景色的比例为 25:100。
+.常量 阴影风格_百分30阴影, "10", 隐藏, Percent30 指定 30% 阴影。前景色与背景色的比例为 30:100。
+.常量 阴影风格_百分40阴影, "11", 隐藏, Percent40 指定 40% 阴影。前景色与背景色的比例为 40:100。
+.常量 阴影风格_百分50阴影, "12", 隐藏, Percent50 指定 50% 阴影。前景色与背景色的比例为 50:100。
+.常量 阴影风格_百分60阴影, "13", 隐藏, Percent60 指定 60% 阴影。前景色与背景色的比例为 60:100。
+.常量 阴影风格_百分70阴影, "14", 隐藏, Percent70 指定 70% 阴影。前景色与背景色的比例为 70:100。
+.常量 阴影风格_百分75阴影, "15", 隐藏, Percent75 指定 75% 阴影。前景色与背景色的比例为 75:100。
+.常量 阴影风格_百分80阴影, "16", 隐藏, Percent80 指定 80% 阴影。前景色与背景色的比例为 80:100。
+.常量 阴影风格_百分90阴影, "17", 隐藏, Percent90 指定 90% 阴影。前景色与背景色的比例为 90:100。
+.常量 阴影风格_细向下对角线, "18", 隐藏, LightDownwardDiagonal
+.常量 阴影风格_细向上对角线, "19", 隐藏, LightUpwardDiagonal 指定从顶点到底点向左倾斜的对角线，其两边夹角比 BackwardDiagonal 小 50%，但这些直线不是锯齿消除的。
+.常量 阴影风格_粗向下对角线, "20", 隐藏, DarkDownwardDiagonal 指定从顶点到底点向右倾斜的对角线，其两边夹角比 ForwardDiagonal 小 50%，宽度是其两倍。此阴影图案不是锯齿消除的。
+.常量 阴影风格_粗向上对角线, "21", 隐藏, DarkUpwardDiagonal 指定从顶点到底点向左倾斜的对角线，其两边夹角比 BackwardDiagonal 小 50%，宽度是其两倍，但这些直线不是锯齿消除的。
+.常量 阴影风格_宽向下对角线, "22", 隐藏, WideDownwardDiagonal 指定从顶点到底点向右倾斜的对角线，其间距与阴影样式 ForwardDiagonal 相同，宽度是其三倍，但它们不是锯齿消除的。
+.常量 阴影风格_宽向上对角线, "23", 隐藏, WideUpwardDiagonal 指定从顶点到底点向左倾斜的对角线，其间距与阴影样式 BackwardDiagonal 相同，宽度是其三倍，但它们不是锯齿消除的。
+.常量 阴影风格_细垂直线, "24", 隐藏, LightVertical 指定垂直线的两边夹角比 Vertical 小 50%。
+.常量 阴影风格_细水平线, "25", 隐藏, LightHorizontal 指定水平线，其两边夹角比 Horizontal 小 50%。
+.常量 阴影风格_密垂直线, "26", 隐藏, NarrowVertical 指定垂直线的两边夹角比阴影样式 Vertical 小 75%（或者比 LightVertical 小 25%）。
+.常量 阴影风格_密水平线, "27", 隐藏, NarrowHorizontal 指定水平线的两边夹角比阴影样式 Horizontal 小 75%（或者比 LightHorizontal 小 25%）。
+.常量 阴影风格_粗垂直线, "28", 隐藏, DarkVertical 指定垂直线的两边夹角比 Vertical 小 50% 并且宽度是其两倍。
+.常量 阴影风格_粗水平线, "29", 隐藏, DarkHorizontal 指定水平线的两边夹角比水平小 50% 并且宽度是 HatchStyleHorizontal 的两倍。
+.常量 阴影风格_右斜虚线, "30", 隐藏, DashedDownwardDiagonal 指定虚线对角线，这些对角线从顶点到底点向右倾斜。
+.常量 阴影风格_左斜虚线, "31", 隐藏, DashedUpwardDiagonal 指定虚线对角线，这些对角线从顶点到底点向左倾斜。
+.常量 阴影风格_水平虚线, "32", 隐藏, DashedHorizontal 指定虚线水平线。
+.常量 阴影风格_垂直虚线, "33", 隐藏, DashedVertical 指定虚线垂直线。
+.常量 阴影风格_小五彩纸屑, "34", 隐藏, SmallConfetti 指定带有五彩纸屑外观的阴影。
+.常量 阴影风格_大五彩纸屑, "35", 隐藏, LargeConfetti 指定具有五彩纸屑外观的阴影，并且它是由比 SmallConfetti 更大的片构成的。
+.常量 阴影风格_曲线, "36", 隐藏, ZigZag 指定由 Z 字形构成的水平线。
+.常量 阴影风格_波浪线, "37", 隐藏, Wave 指定由代字号“~”构成的水平线。
+.常量 阴影风格_左斜砖块, "38", 隐藏, DiagonalBrick 指定具有分层砖块外观的阴影，它从顶点到底点向左倾斜。
+.常量 阴影风格_水平砖块, "39", 隐藏, HorizontalBrick 指定具有水平分层砖块外观的阴影。
+.常量 阴影风格_编织, "40", 隐藏, Weave 指定具有织物外观的阴影。
+.常量 阴影风格_花格子, "41", 隐藏, Plaid 指定具有格子花呢材料外观的阴影。
+.常量 阴影风格_草皮, "42", 隐藏, Divot 指定具有草皮层外观的阴影。
+.常量 阴影风格_十字点线, "43", 隐藏, DottedGrid 指定互相交叉的水平线和垂直线，每一直线都是由点构成的。
+.常量 阴影风格_交叉点线, "44", 隐藏, DottedDiamond 指定互相交叉的正向对角线和反向对角线，每一对角线都是由点构成的。
+.常量 阴影风格_瓦片, "45", 隐藏, Shingle 指定带有对角分层鹅卵石外观的阴影，它从顶点到底点向右倾斜。
+.常量 阴影风格_网格, "46", 隐藏, Trellis 指定具有格架外观的阴影。
+.常量 阴影风格_球体, "47", 隐藏, Sphere 指定具有球体彼此相邻放置的外观的阴影。
+.常量 阴影风格_小网格, "48", 隐藏, SmallGrid 指定互相交叉的水平线和垂直线，其两边夹角比阴影样式 Cross 小 50%。
+.常量 阴影风格_小棋盘, "49", 隐藏, SmallCheckerBoard 指定带有棋盘外观的阴影。
+.常量 阴影风格_大棋盘, "50", 隐藏, LargeCheckerBoard 指定具有棋盘外观的阴影，棋盘所具有的方格大小是 SmallCheckerBoard 大小的两倍。
+.常量 阴影风格_有锯齿交叉斜线, "51", 隐藏, OutlinedDiamond 指定互相交叉的正向对角线和反向对角线，但这些对角线不是锯齿消除的。
+.常量 阴影风格_对角棋盘, "52", 隐藏, SolidDiamond 指定具有对角放置的棋盘外观的阴影。
+.常量 阴影风格_大网格, "4", 隐藏, LargeGrid 指定阴影样式 Cross。
+.常量 阴影风格_Min, "0", 隐藏, Min 指定阴影样式 Horizonal。
+.常量 阴影风格_Max, "52", 隐藏, Max 指定阴影样式 SolidDiamond。
+.常量 环绕模式_平铺, "0", 隐藏, Tile 平铺渐变或纹理。
+.常量 环绕模式_平铺水平翻转, "1", 隐藏, TileFlipX 水平反转纹理或渐变，然后平铺该纹理或渐变。
+.常量 环绕模式_平铺垂直翻转, "2", 隐藏, TileFlipY 垂直反转纹理或渐变，然后平铺该纹理或渐变。
+.常量 环绕模式_平铺水平垂直翻转, "3", 隐藏, TileFlipXY 水平和垂直反转纹理或渐变，然后平铺该纹理或渐变。
+.常量 环绕模式_固定, "4", 隐藏, Clamp 纹理或渐变没有平铺。
+.常量 线性渐变模式_从左到右, "0", 隐藏, Horizontal 指定从左到右的渐变。
+.常量 线性渐变模式_从上到下, "1", 隐藏, Vertical 指定从上到下的渐变。
+.常量 线性渐变模式_从左上到右下, "2", 隐藏, ForwardDiagonal 指定从左上到右下的渐变。
+.常量 线性渐变模式_从右上到左下, "3", 隐藏, BackwardDiagonal 指定从右上到左下的渐变。
+.常量 线帽样式_平线帽, "0", 隐藏, LineCapFlat
+.常量 线帽样式_方线帽, "1", 隐藏, LineCapSquare
+.常量 线帽样式_圆线帽, "2", 隐藏, LineCapRound
+.常量 线帽样式_三角线帽, "3", 隐藏, LineCapTriangle
+.常量 线帽样式_没有锚, "16", 隐藏, LineCapNoAnchor
+.常量 线帽样式_方锚头帽, "17", 隐藏, LineCapSquareAnchor
+.常量 线帽样式_圆锚头帽, "18", 隐藏, LineCapRoundAnchor
+.常量 线帽样式_菱形锚头帽, "19", 隐藏, LineCapDiamondAnchor
+.常量 线帽样式_箭头状锚头帽, "20", 隐藏, LineCapArrowAnchor
+.常量 线帽样式_自定义线帽, "255", 隐藏, LineCapCustom
+.常量 虚线帽样式_方线帽, "0", 隐藏, DashCapFlat
+.常量 虚线帽样式_圆线帽, "2", 隐藏, DashCapRound
+.常量 虚线帽样式_三角线帽, "3", 隐藏, DashCapTriangle
+.常量 连线方式_斜接, "0", 隐藏, LineJoinMiter
+.常量 连线方式_斜角, "1", 隐藏, LineJoinBevel
+.常量 连线方式_圆角, "2", 隐藏, LineJoinRound
+.常量 连线方式_斜接截断, "3", 隐藏, LineJoinMiterClipped
+.常量 画笔对齐方式_居中, "0", 隐藏, 
+.常量 画笔对齐方式_内侧, "1", 隐藏, 
+.常量 画笔对齐方式_外侧, "2", 隐藏, 
+.常量 画笔对齐方式_左侧, "3", 隐藏, 
+.常量 画笔对齐方式_右侧, "4", 隐藏, 
+.常量 画笔类型_固色, "0", 隐藏, 
+.常量 画笔类型_阴影, "1", 隐藏, 
+.常量 画笔类型_图像纹理, "2", 隐藏, 
+.常量 画笔类型_路径渐变, "3", 隐藏, 
+.常量 画笔类型_线性渐变, "4", 隐藏, 
+.常量 画笔类型_未知, "-1", 隐藏, 
+.常量 虚线类型_实线, "0", 隐藏, DashStyleSolid
+.常量 虚线类型_划线, "1", 隐藏, DashStyleDash
+.常量 虚线类型_点线, "2", 隐藏, DashStyleDot
+.常量 虚线类型_点划线, "3", 隐藏, DashStyleDashDot
+.常量 虚线类型_双点划线, "4", 隐藏, DashStyleDashDotDot
+.常量 虚线类型_自定义, "5", 隐藏, DashStyleCustom
+.常量 路径点类型_开始, "0", 隐藏, PathPointTypeStart
+.常量 路径点类型_直线, "1", 隐藏, PathPointTypeLine
+.常量 路径点类型_贝塞尔曲线, "2", 隐藏, PathPointTypeBezier
+.常量 路径点类型_掩膜类型, "3", 隐藏, PathPointTypePathTypeMask
+.常量 路径点类型_虚线模式, "4", 隐藏, PathPointTypePathDashMode。没有使用
+.常量 路径点类型_掩膜, "5", 隐藏, PathPointTypePathMarker
+.常量 路径点类型_关闭子路径, "6", 隐藏, PathPointTypeCloseSubpath
+.常量 路径点类型_贝塞尔曲线3, "7", 隐藏, PathPointTypeBezier3
+.常量 文本格式标志_方向右到左, "1", 隐藏, StringFormatFlagsDirectionRightToLeft
+.常量 文本格式标志_方向垂直, "2", 隐藏, StringFormatFlagsDirectionVertical
+.常量 文本格式标志_允许部分延伸, "4", 隐藏, StringFormatFlagsNoFitBlackBox
+.常量 文本格式标志_Unicode, "32", 隐藏, StringFormatFlagsDisplayFormatControl
+.常量 文本格式标志_禁止不支持字符, "1024", 隐藏, StringFormatFlagsNoFontFallback
+.常量 文本格式标志_包含结尾空字符, "2048", 隐藏, StringFormatFlagsMeasureTrailingSpaces
+.常量 文本格式标志_不换行, "4096", 隐藏, StringFormatFlagsNoWrap
+.常量 文本格式标志_整行布局, "8192", 隐藏, StringFormatFlagsLineLimit。若要确保看到的都是整行，请指定此值，并仔细地提供格式化矩形，使其高度至少为一个行高
+.常量 文本格式标志_不裁剪, "16384", 隐藏, StringFormatFlagsNoClip
+.常量 文本对齐_靠近, "0", 隐藏, StringAlignmentNear
+.常量 文本对齐_居中, "1", 隐藏, StringAlignmentCenter 
+.常量 文本对齐_远离, "2", 隐藏, StringAlignmentFar 
+.常量 文本修整_无, "0", 隐藏, StringTrimmingNone。指定不进行任何修整。
+.常量 文本修整_字符, "1", 隐藏, StringTrimmingCharacter。指定将文本修整成最接近的字符。
+.常量 文本修整_单词, "2", 隐藏, StringTrimmingWord。指定将文本修整成最接近的单词。
+.常量 文本修整_字符和省略号, "3", 隐藏, StringTrimmingEllipsisCharacter。指定将文本修整成最接近的字符，并在被修整的行的末尾插入一个省略号。 
+.常量 文本修整_单词和省略号, "4", 隐藏, StringTrimmingEllipsisWord。指定将文本修整成最接近的单词，并在被修整的行的末尾插入一个省略号。
+.常量 文本修整_路径和省略号, "5", 隐藏, StringTrimmingEllipsisPath。中心从被修整的行移除并用省略号替换。这种算法尽可能多地保留了行中的最后一个由斜杠分隔的段。
+.常量 热键前缀_无, "0", 隐藏, HotkeyPrefixNone
+.常量 热键前缀_显示, "1", 隐藏, HotkeyPrefixShow
+.常量 热键前缀_隐藏, "2", 隐藏, HotkeyPrefixHide
+.常量 文本数字替换_用户定义, "0", 隐藏, StringDigitSubstituteUser
+.常量 文本数字替换_无, "1", 隐藏, StringDigitSubstituteNone 
+.常量 文本数字替换_国家, "2", 隐藏, StringDigitSubstituteNational
+.常量 文本数字替换_本地, "3", 隐藏, StringDigitSubstituteTraditional
+.常量 扭曲模式_透视, "0", 隐藏, 
+.常量 扭曲模式_双线性, "1", 隐藏, 
+.常量 图像锁定模式_读, "1", 隐藏, ImageLockModeRead
+.常量 图像锁定模式_写, "2", 隐藏, ImageLockModeWrite
+.常量 图像锁定模式_用户分配缓冲区, "4", 隐藏, ImageLockModeUserInputBuf 
+.常量 EMF类型_Emf, "3", 隐藏, EmfTypeEmfOnly
+.常量 EMF类型_EmfPlusOnly, "4", 隐藏, EmfTypeEmfPlusOnly
+.常量 EMF类型_EmfPlusDual, "5", 隐藏, EmfTypeEmfPlusDual
+.常量 图元文件单位_像素, "2", 隐藏, MetafileFrameUnitPixel
+.常量 图元文件单位_点, "3", 隐藏, MetafileFrameUnitPoint。1/72英寸
+.常量 图元文件单位_英寸, "4", 隐藏, MetafileFrameUnitInch
+.常量 图元文件单位_文档, "5", 隐藏, MetafileFrameUnitDocument。1/300英寸
+.常量 图元文件单位_毫米, "6", 隐藏, MetafileFrameUnitMillimeter
+.常量 图元文件单位_GDI, "7", 隐藏, MetafileFrameUnitGdi。0.01毫米
+.常量 图元文件类型_无效, "0", 隐藏, MetafileTypeInvalid
+.常量 图元文件类型_Wmf, "1", 隐藏, MetafileTypeWmf
+.常量 图元文件类型_WmfAldus, "2", 隐藏, MetafileTypeWmfAldus
+.常量 图元文件类型_Emf, "3", 隐藏, MetafileTypeEmf
+.常量 图元文件类型_EmfPlusOnly, "4", 隐藏, MetafileTypeEmfPlusOnly
+.常量 图元文件类型_EmfPlusDual, "5", 隐藏, MetafileTypeEmfPlusDual
+.常量 控制文本标志_查找映射表, "1", 隐藏, DriverStringOptionsCmapLookup。必须包含此标志，原因暂时不明
+.常量 控制文本标志_垂直显示, "2", 隐藏, DriverStringOptionsVertical
+.常量 控制文本标志_预先实现, "4", 隐藏, DriverStringOptionsRealizedAdvance。只提供第一个字符的坐标。
+.常量 控制文本标志_高质量, "8", 隐藏, DriverStringOptionsLimitSubpixel
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' iext2 AF6AD80AA4244A59AFB3D83ECF5173CC 2 0 扩展界面支持库二
+
+
+
+ ' 所需要的模块
+ ' 智圆行方GDI/GDI+高级模块 C:\Documents and Settings\Administrator\桌面\智圆行方GDI-GDI+高级模块 5.5.ec
+
+
+数据类型 GDI_点, 公开, POINT；POINTAPI
+    .成员 横坐标, 整数型, , , 
+    .成员 纵坐标, 整数型, , , 
+
+数据类型 GDI_画刷属性, 公开, 刷子样式
+    .成员 刷子样式, 整数型, , , 参见常量表
+    .成员 颜色值, 整数型, , , 颜色值
+    .成员 刷子花纹, 整数型, , , 参见常量表，只有 刷子样式_花纹 才需要，否则提供任意值即可
+
+数据类型 GDI_矩形, 公开, RECT
+    .成员 左边, 整数型, , , Left
+    .成员 顶边, 整数型, , , Top
+    .成员 右边, 整数型, , , Right
+    .成员 底边, 整数型, , , Bottom
+
+数据类型 GDI_字体, 公开, 
+    .成员 字符宽度, 整数型, , , 
+    .成员 字符高度, 整数型, , , 
+    .成员 斜度, 整数型, , , 
+    .成员 字形_, 整数型, , , 详见常量表，字形_*
+    .成员 颜色, 整数型, , , 颜色值
+    .成员 是否斜体, 逻辑型, , , 
+    .成员 是否下划线, 逻辑型, , , 
+    .成员 是否删除线, 逻辑型, , , 
+    .成员 字体名称, 文本型, , , 
+
+数据类型 GDI_渐变数据, 公开, 
+    .成员 x, 整数型, , , 
+    .成员 y, 整数型, , , 
+    .成员 r, 短整数型, , , 0-255
+    .成员 g, 短整数型, , , 0-255
+    .成员 b, 短整数型, , , 0-255
+    .成员 保留, 字节型, , , 该值无效，保留
+
+数据类型 GDI_RGB, 公开, 
+    .成员 R, 整数型, , , 
+    .成员 G, 整数型, , , 
+    .成员 B, 整数型, , , 
+
+数据类型 GP_坐标F, 公开, PointF
+    .成员 横坐标, 小数型, , , 
+    .成员 纵坐标, 小数型, , , 
+
+数据类型 GP_坐标L, 公开, PointL
+    .成员 横坐标, 整数型, , , 
+    .成员 纵坐标, 整数型, , , 
+
+数据类型 GP_矩形F, 公开, RectF
+    .成员 左边, 小数型, , , left
+    .成员 顶边, 小数型, , , top
+    .成员 宽度, 小数型, , , Width
+    .成员 高度, 小数型, , , Height
+
+数据类型 GP_矩形L, 公开, RectL
+    .成员 左边, 整数型, , , left
+    .成员 顶边, 整数型, , , top
+    .成员 宽度, 整数型, , , Width
+    .成员 高度, 整数型, , , Height
+
+数据类型 GP_矩形16, 公开, Rect16
+    .成员 左边, 短整数型, , , left
+    .成员 顶边, 短整数型, , , top
+    .成员 宽度, 短整数型, , , Width
+    .成员 高度, 短整数型, , , Height
+
+数据类型 GP_尺寸F, 公开, SizeF
+    .成员 宽度, 小数型, , , Width
+    .成员 高度, 小数型, , , Height
+
+数据类型 GP_尺寸L, 公开, SizeL
+    .成员 宽度, 整数型, , , Width
+    .成员 高度, 整数型, , , Height
+
+数据类型 GP_色彩映射表, 公开, ColorMap
+    .成员 原颜色, 整数型, , , ARGB颜色
+    .成员 新颜色, 整数型, , , ARGB颜色
+
+数据类型 GP_颜色调色板, 公开, ColorPalette
+    .成员 标志, 整数型, , , “调色板标志_”开头常量。
+    .成员 数量, 整数型, , , 
+    .成员 ARGB颜色, 整数型, , "1", 
+
+数据类型 GP_编码器参数, 公开, EncoderParameter
+    .成员 编码器Guid, 文本型, , , Guid。“编码器_”开头常量
+    .成员 值成员数, 整数型, , , NumberOfValues
+    .成员 值类型, 整数型, , , Type。“编码器参数值类型_”开头常量
+    .成员 值, 字节集, , , Value。
+
+数据类型 GP_编码器参数集, 公开, EncoderParameters
+    .成员 参数数量, 整数型, , , 
+    .成员 编码器参数, GP_编码器参数, , "1", 
+
+数据类型 GP_属性项目, 公开, PropertyItem
+    .成员 属性标签, 整数型, , , id“属性标签_”开头常量
+    .成员 值大小, 整数型, , , length
+    .成员 值类型, 整数型, , , type“属性值类型_”开头常量
+    .成员 值, 字节集, , , value
+
+数据类型 GP_图像编解码信息, 公开, ImageCodecInfo
+    .成员 Clsid, 文本型, , , 
+    .成员 图像格式ID, 文本型, , , FormatID
+    .成员 编码器名, 文本型, , , CodecName
+    .成员 DLL名, 文本型, , , DllName
+    .成员 格式描述, 文本型, , , FormatDescription
+    .成员 文件扩展名, 文本型, , , FilenameExtension
+    .成员 Mime类型, 文本型, , , MimeType
+    .成员 标志, 整数型, , , Flags
+    .成员 版本, 整数型, , , Version
+    .成员 签名数, 整数型, , , SigCount
+    .成员 签名大小, 整数型, , , SigSize
+    .成员 签名模式, 字节集, , , SigPattern
+    .成员 签名掩码, 字节集, , , SigMask
+
+数据类型 GP_路径数据, 公开, PathData
+    .成员 总数, 整数型, , , Count
+    .成员 坐标组, GP_坐标F, , "1", Points
+    .成员 类型组, 字节型, , "1", Types
+
+数据类型 GP_位图数据, 公开, BitmapData
+    .成员 宽度, 整数型, , , Width
+    .成员 高度, 整数型, , , Height
+    .成员 跨步, 整数型, , , Stride。指定相邻扫描行开始处之间字节偏移量的整数。这通常（但不一定）是以像素格式表示的字节数（例如，2 表示每像素 16 位）乘以位图的宽度。传递给此参数的值必须为 4 的倍数
+    .成员 像素格式, 整数型, , , PixelFormat“像素格式_”开头常量。
+    .成员 像素数据, 整数型, , , Scan0。指向包含像素数据的字节集指针。
+    .成员 保留, 整数型, , , Reserved
+
+数据类型 GP_测试字符范围, 公开, CharacterRange
+    .成员 起始位置, 整数型, , , First
+    .成员 长度, 整数型, , , Length
+
+数据类型 GP_APM文件头, 公开, APMFileHeader
+    .成员 标识, 整数型, , , Key。指示一个可放置图元文件头的存在。此值始终为2596720087
+    .成员 句柄, 短整数型, , , hmf。当写入磁盘后，此句柄值为0。
+    .成员 范围矩形, GP_矩形16, , , BoundingBox
+    .成员 英寸, 短整数型, , , Inch。每英寸点数。通常为1440。
+    .成员 保留, 整数型, , , Reserved
+    .成员 校验, 短整数型, , , Checksum。该成员可以检测图元文件是否损坏。
+
+数据类型 GP_EMF文件头, 公开, 
+    .成员 类型, 整数型, , , Type。EMR_HEADER
+    .成员 大小, 整数型, , , Size
+    .成员 边界矩形, GP_矩形L, , , rclBounds
+    .成员 框架矩形, GP_矩形L, , , rclFrame
+    .成员 签名, 整数型, , , dSignature。ENHMETA_SIGNATURE
+    .成员 版本, 整数型, , , nVersion
+    .成员 字节数, 整数型, , , nBytes
+    .成员 记录数, 整数型, , , nRecords
+    .成员 句柄数, 短整数型, , , nHandles
+    .成员 保留, 短整数型, , , sReserved
+    .成员 描述数, 整数型, , , nDescription
+    .成员 描述偏移, 整数型, , , offDescription
+    .成员 调色板项目数, 整数型, , , nPalEntries
+    .成员 设备像素尺寸, GP_尺寸L, , , szlDevice
+    .成员 设备毫米尺寸, GP_尺寸L, , , szlMillimeters
+
+数据类型 GP_图元文件头, 公开, MetafileHeader
+    .成员 类型, 整数型, , , Type“图元文件类型_”开头常量。
+    .成员 大小, 整数型, , , Size
+    .成员 版本, 整数型, , , Version
+    .成员 增强EMF标识, 整数型, , , EmfPlusFlags
+    .成员 水平分辨率, 小数型, , , DpiX
+    .成员 垂直分辨率, 小数型, , , DpiY
+    .成员 左边, 整数型, , , X
+    .成员 顶边, 整数型, , , Y
+    .成员 宽度, 整数型, , , Width
+    .成员 高度, 整数型, , , Height
+    .成员 EMF文件头, GP_EMF文件头, , , EmfHeader
+    .成员 增强EMF大小, 整数型, , , EmfPlusHeaderSize
+    .成员 逻辑水平分辨率, 整数型, , , LogicalDpiX
+    .成员 逻辑垂直分辨率, 整数型, , , LogicalDpiY
+
+数据类型 GDI_HSL, 公开, 
+    .成员 H, 整数型, , , 
+    .成员 S, 整数型, , , 
+    .成员 L, 整数型, , , 
+
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 本子程序在程序启动后最先执行
+载入 (窗口1, , 假)
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 图形, GDI_GP_图形, , , 
+.程序集变量 图形2, GDI_GP_图形, , , 
+.程序集变量 背景画刷, GDI_刷子, , , 
+.程序集变量 格子画笔, GDI_画笔, , , 
+.程序集变量 曲线画笔, GDI_画笔, , , 
+.程序集变量 起点纵坐标, 整数型, , , 
+.程序集变量 纵坐标数组, 整数型, , "0", 
+.程序集变量 s, 整数型, , , 
+.程序集变量 x, 整数型, , , 
+.程序集变量 起点横坐标, 整数型, , , 
+.程序集变量 CPU占用率, 整数型, , , 
+.程序集变量 aaa, 整数型, , , 
+.程序集变量 b, 整数型, , , 
+.程序集变量 aaaaa, 逻辑型, , , 
+.程序集变量 asc, 逻辑型, , , 
+.子程序 _窗口1_创建完毕, 空白型, , 
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+赋值 (x, 相除 (.高度, 2))
+赋值 (s, 0)
+50.未知支持库函数_92 (#E键)
+50.未知支持库函数_92 (#R键)
+50.未知支持库函数_92 (#D键)
+50.未知支持库函数_92 (#F键)
+
+.子程序 _窗口1_首次激活, 空白型, , 
+图形.未知函数_67174440 (取窗口句柄 ())
+图形2.未知函数_67174440 (取窗口句柄 ())
+背景画刷.未知函数_67174644 (#黑色)
+格子画笔.未知函数_67174641 (#画笔样式1_实线, 1, 取颜色值 (2, 120, 2))
+曲线画笔.未知函数_67174641 (#画笔样式1_实线, 1, #绿色)
+清除所有 ()
+ ' 本源码来自易语言资源网(www.5A5X.com)
+图形.未知函数_67174486 ()
+图形2.未知函数_67174486 ()
+
+.子程序 清除所有, 空白型, , 
+图形.未知函数_67174453 (背景画刷, 0, 0, 272, 232)
+图形2.未知函数_67174453 (背景画刷, 0, 0, 104, 200)
+ ' 图形.刷新显示 ()
+ ' 图形2.刷新显示 ()
+
+.子程序 画线, 空白型, , 
+.局部变量 j, 整数型, , , 
+.局部变量 横坐标数组, 整数型, , "0", 
+.局部变量 l, 整数型, , , 
+.局部变量 i, 整数型, , , 
+
+.计次循环首 (.宽度, j)
+    .如果真 (等于 (求余数 (j, 2), 0))
+        加入成员 (横坐标数组, j)
+    .如果真结束
+     ' 本源码来自易语言资源网(www.5A5X.com)
+.计次循环尾 ()
+数组排序 (横坐标数组, 假)
+加入成员 (纵坐标数组, 相减 (.高度, 8, CPU占用率))
+.如果真 (大于 (取数组成员数 (纵坐标数组), 相除 (.宽度, 2)))
+    删除成员 (纵坐标数组, 1, 1)
+    
+.如果真结束
+.计次循环首 (相除 (.宽度, 10), i)
+    图形.未知函数_67174464 (格子画笔, 相乘 (i, 10), 0, 相乘 (i, 10), .高度)
+    .如果真 (小于或等于 (相乘 (i, 10), .高度))
+        图形.未知函数_67174464 (格子画笔, 0, 相乘 (i, 10), .宽度, 相乘 (i, 10))
+    .如果真结束
+    
+.计次循环尾 ()
+.计次循环首 (取数组成员数 (纵坐标数组), l)
+    图形.未知函数_67174464 (曲线画笔, 起点横坐标, 起点纵坐标, 横坐标数组 [l], 纵坐标数组 [相加 (相减 (取数组成员数 (纵坐标数组), l), 1)])
+    赋值 (起点纵坐标, 纵坐标数组 [相加 (相减 (取数组成员数 (纵坐标数组), l), 1)])
+    赋值 (起点横坐标, 横坐标数组 [l])
+.计次循环尾 ()
+
+.子程序 画CPU, 空白型, , 
+.局部变量 i, 整数型, , , 
+.局部变量 l, 整数型, , , 
+.局部变量 b, 整数型, , , 
+.局部变量 y, 整数型, , , 
+.局部变量 k, 整数型, 静态, , 
+.局部变量 目标次数, 整数型, , , 
+.局部变量 t, 整数型, , , 
+
+.计次循环首 (40, l)
+    图形2.未知函数_67174464 (格子画笔, 5, 相乘 (l, 5), 相减 (.宽度, 5), 相乘 (l, 5))
+.计次循环尾 ()
+
+.计次循环首 (40, t)
+    .如果真 (并且 (大于 (相除 (CPU占用率, 5), 相减 (t, 1)), 小于或等于 (相除 (CPU占用率, 5), t)))
+        赋值 (目标次数, t)
+    .如果真结束
+     ' 本源码来自易语言资源网(www.5A5X.com)
+.计次循环尾 ()
+.计次循环首 (目标次数, i)
+    图形2.未知函数_67174464 (曲线画笔, 5, 相减 (.高度, 相乘 (i, 5)), 相减 (.宽度, 5), 相减 (.高度, 相乘 (i, 5)))
+.计次循环尾 ()
+
+.子程序 _时钟1_周期事件, 空白型, , 
+赋值 (aaa, 相加 (aaa, 1))
+
+
+清除所有 ()
+.如果 (等于 (aaaaa, 真))
+    
+    赋值 (CPU占用率, 50)
+.否则
+    .如果 (等于 (asc, 真))
+        .如果真 (大于 (aaa, 2))
+            赋值 (aaa, 0)
+        .如果真结束
+        
+        .如果 (等于 (aaa, 2))
+            赋值 (aaa, 0)
+            赋值 (CPU占用率, 90)
+        .否则
+            赋值 (CPU占用率, 取随机数 (1, 10))
+        .如果结束
+        
+    .否则
+        .如果真 (大于 (aaa, 14))
+            赋值 (aaa, 0)
+        .如果真结束
+        .如果 (等于 (aaa, 14))
+            赋值 (aaa, 0)
+            赋值 (CPU占用率, 90)
+        .否则
+            赋值 (CPU占用率, 取随机数 (1, 10))
+        .如果结束
+        
+    .如果结束
+    ' 本源码来自易语言资源网(www.5A5X.com)
+.如果结束
+
+赋值 (起点纵坐标, 相减 (.高度, 8))
+赋值 (起点横坐标, 相减 (.宽度, 2))
+画线 ()
+画CPU ()
+图形.未知函数_67174486 ()
+图形2.未知函数_67174486 ()
+
+.子程序 _按钮1_被单击, 空白型, , 
+赋值 (.时钟周期, 50)
+
+.子程序 _按钮2_被单击, 空白型, , 
+赋值 (.时钟周期, 0)
+
+.子程序 _动画框1_监视键被按下, 空白型, , 
+.参数 键代码, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.如果真 (等于 (键代码, #E键))
+    赋值 (asc, 真)
+.如果真结束
+.如果真 (等于 (键代码, #R键))
+    赋值 (asc, 假)
+.如果真结束
+.如果真 (等于 (键代码, #D键))
+    赋值 (aaaaa, 真)
+.如果真结束
+.如果真 (等于 (键代码, #F键))
+    赋值 (aaaaa, 假)
+.如果真结束
+
+
+.类模块 GDI_GP_图形, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 得到GDIPLUS图形句柄, 整数型, , 
+
+
+.子程序 宽度, 整数型, , 
+
+
+.子程序 高度, 整数型, , 
+
+
+.子程序 取窗口宽度, 整数型, , 
+
+
+.子程序 取窗口高度, 整数型, , 
+
+
+.子程序 创建_自窗口句柄, 逻辑型, , 成功则真，失败则假
+.参数 窗口句柄, 整数型, , 可以是窗口句柄同样可以是组件句柄，只要是　取窗口句柄（）　得到的即可。
+
+
+
+.子程序 创建_自窗口, 逻辑型, , 成功则真，失败则假
+.参数 窗口, 窗口, , 直接提供你的窗口就行啊
+
+
+
+.子程序 创建_自窗口2, 逻辑型, , 成功则真，失败则假，这个方法可以拥有自定义大的后台（内存无限则后台无限），没有更大的后台，平移方法后留下的空白区域则无法填充
+.参数 窗口, 窗口, , 直接提供你的窗口就行啊
+.参数 后台宽度, 整数型, , 
+.参数 后台高度, 整数型, , 
+
+
+
+.子程序 创建_自窗口句柄2, 逻辑型, , 成功则真，失败则假，这个方法可以拥有自定义大的后台（内存无限则后台无限），没有更大的后台，平移方法后留下的空白区域则无法填充
+.参数 窗口句柄, 整数型, , 可以是窗口句柄同样可以是组件句柄，只要是　取窗口句柄（）　得到的即可。
+.参数 后台宽度, 整数型, , 
+.参数 后台高度, 整数型, , 
+
+
+
+.子程序 创建_自设备句柄2, 逻辑型, , 成功则真，失败则假，这个方法可以拥有自定义大的后台（内存无限则后台无限），没有更大的后台，平移方法后留下的空白区域则无法填充
+.参数 设备句柄_HDC, 整数型, , 请提供由GetDC()或画板.取设备句柄()或其他方式获得HDC设备句柄
+.参数 后台宽度, 整数型, , 
+.参数 后台高度, 整数型, , 
+
+
+
+.子程序 创建_自设备句柄, 逻辑型, , 成功则真，失败则假
+.参数 设备句柄_HDC, 整数型, , 请提供由GetDC()或画板.取设备句柄()或其他方式获得HDC设备句柄
+
+
+
+.子程序 描_像素点, 逻辑型, , 成功则真，失败则假。画一个像素点，由于操作简单，不依赖画笔
+.参数 横坐标, 整数型, , 
+.参数 纵坐标, 整数型, , 
+.参数 颜色值, 整数型, , 
+.参数 透明度, 整数型, , 0-255
+
+
+
+.子程序 清除, 逻辑型, , 
+
+
+.子程序 清除_局部, 逻辑型, , 
+.参数 左边, 整数型, , 
+.参数 顶边, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+
+
+
+.子程序 复制_窗口快照, 逻辑型, , 
+.参数 窗口句柄, 整数型, 可空, 默认为画布窗口
+.参数 光栅运算, 整数型, 可空, 详见常量表，光栅运算_*
+
+
+
+.子程序 清除_窗口, 逻辑型, , 
+
+
+.子程序 清除_窗口_局部, 逻辑型, , 
+.参数 左边, 整数型, , 
+.参数 顶边, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+
+
+
+.子程序 描边_矩形, 逻辑型, , 成功则真，失败则假。
+.参数 画笔, GDI_画笔, , 
+.参数 横坐标, 整数型, , 
+.参数 纵坐标, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+
+
+
+.子程序 填充_矩形, 逻辑型, , 成功则真，失败则假。
+.参数 刷子, GDI_刷子, , 
+.参数 横坐标, 整数型, , 
+.参数 纵坐标, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+
+
+
+.子程序 描边_椭圆, 逻辑型, , 成功则真，失败则假。
+.参数 画笔, GDI_画笔, , 
+.参数 横坐标, 整数型, , 
+.参数 纵坐标, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+
+
+
+.子程序 填充_椭圆, 逻辑型, , 成功则真，失败则假。
+.参数 刷子, GDI_刷子, , 
+.参数 横坐标, 整数型, , 
+.参数 纵坐标, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+
+
+
+.子程序 描边_弧, 逻辑型, , 
+.参数 画笔, GDI_画笔, , 
+.参数 椭圆起始横坐标, 整数型, , 
+.参数 椭圆起始纵坐标, 整数型, , 
+.参数 椭圆终止横坐标, 整数型, , 
+.参数 椭圆终止纵坐标, 整数型, , 
+.参数 弧线起始横坐标, 整数型, , 
+.参数 弧线起始纵坐标, 整数型, , 
+.参数 弧线终止横坐标, 整数型, , 
+.参数 弧线终止纵坐标, 整数型, , 
+
+
+
+.子程序 填充_弧, 逻辑型, , 
+.参数 刷子, GDI_刷子, , 
+.参数 椭圆起始横坐标, 整数型, , 
+.参数 椭圆起始纵坐标, 整数型, , 
+.参数 椭圆终止横坐标, 整数型, , 
+.参数 椭圆终止纵坐标, 整数型, , 
+.参数 弧线起始横坐标, 整数型, , 
+.参数 弧线起始纵坐标, 整数型, , 
+.参数 弧线终止横坐标, 整数型, , 
+.参数 弧线终止纵坐标, 整数型, , 
+
+
+
+.子程序 填充_弧2, 逻辑型, , 
+.参数 刷子, GDI_刷子, , 
+.参数 椭圆横坐标, 整数型, , 
+.参数 椭圆纵坐标, 整数型, , 
+.参数 椭圆宽度, 整数型, , 
+.参数 椭圆高度, 整数型, , 
+.参数 初始角度, 整数型, , 角度0表示正上方，范围0-360
+.参数 结束角度, 整数型, , 角度360同样表示正上方，范围0-360
+
+
+
+.子程序 填充_饼, 逻辑型, , 
+.参数 刷子, GDI_刷子, , 
+.参数 椭圆起始横坐标, 整数型, , 
+.参数 椭圆起始纵坐标, 整数型, , 
+.参数 椭圆终止横坐标, 整数型, , 
+.参数 椭圆终止纵坐标, 整数型, , 
+.参数 弧线起始横坐标, 整数型, , 
+.参数 弧线起始纵坐标, 整数型, , 
+.参数 弧线终止横坐标, 整数型, , 
+.参数 弧线终止纵坐标, 整数型, , 
+
+
+
+.子程序 描边_饼, 逻辑型, , 
+.参数 画笔, GDI_画笔, , 
+.参数 椭圆起始横坐标, 整数型, , 
+.参数 椭圆起始纵坐标, 整数型, , 
+.参数 椭圆终止横坐标, 整数型, , 
+.参数 椭圆终止纵坐标, 整数型, , 
+.参数 弧线起始横坐标, 整数型, , 
+.参数 弧线起始纵坐标, 整数型, , 
+.参数 弧线终止横坐标, 整数型, , 
+.参数 弧线终止纵坐标, 整数型, , 
+
+
+
+.子程序 填充_饼2, 逻辑型, , 
+.参数 刷子, GDI_刷子, , 
+.参数 椭圆横坐标, 整数型, , 
+.参数 椭圆纵坐标, 整数型, , 
+.参数 椭圆宽度, 整数型, , 
+.参数 椭圆高度, 整数型, , 
+.参数 初始角度, 整数型, , 角度0表示正上方，范围0-360
+.参数 结束角度, 整数型, , 角度360同样表示正上方，范围0-360
+
+
+
+.子程序 描边_饼2, 逻辑型, , 
+.参数 画笔, GDI_画笔, , 
+.参数 椭圆横坐标, 整数型, , 
+.参数 椭圆纵坐标, 整数型, , 
+.参数 椭圆宽度, 整数型, , 
+.参数 椭圆高度, 整数型, , 
+.参数 初始角度, 整数型, , 角度0表示正上方，范围0-360
+.参数 结束角度, 整数型, , 角度360同样表示正上方，范围0-360
+
+
+
+.子程序 描边_弧2, 逻辑型, , 
+.参数 画笔, GDI_画笔, , 
+.参数 椭圆横坐标, 整数型, , 
+.参数 椭圆纵坐标, 整数型, , 
+.参数 椭圆宽度, 整数型, , 
+.参数 椭圆高度, 整数型, , 
+.参数 初始角度, 整数型, , 角度0表示正上方，范围0-360
+.参数 结束角度, 整数型, , 角度360同样表示正上方，范围0-360
+
+
+
+.子程序 描_直线, 逻辑型, , 连接指定矩形范围的对角线
+.参数 画笔, GDI_画笔, , 
+.参数 起始横坐标, 整数型, , 
+.参数 起始纵坐标, 整数型, , 
+.参数 结束横坐标, 整数型, , 
+.参数 结束纵坐标, 整数型, , 
+
+
+
+.子程序 填充_渐变, 逻辑型, , 
+.参数 渐变数据, GDI_渐变数据, 数组, 
+.参数 渐变类型, 整数型, , 详见常量表，渐变类型_*
+
+
+
+.子程序 描边_圆角矩形, 逻辑型, , 
+.参数 画笔, GDI_画笔, , 
+.参数 横坐标, 整数型, , 
+.参数 纵坐标, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+.参数 圆角宽度, 整数型, , 
+.参数 圆角高度, 整数型, , 
+
+
+
+.子程序 填充_圆角矩形, 逻辑型, , 
+.参数 刷子, GDI_刷子, , 
+.参数 横坐标, 整数型, , 
+.参数 纵坐标, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+.参数 圆角宽度, 整数型, , 
+.参数 圆角高度, 整数型, , 
+
+
+
+.子程序 描_贝塞尔曲线集合, 逻辑型, , 
+.参数 画笔, GDI_画笔, , 
+.参数 点集合, GDI_点, 数组, 请提供点数据类型的数组。其中的第一个结构指定了起点。剩下的点三个一组——包括两个控制点和一个终点
+.参数 点数量, 整数型, 可空, 为空则自动计算数量
+
+
+
+.子程序 描_直线集合, 逻辑型, , 
+.参数 画笔, GDI_画笔, , 
+.参数 点集合, GDI_点, 数组, 请提供点数据类型的数组。
+.参数 点数量, 整数型, 可空, 为空则自动计算数量
+
+
+
+.子程序 描边_多边形, 逻辑型, , 
+.参数 画笔, GDI_画笔, , 
+.参数 点集合, GDI_点, 数组, 请提供点数据类型的数组。各个点连成多边形
+.参数 点数量, 整数型, 可空, 为空则自动计算数量
+
+
+
+.子程序 写出文本, 逻辑型, , 
+.参数 字体, GDI_字体, , 
+.参数 背景色, 整数型, 可空, 如果为空，则不填充背景
+.参数 文本内容, 文本型, , 
+.参数 文本矩形范围, GDI_矩形, , 
+.参数 方式, 整数型, , 详见常量表，写出文本_*
+
+
+
+.子程序 写出文本_阴影, 逻辑型, , 
+.参数 字体, GDI_字体, , 
+.参数 背景色, 整数型, 可空, 如果为空，则不填充背景
+.参数 文本内容, 文本型, , 
+.参数 文本矩形范围, GDI_矩形, , 
+.参数 阴影色, 整数型, , 
+.参数 阴影横向偏移, 整数型, , 
+.参数 阴影纵向偏移, 整数型, , 
+.参数 方式, 整数型, , 
+
+
+
+.子程序 取点_后台, 整数型, , 返回您绘制的那个后台页面的某点颜色值
+.参数 横坐标, 整数型, , 
+.参数 纵坐标, 整数型, , 
+
+
+
+.子程序 填充_多边形, 逻辑型, , 
+.参数 刷子, GDI_刷子, , 
+.参数 点集合, GDI_点, 数组, 请提供点数据类型的数组。各个点连成多边形
+.参数 点数量, 整数型, 可空, 为空则自动计算数量
+
+
+
+.子程序 反色, 逻辑型, , 将指定范围的颜色翻转过来
+.参数 横坐标, 整数型, , 
+.参数 纵坐标, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+
+
+
+.子程序 取窗口句柄, 整数型, , 返回该图像挂接的窗口句柄
+
+
+.子程序 填充_区域, 逻辑型, , 
+.参数 刷子, GDI_刷子, , 
+.参数 区域, GDI_区域, , 
+
+
+
+.子程序 描边_区域_用刷子, 逻辑型, , 
+.参数 刷子, GDI_刷子, , 
+.参数 区域, GDI_区域, , 
+.参数 边框宽度, 整数型, , 
+.参数 边框高度, 整数型, , 
+
+
+
+.子程序 路径_启动, 逻辑型, , 开始一个路径，路径中可进行绘制，但无法显现出来，需要调用特定命令以显现路径
+
+
+.子程序 路径_结束, 逻辑型, , 结束开始的路径
+
+
+.子程序 填充_路径, 逻辑型, , 
+.参数 刷子, GDI_刷子, , 
+
+
+
+.子程序 描边_路径, 逻辑型, , 
+.参数 画笔, GDI_画笔, , 
+
+
+
+.子程序 取点_前台, 整数型, , 返回将后台页面显现出来的窗口画布的某点颜色值
+.参数 横坐标, 整数型, , 
+.参数 纵坐标, 整数型, , 
+
+
+
+.子程序 画图片, 逻辑型, , 
+.参数 图片, GDI_图片, , 
+.参数 画到横坐标, 整数型, , 画到窗口上的位置
+.参数 画到纵坐标, 整数型, , 画到窗口上的位置
+.参数 截取横坐标, 整数型, , 对图片的截取
+.参数 截取纵坐标, 整数型, , 对图片的截取
+.参数 截取宽度, 整数型, 可空, 对图片的截取，默认为正常宽度
+.参数 截取高度, 整数型, 可空, 对图片的截取，默认为正常宽度
+.参数 光栅运算, 整数型, 可空, 详见常量表，光栅运算_*，默认为 光栅运算_复制
+
+
+
+.子程序 画图片_透空, 逻辑型, , 该方法可以抠出图片需要的部分，取出不需要的颜色
+.参数 图片, GDI_图片, , 
+.参数 画到横坐标, 整数型, , 画到窗口上的位置
+.参数 画到纵坐标, 整数型, , 画到窗口上的位置
+.参数 画到宽度, 整数型, 可空, 此宽度若与截取图片的不同，将进行缩放处理默认为正常宽度
+.参数 画到高度, 整数型, 可空, 此高度若与截取图片的不同，将进行缩放处理默认为正常高度
+.参数 截取横坐标, 整数型, , 对图片的截取
+.参数 截取纵坐标, 整数型, , 对图片的截取
+.参数 截取宽度, 整数型, 可空, 对图片的截取默认为正常宽度
+.参数 截取高度, 整数型, 可空, 对图片的截取默认为正常高度
+.参数 透明色, 整数型, , 凡图片中为该透明色的地方均被扣去，留下剩余部分
+
+
+
+.子程序 刷新显示, 逻辑型, , 成功则真，失败则假。
+.参数 光栅运算, 整数型, 可空, 详见常量表，光栅运算_*
+
+
+
+.子程序 变换_平移, 空白型, , 如果您的GDI_图形不是用 创建_*2 即第二种办法创建，则尽量不使用为好，详见 创建_*2 方法的备注
+.参数 横向平移, 整数型, , 正为向右，反之
+.参数 纵向平移, 整数型, , 正为向下，反之
+
+
+
+.子程序 变换_镜像, 空白型, , 即对称
+.参数 变换范围, 未知类型0x410124DF, , 
+.参数 镜像类型, 整数型, , 详见常量表，镜像类型_*
+
+
+
+.子程序 刷新显示_局部, 逻辑型, , 成功则真，失败则假。
+.参数 左边, 整数型, , 
+.参数 顶边, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+.参数 光栅运算, 整数型, 可空, 详见常量表，光栅运算_*
+
+
+
+.子程序 刷新显示_透明混合_局部, 逻辑型, , 
+.参数 左边, 整数型, , 
+.参数 顶边, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+.参数 透明度, 整数型, , 0-255
+
+
+
+.子程序 复制, 逻辑型, , 成功则真，失败则假。
+.参数 图形, GDI_GP_图形, , 
+.参数 光栅运算, 整数型, 可空, 详见常量表，光栅运算_*
+
+
+
+.子程序 复制_透空, 逻辑型, , 成功则真，失败则假。
+.参数 图形, GDI_GP_图形, , 
+.参数 目标左边, 整数型, , 
+.参数 目标顶边, 整数型, , 
+.参数 目标宽度, 整数型, , 
+.参数 目标高度, 整数型, , 
+.参数 源左边, 整数型, , 
+.参数 源顶边, 整数型, , 
+.参数 源宽度, 整数型, , 
+.参数 源高度, 整数型, , 
+.参数 透明色, 整数型, , 
+
+
+
+.子程序 复制_局部, 逻辑型, , 成功则真，失败则假。
+.参数 图形, GDI_GP_图形, , 
+.参数 左边, 整数型, , 
+.参数 顶边, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+.参数 光栅运算, 整数型, 可空, 详见常量表，光栅运算_*
+
+
+
+.子程序 灰度化, 空白型, , 
+
+
+.子程序 色相处理, 空白型, , 
+.参数 色相偏差, 小数型, , 正则加，负则减。请想象有一个色盘，正数为顺时针旋转色盘，负数反之
+.参数 饱和度偏差, 小数型, , 正则加，负则减
+.参数 亮度偏差, 小数型, , 正则加，负则减
+
+
+
+.子程序 置像素数据, 整数型, , 
+.参数 像素数据, 字节集, , 每三个字节为一组，第一个为红色值，第二个为绿色值，第三个为蓝色值。每一组如是。
+
+
+
+.子程序 取像素数据, 字节集, , 
+
+
+.子程序 保存到文件, 空白型, , 
+.参数 文件路径, 文本型, , 
+
+
+
+.子程序 取图形数据, 字节集, , 根据位图句柄取回位图数据。
+
+
+.子程序 复制_透明混合_局部, 逻辑型, , 
+.参数 图形, GDI_GP_图形, , 
+.参数 左边, 整数型, , 
+.参数 顶边, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+.参数 透明度, 整数型, , 0-255
+
+
+
+.子程序 获取_窗口句柄, 整数型, , 
+
+
+.子程序 获取_设备句柄_HDC, 整数型, , 
+
+
+.子程序 获取_内存设备句柄_MDC, 整数型, , 
+
+
+.子程序 销毁, 逻辑型, , 提供本方法的目的是为了可以在不用时候方便清理，如想再用可以再次创建。每次创建都会销毁上一次的本对象，然而不调用本方法的话，则必须等到程序结束，才能自行清理掉一直保留的一个本对象，因此，若确实不再用之时可调用本方法，节省内存使用。
+
+
+.子程序 GP取混合模式, 整数型, , GdipGetCompositingMode。“混合模式_”开头常量。
+
+
+.子程序 GP置混合模式, 逻辑型, , GdipSetCompositingMode
+.参数 参数_混合模式, 整数型, , “混合模式_”开头常量。
+
+
+
+.子程序 GP取渲染源点, 逻辑型, , GdipGetRenderingOrigin
+.参数 参数_x, 整数型, 参考, 只能提供变量，装载数据
+.参数 参数_y, 整数型, 参考, 只能提供变量，装载数据
+
+
+
+.子程序 GP置渲染源点, 逻辑型, , GdipSetRenderingOrigin
+.参数 参数_x, 整数型, , 
+.参数 参数_y, 整数型, , 
+
+
+
+.子程序 GP取混合品质, 整数型, , GdipGetCompositingQuality。“混合品质_”开头常量。
+
+
+.子程序 GP置混合品质, 逻辑型, , GdipSetCompositingQuality
+.参数 参数_混合模式, 整数型, , “混合品质_”开头常量。
+
+
+
+.子程序 GP置平滑模式, 逻辑型, , GdipSetSmoothingMode
+.参数 参数_呈现模式, 整数型, , “平滑模式_”开头常量。
+
+
+
+.子程序 GP取平滑模式, 整数型, , GdipGetSmoothingMode。“平滑模式_”开头常量。
+
+
+.子程序 GP置文本渲染模式, 逻辑型, , GdipSetTextRenderingHint
+.参数 参数_文本呈现模式, 整数型, , “文本渲染模式_”开头常量。
+
+
+
+.子程序 GP取文本渲染模式, 整数型, , GdipGetTextRenderingHint。“文本渲染模式_”开头常量。
+
+
+.子程序 GP置算法模式, 逻辑型, , GdipSetInterpolationMode。设置在缩放或旋转图像时使用的算法
+.参数 参数_算法模式, 整数型, , “算法模式_”开头常量。
+
+
+
+.子程序 GP取算法模式, 整数型, , GdipGetInterpolationMode。“算法模式_”开头常量。
+
+
+.子程序 GP置像素偏移模式, 逻辑型, , GdipSetPixelOffsetMode。设置在缩放或旋转图像时使用的算法
+.参数 参数_像素偏移模式, 整数型, , “像素偏移模式_”开头常量。
+
+
+
+.子程序 GP取像素偏移模式, 整数型, , GdipGetTextRenderingHint。“像素偏移模式_”开头常量。
+
+
+.子程序 GP变形置矩阵, 逻辑型, , GdipSetWorldTransform
+.参数 参数_矩阵, GP矩阵, , 
+
+
+
+.子程序 GP变形取矩阵, 逻辑型, , GdipGetWorldTransform
+.参数 参数_矩阵, GP矩阵, 参考, 
+
+
+
+.子程序 GP变形重置, 逻辑型, , GdipResetWorldTransform
+
+
+.子程序 GP变形相乘, 逻辑型, , GdipMultiplyWorldTransform
+.参数 参数_矩阵, GP矩阵, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“#矩阵顺序_预先计算”
+
+
+
+.子程序 GP变形平移, 逻辑型, , GdipTranslateWorldTransform。
+.参数 参数_水平偏移量, 小数型, , 
+.参数 参数_垂直偏移量, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“ #矩阵顺序_预先计算”
+
+
+
+.子程序 GP变形缩放, 逻辑型, , GdipScaleWorldTransform
+.参数 参数_水平缩放倍数, 小数型, , 
+.参数 参数_垂直缩放倍数, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“ #矩阵顺序_预先计算”
+
+
+
+.子程序 GP变形旋转, 逻辑型, , GdipRotateWorldTransform
+.参数 参数_角度, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“#矩阵顺序_预先计算
+
+
+
+.子程序 GP置页单位, 逻辑型, , GdipSetPageUnit。设置当前页的变形单位。
+.参数 参数_单位, 整数型, , “单位_”开头常量。
+
+
+
+.子程序 GP取页单位, 整数型, , GdipGetPageUnit。“单位_”开头常量。
+
+
+.子程序 GP置页比例, 逻辑型, , GdipSetPageScale
+.参数 参数_比例, 小数型, , 
+
+
+
+.子程序 GP取页比例, 小数型, , GdipGetPageUnit。
+
+
+.子程序 GP取水平分辨率, 小数型, , GdipGetDpiX
+
+
+.子程序 GP取垂直分辨率, 小数型, , GdipGetDpiY
+
+
+.子程序 GP转换坐标空间, 逻辑型, , GdipTransformPoints
+.参数 参数_目标坐标空间, 整数型, , “坐标空间_”开头常量。
+.参数 参数_源坐标空间, 整数型, , “坐标空间_”开头常量。
+.参数 参数_坐标组, GP_坐标F, 参考 数组, 
+
+
+
+.子程序 GP转换坐标空间I, 逻辑型, , GdipTransformPoints
+.参数 参数_目标坐标空间, 整数型, , “坐标空间_”开头常量。
+.参数 参数_源坐标空间, 整数型, , “坐标空间_”开头常量。
+.参数 参数_坐标组, GP_坐标L, 参考 数组, 
+
+
+
+.子程序 GP取最近颜色, 整数型, , GdipGetNearestColor。返回最近的ARGB颜色。
+.参数 参数_参考颜色, 整数型, , 
+
+
+
+.子程序 GP画直线, 逻辑型, , GdipDrawLine
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_起始x, 小数型, , 
+.参数 参数_起始y, 小数型, , 
+.参数 参数_结束x, 小数型, , 
+.参数 参数_结束y, 小数型, , 
+
+
+
+.子程序 GP画直线I, 逻辑型, , GdipDrawLineI
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_起始x, 整数型, , 
+.参数 参数_起始y, 整数型, , 
+.参数 参数_结束x, 整数型, , 
+.参数 参数_结束y, 整数型, , 
+
+
+
+.子程序 GP画直线组, 逻辑型, , GdipDrawLines
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_坐标组, GP_坐标F, 数组, 
+
+
+
+.子程序 GP画直线组I, 逻辑型, , GdipDrawLinesI
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_坐标组, GP_坐标L, 数组, 
+
+
+
+.子程序 GP画圆弧, 逻辑型, , GdipDrawArc。以顺时针方向画一个圆弧
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_宽度, 小数型, , 
+.参数 参数_高度, 小数型, , 
+.参数 参数_开始角度, 小数型, , 
+.参数 参数_扫描角度, 小数型, , 
+
+
+
+.子程序 GP画圆弧I, 逻辑型, , GdipDrawArcI。以顺时针方向画一个圆弧
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+.参数 参数_开始角度, 小数型, , 
+.参数 参数_扫描角度, 小数型, , 
+
+
+
+.子程序 GP画贝塞尔曲线, 逻辑型, , GdipDrawBezier。
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_x1, 小数型, , 
+.参数 参数_y1, 小数型, , 
+.参数 参数_x2, 小数型, , 
+.参数 参数_y2, 小数型, , 
+.参数 参数_x3, 小数型, , 
+.参数 参数_y3, 小数型, , 
+.参数 参数_x4, 小数型, , 
+.参数 参数_y4, 小数型, , 
+
+
+
+.子程序 GP画贝塞尔曲线I, 逻辑型, , GdipDrawBezierI。
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_x1, 整数型, , 
+.参数 参数_y1, 整数型, , 
+.参数 参数_x2, 整数型, , 
+.参数 参数_y2, 整数型, , 
+.参数 参数_x3, 整数型, , 
+.参数 参数_y3, 整数型, , 
+.参数 参数_x4, 整数型, , 
+.参数 参数_y4, 整数型, , 
+
+
+
+.子程序 GP画贝塞尔曲线组, 逻辑型, , GdipDrawBeziers。“参数_坐标组”的成员数必须4个以上。
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_坐标组, GP_坐标F, 数组, 
+
+
+
+.子程序 GP画贝塞尔曲线组I, 逻辑型, , GdipDrawBeziersI。“参数_坐标组”的成员数必须4个以上。
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_坐标组, GP_坐标L, 数组, 
+
+
+
+.子程序 GP画矩形, 逻辑型, , GdipDrawRectangle
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_宽度, 小数型, , 
+.参数 参数_高度, 小数型, , 
+
+
+
+.子程序 GP画矩形I, 逻辑型, , GdipDrawRectangleI
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+
+
+
+.子程序 GP画矩形组, 逻辑型, , GdipDrawRectangles
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_矩形组, GP_矩形F, 数组, 
+
+
+
+.子程序 GP画矩形组I, 逻辑型, , GdipDrawRectanglesI
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_矩形组, GP_矩形L, 数组, 
+
+
+
+.子程序 GP画椭圆, 逻辑型, , GdipDrawEllipse。
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_宽度, 小数型, , 
+.参数 参数_高度, 小数型, , 
+
+
+
+.子程序 GP画椭圆I, 逻辑型, , GdipDrawEllipseI。
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+
+
+
+.子程序 GP画饼, 逻辑型, , GdipDrawPie。
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_宽度, 小数型, , 
+.参数 参数_高度, 小数型, , 
+.参数 参数_开始角度, 小数型, , 
+.参数 参数_扫描角度, 小数型, , 
+
+
+
+.子程序 GP画饼I, 逻辑型, , GdipDrawPieI。
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+.参数 参数_开始角度, 小数型, , 
+.参数 参数_扫描角度, 小数型, , 
+
+
+
+.子程序 GP画多边形, 逻辑型, , GdipDrawPolygon
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_坐标组, GP_坐标F, 数组, 
+
+
+
+.子程序 GP画多边形I, 逻辑型, , GdipDrawPolygonI
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_坐标组, GP_坐标L, 数组, 
+
+
+
+.子程序 GP画路径, 逻辑型, , GdipDrawPath
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_路径, GP路径, , 
+
+
+
+.子程序 GP画曲线, 逻辑型, , GdipDrawCurve。
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_坐标组, GP_坐标F, 数组, 
+
+
+
+.子程序 GP画曲线I, 逻辑型, , GdipDrawCurveI。
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_坐标组, GP_坐标L, 数组, 
+
+
+
+.子程序 GP画曲线2, 逻辑型, , GdipDrawCurve2。
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_坐标组, GP_坐标F, 数组, 
+.参数 参数_张力, 小数型, , 
+
+
+
+.子程序 GP画曲线2I, 逻辑型, , GdipDrawCurve2I。
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_坐标组, GP_坐标L, 数组, 
+.参数 参数_张力, 小数型, , 
+
+
+
+.子程序 GP画曲线3, 逻辑型, , GdipDrawCurve3。
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_坐标组, GP_坐标F, 数组, 
+.参数 参数_偏移量, 整数型, , 从0开始
+.参数 参数_段数, 整数型, , 从0开始
+.参数 参数_张力, 小数型, , 
+
+
+
+.子程序 GP画曲线3I, 逻辑型, , GdipDrawCurve3I。
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_坐标组, GP_坐标L, 数组, 
+.参数 参数_偏移量, 整数型, , 从0开始
+.参数 参数_段数, 整数型, , 从0开始
+.参数 参数_张力, 小数型, , 
+
+
+
+.子程序 GP画闭合曲线, 逻辑型, , GdipDrawClosedCurve。最后一点将和起始点自动连接。
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_坐标组, GP_坐标F, 数组, 
+
+
+
+.子程序 GP画闭合曲线I, 逻辑型, , GdipDrawClosedCurveI。最后一点将和起始点自动连接。
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_坐标组, GP_坐标L, 数组, 
+
+
+
+.子程序 GP画闭合曲线2, 逻辑型, , GdipDrawClosedCurve2。最后一点将和起始点自动连接。
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_坐标组, GP_坐标F, 数组, 
+.参数 参数_张力, 小数型, , 
+
+
+
+.子程序 GP画闭合曲线2I, 逻辑型, , GdipDrawClosedCurve2I。最后一点将和起始点自动连接。
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_坐标组, GP_坐标L, 数组, 
+.参数 参数_张力, 小数型, , 
+
+
+
+.子程序 GP清除, 逻辑型, , GdipGraphicsClear。清除整个绘图面，并以指定色填充。
+.参数 参数_ARGB颜色, 整数型, 可空, 默认为-1。
+
+
+
+.子程序 GP填充矩形, 逻辑型, , GdipFillRectangle
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_宽度, 小数型, , 
+.参数 参数_高度, 小数型, , 
+
+
+
+.子程序 GP填充矩形2, 逻辑型, , GdipFillRectangle
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_矩形, GP_矩形F, , 
+
+
+
+.子程序 GP填充矩形I, 逻辑型, , GdipFillRectangleI
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+
+
+
+.子程序 GP填充矩形组, 逻辑型, , GdipFillRectangles
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_矩形组, GP_矩形F, 数组, 
+
+
+
+.子程序 GP填充矩形组I, 逻辑型, , GdipFillRectanglesI
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_矩形组, GP_矩形L, 数组, 
+
+
+
+.子程序 GP填充多边形, 逻辑型, , GdipFillPolygon
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_坐标组, GP_坐标F, 数组, 
+.参数 参数_填充模式, 整数型, 可空, “填充模式_”开头常量，默认为：“#填充模式_交替”
+
+
+
+.子程序 GP填充多边形I, 逻辑型, , GdipFillPolygonI
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_坐标组, GP_坐标L, 数组, 
+.参数 参数_填充模式, 整数型, 可空, “填充模式_”开头常量，默认为：“#填充模式_交替”
+
+
+
+.子程序 GP填充椭圆, 逻辑型, , GdipFillEllipse
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_宽度, 小数型, , 
+.参数 参数_高度, 小数型, , 
+
+
+
+.子程序 GP填充椭圆I, 逻辑型, , GdipFillEllipseI
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+
+
+
+.子程序 GP填充饼, 逻辑型, , GdipFillPie
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_宽度, 小数型, , 
+.参数 参数_高度, 小数型, , 
+.参数 参数_开始角度, 小数型, , 
+.参数 参数_扫描角度, 小数型, , 
+
+
+
+.子程序 GP填充饼I, 逻辑型, , GdipFillPieI
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+.参数 参数_开始角度, 小数型, , 
+.参数 参数_扫描角度, 小数型, , 
+
+
+
+.子程序 GP填充路径, 逻辑型, , GdipFillPath
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_路径, GP路径, , 
+
+
+
+.子程序 GP填充闭合曲线, 逻辑型, , GdipFillClosedCurve
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_坐标组, GP_坐标F, 数组, 
+
+
+
+.子程序 GP填充闭合曲线2, 逻辑型, , GdipFillClosedCurve2
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_坐标组, GP_坐标F, 数组, 
+.参数 参数_张力, 小数型, , 
+.参数 参数_填充模式, 整数型, 可空, “填充模式_”开头常量，默认为：“#填充模式_交替”
+
+
+
+.子程序 GP填充闭合曲线I, 逻辑型, , GdipFillClosedCurveI
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_坐标组, GP_坐标L, 数组, 
+
+
+
+.子程序 GP填充闭合曲线2I, 逻辑型, , GdipFillClosedCurve2I
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_坐标组, GP_坐标L, 数组, 
+.参数 参数_张力, 小数型, , 
+.参数 参数_填充模式, 整数型, 可空, “填充模式_”开头常量，默认为：“#填充模式_交替”
+
+
+
+.子程序 GP填充区域, 逻辑型, , GdipFillRegion
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_区域, GP区域, , 
+
+
+
+.子程序 GP画文本, 逻辑型, , GdipDrawString
+.参数 参数_文本, 文本型, , 
+.参数 参数_字体, GP字体, , 
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_矩形, GP_矩形F, 可空, 
+.参数 参数_文本格式, GP文本格式, 可空, 
+
+
+
+.子程序 GP测量文本矩形, 逻辑型, , GdipMeasureString
+.参数 参数_文本, 文本型, , 
+.参数 参数_字体, GP字体, , 
+.参数 参数_参考矩形, GP_矩形F, 可空, 
+.参数 参数_文本格式, GP文本格式, 可空, 
+.参数 参数_测量矩形, GP_矩形F, 参考, 返回测量“参数_文本”所需要的矩形。
+
+
+
+.子程序 GP测量文本区域, 逻辑型, , GdipMeasureCharacterRanges
+.参数 参数_文本, 文本型, , 
+.参数 参数_字体, GP字体, , 
+.参数 参数_参考矩形, GP_矩形F, 可空, 
+.参数 参数_文本格式, GP文本格式, 可空, 
+.参数 参数_区域数, 整数型, , 
+.参数 参数_区域集, GP区域, 参考 数组, 返回区域数组。
+
+
+
+.子程序 GP画控制文本, 逻辑型, , GdipDrawDriverString
+.参数 参数_文本, 文本型, , 
+.参数 参数_字体, GP字体, , 
+.参数 参数_画刷, 未知类型0x490124E0, , 
+.参数 参数_坐标集, GP_坐标F, 数组, 每一个坐标指定每个文本所在的位置。
+.参数 参数_标志, 整数型, 可空, “控制文本标志_”开头常量组合。默认为：“控制文本标志_映射查找”
+.参数 参数_矩阵, GP矩阵, 可空, 
+
+
+
+.子程序 GP画图像, 逻辑型, , GdipDrawImage。
+.参数 参数_图像, GP图像, , 
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+
+
+
+.子程序 GP画图像I, 逻辑型, , GdipDrawImageI。
+.参数 参数_图像, GP图像, , 
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+
+
+
+.子程序 GP画缓存位图, 逻辑型, , GdipDrawCachedBitmap
+.参数 参数_缓存位图, GP缓存位图, , 
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+
+
+
+.子程序 GP画图像缩放, 逻辑型, , GdipDrawImageRect。按照指定的矩形缩放图像。
+.参数 参数_图像, GP图像, , 
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_宽度, 小数型, , 
+.参数 参数_高度, 小数型, , 
+
+
+
+.子程序 GP画图像缩放I, 逻辑型, , GdipDrawImageRectI。按照指定的矩形缩放图像。
+.参数 参数_图像, GP图像, , 
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+
+
+
+.子程序 GP画图像变形, 逻辑型, , GdipDrawImagePoints，可以画出平行四边形的图像。
+.参数 参数_图像, GP图像, , 
+.参数 参数_左上角X, 小数型, , 
+.参数 参数_左上角Y, 小数型, , 
+.参数 参数_右上角X, 小数型, , 
+.参数 参数_右上角Y, 小数型, , 
+.参数 参数_左下角X, 小数型, , 
+.参数 参数_左下角Y, 小数型, , 
+
+
+
+.子程序 GP画图像变形I, 逻辑型, , GdipDrawImagePointsI，可以画出平行四边形的图像。
+.参数 参数_图像, GP图像, , 
+.参数 参数_左上角X, 整数型, , 
+.参数 参数_左上角Y, 整数型, , 
+.参数 参数_右上角X, 整数型, , 
+.参数 参数_右上角Y, 整数型, , 
+.参数 参数_左下角X, 整数型, , 
+.参数 参数_左下角Y, 整数型, , 
+
+
+
+.子程序 GP画图像部分, 逻辑型, , GdipDrawImagePointRect。可以画出源图像的一部分或全部。
+.参数 参数_图像, GP图像, , 
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_原图左边, 小数型, , 
+.参数 参数_原图顶边, 小数型, , 
+.参数 参数_原图宽度, 小数型, , 
+.参数 参数_原图高度, 小数型, , 
+.参数 参数_单位, 整数型, 可空, 默认为“单位_像素”
+
+
+
+.子程序 GP画图像部分I, 逻辑型, , GdipDrawImagePointRectI。可以画出源图像的一部分或全部。
+.参数 参数_图像, GP图像, , 
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_原图左边, 整数型, , 
+.参数 参数_原图顶边, 整数型, , 
+.参数 参数_原图宽度, 整数型, , 
+.参数 参数_原图高度, 整数型, , 
+.参数 参数_单位, 整数型, 可空, 默认为“单位_像素”
+
+
+
+.子程序 GP画图像缩放部分, 逻辑型, , GdipDrawImageRectRect。按照指定的矩形缩放图像，并且可以是源图像的一部分或全部
+.参数 参数_图像, GP图像, , 
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_宽度, 小数型, , 
+.参数 参数_高度, 小数型, , 
+.参数 参数_原图左边, 小数型, , 
+.参数 参数_原图顶边, 小数型, , 
+.参数 参数_原图宽度, 小数型, , 
+.参数 参数_原图高度, 小数型, , 
+.参数 参数_原图单位, 整数型, 可空, 默认为“单位_像素”
+.参数 参数_图像属性, GP图像属性, 可空, 
+
+
+
+.子程序 GP画图像缩放部分I, 逻辑型, , GdipDrawImageRectRectI。按照指定的矩形缩放图像，并且可以是源图像的一部分或全部
+.参数 参数_图像, GP图像, , 
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+.参数 参数_原图左边, 整数型, , 
+.参数 参数_原图顶边, 整数型, , 
+.参数 参数_原图宽度, 整数型, , 
+.参数 参数_原图高度, 整数型, , 
+.参数 参数_原图单位, 整数型, 可空, 默认为“单位_像素”
+.参数 参数_图像属性, GP图像属性, 可空, 
+
+
+
+.子程序 GP画图像变形部分, 逻辑型, , GdipDrawImagePointsRect。可以画出平行四边形的图像，并且可以是源图像的一部分或全部
+.参数 参数_图像, GP图像, , 
+.参数 参数_左上角X, 小数型, , 
+.参数 参数_左上角Y, 小数型, , 
+.参数 参数_右上角X, 小数型, , 
+.参数 参数_右上角Y, 小数型, , 
+.参数 参数_左下角X, 小数型, , 
+.参数 参数_左下角Y, 小数型, , 
+.参数 参数_原图左边, 小数型, , 
+.参数 参数_原图顶边, 小数型, , 
+.参数 参数_原图宽度, 小数型, , 
+.参数 参数_原图高度, 小数型, , 
+.参数 参数_原图单位, 整数型, 可空, 默认为“单位_像素”
+.参数 参数_图像属性, GP图像属性, 可空, 
+
+
+
+.子程序 GP画图像变形部分I, 逻辑型, , GdipDrawImagePointsRectI。可以画出平行四边形的图像，并且可以是源图像的一部分或全部
+.参数 参数_图像, GP图像, , 
+.参数 参数_左上角X, 整数型, , 
+.参数 参数_左上角Y, 整数型, , 
+.参数 参数_右上角X, 整数型, , 
+.参数 参数_右上角Y, 整数型, , 
+.参数 参数_左下角X, 整数型, , 
+.参数 参数_左下角Y, 整数型, , 
+.参数 参数_原图左边, 整数型, , 
+.参数 参数_原图顶边, 整数型, , 
+.参数 参数_原图宽度, 整数型, , 
+.参数 参数_原图高度, 整数型, , 
+.参数 参数_原图单位, 整数型, 可空, 默认为“单位_像素”
+.参数 参数_图像属性, GP图像属性, 可空, 
+
+
+
+.子程序 GP列举图元文件目的坐标, 逻辑型, , GdipEnumerateMetafileDestPoint。这个方法可以在回调函数中使用回放图元文件。
+.参数 参数_图元文件, GP图元文件, , 
+.参数 参数_目的坐标, GP_坐标F, , 
+.参数 参数_回调函数, 整数型, , 参数1 整数型：记录类型，参数2 整数型：标志，参数3 整数型：数据大小，参数4 整数型：数据指针，参数5 整数型：自定义数值。返回值 逻辑型。
+.参数 参数_自定义数值, 整数型, 可空, 
+.参数 参数_图像属性, GP图像属性, 可空, 
+
+
+
+.子程序 GP列举图元文件目的坐标I, 逻辑型, , GdipEnumerateMetafileDestPointI。这个方法可以在回调函数中使用回放图元文件。
+.参数 参数_图元文件, GP图元文件, , 
+.参数 参数_目的坐标, GP_坐标L, , 
+.参数 参数_回调函数, 整数型, , 参数1 整数型：记录类型，参数2 整数型：标志，参数3 整数型：数据大小，参数4 整数型：数据指针，参数5 整数型：自定义数值。返回值 逻辑型。
+.参数 参数_自定义数值, 整数型, 可空, 
+.参数 参数_图像属性, GP图像属性, 可空, 
+
+
+
+.子程序 GP列举图元文件目的坐标集, 逻辑型, , GdipEnumerateMetafileDestPoints。这个方法可以在回调函数中使用回放图元文件。
+.参数 参数_图元文件, GP图元文件, , 
+.参数 参数_目的坐标组, GP_坐标F, 数组, 
+.参数 参数_回调函数, 整数型, , 参数1 整数型：记录类型，参数2 整数型：标志，参数3 整数型：数据大小，参数4 整数型：数据指针，参数5 整数型：自定义数值。返回值 逻辑型。
+.参数 参数_自定义数值, 整数型, 可空, 
+.参数 参数_图像属性, GP图像属性, 可空, 
+
+
+
+.子程序 GP列举图元文件目的坐标集I, 逻辑型, , GdipEnumerateMetafileDestPointsI。这个方法可以在回调函数中使用回放图元文件。
+.参数 参数_图元文件, GP图元文件, , 
+.参数 参数_目的坐标组, GP_坐标L, 数组, 
+.参数 参数_回调函数, 整数型, , 参数1 整数型：记录类型，参数2 整数型：标志，参数3 整数型：数据大小，参数4 整数型：数据指针，参数5 整数型：自定义数值。返回值 逻辑型。
+.参数 参数_自定义数值, 整数型, 可空, 
+.参数 参数_图像属性, GP图像属性, 可空, 
+
+
+
+.子程序 GP列举图元文件目的矩形, 逻辑型, , GdipEnumerateMetafileDestRect。这个方法可以在回调函数中使用回放图元文件。
+.参数 参数_图元文件, GP图元文件, , 
+.参数 参数_目的矩形, GP_矩形F, , 
+.参数 参数_回调函数, 整数型, , 参数1 整数型：记录类型，参数2 整数型：标志，参数3 整数型：数据大小，参数4 整数型：数据指针，参数5 整数型：自定义数值。返回值 逻辑型。
+.参数 参数_自定义数值, 整数型, 可空, 
+.参数 参数_图像属性, GP图像属性, 可空, 
+
+
+
+.子程序 GP列举图元文件目的矩形I, 逻辑型, , GdipEnumerateMetafileDestRectI。这个方法可以在回调函数中使用回放图元文件。
+.参数 参数_图元文件, GP图元文件, , 
+.参数 参数_目的矩形, GP_矩形L, , 
+.参数 参数_回调函数, 整数型, , 参数1 整数型：记录类型，参数2 整数型：标志，参数3 整数型：数据大小，参数4 整数型：数据指针，参数5 整数型：自定义数值。返回值 逻辑型。
+.参数 参数_自定义数值, 整数型, 可空, 
+.参数 参数_图像属性, GP图像属性, 可空, 
+
+
+
+.子程序 GP列举图元文件源矩形目的坐标, 逻辑型, , GdipEnumerateMetafileSrcRectDestPoint。这个方法可以在回调函数中使用回放图元文件。
+.参数 参数_图元文件, GP图元文件, , 
+.参数 参数_目的坐标, GP_坐标F, , 
+.参数 参数_源矩形, GP_矩形F, , 
+.参数 参数_源单位, 整数型, , “单位_”开头常量。
+.参数 参数_回调函数, 整数型, , 参数1 整数型：记录类型，参数2 整数型：标志，参数3 整数型：数据大小，参数4 整数型：数据指针，参数5 整数型：自定义数值。返回值 逻辑型。
+.参数 参数_自定义数值, 整数型, 可空, 
+.参数 参数_图像属性, GP图像属性, 可空, 
+
+
+
+.子程序 GP列举图元文件源矩形目的坐标I, 逻辑型, , GdipEnumerateMetafileSrcRectDestPointI。这个方法可以在回调函数中使用回放图元文件。
+.参数 参数_图元文件, GP图元文件, , 
+.参数 参数_目的坐标, GP_坐标L, , 
+.参数 参数_源矩形, GP_矩形L, , 
+.参数 参数_源单位, 整数型, , “单位_”开头常量。
+.参数 参数_回调函数, 整数型, , 参数1 整数型：记录类型，参数2 整数型：标志，参数3 整数型：数据大小，参数4 整数型：数据指针，参数5 整数型：自定义数值。返回值 逻辑型。
+.参数 参数_自定义数值, 整数型, 可空, 
+.参数 参数_图像属性, GP图像属性, 可空, 
+
+
+
+.子程序 GP列举图元文件源矩形目的坐标集, 逻辑型, , GdipEnumerateMetafileSrcRectDestPoints。这个方法可以在回调函数中使用回放图元文件。
+.参数 参数_图元文件, GP图元文件, , 
+.参数 参数_目的坐标组, GP_坐标F, 数组, 
+.参数 参数_源矩形, GP_矩形F, , 
+.参数 参数_源单位, 整数型, , “单位_”开头常量。
+.参数 参数_回调函数, 整数型, , 参数1 整数型：记录类型，参数2 整数型：标志，参数3 整数型：数据大小，参数4 整数型：数据指针，参数5 整数型：自定义数值。返回值 逻辑型。
+.参数 参数_自定义数值, 整数型, 可空, 
+.参数 参数_图像属性, GP图像属性, 可空, 
+
+
+
+.子程序 GP列举图元文件源矩形目的坐标集I, 逻辑型, , GdipEnumerateMetafileSrcRectDestPointsI。这个方法可以在回调函数中使用回放图元文件。
+.参数 参数_图元文件, GP图元文件, , 
+.参数 参数_目的坐标, GP_坐标L, 数组, 
+.参数 参数_源矩形, GP_矩形L, , 
+.参数 参数_源单位, 整数型, , “单位_”开头常量。
+.参数 参数_回调函数, 整数型, , 参数1 整数型：记录类型，参数2 整数型：标志，参数3 整数型：数据大小，参数4 整数型：数据指针，参数5 整数型：自定义数值。返回值 逻辑型。
+.参数 参数_自定义数值, 整数型, 可空, 
+.参数 参数_图像属性, GP图像属性, 可空, 
+
+
+
+.子程序 GP列举图元文件源矩形目的矩形, 逻辑型, , GdipEnumerateMetafileSrcRectDestRect。这个方法可以在回调函数中使用回放图元文件。
+.参数 参数_图元文件, GP图元文件, , 
+.参数 参数_目的矩形, GP_矩形F, , 
+.参数 参数_源矩形, GP_矩形F, , 
+.参数 参数_源单位, 整数型, , “单位_”开头常量。
+.参数 参数_回调函数, 整数型, , 参数1 整数型：记录类型，参数2 整数型：标志，参数3 整数型：数据大小，参数4 整数型：数据指针，参数5 整数型：自定义数值。返回值 逻辑型。
+.参数 参数_自定义数值, 整数型, 可空, 
+.参数 参数_图像属性, GP图像属性, 可空, 
+
+
+
+.子程序 GP列举图元文件源矩形目的矩形I, 逻辑型, , GdipEnumerateMetafileSrcRectDestRectI。这个方法可以在回调函数中使用回放图元文件。
+.参数 参数_图元文件, GP图元文件, , 
+.参数 参数_目的矩形, GP_矩形L, , 
+.参数 参数_源矩形, GP_矩形L, , 
+.参数 参数_源单位, 整数型, , “单位_”开头常量。
+.参数 参数_回调函数, 整数型, , 参数1 整数型：记录类型，参数2 整数型：标志，参数3 整数型：数据大小，参数4 整数型：数据指针，参数5 整数型：自定义数值。返回值 逻辑型。
+.参数 参数_自定义数值, 整数型, 可空, 
+.参数 参数_图像属性, GP图像属性, 可空, 
+
+
+
+.子程序 GP置剪辑区自图形, 逻辑型, , GdipSetClipGraphics
+.参数 参数_源图形, GDI_GP_图形, , 
+.参数 参数_合并模式, 整数型, 可空, 默认为“#合并模式_替代”。
+
+
+
+.子程序 GP置剪辑区自路径, 逻辑型, , GdipSetClipPath
+.参数 参数_路径, GP路径, , 
+.参数 参数_合并模式, 整数型, 可空, 默认为“#合并模式_替代”。
+
+
+
+.子程序 GP置剪辑区自矩形, 逻辑型, , GdipSetClipRect
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_宽度, 小数型, , 
+.参数 参数_高度, 小数型, , 
+.参数 参数_合并模式, 整数型, 可空, 默认为“#合并模式_替代”。
+
+
+
+.子程序 GP置剪辑区自矩形I, 逻辑型, , GdipSetClipRectI
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+.参数 参数_合并模式, 整数型, 可空, 默认为“#合并模式_替代”。
+
+
+
+.子程序 GP置剪辑区自区域, 逻辑型, , GdipSetClipRegion
+.参数 参数_区域, GP区域, , 
+.参数 参数_合并模式, 整数型, 可空, 默认为“#合并模式_替代”。
+
+
+
+.子程序 GP置剪辑区自区域句柄, 逻辑型, , GdipSetClipRegion
+.参数 参数_区域句柄, 整数型, , hRgn
+.参数 参数_合并模式, 整数型, 可空, 默认为“#合并模式_替代”。
+
+
+
+.子程序 GP重置剪辑区, 逻辑型, , GdipResetClip。重置为无限区域。
+
+
+.子程序 GP平移剪辑区, 逻辑型, , GdipTranslateClip
+.参数 参数_水平偏移量, 小数型, , 
+.参数 参数_垂直偏移量, 小数型, , 
+
+
+
+.子程序 GP平移剪辑区I, 逻辑型, , GdipTranslateClipI
+.参数 参数_水平偏移量, 整数型, , 
+.参数 参数_垂直偏移量, 整数型, , 
+
+
+
+.子程序 GP取剪辑区, 逻辑型, , GdipGetClip
+.参数 参数_区域, GP区域, 参考, 返回的区域。
+
+
+
+.子程序 GP取剪辑区边界, GP_矩形F, , GdipGetClipBounds
+
+
+.子程序 GP取剪辑区边界I, GP_矩形L, , GdipGetClipBoundsI
+
+
+.子程序 GP取可见剪辑区边界, GP_矩形F, , GdipGetVisibleClipBounds
+
+
+.子程序 GP取可见剪辑区边界I, GP_矩形L, , GdipGetVisibleClipBoundsI
+
+
+.子程序 GP是否为空剪辑区, 逻辑型, , GdipIsClipEmpty
+
+
+.子程序 GP是否为空可见剪辑区, 逻辑型, , GdipIsVisibleClipEmpty
+
+
+.子程序 GP是否可见坐标, 逻辑型, , GdipIsVisiblePoint
+.参数 参数_x, 小数型, , 
+.参数 参数_y, 小数型, , 
+
+
+
+.子程序 GP是否可见坐标I, 逻辑型, , GdipIsVisiblePointI
+.参数 参数_x, 整数型, , 
+.参数 参数_y, 整数型, , 
+
+
+
+.子程序 GP是否可见矩形, 逻辑型, , GdipIsVisibleRect
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_宽度, 小数型, , 
+.参数 参数_高度, 小数型, , 
+
+
+
+.子程序 GP是否可见矩形I, 逻辑型, , GdipIsVisibleRectI
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+
+
+
+.子程序 GP保存, 整数型, , GdipSaveGraphics。返回状态
+
+
+.子程序 GP恢复, 逻辑型, , GdipRestoreGraphics
+.参数 参数_状态, 整数型, , 由“保存()”返回的值。
+
+
+
+.子程序 GP开始容器, 整数型, , GdipBeginContainer。返回状态。
+.参数 参数_目标矩形, GP_矩形F, , 
+.参数 参数_源矩形, GP_矩形F, , 
+.参数 参数_单位, 整数型, 可空, 
+
+
+
+.子程序 GP开始容器I, 整数型, , GdipBeginContainerI。建一个新绘图状态，返回状态。
+.参数 参数_目标矩形, GP_矩形L, , 
+.参数 参数_源矩形, GP_矩形L, , 
+.参数 参数_单位, 整数型, 可空, 
+
+
+
+.子程序 GP开始容器2, 整数型, , GdipBeginContainer2。建一个新绘图状态，返回状态。
+
+
+.子程序 GP结束容器, 逻辑型, , GdipEndContainer。结束一个绘制状态。
+.参数 参数_状态, 整数型, , 
+
+
+
+.子程序 GP添加图元文件注译, 逻辑型, , GdipComment
+.参数 参数_数据, 字节集, , 
+
+
+
+.类模块 GDI_画笔, , , 
+
+.子程序 销毁, 空白型, , 提供本方法的目的是为了可以在不用时候方便清理，如想再用可以再次创建。每次创建都会销毁上一次的本对象，然而不调用本方法的话，则必须等到程序结束，才能自行清理掉一直保留的一个本对象，因此，若确实不再用之时可调用本方法，节省内存使用。
+
+
+.子程序 创建, 逻辑型, , 
+.参数 样式, 整数型, , 详见常量表！画笔样式1_*
+.参数 粗细, 整数型, , 
+.参数 颜色值, 整数型, , 
+
+
+
+.子程序 创建_自画刷属性, 逻辑型, , 
+.参数 样式, 整数型, , 详见常量表！画笔样式*_*，如有多个，请进行位或操作。
+.参数 画刷属性, GDI_画刷属性, , 
+
+
+
+.子程序 取句柄, 整数型, , 得到hPen，若无特殊需要，不用调用本方法，本方法是为本模块服务的
+
+
+.类模块 GDI_刷子, , , 
+
+.子程序 创建_纯色, 逻辑型, , 
+.参数 颜色值, 整数型, , 
+
+
+
+.子程序 创建_阴影, 逻辑型, , 
+.参数 刷子花纹, 整数型, , 详见常量表 刷子花纹_*
+.参数 颜色值, 整数型, , 
+
+
+
+.子程序 创建_自画刷属性, 逻辑型, , 
+.参数 画刷属性, GDI_画刷属性, , 
+
+
+
+.子程序 创建_自图片, 逻辑型, , 
+.参数 图片, GDI_图片, , 
+
+
+
+.子程序 取句柄, 整数型, , 得到hBrush，若无特殊需要，不用调用本方法，本方法是为本模块服务的
+
+
+.子程序 销毁, 空白型, , 提供本方法的目的是为了可以在不用时候方便清理，如想再用可以再次创建。每次创建都会销毁上一次的本对象，然而不调用本方法的话，则必须等到程序结束，才能自行清理掉一直保留的一个本对象，因此，若确实不再用之时可调用本方法，节省内存使用。
+
+
+.类模块 GDI_图片, , , 
+
+.子程序 销毁, 空白型, , 提供本方法的目的是为了可以在不用时候方便清理，如想再用可以再次创建。每次创建都会销毁上一次的本对象，然而不调用本方法的话，则必须等到程序结束，才能自行清理掉一直保留的一个本对象，因此，若确实不再用之时可调用本方法，节省内存使用。
+
+
+.子程序 取图片宽度, 整数型, , 
+
+
+.子程序 取图片高度, 整数型, , 
+
+
+.子程序 创建_自文件, 逻辑型, , 
+.参数 文件名, 文本型, , 全路径
+.参数 图片宽度, 整数型, , 0为默认大小
+.参数 图片高度, 整数型, , 0为默认大小
+.参数 图片类型, 整数型, , 详见常量表，图片_*
+.参数 载入方式, 整数型, , 详见常量表，载入图片_*（可进行 位或 操作以同时利用多种方式！）
+
+
+
+.子程序 创建_自字节集, 逻辑型, , 
+.参数 字节集, 字节集, , #XX，放在资源表里的，或读入文件（）返回值
+
+
+
+.子程序 取句柄, 整数型, , 得到hBitmap，若无特殊需要，不用调用本方法，本方法是为本模块服务的
+
+
+.类模块 GDI_区域, , , 
+
+.子程序 创建_矩形区域, 逻辑型, , 
+.参数 横坐标, 整数型, , 
+.参数 纵坐标, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+
+
+
+.子程序 创建_椭圆区域, 逻辑型, , 
+.参数 横坐标, 整数型, , 
+.参数 纵坐标, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+
+
+
+.子程序 创建_圆角矩形区域, 逻辑型, , 
+.参数 横坐标, 整数型, , 
+.参数 纵坐标, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+.参数 圆角宽度, 整数型, , 
+.参数 圆角高度, 整数型, , 
+
+
+
+.子程序 创建_多边形区域, 逻辑型, , 
+.参数 点集合, GDI_点, 数组, 请提供点数据类型的数组。各个点连成多边形
+.参数 点数量, 整数型, 可空, 为空则自动计算数量
+.参数 填充模式, 整数型, 可空, 详见常量表，填充模式_*
+
+
+
+.子程序 创建_多个多边形区域, 逻辑型, , 
+.参数 点集合, GDI_点, 数组, 请提供点数据类型的数组。各个点连成多边形
+.参数 每个多边形的点数量, 整数型, 数组, 比如说：第一个多边形由三个点组成，则该数组[1]赋值为3，第n个由m个点组成，则[n]=m
+.参数 总点数量, 整数型, 可空, 为空则自动计算数量
+.参数 填充模式, 整数型, 可空, 详见常量表，填充模式_*
+
+
+
+.子程序 创建_合并区域, 整数型, , 将两个已创建GDI_区域用指定方式合并起来，获得最终区域即本区域。注意返回值：0：不能创建组合区域；1：区域为空；2：区域边界没有互相交叠；3：区域有互相交叠的边界
+.参数 区域1, GDI_区域, , 
+.参数 区域2, GDI_区域, , 
+.参数 合并方式, 整数型, 可空, 详见常量表，合并方式_*，默认为 合并方式_并集 即将两区域结合起来组成当前区域
+
+
+
+.子程序 创建_复制区域, 逻辑型, , 复制一个已创建的GDI_区域为当前区域
+.参数 区域, GDI_区域, , 
+
+
+
+.子程序 创建_窗口区域, 逻辑型, , 根据一个窗口创建当前区域
+.参数 窗口句柄, 整数型, , 
+
+
+
+.子程序 是否相等于当前区域, 逻辑型, , 确定两个区域是否相等，假则不等，真则相等
+.参数 另一区域, GDI_区域, , 
+
+
+
+.子程序 平移区域, 逻辑型, , 
+.参数 横向平移, 整数型, , 
+.参数 纵向平移, 整数型, , 
+
+
+
+.子程序 某点是否在当前区域内, 逻辑型, , 真则是，假则否
+.参数 点, GDI_点, , 
+
+
+
+.子程序 某点是否在当前区域内2, 逻辑型, , 真则是，假则否
+.参数 x, 整数型, , 
+.参数 y, 整数型, , 
+
+
+
+.子程序 某矩形是否在当前区域内, 逻辑型, , 真则是，假则否
+.参数 矩形, GDI_矩形, , 
+
+
+
+.子程序 置窗口区域, 逻辑型, , 此方法妙哉，可以改变窗口外形，将窗口外形置为当前区域形状
+.参数 窗口句柄, 整数型, , 欲操作的窗口句柄
+.参数 是否立即重画窗口, 逻辑型, 可空, 默认为真
+
+
+
+.子程序 取区域矩形, GDI_矩形, , 包含本区域的矩形范围
+
+
+.子程序 取句柄, 整数型, , 得到hRgn，若无特殊需要，不用调用本方法，本方法是为本模块服务的
+
+
+.子程序 销毁, 空白型, , 提供本方法的目的是为了可以在不用时候方便清理，如想再用可以再次创建。每次创建都会销毁上一次的本对象，然而不调用本方法的话，则必须等到程序结束，才能自行清理掉一直保留的一个本对象，因此，若确实不再用之时可调用本方法，节省内存使用。
+
+
+.类模块 GDI_自绘, , , 
+
+.子程序 还原, 整数型, , 
+
+
+.子程序 创建, 逻辑型, , 
+.参数 组件的句柄, 整数型, , 组件.取窗口句柄（）获得的值
+.参数 窗口消息回调, 子程序指针, 可空, 如果为空，则表明您只想用来改变组件外形，而非重绘。
+
+
+
+.子程序 开始重绘, 空白型, , 请放在 如果（wmsg=15）中 即将开始绘制之前
+
+
+.子程序 结束重绘, 空白型, , 请放在 如果（wmsg=15）中 绘制完成之后，和 开始重绘 配对使用
+
+
+.子程序 默认处理消息, 整数型, , 
+.参数 hwnd, 整数型, , 
+.参数 wmsg, 整数型, , 
+.参数 lparam, 整数型, , 
+.参数 wparam, 整数型, , 
+
+
+
+.子程序 置外形_自区域, 逻辑型, , 
+.参数 区域, GDI_区域, , 
+.参数 是否立即重画窗口, 逻辑型, 可空, 默认为真
+
+
+
+.子程序 置外形_椭圆, 逻辑型, , 
+.参数 横坐标, 整数型, , 
+.参数 纵坐标, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+.参数 是否立即重画窗口, 逻辑型, 可空, 默认为真
+
+
+
+.子程序 置外形_圆角矩形, 逻辑型, , 
+.参数 横坐标, 整数型, , 
+.参数 纵坐标, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+.参数 圆角宽度, 整数型, , 
+.参数 圆角高度, 整数型, , 
+.参数 是否立即重画窗口, 逻辑型, 可空, 默认为真
+
+
+
+.类模块 GP图像, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 销毁, 逻辑型, , GdipDisposeImage。
+
+
+.子程序 创建自文件, 逻辑型, , GdipLoadImageFromFile
+.参数 参数_文件名, 文本型, , 
+.参数 参数_是否ICM, 逻辑型, 可空, 默认为假。如果为真表示使用ICC文件调整颜色。
+
+
+
+.子程序 创建自字节集, 逻辑型, , GdipLoadImageFromStream
+.参数 参数_字节集, 字节集, , 
+.参数 参数_是否ICM, 逻辑型, 可空, 默认为假。如果为真表示使用ICC文件调整颜色。
+
+
+
+.子程序 复制, 逻辑型, , GdipCloneImage
+.参数 参数_图像, GP图像, 参考, 
+
+
+
+.子程序 保存到文件, 逻辑型, , GdipSaveImageToFile
+.参数 参数_文件名, 文本型, , 
+.参数 参数_图像格式, 文本型, 可空, “图像格式_”开头常量。
+.参数 参数_编码器参数集, GP_编码器参数集, 可空, 
+
+
+
+.子程序 保存到字节集, 字节集, , GdipSaveImageToStream
+.参数 参数_图像格式, 文本型, 可空, “图像格式_”开头常量
+.参数 参数_编码器参数集, GP_编码器参数集, 可空, 
+
+
+
+.子程序 保存添加, 逻辑型, , GdipSaveAdd
+.参数 参数_编码器参数集, GP_编码器参数集, , 
+
+
+
+.子程序 保存添加图像, 逻辑型, , GdipSaveAddImage
+.参数 参数_图像, GP图像, , 
+.参数 参数_编码器参数集, GP_编码器参数集, , 
+
+
+
+.子程序 取编码器参数列表, 逻辑型, , GdipGetEncoderParameterList。
+.参数 参数_图像格式, 文本型, , “图像格式_”开头常量。
+.参数 参数_编码器, GP_编码器参数集, 参考, 
+
+
+
+.子程序 取原始格式, 文本型, , GdipGetImageRawFormat。返回“图像格式_”开头常量。
+
+
+.子程序 取边界矩形, GP_矩形F, , GdipGetImageBounds。返回矩形范围
+.参数 参数_单位, 整数型, 参考 可空, 提供整数型变量取返回值,指定该矩形的单位。“单位_”开头常量。
+
+
+
+.子程序 取物理尺寸, GP_尺寸F, , GdipGetImageDimension
+
+
+.子程序 取类型, 整数型, , GdipGetImageType。返回“图像类型_”开头常量。
+
+
+.子程序 取宽度, 整数型, , GdipGetImageWidth
+
+
+.子程序 取高度, 整数型, , GdipGetImageHeight
+
+
+.子程序 取水平分辨率, 小数型, , GdipGetImageHorizontalResolution。以“像素/英寸”为单位
+
+
+.子程序 取垂直分辨率, 小数型, , GdipGetImageVerticalResolution。以“像素/英寸”为单位
+
+
+.子程序 取图像属性, 整数型, , GdipGetImageFlags。返回“图像属性_”开头常量。
+
+
+.子程序 取像素格式, 整数型, , GdipGetImagePixelFormat。返回“像素格式_”开头常量。
+
+
+.子程序 取图像缩略图, 逻辑型, , GdipGetImageThumbnail
+.参数 参数_缩略图宽度, 整数型, , 
+.参数 参数_缩略图高度, 整数型, , 
+.参数 参数_缩略图, GP图像, 参考, 返回一个缩略图的Gdip图像。
+
+
+
+.子程序 取帧数, 整数型, , GdipImageGetFrameCount
+.参数 参数_帧维面, 文本型, , “帧维面_”开头常量。
+
+
+
+.子程序 取帧维面列表, 逻辑型, , GdipImageGetFrameDimensionsList
+.参数 参数_帧惟面, 文本型, 数组, “帧维面_”开头常量。
+
+
+
+.子程序 置活动帧, 逻辑型, , GdipImageSelectActiveFrame
+.参数 参数_帧维面, 文本型, , “帧维面_”开头常量。
+.参数 参数_索引, 整数型, , 
+
+
+
+.子程序 取各帧延时, 逻辑型, , 
+.参数 参数_延时, 整数型, 数组, 
+
+
+
+.子程序 取属性项目, 逻辑型, , GdipGetPropertyItem
+.参数 参数_属性标签, 整数型, , “属性标签_”开头常量。通常是通过“取属性标签列表()”方法来查看此图像有哪些属性。
+.参数 参数_属性项目, GP_属性项目, 参考, 
+
+
+
+.子程序 置属性项目, 逻辑型, , GdipSetPropertyItem
+.参数 参数_属性项目, GP_属性项目, , 
+
+
+
+.子程序 移除属性项目, 逻辑型, , GdipRemovePropertyItem
+.参数 参数_属性标签, 整数型, , “属性标签_”开头常量。通常是通过“取属性标签列表()”方法来查看此图像有哪些属性。
+
+
+
+.子程序 取属性标签列表, 整数型, , GdipGetPropertyIdList。返回属性标签数。
+.参数 参数_属性标签数组, 整数型, 数组, 
+
+
+
+.子程序 旋转翻转, 逻辑型, , GdipImageRotateFlip
+.参数 参数_旋转翻转类型, 整数型, , “旋转翻转_”开头常量。
+
+
+
+.子程序 取颜色调色板, 逻辑型, , GdipGetImagePalette
+.参数 参数_颜色调色板, GP_颜色调色板, 参考, 
+
+
+
+.子程序 置颜色调色板, 逻辑型, , GdipSetImagePalette
+.参数 参数_颜色调色板, GP_颜色调色板, , 
+
+
+
+.类模块 GP画笔, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 销毁, 逻辑型, , GdipDeletePen。
+
+
+.子程序 创建自颜色, 逻辑型, , GdipCreatePen1
+.参数 参数_ARGB颜色, 整数型, , 需要将RGB颜色转换为ARGB颜色。
+.参数 参数_宽度, 小数型, , 
+.参数 参数_单位, 整数型, 可空, “单位_”开头常量。默认为：“单位_世界坐标”
+
+
+
+.子程序 创建自画刷, 逻辑型, , GdipCreatePen2
+.参数 参数_画刷, 未知类型0x490124E0, 参考, 
+.参数 参数_宽度, 小数型, , 
+.参数 参数_单位, 整数型, 可空, “单位_”开头常量。默认为：“单位_世界坐标”
+
+
+
+.子程序 复制, 逻辑型, , GdipClonePen
+.参数 参数_画笔, GP画笔, 参考, 
+
+
+
+.子程序 取宽度, 小数型, , GdipGetPenWidth
+
+
+.子程序 置宽度, 逻辑型, , GdipSetPenWidth
+.参数 参数_宽度, 小数型, , 
+
+
+
+.子程序 取单位, 整数型, , GdipGetPenUnit。返回“单位_”开头常量。
+
+
+.子程序 置单位, 逻辑型, , GdipSetPenUnit
+.参数 参数_单位, 小数型, , “单位_”开头常量。
+
+
+
+.子程序 置线帽197819, 逻辑型, , GdipSetPenLineCap197819
+.参数 参数_起点帽, 整数型, , “线帽样式_”开头常量。
+.参数 参数_终点帽, 整数型, , “线帽样式_”开头常量。
+.参数 参数_虚线帽, 整数型, , “虚线帽样式_”开头常量。
+
+
+
+.子程序 置线帽, 逻辑型, , GdipSetPenLineCap
+.参数 参数_起点帽, 整数型, , “线帽样式_”开头常量。
+.参数 参数_终点帽, 整数型, , “线帽样式_”开头常量。
+.参数 参数_虚线帽, 整数型, , “虚线帽样式_”开头常量。
+
+
+
+.子程序 置起点线帽, 逻辑型, , GdipSetPenStartCap
+.参数 参数_线帽样式, 整数型, , “线帽样式_”开头常量。
+
+
+
+.子程序 置终点线帽, 逻辑型, , GdipSetPenEndCap
+.参数 参数_线帽样式, 整数型, , “线帽样式_”开头常量。
+
+
+
+.子程序 置虚线帽, 逻辑型, , GdipSetPenDashCap
+.参数 参数_虚线帽样式, 整数型, , “虚线帽样式_”开头常量
+
+
+
+.子程序 取起点线帽, 整数型, , GdipGetPenStartCap
+
+
+.子程序 取终点线帽, 整数型, , GdipGetPenEndCap
+
+
+.子程序 取虚线帽197819, 整数型, , GdipGetPenDashCap197819
+
+
+.子程序 取虚线帽, 整数型, , GdipGetPenDashCap
+
+
+.子程序 置连线方式, 逻辑型, , GdipSetPenLineJoin
+.参数 参数_连线方式, 整数型, , “连线方式_”开头常量。
+
+
+
+.子程序 取连线方式, 整数型, , GdipGetPenLineJoin。返回“连线方式_”开头常量。
+
+
+.子程序 置自定起点线帽, 逻辑型, , GdipSetPenCustomStartCap
+.参数 参数_自定义线帽, GP自定义线帽, , 
+
+
+
+.子程序 取自定起点线帽, 逻辑型, , GdipSetPenCustomStartCap
+.参数 参数_自定义线帽, GP自定义线帽, 参考, 
+
+
+
+.子程序 置自定终点线帽, 逻辑型, , GdipSetPenCustomEndCap
+.参数 参数_自定义线帽, GP自定义线帽, , 
+
+
+
+.子程序 取自定终点线帽, 逻辑型, , GdipGetPenCustomEndCap
+.参数 参数_自定义线帽, GP自定义线帽, 参考, 
+
+
+
+.子程序 置斜接限制, 逻辑型, , GdipSetPenMiterLimit
+.参数 参数_斜接限制, 小数型, , 
+
+
+
+.子程序 取斜接限制, 小数型, , GdipGetPenMiterLimit
+
+
+.子程序 置对齐方式, 逻辑型, , GdipSetPenMode
+.参数 参数_对齐方式, 整数型, , “画笔对齐方式_”开头常量。
+
+
+
+.子程序 取对齐方式, 整数型, , GdipGetPenMode。返回“画笔对齐方式_”开头常量。
+
+
+.子程序 变形置矩阵, 逻辑型, , GdipSetPenTransform
+.参数 参数_矩阵, GP矩阵, , 
+
+
+
+.子程序 变形取矩阵, 逻辑型, , GdipGetpenTransform
+.参数 参数_矩阵, GP矩阵, 参考, 
+
+
+
+.子程序 变形重置, 逻辑型, , GdipResetPenTransform
+
+
+.子程序 变形相乘, 逻辑型, , GdipMultiplyPenTransform
+.参数 参数_矩阵, GP矩阵, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“#矩阵顺序_预先计算”
+
+
+
+.子程序 变形旋转, 逻辑型, , GdipRotatePenTransform
+.参数 参数_角度, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“#矩阵顺序_预先计算
+
+
+
+.子程序 变形缩放, 逻辑型, , GdipScalePenTransform
+.参数 参数_水平缩放倍数, 小数型, , 
+.参数 参数_垂直缩放倍数, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“ #矩阵顺序_预先计算”
+
+
+
+.子程序 变形平移, 逻辑型, , GdipTranslatePenTransform。
+.参数 参数_水平偏移量, 小数型, , 
+.参数 参数_垂直偏移量, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“ #矩阵顺序_预先计算”
+
+
+
+.子程序 取颜色, 整数型, , GdipGetPenColor。返回ARGB颜色值。
+
+
+.子程序 置颜色, 逻辑型, , GdipSetPenColor。
+.参数 参数_ARGB颜色, 整数型, , 
+
+
+
+.子程序 置画刷, 逻辑型, , GdipSetPenBrushFill
+.参数 参数_画刷, 未知类型0x490124E0, , 
+
+
+
+.子程序 取画刷, 逻辑型, , GdipGetPenBrushFill
+.参数 参数_画刷, 未知类型0x490124E0, 参考, 
+
+
+
+.子程序 取填充类型, 整数型, , GdipGetPenFillType。返回“画笔类型_”开头常量。
+
+
+.子程序 置虚线类型, 逻辑型, , GdipSetPenDashStyle
+.参数 参数_虚线类型, 整数型, , “虚线类型_”开头常量。
+
+
+
+.子程序 取虚线类型, 整数型, , GdipGetPenDashStyle。返回“虚线类型_”开头常量。
+
+
+.子程序 取虚线偏移, 小数型, , GdipGetPenDashOffset。
+
+
+.子程序 置虚线偏移, 逻辑型, , GdipSetPenDashOffset。
+.参数 参数_偏移, 小数型, , 
+
+
+
+.子程序 取虚线格式, 整数型, , GdipGetPenDashArray。返回虚线格式数量。
+.参数 参数_虚线格式, 小数型, 参考 数组, 
+
+
+
+.子程序 置虚线格式, 逻辑型, , GdipSetPenDashOffset。
+.参数 参数_虚线格式, 小数型, 数组, 第一个成员表示虚线长度，第二个成员表示空白长度，以此类推。
+
+
+
+.子程序 置分割数组, 逻辑型, , GdipSetPenCompoundArray。将画笔画出的线分割成若干条。
+.参数 参数_分割数组, 小数型, 数组, 成员值必须是0到1之间的小数，且必须是升序。如：{0,0.2,0.7,1}，表示分割成两条线，第1条线宽度为20%，中间的空白宽度为50%，第2条线宽度为30%
+
+
+
+.子程序 取分割数组, 整数型, , GdipGetPenCompoundArray。返回分割数。
+.参数 参数_分割数组, 小数型, 参考 数组, 
+
+
+
+.类模块 GP矩阵, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 销毁, 逻辑型, , GdipDeleteMatrix。
+
+
+.子程序 创建, 逻辑型, , GdipCreateMatrix。创建一个默认矩阵。
+
+
+.子程序 创建2, 逻辑型, , GdipCreateMatrix2
+.参数 参数_m11, 小数型, , 第一行，第一列
+.参数 参数_m12, 小数型, , 第一行，第二列
+.参数 参数_m21, 小数型, , 第二行，第一列
+.参数 参数_m22, 小数型, , 第二行，第二列
+.参数 参数_dx, 小数型, , 第三行，第一列
+.参数 参数_dy, 小数型, , 第三行，第二列
+
+
+
+.子程序 创建3, 逻辑型, , GdipCreateMatrix3
+.参数 参数_矩形, GP_矩形F, , 
+.参数 参数_坐标, GP_坐标F, , 
+
+
+
+.子程序 创建3I, 逻辑型, , GdipCreateMatrix3I
+.参数 参数_矩形, GP_矩形L, , 
+.参数 参数_坐标, GP_坐标L, , 
+
+
+
+.子程序 复制, 逻辑型, , GdipCloneImageAttributes。将本矩阵复制到 参数_矩阵。
+.参数 参数_矩阵, GP矩阵, 参考, 
+
+
+
+.子程序 置元素, 逻辑型, , GdipSetMatrixElements。设置矩阵元素。
+.参数 参数_m11, 小数型, , 第一行，第一列
+.参数 参数_m12, 小数型, , 第一行，第二列
+.参数 参数_m21, 小数型, , 第二行，第一列
+.参数 参数_m22, 小数型, , 第二行，第二列
+.参数 参数_dx, 小数型, , 第三行，第一列
+.参数 参数_dy, 小数型, , 第三行，第二列
+
+
+
+.子程序 取元素, 逻辑型, , GdipGetMatrixElements
+.参数 参数_元素组, 小数型, 数组, 返回值。
+
+
+
+.子程序 相乘, 逻辑型, , GdipMultiplyMatrix。如果指定的顺序是“#矩阵顺序_预先计算”，则按预先计算的顺序将此 矩阵 对象乘以指定的矩阵。如果指定的顺序是“#矩阵顺序_追加”，则按追加的顺序将此 矩阵 对象乘以指定的矩阵。
+.参数 参数_矩阵, GP矩阵, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“#矩阵顺序_预先计算”
+
+
+
+.子程序 平移, 逻辑型, , GdipTranslateMatrix。
+.参数 参数_水平偏移量, 小数型, , 
+.参数 参数_垂直偏移量, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“ #矩阵顺序_预先计算”
+
+
+
+.子程序 旋转, 逻辑型, , GdipRotateMatrix
+.参数 参数_角度, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“ #矩阵顺序_预先计算”
+
+
+
+.子程序 逆转, 逻辑型, , GdipInvertMatrix。设置旋转方向为逆向。
+
+
+.子程序 缩放, 逻辑型, , GdipScaleMatrix
+.参数 参数_水平缩放倍数, 小数型, , 
+.参数 参数_垂直缩放倍数, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“ #矩阵顺序_预先计算”
+
+
+
+.子程序 切变, 逻辑型, , GdipShearMatrix
+.参数 参数_x, 小数型, , 
+.参数 参数_y, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“ #矩阵顺序_预先计算”
+
+
+
+.子程序 重置, 逻辑型, , 
+
+
+.子程序 仿射变换, 逻辑型, , GdipTransformMatrixPoints
+.参数 参数_坐标组, GP_坐标F, 数组, [in, out]输入时提供仿射点，输出时为仿射后结果。
+
+
+
+.子程序 矢量仿射变换, 逻辑型, , GdipVectorTransformMatrixPoints
+.参数 参数_坐标组, GP_坐标F, 数组, [in, out]输入时提供仿射点，输出时为仿射后结果。
+
+
+
+.子程序 是否逆转, 逻辑型, , GdipIsMatrixInvertible
+
+
+.子程序 是否单位矩阵, 逻辑型, , GdipIsMatrixIdentity
+
+
+.子程序 是否相等, 逻辑型, , GdipIsMatrixEqual
+.参数 参数_矩阵, GP矩阵, , 
+
+
+
+.类模块 GP路径, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 销毁, 逻辑型, , GdipDeletePath。
+
+
+.子程序 创建, 逻辑型, , GdipCreatePath
+.参数 参数_填充模式, 整数型, 可空, “填充模式_”开头常量。默认为“#填充模式_交替”
+
+
+
+.子程序 创建自坐标组, 逻辑型, , GdipCreatePath2
+.参数 参数_坐标, GP_坐标F, 数组, 
+.参数 参数_类型, 字节型, 数组, “路径点类型_”开头常量。
+.参数 参数_填充模式, 整数型, 可空, “填充模式_”开头常量。默认为“#填充模式_交替”
+
+
+
+.子程序 创建自坐标组I, 逻辑型, , GdipCreatePath2
+.参数 参数_坐标, GP_坐标L, 数组, 
+.参数 参数_类型, 字节型, 数组, “路径点类型_”开头常量。
+.参数 参数_填充模式, 整数型, 可空, “填充模式_”开头常量。默认为“#填充模式_交替”
+
+
+
+.子程序 复制, 逻辑型, , GdipClonePath
+.参数 参数_路径, GP路径, 参考, 
+
+
+
+.子程序 重置, 逻辑型, , GdipResetPath
+
+
+.子程序 取填充模式, 整数型, , GdipGetPathFillMode。返回“填充模式_”开头常量
+
+
+.子程序 置填充模式, 逻辑型, , GdipSetPathFillMode
+.参数 参数_填充模式, 整数型, , “填充模式_”开头常量
+
+
+
+.子程序 取路径数据, 逻辑型, , GdipGetPathData。
+.参数 参数_路径数据, GP_路径数据, 参考, 
+
+
+
+.子程序 取路径类型组, 逻辑型, , GdipGetPathTypes
+.参数 参数_类型, 字节型, 参考 数组, 返回“路径点类型_”开头常量。
+.参数 参数_总数, 整数型, , 可用“取坐标数()”获得。
+
+
+
+.子程序 取路径坐标组, 逻辑型, , GdipGetPathPoints
+.参数 参数_坐标, GP_坐标F, 数组, 
+.参数 参数_总数, 整数型, , 
+
+
+
+.子程序 开始图形, 逻辑型, , GdipStartPathFigure。不闭合当前图形即开始一个新图形。后面添加到该路径的所有点都被添加到此新图形中。
+
+
+.子程序 关闭图形, 逻辑型, , GdipClosePathFigure。闭合当前图形并开始新的图形。如果当前图形包含一系列相互连接的直线和曲线，该方法通过连接一条从终结点到起始点的直线，闭合该环回。
+
+
+.子程序 关闭所有图形, 逻辑型, , GdipClosePathFigures。闭合此路径中所有开放的图形并开始一个新图形。它通过连接一条从图形的终结点到起始点的直线，闭合每一开放的图形。 
+
+
+.子程序 置标记, 逻辑型, , GdipSetPathMarker。
+
+
+.子程序 清除标记, 逻辑型, , GdipClearPathMarkers
+
+
+.子程序 反向, 逻辑型, , GdipReversePath
+
+
+.子程序 取最后坐标, GP_坐标F, , GdipGetPathLastPoint
+
+
+.子程序 添加直线, 逻辑型, , GdipAddPathLine
+.参数 参数_起点X, 小数型, , 
+.参数 参数_起点Y, 小数型, , 
+.参数 参数_终点X, 小数型, , 
+.参数 参数_终点Y, 小数型, , 
+
+
+
+.子程序 添加直线I, 逻辑型, , GdipAddPathLineI
+.参数 参数_起点X, 整数型, , 
+.参数 参数_起点Y, 整数型, , 
+.参数 参数_终点X, 整数型, , 
+.参数 参数_终点Y, 整数型, , 
+
+
+
+.子程序 添加直线组, 逻辑型, , GdipAddPathLine2
+.参数 参数_坐标, GP_坐标F, 数组, 
+
+
+
+.子程序 添加直线组I, 逻辑型, , GdipAddPathLine2I
+.参数 参数_坐标, GP_坐标L, 数组, 
+
+
+
+.子程序 添加圆弧, 逻辑型, , GdipAddPathArc
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_宽度, 小数型, , 
+.参数 参数_高度, 小数型, , 
+.参数 参数_开始角度, 小数型, , 
+.参数 参数_扫描角度, 小数型, , 
+
+
+
+.子程序 添加圆弧I, 逻辑型, , GdipAddPathArcI
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+.参数 参数_开始角度, 小数型, , 
+.参数 参数_扫描角度, 小数型, , 
+
+
+
+.子程序 添加贝塞尔曲线, 逻辑型, , GdipAddPathBezier
+.参数 参数_x1, 小数型, , 
+.参数 参数_y1, 小数型, , 
+.参数 参数_x2, 小数型, , 
+.参数 参数_y2, 小数型, , 
+.参数 参数_x3, 小数型, , 
+.参数 参数_y3, 小数型, , 
+.参数 参数_x4, 小数型, , 
+.参数 参数_y4, 小数型, , 
+
+
+
+.子程序 添加贝塞尔曲线I, 逻辑型, , GdipAddPathBezierI
+.参数 参数_x1, 整数型, , 
+.参数 参数_y1, 整数型, , 
+.参数 参数_x2, 整数型, , 
+.参数 参数_y2, 整数型, , 
+.参数 参数_x3, 整数型, , 
+.参数 参数_y3, 整数型, , 
+.参数 参数_x4, 整数型, , 
+.参数 参数_y4, 整数型, , 
+
+
+
+.子程序 添加贝塞尔曲线组, 逻辑型, , GdipAddPathBeziers。“参数_坐标组”的成员数必须4个以上。
+.参数 参数_坐标组, GP_坐标F, 数组, 
+
+
+
+.子程序 添加贝塞尔曲线组I, 逻辑型, , GdipAddPathBeziersI。“参数_坐标组”的成员数必须4个以上。
+.参数 参数_坐标组, GP_坐标L, 数组, 
+
+
+
+.子程序 添加曲线, 逻辑型, , GdipAddPathCurve。
+.参数 参数_坐标组, GP_坐标F, 数组, 
+
+
+
+.子程序 添加曲线2, 逻辑型, , GdipAddPathCurve2。
+.参数 参数_坐标组, GP_坐标F, 数组, 
+.参数 参数_张力, 小数型, , 
+
+
+
+.子程序 添加曲线3, 逻辑型, , GdipAddPathCurve3。
+.参数 参数_坐标组, GP_坐标F, 数组, 
+.参数 参数_偏移量, 整数型, , 从0开始
+.参数 参数_段数, 整数型, , 从0开始
+.参数 参数_张力, 小数型, , 
+
+
+
+.子程序 添加曲线I, 逻辑型, , GdipAddPathCurveI
+.参数 参数_坐标组, GP_坐标L, 数组, 
+
+
+
+.子程序 添加曲线2I, 逻辑型, , GdipAddPathCurve2I
+.参数 参数_坐标组, GP_坐标L, 数组, 
+.参数 参数_张力, 小数型, , 
+
+
+
+.子程序 添加曲线3I, 逻辑型, , GdipAddPathCurve3I
+.参数 参数_坐标组, GP_坐标L, 数组, 
+.参数 参数_偏移量, 整数型, , 从0开始
+.参数 参数_段数, 整数型, , 从0开始
+.参数 参数_张力, 小数型, , 
+
+
+
+.子程序 添加闭合曲线, 逻辑型, , GdipAddPathClosedCurve。最后一点将和起始点自动连接。
+.参数 参数_坐标组, GP_坐标F, 数组, 
+
+
+
+.子程序 添加闭合曲线2, 逻辑型, , GdipAddPathClosedCurve2。最后一点将和起始点自动连接。
+.参数 参数_坐标组, GP_坐标F, 数组, 
+.参数 参数_张力, 小数型, , 
+
+
+
+.子程序 添加闭合曲线I, 逻辑型, , GdipAddPathClosedCurveI。最后一点将和起始点自动连接。
+.参数 参数_坐标组, GP_坐标L, 数组, 
+
+
+
+.子程序 添加闭合曲线2I, 逻辑型, , GdipAddPathClosedCurve2I。最后一点将和起始点自动连接。
+.参数 参数_坐标组, GP_坐标L, 数组, 
+.参数 参数_张力, 小数型, , 
+
+
+
+.子程序 添加矩形, 逻辑型, , GdipAddPathRectangle
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_宽度, 小数型, , 
+.参数 参数_高度, 小数型, , 
+
+
+
+.子程序 添加矩形组, 逻辑型, , GdipAddPathRectangles
+.参数 参数_矩形组, GP_矩形F, 数组, 
+
+
+
+.子程序 添加矩形I, 逻辑型, , GdipAddPathRectangleI
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+
+
+
+.子程序 添加矩形组I, 逻辑型, , GdipAddPathRectanglesI
+.参数 参数_矩形组, GP_矩形L, 数组, 
+
+
+
+.子程序 添加椭圆, 逻辑型, , GdipAddPathEllipse。
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_宽度, 小数型, , 
+.参数 参数_高度, 小数型, , 
+
+
+
+.子程序 添加椭圆I, 逻辑型, , GdipAddPathEllipseI。
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+
+
+
+.子程序 添加饼I, 逻辑型, , GdipAddPathPieI。
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+.参数 参数_开始角度, 小数型, , 
+.参数 参数_扫描角度, 小数型, , 
+
+
+
+.子程序 添加多边形, 逻辑型, , GdipAddPathPolygon
+.参数 参数_坐标组, GP_坐标F, 数组, 
+
+
+
+.子程序 添加多边形I, 逻辑型, , GdipAddPathPolygonI
+.参数 参数_坐标组, GP_坐标L, 数组, 
+
+
+
+.子程序 添加路径, 逻辑型, , GdipAddPathPath
+.参数 参数_路径, GP路径, , 
+.参数 参数_连接, 逻辑型, 可空, 它指定添加的路径中的第一个图形是否是该路径中最后一个图形的一部分。真 的值指定（如果可能）添加的路径中的第一个图形是该路径中最后一个图形的一部分。假 的值指定添加的路径中的第一个图形与该路径中最后一个图形不同。默认为：假。
+
+
+
+.子程序 添加文本, 逻辑型, , GdipAddPathString
+.参数 参数_文本, 文本型, , 
+.参数 参数_字体族, GP字体族, , 
+.参数 参数_EM大小, 整数型, , 世界坐标单位
+.参数 参数_矩形, GP_矩形F, 可空, 
+.参数 参数_字体风格, 整数型, 可空, “字体风格_”开头常量。
+.参数 参数_文本格式, GP文本格式, 可空, 
+
+
+
+.子程序 添加文本I, 逻辑型, , GdipAddPathStringI
+.参数 参数_文本, 文本型, , 
+.参数 参数_字体族, GP字体族, , 
+.参数 参数_EM大小, 整数型, , 世界坐标单位
+.参数 参数_矩形, GP_矩形L, 可空, 
+.参数 参数_字体风格, 整数型, 可空, “字体风格_”开头常量。
+.参数 参数_文本格式, GP文本格式, 可空, 
+
+
+
+.子程序 变形置矩阵, 逻辑型, , GdipTransformPath
+.参数 参数_矩阵, GP矩阵, , 
+
+
+
+.子程序 变平, 逻辑型, , GdipFlattenPath
+.参数 参数_矩阵, GP矩阵, 可空, 
+.参数 参数_展平值, 小数型, 可空, 一个介于 0 到 1 之间的值，它指定如何展平最终路径。默认为：0.25
+
+
+
+.子程序 扩大, 逻辑型, , GdipWidenPath
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_矩阵, GP矩阵, 可空, 
+.参数 参数_展平值, 小数型, 可空, 一个介于 0 到 1 之间的值，它指定如何展平最终路径。默认为：0.25
+
+
+
+.子程序 轮廓线, 逻辑型, , GdipWindingModeOutline
+.参数 参数_矩阵, GP矩阵, 可空, 
+.参数 参数_展平值, 小数型, 可空, 一个介于 0 到 1 之间的值，它指定如何展平最终路径。默认为：0.25
+
+
+
+.子程序 扭曲, 逻辑型, , GdipWarpPath
+.参数 参数_坐标, GP_坐标F, 数组, 一个 坐标F 结构的数组，它们定义由 “参数_源矩形” 定义的矩形将变形到的平行四边形。该数组可以包含三个或四个元素。如果该数组包含三个元素，则平行四边形的右下角位置的点可从前三个点导出。
+.参数 参数_源矩形, GP_矩形F, , 一个 矩形F 结构，它表示将变形为 destPoints 定义的平行四边形的矩形
+.参数 参数_矩阵, GP矩阵, 可空, 
+.参数 参数_扭曲模式, 整数型, 可空, “扭曲模式_”开头常量。默认为：“扭曲模式_透视”
+.参数 参数_展平值, 小数型, 可空, 一个介于 0 到 1 之间的值，它指定如何展平最终路径。默认为：0.25
+
+
+
+.子程序 取坐标数, 整数型, , GdipGetPointCount
+
+
+.子程序 取边界矩形, GP_矩形F, , GdipGetPathWorldBounds
+.参数 参数_矩阵, GP矩阵, 可空, 
+.参数 参数_画笔, GP画笔, 可空, 
+
+
+
+.子程序 是否可见坐标, 逻辑型, , GdipIsVisiblePathPoint
+.参数 参数_x, 小数型, , 
+.参数 参数_y, 小数型, , 
+.参数 参数_图形, GDI_GP_图形, 可空, 
+
+
+
+.子程序 是否可见坐标I, 逻辑型, , GdipIsVisiblePathPointI
+.参数 参数_x, 整数型, , 
+.参数 参数_y, 整数型, , 
+.参数 参数_图形, GDI_GP_图形, 可空, 
+
+
+
+.子程序 是否可见坐标轮廓, 逻辑型, , GdipIsOutlineVisiblePathPoint
+.参数 参数_x, 小数型, , 
+.参数 参数_y, 小数型, , 
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_图形, GDI_GP_图形, 可空, 
+
+
+
+.子程序 是否可见坐标轮廓I, 逻辑型, , GdipIsOutlineVisiblePathPointI
+.参数 参数_x, 整数型, , 
+.参数 参数_y, 整数型, , 
+.参数 参数_画笔, GP画笔, , 
+.参数 参数_图形, GDI_GP_图形, 可空, 
+
+
+
+.类模块 GP区域, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 销毁, 逻辑型, , GdipDeleteRegion。
+
+
+.子程序 创建, 逻辑型, , GdipCreateRegion
+
+
+.子程序 创建自矩形, 逻辑型, , GdipCreateRegionRect
+.参数 参数_矩形, GP_矩形F, , 
+
+
+
+.子程序 创建自矩形I, 逻辑型, , GdipCreateRegionRectI
+.参数 参数_矩形, GP_矩形L, , 
+
+
+
+.子程序 创建自路径, 逻辑型, , GdipCreateRegionPath
+.参数 参数_路径, GP路径, , 
+
+
+
+.子程序 创建自句柄, 逻辑型, , GdipCreateRegionHrgn
+.参数 参数_hRgn, 整数型, , 区域句柄
+
+
+
+.子程序 创建自数据, 逻辑型, , GdipCreateRegionRgnData
+.参数 参数_数据, 字节集, , 
+.参数 参数_数据大小, 整数型, , 
+
+
+
+.子程序 复制, 逻辑型, , GdipCloneRegion
+.参数 参数_区域, GP区域, 参考, 
+
+
+
+.子程序 置为无限, 逻辑型, , GdipSetInfinite
+
+
+.子程序 置为空, 逻辑型, , GdipSetEmpty
+
+
+.子程序 合并矩形, 逻辑型, , GdipCombineRegionRect
+.参数 参数_矩形, GP_矩形F, , 
+.参数 参数_合并模式, 整数型, 可空, “合并模式_”开头常量
+
+
+
+.子程序 合并矩形I, 逻辑型, , GdipCombineRegionRectI
+.参数 参数_矩形, GP_矩形L, , 
+.参数 参数_合并模式, 整数型, 可空, “合并模式_”开头常量
+
+
+
+.子程序 合并区域, 逻辑型, , GdipCombineRegionRegion
+.参数 参数_区域, GP区域, , 
+.参数 参数_合并模式, 整数型, 可空, “合并模式_”开头常量
+
+
+
+.子程序 合并路径, 逻辑型, , GdipCombineRegionPath
+.参数 参数_路径, GP路径, , 
+.参数 参数_合并模式, 整数型, 可空, “合并模式_”开头常量
+
+
+
+.子程序 平移区域, 逻辑型, , GdipTranslateRegion
+.参数 参数_水平偏移量, 小数型, , 水平偏移的量。
+.参数 参数_垂直偏移量, 小数型, , 垂直偏移的量。
+
+
+
+.子程序 平移区域I, 逻辑型, , GdipTranslateRegionI
+.参数 参数_水平偏移量, 整数型, , 水平偏移的量。
+.参数 参数_垂直偏移量, 整数型, , 垂直偏移的量。
+
+
+
+.子程序 变换区域, 逻辑型, , GdipTransformRegion
+.参数 参数_矩阵, GP矩阵, , 
+
+
+
+.子程序 取矩形边界, GP_矩形F, , GdipGetRegionBounds
+.参数 参数_图形, GDI_GP_图形, , 
+
+
+
+.子程序 取矩形边界I, GP_矩形L, , GdipGetRegionBoundsI
+.参数 参数_图形, GDI_GP_图形, , 
+
+
+
+.子程序 取数据大小, 整数型, , GdipGetRegionDataSize
+
+
+.子程序 取数据, 字节集, , GdipGetRegionData
+.参数 参数_数据大小, 整数型, , 
+.参数 参数_填充大小, 整数型, 参考 可空, 
+
+
+
+.子程序 取区域句柄, 整数型, , GdipGetRegionHRgn。返回区域句柄。
+.参数 参数_图形, GDI_GP_图形, , 
+
+
+
+.子程序 是否为空, 逻辑型, , GdipIsEmptyRegion
+.参数 参数_图形, GDI_GP_图形, , 
+
+
+
+.子程序 是否为无限, 逻辑型, , GdipIsInfiniteRegion
+.参数 参数_图形, GDI_GP_图形, , 
+
+
+
+.子程序 是否相等, 逻辑型, , GdipIsEqualRegion
+.参数 参数_区域, GP区域, , 
+.参数 参数_图形, GDI_GP_图形, , 
+
+
+
+.子程序 是否可见坐标, 逻辑型, , GdipIsVisibleRegionPoint
+.参数 参数_坐标, GP_坐标F, , 
+.参数 参数_图形, GDI_GP_图形, 可空, 
+
+
+
+.子程序 是否可见坐标I, 逻辑型, , GdipIsVisibleRegionPointI
+.参数 参数_坐标, GP_坐标L, , 
+.参数 参数_图形, GDI_GP_图形, 可空, 
+
+
+
+.子程序 是否可见矩形, 逻辑型, , GdipIsVisibleRegionRect
+.参数 参数_矩形, GP_矩形F, , 
+.参数 参数_图形, GDI_GP_图形, 可空, 
+
+
+
+.子程序 是否可见矩形I, 逻辑型, , GdipIsVisibleRegionRectI
+.参数 参数_矩形, GP_矩形L, , 
+.参数 参数_图形, GDI_GP_图形, 可空, 
+
+
+
+.子程序 取扫描数, 整数型, , GdipGetRegionScansCount
+.参数 参数_矩阵, GP矩阵, , 
+
+
+
+.子程序 取扫描矩形, 整数型, , GdipGetRegionScans
+.参数 参数_矩阵, GP矩阵, , 
+.参数 参数_矩形, GP_矩形F, 数组, 
+
+
+
+.子程序 取扫描矩形I, 整数型, , GdipGetRegionScansI
+.参数 参数_矩阵, GP矩阵, , 
+.参数 参数_矩形, GP_矩形L, 数组, 
+
+
+
+.类模块 GP字体, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 销毁, 逻辑型, , GdipDeleteFont
+
+
+.子程序 创建, 逻辑型, , GdipCreateFont
+.参数 参数_字体族, GP字体族, , 
+.参数 参数_字体大小, 小数型, , 字体大小
+.参数 参数_风格, 整数型, 可空, “字体风格_”开头常量。
+.参数 参数_单位, 整数型, 可空, “单位_”开头常量。
+
+
+
+.子程序 创建自默认字体, 逻辑型, , 
+
+
+.子程序 创建自名称, 逻辑型, , GdipCreateFont
+.参数 参数_名称, 文本型, , 
+.参数 参数_尺寸, 小数型, , 字体大小
+.参数 参数_风格, 整数型, 可空, “字体风格_”开头常量。
+.参数 参数_单位, 整数型, 可空, “单位_”开头常量。
+
+
+
+.子程序 创建自DC, 逻辑型, , GdipCreateFontFromDC
+.参数 参数_hdc, 整数型, , 设备场景句柄。
+
+
+
+.子程序 创建自hFont, 逻辑型, , 
+.参数 参数_hdc, 整数型, , 设备场景句柄
+.参数 参数_hFont, 整数型, , 字体句柄
+
+
+
+.子程序 创建自逻辑字体, 逻辑型, , GdipCreateFontFromLogfontA
+.参数 参数_hdc, 整数型, , 设备场景句柄。
+.参数 参数_pLogfont, 整数型, , logfont的指针。
+
+
+
+.子程序 复制, 逻辑型, , GdipCloneFont
+.参数 参数_字体, GP字体, 参考, 
+
+
+
+.子程序 取字体族, 逻辑型, , GdipGetFamily
+.参数 参数_字体族, GP字体族, 参考, 
+
+
+
+.子程序 取风格, 整数型, , GdipGetFontStyle。返回“字体风格_”开头常量。
+
+
+.子程序 取尺寸, 小数型, , GdipGetFontSize
+
+
+.子程序 取单位, 整数型, , GdipGetFontUnit。“单位_”开头常量。
+
+
+.子程序 取高度, 小数型, , GdipGetFontHeight
+.参数 参数_图形, GDI_GP_图形, 可空, 参数为空时，字体单位必须是像素。
+
+
+
+.子程序 取高度自分辨率, 小数型, , GdipGetFontHeightGivenDPI
+.参数 参数_分辨率, 小数型, , 
+
+
+
+.子程序 取逻辑字体, 逻辑型, , GdipGetLogFontA
+.参数 参数_图形, GDI_GP_图形, , 
+.参数 参数_逻辑字体, 字节集, 参考, LogFontA结构的字节集形式，长度60。
+
+
+
+.类模块 GP字体族, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 销毁, 逻辑型, , GdipDeleteFontFamily。
+
+
+.子程序 创建自名称, 逻辑型, , GdipCreateFontFamilyFromName
+.参数 参数_名称, 文本型, , 
+.参数 参数_字体集, 未知类型0x490124E1, 可空, 
+
+
+
+.子程序 创建自通用无衬线, 逻辑型, , GdipGetGenericFontFamilySansSerif
+
+
+.子程序 创建自通用衬线, 逻辑型, , GdipGetGenericFontFamilySerif
+
+
+.子程序 创建自通用等宽, 逻辑型, , GdipGetGenericFontFamilyMonospace
+
+
+.子程序 复制, 逻辑型, , GdipCloneFontFamily
+.参数 参数_字体族, GP字体族, 参考, 
+
+
+
+.子程序 取名称, 文本型, , GdipGetFamilyName
+
+
+.子程序 是否有效风格, 逻辑型, , GdipIsStyleAvailable
+.参数 参数_字体风格, 整数型, , “字体风格_”开头常量。
+
+
+
+.子程序 取EM高度, 短整数型, , GdipGetEmHeight。以字体设计单位为单位
+.参数 参数_字体风格, 整数型, , “字体风格_”开头常量。
+
+
+
+.子程序 取上区高度, 短整数型, , GdipGetCellAscent。以字体设计单位为单位
+.参数 参数_字体风格, 整数型, , “字体风格_”开头常量。
+
+
+
+.子程序 取下区高度, 短整数型, , GdipGetCellDescent。以字体设计单位为单位
+.参数 参数_字体风格, 整数型, , “字体风格_”开头常量。
+
+
+
+.子程序 取行间距, 短整数型, , GdipGetCellDescent。以字体设计单位为单位
+.参数 参数_字体风格, 整数型, , “字体风格_”开头常量。
+
+
+
+.类模块 GP图像属性, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 销毁, 逻辑型, , GdipDisposeImageAttributes
+
+
+.子程序 创建, 逻辑型, , GdipCreateImageAttributes
+
+
+.子程序 复制, 逻辑型, , GdipCloneImageAttributes。复制本图像属性到 参数_图像属性。
+.参数 参数_图像属性, GP图像属性, 参考, 
+
+
+
+.子程序 置类型, 逻辑型, , GdipSetImageAttributesToIdentity。
+.参数 参数_颜色调整类型, 整数型, , “颜色调整类型_”开头常量。
+
+
+
+.子程序 重置, 逻辑型, , GdipResetImageAttributes
+.参数 参数_颜色调整类型, 整数型, 可空, “颜色调整类型_”开头常量。
+
+
+
+.子程序 置临界值, 逻辑型, , GdipSetImageAttributesThreshold。
+.参数 参数_临界值, 小数型, , 临界值是一个从0到1，指定每个颜色成分分界点。例如，假设临界值为0.7，假设你是提供一种颜色的红，绿，蓝230，50，220。红色部分，230>0.7 × 255，因此红色成分将改为255（全强度）。绿色部分，50<0.7 × 255，所以绿色成分将被更改为0。蓝色的部分，220>0.7 × 255，所以蓝色部分将改为255
+.参数 参数_颜色调整类型, 整数型, 可空, “颜色调整类型_”开头常量。
+
+
+
+.子程序 清除临界值, 逻辑型, , GdipSetImageAttributesThreshold
+.参数 参数_颜色调整类型, 整数型, 可空, “颜色调整类型_”开头常量。
+
+
+
+.子程序 禁用, 逻辑型, , GdipSetImageAttributesNoOp。可以用 恢复() 方法恢复被禁用的颜色调整类型。
+.参数 参数_颜色调整类型, 整数型, 可空, “颜色调整类型_”开头常量。
+
+
+
+.子程序 恢复, 逻辑型, , GdipSetImageAttributesNoOp。恢复禁用的颜色调整类型。
+.参数 参数_颜色调整类型, 整数型, 可空, “颜色调整类型_”开头常量。
+
+
+
+.子程序 置伽玛值, 逻辑型, , GdipSetImageAttributesGamma
+.参数 参数_伽玛值, 小数型, , 一般是1.0到2.2之间，有时候0.1到5.0也有效。
+.参数 参数_颜色调整类型, 整数型, 可空, “颜色调整类型_”开头常量。
+
+
+
+.子程序 清除伽玛值, 逻辑型, , GdipSetImageAttributesGamma
+.参数 参数_颜色调整类型, 整数型, 可空, “颜色调整类型_”开头常量。
+
+
+
+.子程序 置透明色范围, 逻辑型, , GdipSetImageAttributesColorKeys。在 参数_低颜色 和 参数_高颜色 之间的颜色值将是透明的。
+.参数 参数_低颜色, 整数型, , ARGB颜色
+.参数 参数_高颜色, 整数型, , ARGB颜色
+.参数 参数_颜色调整类型, 整数型, 可空, “颜色调整类型_”开头常量。
+
+
+
+.子程序 清除透明色范围, 逻辑型, , GdipSetImageAttributesColorKeys
+.参数 参数_颜色调整类型, 整数型, 可空, “颜色调整类型_”开头常量。
+
+
+
+.子程序 置输出通道, 逻辑型, , GdipSetImageAttributesOutputChannel。设置CMYK输出通道。
+.参数 参数_输出通道, 整数型, , “输出通道_”开头常量。
+.参数 参数_颜色调整类型, 整数型, 可空, “颜色调整类型_”开头常量。
+
+
+
+.子程序 清除输出通道, 逻辑型, , GdipSetImageAttributesOutputChannel
+.参数 参数_颜色调整类型, 整数型, 可空, “颜色调整类型_”开头常量。
+
+
+
+.子程序 置输出通道配置文件, 逻辑型, , GdipSetImageAttributesOutputChannel
+.参数 参数_颜色配置文件, 文本型, , *.ICM
+.参数 参数_颜色调整类型, 整数型, 可空, “颜色调整类型_”开头常量。
+
+
+
+.子程序 清除出通道配置文件, 逻辑型, , GdipSetImageAttributesOutputChannel
+.参数 参数_颜色调整类型, 整数型, 可空, “颜色调整类型_”开头常量。
+
+
+
+.子程序 置色彩映射表, 逻辑型, , GdipSetImageAttributesRemapTable。将原来的颜色映射成为新的颜色。
+.参数 参数_色彩映射表, GP_色彩映射表, 数组, 
+.参数 参数_颜色调整类型, 整数型, 可空, “颜色调整类型_”开头常量。
+
+
+
+.子程序 清除色彩映射表, 逻辑型, , GdipSetImageAttributesRemapTable。
+.参数 参数_颜色调整类型, 整数型, 可空, “颜色调整类型_”开头常量。
+
+
+
+.子程序 置环绕模式, 逻辑型, , GdipSetImageAttributesWrapMode。设置空白区域的覆盖模式。
+.参数 参数_环绕模式, 整数型, , “环绕模式_”开头常量。
+.参数 参数_背景颜色, 整数型, 可空, ARGB颜色，当环绕模式为“环绕模式_固定”时，指定用什么颜色来填充空白区域。
+
+
+
+.子程序 取颜色调整调色板, 逻辑型, , GdipGetImageAttributesAdjustedPalette
+.参数 参数_颜色调色板, GP_颜色调色板, 参考, 输入\输出，
+.参数 参数_颜色调整类型, 整数型, 可空, “颜色调整类型_”开头常量。
+
+
+
+.子程序 置颜色矩阵, 逻辑型, , GdipSetImageAttributesColorMatrix
+.参数 参数_颜色矩阵, 小数型, 数组, 颜色矩阵是一个5x5的二维数组。
+.参数 参数_灰度矩阵, 小数型, 可空 数组, 同上。
+.参数 参数_颜色矩阵标志, 整数型, 可空, “颜色矩阵标志_”开头常量。
+.参数 参数_颜色调整类型, 整数型, 可空, “颜色调整类型_”开头常量。
+
+
+
+.子程序 清除颜色矩阵, 逻辑型, , 
+.参数 参数_颜色调整类型, 整数型, 可空, “颜色调整类型_”开头常量。
+
+
+
+.类模块 GP纯色画刷, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 销毁, 逻辑型, , GdipDeleteBrush。
+
+
+.子程序 复制, 逻辑型, , GdipCloneBrush。将当前画刷复制到“参数_画刷”。
+.参数 参数_画刷, 未知类型0x490124E0, 参考, 
+
+
+
+.子程序 取类型, 整数型, , GdipGetBrushType。返回“#画刷类型_”开头常量。
+
+
+.子程序 创建, 逻辑型, , GdipCreateSolidFill
+.参数 参数_ARGB颜色, 整数型, , 需要将RGB颜色转换为ARGB颜色。
+
+
+
+.子程序 置颜色, 逻辑型, , GdipSetSolidFillColor
+.参数 参数_ARGB颜色, 整数型, , 
+
+
+
+.子程序 取颜色, 整数型, , GdipGetSolidFillColor
+
+
+.类模块 GP阴影画刷, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 销毁, 逻辑型, , GdipDeleteBrush。
+
+
+.子程序 复制, 逻辑型, , GdipCloneBrush。将当前画刷复制到“参数_画刷”。
+.参数 参数_画刷, 未知类型0x490124E0, 参考, 
+
+
+
+.子程序 取类型, 整数型, , GdipGetBrushType。返回“#画刷类型_”开头常量。
+
+
+.子程序 创建, 逻辑型, , GdipCreateHatchBrush
+.参数 参数_阴影风格, 整数型, , “阴影风格_”开头常量。
+.参数 参数_前景ARGB颜色, 整数型, , 
+.参数 参数_背景ARGB颜色, 整数型, , 
+
+
+
+.子程序 取阴影风格, 整数型, , GdipGetHatchStyle。返回“阴影风格_”开头常量。
+
+
+.子程序 取前景色, 整数型, , GdipGetHatchForegroundColor。返回前景ARGB颜色。
+
+
+.子程序 取背景色, 整数型, , GdipGetHatchBackgroundColor。返回背景ARGB颜色。
+
+
+.类模块 GP纹理画刷, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 销毁, 逻辑型, , GdipDeleteBrush。
+
+
+.子程序 复制, 逻辑型, , GdipCloneBrush。将当前画刷复制到“参数_画刷”。
+.参数 参数_画刷, 未知类型0x490124E0, 参考, 
+
+
+
+.子程序 取类型, 整数型, , GdipGetBrushType。返回“#画刷类型_”开头常量。
+
+
+.子程序 创建, 逻辑型, , GdipCreateTexture
+.参数 参数_图像, GP图像, , 
+.参数 参数_环绕模式, 整数型, 可空, “环绕模式_”开头常量。默认为：“环绕模式_平铺”
+
+
+
+.子程序 创建自矩形, 逻辑型, , GdipCreateTexture2
+.参数 参数_图像, GP图像, , 
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_宽度, 小数型, , 
+.参数 参数_高度, 小数型, , 
+.参数 参数_环绕模式, 整数型, 可空, “环绕模式_”开头常量。
+
+
+
+.子程序 创建自矩形I, 逻辑型, , GdipCreateTexture2I
+.参数 参数_图像, GP图像, , 
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+.参数 参数_环绕模式, 整数型, 可空, “环绕模式_”开头常量。
+
+
+
+.子程序 创建自图像属性, 逻辑型, , GdipCreateTextureIA
+.参数 参数_图像, GP图像, , 
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_宽度, 小数型, , 
+.参数 参数_高度, 小数型, , 
+.参数 参数_图像属性, GP图像属性, 可空, 
+
+
+
+.子程序 创建自图像属性I, 逻辑型, , GdipCreateTextureIAI
+.参数 参数_图像, GP图像, , 
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+.参数 参数_图像属性, GP图像属性, 可空, 
+
+
+
+.子程序 变形取矩阵, 逻辑型, , GdipGetTextureTransform
+.参数 参数_矩阵, GP矩阵, 参考, 
+
+
+
+.子程序 变形置矩阵, 逻辑型, , GdipSetTextureTransform
+.参数 参数_矩阵, GP矩阵, , 
+
+
+
+.子程序 变形重置, 逻辑型, , GdipResetTextureTransform
+
+
+.子程序 变形相乘, 逻辑型, , GdipMultiplyTextureTransform
+.参数 参数_矩阵, GP矩阵, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“#矩阵顺序_预先计算”
+
+
+
+.子程序 变形平移, 逻辑型, , GdipTranslateTextureTransform。
+.参数 参数_水平偏移量, 小数型, , 
+.参数 参数_垂直偏移量, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“ #矩阵顺序_预先计算”
+
+
+
+.子程序 变形缩放, 逻辑型, , GdipScaleTextureTransform
+.参数 参数_水平缩放倍数, 小数型, , 
+.参数 参数_垂直缩放倍数, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“ #矩阵顺序_预先计算”
+
+
+
+.子程序 变形旋转, 逻辑型, , GdipRotateTextureTransform
+.参数 参数_角度, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“#矩阵顺序_预先计算
+
+
+
+.子程序 取环绕模式, 整数型, , GdipGetTextureWrapMode。返回“环绕模式_”开头常量。
+
+
+.子程序 置环绕模式, 逻辑型, , GdipSetTextureWrapMode
+.参数 参数_环绕模式, 整数型, , “环绕模式_”开头常量。
+
+
+
+.子程序 取图像, 逻辑型, , GdipGetTextureImage
+.参数 参数_图像, GP图像, 参考, 
+
+
+
+.类模块 GP线性渐变画刷, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 销毁, 逻辑型, , GdipDeleteBrush。
+
+
+.子程序 复制, 逻辑型, , GdipCloneBrush。将当前画刷复制到“参数_画刷”。
+.参数 参数_画刷, 未知类型0x490124E0, 参考, 
+
+
+
+.子程序 取类型, 整数型, , GdipGetBrushType。返回“#画刷类型_”开头常量。
+
+
+.子程序 创建, 逻辑型, , GdipCreateLineBrush
+.参数 参数_起点坐标, GP_坐标F, , 
+.参数 参数_终点坐标, GP_坐标F, , 
+.参数 参数_起点ARGB颜色, 整数型, , 
+.参数 参数_终点ARGB颜色, 整数型, , 
+
+
+
+.子程序 创建I, 逻辑型, , GdipCreateLineBrushI
+.参数 参数_起点坐标, GP_坐标L, , 
+.参数 参数_终点坐标, GP_坐标L, , 
+.参数 参数_起点ARGB颜色, 整数型, , 
+.参数 参数_终点ARGB颜色, 整数型, , 
+
+
+
+.子程序 创建自矩形, 逻辑型, , GdipCreateLineBrushFromRect
+.参数 参数_矩形, GP_矩形F, , 
+.参数 参数_起点ARGB颜色, 整数型, , 
+.参数 参数_终点ARGB颜色, 整数型, , 
+.参数 参数_线性渐变模式, 整数型, 可空, “线性渐变模式_”开头常量。
+
+
+
+.子程序 创建自矩形I, 逻辑型, , GdipCreateLineBrushFromRectI
+.参数 参数_矩形, GP_矩形L, , 
+.参数 参数_起点ARGB颜色, 整数型, , 
+.参数 参数_终点ARGB颜色, 整数型, , 
+.参数 参数_线性渐变模式, 整数型, 可空, “线性渐变模式_”开头常量。
+
+
+
+.子程序 创建自矩形角度, 逻辑型, , GdipCreateLineBrushFromRectWithAngle
+.参数 参数_矩形, GP_矩形F, , 
+.参数 参数_起点ARGB颜色, 整数型, , 
+.参数 参数_终点ARGB颜色, 整数型, , 
+.参数 参数_角度, 小数型, , 
+.参数 参数_角度是否可扩展, 逻辑型, 可空, 
+
+
+
+.子程序 创建自矩形角度I, 逻辑型, , GdipCreateLineBrushFromRectWithAngleI
+.参数 参数_矩形, GP_矩形L, , 
+.参数 参数_起点ARGB颜色, 整数型, , 
+.参数 参数_终点ARGB颜色, 整数型, , 
+.参数 参数_角度, 小数型, , 
+.参数 参数_角度是否可扩展, 逻辑型, 可空, 
+
+
+
+.子程序 取线性渐变色, 逻辑型, , GdipGetLineColors
+.参数 参数_起点ARGB颜色, 整数型, 参考, 
+.参数 参数_终点ARGB颜色, 整数型, 参考, 
+
+
+
+.子程序 置线性渐变色, 逻辑型, , GdipSetLineColors
+.参数 参数_起点ARGB颜色, 整数型, , 
+.参数 参数_终点ARGB颜色, 整数型, , 
+
+
+
+.子程序 取矩形, GP_矩形F, , GdipGetLineRect
+
+
+.子程序 取矩形I, GP_矩形L, , GdipGetLineRectI
+
+
+.子程序 置伽玛校正, 逻辑型, , GdipSetLineGammaCorrection
+.参数 参数_是否启用校正, 逻辑型, , 
+
+
+
+.子程序 取伽玛校正, 逻辑型, , GdipSetLineGammaCorrection
+
+
+.子程序 置混合, 逻辑型, , GdipSetLineBlend
+.参数 参数_颜色比例, 小数型, 数组, 如：{0，0.5，1}
+.参数 参数_位置比例, 小数型, 数组, 如：{0，0.2，1}
+
+
+
+.子程序 取混合, 整数型, , GdipGetLineBlend。返回总数。
+.参数 参数_颜色比例, 小数型, 数组, 提供小数型数组变量，装载数据。
+.参数 参数_位置比例, 小数型, 数组, 同上。
+
+
+
+.子程序 置预设混合, 逻辑型, , GdipSetLinePresetBlend
+.参数 参数_ARGB颜色, 整数型, 数组, ARGB颜色数组。
+.参数 参数_位置比例, 小数型, 数组, 如{0，0.3，1}
+
+
+
+.子程序 取预设混合, 整数型, , GdipGetLineBlend。返回总数。
+.参数 参数_ARGB颜色, 整数型, 数组, 提供整数型数组变量，装载数据。
+.参数 参数_位置比例, 小数型, 数组, 提供小数型数组变量，装载数据。
+
+
+
+.子程序 置钟形混合, 逻辑型, , GdipSetLineSigmaBlend
+.参数 参数_焦点, 小数型, , 0到1之间的小数。
+.参数 参数_比例, 小数型, , 0到1之间的小数。
+
+
+
+.子程序 置线性混合, 逻辑型, , GdipSetLineLinearBlend
+.参数 参数_焦点, 小数型, , 0到1之间的小数。
+.参数 参数_比例, 小数型, , 0到1之间的小数。
+
+
+
+.子程序 取环绕模式, 整数型, , GdipGetLineWrapMode。返回“环绕模式_”开头常量。
+
+
+.子程序 置环绕模式, 逻辑型, , GdipSetLineWrapMode
+.参数 参数_环绕模式, 整数型, , “环绕模式_”开头常量。
+
+
+
+.子程序 变形取矩阵, 逻辑型, , GdipGetLineTransform
+.参数 参数_矩阵, GP矩阵, 参考, 
+
+
+
+.子程序 变形置矩阵, 逻辑型, , GdipSetLineTransform
+.参数 参数_矩阵, GP矩阵, , 
+
+
+
+.子程序 变形重置, 逻辑型, , GdipResetLineTransform
+
+
+.子程序 变形相乘, 逻辑型, , GdipMultiplyLineTransform
+.参数 参数_矩阵, GP矩阵, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“#矩阵顺序_预先计算”
+
+
+
+.子程序 变形平移, 逻辑型, , GdipTranslateLineTransform。
+.参数 参数_水平偏移量, 小数型, , 
+.参数 参数_垂直偏移量, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“ #矩阵顺序_预先计算”
+
+
+
+.子程序 变形缩放, 逻辑型, , GdipScaleLineTransform
+.参数 参数_水平缩放倍数, 小数型, , 
+.参数 参数_垂直缩放倍数, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“ #矩阵顺序_预先计算”
+
+
+
+.子程序 变形旋转, 逻辑型, , GdipRotateLineTransform
+.参数 参数_角度, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“#矩阵顺序_预先计算
+
+
+
+.类模块 GP路径渐变画刷, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 销毁, 逻辑型, , GdipDeleteBrush。
+
+
+.子程序 复制, 逻辑型, , GdipCloneBrush。将当前画刷复制到“参数_画刷”。
+.参数 参数_画刷, 未知类型0x490124E0, 参考, 
+
+
+
+.子程序 取类型, 整数型, , GdipGetBrushType。返回“#画刷类型_”开头常量。
+
+
+.子程序 创建, 逻辑型, , GdipCreatePathGradient
+.参数 参数_坐标组, GP_坐标F, 数组, 
+.参数 参数_环绕模式, 整数型, 可空, “环绕模式_”开头常量。默认为：#环绕模式_固定
+
+
+
+.子程序 创建I, 逻辑型, , GdipCreatePathGradientI
+.参数 参数_坐标组, GP_坐标L, 数组, 
+.参数 参数_环绕模式, 整数型, 可空, “环绕模式_”开头常量。默认为：#环绕模式_固定
+
+
+
+.子程序 创建自路径, 逻辑型, , GdipCreatePathGradientFromPath
+.参数 参数_路径, GP路径, , 
+
+
+
+.子程序 取中心点颜色, 整数型, , GdipGetPathGradientCenterColor。返回ARGB颜色。
+
+
+.子程序 置中心点颜色, 逻辑型, , GdipSetPathGradientCenterColor
+.参数 参数_ARGB颜色, 整数型, , 
+
+
+
+.子程序 取坐标数, 整数型, , GdipGetPathGradientPointCount
+
+
+.子程序 取周围颜色数, 整数型, , GdipGetPathGradientSurroundColorCount
+
+
+.子程序 取周围颜色, 逻辑型, , GdipGetPathGradientSurroundColorsWithCount
+.参数 参数_ARGB颜色, 整数型, 参考 数组, 
+.参数 参数_数量, 整数型, 参考, [in/out]
+
+
+
+.子程序 置周围颜色, 逻辑型, , GdipSetPathGradientSurroundColorsWithCount
+.参数 参数_ARGB颜色, 整数型, 数组, 
+.参数 参数_数量, 整数型, 参考 可空, [in/out]
+
+
+
+.子程序 取路径, 逻辑型, , GdipGetPathGradientPath
+.参数 参数_路径, GP路径, 参考, 
+
+
+
+.子程序 置路径, 逻辑型, , GdipGetPathGradientPath
+.参数 参数_路径, GP路径, , 
+
+
+
+.子程序 取中心点, GP_坐标F, , GdipGetPathGradientCenterPoint
+
+
+.子程序 取中心点I, GP_坐标L, , GdipGetPathGradientCenterPointI
+
+
+.子程序 置中心点, 逻辑型, , GdipSetPathGradientCenterPoint
+.参数 参数_坐标, GP_坐标F, , 
+
+
+
+.子程序 置中心点I, 逻辑型, , GdipSetPathGradientCenterPointI
+.参数 参数_坐标, GP_坐标L, , 
+
+
+
+.子程序 取矩形, GP_矩形F, , GdipGetPathGradientRect
+
+
+.子程序 取矩形I, GP_矩形L, , GdipGetPathGradientRectI
+
+
+.子程序 置伽玛校正, 逻辑型, , GdipSetPathGradientGammaCorrection
+.参数 参数_是否启用校正, 逻辑型, , 
+
+
+
+.子程序 取伽玛校正, 逻辑型, , GdipGetPathGradientGammaCorrection
+
+
+.子程序 置混合, 逻辑型, , GdipSetPathGradientBlend
+.参数 参数_颜色比例, 小数型, 数组, 如：{0，0.5，1}
+.参数 参数_位置比例, 小数型, 数组, 如：{0，0.2，1}
+
+
+
+.子程序 取混合, 整数型, , GdipGetPathGradientBlend。返回总数。
+.参数 参数_颜色比例, 小数型, 数组, 提供小数型数组变量，装载数据。
+.参数 参数_位置比例, 小数型, 数组, 同上。
+
+
+
+.子程序 取中心点比例, 逻辑型, , GdipGetPathGradientFocusScales
+.参数 参数_比例X, 小数型, 参考, 
+.参数 参数_比例Y, 小数型, 参考, 
+
+
+
+.子程序 置中心点比例, 逻辑型, , GdipGetPathGradientFocusScales
+.参数 参数_比例X, 小数型, , 0到1之间的小数。
+.参数 参数_比例Y, 小数型, , 0到1之间的小数。
+
+
+
+.子程序 置预设颜色, 逻辑型, , GdipSetPathGradientPresetBlend
+.参数 参数_ARGB颜色, 整数型, 数组, ARGB颜色数组。
+.参数 参数_位置比例, 小数型, 数组, 如{0，0.3，1}
+
+
+
+.子程序 取预设颜色, 整数型, , GdipGetPathGradientPresetBlend。返回总数。
+.参数 参数_ARGB颜色, 整数型, 数组, 提供整数型数组变量，装载数据。
+.参数 参数_位置比例, 小数型, 数组, 提供小数型数组变量，装载数据。
+
+
+
+.子程序 置钟形混合, 逻辑型, , GdipSetPathGradientSigmaBlend
+.参数 参数_焦点, 小数型, , 0到1之间的小数。
+.参数 参数_比例, 小数型, , 0到1之间的小数。
+
+
+
+.子程序 置线性混合, 逻辑型, , GdipSetPathGradientLinearBlend
+.参数 参数_焦点, 小数型, , 0到1之间的小数。
+.参数 参数_比例, 小数型, , 0到1之间的小数。
+
+
+
+.子程序 取环绕模式, 整数型, , GdipGetPathGradientWrapMode。返回“环绕模式_”开头常量。
+
+
+.子程序 置环绕模式, 逻辑型, , GdipSetPathGradientWrapMode
+.参数 参数_环绕模式, 整数型, , “环绕模式_”开头常量。
+
+
+
+.子程序 变形取矩阵, 逻辑型, , GdipGetPathGradientTransform
+.参数 参数_矩阵, GP矩阵, 参考, 
+
+
+
+.子程序 变形置矩阵, 逻辑型, , GdipSetPathGradientTransform
+.参数 参数_矩阵, GP矩阵, , 
+
+
+
+.子程序 变形重置, 逻辑型, , GdipResetPathGradientTransform
+
+
+.子程序 变形相乘, 逻辑型, , GdipMultiplyPathGradientTransform
+.参数 参数_矩阵, GP矩阵, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“#矩阵顺序_预先计算”
+
+
+
+.子程序 变形平移, 逻辑型, , GdipTranslatePathGradientTransform。
+.参数 参数_水平偏移量, 小数型, , 
+.参数 参数_垂直偏移量, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“ #矩阵顺序_预先计算”
+
+
+
+.子程序 变形缩放, 逻辑型, , GdipScalePathGradientTransform
+.参数 参数_水平缩放倍数, 小数型, , 
+.参数 参数_垂直缩放倍数, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“ #矩阵顺序_预先计算”
+
+
+
+.子程序 变形旋转, 逻辑型, , GdipRotatePathGradientTransform
+.参数 参数_角度, 小数型, , 
+.参数 参数_矩阵顺序, 整数型, 可空, “矩阵顺序_”开头常量。默认为“#矩阵顺序_预先计算
+
+
+
+.类模块 GP自定义线帽, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 销毁, 逻辑型, , GdipDeleteCustomLineCap
+
+
+.子程序 创建, 逻辑型, , GdipCreateCustomLineCap
+.参数 参数_填充路径, GP路径, 可空, “参数_填充路径”和“参数_笔画路径”二选一，如果两参数都是非空，将忽略“参数_填充路径”
+.参数 参数_笔画路径, GP路径, 可空, 
+.参数 参数_基线帽, 整数型, 可空, 默认为：“线帽样式_平线帽”
+.参数 参数_基距离, 小数型, 可空, 默认为：0
+
+
+
+.子程序 复制, 逻辑型, , GdipCloneCustomLineCap
+.参数 参数_自定义线帽, GP自定义线帽, 参考, 
+
+
+
+.子程序 置笔画线帽, 逻辑型, , GdipSetCustomLineCapStrokeCaps
+.参数 参数_起点线帽, 整数型, , “线帽样式_”开头常量
+.参数 参数_终点线帽, 整数型, , “线帽样式_”开头常量
+
+
+
+.子程序 取笔画线帽, 逻辑型, , GdipSetCustomLineCapStrokeCaps
+.参数 参数_起点线帽, 整数型, 参考, 只能提供变量，装载数据。
+.参数 参数_终点线帽, 整数型, 参考, 只能提供变量，装载数据。
+
+
+
+.子程序 置笔画连线方式, 逻辑型, , GdipSetCustomLineCapStrokeJoin
+.参数 参数_连线方式, 整数型, , “连线方式_”开头常量。
+
+
+
+.子程序 取笔画连线方式, 整数型, , GdipGetCustomLineCapStrokeJoin。返回“连线方式_”开头常量。
+
+
+.子程序 置基线帽, 逻辑型, , GdipSetCustomLineCapBaseCap
+.参数 参数_线帽样式, 整数型, , “线帽样式_”开头常量
+
+
+
+.子程序 取基线帽, 整数型, , GdipGetCustomLineCapBaseCap。返回“线帽样式_”开头常量
+
+
+.子程序 置基距离, 逻辑型, , GdipSetCustomLineCapBaseInset
+.参数 参数_基距离, 小数型, , 
+
+
+
+.子程序 取基距离, 小数型, , GdipGetCustomLineCapBaseInset。返回“线帽样式_”开头常量
+
+
+.子程序 置宽比例, 逻辑型, , GdipSetCustomLineCapWidthScale
+.参数 参数_宽比例, 小数型, , 
+
+
+
+.子程序 取宽比例, 小数型, , GdipGetCustomLineCapWidthScale。
+
+
+.类模块 GP系统字体集, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 取字体族数, 整数型, , GdipGetFontCollectionFamilyCount。
+
+
+.子程序 取字体族列表, 整数型, , GdipGetFontCollectionFamilyList。成功返回实际字体族数量。
+.参数 参数_数量, 整数型, , 
+.参数 参数_字体族, GP字体族, 参考 数组, 
+
+
+
+.子程序 创建, 逻辑型, , GdipNewInstalledFontCollection
+
+
+.类模块 GP私有字体集, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 取字体族数, 整数型, , GdipGetFontCollectionFamilyCount。
+
+
+.子程序 取字体族列表, 整数型, , GdipGetFontCollectionFamilyList。成功返回实际字体族数量。
+.参数 参数_数量, 整数型, , 
+.参数 参数_字体族, GP字体族, 参考 数组, 
+
+
+
+.子程序 创建, 逻辑型, , GdipNewPrivateFontCollection
+
+
+.子程序 销毁, 逻辑型, , GdipDeletePrivateFontCollection
+
+
+.子程序 添加字体文件, 逻辑型, , GdipPrivateAddFontFile
+.参数 参数_字体文件名, 文本型, , 
+
+
+
+.子程序 添加字体字节集, 逻辑型, , 
+.参数 参数_字体字节集, 字节集, , 
+
+
+
+.类模块 GP文本格式, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 销毁, 逻辑型, , GdipDeleteStringFormat
+
+
+.子程序 创建, 逻辑型, , GdipCreateStringFormat
+.参数 参数_格式标志, 整数型, 可空, “文本格式标志_”开头常量。
+.参数 参数_语言, 短整数型, 可空, 默认为：LANG_NEUTRAL=0
+
+
+
+.子程序 创建自通用默认, 逻辑型, , GdipStringFormatGetGenericDefault
+
+
+.子程序 创建自通用印刷, 逻辑型, , GdipStringFormatGetGenericTypographic
+
+
+.子程序 复制, 逻辑型, , GdipCloneStringFormat
+.参数 参数_文本格式, GP文本格式, 参考, 
+
+
+
+.子程序 置格式标志, 逻辑型, , GdipSetStringFormatFlags
+.参数 参数_格式标志, 整数型, , “文本格式标志_”开头常量。
+
+
+
+.子程序 取格式标志, 整数型, , GdipGetStringFormatFlags。返回“文本格式标志_”开头常量。
+
+
+.子程序 置对齐, 逻辑型, , GdipSetStringFormatAlign
+.参数 参数_对齐方式, 整数型, , “文本对齐_”开头常量。
+
+
+
+.子程序 取对齐, 整数型, , GdipGetStringFormatAlign。返回“文本对齐_”开头常量。
+
+
+.子程序 置行对齐, 逻辑型, , GdipSetStringFormatLineAlign
+.参数 参数_对齐方式, 整数型, , “文本对齐_”开头常量。
+
+
+
+.子程序 取行对齐, 整数型, , GdipGetStringFormatLineAlign。返回“文本对齐_”开头常量。
+
+
+.子程序 置修整, 逻辑型, , GdipSetStringFormatTrimming
+.参数 参数_修整方式, 整数型, , “文本修整_”开头常量。
+
+
+
+.子程序 取修整, 整数型, , GdipGetStringFormatTrimming。返回“文本修整_”开头常量。
+
+
+.子程序 置热键前缀, 逻辑型, , GdipSetStringFormatHotkeyPrefix。字符(&)
+.参数 参数_热键前缀, 整数型, , “热键前缀_”开头常量。
+
+
+
+.子程序 取热键前缀, 整数型, , GdipGetStringFormatHotkeyPrefix。返回“热键前缀_”开头常量。
+
+
+.子程序 置制表位偏移, 逻辑型, , GdipSetStringFormatTabStops
+.参数 参数_初始偏移量, 小数型, , 文本行开头和第一个制表位之间的空格数
+.参数 参数_偏移距离, 小数型, 数组, 数组中的每个制表位偏移量（第一个除外）都是相对于前一个的。第一个制表位偏移量相对于由 “参数_初始偏移量” 指定的初始偏移位置。例如，如果初始偏移位置是 8，第一个制表位偏移量是 50，则第一个制表位的位置是 58。如果初始偏移位置是零，则第一个制表位偏移量相对于位置 0（即原点字符串）。
+
+
+
+.子程序 取制表位偏移, 整数型, , GdipGetStringFormatTabStops。返回制表位偏移总数。
+.参数 参数_初始偏移量, 小数型, 参考, 文本行开头和第一个制表位之间的空格数
+.参数 参数_偏移距离, 小数型, 参考 数组, 数组中的每个制表位偏移量（第一个除外）都是相对于前一个的。第一个制表位偏移量相对于由 “参数_初始偏移量” 指定的初始偏移位置。例如，如果初始偏移位置是 8，第一个制表位偏移量是 50，则第一个制表位的位置是 58。如果初始偏移位置是零，则第一个制表位偏移量相对于位置 0（即原点字符串）。
+
+
+
+.子程序 置数字替换, 逻辑型, , GdipSetStringFormatDigitSubstitution
+.参数 参数_数字替换, 整数型, , “文本数字替换_”开头常量。
+.参数 参数_语言, 短整数型, 可空, 默认为：LANG_NEUTRAL
+
+
+
+.子程序 取数字替换, 逻辑型, , GdipGetStringFormatDigitSubstitution
+.参数 参数_数字替换, 整数型, 参考, 返回“文本数字替换_”开头常量。
+.参数 参数_语言, 短整数型, 参考 可空, 
+
+
+
+.子程序 置测量字符范围, 逻辑型, , GdipSetStringFormatMeasurableCharacterRanges
+.参数 参数_字符范围, GP_测试字符范围, 数组, 
+
+
+
+.子程序 取测量字符范围数, 整数型, , GdipGetStringFormatMeasurableCharacterRangeCount
+
+
+.类模块 GP位图, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 销毁, 逻辑型, , GdipDisposeImage。
+
+
+.子程序 创建自文件, 逻辑型, , GdipCreateBitmapFromFile
+.参数 参数_文件名, 文本型, , 
+.参数 参数_是否ICM, 逻辑型, 可空, 默认为假。如果为真表示使用ICC文件调整颜色。
+
+
+
+.子程序 创建自字节集, 逻辑型, , GdipCreateBitmapFromStream
+.参数 参数_字节集, 字节集, , 
+.参数 参数_是否ICM, 逻辑型, 可空, 默认为假。如果为真表示使用ICC文件调整颜色。
+
+
+
+.子程序 复制, 逻辑型, , GdipCloneImage
+.参数 参数_图像, GP图像, 参考, 
+
+
+
+.子程序 保存到文件, 逻辑型, , GdipSaveImageToFile
+.参数 参数_文件名, 文本型, , 
+.参数 参数_图像格式, 文本型, 可空, “图像格式_”开头常量。
+.参数 参数_编码器参数集, GP_编码器参数集, 可空, 
+
+
+
+.子程序 保存到字节集, 字节集, , GdipSaveImageToStream
+.参数 参数_图像格式, 文本型, 可空, “图像格式_”开头常量
+.参数 参数_编码器参数集, GP_编码器参数集, 可空, 
+
+
+
+.子程序 保存添加, 逻辑型, , GdipSaveAdd
+.参数 参数_编码器参数集, GP_编码器参数集, , 
+
+
+
+.子程序 保存添加图像, 逻辑型, , GdipSaveAddImage
+.参数 参数_图像, GP图像, , 
+.参数 参数_编码器参数集, GP_编码器参数集, , 
+
+
+
+.子程序 取编码器参数列表, 逻辑型, , GdipGetEncoderParameterList。
+.参数 参数_图像格式, 文本型, , “图像格式_”开头常量。
+.参数 参数_编码器, GP_编码器参数集, 参考, 
+
+
+
+.子程序 取原始格式, 文本型, , GdipGetImageRawFormat。返回“图像格式_”开头常量。
+
+
+.子程序 取边界矩形, GP_矩形F, , GdipGetImageBounds。返回矩形范围
+.参数 参数_单位, 整数型, 参考 可空, 提供整数型变量取返回值,指定该矩形的单位。“单位_”开头常量。
+
+
+
+.子程序 取物理尺寸, GP_尺寸F, , GdipGetImageDimension
+
+
+.子程序 取类型, 整数型, , GdipGetImageType。返回“图像类型_”开头常量。
+
+
+.子程序 取宽度, 整数型, , GdipGetImageWidth
+
+
+.子程序 取高度, 整数型, , GdipGetImageHeight
+
+
+.子程序 取水平分辨率, 小数型, , GdipGetImageHorizontalResolution。以“像素/英寸”为单位
+
+
+.子程序 取垂直分辨率, 小数型, , GdipGetImageVerticalResolution。以“像素/英寸”为单位
+
+
+.子程序 取图像属性, 整数型, , GdipGetImageFlags。返回“图像属性_”开头常量。
+
+
+.子程序 取像素格式, 整数型, , GdipGetImagePixelFormat。返回“像素格式_”开头常量。
+
+
+.子程序 取图像缩略图, 逻辑型, , GdipGetImageThumbnail
+.参数 参数_缩略图宽度, 整数型, , 
+.参数 参数_缩略图高度, 整数型, , 
+.参数 参数_缩略图, GP图像, 参考, 返回一个缩略图的Gdip图像。
+
+
+
+.子程序 取帧数, 整数型, , GdipImageGetFrameCount
+.参数 参数_帧维面, 文本型, , “帧维面_”开头常量。
+
+
+
+.子程序 取帧维面列表, 逻辑型, , GdipImageGetFrameDimensionsList
+.参数 参数_帧惟面, 文本型, 数组, “帧维面_”开头常量。
+
+
+
+.子程序 置活动帧, 逻辑型, , GdipImageSelectActiveFrame
+.参数 参数_帧维面, 文本型, , “帧维面_”开头常量。
+.参数 参数_索引, 整数型, , 
+
+
+
+.子程序 取各帧延时, 逻辑型, , 
+.参数 参数_延时, 整数型, 数组, 
+
+
+
+.子程序 取属性项目, 逻辑型, , GdipGetPropertyItem
+.参数 参数_属性标签, 整数型, , “属性标签_”开头常量。通常是通过“取属性标签列表()”方法来查看此图像有哪些属性。
+.参数 参数_属性项目, GP_属性项目, 参考, 
+
+
+
+.子程序 置属性项目, 逻辑型, , GdipSetPropertyItem
+.参数 参数_属性项目, GP_属性项目, , 
+
+
+
+.子程序 移除属性项目, 逻辑型, , GdipRemovePropertyItem
+.参数 参数_属性标签, 整数型, , “属性标签_”开头常量。通常是通过“取属性标签列表()”方法来查看此图像有哪些属性。
+
+
+
+.子程序 取属性标签列表, 整数型, , GdipGetPropertyIdList。返回属性标签数。
+.参数 参数_属性标签数组, 整数型, 数组, 
+
+
+
+.子程序 旋转翻转, 逻辑型, , GdipImageRotateFlip
+.参数 参数_旋转翻转类型, 整数型, , “旋转翻转_”开头常量。
+
+
+
+.子程序 取颜色调色板, 逻辑型, , GdipGetImagePalette
+.参数 参数_颜色调色板, GP_颜色调色板, 参考, 
+
+
+
+.子程序 置颜色调色板, 逻辑型, , GdipSetImagePalette
+.参数 参数_颜色调色板, GP_颜色调色板, , 
+
+
+
+.子程序 创建自扫描行, 逻辑型, , GdipCreateBitmapFromScan0
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+.参数 参数_跨步, 整数型, , 指定相邻扫描行开始处之间字节偏移量的整数。这通常（但不一定）是以像素格式表示的字节数（例如，2 表示每像素 16 位）乘以位图的宽度。传递给此参数的值必须为 4 的倍数。提供一个公式：左移(右移(参数_宽度*位深+31,5),2)
+.参数 参数_像素格式, 整数型, , “像素格式_”开头常量。
+.参数 参数_像素数据, 整数型, 可空, 指向包含像素数据的字节集指针。
+
+
+
+.子程序 创建自像素格式, 逻辑型, , GdipCreateBitmapFromScan0
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+.参数 参数_像素格式, 整数型, 可空, “像素格式_”开头常量。默认为：“像素格式_32bppARGB”
+
+
+
+.子程序 创建自图形, 逻辑型, , GdipCreateBitmapFromGraphics
+.参数 参数_宽度, 整数型, , 
+.参数 参数_高度, 整数型, , 
+.参数 参数_图形, GDI_GP_图形, , 
+
+
+
+.子程序 创建自GDI对象, 逻辑型, , GdipCreateBitmapFromGdiDib
+.参数 参数_BITMAPINFO, 整数型, , BITMAPINFO结构指针。
+.参数 参数_位图数据, 整数型, , 位图数据指针。
+
+
+
+.子程序 创建自位图句柄, 逻辑型, , GdipCreateBitmapFromHBITMAP
+.参数 参数_位图句柄, 整数型, , hBitmap
+.参数 参数_调色板句柄, 整数型, 可空, 如果位图句柄不是一个设备无关位图，则用于定义位图颜色。
+
+
+
+.子程序 创建自图标句柄, 逻辑型, , GdipCreateBitmapFromHICON
+.参数 参数_图标句柄, 整数型, , hIcon
+
+
+
+.子程序 创建自资源, 逻辑型, , GdipCreateBitmapFromResource
+.参数 参数_实例句柄, 整数型, , 
+.参数 参数_资源ID, 整数型, , 
+
+
+
+.子程序 取位图句柄, 整数型, , GdipCreateHBITMAPFromBitmap。返回位图句柄。需要调用 DeleteObject 释放。
+.参数 参数_背景ARGB颜色, 整数型, 可空, 指定背景色。如果位图完全不透明，则忽略此参数。
+
+
+
+.子程序 取图标句柄, 整数型, , GdipCreateHICONFromBitmap。返回图标句柄。需要调用 DestroyIcon 释放。
+
+
+.子程序 复制部分, 逻辑型, , GdipCloneBitmapArea
+.参数 参数_矩形, GP_矩形F, , 
+.参数 参数_像素格式, 整数型, , “像素格式_”开头常量。
+.参数 参数_位图, GP位图, 参考, 返回新的位图对象。
+
+
+
+.子程序 锁定数据, 逻辑型, , GdipBitmapLockBits
+.参数 参数_锁定矩形, GP_矩形L, , 被锁定的矩形范围。
+.参数 参数_锁定模式, 整数型, , “图像锁定模式_”开头常量。
+.参数 参数_像素格式, 整数型, , “像素格式_”开头常量。
+.参数 参数_位图数据, GP_位图数据, 参考, [in,out]
+
+
+
+.子程序 解锁数据, 逻辑型, , GdipBitmapUnlockBits
+.参数 参数_位图数据, GP_位图数据, , 
+
+
+
+.子程序 取某点颜色, 整数型, , GdipBitmapGetPixel。返回ARGB颜色值。
+.参数 参数_x, 整数型, , 
+.参数 参数_y, 整数型, , 
+
+
+
+.子程序 置某点颜色, 逻辑型, , GdipBitmapSetPixel
+.参数 参数_x, 整数型, , 
+.参数 参数_y, 整数型, , 
+.参数 参数_ARGB颜色, 整数型, , 
+
+
+
+.子程序 置分辨率, 逻辑型, , GdipBitmapSetResolution
+.参数 参数_水平分辨率, 小数型, , 
+.参数 参数_垂直分辨率, 小数型, , 
+
+
+
+.类模块 GP图元文件, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 销毁, 逻辑型, , GdipDisposeImage。
+
+
+.子程序 创建自文件, 逻辑型, , GdipCreateMetafileFromFile
+.参数 参数_文件名, 文本型, , 
+.参数 参数_保留, 逻辑型, 可空, 
+
+
+
+.子程序 创建自字节集, 逻辑型, , GdipCreateMetafileFromStream
+.参数 参数_字节集, 字节集, , 
+.参数 参数_保留, 逻辑型, 可空, 
+
+
+
+.子程序 复制, 逻辑型, , GdipCloneImage
+.参数 参数_图像, GP图像, 参考, 
+
+
+
+.子程序 保存到文件, 逻辑型, , GdipSaveImageToFile
+.参数 参数_文件名, 文本型, , 
+.参数 参数_图像格式, 文本型, 可空, “图像格式_”开头常量。
+.参数 参数_编码器参数集, GP_编码器参数集, 可空, 
+
+
+
+.子程序 保存到字节集, 字节集, , GdipSaveImageToStream
+.参数 参数_图像格式, 文本型, 可空, “图像格式_”开头常量
+.参数 参数_编码器参数集, GP_编码器参数集, 可空, 
+
+
+
+.子程序 保存添加, 逻辑型, , GdipSaveAdd
+.参数 参数_编码器参数集, GP_编码器参数集, , 
+
+
+
+.子程序 保存添加图像, 逻辑型, , GdipSaveAddImage
+.参数 参数_图像, GP图像, , 
+.参数 参数_编码器参数集, GP_编码器参数集, , 
+
+
+
+.子程序 取编码器参数列表, 逻辑型, , GdipGetEncoderParameterList。
+.参数 参数_图像格式, 文本型, , “图像格式_”开头常量。
+.参数 参数_编码器, GP_编码器参数集, 参考, 
+
+
+
+.子程序 取原始格式, 文本型, , GdipGetImageRawFormat。返回“图像格式_”开头常量。
+
+
+.子程序 取边界矩形, GP_矩形F, , GdipGetImageBounds。返回矩形范围
+.参数 参数_单位, 整数型, 参考 可空, 提供整数型变量取返回值,指定该矩形的单位。“单位_”开头常量。
+
+
+
+.子程序 取物理尺寸, GP_尺寸F, , GdipGetImageDimension
+
+
+.子程序 取类型, 整数型, , GdipGetImageType。返回“图像类型_”开头常量。
+
+
+.子程序 取宽度, 整数型, , GdipGetImageWidth
+
+
+.子程序 取高度, 整数型, , GdipGetImageHeight
+
+
+.子程序 取水平分辨率, 小数型, , GdipGetImageHorizontalResolution。以“像素/英寸”为单位
+
+
+.子程序 取垂直分辨率, 小数型, , GdipGetImageVerticalResolution。以“像素/英寸”为单位
+
+
+.子程序 取图像属性, 整数型, , GdipGetImageFlags。返回“图像属性_”开头常量。
+
+
+.子程序 取像素格式, 整数型, , GdipGetImagePixelFormat。返回“像素格式_”开头常量。
+
+
+.子程序 取图像缩略图, 逻辑型, , GdipGetImageThumbnail
+.参数 参数_缩略图宽度, 整数型, , 
+.参数 参数_缩略图高度, 整数型, , 
+.参数 参数_缩略图, GP图像, 参考, 返回一个缩略图的Gdip图像。
+
+
+
+.子程序 取帧数, 整数型, , GdipImageGetFrameCount
+.参数 参数_帧维面, 文本型, , “帧维面_”开头常量。
+
+
+
+.子程序 取帧维面列表, 逻辑型, , GdipImageGetFrameDimensionsList
+.参数 参数_帧惟面, 文本型, 数组, “帧维面_”开头常量。
+
+
+
+.子程序 置活动帧, 逻辑型, , GdipImageSelectActiveFrame
+.参数 参数_帧维面, 文本型, , “帧维面_”开头常量。
+.参数 参数_索引, 整数型, , 
+
+
+
+.子程序 取各帧延时, 逻辑型, , 
+.参数 参数_延时, 整数型, 数组, 
+
+
+
+.子程序 取属性项目, 逻辑型, , GdipGetPropertyItem
+.参数 参数_属性标签, 整数型, , “属性标签_”开头常量。通常是通过“取属性标签列表()”方法来查看此图像有哪些属性。
+.参数 参数_属性项目, GP_属性项目, 参考, 
+
+
+
+.子程序 置属性项目, 逻辑型, , GdipSetPropertyItem
+.参数 参数_属性项目, GP_属性项目, , 
+
+
+
+.子程序 移除属性项目, 逻辑型, , GdipRemovePropertyItem
+.参数 参数_属性标签, 整数型, , “属性标签_”开头常量。通常是通过“取属性标签列表()”方法来查看此图像有哪些属性。
+
+
+
+.子程序 取属性标签列表, 整数型, , GdipGetPropertyIdList。返回属性标签数。
+.参数 参数_属性标签数组, 整数型, 数组, 
+
+
+
+.子程序 旋转翻转, 逻辑型, , GdipImageRotateFlip
+.参数 参数_旋转翻转类型, 整数型, , “旋转翻转_”开头常量。
+
+
+
+.子程序 取颜色调色板, 逻辑型, , GdipGetImagePalette
+.参数 参数_颜色调色板, GP_颜色调色板, 参考, 
+
+
+
+.子程序 置颜色调色板, 逻辑型, , GdipSetImagePalette
+.参数 参数_颜色调色板, GP_颜色调色板, , 
+
+
+
+.子程序 创建自hWMF, 逻辑型, , GdipCreateMetafileFromWmf
+.参数 参数_WMF句柄, 整数型, , 
+.参数 参数_APM文件头, GP_APM文件头, , 
+.参数 参数_是否删除句柄, 逻辑型, 可空, 指定是否自动删除图元文件句柄。
+
+
+
+.子程序 创建自hEMF, 逻辑型, , GdipCreateMetafileFromEmf
+.参数 参数_EMF句柄, 整数型, , 
+.参数 参数_是否删除句柄, 逻辑型, 可空, 指定是否自动删除图元文件句柄。
+
+
+
+.子程序 创建自WMF文件, 逻辑型, , GdipCreateMetafileFromWmfFile
+.参数 参数_文件名, 文本型, , 
+.参数 参数_APM文件头, GP_APM文件头, , 
+
+
+
+.子程序 创建自记录, 逻辑型, , GdipRecordMetafile
+.参数 参数_hdc, 整数型, , 设备上下文句柄。
+.参数 参数_框架矩形, GP_矩形F, 可空, 
+.参数 参数_框架单位, 整数型, 可空, “图元文件单位_”开头常量。默认为：图元文件单位_GDI
+.参数 参数_EMF类型, 整数型, 可空, “EMF类型_”开头常量。默认为：EMF类型_EmfPlusDual
+.参数 参数_描述文本, 文本型, 可空, 
+
+
+
+.子程序 创建自记录I, 逻辑型, , GdipRecordMetafileI
+.参数 参数_hdc, 整数型, , 设备上下文句柄。
+.参数 参数_框架矩形, GP_矩形L, 可空, 
+.参数 参数_框架单位, 整数型, 可空, “图元文件单位_”开头常量。默认为：图元文件单位_GDI
+.参数 参数_EMF类型, 整数型, 可空, “EMF类型_”开头常量。默认为：EMF类型_EmfPlusDual
+.参数 参数_描述文本, 文本型, 可空, 
+
+
+
+.子程序 创建自记录文件名, 逻辑型, , GdipRecordMetafileFileName
+.参数 参数_文件名, 文本型, , 
+.参数 参数_hdc, 整数型, , 设备上下文句柄。
+.参数 参数_框架矩形, GP_矩形F, 可空, 
+.参数 参数_框架单位, 整数型, 可空, “图元文件单位_”开头常量。默认为：图元文件单位_GDI
+.参数 参数_EMF类型, 整数型, 可空, “EMF类型_”开头常量。默认为：EMF类型_适合
+.参数 参数_描述文本, 文本型, 可空, 
+
+
+
+.子程序 创建自记录文件名I, 逻辑型, , GdipRecordMetafileFileNameI
+.参数 参数_文件名, 文本型, , 
+.参数 参数_hdc, 整数型, , 设备上下文句柄。
+.参数 参数_框架矩形, GP_矩形L, 可空, 
+.参数 参数_框架单位, 整数型, 可空, “图元文件单位_”开头常量。默认为：图元文件单位_GDI
+.参数 参数_EMF类型, 整数型, 可空, “EMF类型_”开头常量。默认为：EMF类型_适合
+.参数 参数_描述文本, 文本型, 可空, 
+
+
+
+.子程序 创建自记录字节集, 逻辑型, , GdipRecordMetafileStream
+.参数 参数_字节集, 字节集, , 
+.参数 参数_hdc, 整数型, , 设备上下文句柄。
+.参数 参数_框架矩形, GP_矩形F, 可空, 
+.参数 参数_框架单位, 整数型, 可空, “图元文件单位_”开头常量。默认为：图元文件单位_GDI
+.参数 参数_EMF类型, 整数型, 可空, “EMF类型_”开头常量。默认为：EMF类型_EmfPlusDual
+.参数 参数_描述文本, 文本型, 可空, 
+
+
+
+.子程序 创建自记录字节集I, 逻辑型, , GdipRecordMetafileStreamI
+.参数 参数_字节集, 字节集, , 
+.参数 参数_hdc, 整数型, , 设备上下文句柄。
+.参数 参数_框架矩形, GP_矩形L, 可空, 
+.参数 参数_框架单位, 整数型, 可空, “图元文件单位_”开头常量。默认为：图元文件单位_GDI
+.参数 参数_EMF类型, 整数型, 可空, “EMF类型_”开头常量。默认为：EMF类型_EmfPlusDual
+.参数 参数_描述文本, 文本型, 可空, 
+
+
+
+.子程序 取图元文件头自hWMF, GP_图元文件头, , GdipGetMetafileHeaderFromWmf
+.参数 参数_hWMF, 整数型, , 
+.参数 参数_APM文件头, GP_APM文件头, , 
+
+
+
+.子程序 取图元文件头自hEMF, GP_图元文件头, , GdipGetMetafileHeaderFromEmf
+.参数 参数_hEMF, 整数型, , 
+
+
+
+.子程序 取图元文件头自文件, GP_图元文件头, , GdipGetMetafileHeaderFromFile
+.参数 参数_文件名, 文本型, , 
+
+
+
+.子程序 取图元文件头自字节集, GP_图元文件头, , GdipGetMetafileHeaderFromStream
+.参数 参数_字节集, 字节集, , 
+
+
+
+.子程序 取图元文件头, GP_图元文件头, , GdipGetMetafileHeaderFromMetafile
+
+
+.子程序 置栅格化限制, 逻辑型, , GdipSetMetafileDownLevelRasterizationLimit
+.参数 参数_栅格化限制DPI, 整数型, , 
+
+
+
+.子程序 取栅格化限制, 整数型, , GdipGetMetafileDownLevelRasterizationLimit
+
+
+.子程序 取EMF句柄, 整数型, , GdipGetHemfFromMetafile。需要使用 DeleteEnhMetafile 释放。
+
+
+.子程序 播放记录, 逻辑型, , GdipPlayMetafileRecord
+.参数 参数_记录类型, 整数型, , 
+.参数 参数_标志, 整数型, , 0
+.参数 参数_数据大小, 整数型, , 
+.参数 参数_数据指针, 整数型, , 
+
+
+
+.类模块 GP缓存位图, , , 
+
+.子程序 取指针, 整数型, , 
+
+
+.子程序 置指针, 空白型, , 
+.参数 参数_指针, 整数型, , 
+
+
+
+.子程序 销毁, 逻辑型, , GdipDeleteCachedBitmap
+
+
+.子程序 创建, 逻辑型, , GdipCreateCachedBitmap
+.参数 参数_位图, GP位图, , 
+.参数 参数_图形, GDI_GP_图形, , 
+
+
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 颜色值取RGB, 空白型, , 
+.参数 颜色, 整数型, , 
+.参数 R, 整数型, 参考, 
+.参数 G, 整数型, 参考, 
+.参数 B, 整数型, 参考, 
+
+
+
+.子程序 取错误信息, 文本型, , 请在得知发生错误后使用，若返回为数值，则是程序未知，系统反馈的错误代码，若为空则无错误
+
+
+.子程序 取渐变色, 空白型, , 
+.参数 开始色, 整数型, , 渐变初始色
+.参数 结束色, 整数型, , 渐变最终色
+.参数 颜色数, 整数型, , 取出多少个颜色
+.参数 色集合, 整数型, 参考 数组, 
+
+
+
+.子程序 RGB2HSL, GDI_HSL, , 
+.参数 RGB, GDI_RGB, , 
+
+
+
+.子程序 HSI2RGB, GDI_RGB, , HSI通道转到RGB通道，RGB：红绿蓝通道；HSI：色相、饱和度、亮度 通道
+.参数 cr_hsl, GDI_HSL, , 
+
+
+
+.子程序 结束处理, 整数型, , 
+
+
+.子程序 RGB到ARGB, 整数型, , 
+.参数 参数_RGB, 整数型, , 
+.参数 参数_透明度, 字节型, 可空, 默认为255，不透明。
+
+
+
+.子程序 ARGB到RGB, 整数型, , 
+.参数 参数_ARGB, 整数型, , 
+.参数 参数_透明度, 字节型, 参考 可空, 
+
+
+
+.子程序 取错误描述_GDI_PLUS, 文本型, , 
+.参数 返回码, 整数型, , 执行某命令后的返回值
+
+
+
+.子程序 坐标F_2_GDI_点, GDI_点, , 
+.参数 坐标F, GP_坐标F, , 
+
+
+
+.子程序 Gdiplus取最后错误, 整数型, , GdiplusGetLastStatus
+
+
+.子程序 Gdiplus取最后错误文本, 文本型, , GdiplusGetLastStatusText
+
+
+.子程序 W2A, 文本型, , 将Unicode转成Ansi
+.参数 参数_Unicode文本指针, 整数型, , 
+
+
+
+.子程序 A2W, 字节集, , 将Ansi转成Unicode
+.参数 参数_Ansi文本, 文本型, , 
+
+
+
+.子程序 取宽文本长度, 整数型, , lstrlenw
+.参数 参数_Unicode文本, 字节集, , 
+
+
+
+.子程序 取图像编码列表, 整数型, , GdipGetImageEncoders。返回图像编码列表数。
+.参数 参数_图像编码信息, GP_图像编解码信息, 数组, 
+
+
+
+.子程序 取图像解码列表, 整数型, , GdipGetImageEncoders。返回图像解码列表数。
+.参数 参数_信息, GP_图像编解码信息, 数组, 
+
+
+
+.子程序 取图像编码CLSID自Mime, 文本型, , GetCodecClsid
+.参数 参数_Mime, 文本型, , 只能是如下值：“image/bmp”、“image/jpeg”、“image/gif”、“image/tiff”、“image/png”
+
+
+
+.子程序 取图像编码CLSID自图像格式, 文本型, , GetCodecClsid
+.参数 参数_图像格式, 文本型, , “图像格式_”开头常量
+
+
+
+.子程序 GUID到文本, 文本型, , StringFromGUID2
+.参数 参数_CLSID, 字节集, , 
+
+
+
+.子程序 文本到GUDI, 字节集, , CLSIDFromString
+.参数 参数_文本, 文本型, , 
+
+
+
+.子程序 制坐标F, GP_坐标F, , MakePointF
+.参数 参数_x, 小数型, , 
+.参数 参数_y, 小数型, , 
+
+
+
+.子程序 制矩形F, GP_矩形F, , MakeRectF
+.参数 参数_左边, 小数型, , 
+.参数 参数_顶边, 小数型, , 
+.参数 参数_宽度, 小数型, 可空, 
+.参数 参数_高度, 小数型, 可空, 
+
+
+
+.子程序 制坐标L, GP_坐标L, , MakePointL
+.参数 参数_x, 整数型, , 
+.参数 参数_y, 整数型, , 
+
+
+
+.子程序 制矩形L, GP_矩形L, , MakeRectL
+.参数 参数_左边, 整数型, , 
+.参数 参数_顶边, 整数型, , 
+.参数 参数_宽度, 整数型, 可空, 
+.参数 参数_高度, 整数型, 可空, 
+
+
+
+.子程序 坐标L_2_GDI_点, GDI_点, , 
+.参数 坐标L, GP_坐标L, , 
+
+
+
+.子程序 GDI_点_2_坐标F, GP_坐标F, , 
+.参数 GDI_点, GDI_点, , 
+
+
+
+.子程序 GDI_点_2_坐标L, GP_坐标L, , 
+.参数 GDI_点, GDI_点, , 
+
+
+
+.子程序 矩形F_2_GDI_矩形2, 未知类型0x410124DF, , 
+.参数 矩形F, GP_矩形F, , 
+
+
+
+.子程序 矩形L_2_GDI_矩形2, 未知类型0x410124DF, , 
+.参数 矩形L, GP_矩形L, , 
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

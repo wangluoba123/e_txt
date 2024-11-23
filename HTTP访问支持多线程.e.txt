@@ -1,0 +1,366 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：HTTP访问模块 路过已错过 第三次修正 完美终结版
+ ' 程序描述：替代HTTP读文件()函数用。
+
+----------------------------
+首先声明!
+因联系不到原作者[金眼睛],本次修改未经作者的同意,但本着出于免费开源,造福易友的目的,不妥的地方,还请作者海涵.
+
+原本的调用方法,在数据读取期间,会造成CPU使用率100.
+通过一些方法解决满负载后,窗口消息也无法得到响应,在多线程中也有冲突.
+在此终结版中,解决了这3个问题.
+
+让CPU使用率降低,也能让窗口响应消息.
+
+修改:路过已错过
+QQ:43581066
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 INTERNET_OPEN_TYPE_DIRECT, "1", , 
+.常量 INTERNET_OPEN_TYPE_PROXY, "3", , 
+.常量 , , , 
+.常量 INTERNET_SERVICE_HTTP, "3", , 
+.常量 , , , 
+.常量 WAIT_TIMEOUT, "258", , 超时
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+
+.DLL命令 InternetOpenA, 整数型, "WinINet.dll", "", , 
+    .参数 lpszAgent, 文本型, , 
+    .参数 dwAccessType, 整数型, , 
+    .参数 lpszProxyName, 文本型, , 
+    .参数 lpszProxyBypass, 文本型, , 
+    .参数 dwFlags, 整数型, , 
+
+.DLL命令 InternetCloseHandle, 逻辑型, "WinINet.dll", "", , 
+    .参数 hInternet, 整数型, , 
+
+.DLL命令 InternetConnectA, 整数型, "WinINet.dll", "", , 
+    .参数 hInternet, 整数型, , 
+    .参数 lpszServerName, 文本型, , 
+    .参数 nServerPort, 整数型, , 
+    .参数 lpszUserName, 文本型, , 
+    .参数 lpszPassword, 文本型, , 
+    .参数 dwService, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 dwContext, 整数型, , 
+
+.DLL命令 HttpOpenRequestA, 整数型, "WinINet.dll", "", , 
+    .参数 hConnect, 整数型, , 
+    .参数 lpszVerb, 文本型, , 
+    .参数 lpszObjectName, 文本型, , 
+    .参数 lpszVersion, 文本型, , 
+    .参数 lpszReferer, 文本型, , 
+    .参数 lplpszAcceptTypes, 文本型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 dwContext, 整数型, , 
+
+.DLL命令 HttpSendRequestA, 逻辑型, "WinINet.dll", "", , 
+    .参数 hRequest, 整数型, , 
+    .参数 lpszHeaders, 文本型, , 
+    .参数 dwHeadersLength, 整数型, , 
+    .参数 lpOptional, 文本型, , 
+    .参数 dwOptionalLength, 整数型, , 
+
+.DLL命令 InternetReadFile, 逻辑型, "WinINet.dll", "", , 
+    .参数 hFile, 整数型, , 
+    .参数 lpBuffer, 字节集, 传址, 
+    .参数 dwNumberOfBytesToRead, 整数型, , 
+    .参数 lpdwNumberOfBytesRead, 整数型, 传址, 
+
+.DLL命令 HttpQueryInfoA, 逻辑型, "WinINet.dll", "", , 
+    .参数 hRequest, 整数型, , 
+    .参数 dwInfoLevel, 整数型, , 
+    .参数 lpvBuffer, 文本型, 传址, 
+    .参数 lpdwBufferLength, 整数型, 传址, 
+    .参数 lpdwIndex, 整数型, , 
+
+.DLL命令 InternetSetCookieA, 逻辑型, "WinINet.dll", "", , 
+    .参数 lpszUrl, 文本型, , 
+    .参数 lpszCookieName, 文本型, , 
+    .参数 lpszCookieData, 文本型, , 
+
+.DLL命令 CreateThread, 整数型, "", "", , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 子程序指针, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, 传址, 
+
+.DLL命令 CloseHandle, 逻辑型, "", "", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 TerminateThread, 逻辑型, "", "", , 
+    .参数 hThread, 整数型, , 
+    .参数 dwExitCode, 整数型, , 
+
+.DLL命令 MsgWaitForMultipleObjects, 整数型, "", "", , 
+    .参数 nCount, 整数型, , 
+    .参数 pHandles, 整数型, 传址, 
+    .参数 bWaitAll, 逻辑型, , 
+    .参数 dwMilliseconds, 整数型, , 
+    .参数 dwWakeMask, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+.子程序 访问网页, 字节集, 公开, 
+.参数 完整网址, 文本型, , 
+.参数 访问方式, 文本型, 可空, "GET" or "POST",为空默认"GET"
+.参数 代理地址, 文本型, 可空, 
+.参数 用户名, 文本型, 可空, 
+.参数 密码, 文本型, 可空, 
+.参数 附加协议头, 文本型, 可空, 
+.参数 提交信息, 文本型, 可空, "POST"专用
+.参数 超时值, 整数型, 可空, 
+.参数 返回状态文本, 文本型, 参考 可空, 在Send之后可以获取状态文本
+
+.局部变量 hThread, 整数型, , , 
+.局部变量 ret, 整数型, , , 
+.局部变量 hMemFile, 整数型, , , 
+.局部变量 szFlag, 文本型, , , 
+.局部变量 szRequest, 文本型, , , 
+.局部变量 lpBody, 字节集, , , 
+
+赋值 (hMemFile, 打开内存文件 ())
+写出数据 (hMemFile, “MissWho”, 完整网址, 访问方式, 代理地址, 用户名, 密码, 附加协议头, 提交信息)
+未知函数_244 () ' *** 缩略程序块 ***
+ ' szFullAddr ＝ 完整网址
+ ' szVerb ＝ 访问方式
+ ' szProxyServer ＝ 代理地址
+ ' szHeaders ＝ 附加协议头
+ ' szSendBody ＝ 提交信息
+ ' lpBody ＝ {  }
+.如果真 (或者 (是否为空 (超时值), 等于 (超时值, 0)))
+    赋值 (超时值, 90)
+.如果真结束
+赋值 (hThread, CreateThread (0, 0, &ReadFile, hMemFile, 0, 0))
+.循环判断首 ()
+    赋值 (ret, MsgWaitForMultipleObjects (1, hThread, 假, 相乘 (超时值, 1000), 1215))
+    处理事件 ()
+.循环判断尾 (并且 (不等于 (ret, 0), 不等于 (ret, 258)))
+TerminateThread (hThread, 0)
+CloseHandle (hThread)
+移到文件首 (hMemFile)
+ ' 本源码来自易语言资源网(www.5A5X.com)
+读入数据 (hMemFile, szFlag, szRequest, lpBody)
+关闭文件 (hMemFile)
+.如果真 (或者 (不等于 (szFlag, “MissWho_OK”), 等于 (ret, 258)))
+    赋值 (lpBody, {  })
+.如果真结束
+.如果真 (等于 (是否为空 (返回状态文本), 假))
+    赋值 (返回状态文本, szRequest)
+.如果真结束
+ ' 连续赋值 (字符 (0), szFullAddr, szVerb, szProxyServer, szHeaders, szSendBody, szRequest)
+返回 (lpBody)
+
+.子程序 ReadFile, 逻辑型, , 
+.参数 hMemFile, 整数型, , 
+
+.局部变量 szFlag, 文本型, , , 
+.局部变量 szFullAddr, 文本型, , , 
+.局部变量 szVerb, 文本型, , , "GET" or "POST",为空默认"GET"
+.局部变量 szProxyServer, 文本型, , , 
+.局部变量 szUserName, 文本型, , , 
+.局部变量 szPassword, 文本型, , , 
+.局部变量 szHeaders, 文本型, , , 
+.局部变量 szSendBody, 文本型, , , "POST"专用
+.局部变量 szRequest, 文本型, , , 
+.局部变量 lpBody, 字节集, , , 
+.局部变量 匿名局部变量_452, 空白型, , , 
+.局部变量 hOpen, 整数型, , , 
+.局部变量 hConnect, 整数型, , , 
+.局部变量 hRequest, 整数型, , , 
+.局部变量 szDomain, 文本型, , , 
+.局部变量 szPageAddr, 文本型, , , 
+.局部变量 bUseProxy, 逻辑型, , , 
+.局部变量 lpBuffer, 字节集, , , 
+.局部变量 dwNumber, 整数型, , , 
+
+.如果真 (等于 (hMemFile, 0))
+    返回 (假)
+.如果真结束
+移到文件首 (hMemFile)
+读入数据 (hMemFile, szFlag)
+.如果真 (不等于 (szFlag, “MissWho”))
+    返回 (假)
+.如果真结束
+读入数据 (hMemFile, szFullAddr, szVerb, szProxyServer, szUserName, szPassword, szHeaders, szSendBody)
+移到文件首 (hMemFile)
+删除数据 (hMemFile, 取文件长度 (hMemFile))
+赋值 (szDomain, 取域名 (szFullAddr))
+赋值 (szPageAddr, 取页面地址 (szFullAddr))
+赋值 (bUseProxy, 不等于 (删全部空 (szProxyServer), “”))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+ ' 建立基础连接
+赋值 (hOpen, InternetOpenA (“Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)”, 选择 (bUseProxy, 3, 1), 选择 (bUseProxy, 相加 (“http=”, szProxyServer), 字符 (0)), 字符 (0), 0))
+.如果真 (等于 (hOpen, 0))
+    返回 (假)
+.如果真结束
+赋值 (hConnect, InternetConnectA (hOpen, szDomain, 取端口 (szFullAddr), 选择 (不等于 (删全部空 (szUserName), “”), szUserName, 字符 (0)), 选择 (不等于 (删全部空 (szPassword), “”), szPassword, 字符 (0)), #INTERNET_SERVICE_HTTP, 0, 0))
+.如果真 (等于 (hConnect, 0))
+    InternetCloseHandle (hOpen)
+    返回 (假)
+.如果真结束
+赋值 (hRequest, HttpOpenRequestA (hConnect, szVerb, szPageAddr, “HTTP/1.1”, 字符 (0), 字符 (0), 2147483648, 0))
+.如果真 (等于 (hRequest, 0))
+    InternetCloseHandle (hConnect)
+    InternetCloseHandle (hOpen)
+    返回 (假)
+.如果真结束
+
+ ' 补充协议头
+.如果真 (等于 (寻找文本 (szHeaders, “Accept: ”, 1, 真), -1))
+    赋值 (szHeaders, 相加 (szHeaders, “Accept: image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*”, #换行符))
+.如果真结束
+.如果真 (等于 (寻找文本 (szHeaders, “Referer: ”, 1, 真), -1))
+    赋值 (szHeaders, 相加 (szHeaders, “Referer: ”, szFullAddr, #换行符))
+.如果真结束
+.如果真 (等于 (寻找文本 (szHeaders, “Accept-Language: ”, 1, 真), -1))
+    赋值 (szHeaders, 相加 (szHeaders, “Accept-Language: zh-cn”, #换行符))
+.如果真结束
+
+ ' 附带信息发送请求
+.判断开始 (或者 (等于 (szVerb, “”), 等于 (到大写 (szVerb), “GET”)))
+    HttpSendRequestA (hRequest, szHeaders, 取文本长度 (szHeaders), 字符 (0), 0)
+.判断 (等于 (到大写 (szVerb), “POST”))
+    .如果真 (不等于 (szSendBody, “”))
+        .如果真 (等于 (寻找文本 (szHeaders, “Content-Type: ”, 1, 真), -1))
+            赋值 (szHeaders, 相加 (szHeaders, “Content-Type: application/x-www-form-urlencoded”, #换行符))
+        .如果真结束
+        赋值 (szHeaders, 相加 (szHeaders, “Content-Length: ”, 到文本 (取文本长度 (szSendBody)), #换行符))
+    .如果真结束
+    HttpSendRequestA (hRequest, szHeaders, 取文本长度 (szHeaders), szSendBody, 取文本长度 (szSendBody))
+.默认
+    InternetCloseHandle (hRequest)
+    InternetCloseHandle (hConnect)
+    InternetCloseHandle (hOpen)
+    返回 (假)
+.判断结束
+
+ ' 读取页面数据
+.循环判断首 ()
+    赋值 (lpBuffer, 取空白字节集 (512))
+    InternetReadFile (hRequest, lpBuffer, 取字节集长度 (lpBuffer), dwNumber)
+    赋值 (lpBody, 相加 (lpBody, 取字节集左边 (lpBuffer, dwNumber)))
+.循环判断尾 (不等于 (dwNumber, 0))
+
+ ' 取服务器回传协议头
+赋值 (szRequest, 取空白文本 (1024))
+HttpQueryInfoA (hRequest, 22, szRequest, 1024, 0)
+
+移到文件首 (hMemFile)
+写出数据 (hMemFile, “MissWho_OK”, szRequest, lpBody)
+
+ ' 关闭句柄
+InternetCloseHandle (hRequest)
+InternetCloseHandle (hConnect)
+InternetCloseHandle (hOpen)
+ ' 本源码来自易语言资源网(www.5A5X.com)
+ ' 设置COOKIE
+.如果真 (大于 (寻找文本 (szRequest, “Set-Cookie: ”, 1, 真), 0))
+    赋值 (dwNumber, 打开内存文件 ())
+    写出文本 (dwNumber, szRequest)
+    移到文件首 (dwNumber)
+    .判断循环首 (等于 (是否在文件尾 (dwNumber, 假), 假))
+        赋值 (szPageAddr, 读入一行 (dwNumber))
+        .如果真 (大于 (寻找文本 (szPageAddr, “Set-Cookie: ”, 1, 真), 0))
+            赋值 (szPageAddr, 文本替换 (szPageAddr, 1, 12, ))
+            赋值 (hRequest, 寻找文本 (szPageAddr, “=”, 1, 真))
+            InternetSetCookieA (相加 (“http://”, szDomain), 取文本左边 (szPageAddr, 相减 (hRequest, 1)), 取文本右边 (szPageAddr, 相减 (取文本长度 (szPageAddr), hRequest)))
+        .如果真结束
+        
+    .判断循环尾 ()
+    关闭文件 (dwNumber)
+.如果真结束
+返回 (真)
+
+.子程序 取域名, 文本型, 公开, 
+.参数 网址, 文本型, , 
+.参数 不过滤端口, 逻辑型, 可空, 
+
+.局部变量 dwNumber, 整数型, , , 
+.局部变量 dwLast, 整数型, , , 
+.局部变量 szServerName, 文本型, , , 
+
+赋值 (szServerName, 网址)
+赋值 (dwNumber, 选择 (等于 (寻找文本 (szServerName, “http://”, , 假), -1), 1, 相加 (寻找文本 (szServerName, “http://”, , 假), 7)))
+赋值 (szServerName, 取文本中间 (szServerName, dwNumber, 选择 (等于 (寻找文本 (szServerName, “/”, dwNumber, 假), -1), 取文本长度 (szServerName), 相减 (寻找文本 (szServerName, “/”, dwNumber, 假), dwNumber)))) ' 这段代码是过滤掉前http://和后/
+.如果真 (取反 (不过滤端口))
+    赋值 (dwNumber, 寻找文本 (szServerName, “:”, , 假))
+    .如果真 (不等于 (dwNumber, -1))
+        赋值 (szServerName, 取文本左边 (szServerName, 相减 (dwNumber, 1)))
+    .如果真结束
+    
+.如果真结束
+返回 (到小写 (szServerName))
+
+.子程序 取端口, 整数型, 公开, 
+.参数 网址, 文本型, , 
+
+.局部变量 dwNumber, 整数型, , , 
+.局部变量 szServerName, 文本型, , , 
+
+赋值 (szServerName, 取域名 (网址, 真))
+赋值 (dwNumber, 寻找文本 (szServerName, “:”, , 假))
+' 本源码来自易语言资源网(www.5A5X.com)
+赋值 (dwNumber, 选择 (等于 (dwNumber, -1), 80, 到数值 (取文本右边 (szServerName, 相减 (取文本长度 (szServerName), dwNumber)))))
+返回 (dwNumber)
+
+.子程序 取页面地址, 文本型, 公开, 
+.参数 网址, 文本型, , 
+
+.局部变量 页面地址, 文本型, , , 
+.局部变量 符号位置, 整数型, , , 
+.局部变量 域名, 文本型, , , 
+
+赋值 (域名, 取域名 (网址))
+赋值 (符号位置, 寻找文本 (网址, “/”, 寻找文本 (网址, 域名, 1, 真), 真))
+赋值 (页面地址, 选择 (等于 (符号位置, -1), “/”, 取文本右边 (网址, 相加 (相减 (取文本长度 (网址), 符号位置), 1))))
+返回 (页面地址)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

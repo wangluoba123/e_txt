@@ -1,0 +1,544 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 385
+    高度 = 429
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “网络通讯类_完成端口测试”
+    帮助文件名 = “”
+
+
+
+.常量 PF_INET, "2", , TCP/IP协议族
+.常量 AF_INET, "2", , TCP/IP协议族
+.常量 SOCK_STREAM, "1", , 流套接字类型(TCP)
+.常量 SOCK_DGRAM, "2", , 数据报套接字类型(UDP)
+.常量 IPPROTO_TCP, "6", , 
+.常量 IPPROTO_UDP, "17", , 
+.常量 , , , 
+.常量 SOMAXCONN, "2147483647", , 最大连接数(整数型最大上限)
+.常量 SOCKET_ERROR, "-1", , Socket操作失败
+.常量 , , , 
+.常量 FD_ACCEPT, "8", , 客户进入
+.常量 FD_CLOSE, "32", , 连接关闭
+.常量 FD_READ, "1", , 数据到达
+.常量 FD_WRITE, "2", , 发送数据
+.常量 ERROR_IO_PENDING, "997", , 
+.常量 FORMAT_MESSAGE_FROM_SYSTEM, "4096", , FORMAT_MESSAGE_FROM_SYSTEM
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 WSADataType, , 
+    .成员 wVersion, 短整数型, , , Windows Sockets 版本信息。
+    .成员 wHighVersion, 短整数型, , , 通过加载库文件得到的最高的支持Winsock 的版本，它通常和wVersion值相同。
+    .成员 szDescription, 字节型, , "257", 长度257的文本，Windows Sockets 执行时的详细描述
+    .成员 szSystemStatus, 字节型, , "129", 长度129的文本，包含了相关的状态和配置的信息
+    .成员 iMaxSockets, 短整数型, , , 表示同时打开的socket最大数，为0表示没有限制。
+    .成员 iMaxUdpDg, 短整数型, , , 表示同时打开的数据报最大数，为0表示没有限制。
+    .成员 lpVendorInfo, 整数型, , , 厂商指定信息预留
+
+数据类型 sockaddr_in, , 
+    .成员 sin_family, 短整数型, , , 族
+    .成员 sin_port, 短整数型, , , 端口数值
+    .成员 sin_addr, 整数型, , , 整数型IP
+    .成员 sin_zero, 字节型, , "8", 0
+
+数据类型 地址信息, , 
+    .成员 地址, 文本型, , , 
+    .成员 端口, 整数型, , , 1-65535
+
+数据类型 fd_set, , 
+    .成员 fd_count, 整数型, , , 
+    .成员 fd_array, 整数型, , , 
+
+数据类型 HOSTENT, , 
+    .成员 hName, 整数型, , , 
+    .成员 hAliases, 整数型, , , 
+    .成员 hAddrType, 短整数型, , , 
+    .成员 hLength, 短整数型, , , 
+    .成员 hAddrList, 整数型, , , 
+
+数据类型 OVERLAPPED, , 
+    .成员 internal, 整数型, , , 
+    .成员 internalHigh, 整数型, , , 
+    .成员 offset, 整数型, , , 
+    .成员 OffsetHigh, 整数型, , , 
+    .成员 hEvent, 整数型, , , 
+
+数据类型 PER_IO_OPERATION_DATA, , 
+    .成员 Overlapped, OVERLAPPED, , , 
+    .成员 DataBuf, WSABUF, 传址, , 
+    .成员 Buffer, 字节集, 传址, , 
+    .成员 BytesSEND, 整数型, , , 
+    .成员 BytesRECV, 整数型, , , 
+
+数据类型 WSABUF, , 
+    .成员 len, 整数型, , , 
+    .成员 buf, 字节集, 传址, , 
+
+数据类型 PER_HANDLE_DATA, , 
+    .成员 Socket, 整数型, , , 
+
+数据类型 SYSTEM_INFO, , 
+    .成员 dwOemID, 空白型, , , 
+    .成员 dwPageSize, 空白型, , , 
+    .成员 lpMinimumApplicationAddress, 空白型, , , 
+    .成员 lpMaximumApplicationAddress, 空白型, , , 
+    .成员 dwActiveProcessorMask, 空白型, , , 
+    .成员 dwNumberOrfProcessors, 空白型, , , 
+    .成员 dwProcessorType, 空白型, , , 
+    .成员 dwAllocationGranularity, 空白型, , , 
+    .成员 wProcessorLevel, 空白型, , , 
+    .成员 wProcessorRevision, 空白型, , , 
+
+
+.DLL命令 socket, 整数型, "ws2_32.dll", "socket", , 创建套接字
+    .参数 af, 整数型, , 使用的通信协议的协议族
+    .参数 type, 整数型, , 流套接字类型
+    .参数 protocol, 整数型, , 使用的通信协议
+
+.DLL命令 WSASocket, 整数型, "ws2_32.dll", "WSASocketA", , 创建套接字
+    .参数 af, 整数型, , 使用的通信协议的协议族
+    .参数 type, 整数型, , 流套接字类型
+    .参数 protocol, 整数型, , 使用的通信协议
+    .参数 lpProtocolInfo, 整数型, , 
+    .参数 g, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+
+.DLL命令 WSAAccept, 整数型, "ws2_32.dll", "WSAAccept", , 创建套接字
+    .参数 s, 整数型, , 使用的通信协议的协议族
+    .参数 addr, sockaddr_in, 传址, 流套接字类型
+    .参数 addrlen, 整数型, 传址, 使用的通信协议
+    .参数 lpfnCondition, 整数型, , 
+    .参数 dwCallbackData, 整数型, , 
+
+.DLL命令 closesocket, 整数型, "ws2_32.dll", "closesocket", , 销毁套接字
+    .参数 s, 整数型, , 套接字描述符
+
+.DLL命令 Connect, 整数型, "ws2_32.dll", "connect", , 连接到服务器(TCP)
+    .参数 s, 整数型, , 套接字描述符
+    .参数 addr, sockaddr_in, 传址, 地址信息
+    .参数 namelen, 整数型, , 地址信息长度
+
+.DLL命令 Send, 整数型, "ws2_32.dll", "send", , 发送数据(TCP，当这次发送数据未发送完时返回剩余字节数)
+    .参数 s, 整数型, , 套接字描述符
+    .参数 buf, 字节集, 传址, 欲发送的数据
+    .参数 buflen, 整数型, , 欲发送数据长度
+    .参数 flags, 整数型, , 保留值，给0
+
+.DLL命令 recv, 整数型, "ws2_32.dll", "recv", , 接收数据(TCP，当数据这次未接收完时返回剩余字节数)
+    .参数 s, 整数型, , 套接字描述符
+    .参数 buf, 字节集, 传址, 数据(提供变量)
+    .参数 buflen, 整数型, , 数据长度
+    .参数 flags, 整数型, , 保留值，给0
+
+.DLL命令 WSARecv, 整数型, "ws2_32.dll", "WSARecv", , 接收数据(TCP，当数据这次未接收完时返回剩余字节数)
+    .参数 s, 整数型, , 套接字描述符
+    .参数 lpBuffers, WSABUF, 传址, 数据(提供变量)
+    .参数 dwBufferCount, 整数型, , 数据长度
+    .参数 lpNumberOfBytesRecvd, 整数型, 传址, 
+    .参数 lpFlags, 整数型, 传址, 保留值，给0
+    .参数 lpOverlapped, OVERLAPPED, 传址, 
+    .参数 lpCompletionRoutine, 整数型, , 
+
+.DLL命令 bind, 整数型, "ws2_32.dll", "bind", , 绑定一个地址和端口
+    .参数 s, 整数型, , 套接字描述符
+    .参数 name, sockaddr_in, 传址, 地址信息
+    .参数 namelen, 整数型, , 地址信息长度(长度16)
+
+.DLL命令 WSAStartup, 整数型, "ws2_32.dll", "WSAStartup", , 初始化WnSocket服务
+    .参数 wVR, 短整数型, , socket版本,第一个字节代表主版本，第2个字节代表从版本
+    .参数 lpWSAD, WSADataType, 传址, 服务信息
+
+.DLL命令 WSACleanup, 整数型, "ws2_32.dll", "WSACleanup", , 卸载Winsocket服务
+
+.DLL命令 htons, 短整数型, "ws2_32.dll", "htons", , 转换为network 排列方式的数目
+    .参数 hostshort, 短整数型, , 端口号
+
+.DLL命令 inet_ntoa, 整数型, "ws2_32.dll", "inet_ntoa", , 将整数格式IP地址转换为点数格式（返回值是内存地址指针）
+    .参数 inn, 整数型, , 欲转换整数格式IP地址
+
+.DLL命令 inet_addr, 整数型, "ws2_32.dll", "inet_addr", , 点数格式转换为整数格式IP地址
+    .参数 cp, 文本型, 传址, 欲被转换的IP地址
+
+.DLL命令 listen, 整数型, "ws2_32.dll", "listen", , 监听
+    .参数 s, 整数型, , 套接字描述符
+    .参数 backlog, 整数型, , 最多容纳客户请求数
+
+.DLL命令 accept, 整数型, "ws2_32.dll", "accept", , 等待用户进入并接受连接
+    .参数 s, 整数型, , 套接字描述符
+    .参数 addr, sockaddr_in, 传址, 地址信息
+    .参数 addrlen, 整数型, 传址, 地址信息长度（长度为16）
+
+.DLL命令 ntohs, 短整数型, "ws2_32.dll", "ntohs", , 转换为端口号
+    .参数 netshort, 短整数型, , 欲转换值
+
+.DLL命令 sendto, 整数型, "ws2_32.dll", "sendto", , 发送数据(UDP)
+    .参数 s, 整数型, , 套接字描述符
+    .参数 buf, 字节集, 传址, 数据
+    .参数 len, 整数型, , 数据长度
+    .参数 flags, 整数型, , 保留值，给0
+    .参数 to, sockaddr_in, 传址, 目标地址信息
+    .参数 tolen, 整数型, , 地址信息长度
+
+.DLL命令 recvfrom, 整数型, "ws2_32.dll", "recvfrom", , 接收数据(UDP)
+    .参数 s, 整数型, , 套接字描述符
+    .参数 buf, 字节集, 传址, 数据(提供变量)
+    .参数 len, 整数型, , 数据长度
+    .参数 flags, 整数型, , 保留值，给0
+    .参数 from, sockaddr_in, 传址, 来源地址信息(提供变量)
+    .参数 fromlen, 整数型, 传址, 地址信息长度(提供变量)
+
+.DLL命令 CreateThread, 整数型, "kernel32.dll", "CreateThread", , 创建线程
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 子程序指针, , 子程序
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadID, 整数型, 传址, 提供变量，返回线程ID
+
+.DLL命令 gethostname, 整数型, "ws2_32.dll", "gethostname", , 取本机名，失败返回-1，成功返回0。
+    .参数 name, 文本型, 传址, 给变量，用于存放名称
+    .参数 namelen, 整数型, , 上一个参数的长度
+
+.DLL命令 gethostbyname, 整数型, "ws2_32.dll", "gethostbyname", , 成功返回内存指针
+    .参数 name, 文本型, 传址, 机器名称
+
+.DLL命令 getpeername, 整数型, "ws2_32.dll", "getpeername", , 获取远端信息（已连接对方IP和端口）。成功返回0
+    .参数 s, 整数型, , 句柄
+    .参数 name, sockaddr_in, 传址, 地址信息
+    .参数 namelen, 整数型, 传址, name长度,Sockaddr_in长度为16
+
+.DLL命令 select, 整数型, "ws2_32.dll", "select", , 检查套接字状态
+    .参数 nfds, 整数型, , 
+    .参数 readfds, fd_set, 传址, 读
+    .参数 writefds, fd_set, 传址, 写
+    .参数 exceptfds, fd_set, 传址, 错误
+    .参数 timeout, 整数型, 传址, 超时
+
+.DLL命令 getsockname, 整数型, "ws2_32.dll", "getsockname", , 获取本地信息（用于连接对方的端口）。成功返回0
+    .参数 s, 整数型, , 句柄
+    .参数 name, sockaddr_in, 传址, 地址信息
+    .参数 namelen, 整数型, 传址, name长度,Sockaddr_in长度为16
+
+.DLL命令 WSAAsyncSelect, 整数型, "ws2_32.dll", "WSAAsyncSelect", , 
+    .参数 s, 整数型, , 
+    .参数 hWnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 lEvent, 整数型, , 
+
+.DLL命令 ZeroMemory, 空白型, "", "RtlZeroMemory", , 内存清空
+    .参数 Destination, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 LocalSize, 整数型, "kernel32.dll", "LocalSize", , 
+    .参数 参数一, 空白型, 传址, 
+
+.DLL命令 WSAGetLastError, 整数型, "ws2_32.dll", "WSAGetLastError", , 
+
+.DLL命令 GetLastError, 整数型, "", "GetLastError", , 
+
+.DLL命令 API_创建线程, 整数型, "", "CreateThread", , 生成线程成功，CreateThread函数返回新线程的句柄。否则返回NULL。线程执行完毕后自动退出（除非进入的是循环）。
+    .参数 lpThreadAttributes, 整数型, , 线程的安全属性，缺省为0
+    .参数 dwStackSize, 整数型, , 线程的堆栈大小，为0时与进程相同
+    .参数 lpStartAddress, 子程序指针, , 线程函数的起始地址
+    .参数 lpParameter, 整数型, , 传递线程的上下文,可以传递一个整数型参数。
+    .参数 dwCreationFlags, 整数型, , 0：创建线程后立即启动，相反的是标志位CREATE_SUSPENDED，这样您需要稍后显示地让该线程运行（可设为－1）
+    .参数 lpThreadId, 整数型, 传址, 内核给新生成的线程分配的线程ID
+
+.DLL命令 API_关闭句柄, 逻辑型, "", "CloseHandle", , 
+    .参数 对象句柄, 整数型, , 
+
+.DLL命令 CreateIoCompletionPort, 整数型, "", "CreateIoCompletionPort", , 
+    .参数 FileHandle, 整数型, , 
+    .参数 ExistingCompletionPort, 整数型, , 
+    .参数 CompletionKey, 整数型, , 
+    .参数 NumberOfConcurrentThreads, 整数型, , 
+
+.DLL命令 GetQueuedCompletionStatus, 整数型, "", "GetQueuedCompletionStatus", , 
+    .参数 CompletionPort, 整数型, , 
+    .参数 lpNumberOfBytesTransferred, 整数型, 传址, 
+    .参数 lpCompletionKey, 整数型, 传址, 
+    .参数 Overlapped, 整数型, 传址, 
+    .参数 dwMilliseconds, 整数型, , 
+
+.DLL命令 PostQueuedCompletionStatus, 空白型, "", "PostQueuedCompletionStatus", , 
+    .参数 CompletionPort, 整数型, , 
+    .参数 lpNumberOfBytesTransferred, 整数型, , 
+    .参数 lpCompletionKey, 整数型, , 
+    .参数 Overlapped, 整数型, , 
+
+.DLL命令 GetSystemInfo, 整数型, "", "GetSystemInfo", , 
+    .参数 SystemInfo, SYSTEM_INFO, 传址, 
+
+.DLL命令 GlobalAlloc, 整数型, "", "GlobalAlloc", , 
+    .参数 wFlags, 整数型, , 
+    .参数 dwBytes, 整数型, , 
+
+.DLL命令 LPPER_HANDLE_DATA, 整数型, "", "lstrcpyn", , 
+    .参数 目的指针, PER_HANDLE_DATA, 传址, 
+    .参数 源指针, PER_HANDLE_DATA, 传址, 
+    .参数 复制长度, 整数型, , 0
+
+.DLL命令 FormatMessage, 整数型, "", "FormatMessageA", , 
+    .参数 标志, 整数型, , 
+    .参数 源, 整数型, , 
+    .参数 消息号, 整数型, , 
+    .参数 语言, 整数型, , 
+    .参数 缓冲, 文本型, , 
+    .参数 缓冲大小, 整数型, , 
+    .参数 插入, 整数型, , 
+
+.DLL命令 ReadProcessMemory_Int, 整数型, "", "ReadProcessMemory", 公开, 读内存指针整型内容
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 整数型, 传址, 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesRead, 整数型, , 
+
+.DLL命令 GetCurrentProcess, 整数型, "", "GetCurrentProcess", 公开, API_取当前进程句柄
+
+.窗口程序集 启动窗口程序集, , , 
+
+.程序集变量 InternetAddr, sockaddr_in, , , 
+.程序集变量 AcceptAddr, sockaddr_in, , , 
+.程序集变量 Listen, 整数型, , , 
+.程序集变量 Accept, 整数型, , , 
+.程序集变量 CompletionPort, 整数型, , , 
+.程序集变量 SystemInfo, SYSTEM_INFO, , , 
+.程序集变量 PerHandleData, PER_HANDLE_DATA, , "0", 
+.程序集变量 LPHandleData, 整数型, , , 
+.程序集变量 LPOVERLAPPED, 整数型, , , 
+.程序集变量 PerIoData, PER_IO_OPERATION_DATA, , "0", 
+.程序集变量 LPPerIoData, 整数型, , , 
+.程序集变量 i, 整数型, , , 
+.程序集变量 RecvBytes, 整数型, , , 
+.程序集变量 Flags, 整数型, , , 
+.程序集变量 wsaData, WSABUF, , , 
+.程序集变量 LP_WSABUF, 整数型, , , 
+.程序集变量 Ret, 整数型, , , 
+.程序集变量 ThreadID, 整数型, , , 
+.程序集变量 ThreadHandle, 整数型, , , 
+.程序集变量 DATA_BUFSIZE, 整数型, , , 
+.程序集变量 退出, 逻辑型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 StartupData, WSADataType, , , 
+
+赋值 (_启动窗口., 真)
+重定义数组 (PerHandleData, 假, 10240)
+重定义数组 (PerIoData, 假, 10240)
+赋值 (DATA_BUFSIZE, 8192)
+WSAGetLastError ()
+赋值 (Ret, WSAStartup (取字节集数据 ({ 2, 2 }, #短整数型, 1), StartupData))
+.如果真 (不等于 (Ret, 0)) ' WinSock版本2.2
+    相加 (“服务器类初始化失败 ”, 取错误文本 (), #换行符).加入文本 ()
+    返回 ()
+.如果真结束
+赋值 (CompletionPort, CreateIoCompletionPort (-1, 0, 0, 0))
+.如果真 (等于 (CompletionPort, -1))
+    相加 (“完成端口创建失败 ”, 取错误文本 (), #换行符).加入文本 ()
+    返回 ()
+.如果真结束
+GetSystemInfo (SystemInfo)
+赋值 (Listen, WSASocket (#AF_INET, #SOCK_STREAM, #IPPROTO_TCP, 0, 0, 1))
+ ' Listen ＝ socket (#AF_INET, #SOCK_STREAM, #IPPROTO_TCP)
+.如果真 (等于 (Listen, -1))
+    输出调试文本 (相加 (“监听套接字创建失败 ”, 取错误文本 ()))
+    返回 ()
+.如果真结束
+赋值 (InternetAddr.sin_family, #AF_INET)
+赋值 (InternetAddr.sin_addr, inet_addr (“0.0.0.0”))
+赋值 (InternetAddr.sin_port, htons (5050))
+赋值 (Ret, bind (Listen, InternetAddr, 16))
+.如果真 (等于 (Ret, -1))
+    相加 (“绑定端口失败 ”, 取错误文本 (), #换行符).加入文本 ()
+    返回 ()
+.如果真结束
+.如果真 (等于 (listen (Listen, 5), #SOCKET_ERROR))
+    相加 (“套接字监听失败 ”, 取错误文本 (), #换行符).加入文本 ()
+    返回 ()
+.如果真结束
+API_创建线程 (0, 0, &接受连接线程, 0, 0, ThreadID)
+
+.子程序 接受连接线程, 空白型, , 
+.参数 参数, 空白型, , 
+
+.局部变量 错误, 整数型, , , 
+
+.判断循环首 (等于 (退出, 假))
+    赋值 (Accept, WSAAccept (Listen, AcceptAddr, 16, 0, 0))
+    .如果真 (等于 (Accept, -1))
+        相加 (“接受连接失败 ”, 取错误文本 (), #换行符).加入文本 ()
+        返回 ()
+    .如果真结束
+    相加 (“接受客户端连接”, 到文本 (Accept), “ ip:”, 指针到文本 (inet_ntoa (AcceptAddr.sin_addr)), “ 端口”, 到文本 (ntohs (AcceptAddr.sin_port)), #换行符).加入文本 ()
+    赋值 (PerHandleData [Accept], Socket, Accept)
+    赋值 (LPHandleData, LPPER_HANDLE_DATA (PerHandleData [Accept], PerHandleData [Accept], 0))
+    .如果真 (等于 (CreateIoCompletionPort (Accept, CompletionPort, LPHandleData, 0), 0))
+        相加 (“绑定完成端口失败:”, 取错误文本 ()).加入文本 ()
+    .如果真结束
+    赋值 (PerIoData [Accept], BytesSEND, 0)
+    赋值 (PerIoData [Accept], BytesRECV, 0)
+    赋值 (PerIoData [Accept], DataBuf.len, DATA_BUFSIZE)
+    赋值 (PerIoData [Accept], DataBuf.buf, 取空白字节集 (DATA_BUFSIZE))
+    赋值 (PerIoData [Accept], Buffer, PerIoData [Accept], DataBuf.buf)
+    赋值 (Flags, 0)
+    .如果真 (等于 (WSARecv (Accept, PerIoData [Accept], DataBuf, 1, RecvBytes, Flags, PerIoData [Accept], Overlapped, 0), -1))
+        赋值 (错误, WSAGetLastError ())
+        .如果真 (不等于 (错误, #ERROR_IO_PENDING))
+            相加 (“投递WSARecv失败 ”, 取错误文本 (错误), #换行符).加入文本 ()
+        .如果真结束
+        
+    .如果真结束
+    
+.判断循环尾 ()
+
+
+.子程序 取错误文本, 文本型, 公开, 
+.参数 参_错误码, 整数型, 可空, 
+
+.局部变量 错误文本, 文本型, , , 
+.局部变量 错误码, 整数型, , , 
+
+赋值 (错误文本, 取空白文本 (255))
+.如果 (是否为空 (参_错误码))
+    赋值 (错误码, WSAGetLastError ())
+.否则
+    赋值 (错误码, 参_错误码)
+.如果结束
+.如果真 (不等于 (FormatMessage (#FORMAT_MESSAGE_FROM_SYSTEM, 0, 错误码, 0, 错误文本, 254, 0), 0))
+    返回 (相加 (到文本 (错误码), “ ”, 删首空 (错误文本)))
+.如果真结束
+返回 (“”)
+
+.子程序 ServerWorkerThread, 空白型, , 
+.参数 CompletionPortID, 整数型, , 
+
+.局部变量 局_CompletionPort, 整数型, , , 
+.局部变量 局_dwBytesTransferred, 整数型, , , 
+.局部变量 LPerHandleData, 整数型, , , 
+.局部变量 LPerIoData, 整数型, , , 
+.局部变量 局_buf, 字节集, , , 
+.局部变量 s, 整数型, , , 
+.局部变量 错误, 整数型, , , 
+.局部变量 计次, 整数型, , , 
+.局部变量 内容, 字节集, , , 
+
+赋值 (局_CompletionPort, CompletionPortID)
+.判断循环首 (真)
+    GetQueuedCompletionStatus (局_CompletionPort, 局_dwBytesTransferred, LPerHandleData, LPerIoData, -1)
+    .如果真 (等于 (局_dwBytesTransferred, -1))
+        相加 (“工作者线程退出 ”, 取错误文本 (), #换行符).加入文本 ()
+        赋值 (., “启动”)
+        返回 ()
+    .如果真结束
+    未知函数_167841910 (未知函数_167841912 (), LPerHandleData, s, 4, 0)
+    .如果 (等于 (局_dwBytesTransferred, 0))
+        相加 (“客户socket关闭 ”, 到文本 (s), “ ”, 取错误文本 (), #换行符).加入文本 ()
+    .否则
+        相加 (“收到客户”, 到文本 (s), “发来 ”, 取字节集数据 (PerIoData [s], DataBuf.buf, 10, ), #换行符).加入文本 ()
+        赋值 (内容, 到字节集 (“服务器已经收到你发来的数据”))
+        Send (s, 内容, 取字节集长度 (内容), 0)
+        赋值 (PerIoData [s], BytesSEND, 0)
+        赋值 (PerIoData [s], BytesRECV, 0)
+        赋值 (PerIoData [s], DataBuf.len, DATA_BUFSIZE)
+        赋值 (PerIoData [s], DataBuf.buf, 取空白字节集 (DATA_BUFSIZE))
+        赋值 (PerIoData [s], Buffer, PerIoData [s], DataBuf.buf)
+        赋值 (Flags, 0)
+        .如果真 (等于 (WSARecv (s, PerIoData [s], DataBuf, 1, RecvBytes, Flags, PerIoData [s], Overlapped, 0), -1))
+            赋值 (错误, WSAGetLastError ())
+            .如果真 (不等于 (错误, #ERROR_IO_PENDING))
+                相加 (“投递WSARecv失败 ”, 到文本 (s), “ ”, 取错误文本 (错误), #换行符).加入文本 ()
+            .如果真结束
+            
+        .如果真结束
+        
+    .如果结束
+    
+.判断循环尾 ()
+
+
+.子程序 _TCP_C_Socket按钮_被单击, 空白型, , 
+“127.0.0.1”.连接 (5050)
+“127.0.0.1”.连接 (5050)
+
+.子程序 _TCP_C_Recv按钮_被单击, 空白型, , 
+.发送数据 (.)
+相加 (., “2”).发送数据 ()
+
+.子程序 _TCP_C_Recv按钮1_被单击, 空白型, , 
+.发送数据 (.)
+
+.子程序 _TCP_C_Recv按钮2_被单击, 空白型, , 
+相加 (., “2”).发送数据 ()
+
+.子程序 __启动窗口_可否被关闭, 逻辑型, , 
+ ' PostQueuedCompletionStatus (CompletionPort, -1, 0, 0)
+
+.子程序 _TCP_C_CloseSocket按钮_被单击, 空白型, , 
+断开连接 ()
+断开连接 ()
+
+.子程序 _按钮_启动关闭_被单击, 空白型, , 
+.如果 (等于 (., “启动”))
+    .计次循环首 (相乘 (SystemInfo.dwNumberOrfProcessors, 2), i)
+        赋值 (ThreadHandle, API_创建线程 (0, 0, &ServerWorkerThread, CompletionPort, 0, ThreadID))
+        API_关闭句柄 (ThreadHandle)
+    .计次循环尾 ()
+    相加 (“创建工作都线程成功,”, #换行符).加入文本 ()
+    赋值 (., “停止”)
+.否则
+    PostQueuedCompletionStatus (CompletionPort, -1, 0, 0)
+    
+.如果结束
+
+
+.子程序 _客户1_数据到达, 空白型, , 
+相加 (到文本 (取回数据 ()), #换行符).加入文本 ()
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,291 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：浏览文件夹模块
+ ' 程序描述：(彬)泪闯天涯原创
+离不开电脑增强
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：www.it608.com
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.1
+ ' 创建号：0.0
+
+
+
+.常量 ERROR_SUCCESS, "0", , 
+.常量 MAX_PATH, "260", , 
+.常量 BIF_RETURNONLYFSDIRS, "1", , Only return file system directories. If the user selects folders that are not part of the file system, the OK button is grayed
+.常量 BIF_DONTGOBELOWDOMAIN, "2", , Do not include network folders below the domain level in the dialog box's tree view control
+.常量 BIF_STATUSTEXT, "4", , Include a status area in the dialog box. The callback function can set the status text by sending messages to the dialog box
+.常量 BIF_RETURNFSANCESTORS, "8", , Only return file system ancestors. An ancestor is a subfolder that is beneath the root folder in the namespace hierarchy. If the user selects an ancestor of the root folder that is not part of the file system, the OK button is grayed
+.常量 BIF_EDITBOX, "22", , Version 4.71. Include an edit control in the browse dialog box that allows the user to type the name of an item
+.常量 BIF_VALIDATE, "32", , If the user types an invalid name into the edit box, the browse dialog box will call the application's BrowseCallbackProc with the BFFM_VALIDATEFAILED message. This flag is ignored if BIF_EDITBOX is not specified
+.常量 BIF_USENEWUI, "64", , Version 5.0. Use the new user interface, including an edit box. This flag is equivalent to BIF_EDITBOX | BIF_NEWDIALOGSTYLE. To use BIF_USENEWUI, you must call OleInitialize or CoInitialize before calling SHBrowseForFolder
+.常量 BIF_NEWDIALOGSTYLE, "100", , Version 5.0. Use the new user interface. Setting this flag provides the user with a larger dialog box that can be resized. The dialog box has several new capabilities including: drag and drop capability within the dialog box, reordering, shortcut menus, new folders, delete, and other shortcut menu commands. To use this flag, you must call OleInitialize or CoInitialize before calling SHBrowseForFolder
+.常量 BIF_BROWSEFORCOMPUTER, "4096", , Only return computers. If the user selects anything other than a computer, the OK button is grayed
+.常量 BIF_BROWSEFORPRINTER, "8192", , Only return printers. If the user selects anything other than a printer, the OK button is grayed
+.常量 BIF_BROWSEINCLUDEFILES, "91012", , Version 4.71. The browse dialog box will display files as well as folders
+.常量 CSIDL_DESKTOP, "0", , Desktop Folder
+.常量 CSIDL_INTERNET, "1", , Internet Explorer (icon on desktop)
+.常量 CSIDL_PROGRAMS, "2", , Program Files Folder
+.常量 CSIDL_CONTROLS, "3", , Control Panel Folder
+.常量 CSIDL_PRINTERS, "4", , Printers Folder
+.常量 CSIDL_PERSONAL, "5", , My Documents Folder
+.常量 CSIDL_FAVORITES, "6", , Favorites Folder
+.常量 CSIDL_STARTUP, "7", , Startup Folder
+.常量 CSIDL_RECENT, "8", , Recent Folder
+.常量 CSIDL_SENDTO, "9", , SentTo Folder
+.常量 CSIDL_BITBUCKET, "10", , Recycle Bin Folder
+.常量 CSIDL_STARTMENU, "11", , Start Menu Folder
+.常量 CSIDL_DESKTOPDIRECTORY, "16", , File system directory used to physically
+.常量 CSIDL_DRIVES, "17", , My Computer Folder
+.常量 CSIDL_NETWORK, "18", , Network Neighborhood Folder
+.常量 CSIDL_NETHOOD, "19", , Nethood Folder
+.常量 CSIDL_FONTS, "20", , Fonts Folder
+.常量 CSIDL_TEMPLATES, "21", , Templates/ShellNew Folder
+.常量 CSIDL_COMMON_STARTMENU, "22", , (all users)\Start Menu
+.常量 CSIDL_COMMON_PROGRAMS, "23", , (all users)\Programs
+.常量 CSIDL_COMMON_STARTUP, "24", , (all users)\Startup
+.常量 CSIDL_COMMON_DESKTOPDIRECTORY, "25", , (all users)\Desktop
+.常量 CSIDL_APPDATA, "26", , (user)\Application Data
+.常量 CSIDL_PRINTHOOD, "27", , (user)\PrintHood
+.常量 CSIDL_LOCAL_APPDATA, "28", , (user)\Local Settings\Application Data (non roaming)
+.常量 CSIDL_ALTSTARTUP, "29", , non localized startup
+.常量 CSIDL_COMMON_ALTSTARTUP, "30", , non localized common startup
+.常量 CSIDL_COMMON_FAVORITES, "31", , 
+.常量 CSIDL_INTERNET_CACHE, "32", , 
+.常量 CSIDL_COOKIES, "33", , 
+.常量 CSIDL_HISTORY, "34", , 
+.常量 CSIDL_COMMON_APPDATA, "35", , (all users)\Application Data
+.常量 CSIDL_WINDOWS, "36", , GetWindowsDirectory()
+.常量 CSIDL_SYSTEM, "37", , GetSystemDirectory()
+.常量 CSIDL_PROGRAM_FILES, "38", , C:\Program Files
+.常量 CSIDL_MYPICTURES, "39", , C:\Program Files\My Pictures
+.常量 CSIDL_PROFILE, "40", , USERPROFILE
+.常量 CSIDL_PROGRAM_FILES_COMMON, "43", , C:\Program Files\Common
+.常量 CSIDL_COMMON_TEMPLATES, "45", , (all users)\Templates
+.常量 CSIDL_COMMON_DOCUMENTS, "46", , (all users)\Documents
+.常量 CSIDL_COMMON_ADMINTOOLS, "47", , (all users)\Start Menu\Programs\Administrative Tools
+.常量 CSIDL_ADMINTOOLS, "48", , (user)\Start Menu\Programs\Administrative Tools
+.常量 CSIDL_FLAG_CREATE, "32768", , combine with CSIDL_ value to force
+.常量 CSIDL_FLAG_DONT_VERIFY, "16384", , combine with CSIDL_ value to force
+.常量 CSIDL_FLAG_MASK, "65280", , mask for all possible flag values
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 SHITEMID, , 
+    .成员 cb, 整数型, , , Size of the ID (including cb itself)
+    .成员 abID, 字节型, , , The item ID (variable length)
+
+数据类型 ITEMIDLIST, , 
+    .成员 mkid, SHITEMID, , , 
+
+数据类型 BROWSEINFO, , 
+    .成员 hOwner, 整数型, , , Handle to the owner window for the dialog box
+    .成员 pidlRoot, 整数型, , , Pointer to an item identifier list (an
+    .成员 pszDisplayName, 文本型, , , Pointer to a buffer that receives the display
+    .成员 lpszTitle, 文本型, , , Pointer to a null-terminated string that is
+    .成员 ulFlags, 整数型, , , Value specifying the types of folders to be
+    .成员 lpfn, 整数型, , , Address an application-defined function that the
+    .成员 lParam, 整数型, , , Application-defined value that the dialog box
+    .成员 iImage, 整数型, , , Variable that receives the image associated with
+
+
+.DLL命令 CoTaskMemFree, 空白型, "ole32", "", , 
+    .参数 pv, 整数型, , 
+
+.DLL命令 SHGetPathFromIDList, 整数型, "shell32", "SHGetPathFromIDListA", , 
+    .参数 pidl, 整数型, , 
+    .参数 pszPath, 文本型, , 
+
+.DLL命令 SHBrowseForFolder, 整数型, "shell32", "SHBrowseForFolderA", , 
+    .参数 lpBrowseInfo, BROWSEINFO, 传址, 
+
+.DLL命令 SHGetSpecialFolderLocation, 整数型, "shell32", "", , 
+    .参数 hwndOwner, 整数型, , 
+    .参数 nFolder, 整数型, , 
+    .参数 pidl, ITEMIDLIST, 传址, 
+
+.DLL命令 SHGetFolderPath, 整数型, "shell32", "SHGetFolderPathA", , 
+    .参数 hwndOwner, 整数型, , 
+    .参数 nFolder, 整数型, , 
+    .参数 hToken, 整数型, , 
+    .参数 dwReserved, 整数型, , 
+    .参数 lpszPath, 文本型, , 
+
+.DLL命令 SHGetFolderLocation, 整数型, "shell32", "", , 
+    .参数 hwndOwner, 整数型, , 
+    .参数 nFolder, 整数型, , 
+    .参数 hToken, 整数型, , 
+    .参数 dwReserved, 整数型, , 
+    .参数 pidl, ITEMIDLIST, 传址, 
+
+.DLL命令 ILCreateFromPathW, 整数型, "", "ILCreateFromPathW", , 
+    .参数 pwszPath, 字节集, , 
+
+.DLL命令 ILFree, 空白型, "", "ILFree", , 
+    .参数 pidl, 整数型, , 
+
+.DLL命令 MultiByteToWideChar, 整数型, "", "MultiByteToWideChar", , 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpWideCharStr, 字节集, , 
+    .参数 cchWideChar, 整数型, , 
+
+.DLL命令 WideCharToMultiByte, 整数型, "", "WideCharToMultiByte", 公开, 返回 MultiByte字符数目,包括结尾0
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpWideCharStr, 整数型, , 
+    .参数 cchWideChar, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 unknow, 整数型, , 
+    .参数 unknow, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+输出调试文本 (浏览文件夹_高级 (0, , 真, “D:\”))
+
+.子程序 浏览文件夹_高级, 文本型, 公开, 打开一个对话框，浏览系统中存在的所有文件夹，返回被选定文件夹的路径名，如果未选中任何文件夹，则返回空文本。本命令为初级命令。
+.参数 父窗口句柄, 整数型, 可空, 本参数提供需要打开浏览文件夹父窗口的句柄
+.参数 标题, 文本型, 可空, 本参数提供显示在对话框上部的标题文本
+.参数 列出文件, 逻辑型, 可空, 是否显示文件列表，默认为假
+.参数 初始目录, 文本型, 可空, 例如 D:\123 
+
+.局部变量 BI, BROWSEINFO, , , 
+.局部变量 lPid, 整数型, , , 
+.局部变量 sPath, 文本型, , , 
+.局部变量 iPos, 整数型, , , 
+.局部变量 lPidlRoot, ITEMIDLIST, , , 
+.局部变量 flName, 文本型, , , 
+
+SHGetFolderLocation (父窗口句柄, #CSIDL_DESKTOP, 0, 0, lPidlRoot)
+.如果真 (是否为空 (标题))
+    赋值 (标题, “请选择文件夹路径”)
+.如果真结束
+赋值 (BI.hOwner, 父窗口句柄)
+赋值 (BI.pidlRoot, lPidlRoot.mkid.cb) ' 默认初始目录为桌面
+ ' -----------以下为离不开电脑添加---------------
+.如果真 (取反 (是否为空 (初始目录)))
+    赋值 (BI.pidlRoot, ILCreateFromPathW (A2U (初始目录))) ' 取路径的ID
+.如果真结束
+ ' -----------End---------------
+赋值 (BI.pszDisplayName, 取空白文本 (#MAX_PATH))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+赋值 (BI.lpszTitle, 标题)
+赋值 (BI.ulFlags, 位或 (#BIF_RETURNONLYFSDIRS, #BIF_NEWDIALOGSTYLE, #BIF_STATUSTEXT, #BIF_EDITBOX, #BIF_VALIDATE))
+.如果真 (列出文件)
+    赋值 (BI.ulFlags, 位或 (BI.ulFlags, #BIF_BROWSEINCLUDEFILES))
+.如果真结束
+赋值 (lPid, SHBrowseForFolder (BI))
+ ' 输出调试文本 (BI.pszDisplayName, lPid)
+.如果 (大于 (寻找文本 (删首尾空 (BI.pszDisplayName), “?”, 1, 假), -1))
+    赋值 (flName, “”)
+.否则
+    .如果 (不等于 (lPid, 0))
+        赋值 (sPath, 取空白文本 (#MAX_PATH))
+        .如果真 (不等于 (SHGetPathFromIDList (lPid, sPath), 0))
+            赋值 (flName, sPath)
+            .如果真 (等于 (取文本长度 (flName), 3))
+                赋值 (flName, 取文本左边 (flName, 2))
+            .如果真结束
+             ' 本源码来自易语言资源网(www.5A5X.com)
+        .如果真结束
+        
+    .否则
+        赋值 (flName, 相加 (“\\”, 删首尾空 (BI.pszDisplayName)))
+        .如果真 (等于 (flName, “\\”))
+            赋值 (flName, “”)
+        .如果真结束
+        
+    .如果结束
+    
+.如果结束
+CoTaskMemFree (lPid)
+赋值 (flName, 相加 (flName, “\”)) ' 这句是我自己需要所以加了，建议不要去掉。
+返回 (flName)
+
+.子程序 A2U, 字节集, 公开, 将Ansi转成Unicode
+.参数 欲转换的文本, 文本型, , 
+
+.局部变量 缓冲区, 字节集, , , 
+.局部变量 字符数目, 整数型, , , 包括结尾0
+
+赋值 (字符数目, MultiByteToWideChar (0, 0, 欲转换的文本, -1, {  }, 0)) ' 返回字符数目
+ ' 输出调试文本 (字符数目)
+赋值 (缓冲区, 取空白字节集 (相乘 (字符数目, 2)))
+MultiByteToWideChar (0, 0, 欲转换的文本, -1, 缓冲区, 字符数目)
+返回 (缓冲区)
+
+.子程序 U2A, 文本型, 公开, 将Unicode转成Ansi
+.参数 欲转换的文本, 整数型, , Unicode文本内存地址
+
+.局部变量 缓冲区, 文本型, , , 
+.局部变量 字符数目, 整数型, , , 包括结尾0
+
+赋值 (字符数目, WideCharToMultiByte (1, 0, 欲转换的文本, -1, “”, 0, 0, 0))
+ ' 输出调试文本 (字符数目)
+赋值 (缓冲区, 取空白文本 (字符数目))
+WideCharToMultiByte (1, 0, 欲转换的文本, -1, 缓冲区, 字符数目, 0, 0)
+' 本源码来自易语言资源网(www.5A5X.com)
+返回 (缓冲区)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

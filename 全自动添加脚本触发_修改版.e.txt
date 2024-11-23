@@ -1,0 +1,606 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 503
+    高度 = 237
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “#44521”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “测试         By:Xed       QQ:364831018
+”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+.全局变量 ProgramhWnd, 整数型, , , 
+.全局变量 hWnd, 整数型, , , 
+.全局变量 hWnd_MPQ, 整数型, , , 
+
+.DLL命令 FindWindowA, 整数型, "user32.dll", "FindWindowA", , 
+    .参数 IpClassName, 文本型, , 
+    .参数 IpWindowName, 文本型, , 
+
+.DLL命令 MessageBoxA, 整数型, "user32.dll", "MessageBoxA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 Text, 文本型, , 
+    .参数 Title, 文本型, , 
+    .参数 ReturnValue, 整数型, , 
+
+.DLL命令 MpqOpenArchiveForUpdate, 整数型, "SFmpq.dll", "MpqOpenArchiveForUpdate", , 
+    .参数 lpFileName, 文本型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 dwMaximumFilesInArchive, 整数型, , 
+
+.DLL命令 MpqAddFileToArchiveEx, 整数型, "SFmpq.dll", "MpqAddFileToArchiveEx", , 
+    .参数 hWnd, 整数型, , 
+    .参数 替换的文件, 文本型, , 
+    .参数 被替换的文件, 文本型, , 
+    .参数 Code197121, 整数型, , 197121
+    .参数 Code2, 整数型, , 2
+    .参数 Code9, 整数型, , 9
+
+.DLL命令 MpqCompactArchive, 整数型, "SFmpq.dll", "MpqCompactArchive", , 
+    .参数 hMPQ, 整数型, , 
+
+.DLL命令 SFileOpenArchive, 逻辑型, "Storm.dll", "#266", , 
+    .参数 lpFileName, 文本型, , 
+    .参数 dwPriority, 整数型, , 0
+    .参数 dwFlags, 整数型, , 0
+    .参数 hMPQ, 整数型, 传址, 返回句柄
+
+.DLL命令 SFileDestroy, 逻辑型, "Storm.dll", "#262", , 初始化,放在最前面
+
+.DLL命令 MpqCloseUpdatedArchive, 整数型, "SFmpq.dll", "MpqCloseUpdatedArchive", , 
+    .参数 hMPQ, 整数型, , 
+    .参数 Null, 整数型, , 
+
+.DLL命令 SFileCloseArchive, 逻辑型, "Storm.dll", "#252", , 关闭MPQ文件
+    .参数 hMPQ, 整数型, , 
+
+.DLL命令 SFileOpenFileEx, 逻辑型, "Storm.dll", "#268", , 
+    .参数 hMPQ, 整数型, , 
+    .参数 lpFileName, 文本型, , 
+    .参数 dwSearchScope, 整数型, , 0
+    .参数 hFile, 整数型, 传址, 返回打开句柄
+
+.DLL命令 SFileGetFileSize, 整数型, "Storm.dll", "#265", , 取文件大小
+    .参数 hFile, 整数型, , 
+    .参数 lpFileSizeHigh, 整数型, , 0
+
+.DLL命令 SFileReadFile, 逻辑型, "Storm.dll", "#269", , 读取文件
+    .参数 hFile, 整数型, , 
+    .参数 lpBuffer, 字节集, 传址, 存放读取的内容，需分配空间
+    .参数 nNumberOfBytesToRead, 整数型, , 要读取的字节数,SFileGetFileSize取得
+    .参数 lpNumberOfBytesRead, 整数型, 传址, 实际读取字节数，跟前面一样
+    .参数 lpOverlapped, 整数型, , 0
+
+.DLL命令 SFileCloseFile, 逻辑型, "Storm.dll", "#253", , 关闭已经打开的MPQ里面的文件
+    .参数 hFile, 整数型, , 
+
+.DLL命令 SFileFileExistsEx, 整数型, "Storm.dll", "#289", , 文件是否存在，失败返回0
+    .参数 hMPQ, 整数型, , 
+    .参数 lpszFileName, 文本型, , 
+    .参数 grfSearchScope, 整数型, , 0
+
+.DLL命令 拷贝内存_, 整数型, "kernel32", "RtlMoveMemory", , , RtlMoveMemory
+    .参数 目标数据地址, 字节型, 传址 数组, lpvDest
+    .参数 源数据, 字节集, 传址, lpvSource
+    .参数 尺寸, 整数型, , cbCopy
+
+.DLL命令 lstrcpyn_字节集, 整数型, "", "lstrcpyn", , 
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 RtlMoveMemory, 整数型, "kernel32", "RtlMoveMemory", , , RtlMoveMemory
+    .参数 目标数据地址, 字节型, 传址, lpvDest
+    .参数 源数据, 整数型, , lpvSource
+    .参数 尺寸, 整数型, , cbCopy
+
+.DLL命令 wvsprintf, 整数型, "user32.dll", "wvsprintfA", , 
+    .参数 lpstr, 整数型, , 
+    .参数 lpcstr, 文本型, , 
+    .参数 OptionalArguments, 长整数型, 传址, 
+
+.DLL命令 VirtualFree, 整数型, "kernel32.dll", "VirtualFree", , 调用失败,返回0
+    .参数 lpAddress, 空白型, , 
+    .参数 dwSize, 空白型, , 0
+    .参数 dwFreeType, 空白型, , MEM_RELEASE
+
+.DLL命令 VirtualAlloc, 整数型, "kernel32.dll", "VirtualAlloc", , 调用失败,返回0
+    .参数 pAddress, 整数型, , 
+    .参数 size, 整数型, , 
+    .参数 flAllocationType, 整数型, , MEM_COMMIT
+    .参数 flProtect, 整数型, , PAGE_READWRITE
+
+.DLL命令 copymem, 整数型, "kernel32", "RtlMoveMemory", , , RtlMoveMemory
+    .参数 目标数据地址, 整数型, , lpvDest
+    .参数 源数据, 整数型, , lpvSource
+    .参数 尺寸, 整数型, , cbCopy
+
+.DLL命令 lstrcpyn_文本, 整数型, "", "lstrcpyn", , 
+    .参数 欲取其指针, 文本型, 传址, 
+    .参数 欲取其指针, 文本型, 传址, 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 lstrcpyn_整数, 整数型, "", "lstrcpyn", , 
+    .参数 欲取其指针, 整数型, 传址, 
+    .参数 欲取其指针, 整数型, , 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 lstrcpyn_文本1, 整数型, "", "lstrcpyn", , 
+    .参数 欲取其指针, 整数型, , 
+    .参数 欲取其指针, 整数型, , 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 DeleteFileA, 空白型, "kernel32.dll", "DeleteFileA", , 
+    .参数 FilePath, 文本型, , 
+
+.DLL命令 MpqDeleteFileWithLocale, 空白型, "SFmpq.dll", "#29", , 
+    .参数 hWnd, 整数型, , 
+    .参数 Path, 文本型, , 
+    .参数 Null, 整数型, , 0
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+赋值 (., 0)
+赋值 (., “*.mpq;*.w3x;*.w3m;*.w3n;*.scx;*.scm;*.scn|*.mpq;*.w3x;*.w3m;*.w3n;*.scx;*.scm;*.scn|所有文件|*.*”)
+.如果真 (等于 (打开 (), 假))
+    返回 ()
+.如果真结束
+赋值 (., .)
+ ' ....................初始化........................
+
+
+
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+ProgramhWnd ＝ FindWindowA (“#44521”, “测试         By:Xed       QQ:364831018”)
+
+
+
+.子程序 _添加_被单击, 空白型, , 
+.局部变量 Echo, 整数型, , , 
+.局部变量 CloseHwndEcho, 整数型, , , 
+.局部变量 ComEcho, 整数型, , , 
+.局部变量 文件名, 文本型, , , 
+.局部变量 文件内容, 字节集, , , 
+
+赋值 (文件名, “war3map.j”)
+.如果 (等于 (., “”))
+    MessageBoxA (ProgramhWnd, “请先选择文件”, “提示”, 相加 (#错误图标, #系统等待))
+    返回 ()
+.否则
+    
+.如果结束
+
+SFileDestroy ()
+.如果 (等于 (SFileOpenArchive (., 0, 0, hWnd_MPQ), 假))
+    MessageBoxA (ProgramhWnd, “打开文档失败”, “提示”, 相加 (#错误图标, #系统等待))
+    返回 ()
+.否则
+    
+.如果结束
+
+赋值 (., 10)
+.如果 (等于 (读取MPQ内部文件 (hWnd_MPQ, 文件名, 文件内容), 真))
+    写到文件 (相加 (取运行目录 (), “\”, 文件名), 文件内容)
+    修改脚本 ()
+    赋值 (., 30)
+    .如果 (等于 (SFileFileExistsEx (hWnd_MPQ, “war3map.j”, 0), 1))
+        SFileCloseArchive (hWnd_MPQ)
+        赋值 (., 40)
+        赋值 (hWnd, MpqOpenArchiveForUpdate (., 33, 0))
+        赋值 (., 45)
+        赋值 (Echo, MpqAddFileToArchiveEx (hWnd, 相加 (取运行目录 (), “\war3map.j”), “war3map.j”, 197121, 2, 9))
+        赋值 (., 50)
+        赋值 (CloseHwndEcho, MpqCloseUpdatedArchive (hWnd, 0))
+        赋值 (., 60)
+        赋值 (hWnd, MpqOpenArchiveForUpdate (., 33, 0))
+        赋值 (., 70)
+        MpqDeleteFileWithLocale (hWnd, “(attributes)”, 0) ' 删除文件
+        赋值 (ComEcho, MpqCompactArchive (hWnd)) ' 重新压缩
+        赋值 (., 80)
+        .如果 (等于 (ComEcho, 1))
+            赋值 (., “重压缩成功”)
+             ' DeleteFileA (取运行目录 () ＋ “\war3map.j”)
+        .否则
+            赋值 (., “重压缩失败”)
+             ' DeleteFileA (取运行目录 () ＋ “\war3map.j”)
+        .如果结束
+        赋值 (CloseHwndEcho, MpqCloseUpdatedArchive (hWnd, 0))
+        赋值 (., 100)
+        返回 ()
+    .否则
+        赋值 (., “读取列表文件失败,尝试读取另一个...”)
+        
+    .如果结束
+    
+.否则
+    赋值 (., “读取列表文件失败,尝试读取另一个...”)
+    赋值 (CloseHwndEcho, MpqCloseUpdatedArchive (hWnd, 0))
+.如果结束
+
+SFileDestroy ()
+.如果 (等于 (SFileOpenArchive (., 0, 0, hWnd_MPQ), 假))
+    MessageBoxA (ProgramhWnd, “打开文档失败”, “提示”, 相加 (#错误图标, #系统等待))
+    返回 ()
+.否则
+    
+.如果结束
+
+赋值 (., “开始尝试读取另一个...”)
+.如果 (等于 (读取MPQ内部文件 (hWnd_MPQ, “scripts\war3map.j”, 文件内容), 真))
+    写到文件 (相加 (取运行目录 (), “\”, 文件名), 文件内容)
+    修改脚本 ()
+    赋值 (., 30)
+    .如果 (等于 (SFileFileExistsEx (hWnd_MPQ, “scripts\war3map.j”, 0), 1))
+        SFileCloseArchive (hWnd_MPQ)
+        赋值 (., 40)
+        赋值 (hWnd, MpqOpenArchiveForUpdate (., 33, 0))
+        赋值 (., 45)
+        赋值 (Echo, MpqAddFileToArchiveEx (hWnd, 相加 (取运行目录 (), “\war3map.j”), “scripts\war3map.j”, 197121, 2, 9))
+        赋值 (., 50)
+        赋值 (CloseHwndEcho, MpqCloseUpdatedArchive (hWnd, 0))
+        赋值 (., 60)
+        赋值 (hWnd, MpqOpenArchiveForUpdate (., 33, 0))
+        赋值 (., 70)
+        MpqDeleteFileWithLocale (hWnd, “(listfile)”, 0) ' 删除文件  (listfile)
+        MpqDeleteFileWithLocale (hWnd, “(attributes)”, 0) ' 删除文件  (listfile)
+        赋值 (ComEcho, MpqCompactArchive (hWnd)) ' 重新压缩
+        赋值 (., 80)
+        .如果 (等于 (ComEcho, 1))
+            赋值 (., “重压缩成功”)
+             ' DeleteFileA (取运行目录 () ＋ “\war3map.j”)
+        .否则
+            赋值 (., “重压缩失败”)
+             ' DeleteFileA (取运行目录 () ＋ “\war3map.j”)
+        .如果结束
+        赋值 (CloseHwndEcho, MpqCloseUpdatedArchive (hWnd, 0))
+        赋值 (., 100)
+        返回 ()
+    .否则
+        MessageBoxA (ProgramhWnd, “读取文件列表失败”, “提示”, 相加 (#错误图标, #系统等待))
+        返回 ()
+    .如果结束
+    
+.否则
+    MessageBoxA (ProgramhWnd, “读取文件失败”, “提示”, 相加 (#错误图标, #系统等待))
+    返回 ()
+.如果结束
+DeleteFileA (相加 (取运行目录 (), “\war3map.j”))
+ ' -----------------------------------------------------------
+MessageBoxA (ProgramhWnd, “地图内未找到脚本文件！”, “注意”, #警告图标)
+赋值 (., “操作失败”)
+
+
+.子程序 读取MPQ内部文件, 逻辑型, , 成功返回真
+.参数 hMPQ, 整数型, , 用"SF打开MPQ文件"获得,不能是0
+.参数 文件, 文本型, , 文件在MPQ里的完整路径,例如:"Scripts\war3map.j"
+.参数 文件内容, 字节集, 参考, 返回字节集,可以用"写到文件"命令保存到外部文件.
+
+.局部变量 文件大小, 整数型, , , 
+.局部变量 hFile, 整数型, , , 
+.局部变量 是否成功, 逻辑型, , , 
+
+
+
+ ' .如果真 (等于 (SFileOpenFileEx (hMPQ, 文件, 0, hFile), 假))
+    返回 (假)
+.如果真结束
+赋值 (文件大小, SFileGetFileSize (hFile, 0))
+.如果真 (等于 (文件大小, 0))
+    返回 (假)
+.如果真结束
+赋值 (文件内容, 取空白字节集 (文件大小))
+赋值 (是否成功, SFileReadFile (hFile, 文件内容, 文件大小, 文件大小, 0))
+SFileCloseFile (hFile)
+返回 (是否成功)
+
+.子程序 修改脚本, 空白型, , 
+.局部变量 FindText, 文本型, , , 
+.局部变量 Echo, 逻辑型, , , 
+.局部变量 ObjAddress_1, 整数型, , , 
+.局部变量 ObjAddress_2, 整数型, , , 
+.局部变量 Test, 字节集, , , 
+.局部变量 globals, 字节集, , , 
+.局部变量 endglobals, 字节集, , , 
+.局部变量 我的参数, 字节集, , , 
+.局部变量 我的函数, 字节集, , , 
+.局部变量 自定义函数, 字节集, , , 
+.局部变量 函数调用, 字节集, , , 
+.局部变量 globals_, 文本型, , , 
+.局部变量 endglobals_, 文本型, , , 
+.局部变量 函数调用_, 文本型, , , 
+.局部变量 自定义函数_, 文本型, , , 
+.局部变量 我的参数_, 文本型, , , 
+.局部变量 我的函数_, 文本型, , , 
+.局部变量 我的函数_1, 文本型, , , 
+.局部变量 我的函数_2, 文本型, , , 
+.局部变量 我的函数_3, 文本型, , , 
+.局部变量 我的函数_4, 文本型, , , 
+.局部变量 我的函数_5, 文本型, , , 
+.局部变量 我的函数_6, 文本型, , , 
+.局部变量 我的函数_7, 文本型, , , 
+.局部变量 我的函数_8, 文本型, , , 
+.局部变量 我的函数_9, 文本型, , , 
+.局部变量 FileHand, 整数型, , , 
+.局部变量 FileLong, 整数型, , , 
+.局部变量 ObjAddress, 整数型, , , 
+.局部变量 Data, 字节集, , , 
+
+ ' ---------------------------------------初始化----------------------------------------
+赋值 (globals_, “globals”) ' globals ＝ { 103, 108, 111, 98, 97, 108, 115 }
+赋值 (globals, 到字节集 (globals_))
+
+赋值 (endglobals_, “endglobals”) ' endglobals ＝ { 101, 110, 100, 103, 108, 111, 98, 97, 108, 115 }
+赋值 (endglobals, 到字节集 (endglobals_))
+
+赋值 (函数调用_, “call InitTrig_Xed(  )”) ' 函数调用 ＝ { 99, 97, 108, 108, 32, 73, 110, 105, 116, 84, 114, 105, 103, 95, 88, 101, 100, 40, 32, 32, 41, 10 }
+赋值 (函数调用, 相加 (到字节集 (函数调用_), { 10 }))
+
+赋值 (自定义函数_, “function InitCustomTriggers takes nothing returns nothing”) ' 自定义函数 ＝ { 102, 117, 110, 99, 116, 105, 111, 110, 32, 73, 110, 105, 116, 67, 117, 115, 116, 111, 109, 84, 114, 105, 103, 103, 101, 114, 115, 32, 116, 97, 107, 101, 115, 32, 110, 111, 116, 104, 105, 110, 103, 32, 114, 101, 116, 117, 114, 110, 115, 32, 110, 111, 116, 104, 105, 110, 103 }
+赋值 (自定义函数, 到字节集 (自定义函数_))
+
+赋值 (我的参数_, “trigger gg_trg_Xed =null”) ' 我的参数 ＝ { 116, 114, 105, 103, 103, 101, 114, 32, 103, 103, 95, 116, 114, 103, 95, 88, 101, 100, 32, 61, 110, 117, 108, 108, 13 }
+赋值 (我的参数, 相加 (到字节集 (我的参数_), { 13 }))
+ ' --------------------------------------------
+
+赋值 (我的函数_1, “function Trig_Xed_Actions takes nothing returns nothing”)
+赋值 (我的函数_2, 相加 (“call AdjustPlayerStateBJ( ”, ., “, Player(0), PLAYER_STATE_RESOURCE_GOLD )”))
+赋值 (我的函数_3, 相加 (“call AdjustPlayerStateBJ( ”, ., “, Player(0), PLAYER_STATE_RESOURCE_LUMBER )”))
+赋值 (我的函数_4, “endfunction”)
+ ' -------------------------------------------------------------
+赋值 (我的函数_5, “function InitTrig_Xed takes nothing returns nothing”)
+赋值 (我的函数_6, “set gg_trg_Xed = CreateTrigger(  )”)
+赋值 (我的函数_7, 相加 (“call TriggerRegisterPlayerChatEvent( gg_trg_Xed, Player(0), ”, #引号, ., #引号, “, true )”))
+赋值 (我的函数_8, “call TriggerAddAction( gg_trg_Xed, function Trig_Xed_Actions )”)
+赋值 (我的函数_9, “endfunction”)
+
+赋值 (我的函数, 相加 (到字节集 (我的函数_1), { 13 }, 到字节集 (我的函数_2), { 13 }, 到字节集 (我的函数_3), { 13 }, 到字节集 (我的函数_4), { 13 }, 到字节集 (我的函数_5), { 13 }, 到字节集 (我的函数_6), { 13 }, 到字节集 (我的函数_7), { 13 }, 到字节集 (我的函数_8), { 13 }, 到字节集 (我的函数_9), { 13 }))
+
+
+赋值 (., 15)
+ ' -------------------------------------------------------------------------------------------
+
+ ' 我的函数 ＝ { 102, 117, 110, 99, 116, 105, 111, 110, 32, 84, 114, 105, 103, 95, 88, 101, 100, 95, 65, 99, 116, 105, 111, 110, 115, 32, 116, 97, 107, 101, 115, 32, 110, 111, 116, 104, 105, 110, 103, 32, 114, 101, 116, 117, 114, 110, 115, 32, 110, 111, 116, 104, 105, 110, 103, 13, 99, 97, 108, 108, 32, 65, 100, 106, 117, 115, 116, 80, 108, 97, 121, 101, 114, 83, 116, 97, 116, 101, 66, 74, 40, 32, 57, 48, 48, 48, 48, 48, 44, 32, 80, 108, 97, 121, 101, 114, 40, 48, 41, 44, 32, 80, 76, 65, 89, 69, 82, 95, 83, 84, 65, 84, 69, 95, 82, 69, 83, 79, 85, 82, 67, 69, 95, 71, 79, 76, 68, 32, 41, 13, 99, 97, 108, 108, 32, 65, 100, 106, 117, 115, 116, 80, 108, 97, 121, 101, 114, 83, 116, 97, 116, 101, 66, 74, 40, 32, 49, 48, 48, 44, 32, 80, 108, 97, 121, 101, 114, 40, 48, 41, 44, 32, 80, 76, 65, 89, 69, 82, 95, 83, 84, 65, 84, 69, 95, 82, 69, 83, 79, 85, 82, 67, 69, 95, 76, 85, 77, 66, 69, 82, 32, 41, 13, 101, 110, 100, 102, 117, 110, 99, 116, 105, 111, 110, 13, 102, 117, 110, 99, 116, 105, 111, 110, 32, 73, 110, 105, 116, 84, 114, 105, 103, 95, 88, 101, 100, 32, 116, 97, 107, 101, 115, 32, 110, 111, 116, 104, 105, 110, 103, 32, 114, 101, 116, 117, 114, 110, 115, 32, 110, 111, 116, 104, 105, 110, 103, 13, 115, 101, 116, 32, 103, 103, 95, 116, 114, 103, 95, 88, 101, 100, 32, 61, 32, 67, 114, 101, 97, 116, 101, 84, 114, 105, 103, 103, 101, 114, 40, 32, 32, 41, 13, 99, 97, 108, 108, 32, 84, 114, 105, 103, 103, 101, 114, 82, 101, 103, 105, 115, 116, 101, 114, 80, 108, 97, 121, 101, 114, 67, 104, 97, 116, 69, 118, 101, 110, 116, 40, 32, 103, 103, 95, 116, 114, 103, 95, 88, 101, 100, 44, 32, 80, 108, 97, 121, 101, 114, 40, 48, 41, 44, 32, 34, 77, 121, 76, 111, 118, 101, 34, 44, 32, 116, 114, 117, 101, 32, 41, 13, 99, 97, 108, 108, 32, 84, 114, 105, 103, 103, 101, 114, 65, 100, 100, 65, 99, 116, 105, 111, 110, 40, 32, 103, 103, 95, 116, 114, 103, 95, 88, 101, 100, 44, 32, 102, 117, 110, 99, 116, 105, 111, 110, 32, 84, 114, 105, 103, 95, 88, 101, 100, 95, 65, 99, 116, 105, 111, 110, 115, 32, 41, 13, 101, 110, 100, 102, 117, 110, 99, 116, 105, 111, 110, 13 }
+
+赋值 (., “正在添加脚本...”)
+
+ ' -------------以下代码检测文件是否添加过脚本-------------------
+赋值 (FileHand, 打开文件 (相加 (取运行目录 (), “\war3map.j”), , ))
+赋值 (FileLong, 取文件长度 (FileHand))
+赋值 (Data, 读入字节集 (FileHand, FileLong))
+赋值 (ObjAddress, 寻找字节集 (Data, globals, 1))
+赋值 (ObjAddress, 相加 (ObjAddress, 取字节集长度 (globals)))
+移动读写位置 (FileHand, 1, ObjAddress)
+赋值 (Test, 读入字节集 (FileHand, 9))
+.如果 (等于 (Test, { 116, 114, 105, 103, 103, 101, 114, 32, 103 }))
+    MessageBoxA (ProgramhWnd, “该文件已添加脚本！”, “注意”, #警告图标)
+    赋值 (., “添加脚本失败!”)
+    返回 ()
+.否则
+    
+.如果结束
+关闭文件 (FileHand)
+赋值 (., 17)
+ ' ----------------------添加脚本------------------------
+赋值 (FileHand, 打开文件 (相加 (取运行目录 (), “\war3map.j”), , ))
+赋值 (FileLong, 取文件长度 (FileHand))
+.如果 (小于 (FileHand, 1))
+    MessageBoxA (ProgramhWnd, “无法打开文件！”, “注意”, #错误图标)
+    返回 ()
+.否则
+    .如果 (小于 (FileLong, 1))
+        MessageBoxA (ProgramhWnd, “无法获取文件长度！”, “注意”, #错误图标)
+        返回 ()
+    .否则
+        赋值 (Data, 读入字节集 (FileHand, FileLong))
+        赋值 (ObjAddress, 寻找字节集 (Data, globals, 1))
+        赋值 (ObjAddress, 相加 (ObjAddress, 取字节集长度 (globals)))
+        移动读写位置 (FileHand, 1, ObjAddress)
+        赋值 (Echo, 插入字节集 (FileHand, 我的参数))
+        .如果 (等于 (Echo, 假))
+            MessageBoxA (ProgramhWnd, “无法写入文件！”, “注意”, #错误图标)
+            返回 ()
+        .否则
+            
+        .如果结束
+        
+    .如果结束
+    
+.如果结束
+关闭文件 (FileHand)
+赋值 (., 20)
+ ' ------------------------------------------------
+赋值 (FileHand, 打开文件 (相加 (取运行目录 (), “\war3map.j”), , ))
+赋值 (FileLong, 取文件长度 (FileHand))
+.如果 (小于 (FileHand, 1))
+     ' 信息框 (“无法打开文件！”, 0, )
+    MessageBoxA (ProgramhWnd, “无法打开文件！”, “注意”, #错误图标)
+    返回 ()
+.否则
+    .如果 (小于 (FileLong, 1))
+         ' 信息框 (“无法获取文件长度！”, 0, )
+        MessageBoxA (ProgramhWnd, “无法获取文件长度！”, “注意”, #错误图标)
+        返回 ()
+    .否则
+        赋值 (Data, 读入字节集 (FileHand, FileLong))
+        赋值 (ObjAddress_1, 寻找字节集 (Data, endglobals, 1))
+        赋值 (ObjAddress_1, 相加 (ObjAddress_1, 取字节集长度 (endglobals)))
+        移动读写位置 (FileHand, 1, ObjAddress_1)
+        赋值 (Echo, 插入字节集 (FileHand, 我的函数))
+    .如果结束
+    
+.如果结束
+关闭文件 (FileHand)
+赋值 (., 25)
+ ' -------------------------------------------
+
+赋值 (FileHand, 打开文件 (相加 (取运行目录 (), “\war3map.j”), , ))
+赋值 (FileLong, 取文件长度 (FileHand))
+.如果 (小于 (FileHand, 1))
+    MessageBoxA (ProgramhWnd, “无法打开文件！”, “注意”, #错误图标)
+    返回 ()
+.否则
+    .如果 (小于 (FileLong, 1))
+         ' 信息框 (“无法获取文件长度！”, 0, )
+        MessageBoxA (ProgramhWnd, “无法获取文件长度！”, “注意”, #错误图标)
+        返回 ()
+    .否则
+        赋值 (Data, 读入字节集 (FileHand, FileLong))
+        赋值 (ObjAddress_2, 寻找字节集 (Data, 自定义函数, 1))
+        赋值 (ObjAddress_2, 相加 (ObjAddress_2, 取字节集长度 (自定义函数)))
+        移动读写位置 (FileHand, 1, ObjAddress_2)
+        赋值 (Echo, 插入字节集 (FileHand, 函数调用))
+    .如果结束
+    
+.如果结束
+关闭文件 (FileHand)
+赋值 (., 28)
+ ' ---------------------------------------------
+赋值 (., “添加脚本成功!”)
+
+
+.子程序 _解密_被单击, 空白型, , 
+.局部变量 FileHand, 整数型, , , 
+.局部变量 解密标志, 字节集, , , 
+
+赋值 (FileHand, 打开文件 (., , ))
+移动读写位置 (FileHand, 1, 516)
+删除数据 (FileHand, 6)
+移动读写位置 (FileHand, 1, 516) ' 18
+插入字节集 (FileHand, { 32, 0, 0, 0, 255, 255 })
+ ' -------------------------
+ ' FileHand ＝ 打开文件 (编辑框3.内容, , )
+移动读写位置 (FileHand, 1, 540) ' 18
+删除数据 (FileHand, 1)
+移动读写位置 (FileHand, 1, 540) ' 18
+
+
+插入字节集 (FileHand, { 20 })
+
+
+ ' Data ＝ 读入字节集 (FileHand, 1)
+ ' 编辑框2.内容 ＝ 查看字节集_光庆 (Data)
+关闭文件 (FileHand)
+
+
+.子程序 _查询_被单击, 空白型, , 
+.局部变量 FileHand, 整数型, , , 
+.局部变量 Data, 字节集, , , 
+.局部变量 Data_1, 字节集, , , 
+.局部变量 Temp, 文本型, , , 
+.局部变量 Temp_1, 文本型, , , 
+
+.如果 (等于 (., “”))
+    MessageBoxA (ProgramhWnd, “请先打开文件”, “提示”, 0)
+    返回 ()
+.否则
+    赋值 (FileHand, 打开文件 (., , ))
+.如果结束
+移动读写位置 (FileHand, 1, 516)
+赋值 (Data, 读入字节集 (FileHand, 6))
+ ' ---------------------------------------------------------------------
+ ' FileHand ＝ 打开文件 (编辑框3.内容, , )
+移动读写位置 (FileHand, 1, 540)
+赋值 (Data_1, 读入字节集 (FileHand, 1))
+赋值 (Temp, 查看字节集 (Data_1))
+
+赋值 (Temp_1, 取文本右边 (Temp, 3))
+
+赋值 (., 取文本左边 (Temp_1, 2))
+
+MessageBoxA (ProgramhWnd, 相加 (查看字节集 (Data), #换行符, 查看字节集 (Data_1)), “提示”, 0)
+关闭文件 (FileHand)
+
+
+
+
+.子程序 查看字节集, 文本型, , 
+.参数 字节集, 字节集, , 
+
+.局部变量 码表, 文本型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 空白文本, 文本型, , , 
+.局部变量 码表指针, 整数型, , , 
+.局部变量 字节集长度, 整数型, , , 
+.局部变量 文本指针, 整数型, , , 
+.局部变量 字节集指针, 整数型, , , 
+
+.变量循环首 (0, 255, 1, i)
+    赋值 (码表, 相加 (码表, 取文本右边 (相加 (“00”, 取十六进制文本 (i), “ ”), 3)))
+.变量循环尾 ()
+赋值 (码表指针, lstrcpyn_文本 (码表, 码表, 0))
+赋值 (字节集指针, lstrcpyn_字节集 (字节集, 字节集, 0))
+赋值 (字节集长度, 取字节集长度 (字节集))
+赋值 (空白文本, 取空白文本 (相加 (相乘 (字节集长度, 3), 1)))
+赋值 (文本指针, lstrcpyn_文本 (空白文本, 空白文本, 0))
+ ' copymem (文本指针, lstrcpyn_文本 (“{”, “{”, 0), 1)
+赋值 (文本指针, 相减 (文本指针, 2))
+.计次循环首 (字节集长度, i)
+    copymem (相加 (文本指针, 相乘 (i, 3)), 相加 (码表指针, 相乘 (字节集 [i], 3)), 3)
+.计次循环尾 ()
+ ' copymem (文本指针 ＋ 字节集长度 × 3 ＋ 2, lstrcpyn_文本 (“}”, “}”, 0), 1)
+返回 (空白文本)
+
+.子程序 _按钮2_被单击, 空白型, , 
+赋值 (hWnd, MpqOpenArchiveForUpdate (., 33, 0))
+MpqDeleteFileWithLocale (hWnd, “(attributes)”, 0)
+MpqCloseUpdatedArchive (hWnd, 0)
+
+
+.窗口程序集 窗口程序集2, , , 
+
+.子程序 _窗口1_创建完毕, 空白型, , 
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

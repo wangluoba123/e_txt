@@ -1,0 +1,168 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 SystemBasicInformation, "0", , 
+.常量 SystemPerformanceInformation, "2", , 
+.常量 SystemTimeInformation, "3", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 2 系统核心支持库
+
+
+
+
+数据类型 SYSTEM_PERFORMACE_INFORMATION, , 312
+    .成员 liIdleTime, 长整数型, , , 
+    .成员 dwSpare, 整数型, , "76", 
+
+数据类型 SYSTEM_INFO, , 
+    .成员 dwOemID, 整数型, , , 
+    .成员 dwPageSize, 整数型, , , 
+    .成员 lpMinimumApplicationAddress, 整数型, , , 
+    .成员 lpMaximumApplicationAddress, 整数型, , , 
+    .成员 dwActiveProcessorMask, 整数型, , , 
+    .成员 dwNumberOrfProcessors, 整数型, , , 
+    .成员 dwProcessorType, 整数型, , , 
+    .成员 dwAllocationGranularity, 整数型, , , 
+    .成员 wProcessorLevel, 短整数型, , , 
+    .成员 wProcessorRevision, 短整数型, , , 
+
+数据类型 SYSTEM_TIME_INFORMATION, , 32
+    .成员 liKeBootTime, 长整数型, , , 
+    .成员 liKeSystemTime, 长整数型, , , 
+    .成员 liExpTimeZoneBias, 长整数型, , , 
+    .成员 uCurrentTimeZoneId, 整数型, , , 
+    .成员 dwReserved, 整数型, , , 
+
+
+.DLL命令 NtQuerySystemInformation1, 整数型, "ntdll.dll", "NtQuerySystemInformation", , 
+    .参数 a, 整数型, , 
+    .参数 b, SYSTEM_TIME_INFORMATION, , 
+    .参数 c, 整数型, , 
+    .参数 d, 整数型, , 
+
+.DLL命令 NtQuerySystemInformation, 整数型, "ntdll.dll", "NtQuerySystemInformation", , 
+    .参数 a, 整数型, , 
+    .参数 b, SYSTEM_PERFORMACE_INFORMATION, , 
+    .参数 c, 整数型, , 
+    .参数 d, 整数型, , 
+
+.DLL命令 GetSystemInfo, 整数型, "", "", , 
+    .参数 lpSystemInfo, SYSTEM_INFO, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 status, 整数型, , , 
+.程序集变量 SysPerfInfo, SYSTEM_PERFORMACE_INFORMATION, , , 
+.程序集变量 SysTimeInfo, SYSTEM_TIME_INFORMATION, , , 
+.程序集变量 dbIdleTime, 双精度小数型, , , 
+.程序集变量 dbSystemTime, 双精度小数型, , , 
+.程序集变量 liOldIdleTime, 双精度小数型, , , 
+.程序集变量 liOldSystemTime, 双精度小数型, , , 
+.程序集变量 CPUNum, 整数型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 a, SYSTEM_INFO, , , 
+
+GetSystemInfo (a)
+赋值 (CPUNum, a.dwNumberOrfProcessors)
+赋值 (status, NtQuerySystemInformation1 (#SystemTimeInformation, SysTimeInfo, 32, 0))
+.如果真 (不等于 (status, 0))
+    销毁 ()
+    返回 ()
+.如果真结束
+赋值 (status, NtQuerySystemInformation (#SystemPerformanceInformation, SysPerfInfo, 312, 0))
+.如果真 (不等于 (status, 0))
+    销毁 ()
+    返回 ()
+.如果真结束
+赋值 (liOldIdleTime, SysPerfInfo.liIdleTime)
+赋值 (liOldSystemTime, SysTimeInfo.liKeSystemTime)
+
+.子程序 Li2Double, 双精度小数型, , 
+.参数 x, 长整数型, , 
+
+.局部变量 h, 整数型, , , 
+.局部变量 l, 整数型, , , 
+.局部变量 k, 文本型, , , 
+
+赋值 (k, 取十六进制文本 (x))
+赋值 (k, 相加 (取重复文本 (相减 (16, 取文本长度 (k)), “0”), k))
+赋值 (h, 十六进制文本到整数 (取文本左边 (k, 8)))
+赋值 (l, 十六进制文本到整数 (取文本右边 (k, 8)))
+返回 (相加 (相乘 (h, 4294967296), l))
+
+.子程序 十六进制文本到整数, 整数型, , 
+.参数 欲转换十六进制文本, 文本型, , 长度不得大于八位，也不得有非法字符，否则返回-1
+
+.局部变量 大写文本, 文本型, , , 
+.局部变量 文本长度, 整数型, , , 
+.局部变量 循环次数, 整数型, , , 
+.局部变量 代码, 整数型, , , 
+.局部变量 n, 整数型, , , 
+
+赋值 (文本长度, 取文本长度 (欲转换十六进制文本))
+.如果真 (大于 (文本长度, 8))
+    返回 (-1)
+.如果真结束
+赋值 (大写文本, 到大写 (欲转换十六进制文本))
+赋值 (n, 0)
+.计次循环首 (文本长度, 循环次数)
+    赋值 (代码, 取代码 (大写文本, 相加 (相减 (文本长度, 循环次数), 1)))
+    .如果 (并且 (大于或等于 (代码, 65), 小于或等于 (代码, 70)))
+        赋值 (n, 相加 (n, 相乘 (相减 (代码, 55), 求次方 (16, 相减 (循环次数, 1)))))
+    .否则
+        .如果 (并且 (大于或等于 (代码, 48), 小于或等于 (代码, 57)))
+            赋值 (n, 相加 (n, 相乘 (相减 (代码, 48), 求次方 (16, 相减 (循环次数, 1)))))
+        .否则
+            返回 (-1)
+        .如果结束
+        
+    .如果结束
+    
+.计次循环尾 ()
+返回 (n)
+
+.子程序 _时钟1_周期事件, 空白型, , 
+赋值 (status, NtQuerySystemInformation1 (#SystemTimeInformation, SysTimeInfo, 32, 0))
+.如果真 (不等于 (status, 0))
+    返回 ()
+.如果真结束
+赋值 (status, NtQuerySystemInformation (#SystemPerformanceInformation, SysPerfInfo, 312, 0))
+.如果真 (不等于 (status, 0))
+    返回 ()
+.如果真结束
+赋值 (dbIdleTime, 相减 (Li2Double (SysPerfInfo.liIdleTime), Li2Double (liOldIdleTime)))
+赋值 (dbSystemTime, 相减 (Li2Double (SysTimeInfo.liKeSystemTime), Li2Double (liOldSystemTime)))
+赋值 (dbIdleTime, 相除 (dbIdleTime, dbSystemTime))
+赋值 (dbIdleTime, 相减 (100, 相除 (相乘 (dbIdleTime, 100), CPUNum)))
+赋值 (liOldIdleTime, SysPerfInfo.liIdleTime)
+赋值 (liOldSystemTime, SysTimeInfo.liKeSystemTime)
+赋值 (_启动窗口., 到文本 (dbIdleTime))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

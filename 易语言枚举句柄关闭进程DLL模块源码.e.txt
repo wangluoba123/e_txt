@@ -1,0 +1,135 @@
+ ' 文件类型：Windows动态链接库
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 ProcessBasicInformation, "0", , 
+.常量 JOB_OBJECT_ALL_ACCESS, "2031647", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 PROCESS_BASIC_INFORMATION, , 
+    .成员 ExitStatus, 整数型, , , NTSTATUS
+    .成员 PebBaseAddress, 整数型, , , PPEB指针
+    .成员 AffinityMask, 整数型, , , ULONG_PTR
+    .成员 BasePriority, 整数型, , , KPRIORITY
+    .成员 UniqueProcessId, 整数型, , , PID
+    .成员 InheritedFromUniqueProcessId, 整数型, , , 父进程PID
+
+数据类型 OBJECT_ATTRIBUTES, , OBJECT_ATTRIBUTES
+    .成员 Length, 整数型, , , 
+    .成员 RootDirectory, 整数型, , , 
+    .成员 ObjectName, 整数型, , , 
+    .成员 Attributes, 整数型, , , 
+    .成员 SecurityDescriptor, 整数型, , , 
+    .成员 SecurityQualityOfService, 整数型, , , 
+
+
+.DLL命令 ZwQueryInformationProcess, 整数型, "ntdll.dll", "ZwQueryInformationProcess", , 
+    .参数 ProcessHandle, 整数型, , 
+    .参数 ProcessInformationClass, 整数型, , 
+    .参数 ProcessInformation, PROCESS_BASIC_INFORMATION, , 
+    .参数 ProcessInformationLength, 整数型, , 
+    .参数 ReturnLength, 整数型, 传址, 
+
+.DLL命令 ZwCreateJobObject, 整数型, "ntdll.dll", "ZwCreateJobObject", , 
+    .参数 st, 整数型, 传址, 
+    .参数 hJob, 整数型, , 
+    .参数 OA, OBJECT_ATTRIBUTES, , 
+
+.DLL命令 ZwAssignProcessToJobObject, 整数型, "ntdll.dll", "ZwAssignProcessToJobObject", , 
+    .参数 hJob, 整数型, , 
+    .参数 hProcess, 整数型, , 
+
+.DLL命令 ZwTerminateJobObject, 整数型, "ntdll.dll", "ZwTerminateJobObject", , 
+    .参数 hJob, 整数型, , 
+    .参数 ExitStatus, 整数型, , 
+
+.DLL命令 ZwClose, 空白型, "ntdll.dll", "ZwClose", , 
+    .参数 句柄, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置动态链接库初始化代码
+OpenProcessByFuckHandle (3196)
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 返回值被忽略。
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.子程序 GetProcessIdByProcessHandle, 整数型, , 
+.参数 ProcessHandle, 整数型, , 
+
+.局部变量 PBI, PROCESS_BASIC_INFORMATION, , , 
+
+ZwQueryInformationProcess (ProcessHandle, #ProcessBasicInformation, PBI, 24, 0)
+返回 (PBI.UniqueProcessId)
+
+
+.子程序 TerminateProcessByJob, 逻辑型, , 
+.参数 hProcess, 整数型, , 
+.参数 ExitStatus, 整数型, , 
+
+.局部变量 st, 整数型, , , 
+.局部变量 hJob, 整数型, , , 
+.局部变量 ret, 逻辑型, , , 
+.局部变量 oa, OBJECT_ATTRIBUTES, , , 
+
+赋值 (ret, 假)
+赋值 (oa.Length, 24)
+赋值 (st, ZwCreateJobObject (hJob, #JOB_OBJECT_ALL_ACCESS, oa))
+.如果真 (大于或等于 (st, 0))
+    赋值 (st, ZwAssignProcessToJobObject (hJob, hProcess))
+    .如果真 (大于或等于 (st, 0))
+        赋值 (st, ZwTerminateJobObject (hJob, ExitStatus))
+        .如果真 (大于或等于 (st, 0))
+            赋值 (ret, 真)
+        .如果真结束
+        
+    .如果真结束
+    
+    ZwClose (hJob)
+.如果真结束
+返回 (ret)
+
+.子程序 OpenProcessByFuckHandle, 逻辑型, , 
+.参数 ProcessId, 整数型, , 要关闭进程的PID
+
+.局部变量 TestHandle, 整数型, , , 
+.局部变量 TestProcessId, 整数型, , , 
+.局部变量 i, 整数型, , , 
+
+.计次循环首 (9999, TestHandle)
+    赋值 (TestProcessId, GetProcessIdByProcessHandle (TestHandle))
+    .如果真 (等于 (TestProcessId, ProcessId))
+        TerminateProcessByJob (TestHandle, 0)
+        ZwClose (TestHandle)
+        返回 (真)
+    .如果真结束
+    
+.计次循环尾 ()
+返回 (假)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

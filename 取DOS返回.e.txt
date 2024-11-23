@@ -1,0 +1,135 @@
+ ' 文件类型：未知类型
+
+ ' 程序名称：取DOS返回结果
+ ' 程序描述：
+ ' 程序作者：ming7
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 SW_HIDE, "0", , 
+.常量 STARTF_USESHOWWINDOW, "1", , 
+.常量 STARTF_USESTDHANDLES, "256", , 
+.常量 STILL_ACTIVE, "259", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 3 系统核心支持库
+
+
+
+
+数据类型 STARTUPINFO, , 
+    .成员 cb, 整数型, , , 
+    .成员 lpReserved, 文本型, , , 
+    .成员 lpDesktop, 文本型, , , 
+    .成员 lpTitle, 文本型, , , 
+    .成员 dwX, 整数型, , , 
+    .成员 dwY, 整数型, , , 
+    .成员 dwXSize, 整数型, , , 
+    .成员 dwYSize, 整数型, , , 
+    .成员 dwXCountChars, 整数型, , , 
+    .成员 dwYCountChars, 整数型, , , 
+    .成员 dwFillAttribute, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+    .成员 wShowWindow, 短整数型, , , 
+    .成员 cbReserved2, 短整数型, , , 
+    .成员 lpReserved2, 整数型, , , 
+    .成员 hStdInput, 整数型, , , 
+    .成员 hStdOutput, 整数型, , , 
+    .成员 hStdError, 整数型, , , 
+
+数据类型 SECURITY_ATTRIBUTES, , 
+    .成员 nLength, 整数型, , , 
+    .成员 lpSecurityDescriptor, 整数型, , , 
+    .成员 bInheritHandle, 整数型, , , 
+
+数据类型 PROCESS_INFORMATION, , 
+    .成员 hProcess, 整数型, , , 
+    .成员 hThread, 整数型, , , 
+    .成员 dwProcessId, 整数型, , , 
+    .成员 dwThreadId, 整数型, , , 
+
+
+.DLL命令 CreateProcess, 整数型, "", "CreateProcessA", , 
+    .参数 lpApplicationName, 整数型, , 
+    .参数 lpCommandLine, 文本型, , 
+    .参数 lpProcessAttributes, 整数型, , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 bInheritHandles, 逻辑型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpEnvironment, 整数型, , 
+    .参数 lpCurrentDriectory, 整数型, , 
+    .参数 lpStartupInfo, 未知类型0x41010065, 传址, 
+    .参数 lpProcessInformation, 未知类型0x41010066, 传址, 
+
+.DLL命令 CreatePipe, 整数型, "", "CreatePipe", , 
+    .参数 phReadPipe, 整数型, 传址, 
+    .参数 phWritePipe, 整数型, 传址, 
+    .参数 lpPipeAttributes, 未知类型0x41010067, 传址, 
+    .参数 nSize, 整数型, , 
+
+.DLL命令 ReadFile, 整数型, "", "ReadFile", , 
+    .参数 hFile, 整数型, , 
+    .参数 lpBuffer, 字节集, 传址, 
+    .参数 nNumberOfBytesToRead, 整数型, , 
+    .参数 lpNumberOfBytesRead, 整数型, 传址, 
+    .参数 lpOverlapped, 整数型, , 
+
+.DLL命令 CloseHandle, 整数型, "", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 PeekNamedPipe, 整数型, "", "PeekNamedPipe", , 
+    .参数 hNamedPipe, 整数型, , 
+    .参数 lpBuffer, 整数型, , 
+    .参数 nBufferSize, 整数型, , 
+    .参数 lpBytesRead, 整数型, , 
+    .参数 lpTotalBytesAvail, 整数型, 传址, 
+    .参数 lpBytesLeftThisMessage, 整数型, , 
+
+.DLL命令 GetExitCodeProcess, 整数型, "", "GetExitCodeProcess", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpExitCode, 整数型, 传址, 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.程序集 _接口程序集, , , 
+
+.程序集变量 SECURITY_ATTRIBUTES, 未知类型0x4101000F, , , 
+.程序集变量 STARTUPINFO, 未知类型0x41010010, , , 
+.程序集变量 PROCESS_INFORMATION, 未知类型0x41010011, , , 
+.程序集变量 hWrite, 整数型, , , 
+.程序集变量 hRead, 整数型, , , 
+.程序集变量 txt, 字节集, , , 
+.程序集变量 len, 整数型, , , 
+.程序集变量 EXIT, 整数型, , , 
+.程序集变量 retext, 文本型, , , 
+.子程序 取DOS执行结果, 文本型, , 
+.参数 命令行文本, 文本型, , 
+
+赋值 (SECURITY_ATTRIBUTES., 12)
+赋值 (SECURITY_ATTRIBUTES., 0)
+赋值 (SECURITY_ATTRIBUTES., 1)
+未知函数_167837714 (hRead, hWrite, SECURITY_ATTRIBUTES, 0) ' 创建一个匿名管道
+赋值 (STARTUPINFO., 68)
+赋值 (STARTUPINFO.)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

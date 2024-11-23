@@ -1,0 +1,492 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：燕为卿
+ ' 邮政编码：100088
+ ' 联系地址：北京市海淀区
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：http://yanshao.blog.sohu.com
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 332
+    高度 = 409
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 真
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “文件目录操作即时监视程序”
+    帮助文件名 = “”
+
+
+
+.常量 WM_SHNOTIFY, "1025", , 
+.常量 SHCNE_RENAMEITEM, "1", , 
+.常量 SHCNE_CREATE, "2", , 
+.常量 SHCNE_DELETE, "4", , 
+.常量 SHCNE_MKDIR, "8", , 
+.常量 SHCNE_RMDIR, "16", , 
+.常量 SHCNE_MEDIAINSERTED, "32", , 
+.常量 SHCNE_MEDIAREMOVED, "64", , 
+.常量 SHCNE_DRIVEREMOVED, "128", , 
+.常量 SHCNE_DRIVEADD, "256", , 
+.常量 SHCNE_NETSHARE, "512", , 
+.常量 SHCNE_NETUNSHARE, "1024", , 
+.常量 SHCNE_ATTRIBUTES, "2048", , 
+.常量 SHCNE_UPDATEDIR, "4096", , 
+.常量 SHCNE_UPDATEITEM, "8192", , 
+.常量 SHCNE_SERVERDISCONNECT, "16384", , 
+.常量 SHCNE_UPDATEIMAGE, "-1", , 
+.常量 SHCNE_DRIVEADDGUI, "65536", , 
+.常量 SHCNE_RENAMEFOLDER, "131072", , 
+.常量 SHCNE_FREESPACE, "262144", , 
+.常量 SHCNE_ASSOCCHANGED, "134217728", , 
+.常量 SHCNE_DISKEVENTS, "145439", , 
+.常量 SHCNE_GLOBALEVENTS, "201687520", , 
+.常量 SHCNE_ALLEVENTS, "2147483647", , 
+.常量 SHCNE_INTERRUPT, "-2147483648", , 
+.常量 SHCNF_IDLIST, "0", , 
+.常量 SHCNF_PATHA, "1", , 
+.常量 SHCNF_PRINTERA, "2", , 
+.常量 SHCNF_DWORD, "3", , 
+.常量 SHCNF_PATHW, "5", , 
+.常量 SHCNF_PRINTERW, "6", , 
+.常量 SHCNF_TYPE, "255", , 
+.常量 SHCNF_FLUSH, "4096", , 
+.常量 SHCNF_FLUSHNOWAIT, "8192", , 
+.常量 CSIDL_DESKTOP, "0", , 
+.常量 CSIDL_INTERNET, "1", , 
+.常量 CSIDL_PROGRAMS, "2", , 
+.常量 CSIDL_CONTROLS, "3", , 
+.常量 CSIDL_PRINTERS, "4", , 
+.常量 CSIDL_PERSONAL, "5", , 
+.常量 CSIDL_FAVORITES, "6", , 
+.常量 CSIDL_STARTUP, "7", , 
+.常量 CSIDL_RECENT, "8", , 
+.常量 CSIDL_SENDTO, "9", , 
+.常量 CSIDL_BITBUCKET, "10", , 
+.常量 CSIDL_STARTMENU, "11", , 
+.常量 CSIDL_DESKTOPDIRECTORY, "16", , 
+.常量 CSIDL_DRIVES, "17", , 
+.常量 CSIDL_NETWORK, "18", , 
+.常量 CSIDL_NETHOOD, "19", , 
+.常量 CSIDL_FONTS, "20", , 
+.常量 CSIDL_TEMPLATES, "21", , 
+.常量 CSIDL_COMMON_STARTMENU, "22", , 
+.常量 CSIDL_COMMON_PROGRAMS, "23", , 
+.常量 CSIDL_COMMON_STARTUP, "24", , 
+.常量 CSIDL_COMMON_DESKTOPDIRECTORY, "25", , 
+.常量 CSIDL_APPDATA, "26", , 
+.常量 CSIDL_PRINTHOOD, "27", , 
+.常量 CSIDL_ALTSTARTUP, "29", , 
+.常量 CSIDL_COMMON_ALTSTARTUP, "30", , 
+.常量 CSIDL_COMMON_FAVORITES, "31", , 
+.常量 CSIDL_INTERNET_CACHE, "32", , 
+.常量 CSIDL_COOKIES, "33", , 
+.常量 CSIDL_HISTORY, "34", , 
+.常量 SHGFI_LARGEICON, "0", , 
+.常量 SHGFI_SMALLICON, "1", , 
+.常量 SHGFI_OPENICON, "2", , 
+.常量 SHGFI_SHELLICONSIZE, "4", , 
+.常量 SHGFI_PIDL, "8", , 
+.常量 SHGFI_USEFILEATTRIBUTES, "16", , 
+.常量 SHGFI_ICON, "256", , 
+.常量 SHGFI_DISPLAYNAME, "512", , 
+.常量 SHGFI_TYPENAME, "1024", , 
+.常量 SHGFI_ATTRIBUTES, "2048", , 
+.常量 SHGFI_ICONLOCATION, "4096", , 
+.常量 SHGFI_EXETYPE, "8192", , 
+.常量 SHGFI_SYSICONINDEX, "16384", , 
+.常量 SHGFI_LINKOVERLAY, "32768", , 
+.常量 SHGFI_SELECTED, "65536", , 
+.常量 SHCNE_EXTENDED_EVENT, "67108864", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' spec A512548E76954B6E92C21055517615B0 2 0 特殊功能支持库
+
+
+
+
+数据类型 SHFILEINFOBYTE, , 
+    .成员 hIcon, 整数型, , , 
+    .成员 iIcon, 整数型, , , 
+    .成员 dwAttributes, 整数型, , , 
+    .成员 szDisplayName, 字节型, , "260", 
+    .成员 szTypeName, 字节型, , "80", 
+
+数据类型 SHFILEINFO, , 
+    .成员 hIcon, 整数型, , , 
+    .成员 iIcon, 整数型, , , 
+    .成员 dwAttributes, 整数型, , , 
+    .成员 szDisplayName, 字节型, , "260", 
+    .成员 szTypeName, 字节型, , "80", 
+
+数据类型 PIDLSTRUCT, , 
+    .成员 PIDL, 整数型, , , 
+    .成员 bWatchSubFolders, 整数型, , , 
+
+数据类型 SHNOTIFYSTRUCT, , 
+    .成员 bwItem1, 整数型, , , 
+    .成员 bwItem2, 整数型, , , 
+
+
+.DLL命令 移动Shell消息结构内存, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 pDest, SHNOTIFYSTRUCT, , 根据需要可以设置成不同的类型
+    .参数 pSource, 整数型, , 根据需要可以设置成不同的类型
+    .参数 dwLength, 整数型, , 
+
+.DLL命令 移动整数型内存, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 pDest, 整数型, 传址, 
+    .参数 pSource, 整数型, , 
+    .参数 dwLength, 整数型, , 
+
+.DLL命令 释放任务内存, 整数型, "ole32.dll", "CoTaskMemFree", , 
+    .参数 pv, 整数型, , 
+
+.DLL命令 取指定文件夹位置, 整数型, "shell32.dll ", "SHGetSpecialFolderLocation", , 
+    .参数 hwndOwner, 整数型, , 
+    .参数 nFolder, 整数型, , 
+    .参数 pidl, 整数型, 传址, 
+
+.DLL命令 从索引列表获取路径, 整数型, "shell32.dll", "SHGetPathFromIDListA", , 
+    .参数 pidl, 整数型, , 
+    .参数 pszPath, 文本型, , 
+
+.DLL命令 取文件信息PIDL, 整数型, "shell32.dll", "SHGetFileInfoA", , 
+    .参数 pidl, 整数型, , 
+    .参数 dwFileAttributes, 整数型, , 
+    .参数 psfib, SHFILEINFOBYTE, , 
+    .参数 cbFileInfo, 整数型, , 
+    .参数 uFlags, 整数型, , 
+
+.DLL命令 取文件信息, 整数型, "shell32.dll", "SHGetFileInfoA", , 
+    .参数 pszPath, 文本型, , 
+    .参数 dwFileAttributes, 整数型, , 
+    .参数 psfi, SHFILEINFO, , 
+    .参数 cbFileInfo, 整数型, , 
+    .参数 uFlags, 整数型, , 
+
+.DLL命令 Shell更改通知注册, 整数型, "shell32.dll", "#2", , 
+    .参数 hWnd, 整数型, , 
+    .参数 uFlags, 整数型, , 
+    .参数 dwEventID, 整数型, , 
+    .参数 uMsg, 整数型, , 
+    .参数 cItems, 整数型, , 
+    .参数 lpps, PIDLSTRUCT, , 
+
+.DLL命令 撤消Shell更改通知注册, 整数型, "shell32.dll", "#4", , 
+    .参数 hNotify, 整数型, , 
+
+.DLL命令 Shell更改通知, 整数型, "shell32.dll", "SHChangeNotify", , 
+    .参数 wEventId, 整数型, , 
+    .参数 uFlags, 整数型, , 
+    .参数 dwItem1, 整数型, , 
+    .参数 dwItem2, 整数型, , 
+
+.DLL命令 SetWindowLong, 整数型, "user32", "SetWindowLongA", 公开, 在窗口结构中为指定的窗口设置信息  指定数据的前一个值
+    .参数 窗口句柄, 整数型, , hwnd，欲为其取得信息的窗口的句柄
+    .参数 窗口信息值, 整数型, , nIndex，请参考GetWindowLong函数的nIndex参数的说明
+    .参数 窗口信息新值, 子程序指针, , dwNewLong，由nIndex指定的窗口信息的新值
+
+.DLL命令 GetWindowLong, 子程序指针, "user32", "GetWindowLongA", 公开, 从指定窗口的结构中取得信息  由nIndex决定。零表示出错。会设置GetLastError
+    .参数 窗口句柄, 整数型, , 欲为其获取信息的窗口的句柄
+    .参数 属性, 整数型, , 欲取回的信息，可以是下述任何一个常数：;GWL_EXSTYLE：扩展窗口样式;GWL_STYLE：窗口样式;GWL_WNDPROC：该窗口的窗口函数的地址;GWL_HINSTANCE：拥有窗口的实例的句柄;GWL_HWNDPARENT：该窗口之父的句柄。不要用SetWindowWord来改变这个值;GWL_ID：对话框中一个子窗口的标识符;GWL_USERDATA：含义由应用程序规定;DWL_DLGPROC：这个窗口的对话框函数地址;DWL_MSGRESULT：在对话框函数中处理的一条消息返回的值;DWL_USER：含义由应用程序规定;
+
+.DLL命令 CallWindowProc, 整数型, "user32.dll", "CallWindowProcA", 公开, 执行窗口过程
+    .参数 前一窗口函数地址, 子程序指针, , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 消息值, 整数型, , 
+    .参数 附加参数1, 整数型, , 
+    .参数 附加参数2, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 原窗口过程, 子程序指针, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.如果 (注册Shell监视 (_启动窗口.取窗口句柄 ()))
+    赋值 (.内容, 相加 (“本程序用易语言4.03版开发，可以监视在Windows Explorer中重命名、新建、删除文件或目录；改变文件关联；插入、取出CD和添加删除网络共享等操作。”, #换行符, “--------------------”))
+    赋值 (原窗口过程, GetWindowLong (_启动窗口.取窗口句柄 (), -4))
+    SetWindowLong (_启动窗口.取窗口句柄 (), -4, &_消息代理_收到消息)
+    赋值 (_启动窗口., “文件目录操作即时监视程序-监视启动成功！”)
+    赋值 (.标题, “停止监控”)
+.否则
+    赋值 (_启动窗口., “文件目录操作即时监视程序-监视启动失败！”)
+    赋值 (.标题, “启动监控”)
+.如果结束
+
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+撤消Shell监视 ()
+SetWindowLong (_启动窗口.取窗口句柄 (), -4, 原窗口过程)
+调试输出 (“监视停止！”)
+
+.子程序 _消息代理_收到消息, 整数型, , 
+.参数 hwnd, 整数型, , 
+.参数 消息号, 整数型, , 
+.参数 消息参数1, 整数型, , 
+.参数 消息参数2, 整数型, , 
+
+.局部变量 输出文本, 文本型, , , 
+.局部变量 Shell消息结构变量, SHNOTIFYSTRUCT, , , 
+.局部变量 驱动器位, 整数型, , , 
+.局部变量 高位字节, 整数型, , , 
+.局部变量 变量, 整数型, , , 
+.局部变量 图像, 整数型, , , 
+.局部变量 显示名称, 文本型, , , 
+
+.如果真 (等于 (消息号, #WM_SHNOTIFY))
+    赋值 (输出文本, 相加 (“当前执行操作：”, 取监视事件文本 (消息参数2), #换行符))
+    移动Shell消息结构内存 (Shell消息结构变量, 消息参数1, 8)
+    .判断开始 (等于 (消息参数2, #SHCNE_FREESPACE))
+        移动整数型内存 (驱动器位, 相加 (Shell消息结构变量.bwItem1, 2), 4)
+        赋值 (高位字节, 取整 (相除 (求自然对数 (驱动器位), 求自然对数 (2))))
+        .变量循环首 (0, 高位字节, 1, 变量)
+            .如果真 (大于 (位与 (求次方 (2, 变量), 驱动器位), 0))
+                赋值 (输出文本, 相加 (输出文本, 字符 (相加 (65, 变量)), “:\”, #换行符))
+            .如果真结束
+            
+        .变量循环尾 ()
+    .判断 (等于 (消息参数2, #SHCNE_UPDATEIMAGE))
+        移动整数型内存 (图像, 相加 (Shell消息结构变量.bwItem1, 2), 4)
+        赋值 (输出文本, 相加 (输出文本, “图像索引： ”, 到文本 (图像), #换行符))
+    .默认
+        .如果真 (大于 (Shell消息结构变量.bwItem1, 0))
+            赋值 (显示名称, 从PIDL取显示名称 (Shell消息结构变量.bwItem1))
+            .如果 (大于 (取文本长度 (显示名称), 0))
+                赋值 (输出文本, 相加 (输出文本, “原始项目显示名称： ”, 显示名称, #换行符))
+                赋值 (输出文本, 相加 (输出文本, “原始项目路径：”, 从PIDL取路径 (Shell消息结构变量.bwItem1), #换行符))
+            .否则
+                赋值 (输出文本, 相加 (输出文本, “原始项目无效！”, #换行符))
+            .如果结束
+            
+        .如果真结束
+        .如果真 (大于 (Shell消息结构变量.bwItem2, 0))
+            赋值 (显示名称, 从PIDL取显示名称 (Shell消息结构变量.bwItem2))
+            .如果 (大于 (取文本长度 (显示名称), 0))
+                赋值 (输出文本, 相加 (输出文本, “新的项目显示名称： ”, 显示名称, #换行符))
+                赋值 (输出文本, 相加 (输出文本, “新的项目路径：”, 从PIDL取路径 (Shell消息结构变量.bwItem2), #换行符))
+            .否则
+                赋值 (输出文本, 相加 (输出文本, “新的项目无效！”, #换行符))
+            .如果结束
+            
+        .如果真结束
+        
+    .判断结束
+    赋值 (.内容, 相加 (.内容, #换行符, 输出文本, #换行符, “--------------------”))
+     ' 返回 (0)
+.如果真结束
+返回 (CallWindowProc (原窗口过程, hwnd, 消息号, 消息参数1, 消息参数2))
+
+.子程序 _按钮1_被单击, 空白型, , 
+.如果 (等于 (.标题, “停止监控”))
+    .如果 (撤消Shell监视 ())
+        赋值 (.标题, “启动监控”)
+        赋值 (_启动窗口., “文件目录操作即时监视程序-监视停止成功！”)
+    .否则
+        赋值 (.标题, “停止监控”)
+        赋值 (_启动窗口., “文件目录操作即时监视程序-监视停止失败！”)
+    .如果结束
+    
+.否则
+    .如果 (注册Shell监视 (_启动窗口.取窗口句柄 ()))
+        赋值 (.标题, “停止监控”)
+        赋值 (_启动窗口., “文件目录操作即时监视程序-监视启动成功！”)
+    .否则
+        赋值 (.标题, “启动监控”)
+        赋值 (_启动窗口., “文件目录操作即时监视程序-监视启动失败！”)
+    .如果结束
+    
+.如果结束
+
+
+.程序集 ShellDefs程序集, , , 
+
+.子程序 从文件夹ID取PIDL, 整数型, , 
+.参数 所有者句柄, 整数型, , 
+.参数 文件夹ID, 整数型, , 
+
+.局部变量 PIDL, 整数型, , , 
+
+.如果 (等于 (取指定文件夹位置 (所有者句柄, 文件夹ID, PIDL), 0))
+    返回 (PIDL)
+.否则
+    返回 (-1)
+.如果结束
+
+
+.子程序 从PIDL取显示名称, 文本型, , 
+.参数 PIDL, 整数型, , 
+
+.局部变量 文件字节信息, SHFILEINFOBYTE, , , 
+
+.如果 (大于 (取文件信息PIDL (PIDL, 0, 文件字节信息, 352, 相加 (#SHGFI_PIDL, #SHGFI_DISPLAYNAME)), 0))
+    返回 (取缓冲区文字 (到文本 (文件字节信息.szDisplayName)))
+.否则
+    返回 (“”)
+.如果结束
+
+
+.子程序 从PIDL取路径, 文本型, , 
+.参数 PIDL, 整数型, , 
+
+.局部变量 路径, 文本型, , , 
+
+赋值 (路径, 取空白文本 (260))
+.如果 (大于 (从索引列表获取路径 (PIDL, 路径), 0))
+    返回 (取缓冲区文字 (路径))
+.否则
+    返回 (“”)
+.如果结束
+
+
+.子程序 取缓冲区文字, 文本型, , 
+.参数 缓冲区文本, 文本型, , 
+
+返回 (删首尾空 (缓冲区文本))
+
+.程序集 ShellNotify程序集, , , 
+
+.程序集变量 Shell监视信息, 整数型, , , 
+.程序集变量 桌面PIDL, 整数型, , , 
+.子程序 注册Shell监视, 逻辑型, , 
+.参数 接收信息窗口句柄, 整数型, , 
+
+.局部变量 PIDL结构, PIDLSTRUCT, , , 
+
+.如果 (等于 (Shell监视信息, 0))
+     ' 取得桌面文件夹的PIDL。
+    赋值 (桌面PIDL, 从文件夹ID取PIDL (0, #CSIDL_DESKTOP))
+    .如果 (大于 (桌面PIDL, 0))
+         ' Fill the one and only PIDLSTRUCT, we're watching
+         ' desktop and all of the it's subfolders, everything...
+        赋值 (PIDL结构.PIDL, 桌面PIDL)
+        赋值 (PIDL结构.bWatchSubFolders, 1)
+         ' Register the notification, specifying that we want the dwItem1 and dwItem2
+         ' members of the SHNOTIFYSTRUCT to be pidls. We're watching all events.
+        赋值 (Shell监视信息, Shell更改通知注册 (接收信息窗口句柄, 相加 (#SHCNF_TYPE, #SHCNF_IDLIST), 相加 (#SHCNE_ALLEVENTS, #SHCNE_INTERRUPT), #WM_SHNOTIFY, 1, PIDL结构))
+         ' Debug.Print Hex(SHCNF_TYPE Or SHCNF_IDLIST)
+         ' Debug.Print Hex(SHCNE_ALLEVENTS Or SHCNE_INTERRUPT)
+         ' Debug.Print m_hSHNotify
+        返回 (真)
+    .否则
+        释放任务内存 (桌面PIDL)
+        返回 (假)
+    .如果结束
+    
+.否则
+    返回 (假)
+.如果结束
+
+
+.子程序 撤消Shell监视, 逻辑型, , 
+ ' If we have a registered notification handle.
+.如果 (大于 (Shell监视信息, 0))
+     ' Unregister it. If the call is successful, zero the handle's variable,
+     ' free and zero the the desktop's pidl.
+    .如果 (大于 (撤消Shell更改通知注册 (Shell监视信息), 0))
+        赋值 (Shell监视信息, 0)
+        释放任务内存 (桌面PIDL)
+        赋值 (桌面PIDL, 0)
+        返回 (真)
+    .否则
+        返回 (假)
+    .如果结束
+    
+.否则
+    返回 (假)
+.如果结束
+
+
+.子程序 取监视事件文本, 文本型, , 
+.参数 事件索引, 整数型, , 
+
+.局部变量 事件文本, 文本型, , , 
+
+.判断开始 (等于 (事件索引, #SHCNE_RENAMEITEM))
+    赋值 (事件文本, “重命名文件”) ' = &H1"
+.判断 (等于 (事件索引, #SHCNE_CREATE))
+    赋值 (事件文本, “新建文件”) ' = &H2"
+.判断 (等于 (事件索引, #SHCNE_DELETE))
+    赋值 (事件文本, “删除文件”) ' = &H4"
+.判断 (等于 (事件索引, #SHCNE_MKDIR))
+    赋值 (事件文本, “新建文件夹”) ' = &H8"
+.判断 (等于 (事件索引, #SHCNE_RMDIR))
+    赋值 (事件文本, “删除文件夹”) ' = &H10"
+.判断 (等于 (事件索引, #SHCNE_MEDIAINSERTED))
+    赋值 (事件文本, “已插入媒体”) ' = &H20"
+.判断 (等于 (事件索引, #SHCNE_MEDIAREMOVED))
+    赋值 (事件文本, “移除媒体”) ' = &H40"
+.判断 (等于 (事件索引, #SHCNE_DRIVEREMOVED))
+    赋值 (事件文本, “移除驱动器”) ' = &H80"
+.判断 (等于 (事件索引, #SHCNE_DRIVEADD))
+    赋值 (事件文本, “添加驱动器”) ' = &H100"
+.判断 (等于 (事件索引, #SHCNE_NETSHARE))
+    赋值 (事件文本, “网络共享”) ' = &H200"
+.判断 (等于 (事件索引, #SHCNE_NETUNSHARE))
+    赋值 (事件文本, “撤消网络共享”) ' = &H400"
+.判断 (等于 (事件索引, #SHCNE_ATTRIBUTES))
+    赋值 (事件文本, “属性改变”) ' = &H800"
+.判断 (等于 (事件索引, #SHCNE_UPDATEDIR))
+    赋值 (事件文本, “更新文件夹”) ' = &H1000"
+.判断 (等于 (事件索引, #SHCNE_UPDATEITEM))
+    赋值 (事件文本, “更新项目”) ' = &H2000"
+.判断 (等于 (事件索引, #SHCNE_SERVERDISCONNECT))
+    赋值 (事件文本, “服务器未连接”) ' = &H4000"
+.判断 (等于 (事件索引, #SHCNE_UPDATEIMAGE))
+    赋值 (事件文本, “更新图像”) ' = &H8000&"
+.判断 (等于 (事件索引, #SHCNE_DRIVEADDGUI))
+    赋值 (事件文本, “添加驱动器GUI”) ' = &H10000"
+.判断 (等于 (事件索引, #SHCNE_RENAMEFOLDER))
+    赋值 (事件文本, “重命名文件夹”) ' = &H20000"
+.判断 (等于 (事件索引, #SHCNE_FREESPACE))
+    赋值 (事件文本, “释放磁盘空间”) ' = &H40000"
+.判断 (等于 (事件索引, #SHCNE_EXTENDED_EVENT))
+    赋值 (事件文本, “扩展事件”) ' = &H4000000"
+.判断 (等于 (事件索引, #SHCNE_ASSOCCHANGED))
+    赋值 (事件文本, “文件关联被改变”) ' = &H8000000"
+.判断 (等于 (事件索引, #SHCNE_DISKEVENTS))
+    赋值 (事件文本, “磁盘事件”) ' = &H2381F"
+.判断 (等于 (事件索引, #SHCNE_GLOBALEVENTS))
+    赋值 (事件文本, “全部事件”) ' = &HC0581E0"
+.判断 (等于 (事件索引, #SHCNE_ALLEVENTS))
+    赋值 (事件文本, “所有事件”) ' = &H7FFFFFFF"
+.判断 (等于 (事件索引, #SHCNE_INTERRUPT))
+    赋值 (事件文本, “中断”) ' = &H80000000"
+.默认
+    返回 (“”)
+.判断结束
+返回 (事件文本)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

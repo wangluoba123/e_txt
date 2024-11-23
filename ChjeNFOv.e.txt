@@ -1,0 +1,107 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.wodesoft.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.wodesoft.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.wodesoft.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 633
+    高度 = 400
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+
+.DLL命令 InternetOpenA, 整数型, "Wininet.dll", "InternetOpenA", , 返回hInternet
+    .参数 lpszAgent, 文本型, , 
+    .参数 dwAccessType, 整数型, , 
+    .参数 lpszProxy, 文本型, , 
+    .参数 lpszProxyBypass, 文本型, , 
+    .参数 dwFlags, 整数型, , 0
+
+.DLL命令 InternetOpenUrlA, 整数型, "Wininet.dll", "InternetOpenUrlA", , 如果已成功建立到FTP，Gopher，或HTTP URL的连接，返回一个有效的句柄，如果连接失败返回NULL。要检索特定的错误讯息，请GetLastError 。要确定为什么对服务器的访问被拒绝，请调用InternetGetLastResponseInfo。 
+    .参数 hInternet, 整数型, , 当前的 Internet 会话句柄。句柄必须由前期的 InternetOpen 调用返回。
+    .参数 lpszUrl, 文本型, , 一个空字符结束的字符串变量的指针，指定读取的网址。只有以ftp:, gopher:, http:, 或者 https: 开头的网址被支持。
+    .参数 lpszHeaders, 文本型, , 一个空字符结束的字符串变量的指针，指定发送到HTTP服务器的头信息。欲了解更多信息，请参阅HttpSendRequest函数里lpszHeaders参数的说明。
+    .参数 dwHeadersLength, 整数型, , 额外的头的大小，以TCHAR为单位。如果这个参数是-1L并且lpszHeaders不是NULL，lpszHeaders被假设为零终止（ ASCIIZ ），而长度被自动计算。
+    .参数 dwFlags, 整数型, , 
+    .参数 dwContext, 整数型, , 一个指向一个应用程序定义的值，将随着返回的句柄，一起传递给回调函数。
+
+.DLL命令 InternetReadFile, 逻辑型, "Wininet.dll", "InternetReadFile", , 
+    .参数 hOpenUrl, 整数型, , 
+    .参数 lpBuffer, 字节集, , 缓冲区
+    .参数 dwNumberOfBytesToRead, 整数型, , 缓冲区长度
+    .参数 lpdwNumberOfBytesRead, 整数型, 传址, 
+
+.DLL命令 InternetCloseHandle, 逻辑型, "Wininet.dll", "InternetCloseHandle", , 
+    .参数 hHandle, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 hNet, 整数型, , , 
+.局部变量 hUrlFile, 整数型, , , 
+.局部变量 temp, 字节集, , , 
+.局部变量 dwBytesRead, 整数型, , , 
+.局部变量 data, 字节集, , , 
+
+赋值 (hNet, InternetOpenA (“MY TEST”, 0, “”, “”, 67108864))
+赋值 (hUrlFile, InternetOpenUrlA (hNet, ., “”, 0, -2147483648, 0))
+赋值 (temp, 取空白字节集 (1024))
+赋值 (dwBytesRead, 0)
+.判断循环首 (InternetReadFile (hUrlFile, temp, 1024, dwBytesRead))
+    .如果真 (等于 (dwBytesRead, 0))
+        跳出循环 ()
+         ' 本源码来自易语言资源网(www.wodesoft.com)
+    .如果真结束
+    赋值 (data, 相加 (data, 取字节集左边 (temp, dwBytesRead)))
+.判断循环尾 ()
+InternetCloseHandle (hUrlFile)
+InternetCloseHandle (hNet)
+赋值 (., 到文本 (data))
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

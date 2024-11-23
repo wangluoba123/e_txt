@@ -1,0 +1,298 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 527
+    高度 = 357
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “画虚线选择框例程 By UpwinDER（逆风者）”
+    帮助文件名 = “”
+
+
+
+.常量 标志文字, "“www.UpwinDER.com”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 RECT, , RECT
+    .成员 左边, 整数型, , , Left
+    .成员 顶边, 整数型, , , Top
+    .成员 右边, 整数型, , , Right
+    .成员 底边, 整数型, , , Bottom
+
+数据类型 PAINTSTRUCT, , 
+    .成员 hdc, 整数型, , , 
+    .成员 fErase, 整数型, , , 
+    .成员 nPaintRect, RECT, , , 
+    .成员 fRestore, 整数型, , , 
+    .成员 fIncUpdate, 整数型, , , 
+    .成员 rgbReserved, 字节型, , "32", 
+
+.全局变量 内存场景, 整数型, , , 
+.全局变量 虚线矩形, RECT, , , 
+.全局变量 hScrBitmap, 整数型, , , 
+.全局变量 hOldScrBitmap, 整数型, , , 
+
+.DLL命令 ReleaseDC, 整数型, "user32", "ReleaseDC", , ReleaseDC
+    .参数 窗口句柄, 整数型, , hwnd，要释放的设备场景相关的窗口句柄
+    .参数 设备场景, 整数型, , hdc，要释放的设备场景句柄
+
+.DLL命令 SelectObject, 整数型, "gdi32.dll", "SelectObject", , SelectObject
+    .参数 场景句柄, 整数型, , hdc
+    .参数 对象句柄, 整数型, , hobject
+
+.DLL命令 GetDC, 整数型, "user32", "GetDC", , 获取指定窗口的设备场景  指定窗口的设备场景句柄，出错则为0
+    .参数 窗口的句柄, 整数型, , 将获取其设备场景的窗口的句柄。若为0，则要获取整个屏幕的DC;
+
+.DLL命令 DeleteObject, 整数型, "gdi32.dll", "DeleteObject", , DeleteObject
+    .参数 对象句柄, 整数型, , hObject,一个GDI对象的句柄
+
+.DLL命令 DrawFocusRect, 空白型, "user32.dll", "DrawFocusRect", , 画一个焦点矩形
+    .参数 设备场景句柄, 整数型, , hdc,设备场景的句柄 
+    .参数 矩形轮廓, RECT, , lpRect,要在逻辑坐标中描绘的矩形 
+
+.DLL命令 GetDCEx, 整数型, "user32", "GetDCEx", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 剪裁区, 整数型, , 
+    .参数 复选项, 整数型, , 
+
+.DLL命令 SetCapture, 整数型, "", "SetCapture", , 
+    .参数 hWnd, 空白型, , 
+
+.DLL命令 ReleaseCapture, 逻辑型, "", "ReleaseCapture", , 
+
+.DLL命令 CreateCompatibleDC, 整数型, "Gdi32", "CreateCompatibleDC", , 
+    .参数 设备场景句柄, 整数型, , 
+
+.DLL命令 CreateCompatibleBitmap, 整数型, "gdi32", "CreateCompatibleBitmap", , 
+    .参数 设备场景句柄, 整数型, , 
+    .参数 宽度, 整数型, , 
+    .参数 高度, 整数型, , 
+
+.DLL命令 BitBlt, 整数型, "gdi32.dll", "BitBlt", , 
+    .参数 目标设备场景, 整数型, , hDestDC,目标设备场景
+    .参数 目标横坐标, 整数型, , x,对目标设备场景中目标矩形左上角位置进行描述的那个点
+    .参数 目标纵坐标, 整数型, , y,对目标设备场景中目标矩形左上角位置进行描述的那个点
+    .参数 传输图像宽度, 整数型, , nWidth,欲传输图象的宽度
+    .参数 传输图像高度, 整数型, , nHeight,欲传输图象的高度
+    .参数 源设备场景, 整数型, , hSrcDC,源设备场景。如光栅运算未指定源，则应设为0
+    .参数 源横坐标, 整数型, , xSrc,对源设备场景中源矩形左上角位置进行描述的那个点
+    .参数 源纵坐标, 整数型, , ySrc,对源设备场景中源矩形左上角位置进行描述的那个点
+    .参数 光栅运算方式, 整数型, , dwRop,传输过程要执行的光栅运算
+
+.DLL命令 DeleteDC, 整数型, "gdi32.dll", "DeleteDC", , 
+    .参数 设备场景句柄, 整数型, , hdc，将要删除的设备场景
+
+.DLL命令 SetWindowLong, 整数型, "user32", "SetWindowLongA", , 在窗口结构中为指定的窗口设置信息  指定数据的前一个值
+    .参数 窗口句柄, 整数型, , hwnd，欲为其取得信息的窗口的句柄
+    .参数 窗口信息值, 整数型, , nIndex，请参考GetWindowLong函数的nIndex参数的说明
+    .参数 窗口信息新值, 整数型, , dwNewLong，由nIndex指定的窗口信息的新值
+
+.DLL命令 GetWindowLong, 整数型, "user32", "GetWindowLongA", , 从指定窗口的结构中取得信息  由nIndex决定。零表示出错。会设置GetLastError
+    .参数 窗口句柄, 整数型, , 欲为其获取信息的窗口的句柄
+    .参数 属性, 整数型, , 欲取回的信息，可以是下述任何一个常数：;GWL_EXSTYLE：扩展窗口样式;GWL_STYLE：窗口样式;GWL_WNDPROC：该窗口的窗口函数的地址;GWL_HINSTANCE：拥有窗口的实例的句柄;GWL_HWNDPARENT：该窗口之父的句柄。不要用SetWindowWord来改变这个值;GWL_ID：对话框中一个子窗口的标识符;GWL_USERDATA：含义由应用程序规定;DWL_DLGPROC：这个窗口的对话框函数地址;DWL_MSGRESULT：在对话框函数中处理的一条消息返回的值;DWL_USER：含义由应用程序规定;
+
+.DLL命令 CallWindowProc, 整数型, "user32.dll", "CallWindowProcA", , 
+    .参数 前一窗口函数地址, 整数型, , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 消息值, 整数型, , 
+    .参数 附加参数1, 整数型, , 
+    .参数 附加参数2, 整数型, , 
+
+.DLL命令 BeginPaint, 整数型, "", "", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpPaint, PAINTSTRUCT, , 
+
+.DLL命令 EndPaint, 逻辑型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpPaint, PAINTSTRUCT, , 
+
+.DLL命令 SendMessage, 整数型, "user32", "SendMessageA", , 调用一个窗口的窗口函数，将一条消息发给那个窗口。除非消息处理完毕，否则该函数不会返回。SendMessageBynum， ;    SendMessageByString是该函数的“类型安全”声明形式  由具体的消息决定
+    .参数 窗口句柄, 整数型, , 要接收消息的那个窗口的句柄
+    .参数 信息值, 整数型, , 消息的标识符
+    .参数 参数一, 整数型, , 具体取决于消息
+    .参数 参数二, 整数型, , 具体取决于消息;
+
+.DLL命令 DrawText, 整数型, "user32.dll", "DrawTextA", , 
+    .参数 hdc, 整数型, , 
+    .参数 lpStr, 文本型, , 
+    .参数 nCount, 整数型, , 
+    .参数 lpRect, 未知类型0x41010306, 传址, 
+    .参数 wFormat, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 oldproc, 整数型, , , 
+.程序集变量 onDrag, 逻辑型, , , 
+.子程序 画调整边框, 空白型, , 
+.参数 矩形, RECT, , 
+
+.局部变量 hTempMemDC, 整数型, , , 
+.局部变量 hTempMemBitmap, 整数型, , , 
+.局部变量 hOldTempMemBitmap, 整数型, , , 
+.局部变量 hScrDC, 整数型, , , 
+.局部变量 Rect, RECT, , , 
+
+赋值 (hScrDC, GetDCEx (取窗口句柄 (), 0, 2))
+赋值 (hTempMemDC, CreateCompatibleDC (hScrDC)) ' 创建与屏幕兼容的临时内存DC
+赋值 (hTempMemBitmap, CreateCompatibleBitmap (hScrDC, ., .)) ' 创建兼容位图
+赋值 (hOldTempMemBitmap, SelectObject (hTempMemDC, hTempMemBitmap))
+BitBlt (hTempMemDC, 0, 0, ., ., 内存场景, 0, 0, 13369376)
+赋值 (Rect, 矩形)
+标准化矩形 (Rect)
+DrawText (hTempMemDC, #标志文字, -1, Rect, 37)
+DrawFocusRect (hTempMemDC, Rect)
+BitBlt (hScrDC, 0, 0, ., ., hTempMemDC, 0, 0, 13369376)
+SelectObject (hTempMemDC, hOldTempMemBitmap)
+DeleteObject (hTempMemBitmap)
+DeleteDC (hTempMemDC)
+ReleaseDC (取窗口句柄 (), hScrDC)
+
+.子程序 __启动窗口_鼠标位置被移动, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.如果真 (onDrag)
+    .如果真 (大于 (横向位置, 10000))
+        赋值 (横向位置, 相减 (横向位置, 65536))
+    .如果真结束
+    .如果真 (大于 (纵向位置, 10000))
+        赋值 (纵向位置, 相减 (纵向位置, 65536))
+    .如果真结束
+    赋值 (虚线矩形.右边, 横向位置)
+    赋值 (虚线矩形.底边, 纵向位置)
+    SendMessage (取窗口句柄 (), 15, 0, 0)
+.如果真结束
+
+
+.子程序 标准化矩形, 空白型, , 
+.参数 矩形, RECT, , 
+
+.如果真 (大于 (矩形.左边, 矩形.右边))
+    互换整数 (矩形.左边, 矩形.右边)
+.如果真结束
+.如果真 (大于 (矩形.顶边, 矩形.底边))
+    互换整数 (矩形.顶边, 矩形.底边)
+.如果真结束
+
+
+.子程序 互换整数, 空白型, , 
+.参数 整数1, 整数型, 参考, 
+.参数 整数2, 整数型, 参考, 
+
+赋值 (整数1, 位异或 (整数1, 整数2))
+赋值 (整数2, 位异或 (整数1, 整数2))
+赋值 (整数1, 位异或 (整数1, 整数2))
+
+.子程序 __启动窗口_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (onDrag, 真)
+赋值 (虚线矩形.左边, 横向位置)
+赋值 (虚线矩形.顶边, 纵向位置)
+SetCapture (取窗口句柄 ())
+
+.子程序 __启动窗口_鼠标左键被放开, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.如果真 (onDrag)
+    赋值 (onDrag, 假)
+    ReleaseCapture ()
+    赋值 (虚线矩形.左边, -1)
+    赋值 (虚线矩形.顶边, -1)
+    赋值 (虚线矩形.右边, -1)
+    赋值 (虚线矩形.底边, -1)
+    SendMessage (取窗口句柄 (), 15, 0, 0)
+.如果真结束
+
+
+.子程序 __启动窗口_首次激活, 空白型, , 
+.局部变量 hScrDC, 整数型, , , 
+
+赋值 (oldproc, GetWindowLong (取窗口句柄 (), -4))
+SetWindowLong (取窗口句柄 (), -4, 到整数 (&回调函数))
+赋值 (hScrDC, GetDCEx (取窗口句柄 (), 0, 2))
+赋值 (内存场景, CreateCompatibleDC (hScrDC)) ' 创建与屏幕兼容的临时内存DC
+赋值 (hScrBitmap, CreateCompatibleBitmap (hScrDC, ., .)) ' 创建兼容位图
+赋值 (hOldScrBitmap, SelectObject (内存场景, hScrBitmap))
+BitBlt (内存场景, 0, 0, ., ., hScrDC, 0, 0, 13369376)
+ReleaseDC (取窗口句柄 (), hScrDC)
+
+.子程序 回调函数, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 x, 整数型, , , 
+.局部变量 y, 整数型, , , 
+.局部变量 ps, PAINTSTRUCT, , , 
+.局部变量 r, 整数型, , , 
+
+.判断开始 (等于 (Msg, 15))
+    赋值 (r, CallWindowProc (oldproc, hWnd, Msg, wParam, lParam))
+    BeginPaint (hWnd, ps)
+    画调整边框 (虚线矩形)
+    EndPaint (hWnd, ps)
+    返回 (r)
+.默认
+    
+.判断结束
+返回 (CallWindowProc (oldproc, hWnd, Msg, wParam, lParam))
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+SelectObject (内存场景, hOldScrBitmap)
+DeleteObject (hScrBitmap)
+DeleteDC (内存场景)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

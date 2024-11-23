@@ -1,0 +1,279 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：Music
+ ' 程序描述：Copyright (C) 2010-2011 Chen Li.
+All rights reserved.
+ ' 程序作者：Chen Li
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：1.9
+
+
+
+.图片 bass, " ' 已保存到：D:\易语言学习\Data\Music.e\bass", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+ ' 所需要的模块
+ ' LoadMemLib C:\Documents and Settings\Administrator\桌面\LoadMemLib.ec
+
+
+
+.DLL命令 lstrcpyn_TEXT, 整数型, "", "lstrcpyn", , 
+    .参数 lpString1, 文本型, , 
+    .参数 lpString2, 整数型, , 
+    .参数 iMaxLength, 整数型, , 
+
+.DLL命令 lstrcpyn_BIN, 整数型, "", "lstrcpyn", , 
+    .参数 lpString1, 字节集, , 
+    .参数 lpString2, 整数型, , 
+    .参数 iMaxLength, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 
+返回 (0)
+
+.程序集 函数声明, , , 
+
+.程序集变量 hLibModule, 整数型, , , 
+.子程序 初始化, 逻辑型, 公开, 初始化设备，建议启动后调用。如果事先没有初始化，别的函数将失效。返回真表示初始化成功。；假表示失败
+.参数 设备号, 整数型, 可空, 使用的设备，如果为空，则使用默认设备。否则 0 为第一个设备。常量：
+.参数 采样, 整数型, 可空, 如果为空，默认为44100赫兹。
+.参数 窗口句柄, 整数型, 可空, 如为空，默认为0，使用当前窗口。
+
+.局部变量 ProcAddress, 整数型, , , 
+
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+赋值 (hLibModule, LoadMemLibrary (#bass))
+赋值 (ProcAddress, GetMemProcAddress (hLibModule, “BASS_Init”))
+.如果真 (不等于 (ProcAddress, 0))
+    返回 (不等于 (Call (ProcAddress, 选择 (是否为空 (设备号), -1, 设备号), 选择 (是否为空 (采样), 44100, 采样), 0, 窗口句柄, 0), 0))
+.如果真结束
+返回 (假)
+
+.子程序 释放, 逻辑型, 公开, 释放所有资源所采用的输出设备,包括所有的样品,流和内存中的音乐。
+.局部变量 ProcAddress, 整数型, , , 
+
+赋值 (ProcAddress, GetMemProcAddress (hLibModule, “BASS_Free”))
+.如果真 (不等于 (ProcAddress, 0))
+    返回 (不等于 (Call (ProcAddress), 0))
+     ' 本源码来自易语言资源网(www.5A5X.com)
+.如果真结束
+FreeMemLibrary (hLibModule)
+返回 (假)
+
+.子程序 从文件创建流, 整数型, 公开, 创建一个流 MP1,MP2,MP3,WAV,OGG ,AIFF.
+.参数 文件名, 文本型, , 相对/全名
+
+.局部变量 ProcAddress, 整数型, , , 
+
+赋值 (ProcAddress, GetMemProcAddress (hLibModule, “BASS_StreamCreateFile”))
+.如果真 (不等于 (ProcAddress, 0))
+    返回 (Call (ProcAddress, 0, lstrcpyn_TEXT (文件名, 0, 0), 0, 0, 0))
+.如果真结束
+返回 (0)
+
+.子程序 从内存创建流, 整数型, 公开, 创建一个流 MP1,MP2,MP3,WAV,OGG ,AIFF.
+.参数 文件, 字节集, , 欲播放的音频文件。
+
+.局部变量 ProcAddress, 整数型, , , 
+
+赋值 (ProcAddress, GetMemProcAddress (hLibModule, “BASS_StreamCreateFile”))
+.如果真 (不等于 (ProcAddress, 0))
+    返回 (Call (ProcAddress, 1, lstrcpyn_BIN (文件, 0, 0), 0, 取字节集长度 (文件), 0))
+     ' 本源码来自易语言资源网(www.5A5X.com)
+.如果真结束
+返回 (0)
+
+.子程序 从URL创建流, 整数型, 公开, 创建一个样品流,MP2,MP3,WAV,OGG MP1,AIFF,选择性地接受下载数据在一个回调函数。
+.参数 地址, 文本型, , URL的流。应该以“http://”或“ftp://”,或其他附加支持协议。
+.参数 下载回调, 子程序指针, 可空, 回调函数来接收文件,因为它是下载……空=不回调。
+
+.局部变量 ProcAddress, 整数型, , , 
+
+赋值 (ProcAddress, GetMemProcAddress (hLibModule, “BASS_StreamCreateURL”))
+.如果真 (不等于 (ProcAddress, 0))
+    返回 (Call (ProcAddress, lstrcpyn_TEXT (地址, 0, 0), 0, 0, 到整数 (下载回调), 0))
+.如果真结束
+返回 (0)
+
+.子程序 开始播放, 逻辑型, 公开, 开始播放一个样品流
+.参数 流句柄, 整数型, , 已创建的流句柄
+.参数 重新播放, 逻辑型, 可空, 真：重新播放 假：播放当前位置
+
+.局部变量 ProcAddress, 整数型, , , 
+
+赋值 (ProcAddress, GetMemProcAddress (hLibModule, “BASS_ChannelPlay”))
+.如果真 (不等于 (ProcAddress, 0))
+    返回 (不等于 (Call (ProcAddress, 流句柄, 到整数 (重新播放)), 0))
+.如果真结束
+返回 (假)
+
+.子程序 停止播放, 逻辑型, 公开, 停止播放一个样品流
+.参数 流句柄, 整数型, , 已创建的流句柄
+
+.局部变量 ProcAddress, 整数型, , , 
+
+赋值 (ProcAddress, GetMemProcAddress (hLibModule, “BASS_ChannelStop”))
+.如果真 (不等于 (ProcAddress, 0))
+    返回 (不等于 (Call (ProcAddress, 流句柄), 0))
+.如果真结束
+返回 (假)
+
+.子程序 暂停播放, 逻辑型, 公开, 暂停播放一个样品流
+.参数 流句柄, 整数型, , 已创建的流句柄
+
+.局部变量 ProcAddress, 整数型, , , 
+
+赋值 (ProcAddress, GetMemProcAddress (hLibModule, “BASS_ChannelPause”))
+.如果真 (不等于 (ProcAddress, 0))
+    返回 (不等于 (Call (ProcAddress, 流句柄), 0))
+.如果真结束
+返回 (假)
+
+.子程序 取播放位置, 整数型, 公开, 获取正在播放的位置
+.参数 流句柄, 整数型, , 已创建的流句柄
+
+.局部变量 ProcAddress, 整数型, , , 
+
+赋值 (ProcAddress, GetMemProcAddress (hLibModule, “BASS_ChannelGetPosition”))
+.如果真 (不等于 (ProcAddress, 0))
+    返回 (Call (ProcAddress, 流句柄, 0))
+.如果真结束
+返回 (0)
+
+.子程序 置播放位置, 逻辑型, 公开, 置正在播放的位置
+.参数 流句柄, 整数型, , 已创建的流句柄
+.参数 位置, 整数型, , 这个位置,在单位由模式。
+
+.局部变量 ProcAddress, 整数型, , , 
+
+赋值 (ProcAddress, GetMemProcAddress (hLibModule, “BASS_ChannelSetPosition”))
+.如果真 (不等于 (ProcAddress, 0))
+    返回 (不等于 (Call (ProcAddress, 流句柄, 位置, 0), 0))
+.如果真结束
+返回 (假)
+
+.子程序 取媒体长度, 整数型, 公开, 检索播放长度的通道。
+.参数 流句柄, 整数型, , 已创建的流句柄
+
+.局部变量 ProcAddress, 整数型, , , 
+
+赋值 (ProcAddress, GetMemProcAddress (hLibModule, “BASS_ChannelGetLength”))
+.如果真 (不等于 (ProcAddress, 0))
+    返回 (Call (ProcAddress, 流句柄, 0))
+.如果真结束
+返回 (0)
+
+.子程序 取播放状态, 整数型, 公开, 判断一个样品,流,或MOD音乐是活跃(上场)或停滞。也可以查看是否有记录。见帮助
+.参数 流句柄, 整数型, , 已创建的流句柄
+
+.局部变量 ProcAddress, 整数型, , , 
+
+赋值 (ProcAddress, GetMemProcAddress (hLibModule, “BASS_ChannelIsActive”))
+.如果真 (不等于 (ProcAddress, 0))
+    返回 (Call (ProcAddress, 流句柄))
+.如果真结束
+返回 (0)
+
+.子程序 释放流文件, 逻辑型, 公开, 释放的资源,包括抽样流的任何同步
+.参数 流句柄, 整数型, , 已创建的流句柄
+
+.局部变量 ProcAddress, 整数型, , , 
+
+赋值 (ProcAddress, GetMemProcAddress (hLibModule, “BASS_StreamFree”))
+.如果真 (不等于 (ProcAddress, 0))
+    返回 (不等于 (Call (ProcAddress, 流句柄), 0))
+.如果真结束
+返回 (假)
+
+.子程序 取播放音量, 小数型, 公开, 获取当前用户的音量
+.局部变量 ProcAddress, 整数型, , , 
+
+赋值 (ProcAddress, GetMemProcAddress (hLibModule, “BASS_GetVolume”))
+.如果真 (不等于 (ProcAddress, 0))
+    返回 (到小数 (Call (ProcAddress)))
+.如果真结束
+返回 (0)
+
+.子程序 置播放音量, 逻辑型, 公开, 设置播放音量
+.参数 音量, 小数型, , 音量0(静音)到1(最高)。范围0-1
+
+.局部变量 ProcAddress, 整数型, , , 
+
+赋值 (ProcAddress, GetMemProcAddress (hLibModule, “BASS_SetVolume”))
+.如果真 (不等于 (ProcAddress, 0))
+    返回 (不等于 (Call (ProcAddress, 音量), 0))
+    ' 本源码来自易语言资源网(www.5A5X.com)
+.如果真结束
+返回 (假)
+
+.子程序 位置到时间, 整数型, 公开, 将一个字节位置到时间(秒),基于一个频道的格式。
+.参数 播放位置, 长整数型, , 正在播放的位置
+
+返回 (相除 (播放位置, 177780))
+
+.子程序 时间到位置, 整数型, 公开, 一段时间(秒)转换成字节位置,基于一个频道的格式。
+.参数 时间, 整数型, , 现行播放的时间，秒
+
+返回 (相乘 (时间, 177780))
+
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 LoadMemLibrary, 整数型, , 
+.参数 lpLibData, 字节集, , 
+
+
+
+.子程序 GetMemProcAddress, 整数型, , 
+.参数 hLibModule, 整数型, , 
+.参数 lpProcName, 文本型, , 
+
+
+
+.子程序 Call, 整数型, , 
+.参数 ProcAddress, 整数型, , 
+.参数 Param1, 整数型, 可空, 
+.参数 Param2, 整数型, 可空, 
+.参数 Param3, 整数型, 可空, 
+.参数 Param4, 整数型, 可空, 
+.参数 Param5, 整数型, 可空, 
+.参数 Param6, 整数型, 可空, 
+.参数 Param7, 整数型, 可空, 
+.参数 Param8, 整数型, 可空, 
+.参数 Param9, 整数型, 可空, 
+
+
+
+.子程序 FreeMemLibrary, 逻辑型, , 
+.参数 hLibModule, 整数型, , 
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

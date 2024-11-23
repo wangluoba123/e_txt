@@ -1,0 +1,262 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：native api 模块
+ ' 程序描述：主要为NATIVE API。
+ ' 程序作者：dtcser
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 PROCESS_ALL_ACCESS, "2035711", 公开, 
+.常量 STATUS_INFO_LENGTH_MISMATCH, "-1073741820", 公开, 
+.常量 STATUS_SUCCESS, "0", 公开, 
+.常量 PROCESS_QUERY_INFORMATION, "1024", 公开, 
+.常量 STATUS_INVALID_PARAMETER, "-1073741811", 公开, 
+.常量 OBJ_INHERIT, "2", 公开, 
+.常量 DUPLICATE_CLOSE_SOURCE, "1", 公开, 
+.常量 DUPLICATE_SAME_ACCESS, "2", 公开, 
+.常量 DUPLICATE_SAME_ATTRIBUTES, "4", 公开, 
+.常量 OB_TYPE_PROCESS, "5", 公开, 
+.常量 ZwGetCurrentProcess, "-1", 公开, 
+.常量 PROCESS_DUP_HANDLE, "64", 公开, 
+.常量 JOB_OBJECT_ALL_ACCESS, "2031647", 公开, 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 CLIENT_ID, 公开, 
+    .成员 UniqueProcess, 整数型, , , 
+    .成员 UniqueThread, 整数型, , , 
+
+数据类型 OBJECT_ATTRIBUTES, 公开, 
+    .成员 Length, 整数型, , , 
+    .成员 RootDirectory, 整数型, , , 
+    .成员 ObjectName, 整数型, , , 
+    .成员 Attributes, 整数型, , , 
+    .成员 SecurityDescriptor, 整数型, , , 
+    .成员 SecurityQualityOfService, 整数型, , , 
+
+数据类型 PROCESS_BASIC_INFORMATION, 公开, 
+    .成员 ExitStatus, 整数型, , , 
+    .成员 PebBaseAddress, 整数型, , , 
+    .成员 AffinityMask, 整数型, , , 
+    .成员 BasePriority, 整数型, , , 
+    .成员 UniqueProcessId, 整数型, , , 
+    .成员 InheritedFromUniqueProcessId, 整数型, , , 
+
+数据类型 MEMORY_BASIC_INFORMATION, 公开, 
+    .成员 BaseAddress, 整数型, , , 
+    .成员 AllocationBase, 整数型, , , 
+    .成员 AllocattionProtect, 整数型, , , 
+    .成员 RegionSize, 整数型, , , 
+    .成员 State, 整数型, , , 
+    .成员 Protect, 整数型, , , 
+    .成员 Type, 整数型, , , 
+
+数据类型 SYSTEM_HANDLE_TABLE_ENTRY_INFO, 公开, 
+    .成员 UniqueProcessId, 短整数型, , , ""
+    .成员 CreatorBackTraceIndex, 短整数型, , , ""
+    .成员 ObjectTypeIndex, 字节型, , , ""
+    .成员 HandleAttributes, 字节型, , , ""
+    .成员 HandleValue, 短整数型, , , ""
+    .成员 pObject, 整数型, , , ""
+    .成员 GrantedAccess, 整数型, , , ""
+
+
+.DLL命令 ZwQuerySystemInformation, 整数型, "ntdll.dll", "ZwQuerySystemInformation", , 
+    .参数 SystemInformationClass, 整数型, , 未知类型：SYSTEM_INFORMATION_CLASS。
+    .参数 SystemInformation, 字节集, , any
+    .参数 SystemInformationLength, 整数型, , 
+    .参数 ReturnLength, 整数型, 传址, 
+
+.DLL命令 取指针_字节集, 整数型, "", "lstrcpyn", 公开, 常规API
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 RtlMoveMemory3, 整数型, "", "RtlMoveMemory", 公开, 常规API,从地址读一个整数
+    .参数 dest, 整数型, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 len, 空白型, , 4
+
+.DLL命令 ZwOpenProcess, 整数型, "ntdll.dll", "ZwOpenProcess", 公开, 
+    .参数 hProcess, 整数型, 传址, 
+    .参数 DesiredAccess, 整数型, , 
+    .参数 ObjectAttributes, OBJECT_ATTRIBUTES, , 
+    .参数 ClientId, CLIENT_ID, , 
+
+.DLL命令 RtlMoveMemory1, 整数型, "", "RtlMoveMemory", , 常规API
+    .参数 dest, SYSTEM_HANDLE_TABLE_ENTRY_INFO, , 
+    .参数 Source, 整数型, , 
+    .参数 len, 空白型, , 284
+
+.DLL命令 ZwQueryInformationProcess, 整数型, "ntdll.dll", "ZwQueryInformationProcess", , 
+    .参数 SystemInformationClass, 整数型, , 未知类型：SYSTEM_INFORMATION_CLASS。
+    .参数 dd, 整数型, , 
+    .参数 SystemInformation, PROCESS_BASIC_INFORMATION, , any
+    .参数 SystemInformationLength, 整数型, , 
+    .参数 ReturnLength, 整数型, 传址, 
+
+.DLL命令 ZwDuplicateObject, 整数型, "ntdll.dll", "", 公开, 
+    .参数 SourceProcessHandle, 整数型, , 
+    .参数 SourceHandle, 整数型, , 
+    .参数 TargetProcessHandle, 整数型, , 
+    .参数 TargetHandle, 整数型, 传址, 
+    .参数 DesiredAccess, 整数型, , 
+    .参数 HandleAttributes, 整数型, , 
+    .参数 Options, 整数型, , 
+
+.DLL命令 ZwCreateJobObject, 整数型, "ntdll.dll", "", 公开, 
+    .参数 JobHandle, 整数型, 传址, 
+    .参数 DesiredAccess, 整数型, , 
+    .参数 ObjectAttributes, OBJECT_ATTRIBUTES, , 
+
+.DLL命令 ZwAssignProcessToJobObject, 整数型, "ntdll.dll", "", 公开, 
+    .参数 JobHandle, 整数型, , 
+    .参数 ProcessHandle, 整数型, , 
+
+.DLL命令 ZwTerminateJobObject, 整数型, "ntdll.dll", "", 公开, 
+    .参数 JobHandle, 整数型, , 
+    .参数 ExitStatus, 整数型, , 
+
+.DLL命令 ZwTerminateProcess, 整数型, "ntdll.dll", "", 公开, 
+    .参数 ProcessHandle, 整数型, , 
+    .参数 ExitStatus, 整数型, , 
+
+.DLL命令 ZwClose, 整数型, "ntdll.dll", "ZwClose", 公开, 
+    .参数 hnd, 空白型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+.子程序 强力结束进程, 逻辑型, , 
+.参数 hProcess, 整数型, , 
+.参数 ExitStatus, 整数型, , 0
+
+.局部变量 st, 整数型, , , 
+.局部变量 hJob, 整数型, , , 
+.局部变量 oa, OBJECT_ATTRIBUTES, , , 
+.局部变量 ret, 逻辑型, , , 
+
+赋值 (ret, 假)
+赋值 (oa.Length, 24)
+赋值 (st, ZwCreateJobObject (hJob, #JOB_OBJECT_ALL_ACCESS, oa))
+.如果真 (大于或等于 (st, 0))
+    赋值 (st, ZwAssignProcessToJobObject (hJob, hProcess))
+    .如果真 (大于或等于 (st, 0))
+        赋值 (st, ZwTerminateJobObject (hJob, ExitStatus))
+        .如果真 (大于或等于 (st, 0))
+            赋值 (ret, 真)
+        .如果真结束
+        
+    .如果真结束
+    ZwClose (hJob)
+.如果真结束
+.如果真 (等于 (ret, 假))
+    赋值 (st, ZwTerminateProcess (hProcess, ExitStatus))
+    .如果真 (大于或等于 (st, 0))
+        赋值 (ret, 真)
+    .如果真结束
+    
+.如果真结束
+返回 (ret)
+
+.子程序 强力打开进程, 整数型, 公开, 
+.参数 dwDesiredAccess, 整数型, , 
+.参数 bInhert, 逻辑型, , 
+.参数 ProcessId, 整数型, , 
+
+.局部变量 st, 整数型, , , 
+.局部变量 cid, CLIENT_ID, , , 
+.局部变量 oa, OBJECT_ATTRIBUTES, , , 
+.局部变量 NumOfHandle, 整数型, , , 
+.局部变量 pbi, PROCESS_BASIC_INFORMATION, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 hProcessToDup, 整数型, , , 
+.局部变量 hProcessCur, 整数型, , , 
+.局部变量 hProcessToRet, 整数型, , , 
+.局部变量 匿名局部变量_93, 空白型, , , 
+.局部变量 h_info, SYSTEM_HANDLE_TABLE_ENTRY_INFO, , , 
+.局部变量 匿名局部变量_95, 空白型, , , 
+.局部变量 retlen, 整数型, , , 
+.局部变量 a, 字节集, , , 
+.局部变量 b, 整数型, , , 
+.局部变量 c, 字节集, , , 
+.局部变量 匿名局部变量_100, 空白型, , , 
+.局部变量 ret, 整数型, , , 
+
+赋值 (oa.Length, 24)
+.如果真 (bInhert)
+    赋值 (oa.Attributes, 位或 (oa.Attributes, #OBJ_INHERIT))
+.如果真结束
+赋值 (cid.UniqueProcess, 相加 (ProcessId, 1))
+赋值 (st, ZwOpenProcess (hProcessToRet, dwDesiredAccess, oa, cid))
+.如果真 (大于或等于 (st, 0))
+    赋值 (ret, hProcessToRet)
+    返回 (ret)
+.如果真结束
+赋值 (retlen, 1)
+.循环判断首 ()
+    赋值 (a, 取空白字节集 (retlen))
+    赋值 (ret, ZwQuerySystemInformation (16, a, retlen, 0))
+    .如果 (等于 (ret, #STATUS_INFO_LENGTH_MISMATCH))
+        赋值 (retlen, 相乘 (retlen, 2))
+        赋值 (a, 取空白字节集 (retlen))
+    .否则
+        跳出循环 ()
+    .如果结束
+    
+.循环判断尾 (等于 (ret, #STATUS_INFO_LENGTH_MISMATCH))
+赋值 (b, 取指针_字节集 (a, a, 0))
+RtlMoveMemory3 (NumOfHandle, b, 4)
+赋值 (b, 相加 (b, 4))
+.计次循环首 (NumOfHandle, i)
+    RtlMoveMemory1 (h_info, b, 16)
+    .如果真 (等于 (h_info.ObjectTypeIndex, #OB_TYPE_PROCESS))
+        赋值 (cid.UniqueProcess, h_info.UniqueProcessId)
+        赋值 (st, ZwOpenProcess (hProcessToDup, #PROCESS_DUP_HANDLE, oa, cid))
+        .如果真 (大于或等于 (st, 0))
+            赋值 (st, ZwDuplicateObject (hProcessToDup, h_info.HandleValue, #ZwGetCurrentProcess, hProcessCur, #PROCESS_ALL_ACCESS, 0, #DUPLICATE_SAME_ATTRIBUTES))
+            .如果真 (大于或等于 (st, 0))
+                赋值 (st, ZwQueryInformationProcess (hProcessCur, 0, pbi, 24, 0))
+                .如果真 (大于或等于 (st, 0))
+                    .如果真 (等于 (pbi.UniqueProcessId, ProcessId))
+                        赋值 (st, ZwDuplicateObject (hProcessToDup, h_info.HandleValue, #ZwGetCurrentProcess, hProcessToRet, dwDesiredAccess, #OBJ_INHERIT, #DUPLICATE_SAME_ATTRIBUTES))
+                        .如果真 (大于或等于 (st, 0))
+                            赋值 (ret, hProcessToRet)
+                        .如果真结束
+                        
+                    .如果真结束
+                    
+                .如果真结束
+                
+            .如果真结束
+            赋值 (st, ZwClose (hProcessCur))
+        .如果真结束
+        赋值 (st, ZwClose (hProcessToDup))
+    .如果真结束
+    赋值 (b, 相加 (b, 16))
+.计次循环尾 ()
+返回 (ret)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

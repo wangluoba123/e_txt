@@ -1,0 +1,233 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 366
+    高度 = 167
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 真
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “实时音频采集”
+    帮助文件名 = “”
+
+
+
+.常量 WAVE_FORMAT_PCM, "1", , PCM脉冲编码
+.常量 WAVE_MAPPER, "-1", , 自动挑选设备ID
+.常量 CALLBACK_FUNCTION, "196608", , 回调方式
+.常量 MM_WIM_OPEN, "958", , 当打开音频输入设备时，设备会发此消息
+.常量 MM_WIM_CLOSE, "959", , 当要关闭音频输入设备时，设备会发此消息
+.常量 MM_WIM_DATA, "960", , 当音频输入设备填满数据块时，设备会发此消息
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 7 系统核心支持库
+ ' eLIBpp ECFB3D10541A422b8B73779AF00B4D0C 1 2 ｅＬＩＢ＋＋
+
+
+
+
+数据类型 WAVEFORMATEX, , (18)
+    .成员 wFormatTag, 短整数型, , , 记录着此声音的格式代号
+    .成员 nChannels, 短整数型, , , 记录声音的声道数
+    .成员 nSamplesPerSec, 整数型, , , 记录每秒采样率
+    .成员 nAvgBytesPerSec, 整数型, , , 记录每秒的数据量
+    .成员 nBlockAlign, 短整数型, , , 记录区块的对齐单位
+    .成员 wBitsPerSample, 短整数型, , , 记录每个取样所需的位元数
+    .成员 cbSize, 短整数型, , , 长度
+
+数据类型 WAVEHDR, , 波形音频数据块结构(32)
+    .成员 lpData, 整数型, , , 指向锁定的数据缓冲区的指针
+    .成员 dwBufferLength, 整数型, , , 数据缓冲区的大小
+    .成员 dwBytesRecorded, 整数型, , , 已录音的字节长度
+    .成员 dwUser, 整数型, , , 用户数据
+    .成员 dwFlags, 整数型, , , 提供缓冲区信息的标志
+    .成员 dwLoops, 整数型, , , 循环次数
+    .成员 lpNext, 整数型, , , 保留
+    .成员 Reserved, 整数型, , , 保留
+
+.全局变量 pBuffer1, 字节集, , , 录音缓冲区1
+.全局变量 pBuffer2, 字节集, , , 录音缓冲区2
+
+.DLL命令 waveInGetNumDevs, 整数型, "winmm.dll", "waveInGetNumDevs", , 获取声音输入设备数量
+
+.DLL命令 waveInOpen, 整数型, "winmm.dll", "waveInOpen", , 
+    .参数 lphWaveIn, 整数型, 传址, 返回打开波形设备的句柄
+    .参数 uDeviceID, 整数型, , 输入设备ID
+    .参数 lpFormat, WAVEFORMATEX, , 录音格式指针
+    .参数 dwCallbac, 子程序指针, , 处理MM_WIM_***消息的回调函数或窗口句柄或线程ID
+    .参数 dwInstance, 整数型, , 
+    .参数 dwFlags, 整数型, , 处理消息方式的符号位
+
+.DLL命令 waveInPrepareHeader, 整数型, "winmm.dll", "waveInPrepareHeader", , 为录音设备准备缓存
+    .参数 hWaveIn, 整数型, , 
+    .参数 lpWaveInHdr, WAVEHDR, , 
+    .参数 uSize, 整数型, , 
+
+.DLL命令 waveInUnprepareHeader, 整数型, "winmm.dll", "waveInUnprepareHeader", , 清除为录音设备准备的缓存
+    .参数 hWaveIn, 整数型, , 
+    .参数 lpWaveInHdr, WAVEHDR, , 
+    .参数 uSize, 整数型, , 
+
+.DLL命令 waveInAddBuffer, 整数型, "winmm.dll", "waveInAddBuffer", , 增加内存块
+    .参数 hWaveIn, 整数型, , 
+    .参数 lpWaveInHdr, WAVEHDR, , 
+    .参数 uSize, 整数型, , 
+
+.DLL命令 waveInStart, 整数型, "winmm.dll", "waveInStart", , 开始录音
+    .参数 hWaveIn, 整数型, , 
+
+.DLL命令 waveInReset, 整数型, "winmm.dll", "waveInReset", , 
+    .参数 hWaveIn, 整数型, , 
+
+.DLL命令 waveInClose, 整数型, "winmm.dll", "waveInClose", , 关闭录音设备
+    .参数 hWaveIn, 整数型, , 
+
+.DLL命令 GetDC, 整数型, "", "GetDC", , 
+    .参数 A, 整数型, , 
+
+.DLL命令 SetPixelV, 整数型, "", "SetPixelV", , 
+    .参数 hdc, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 crColor, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 WaveIn, 整数型, , , 
+.程序集变量 录音设置, WAVEFORMATEX, , , 
+.程序集变量 缓存大小, 整数型, , , 
+.程序集变量 数据缓存, WAVEHDR, , , 
+.程序集变量 缓存地址1, 整数型, , , 
+.程序集变量 缓存地址2, 整数型, , , 
+.程序集变量 可用缓存, 整数型, , , 
+.程序集变量 画板场景, 整数型, , , 
+.程序集变量 x, 整数型, , , 
+.程序集变量 y, 整数型, , , 
+.子程序 _开始录音_被单击, 空白型, , 
+.如果 (大于或等于 (waveInGetNumDevs (), 1))
+    赋值 (缓存大小, 512)
+    赋值 (画板场景, GetDC (取窗口句柄 ()))
+    
+    赋值 (录音设置.wFormatTag, #WAVE_FORMAT_PCM)
+    赋值 (录音设置.nChannels, 1)
+    赋值 (录音设置.nSamplesPerSec, 16000)
+    赋值 (录音设置.nAvgBytesPerSec, 16000)
+    赋值 (录音设置.nBlockAlign, 2)
+    赋值 (录音设置.cbSize, 0)
+    赋值 (录音设置.wBitsPerSample, 16) ' 指定录音格式
+    waveInOpen (WaveIn, #WAVE_MAPPER, 录音设置, &WaveInFunc, 0, #CALLBACK_FUNCTION) ' 打开录音设备
+    
+    赋值 (pBuffer1, 取空白字节集 (缓存大小))
+    赋值 (pBuffer2, 取空白字节集 (缓存大小))
+    赋值 (缓存地址1, 未知支持库函数_2 (pBuffer1))
+    赋值 (缓存地址2, 未知支持库函数_2 (pBuffer2))
+    赋值 (数据缓存.lpData, 缓存地址1)
+    赋值 (数据缓存.dwBufferLength, 缓存大小)
+    赋值 (数据缓存.dwLoops, 1)
+    waveInPrepareHeader (WaveIn, 数据缓存, 32) ' 为录音设备准备录音头文件
+    waveInAddBuffer (WaveIn, 数据缓存, 32) ' 为录音设备准备一个缓存
+    赋值 (可用缓存, 2)
+    waveInStart (WaveIn) ' 开始录音
+    
+.否则
+    信息框 (“没有可用的录音通道！”, 0, “信息”)
+.如果结束
+
+
+.子程序 WaveInFunc, 空白型, , 
+.参数 hwi, 整数型, , 
+.参数 uMsg, 整数型, , 
+.参数 dwInstance, 整数型, , 
+.参数 dwParam1, 整数型, , 
+.参数 dwParam2, 整数型, , 
+
+.清除 ()
+.判断开始 (等于 (uMsg, #MM_WIM_DATA)) ' 填满数据块
+    .判断开始 (等于 (可用缓存, 1))
+        赋值 (数据缓存.lpData, 缓存地址1)
+        赋值 (可用缓存, 2)
+        waveInAddBuffer (WaveIn, 数据缓存, 32) ' 给输入设备增加一个缓存
+        .计次循环首 (256, y)
+            赋值 (x, 相乘 (y, 2))
+            .如果 (小于 (pBuffer2 [x], 128))
+                SetPixelV (画板场景, y, 整除 (相加 (pBuffer2 [x], 255), 4), #绿色)
+            .否则
+                SetPixelV (画板场景, y, 整除 (pBuffer2 [x], 4), #绿色)
+            .如果结束
+            
+        .计次循环尾 ()
+        
+    .判断 (等于 (可用缓存, 2))
+        赋值 (数据缓存.lpData, 缓存地址2)
+        赋值 (可用缓存, 1)
+        waveInAddBuffer (WaveIn, 数据缓存, 32) ' 给输入设备增加一个缓存
+        .计次循环首 (256, y)
+            赋值 (x, 相乘 (y, 2))
+            .如果 (小于 (pBuffer1 [x], 128))
+                SetPixelV (画板场景, y, 整除 (相加 (pBuffer1 [x], 255), 4), #绿色)
+            .否则
+                SetPixelV (画板场景, y, 整除 (pBuffer1 [x], 4), #绿色)
+            .如果结束
+            
+        .计次循环尾 ()
+    .默认
+        
+    .判断结束
+    
+.判断 (等于 (uMsg, #MM_WIM_OPEN)) ' 打开录音设备
+    赋值 (.标题, “正在获取数据！”)
+.判断 (等于 (uMsg, #MM_WIM_CLOSE)) ' 关闭录音设备
+    赋值 (.标题, “停止获取数据！”)
+.默认
+    
+.判断结束
+
+
+.子程序 _停止录音_被单击, 空白型, , 
+赋值 (可用缓存, 0)
+waveInUnprepareHeader (WaveIn, 数据缓存, 32) ' 清除为录音设备准备的录音头文件
+waveInReset (WaveIn) ' 停止录音
+waveInClose (WaveIn) ' 关闭录音设备
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+_停止录音_被单击 ()
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,87 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.图片 图标, " ' 已保存到：D:\易语言学习\Data\新用API置托盘图标成功1.e\图标", , 
+.常量 WM_LBUTTONDBLCLK, "515", , 
+.常量 WM_RBUTTONUP, "517", , 
+.常量 NIM_ADD, "0", , 
+.常量 NIM_MODIFY, "1", , 
+.常量 NIF_MESSAGE, "1", , 
+.常量 NIM_DELETE, "2", , 
+.常量 NIF_ICON, "2", , 
+.常量 NIF_TIP, "4", , 
+.常量 WM_MOUSEMOVE, "512", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 0 系统核心支持库
+
+
+
+
+数据类型 NOTIFYICONDATA, , 
+    .成员 cbSize, 整数型, , , 
+    .成员 hwnd, 整数型, , , 
+    .成员 Uid, 整数型, , , 
+    .成员 UFlags, 整数型, , , 
+    .成员 UCallbackMessage, 整数型, , , 
+    .成员 HIcon, 整数型, , , 
+    .成员 SzTip, 文本型, , , 
+
+
+.DLL命令 ExtractIconA, 整数型, "shell32.dll", "ExtractIconA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 文件名称, 文本型, , 
+    .参数 图标索引, 整数型, , 
+
+.DLL命令 Shell_NotifyIconA, 整数型, "shell32.dll", "Shell_NotifyIconA", , 
+    .参数 dwMessage, 整数型, , 
+    .参数 lpData, NOTIFYICONDATA, 传址, 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 结构, NOTIFYICONDATA, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+赋值 (结构.cbSize, 88)
+赋值 (结构.hwnd, _启动窗口.取窗口句柄 ())
+赋值 (结构.Uid, 0)
+赋值 (结构.UFlags, 2)
+赋值 (结构.UCallbackMessage, 512)
+赋值 (结构.SzTip, “你好！”)
+赋值 (结构.HIcon, ExtractIconA (取窗口句柄 (), 取执行文件名 (), 0))
+Shell_NotifyIconA (0, 结构)
+
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+Shell_NotifyIconA (2, 结构)
+
+.子程序 _按钮1_被单击, 空白型, , 
+销毁 ()
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

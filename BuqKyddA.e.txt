@@ -1,0 +1,1124 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.wodesoft.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.wodesoft.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.wodesoft.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 499
+    高度 = 388
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 1
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “全API打造视频捕获”
+    帮助文件名 = “”
+
+窗口 视频源窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 331
+    高度 = 139
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “视频源”
+    帮助文件名 = “”
+
+
+
+.常量 WM_USER, "1024", , 
+.常量 WM_CAP_START, "1024", , 
+.常量 WM_CAP_GET_CAPSTREAMPTR, "1025", , 
+.常量 WM_CAP_SET_CALLBACK_ERROR, "1026", , 
+.常量 WM_CAP_SET_CALLBACK_STATUS, "1027", , 
+.常量 WM_CAP_SET_CALLBACK_YIELD, "1028", , 
+.常量 WM_CAP_SET_CALLBACK_FRAME, "1029", , 
+.常量 WM_CAP_SET_CALLBACK_VIDEOSTREAM, "1030", , 
+.常量 WM_CAP_SET_CALLBACK_WAVESTREAM, "1031", , 
+.常量 WM_CAP_GET_USER_DATA, "1032", , 
+.常量 WM_CAP_SET_USER_DATA, "1033", , 
+.常量 WM_CAP_DRIVER_CONNECT, "1034", , 
+.常量 WM_CAP_DRIVER_DISCONNECT, "1035", , 
+.常量 WM_CAP_DRIVER_GET_NAME, "1036", , 
+.常量 WM_CAP_DRIVER_GET_VERSION, "1037", , 
+.常量 WM_CAP_DRIVER_GET_CAPS, "1038", , 
+.常量 WM_CAP_FILE_SET_CAPTURE_FILE, "1044", , 
+.常量 WM_CAP_FILE_GET_CAPTURE_FILE, "1045", , 
+.常量 WM_CAP_FILE_ALLOCATE, "1046", , 
+.常量 WM_CAP_FILE_SAVEAS, "1047", , 
+.常量 WM_CAP_FILE_SET_INFOCHUNK, "1048", , 
+.常量 WM_CAP_FILE_SAVEDIB, "1049", , 
+.常量 WM_CAP_EDIT_COPY, "1054", , 
+.常量 WM_CAP_SET_AUDIOFORMAT, "1059", , 
+.常量 WM_CAP_GET_AUDIOFORMAT, "1060", , 
+.常量 WM_CAP_DLG_VIDEOFORMAT, "1065", , 
+.常量 WM_CAP_DLG_VIDEOSOURCE, "1066", , 
+.常量 WM_CAP_DLG_VIDEODISPLAY, "1067", , 
+.常量 WM_CAP_GET_VIDEOFORMAT, "1068", , 
+.常量 WM_CAP_SET_VIDEOFORMAT, "1069", , 
+.常量 WM_CAP_DLG_VIDEOCOMPRESSION, "1070", , 
+.常量 WM_CAP_SET_PREVIEW, "1074", , 
+.常量 WM_CAP_SET_OVERLAY, "1075", , 
+.常量 WM_CAP_SET_PREVIEWRATE, "1076", , 
+.常量 WM_CAP_SET_SCALE, "1077", , 
+.常量 WM_CAP_GET_STATUS, "1078", , 
+.常量 WM_CAP_SET_SCROLL, "1079", , 
+.常量 WM_CAP_GRAB_FRAME, "1084", , 
+.常量 WM_CAP_GRAB_FRAME_NOSTOP, "1085", , 
+.常量 WM_CAP_SEQUENCE, "1086", , 
+.常量 WM_CAP_SEQUENCE_NOFILE, "1087", , 
+.常量 WM_CAP_SET_SEQUENCE_SETUP, "1088", , 
+.常量 WM_CAP_GET_SEQUENCE_SETUP, "1089", , 
+.常量 WM_CAP_SET_MCI_DEVICE, "1090", , 
+.常量 WM_CAP_GET_MCI_DEVICE, "1091", , 
+.常量 WM_CAP_STOP, "1092", , 
+.常量 WM_CAP_ABORT, "1093", , 
+.常量 WM_CAP_SINGLE_FRAME_OPEN, "1094", , 
+.常量 WM_CAP_SINGLE_FRAME_CLOSE, "1095", , 
+.常量 WM_CAP_SINGLE_FRAME, "1096", , 
+.常量 WM_CAP_PAL_OPEN, "1104", , 
+.常量 WM_CAP_PAL_SAVE, "1105", , 
+.常量 WM_CAP_PAL_PASTE, "1106", , 
+.常量 WM_CAP_PAL_AUTOCREATE, "1107", , 
+.常量 WM_CAP_PAL_MANUALCREATE, "1108", , 
+.常量 WM_CAP_SET_CALLBACK_CAPCONTROL, "1109", , 
+.常量 WM_CAP_END, "1109", , 
+.常量 IDS_CAP_BEGIN, "300", , /* "Capture Start" */
+.常量 IDS_CAP_END, "301", , /* "Capture End" */
+.常量 IDS_CAP_INFO, "401", , /* "%s" */
+.常量 IDS_CAP_OUTOFMEM, "402", , /* "Out of memory" */
+.常量 IDS_CAP_FILEEXISTS, "403", , /* "File '%s' exists -- overwrite it?" */
+.常量 IDS_CAP_ERRORPALOPEN, "404", , /* "Error opening palette '%s'" */
+.常量 IDS_CAP_ERRORPALSAVE, "405", , /* "Error saving palette '%s'" */
+.常量 IDS_CAP_ERRORDIBSAVE, "406", , /* "Error saving frame '%s'" */
+.常量 IDS_CAP_DEFAVIEXT, "407", , /* "avi" */
+.常量 IDS_CAP_DEFPALEXT, "408", , /* "pal" */
+.常量 IDS_CAP_CANTOPEN, "409", , /* "Cannot open '%s'" */
+.常量 IDS_CAP_SEQ_MSGSTART, "410", , /* "Select OK to start capture\nof video sequence\nto %s." */
+.常量 IDS_CAP_SEQ_MSGSTOP, "411", , /* "Hit ESCAPE or click to end capture" */
+.常量 IDS_CAP_VIDEDITERR, "412", , /* "An error occurred while trying to run VidEdit." */
+.常量 IDS_CAP_READONLYFILE, "413", , /* "The file '%s' is a read-only file." */
+.常量 IDS_CAP_WRITEERROR, "414", , /* "Unable to write to file '%s'.\nDisk may be full." */
+.常量 IDS_CAP_NODISKSPACE, "415", , /* "There is no space to create a capture file on the specified device." */
+.常量 IDS_CAP_SETFILESIZE, "416", , /* "Set File Size" */
+.常量 IDS_CAP_SAVEASPERCENT, "417", , /* "SaveAs: %2ld%%  Hit Escape to abort." */
+.常量 IDS_CAP_DRIVER_ERROR, "418", , /* Driver specific error message */
+.常量 IDS_CAP_WAVE_OPEN_ERROR, "419", , /* "Error: Cannot open the wave input device.\nCheck sample size
+.常量 IDS_CAP_WAVE_ALLOC_ERROR, "420", , /* "Error: Out of memory for wave buffers." */
+.常量 IDS_CAP_WAVE_PREPARE_ERROR, "421", , /* "Error: Cannot prepare wave buffers." */
+.常量 IDS_CAP_WAVE_ADD_ERROR, "422", , /* "Error: Cannot add wave buffers." */
+.常量 IDS_CAP_WAVE_SIZE_ERROR, "423", , /* "Error: Bad wave size." */
+.常量 IDS_CAP_VIDEO_OPEN_ERROR, "424", , /* "Error: Cannot open the video input device." */
+.常量 IDS_CAP_VIDEO_ALLOC_ERROR, "425", , /* "Error: Out of memory for video buffers." */
+.常量 IDS_CAP_VIDEO_PREPARE_ERROR, "426", , /* "Error: Cannot prepare video buffers." */
+.常量 IDS_CAP_VIDEO_ADD_ERROR, "427", , /* "Error: Cannot add video buffers." */
+.常量 IDS_CAP_VIDEO_SIZE_ERROR, "428", , /* "Error: Bad video size." */
+.常量 IDS_CAP_FILE_OPEN_ERROR, "429", , /* "Error: Cannot open capture file." */
+.常量 IDS_CAP_FILE_WRITE_ERROR, "430", , /* "Error: Cannot write to capture file.  Disk may be full." */
+.常量 IDS_CAP_RECORDING_ERROR, "431", , /* "Error: Cannot write to capture file.  Data rate too high or disk full." */
+.常量 IDS_CAP_RECORDING_ERROR2, "432", , /* "Error while recording" */
+.常量 IDS_CAP_AVI_INIT_ERROR, "433", , /* "Error: Unable to initialize for capture." */
+.常量 IDS_CAP_NO_FRAME_CAP_ERROR, "434", , /* "Warning: No frames captured.\nConfirm that vertical sync interrupts\nare configured and enabled." */
+.常量 IDS_CAP_NO_PALETTE_WARN, "435", , /* "Warning: Using default palette." */
+.常量 IDS_CAP_MCI_CONTROL_ERROR, "436", , /* "Error: Unable to access MCI device." */
+.常量 IDS_CAP_MCI_CANT_STEP_ERROR, "437", , /* "Error: Unable to step MCI device." */
+.常量 IDS_CAP_NO_AUDIO_CAP_ERROR, "438", , /* "Error: No audio data captured.\nCheck audio card settings." */
+.常量 IDS_CAP_AVI_DRAWDIB_ERROR, "439", , /* "Error: Unable to draw this data format." */
+.常量 IDS_CAP_COMPRESSOR_ERROR, "440", , /* "Error: Unable to initialize compressor." */
+.常量 IDS_CAP_AUDIO_DROP_ERROR, "441", , /* "Error: Audio data was lost during capture
+.常量 IDS_CAP_STAT_LIVE_MODE, "500", , /* "Live window" */
+.常量 IDS_CAP_STAT_OVERLAY_MODE, "501", , /* "Overlay window" */
+.常量 IDS_CAP_STAT_CAP_INIT, "502", , /* "Setting up for capture - Please wait" */
+.常量 IDS_CAP_STAT_CAP_FINI, "503", , /* "Finished capture
+.常量 IDS_CAP_STAT_PALETTE_BUILD, "504", , /* "Building palette map" */
+.常量 IDS_CAP_STAT_OPTPAL_BUILD, "505", , /* "Computing optimal palette" */
+.常量 IDS_CAP_STAT_I_FRAMES, "506", , /* "%d frames" */
+.常量 IDS_CAP_STAT_L_FRAMES, "507", , /* "%ld frames" */
+.常量 IDS_CAP_STAT_CAP_L_FRAMES, "508", , /* "Captured %ld frames" */
+.常量 IDS_CAP_STAT_CAP_AUDIO, "509", , /* "Capturing audio" */
+.常量 IDS_CAP_STAT_VIDEOCURRENT, "510", , /* "Captured %ld frames (%ld dropped) %d.%03d sec." */
+.常量 IDS_CAP_STAT_VIDEOAUDIO, "511", , /* "Captured %d.%03d sec.  %ld frames (%ld dropped) (%d.%03d fps).  %ld audio bytes (%d
+.常量 IDS_CAP_STAT_VIDEOONLY, "512", , /* "Captured %d.%03d sec.  %ld frames (%ld dropped) (%d.%03d fps)" */
+.常量 WS_BORDER, "8388608", , 
+.常量 WS_CAPTION, "12582912", , 
+.常量 WS_SYSMENU, "524288", , 
+.常量 WS_CHILD, "1073741824", , 
+.常量 WS_VISIBLE, "268435456", , 
+.常量 WS_OVERLAPPED, "0", , 
+.常量 WS_MINIMIZEBOX, "131072", , 
+.常量 WS_MAXIMIZEBOX, "65536", , 
+.常量 WS_THICKFRAME, "262144", , 
+.常量 WS_OVERLAPPEDWINDOW, "13565952", , WS_OVERLAPPED Or WS_CAPTION Or WS_SYSMENU Or WS_THICKFRAME Or WS_MINIMIZEBOX Or WS_MAXIMIZEBOX
+.常量 SWP_NOMOVE, "2", , 
+.常量 SWP_NOSIZE, "1", , 
+.常量 SWP_NOZORDER, "4", , 
+.常量 HWND_BOTTOM, "1", , 
+.常量 HWND_TOPMOST, "-1", , 
+.常量 HWND_NOTOPMOST, "-2", , 
+.常量 SM_CYCAPTION, "4", , 
+.常量 SM_CXFRAME, "32", , 
+.常量 SM_CYFRAME, "33", , 
+.常量 WS_EX_TRANSPARENT, "32", , 
+.常量 GWL_STYLE, "-16", , 
+.常量 WM_SIZE, "5", , 
+.常量 SIZE_RESTORED, "0", , 
+.常量 WS_CHILDWINDOW, "1073741824", , 
+.常量 CCS_TOP, "1", , 
+.常量 SBARS_SIZEGRIP, "256", , 
+.常量 SBARS_TOOLTIPS, "2048", , 
+.常量 CCS_NOMOVEY, "2", , 
+.常量 CCS_BOTTOM, "3", , 
+.常量 YOURCONSTANTMESSAGE, "0", , 
+.常量 SB_SETPARTS, "1028", , 
+.常量 SB_ISSIMPLE, "1038", , 
+.常量 SB_SIMPLE, "1033", , 
+.常量 SB_SETTEXTA, "1025", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 POINTAPI, , 
+    .成员 x, 整数型, , , 
+    .成员 y, 整数型, , , 
+
+数据类型 CAPDRIVERCAPS, , 
+    .成员 wDeviceIndex, 整数型, , , // Driver index in system.ini
+    .成员 fHasOverlay, 整数型, , , // Can device overlay?
+    .成员 fHasDlgVideoSource, 整数型, , , // Has Video source dlg?
+    .成员 fHasDlgVideoFormat, 整数型, , , // Has Format dlg?
+    .成员 fHasDlgVideoDisplay, 整数型, , , // Has External out dlg?
+    .成员 fCaptureInitialized, 整数型, , , // Driver ready to capture?
+    .成员 fDriverSuppliesPalettes, 整数型, , , // Can driver make palettes?
+    .成员 hVideoIn, 整数型, , , // Driver In channel
+    .成员 hVideoOut, 整数型, , , // Driver Out channel
+    .成员 hVideoExtIn, 整数型, , , // Driver Ext In channel
+    .成员 hVideoExtOut, 整数型, , , // Driver Ext Out channel
+
+数据类型 CAPSTATUS, , 
+    .成员 uiImageWidth, 整数型, , , // Width of the image
+    .成员 uiImageHeight, 整数型, , , // Height of the image
+    .成员 fLiveWindow, 整数型, , , // Now Previewing video?
+    .成员 fOverlayWindow, 整数型, , , // Now Overlaying video?
+    .成员 fScale, 整数型, , , // Scale image to client?
+    .成员 ptScroll, POINTAPI, , , // Scroll position
+    .成员 fUsingDefaultPalette, 整数型, , , // Using default driver palette?
+    .成员 fAudioHardware, 整数型, , , // Audio hardware present?
+    .成员 fCapFileExists, 整数型, , , // Does capture file exist?
+    .成员 dwCurrentVideoFrame, 整数型, , , // # of video frames cap'td
+    .成员 dwCurrentVideoFramesDropped, 整数型, , , // # of video frames dropped
+    .成员 dwCurrentWaveSamples, 整数型, , , // # of wave samples cap'td
+    .成员 dwCurrentTimeElapsedMS, 整数型, , , // Elapsed capture duration
+    .成员 hPalCurrent, 整数型, , , // Current palette in use
+    .成员 fCapturingNow, 整数型, , , // Capture in progress?
+    .成员 dwReturn, 整数型, , , // Error value after any operation
+    .成员 wNumVideoAllocated, 整数型, , , // Actual number of video buffers
+    .成员 wNumAudioAllocated, 整数型, , , // Actual number of audio buffers
+
+数据类型 CAPTUREPARMS, , 
+    .成员 dwRequestMicroSecPerFrame, 整数型, , , // Requested capture rate
+    .成员 fMakeUserHitOKToCapture, 整数型, , , // Show "Hit OK to cap" dlg?
+    .成员 wPercentDropForError, 整数型, , , // Give error msg if > (10%)
+    .成员 fYield, 整数型, , , // Capture via background task?
+    .成员 dwIndexSize, 整数型, , , // Max index size in frames (32K)
+    .成员 wChunkGranularity, 整数型, , , // Junk chunk granularity (2K)
+    .成员 fUsingDOSMemory, 整数型, , , // Use DOS buffers?
+    .成员 wNumVideoRequested, 整数型, , , // # video buffers
+    .成员 fCaptureAudio, 整数型, , , // Capture audio?
+    .成员 wNumAudioRequested, 整数型, , , // # audio buffers
+    .成员 vKeyAbort, 整数型, , , // Virtual key causing abort
+    .成员 fAbortLeftMouse, 整数型, , , // Abort on left mouse?
+    .成员 fAbortRightMouse, 整数型, , , // Abort on right mouse?
+    .成员 fLimitEnabled, 整数型, , , // Use wTimeLimit?
+    .成员 wTimeLimit, 整数型, , , // Seconds to capture
+    .成员 fMCIControl, 整数型, , , // Use MCI video source?
+    .成员 fStepMCIDevice, 整数型, , , // Step MCI device?
+    .成员 dwMCIStartTime, 整数型, , , // Time to start in MS
+    .成员 dwMCIStopTime, 整数型, , , // Time to stop in MS
+    .成员 fStepCaptureAt2x, 整数型, , , // Perform spatial averaging 2x
+    .成员 wStepCaptureAverageFrames, 整数型, , , // Temporal average n Frames
+    .成员 dwAudioBufferSize, 整数型, , , // Size of audio bufs (0 = default)
+    .成员 fDisableWriteCache, 整数型, , , // Attempt to disable write cache
+
+数据类型 CAPINFOCHUNK, , 
+    .成员 fccInfoID, 整数型, , , // Chunk ID
+    .成员 lpData, 整数型, , , // pointer to data
+    .成员 cbData, 整数型, , , // size of lpData
+
+数据类型 VIDEOHDR, , 
+    .成员 lpData, 整数型, , , // address of video buffer
+    .成员 dwBufferLength, 整数型, , , // size
+    .成员 dwBytesUsed, 整数型, , , // see below
+    .成员 dwTimeCaptured, 整数型, , , // see below
+    .成员 dwUser, 整数型, , , // user-specific data
+    .成员 dwFlags, 整数型, , , // see below
+    .成员 dwReserved, 整数型, , "3", 
+
+.全局变量 lwndC, 整数型, , , 
+.全局变量 hStatusbar, 整数型, , , 
+
+.DLL命令 SendMessage, 整数型, "", "SendMessageA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 短整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 SendMessageB, 整数型, "", "SendMessageA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, 传址 数组, 
+
+.DLL命令 SendMessageT, 整数型, "", "SendMessageA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 短整数型, , 
+    .参数 lParam, CAPSTATUS, , 
+
+.DLL命令 SendMessageS, 整数型, "", "SendMessageA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 短整数型, , 
+    .参数 lParam, 文本型, , 
+
+.DLL命令 capCreateCaptureWindowA, 整数型, "avicap32.dll", "", , 
+    .参数 lpszWindowName, 文本型, , 
+    .参数 dwStyle, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 短整数型, , 
+    .参数 hWndParent, 整数型, , 
+    .参数 nID, 整数型, , 
+
+.DLL命令 capGetDriverDescriptionA, 逻辑型, "avicap32.dll", "", , 
+    .参数 wDriver, 短整数型, , 
+    .参数 lpszName, 文本型, , 
+    .参数 cbName, 整数型, , 
+    .参数 lpszVer, 文本型, , 
+    .参数 cbVer, 整数型, , 
+
+.DLL命令 SetWindowLong, 整数型, "", "SetWindowLongA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+    .参数 dwNewLong, 整数型, , 
+
+.DLL命令 lStrCpy, 整数型, "", "lstrcpyA", , 
+    .参数 lpString1, 整数型, , 
+    .参数 lpString2, 整数型, , 
+
+.DLL命令 VarPtr_CAPTUREPARMS, 整数型, "", "lstrcpyA", , 
+    .参数 lpString1, CAPTUREPARMS, 传址, 
+    .参数 lpString2, CAPTUREPARMS, 传址, 
+
+.DLL命令 VarPtr_CAPDRIVERCAPS, 整数型, "", "lstrcpyA", , 
+    .参数 lpString1, CAPDRIVERCAPS, 传址, 
+    .参数 lpString2, CAPDRIVERCAPS, 传址, 
+
+.DLL命令 VarPtr_VIDEOHDR, 整数型, "", "lstrcpyA", , 
+    .参数 lpString1, VIDEOHDR, 传址, 
+    .参数 lpString2, VIDEOHDR, 传址, 
+
+.DLL命令 VarPtr_bin, 整数型, "", "lstrcpyA", , 
+    .参数 lpString1, 字节集, 传址, 
+    .参数 lpString2, 整数型, 传址, 
+
+.DLL命令 VarPtr_CAPSTATUS, 整数型, "", "lstrcpyA", , 
+    .参数 lpString1, CAPSTATUS, 传址, 
+    .参数 lpString2, CAPSTATUS, 传址, 
+
+.DLL命令 lStrCpyn, 整数型, "", "lstrcpynA", , 
+    .参数 lpString1, 整数型, , 
+    .参数 lpString2, 整数型, , 
+    .参数 iMaxLength, 整数型, , 
+
+.DLL命令 RtlMoveMemory, 空白型, "", "", , 
+    .参数 hpvDest, 整数型, , 
+    .参数 hpvSource, 整数型, , 
+    .参数 cbCopy, 整数型, , 
+
+.DLL命令 hmemcpy, 空白型, "", "", , 
+    .参数 hpvDest, 整数型, 传址, 
+    .参数 hpvSource, 整数型, 传址, 
+    .参数 cbCopy, 整数型, , 
+
+.DLL命令 SetWindowPos, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 hWndInsertAfter, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 cx, 整数型, , 
+    .参数 cy, 整数型, , 
+    .参数 wFlags, 整数型, , 
+
+.DLL命令 DestroyWindow, 逻辑型, "", "", , 
+    .参数 hndw, 整数型, , 
+
+.DLL命令 GetSystemMetrics, 整数型, "", "", , 
+    .参数 nIndex, 整数型, , 
+
+.DLL命令 SetWindowText, 整数型, "", "SetWindowTextA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpString, 文本型, , 
+
+.DLL命令 GetSize_CAPTUREPARMS, 整数型, "", "LocalSize", , 
+    .参数 hMem, CAPTUREPARMS, 传址, 
+
+.DLL命令 GetSize_CAPDRIVERCAPS, 整数型, "", "LocalSize", , 
+    .参数 hMem, CAPDRIVERCAPS, 传址, 
+
+.DLL命令 GetSize_CAPSTATUS, 整数型, "", "LocalSize", , 
+    .参数 hMem, CAPSTATUS, 传址, 
+
+.DLL命令 GetSize_VIDEOHDR, 整数型, "", "LocalSize", , 
+    .参数 hMem, VIDEOHDR, 传址, 
+
+.DLL命令 CreateWindowEx, 整数型, "", "CreateWindowExA", , 
+    .参数 dwExStyle, 整数型, , 
+    .参数 lpClassName, 文本型, , 
+    .参数 lpWindowName, 文本型, , 
+    .参数 dwStyle, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+    .参数 hWndParent, 整数型, , 
+    .参数 hMenu, 整数型, , 
+    .参数 hInstance, 整数型, , 
+    .参数 lpParam, 整数型, 传址, 
+
+.DLL命令 GetModuleHandle, 整数型, "", "GetModuleHandleA", , 
+    .参数 lpModuleName, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 lpszName, 文本型, , , 
+.局部变量 lpszVer, 文本型, , , 
+.局部变量 Caps, CAPDRIVERCAPS, , , 
+.局部变量 bar, 整数型, , "0", 
+
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+ ' // 创建状态条
+
+赋值 (hStatusbar, CreateWindowEx (0, “msctls_statusbar32”, “”, 位或 (#WS_VISIBLE, #WS_CHILDWINDOW, #SBARS_SIZEGRIP, #SBARS_TOOLTIPS, #CCS_TOP, #CCS_BOTTOM, #CCS_NOMOVEY), ., 相减 (., 50), ., 50, 取窗口句柄 (), 0, GetModuleHandle (0), 0))
+赋值 (bar, { 500, -1 })
+SendMessageB (hStatusbar, #SB_SETPARTS, 2, bar) ' 设置状态条分隔
+SendMessageS (hStatusbar, #SB_SETTEXTA, 0, “状态:”) ' 置初始文本
+' 本源码来自易语言资源网(www.wodesoft.com)
+ ' // 建立捕捉窗口
+赋值 (lpszName, 取空白文本 (100)) ' 分配内存空间
+赋值 (lpszVer, 取空白文本 (100)) ' 分配内存空间
+capGetDriverDescriptionA (0, lpszName, 100, lpszVer, 100) ' // 取回驱动信息
+赋值 (lwndC, capCreateCaptureWindowA (lpszName, 位或 (#WS_CAPTION, #WS_THICKFRAME, #WS_VISIBLE, #WS_CHILD), 0, 0, 320, 240, 取窗口句柄 (), 0))
+
+ ' // 设置窗口标题
+SetWindowText (lwndC, lpszName)
+
+ ' // 设置视频流回调函数
+capSetCallbackOnStatus (lwndC, 到整数 (&MyStatusCallback))
+capSetCallbackOnError (lwndC, 到整数 (&MyErrorCallback))
+
+ ' // 连接捕获窗口的驱动
+.如果真 (capDriverConnect (lwndC, 0))
+     ' // 只有做好以下如果连接是成功的。
+     ' // 如果失败的话，报告错误，返回调用函数。
+     ' // 进行捕获驱动程序
+    capDriverGetCaps (lwndC, VarPtr_CAPDRIVERCAPS (Caps, Caps), GetSize_CAPDRIVERCAPS (Caps))
+    
+     ' // 如果捕获驱动程序不支持的一个选项，将在菜单栏置灰色。
+    .如果真 (等于 (Caps.fHasDlgVideoSource, 0))
+        赋值 (., 假)
+    .如果真结束
+    .如果真 (等于 (Caps.fHasDlgVideoFormat, 0))
+        赋值 (., 假)
+    .如果真结束
+    .如果真 (等于 (Caps.fHasDlgVideoDisplay, 0))
+        赋值 (., 假)
+    .如果真结束
+    
+     ' // 设置预览时的比例
+    capPreviewScale (lwndC, 真)
+    
+     ' // 设置预览率在毫秒
+    capPreviewRate (lwndC, 66)
+    
+     ' // 开始预览图像从摄像头
+    capPreview (lwndC, 真)
+    
+     ' // 调整捕获窗口，以显示整个图象
+    ResizeCaptureWindow (lwndC)
+.如果真结束
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+.局部变量 vbNull, 文本型, , , 
+
+ ' // 禁用所有的回调
+capSetCallbackOnError (lwndC, 0)
+capSetCallbackOnStatus (lwndC, 0)
+capSetCallbackOnYield (lwndC, 0)
+capSetCallbackOnFrame (lwndC, 0)
+capSetCallbackOnVideoStream (lwndC, 0)
+capSetCallbackOnWaveStream (lwndC, 0)
+capSetCallbackOnCapControl (lwndC, 0)
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 _mnuAllocate_被选择, 空白型, , 
+.局部变量 sFile, 文本型, , , 
+.局部变量 lSize, 整数型, , , 
+
+ ' // 安装的交换文件，为捕捉
+赋值 (lSize, 1000000)
+赋值 (sFile, “C:\TEMP.AVI”)
+capFileSetCaptureFile (lwndC, sFile)
+capFileAlloc (lwndC, lSize)
+
+
+.子程序 _mnuAlwaysVisible_被选择, 空白型, , 
+赋值 (., 取反 (.))
+.如果 (.)
+    SetWindowPos (取窗口句柄 (), #HWND_TOPMOST, 0, 0, 0, 0, 位或 (#SWP_NOSIZE, #SWP_NOMOVE))
+.否则
+    SetWindowPos (取窗口句柄 (), #HWND_NOTOPMOST, 0, 0, 0, 0, 位或 (#SWP_NOSIZE, #SWP_NOMOVE))
+.如果结束
+
+
+.子程序 _mnuCompression_被选择, 空白型, , 
+ ' // 菜单栏选定“压缩”，显示压缩对话框。
+capDlgVideoCompression (lwndC)
+
+
+.子程序 _mnuCopy_被选择, 空白型, , 
+capEditCopy (lwndC)
+
+
+.子程序 _mnuDisplay_被选择, 空白型, , 
+ ' // 菜单栏选定“显示” 显示视频显示对话框。
+capDlgVideoDisplay (lwndC)
+
+.子程序 _mnuExit_被选择, 空白型, , 
+销毁 ()
+
+.子程序 _mnuFormat_被选择, 空白型, , 
+ ' // 菜单栏选定“格式” 显示视频格式对话框。
+capDlgVideoFormat (lwndC)
+ResizeCaptureWindow (lwndC)
+
+.子程序 _mnuPreview_被选择, 空白型, , 
+SendMessageS (hStatusbar, #SB_SETTEXTA, 0, “”)
+赋值 (., 取反 (.))
+capPreview (lwndC, .)
+
+.子程序 _mnuScale_被选择, 空白型, , 
+赋值 (., 取反 (.))
+capPreviewScale (lwndC, .)
+.如果 (.)
+    SetWindowLong (lwndC, #GWL_STYLE, 位或 (#WS_THICKFRAME, #WS_CAPTION, #WS_VISIBLE, #WS_CHILD))
+.否则
+    SetWindowLong (lwndC, #GWL_STYLE, 位或 (#WS_BORDER, #WS_CAPTION, #WS_VISIBLE, #WS_CHILD))
+.如果结束
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+ResizeCaptureWindow (lwndC)
+
+.子程序 _mnuSelect_被选择, 空白型, , 
+载入 (视频源窗口, _启动窗口, 真)
+
+
+.子程序 _mnuSource_被选择, 空白型, , 
+ ' // 菜单栏选定“来源” 显示来源对话框。
+
+capDlgVideoSource (lwndC)
+
+
+.子程序 _mnuStart_被选择, 空白型, , 
+.局部变量 sFileName, 文本型, , , 
+.局部变量 CAP_PARAMS, CAPTUREPARMS, , , 
+
+ ' * 如果开始是选定从菜单中，开始视频流捕获。
+ ' * 压制完成才能终止视频流捕捉。
+
+capCaptureGetSetup (lwndC, VarPtr_CAPTUREPARMS (CAP_PARAMS, CAP_PARAMS), GetSize_CAPTUREPARMS (CAP_PARAMS))
+
+赋值 (CAP_PARAMS.dwRequestMicroSecPerFrame, 相除 (相乘 (1, 求次方 (10, 6)), 30)) ' 以每秒30帧
+赋值 (CAP_PARAMS.fMakeUserHitOKToCapture, 1)
+赋值 (CAP_PARAMS.fCaptureAudio, 0)
+
+capCaptureSetSetup (lwndC, VarPtr_CAPTUREPARMS (CAP_PARAMS, CAP_PARAMS), GetSize_CAPTUREPARMS (CAP_PARAMS))
+
+赋值 (sFileName, “C:\myvideo.avi”)
+
+capCaptureSequence (lwndC) ' 开始捕捉！
+capFileSaveAs (lwndC, sFileName) ' 复制视频文件从临时交换文件成为一个真正的文件。
+
+
+.子程序 __启动窗口_尺寸被改变, 空白型, , 
+SendMessage (hStatusbar, #WM_SIZE, #SIZE_RESTORED, 0)
+
+.子程序 _关于_被选择, 空白型, , 
+信息框 (“By:叮咚茶”, 0, )
+
+
+.窗口程序集 窗口程序集2, , , 
+
+.子程序 _按钮2_被单击, 空白型, , 
+销毁 ()
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 sTitle, 文本型, , , 
+.局部变量 Caps, CAPDRIVERCAPS, , , 
+
+.如果真 (大于 (., -1))
+     ' // Connect the capture window to the driver
+    .如果真 (capDriverConnect (lwndC, .))
+         ' // Get the capabilities of the capture driver
+        capDriverGetCaps (lwndC, GetSize_CAPDRIVERCAPS (Caps), GetSize_CAPDRIVERCAPS (Caps))
+        
+         ' // If the capture driver does not support a dialog, grey it out
+         ' // in the menu bar.
+        赋值 (_启动窗口.., 选择 (等于 (Caps.fHasDlgVideoSource, 0), 假, 真))
+        赋值 (_启动窗口.., 选择 (等于 (Caps.fHasDlgVideoFormat, 0), 假, 真))
+        赋值 (_启动窗口.., 选择 (等于 (Caps.fHasDlgVideoDisplay, 0), 假, 真))
+        
+        赋值 (sTitle, .)
+        
+        SetWindowText (lwndC, sTitle)
+        ResizeCaptureWindow (lwndC)
+        
+    .如果真结束
+    
+.如果真结束
+
+销毁 ()
+
+.子程序 _视频源窗口_创建完毕, 空白型, , 
+.局部变量 lpszName, 文本型, , , 
+.局部变量 lpszVer, 文本型, , , 
+.局部变量 x, 短整数型, , , 
+.局部变量 lResult, 逻辑型, , , 
+.局部变量 Caps, CAPDRIVERCAPS, , , 
+
+ ' // Get a list of all the installed drivers
+赋值 (lpszName, 取空白文本 (100))
+赋值 (lpszVer, 取空白文本 (100))
+赋值 (x, 0)
+.循环判断首 ()
+    赋值 (lResult, capGetDriverDescriptionA (x, lpszName, 100, lpszVer, 100)) ' // Retrieves driver info
+    .如果真 (lResult)
+        lpszName.加入项目 ()
+        赋值 (x, 相加 (x, 1))
+    .如果真结束
+    
+.循环判断尾 (不等于 (lResult, 假))
+
+ ' // Get the capabilities of the current capture driver
+赋值 (lResult, capDriverGetCaps (lwndC, VarPtr_CAPDRIVERCAPS (Caps, Caps), GetSize_CAPDRIVERCAPS (Caps)))
+
+ ' // Select the driver that is currently being used
+ ' If lResult Then cmboSource.ListIndex = Caps.wDeviceIndex
+.如果真 (lResult)
+    赋值 (., Caps.wDeviceIndex)
+.如果真结束
+
+
+.程序集 AVICAP, , , 
+
+.子程序 capSetCallbackOnError, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 lpProc, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SET_CALLBACK_ERROR, 0, lpProc), 0))
+
+.子程序 capSetCallbackOnStatus, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 lpProc, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SET_CALLBACK_STATUS, 0, lpProc), 0))
+
+.子程序 capSetCallbackOnYield, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 lpProc, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SET_CALLBACK_YIELD, 0, lpProc), 0))
+
+.子程序 capSetCallbackOnFrame, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 lpProc, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SET_CALLBACK_FRAME, 0, lpProc), 0))
+
+.子程序 capSetCallbackOnVideoStream, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 lpProc, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SET_CALLBACK_VIDEOSTREAM, 0, lpProc), 0))
+
+.子程序 capSetCallbackOnWaveStream, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 lpProc, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SET_CALLBACK_WAVESTREAM, 0, lpProc), 0))
+
+.子程序 capSetCallbackOnCapControl, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 lpProc, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SET_CALLBACK_CAPCONTROL, 0, lpProc), 0))
+
+.子程序 capSetUserData, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 lUser, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SET_USER_DATA, 0, lUser), 0))
+
+.子程序 capGetUserData, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_GET_USER_DATA, 0, 0), 0))
+
+.子程序 capDriverConnect, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 i, 短整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_DRIVER_CONNECT, i, 0), 0))
+
+.子程序 capDriverDisconnect, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_DRIVER_DISCONNECT, 0, 0), 0))
+
+.子程序 capDriverGetName, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 szName, 整数型, , 
+.参数 wSize, 短整数型, , 
+
+返回 (SendMessage (lwnd, #YOURCONSTANTMESSAGE, wSize, szName))
+
+.子程序 capDriverGetVersion, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 szVer, 整数型, , 
+.参数 wSize, 短整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_DRIVER_GET_VERSION, wSize, szVer), 0))
+
+.子程序 capDriverGetCaps, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 s, 整数型, , 
+.参数 wSize, 短整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_DRIVER_GET_CAPS, wSize, s), 0))
+
+.子程序 capFileSetCaptureFile, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 szName, 文本型, , 
+
+返回 (不等于 (SendMessageS (lwnd, #WM_CAP_FILE_SET_CAPTURE_FILE, 0, szName), 0))
+
+.子程序 capFileGetCaptureFile, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 szName, 整数型, , 
+.参数 wSize, 文本型, , 
+
+返回 (不等于 (SendMessageS (lwnd, #WM_CAP_FILE_SET_CAPTURE_FILE, wSize, szName), 0))
+
+.子程序 capFileAlloc, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 dwSize, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_FILE_ALLOCATE, 0, dwSize), 0))
+
+.子程序 capFileSaveAs, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 szName, 文本型, , 
+
+返回 (不等于 (SendMessageS (lwnd, #WM_CAP_FILE_SAVEAS, 0, szName), 0))
+
+.子程序 capFileSetInfoChunk, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 lpInfoChunk, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_FILE_SET_INFOCHUNK, 0, lpInfoChunk), 0))
+
+.子程序 capFileSaveDIB, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 szName, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_FILE_SAVEDIB, 0, szName), 0))
+
+.子程序 capEditCopy, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_EDIT_COPY, 0, 0), 0))
+
+.子程序 capSetAudioFormat, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 s, 整数型, , 
+.参数 wSize, 短整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SET_AUDIOFORMAT, wSize, s), 0))
+
+.子程序 capGetAudioFormat, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 s, 整数型, , 
+.参数 wSize, 短整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_GET_AUDIOFORMAT, wSize, s), 0))
+
+.子程序 capGetAudioFormatSize, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_GET_AUDIOFORMAT, 0, 0), 0))
+
+.子程序 capDlgVideoFormat, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_DLG_VIDEOFORMAT, 0, 0), 0))
+
+.子程序 capDlgVideoSource, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_DLG_VIDEOSOURCE, 0, 0), 0))
+
+.子程序 capDlgVideoDisplay, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_DLG_VIDEODISPLAY, 0, 0), 0))
+
+.子程序 capDlgVideoCompression, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_DLG_VIDEOCOMPRESSION, 0, 0), 0))
+
+.子程序 capGetVideoFormat, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 s, 整数型, , 
+.参数 wSize, 短整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_GET_VIDEOFORMAT, wSize, s), 0))
+
+.子程序 capGetVideoFormatSize, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_GET_VIDEOFORMAT, 0, 0), 0))
+
+.子程序 capSetVideoFormat, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 s, 整数型, , 
+.参数 wSize, 短整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SET_VIDEOFORMAT, wSize, s), 0))
+
+.子程序 capPreview, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 f, 逻辑型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SET_PREVIEW, 选择 (f, 1, 0), 0), 0))
+
+.子程序 capPreviewRate, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 wMS, 短整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SET_PREVIEWRATE, wMS, 0), 0))
+
+.子程序 capOverlay, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 f, 逻辑型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SET_OVERLAY, f, 0), 0))
+
+.子程序 capPreviewScale, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 f, 逻辑型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SET_SCALE, 选择 (f, 1, 0), 0), 0))
+
+.子程序 capGetStatus, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 s, CAPSTATUS, , 
+.参数 wSize, 短整数型, , 
+
+返回 (不等于 (SendMessageT (lwnd, #WM_CAP_GET_STATUS, wSize, s), 0))
+
+.子程序 capSetScrollPos, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 lpP, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SET_SCROLL, 0, lpP), 0))
+
+.子程序 capGrabFrame, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_GRAB_FRAME, 0, 0), 0))
+
+.子程序 capGrabFrameNoStop, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_GRAB_FRAME_NOSTOP, 0, 0), 0))
+
+.子程序 capCaptureSequence, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SEQUENCE, 0, 0), 0))
+
+.子程序 capCaptureSequenceNoFile, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SEQUENCE_NOFILE, 0, 0), 0))
+
+.子程序 capCaptureStop, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_STOP, 0, 0), 0))
+
+.子程序 capCaptureAbort, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_ABORT, 0, 0), 0))
+
+.子程序 capCaptureSingleFrameOpen, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SINGLE_FRAME_OPEN, 0, 0), 0))
+
+.子程序 capCaptureSingleFrameClose, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SINGLE_FRAME_CLOSE, 0, 0), 0))
+
+.子程序 capCaptureSingleFrame, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SINGLE_FRAME, 0, 0), 0))
+
+.子程序 capCaptureGetSetup, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 s, 整数型, , 
+.参数 wSize, 短整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_GET_SEQUENCE_SETUP, wSize, s), 0))
+
+.子程序 capCaptureSetSetup, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 s, 整数型, , 
+.参数 wSize, 短整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SET_SEQUENCE_SETUP, wSize, s), 0))
+
+.子程序 capSetMCIDeviceName, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 szName, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_SET_MCI_DEVICE, 0, szName), 0))
+
+.子程序 capGetMCIDeviceName, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 szName, 整数型, , 
+.参数 wSize, 短整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_GET_MCI_DEVICE, wSize, szName), 0))
+
+.子程序 capPaletteOpen, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 szName, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_PAL_OPEN, 0, szName), 0))
+
+.子程序 capPaletteSave, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 szName, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_PAL_SAVE, 0, szName), 0))
+
+.子程序 capPalettePaste, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_PAL_PASTE, 0, 0), 0))
+
+.子程序 capPaletteAuto, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 iFrames, 短整数型, , 
+.参数 iColors, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_PAL_AUTOCREATE, iFrames, iColors), 0))
+
+.子程序 capPaletteManual, 逻辑型, , 
+.参数 lwnd, 整数型, , 
+.参数 fGrab, 逻辑型, , 
+.参数 iColors, 整数型, , 
+
+返回 (不等于 (SendMessage (lwnd, #WM_CAP_PAL_MANUALCREATE, fGrab, iColors), 0))
+
+
+.程序集 MemCap, , , 
+
+.子程序 MyFrameCallback, 整数型, , 
+.参数 lwnd, 整数型, , 
+.参数 lpVHdr, 整数型, , 
+
+.局部变量 VideoHeader, VIDEOHDR, , , 
+.局部变量 VideoData, 字节型, , "0", 
+
+输出调试文本 (“FrameCallBack”)
+ ' //Fill VideoHeader with data at lpVHdr
+RtlMoveMemory (VarPtr_VIDEOHDR (VideoHeader), lpVHdr, GetSize_VIDEOHDR (VideoHeader))
+ ' // Make room for data
+.如果真 (大于 (VideoHeader.dwBytesUsed, 0))
+    重定义数组 (VideoData, 假, VideoHeader.dwBytesUsed)
+     ' //Copy data into the array
+    RtlMoveMemory (VarPtr_VIDEOHDR (VideoData [1]), VideoHeader.lpData, VideoHeader.dwBytesUsed)
+    输出调试文本 (VideoHeader.dwBytesUsed)
+    输出调试文本 (VideoData)
+.如果真结束
+
+
+.子程序 MyYieldCallback, 整数型, , 
+.参数 lwnd, 整数型, , 
+
+输出调试文本 (“Yield”)
+
+.子程序 MyErrorCallback, 空白型, , 
+.参数 lwnd, 整数型, , 
+.参数 iID, 整数型, , 
+.参数 ipstrStatusText, 整数型, , 
+
+.局部变量 sStatusText, 文本型, , , 
+
+.如果真 (等于 (iID, 0))
+    返回 ()
+.如果真结束
+
+赋值 (sStatusText, 指针到文本 (ipstrStatusText))
+
+LogError (sStatusText, iID)
+
+.子程序 MyStatusCallback, 空白型, , 
+.参数 lwnd, 空白型, , 
+.参数 iID, 空白型, , 
+.参数 ipstrStatusText, 空白型, , 
+
+.局部变量 sStatusText, 文本型, , , 
+
+.如果真 (等于 (iID, 0))
+    返回 ()
+.如果真结束
+
+赋值 (sStatusText, 指针到文本 (ipstrStatusText))
+SendMessageS (hStatusbar, #SB_SETTEXTA, 0, sStatusText)
+输出调试文本 (相加 (“状态: ”, sStatusText, “ ”, 到文本 (iID)))
+
+.子程序 ResizeCaptureWindow, 空白型, , 
+.参数 lwnd, 整数型, , 
+
+.局部变量 CAPSTATUS, CAPSTATUS, , , 
+.局部变量 lCaptionHeight, 整数型, , , 
+.局部变量 lX_Border, 整数型, , , 
+.局部变量 lY_Border, 整数型, , , 
+
+赋值 (lCaptionHeight, GetSystemMetrics (#SM_CYCAPTION))
+赋值 (lX_Border, GetSystemMetrics (#SM_CXFRAME))
+赋值 (lY_Border, GetSystemMetrics (#SM_CYFRAME))
+
+ ' //得到捕获窗口的属性..宽度和高度
+.如果真 (capGetStatus (lwnd, CAPSTATUS, GetSize_CAPSTATUS (CAPSTATUS)))
+     ' // 调整捕获窗口，捕获大小
+    SetWindowPos (lwnd, #HWND_BOTTOM, 0, 0, 相加 (CAPSTATUS.uiImageWidth, 相乘 (lX_Border, 2)), 相加 (CAPSTATUS.uiImageHeight, lCaptionHeight, 相乘 (lY_Border, 2)), 位或 (#SWP_NOMOVE, #SWP_NOZORDER))
+.如果真结束
+
+输出调试文本 (“调整窗口。”)
+
+.子程序 MyVideoStreamCallback, 空白型, , 
+.参数 lwnd, 整数型, , 
+.参数 lpVHdr, 整数型, , 
+
+鸣叫 () ' // Replace this with your code!
+
+.子程序 MyWaveStreamCallback, 空白型, , 
+.参数 lwnd, 整数型, , 
+.参数 lpVHdr, 整数型, , 
+
+输出调试文本 (“WaveStream”)
+
+.子程序 LogError, 空白型, , 
+.参数 txtError, 文本型, , 
+.参数 lID, 整数型, , 
+
+SendMessageS (hStatusbar, #SB_SETTEXTA, 0, txtError)
+输出调试文本 (相加 (“错误: ”, txtError, “ ”, 到文本 (lID)))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

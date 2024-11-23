@@ -1,0 +1,397 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 WM_NULL, "0", 隐藏, 0x0
+.常量 WM_CREATE, "1", 隐藏, 0x1
+.常量 WM_DESTROY, "2", 隐藏, 0x2
+.常量 WM_MOVE, "3", 隐藏, 0x3
+.常量 WM_SIZE, "5", 隐藏, 0x5
+.常量 WM_ACTIVATE, "6", 隐藏, 0x6
+.常量 WM_SETFOCUS, "7", 隐藏, 0x7
+.常量 WM_KILLFOCUS, "8", 隐藏, 0x8
+.常量 WM_ENABLE, "10", 隐藏, 0xa
+.常量 WM_SETREDRAW, "11", 隐藏, 0xb
+.常量 WM_SETTEXT, "12", 隐藏, 0xc
+.常量 WM_GETTEXT, "13", 隐藏, 0xd
+.常量 WM_GETTEXTLENGTH, "14", 隐藏, 0xe
+.常量 WM_PAINT, "15", 隐藏, 0xf
+.常量 WM_CLOSE, "16", 隐藏, 0x10
+.常量 WM_QUERYENDSESSION, "17", 隐藏, 0x11
+.常量 WM_QUERYOPEN, "19", 隐藏, 0x13
+.常量 WM_ENDSESSION, "22", 隐藏, 0x16
+.常量 WM_QUIT, "18", 隐藏, 0x12
+.常量 WM_ERASEBKGND, "20", 隐藏, 0x14
+.常量 WM_SYSCOLORCHANGE, "21", 隐藏, 0x15
+.常量 WM_SHOWWINDOW, "24", 隐藏, 0x18
+.常量 WM_WININICHANGE, "26", 隐藏, 0x1a
+.常量 WM_SETTINGCHANGE, "26", 隐藏, 0x1a
+.常量 WM_DEVMODECHANGE, "27", 隐藏, 0x1b
+.常量 WM_ACTIVATEAPP, "28", 隐藏, 0x1c
+.常量 WM_FONTCHANGE, "29", 隐藏, 0x1d
+.常量 WM_TIMECHANGE, "30", 隐藏, 0x1e
+.常量 WM_CANCELMODE, "31", 隐藏, 0x1f
+.常量 WM_SETCURSOR, "32", 隐藏, 0x20
+.常量 WM_MOUSEACTIVATE, "33", 隐藏, 0x21
+.常量 WM_CHILDACTIVATE, "34", 隐藏, 0x22
+.常量 WM_QUEUESYNC, "35", 隐藏, 0x23
+.常量 WM_GETMINMAXINFO, "36", 隐藏, 0x24
+.常量 WM_PAINTICON, "38", 隐藏, 0x26
+.常量 WM_ICONERASEBKGND, "39", 隐藏, 0x27
+.常量 WM_NEXTDLGCTL, "40", 隐藏, 0x28
+.常量 WM_SPOOLERSTATUS, "42", 隐藏, 0x2a
+.常量 WM_DRAWITEM, "43", 隐藏, 0x2b
+.常量 WM_MEASUREITEM, "44", 隐藏, 0x2c
+.常量 WM_DELETEITEM, "45", 隐藏, 0x2d
+.常量 WM_VKEYTOITEM, "46", 隐藏, 0x2e
+.常量 WM_CHARTOITEM, "47", 隐藏, 0x2f
+.常量 WM_SETFONT, "48", 隐藏, 0x30
+.常量 WM_GETFONT, "49", 隐藏, 0x31
+.常量 WM_SETHOTKEY, "50", 隐藏, 0x32
+.常量 WM_GETHOTKEY, "51", 隐藏, 0x33
+.常量 WM_QUERYDRAGICON, "55", 隐藏, 0x37
+.常量 WM_COMPAREITEM, "57", 隐藏, 0x39
+.常量 WM_GETOBJECT, "61", 隐藏, 0x3d
+.常量 WM_COMPACTING, "65", 隐藏, 0x41
+.常量 WM_COMMNOTIFY, "68", 隐藏, 0x44
+.常量 WM_WINDOWPOSCHANGING, "70", 隐藏, 0x46
+.常量 WM_WINDOWPOSCHANGED, "71", 隐藏, 0x47
+.常量 WM_POWER, "72", 隐藏, 0x48
+.常量 WM_COPYDATA, "74", 隐藏, 0x4a
+.常量 WM_CANCELJOURNAL, "75", 隐藏, 0x4b
+.常量 WM_NOTIFY, "78", 隐藏, 0x4e
+.常量 WM_INPUTLANGCHANGEREQUEST, "80", 隐藏, 0x50
+.常量 WM_INPUTLANGCHANGE, "81", 隐藏, 0x51
+.常量 WM_TCARD, "82", 隐藏, 0x52
+.常量 WM_HELP, "83", 隐藏, 0x53
+.常量 WM_USERCHANGED, "84", 隐藏, 0x54
+.常量 WM_NOTIFYFORMAT, "85", 隐藏, 0x55
+.常量 WM_CONTEXTMENU, "123", 隐藏, 0x7b
+.常量 WM_STYLECHANGING, "124", 隐藏, 0x7c
+.常量 WM_STYLECHANGED, "125", 隐藏, 0x7d
+.常量 WM_DISPLAYCHANGE, "126", 隐藏, 0x7e
+.常量 WM_GETICON, "127", 隐藏, 0x7f
+.常量 WM_SETICON, "128", 隐藏, 0x80
+.常量 WM_NCCREATE, "129", 隐藏, 0x81
+.常量 WM_NCDESTROY, "130", 隐藏, 0x82
+.常量 WM_NCCALCSIZE, "131", 隐藏, 0x83
+.常量 WM_NCHITTEST, "132", 隐藏, 0x84
+.常量 WM_NCPAINT, "133", 隐藏, 0x85
+.常量 WM_NCACTIVATE, "134", 隐藏, 0x86
+.常量 WM_GETDLGCODE, "135", 隐藏, 0x87
+.常量 WM_SYNCPAINT, "136", 隐藏, 0x88
+.常量 WM_NCMOUSEMOVE, "160", 隐藏, 0xa0
+.常量 WM_NCLBUTTONDOWN, "161", 隐藏, 0xa1
+.常量 WM_NCLBUTTONUP, "162", 隐藏, 0xa2
+.常量 WM_NCLBUTTONDBLCLK, "163", 隐藏, 0xa3
+.常量 WM_NCRBUTTONDOWN, "164", 隐藏, 0xa4
+.常量 WM_NCRBUTTONUP, "165", 隐藏, 0xa5
+.常量 WM_NCRBUTTONDBLCLK, "166", 隐藏, 0xa6
+.常量 WM_NCMBUTTONDOWN, "167", 隐藏, 0xa7
+.常量 WM_NCMBUTTONUP, "168", 隐藏, 0xa8
+.常量 WM_NCMBUTTONDBLCLK, "169", 隐藏, 0xa9
+.常量 WM_NCXBUTTONDOWN, "171", 隐藏, 0xab
+.常量 WM_NCXBUTTONUP, "172", 隐藏, 0xac
+.常量 WM_NCXBUTTONDBLCLK, "173", 隐藏, 0xad
+.常量 WM_INPUT_DEVICE_CHANGE, "254", 隐藏, 0xfe
+.常量 WM_INPUT, "255", 隐藏, 0xff
+.常量 WM_KEYFIRST, "256", 隐藏, 0x100
+.常量 WM_KEYDOWN, "256", 隐藏, 0x100
+.常量 WM_KEYUP, "257", 隐藏, 0x101
+.常量 WM_CHAR, "258", 隐藏, 0x102
+.常量 WM_DEADCHAR, "259", 隐藏, 0x103
+.常量 WM_SYSKEYDOWN, "260", 隐藏, 0x104
+.常量 WM_SYSKEYUP, "261", 隐藏, 0x105
+.常量 WM_SYSCHAR, "262", 隐藏, 0x106
+.常量 WM_SYSDEADCHAR, "263", 隐藏, 0x107
+.常量 WM_UNICHAR, "265", 隐藏, 0x109
+.常量 WM_KEYLAST, "265", 隐藏, 0x109
+.常量 WM_IME_STARTCOMPOSITION, "269", 隐藏, 0x10d
+.常量 WM_IME_ENDCOMPOSITION, "270", 隐藏, 0x10e
+.常量 WM_IME_COMPOSITION, "271", 隐藏, 0x10f
+.常量 WM_IME_KEYLAST, "271", 隐藏, 0x10f
+.常量 WM_INITDIALOG, "272", 隐藏, 0x110
+.常量 WM_COMMAND, "273", 隐藏, 0x111
+.常量 WM_SYSCOMMAND, "274", 隐藏, 0x112
+.常量 WM_TIMER, "275", 隐藏, 0x113
+.常量 WM_HSCROLL, "276", 隐藏, 0x114
+.常量 WM_VSCROLL, "277", 隐藏, 0x115
+.常量 WM_INITMENU, "278", 隐藏, 0x116
+.常量 WM_INITMENUPOPUP, "279", 隐藏, 0x117
+.常量 WM_MENUSELECT, "287", 隐藏, 0x11f
+.常量 WM_MENUCHAR, "288", 隐藏, 0x120
+.常量 WM_ENTERIDLE, "289", 隐藏, 0x121
+.常量 WM_MENURBUTTONUP, "290", 隐藏, 0x122
+.常量 WM_MENUDRAG, "291", 隐藏, 0x123
+.常量 WM_MENUGETOBJECT, "292", 隐藏, 0x124
+.常量 WM_UNINITMENUPOPUP, "293", 隐藏, 0x125
+.常量 WM_MENUCOMMAND, "294", 隐藏, 0x126
+.常量 WM_CHANGEUISTATE, "295", 隐藏, 0x127
+.常量 WM_UPDATEUISTATE, "296", 隐藏, 0x128
+.常量 WM_QUERYUISTATE, "297", 隐藏, 0x129
+.常量 WM_CTLCOLORMSGBOX, "306", 隐藏, 0x132
+.常量 WM_CTLCOLOREDIT, "307", 隐藏, 0x133
+.常量 WM_CTLCOLORLISTBOX, "308", 隐藏, 0x134
+.常量 WM_CTLCOLORBTN, "309", 隐藏, 0x135
+.常量 WM_CTLCOLORDLG, "310", 隐藏, 0x136
+.常量 WM_CTLCOLORSCROLLBAR, "311", 隐藏, 0x137
+.常量 WM_CTLCOLORSTATIC, "312", 隐藏, 0x138
+.常量 WM_MOUSEFIRST, "512", 隐藏, 0x200
+.常量 WM_MOUSEMOVE, "512", 隐藏, 0x200
+.常量 WM_LBUTTONDOWN, "513", 隐藏, 0x201
+.常量 WM_LBUTTONUP, "514", 隐藏, 0x202
+.常量 WM_LBUTTONDBLCLK, "515", 隐藏, 0x203
+.常量 WM_RBUTTONDOWN, "516", 隐藏, 0x204
+.常量 WM_RBUTTONUP, "517", 隐藏, 0x205
+.常量 WM_RBUTTONDBLCLK, "518", 隐藏, 0x206
+.常量 WM_MBUTTONDOWN, "519", 隐藏, 0x207
+.常量 WM_MBUTTONUP, "520", 隐藏, 0x208
+.常量 WM_MBUTTONDBLCLK, "521", 隐藏, 0x209
+.常量 WM_MOUSEWHEEL, "522", 隐藏, 0x20a
+.常量 WM_XBUTTONDOWN, "523", 隐藏, 0x20b
+.常量 WM_XBUTTONUP, "524", 隐藏, 0x20c
+.常量 WM_XBUTTONDBLCLK, "525", 隐藏, 0x20d
+.常量 WM_MOUSEHWHEEL, "526", 隐藏, 0x20e
+.常量 WM_MOUSELAST, "522", 隐藏, 0x20a
+.常量 WM_PARENTNOTIFY, "528", 隐藏, 0x210
+.常量 WM_ENTERMENULOOP, "529", 隐藏, 0x211
+.常量 WM_EXITMENULOOP, "530", 隐藏, 0x212
+.常量 WM_NEXTMENU, "531", 隐藏, 0x213
+.常量 WM_SIZING, "532", 隐藏, 0x214
+.常量 WM_CAPTURECHANGED, "533", 隐藏, 0x215
+.常量 WM_MOVING, "534", 隐藏, 0x216
+.常量 WM_POWERBROADCAST, "536", 隐藏, 0x218
+.常量 WM_DEVICECHANGE, "537", 隐藏, 0x219
+.常量 WM_MDICREATE, "544", 隐藏, 0x220
+.常量 WM_MDIDESTROY, "545", 隐藏, 0x221
+.常量 WM_MDIACTIVATE, "546", 隐藏, 0x222
+.常量 WM_MDIRESTORE, "547", 隐藏, 0x223
+.常量 WM_MDINEXT, "548", 隐藏, 0x224
+.常量 WM_MDIMAXIMIZE, "549", 隐藏, 0x225
+.常量 WM_MDITILE, "550", 隐藏, 0x226
+.常量 WM_MDICASCADE, "551", 隐藏, 0x227
+.常量 WM_MDIICONARRANGE, "552", 隐藏, 0x228
+.常量 WM_MDIGETACTIVE, "553", 隐藏, 0x229
+.常量 WM_MDISETMENU, "560", 隐藏, 0x230
+.常量 WM_ENTERSIZEMOVE, "561", 隐藏, 0x231
+.常量 WM_EXITSIZEMOVE, "562", 隐藏, 0x232
+.常量 WM_DROPFILES, "563", 隐藏, 0x233
+.常量 WM_MDIREFRESHMENU, "564", 隐藏, 0x234
+.常量 WM_IME_SETCONTEXT, "641", 隐藏, 0x281
+.常量 WM_IME_NOTIFY, "642", 隐藏, 0x282
+.常量 WM_IME_CONTROL, "643", 隐藏, 0x283
+.常量 WM_IME_COMPOSITIONFULL, "644", 隐藏, 0x284
+.常量 WM_IME_SELECT, "645", 隐藏, 0x285
+.常量 WM_IME_CHAR, "646", 隐藏, 0x286
+.常量 WM_IME_REQUEST, "648", 隐藏, 0x288
+.常量 WM_IME_KEYDOWN, "656", 隐藏, 0x290
+.常量 WM_IME_KEYUP, "657", 隐藏, 0x291
+.常量 WM_MOUSEHOVER, "673", 隐藏, 0x2a1
+.常量 WM_MOUSELEAVE, "675", 隐藏, 0x2a3
+.常量 WM_NCMOUSEHOVER, "672", 隐藏, 0x2a0
+.常量 WM_NCMOUSELEAVE, "674", 隐藏, 0x2a2
+.常量 WM_WTSSESSION_CHANGE, "689", 隐藏, 0x2b1
+.常量 WM_TABLET_FIRST, "704", 隐藏, 0x2c0
+.常量 WM_TABLET_LAST, "735", 隐藏, 0x2df
+.常量 WM_CUT, "768", 隐藏, 0x300
+.常量 WM_COPY, "769", 隐藏, 0x301
+.常量 WM_PASTE, "770", 隐藏, 0x302
+.常量 WM_CLEAR, "771", 隐藏, 0x303
+.常量 WM_UNDO, "772", 隐藏, 0x304
+.常量 WM_RENDERFORMAT, "773", 隐藏, 0x305
+.常量 WM_RENDERALLFORMATS, "774", 隐藏, 0x306
+.常量 WM_DESTROYCLIPBOARD, "775", 隐藏, 0x307
+.常量 WM_DRAWCLIPBOARD, "776", 隐藏, 0x308
+.常量 WM_PAINTCLIPBOARD, "777", 隐藏, 0x309
+.常量 WM_VSCROLLCLIPBOARD, "778", 隐藏, 0x30a
+.常量 WM_SIZECLIPBOARD, "779", 隐藏, 0x30b
+.常量 WM_ASKCBFORMATNAME, "780", 隐藏, 0x30c
+.常量 WM_CHANGECBCHAIN, "781", 隐藏, 0x30d
+.常量 WM_HSCROLLCLIPBOARD, "782", 隐藏, 0x30e
+.常量 WM_QUERYNEWPALETTE, "783", 隐藏, 0x30f
+.常量 WM_PALETTEISCHANGING, "784", 隐藏, 0x310
+.常量 WM_PALETTECHANGED, "785", 隐藏, 0x311
+.常量 WM_HOTKEY, "786", 隐藏, 0x312
+.常量 WM_PRINT, "791", 隐藏, 0x317
+.常量 WM_PRINTCLIENT, "792", 隐藏, 0x318
+.常量 WM_APPCOMMAND, "793", 隐藏, 0x319
+.常量 WM_THEMECHANGED, "794", 隐藏, 0x31a
+.常量 WM_CLIPBOARDUPDATE, "797", 隐藏, 0x31d
+.常量 WM_DWMCOMPOSITIONCHANGED, "798", 隐藏, 0x31e
+.常量 WM_DWMNCRENDERINGCHANGED, "799", 隐藏, 0x31f
+.常量 WM_DWMCOLORIZATIONCOLORCHANGED, "800", 隐藏, 0x320
+.常量 WM_DWMWINDOWMAXIMIZEDCHANGE, "801", 隐藏, 0x321
+.常量 WM_GETTITLEBARINFOEX, "831", 隐藏, 0x33f
+.常量 WM_HANDHELDFIRST, "856", 隐藏, 0x358
+.常量 WM_HANDHELDLAST, "863", 隐藏, 0x35f
+.常量 WM_AFXFIRST, "864", 隐藏, 0x360
+.常量 WM_AFXLAST, "895", 隐藏, 0x37f
+.常量 WM_PENWINFIRST, "896", 隐藏, 0x380
+.常量 WM_PENWINLAST, "911", 隐藏, 0x38f
+.常量 WM_APP, "32768", 隐藏, 0x8000
+.常量 WM_USER, "1024", 隐藏, 0x400
+.常量 GWL_EXSTYLE, "-20", 隐藏, 
+.常量 GWL_HINSTANCE, "6", 隐藏, 
+.常量 GWL_WNDPROC, "-4", 隐藏, 
+.常量 GWL_STYLE, "-16", 隐藏, 
+.常量 GWL_HWNDPARENT, "-8", 隐藏, 获取父窗口句柄
+.常量 GWL_ID, "-12", 隐藏, 获取窗口标识
+.常量 GWL_USERDATA, "-21", 隐藏, 获取、设置与窗口关联的自定义数据
+.常量 WS_SYSMENU, "524288", 隐藏, 
+.常量 WS_EX_TRANSPARENT, "32", 隐藏, 
+.常量 WS_ACTIVECAPTION, "1", 隐藏, 0x0001
+.常量 WS_BORDER, "8388608", 隐藏, 有单边框
+.常量 WS_CAPTION, "12582912", 隐藏, 有标题框和边框(和WS_TILED样式相同)
+.常量 WS_CHILD, "1073741824", 隐藏, 0x40000000L
+.常量 WS_CHILDWINDOW, "1073741824", 隐藏, 子窗口(不能与WS_POPUP合用)
+.常量 WS_CLIPCHILDREN, "33554432", 隐藏, 当在父窗口内绘图时,排除子窗口区域
+.常量 WS_CLIPSIBLINGS, "67108864", 隐藏, 使窗口排除子窗口之间的相对区域
+.常量 WS_DISABLED, "134217728", 隐藏, 不可用状态
+.常量 WS_DLGFRAME, "4194304", 隐藏, 带对话框边框样式,不带标题框
+.常量 WS_EX_ACCEPTFILES, "16", 隐藏, 可接受文件拖放
+.常量 WS_EX_APPWINDOW, "262144", 隐藏, 当窗口可见时将一个顶层窗口放置在任务栏上
+.常量 WS_EX_CLIENTEDGE, "512", 隐藏, 带阴影的边缘
+.常量 WS_EX_COMPOSITED, "33554432", 隐藏, 用双缓冲从下到上绘制窗口的所有子孙(WinXP以上)
+.常量 WS_EX_CONTEXTHELP, "1024", 隐藏, 有上下文帮助样式,标题栏包含一个问号标志
+.常量 WS_EX_CONTROLPARENT, "65536", 隐藏, 允许用户使用TAB键在窗口的子窗口间搜索
+.常量 WS_EX_DLGMODALFRAME, "1", 隐藏, 带双层边框
+.常量 WS_EX_LAYERED, "524288", 隐藏, 分层或透明窗口,该样式可使用混合特效
+.常量 WS_EX_LAYOUTRTL, "4194304", 隐藏, 窗体或控件将具有从右向左的布局(因而会被镜像)
+.常量 WS_EX_LEFT, "0", 隐藏, 0x00000000L
+.常量 WS_EX_LEFTSCROLLBAR, "16384", 隐藏, 垂直滚动条在窗口左边界
+.常量 WS_EX_LTRREADING, "0", 隐藏, 0x00000000L
+.常量 WS_EX_MDICHILD, "64", 隐藏, MDI子窗口样式
+.常量 WS_EX_NOACTIVATE, "134217728", 隐藏, 处于顶层但不激活
+.常量 WS_EX_NOINHERITLAYOUT, "1048576", 隐藏, 子控件不继承窗体或控件的布局
+.常量 WS_EX_NOPARENTNOTIFY, "4", 隐藏, 创建/销毁时不通知父窗口
+.常量 WS_EX_OVERLAPPEDWINDOW, "768", 隐藏, 带凸起边缘的边框,边缘有阴影
+.常量 WS_EX_PALETTEWINDOW, "392", 隐藏, 带立体边框,有工具条窗口样式,窗口在顶层
+.常量 WS_EX_RIGHT, "4096", 隐藏, 右对齐
+.常量 WS_EX_RIGHTSCROLLBAR, "0", 隐藏, 0x00000000L
+.常量 WS_EX_RTLREADING, "8192", 隐藏, 窗口文本从右到左显示
+.常量 WS_EX_STATICEDGE, "131072", 隐藏, 当窗口为不可用状态时创建一个三维边缘
+.常量 WS_EX_TOOLWINDOW, "128", 隐藏, 工具条窗口样式
+.常量 WS_EX_TOPMOST, "8", 隐藏, 窗口置顶(停留在所有非最高层窗口的上面)
+.常量 WS_EX_WINDOWEDGE, "256", 隐藏, 带凸起边缘的边框
+.常量 WS_GROUP, "131072", 隐藏, 组样式,每个组的第一个控件具有WS_TABSTOP样式
+.常量 WS_GT, "196608", 隐藏, 0x30000
+.常量 WS_HSCROLL, "1048576", 隐藏, 有水平滚动条
+.常量 WS_ICONIC, "536870912", 隐藏, 0x20000000
+.常量 WS_MAXIMIZE, "16777216", 隐藏, 具有最大化按钮,须指定WS_SYSTEM样式
+.常量 WS_MAXIMIZEBOX, "65536", 隐藏, 有最大化按钮
+.常量 WS_MINIMIZE, "536870912", 隐藏, 最小化状态
+.常量 WS_MINIMIZEBOX, "131072", 隐藏, 有最小化按钮
+.常量 WS_OVERLAPPED, "0", 隐藏, 0x00000000L
+.常量 WS_OVERLAPPEDWINDOW, "13565952", 隐藏, 具有层叠,标题框,系统菜单,可调边框,系统按钮
+.常量 WS_POPUP, "-2147483648", 隐藏, 弹出式窗口(不能与WS_CHILDWINDOW样式同时使用)
+.常量 WS_POPUPWINDOW, "-2138570752", 隐藏, 具有单边框,弹出式,系统菜单样式
+.常量 WS_SIZEBOX, "262144", 隐藏, 0x00040000
+.常量 WS_TABSTOP, "65536", 隐藏, 可接受TAB键焦点
+.常量 WS_THICKFRAME, "262144", 隐藏, 有可调边框(与WS_SIZEBOX样式相同)
+.常量 WS_TILED, "0", 隐藏, 0x00000000
+.常量 WS_TILEDWINDOW, "13565952", 隐藏, 0x00cf0000
+.常量 WS_VISIBLE, "268435456", 隐藏, 可见状态
+.常量 WS_VSCROLL, "2097152", 隐藏, 有垂直滚动条
+.常量 DWL_DLGPROC, "4", 隐藏, 4
+.常量 DWL_MSGRESULT, "0", 隐藏, 0
+.常量 DWL_USER, "8", 隐藏, 8
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+ ' 所需要的模块
+ ' Windows 窗口信息操作模块 C:\Users\Administrator\Desktop\窗口信息操作.ec
+
+
+
+.DLL命令 SetWindowLong, 整数型, "user32", "SetWindowLongA", 公开, 在窗口结构中为指定的窗口设置信息  指定数据的前一个值
+    .参数 hwnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+    .参数 dwNewLong, 整数型, , 
+
+.DLL命令 CallWindowProc, 整数型, "user32", "CallWindowProcA", 公开, 将消息传答窗口函数
+    .参数 lpPrevWndFunc, 整数型, , 
+    .参数 hwnd, 整数型, , 
+    .参数 msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 GetWindowLong, 整数型, "user32", "GetWindowLongA", 公开, 从指定窗口的结构中取得信息  由nIndex决定。零表示出错。会设置GetLastError
+    .参数 窗口句柄, 整数型, , 欲为其获取信息的窗口的句柄
+    .参数 属性, 整数型, , 欲取回的信息，可以是下述任何一个常数：;GWL_EXSTYLE：扩展窗口样式;GWL_STYLE：窗口样式;GWL_WNDPROC：该窗口的窗口函数的地址;GWL_HINSTANCE：拥有窗口的实例的句柄;GWL_HWNDPARENT：该窗口之父的句柄。不要用SetWindowWord来改变这个值;GWL_ID：对话框中一个子窗口的标识符;GWL_USERDATA：含义由应用程序规定;DWL_DLGPROC：这个窗口的对话框函数地址;DWL_MSGRESULT：在对话框函数中处理的一条消息返回的值;DWL_USER：含义由应用程序规定;
+
+.类模块 子类化, , , 
+
+.子程序 创建, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 窗口消息回调, 子程序指针, 可空, 空为测试消息
+
+
+
+.子程序 处理消息, 整数型, , 请放置于消息回调的最后用作返回
+.参数 hwnd, 整数型, , 
+.参数 wMsg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+
+
+.子程序 自绘_开始, 空白型, , 请放置于WM_PAINT中。告诉系统，我们开始重画了
+
+
+.子程序 自绘_结束, 空白型, , 请放置于WM_PAINT中。结束重绘
+
+
+.子程序 自绘_取设备句柄, 整数型, , 请在 自绘_开始 与 自绘_结束 之间使用
+
+
+.子程序 自绘_取绘图信息, 未知类型0x41010148, , 请在 自绘_开始 与 自绘_结束 之间使用
+
+
+.子程序 自绘_透明处理, 空白型, , 设置背景透明，请在 自绘_开始 与 自绘_结束 之间使用
+
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 回调示例, 整数型, , 本程序为 子类化.创建 中窗口消息回调的示例，为空程序，复制过去用吧
+.参数 hwnd, 整数型, , 要接收消息的那个窗口的句柄
+.参数 wMsg, 整数型, , 消息的标识符
+.参数 wParam, 整数型, , 具体取决于消息
+.参数 lParam, 整数型, , 具体取决于消息;
+
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 窗口子类化, 子类化, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+窗口子类化.创建 (取窗口句柄 ())
+
+
+ ' 不属于任何一个程序集、类模块的函数：

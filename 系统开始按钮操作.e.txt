@@ -1,0 +1,115 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “[叮咚]开始按钮操作”
+    帮助文件名 = “”
+
+
+
+.常量 WS_BORDER, "8388608", , 
+.常量 WS_DLGFRAME, "4194304", , 
+.常量 WS_THICKFRAME, "262144", , 
+.常量 WS_CAPTION, "12582912", , WS_BORDER Or WS_DLGFRAME
+.常量 WS_EX_CLIENTEDGE, "512", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 RECT, , 
+    .成员 Left, 整数型, , , 
+    .成员 Top, 整数型, , , 
+    .成员 Right, 整数型, , , 
+    .成员 Bottom, 整数型, , , 
+
+
+.DLL命令 MoveWindow, 整数型, "user32", "MoveWindow", , 
+    .参数 hwnd, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+    .参数 bRepaint, 整数型, , 
+
+.DLL命令 GetClientRect, 整数型, "user32", "GetClientRect", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpRect, RECT, , 
+
+.DLL命令 FindWindowEx, 整数型, "user32", "FindWindowExA", , 
+    .参数 hWnd1, 整数型, , 
+    .参数 hWnd2, 整数型, , 
+    .参数 lpsz1, 文本型, , 
+    .参数 lpsz2, 文本型, , 
+
+.DLL命令 SetWindowText, 整数型, "user32", "SetWindowTextA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpString, 文本型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 hwnd, 整数型, , , 
+.局部变量 lpRect, 未知类型0x4101004D, , , 
+
+赋值 (hwnd, FindWindowEx (0, 0, “Shell_TrayWnd”, 字符 (0)))
+赋值 (hwnd, FindWindowEx (hwnd, 0, “Button”, 字符 (0)))
+.如果真 (不等于 (hwnd, 0))
+    .如果真 (不等于 (未知函数_167837764 (), 0))
+        赋值 (lpRect.Right, 相加 (lpRect.Right, 到整数 (.)))
+        SetWindowText (hwnd, .)
+        MoveWindow (hwnd, lpRect.Left, lpRect.Top, 相减 (lpRect.Right, lpRect.Left), 相减 (lpRect.Bottom, lpRect.Top), 1)
+    .如果真结束
+    
+.如果真结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

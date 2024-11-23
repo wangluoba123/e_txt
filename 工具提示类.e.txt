@@ -1,0 +1,343 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：工具提示类模块
+ ' 程序描述：
+ ' 程序作者：凌晨孤星
+ ' 邮政编码：528251
+ ' 联系地址：广东省佛山市南海区
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：lzj85@163.com
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.wodesoft.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.wodesoft.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 TTM_ADDTOOL, "1028", , 添加提示
+.常量 TTM_DELTOOL, "1029", , 删除提示
+.常量 TTM_GETTOOLINFO, "1032", , 取得信息
+.常量 TTM_GETTIPBKCOLOR, "1046", , 取背景颜色
+.常量 TTM_SETTIPBKCOLOR, "1043", , 置背景颜色
+.常量 TTM_GETTIPTEXTCOLOR, "1047", , 取文本颜色
+.常量 TTM_SETTIPTEXTCOLOR, "1044", , 置文本颜色
+.常量 TTM_UPDATETIPTEXT, "1036", , 更新提示文本
+.常量 TTM_SETMAXTIPWIDTH, "1048", , 置最大宽度
+.常量 TTM_SETDELAYTIME, "1027", , 置延时
+.常量 TTDT_AUTOPOP, "2", , 
+.常量 TTDT_INITIAL, "3", , 
+.常量 TTDT_RESHOW, "1", , 
+.常量 TTS_BALLOON, "64", , 气泡提示
+.常量 TTF_SUBCLASS, "16", , 
+.常量 TTF_CENTERTIP, "2", , 
+.常量 TTM_POP, "1052", , 移除气泡提示
+.常量 TTM_GETTOOLCOUNT, "1037", , 取句柄总数
+.常量 TTM_ENUMTOOLS, "1038", , 枚举工具
+.常量 , , , 
+.常量 SWP_NOSIZE, "1", , 
+.常量 SWP_NOMOVE, "2", , 
+.常量 HWND_TOPMOST, "-1", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 TOOLINFO, , 
+    .成员 cbSize, 整数型, , , 
+    .成员 uFlags, 整数型, , , 
+    .成员 hwnd, 整数型, , , 
+    .成员 uId, 整数型, , , 
+    .成员 rect, RECT, , , 
+    .成员 hinst, 整数型, , , 
+    .成员 lpszText, 文本型, , , 
+    .成员 lParam, 整数型, , , 
+
+数据类型 RECT, , 
+    .成员 left, 整数型, , , 
+    .成员 top, 整数型, , , 
+    .成员 right, 整数型, , , 
+    .成员 bottom, 整数型, , , 
+
+
+.DLL命令 CreateWindowExA, 整数型, "user32.dll", "CreateWindowExA", , 
+    .参数 dwExStyle, 整数型, , 
+    .参数 lpClassName, 文本型, , 
+    .参数 lpWindowName, 文本型, , 
+    .参数 dwStyle, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+    .参数 hWndParent, 整数型, , 
+    .参数 hMenu, 整数型, , 
+    .参数 hInstance, 整数型, , 
+    .参数 lpParam, 整数型, , 
+
+.DLL命令 SendMessageA_TOOLINFO, 整数型, "user32.dll", "SendMessageA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 Msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, TOOLINFO, , 
+
+.DLL命令 SendMessageA, 整数型, "user32.dll", "SendMessageA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 Msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 GetClientRect, 空白型, "user32.dll", "GetClientRect", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpRect, RECT, 传址, 
+
+.DLL命令 DestroyWindow, 整数型, "user32.dll", "DestroyWindow", , 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 SetWindowPos, 整数型, "", "SetWindowPos", , 
+    .参数 hwnd, 空白型, , 
+    .参数 hWndInsertAfter, 空白型, , 
+    .参数 x, 空白型, , 
+    .参数 y, 空白型, , 
+    .参数 cx, 空白型, , 
+    .参数 cy, 空白型, , 
+    .参数 wFlags, 空白型, , 
+
+.程序集 程序集, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.类模块 工具提示类, , , 
+
+.程序集变量 hToolTips, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+赋值 (hToolTips, 0)
+
+.子程序 创建, 整数型, , 成功返回工具提示控件句柄，失败返回0
+.参数 是否支持多行, 逻辑型, 可空, 默认为假
+.参数 是否为气泡提示, 逻辑型, 可空, 默认为假
+
+.局部变量 风格, 整数型, , , 
+
+.如果真 (不等于 (hToolTips, 0))
+    返回 (0)
+.如果真结束
+.如果真 (是否为气泡提示)
+    赋值 (风格, #TTS_BALLOON)
+.如果真结束
+赋值 (hToolTips, CreateWindowExA (0, “tooltips_class32”, “”, 风格, 0, 0, 0, 0, 0, 0, 0, 0))
+SetWindowPos (hToolTips, #HWND_TOPMOST, 0, 0, 0, 0, 位或 (#SWP_NOSIZE, #SWP_NOMOVE))
+.如果真 (并且 (不等于 (hToolTips, 0), 是否支持多行))
+    SendMessageA (hToolTips, #TTM_SETMAXTIPWIDTH, 0, 1024)
+.如果真结束
+返回 (hToolTips)
+
+.子程序 添加工具提示, 整数型, , 成功返回非0，失败返回0
+.参数 控件句柄, 整数型, , 
+.参数 提示内容, 文本型, , 
+.参数 提示工具位置, 逻辑型, 可空, 注明：为真表示总显示在控件的中下方，为假表示跟随鼠标。默认为假
+
+.局部变量 tip, TOOLINFO, , , 
+
+.如果真 (不等于 (hToolTips, 0))
+    赋值 (tip.cbSize, 相乘 (11, 4))
+    赋值 (tip.uFlags, #TTF_SUBCLASS)
+    .如果真 (提示工具位置)
+        赋值 (tip.uFlags, 位或 (#TTF_SUBCLASS, #TTF_CENTERTIP))
+    .如果真结束
+    赋值 (tip.hwnd, 控件句柄)
+    赋值 (tip.uId, 0)
+    赋值 (tip.hinst, 0)
+    赋值 (tip.lpszText, 提示内容)
+    GetClientRect (控件句柄, tip.rect)
+    返回 (SendMessageA_TOOLINFO (hToolTips, #TTM_ADDTOOL, 0, tip))
+.如果真结束
+返回 (0)
+
+.子程序 删除工具提示, 空白型, 公开, 没有返回值
+.参数 控件句柄, 整数型, , 
+
+.局部变量 info, TOOLINFO, , , 
+
+.如果真 (不等于 (hToolTips, 0))
+    赋值 (info.hwnd, 控件句柄)
+    SendMessageA_TOOLINFO (hToolTips, #TTM_DELTOOL, 0, info)
+.如果真结束
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 取提示背景颜色, 整数型, 公开, 返回颜色值
+.如果真 (不等于 (hToolTips, 0))
+    返回 (SendMessageA (hToolTips, #TTM_GETTIPBKCOLOR, 0, 0))
+.如果真结束
+返回 (0)
+
+.子程序 置提示背景颜色, 整数型, , 返回值没有意义
+.参数 颜色值, 整数型, , 
+
+.如果真 (不等于 (hToolTips, 0))
+    返回 (SendMessageA (hToolTips, #TTM_SETTIPBKCOLOR, 颜色值, 0))
+.如果真结束
+返回 (0)
+
+.子程序 取提示文本颜色, 整数型, , 
+.如果真 (不等于 (hToolTips, 0))
+    返回 (SendMessageA (hToolTips, #TTM_GETTIPTEXTCOLOR, 0, 0))
+.如果真结束
+返回 (0)
+
+.子程序 置提示文本颜色, 整数型, , 返回值没有意义
+.参数 颜色值, 整数型, , 
+
+.如果真 (不等于 (hToolTips, 0))
+    返回 (SendMessageA (hToolTips, #TTM_SETTIPTEXTCOLOR, 颜色值, 0))
+.如果真结束
+返回 (0)
+
+.子程序 更新提示文本, 空白型, , 没有返回值
+.参数 控件句柄, 整数型, , 
+.参数 提示内容, 文本型, , 
+
+.局部变量 info, TOOLINFO, , , 
+
+.如果真 (不等于 (hToolTips, 0))
+    赋值 (info.hwnd, 控件句柄)
+    赋值 (info.lpszText, 提示内容)
+    SendMessageA_TOOLINFO (hToolTips, #TTM_UPDATETIPTEXT, 0, info)
+.如果真结束
+
+
+.子程序 置提示延时, 整数型, 公开, 返回值没有意义
+.参数 弹出延时, 整数型, , 
+.参数 显示延时, 整数型, , 
+
+.如果真 (不等于 (hToolTips, 0))
+    .如果真 (大于 (弹出延时, 0))
+        SendMessageA (hToolTips, #TTM_SETDELAYTIME, #TTDT_INITIAL, 弹出延时)
+    .如果真结束
+    .如果真 (大于 (显示延时, 0))
+        返回 (SendMessageA (hToolTips, #TTM_SETDELAYTIME, #TTDT_AUTOPOP, 显示延时))
+    .如果真结束
+     ' 本源码来自易语言资源网(www.wodesoft.com)
+.如果真结束
+返回 (0)
+
+.子程序 销毁, 整数型, , 销毁工具提示
+.局部变量 ret, 整数型, , , 
+
+.如果真 (不等于 (hToolTips, 0))
+    赋值 (ret, DestroyWindow (hToolTips))
+    .如果真 (不等于 (ret, 0))
+        赋值 (hToolTips, 0)
+    .如果真结束
+    
+.如果真结束
+返回 (ret)
+
+.子程序 取回句柄, 整数型, , 
+返回 (hToolTips)
+
+.子程序 移除工具提示, 整数型, , 没有意义的返回值
+.如果真 (不等于 (hToolTips, 0))
+    返回 (SendMessageA (hToolTips, #TTM_POP, 0, 0))
+.如果真结束
+返回 (0)
+
+.子程序 置入句柄, 整数型, , 
+.参数 欲置入的句柄, 整数型, , 
+
+.局部变量 ret, 整数型, , , 
+
+赋值 (ret, hToolTips)
+赋值 (hToolTips, 欲置入的句柄)
+返回 (ret)
+
+.子程序 置提示宽度, 整数型, , 返回之前提示的宽度。注：一般在工具提示控件具有“多行”属性时使用。
+.参数 宽度, 整数型, , 以像素为单位
+
+.如果真 (不等于 (hToolTips, 0))
+    返回 (SendMessageA (hToolTips, #TTM_SETMAXTIPWIDTH, 0, 宽度))
+.如果真结束
+返回 (0)
+
+.子程序 取控件总数, 整数型, , 返回控件数目
+.如果真 (不等于 (hToolTips, 0))
+    返回 (SendMessageA (hToolTips, #TTM_GETTOOLCOUNT, 0, 0))
+.如果真结束
+返回 (0)
+
+.子程序 取所有控件句柄, 空白型, 公开, 没有返回值
+.参数 控件句柄数组, 整数型, 参考 数组, 
+
+.局部变量 info, TOOLINFO, , , 
+.局部变量 count, 整数型, , , 
+.局部变量 n, 整数型, , , 
+
+.如果真 (不等于 (hToolTips, 0))
+    赋值 (count, 取控件总数 ())
+    .如果真 (大于 (count, 0))
+        重定义数组 (控件句柄数组, 假, 0)
+        赋值 (info.cbSize, 相乘 (11, 4))
+        .计次循环首 (count, n)
+            SendMessageA_TOOLINFO (hToolTips, #TTM_ENUMTOOLS, 相减 (n, 1), info)
+            .如果真 (不等于 (info.hwnd, 0))
+                加入成员 (控件句柄数组, info.hwnd)
+            .如果真结束
+            ' 本源码来自易语言资源网(www.wodesoft.com)
+        .计次循环尾 ()
+    .如果真结束
+    
+.如果真结束
+
+
+.子程序 取提示文本, 整数型, 公开, 成功返回非0，失败返回0
+.参数 控件句柄, 整数型, , 
+.参数 缓冲区, 文本型, 参考, 
+.参数 缓冲区大小, 整数型, , 
+
+.局部变量 info, TOOLINFO, , , 
+.局部变量 ret, 整数型, , , 
+
+.如果真 (不等于 (hToolTips, 0))
+    赋值 (info.cbSize, 相乘 (11, 4))
+    赋值 (info.hwnd, 控件句柄)
+    赋值 (info.lpszText, 取空白文本 (缓冲区大小))
+    赋值 (ret, SendMessageA_TOOLINFO (hToolTips, #TTM_GETTOOLINFO, 0, info))
+    赋值 (缓冲区, info.lpszText)
+.如果真结束
+返回 (ret)
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+.如果真 (不等于 (hToolTips, 0))
+    DestroyWindow (hToolTips)
+.如果真结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

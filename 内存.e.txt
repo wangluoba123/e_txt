@@ -1,0 +1,120 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “WIN32API功能150个(内存篇)”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 2 系统核心支持库
+
+
+
+
+数据类型 MEMORYSTATUSEX, , 
+    .成员 dwLength, 整数型, , , 
+    .成员 dwMemoryLoad, 整数型, , , 
+    .成员 ullTotalPhys, 长整数型, , , 在VB里是Currency货币型，
+    .成员 ullAvailPhys, 长整数型, , , 在易里没有，
+    .成员 ullTotalPageFile, 长整数型, , , 只好用相同长度的长整型代替
+    .成员 ullAvailPageFile, 长整数型, , , 结果用不了
+    .成员 ullTotalVirtual, 长整数型, , , 
+    .成员 ullAvailVirtual, 长整数型, , , 
+    .成员 ullAvailExtendedVirtual, 长整数型, , , 
+
+数据类型 MemoryStatus, , 
+    .成员 dwLength, 空白型, , , 
+    .成员 dwMemoryLoad, 空白型, , , 
+    .成员 dwTotalPhys, 空白型, , , 
+    .成员 dwAvailPhys, 空白型, , , 
+    .成员 dwTotalPageFile, 空白型, , , 
+    .成员 dwAvailPageFile, 空白型, , , 
+    .成员 dwTotalVirtual, 空白型, , , 
+    .成员 dwAvailVirtual, 空白型, , , 
+
+
+.DLL命令 GlobalMemoryStatusEx, 空白型, "Kernel32.dll", "GlobalMemoryStatusEx", , 
+    .参数 lpBuffer, MEMORYSTATUSEX, 传址, 
+
+.DLL命令 GlobalMemoryStatus, 空白型, "Kernel32.dll", "GlobalMemoryStatus", , 
+    .参数 lpBuffer, MemoryStatus, 传址, 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 msEx, MEMORYSTATUSEX, , , 
+.局部变量 MemoryLoad, 空白型, , , 
+.局部变量 ms, MemoryStatus, , , 
+
+.如果 (假) ' 取操作系统类别 （）=3
+    GlobalMemoryStatusEx (msEx) ' 原本在WIN2000XP用这个API取内存状态，可是由于自定义所用的类型Currency易没有，所以用不了
+    赋值 (MemoryLoad, msEx.dwMemoryLoad)
+    赋值 (., MemoryLoad)
+    赋值 (., 相加 (到文本 (MemoryLoad), “%”))
+    赋值 (., 数值到格式文本 (msEx.ullTotalPhys, , 真))
+    赋值 (., 数值到格式文本 (msEx.ullAvailPhys, , 真))
+    赋值 (., 数值到格式文本 (msEx.ullTotalPageFile, , 真))
+    赋值 (., 数值到格式文本 (msEx.ullAvailPageFile, , 真))
+    赋值 (., 数值到格式文本 (msEx.ullTotalVirtual, , 真))
+    赋值 (., 数值到格式文本 (msEx.ullAvailVirtual, , 真))
+    赋值 (., 数值到格式文本 (msEx.ullAvailExtendedVirtual, , 真))
+.否则
+    GlobalMemoryStatus (ms) ' 在WIN98ME下取内存状态。发现在XP下也能用
+    赋值 (MemoryLoad, ms.dwMemoryLoad)
+    赋值 (., MemoryLoad)
+    赋值 (., 相加 (到文本 (MemoryLoad), “%”))
+    赋值 (., 数值到格式文本 (ms.dwTotalPhys, , 真))
+    赋值 (., 数值到格式文本 (ms.dwAvailPhys, , 真))
+    赋值 (., 数值到格式文本 (ms.dwTotalPageFile, , 真))
+    赋值 (., 数值到格式文本 (ms.dwAvailPageFile, , 真))
+    赋值 (., 数值到格式文本 (ms.dwTotalVirtual, , 真))
+    赋值 (., 数值到格式文本 (ms.dwAvailVirtual, , 真))
+.如果结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,582 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 744
+    高度 = 561
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 1
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 假
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “画板滚动条——UpwinDER.com出品”
+    帮助文件名 = “”
+
+
+
+.常量 WM_SETREDRAW, "11", , 
+.常量 RDW_ERASE, "4", , 
+.常量 RDW_INVALIDATE, "1", , 
+.常量 RDW_UPDATENOW, "256", , 
+.常量 RDW_ALLCHILDREN, "128", , 
+.常量 SRCCOPY, "13369376", , 
+.常量 GWL_WNDPROC, "-4", , 
+.常量 GWL_STYLE, "-16", , 
+.常量 WM_PAINT, "15", , 
+.常量 , , , 
+.常量 WS_HSCROLL, "1048576", , 水平滚动条风格
+.常量 WS_VSCROLL, "2097152", , 垂直滚动条风格
+.常量 WM_HSCROLL, "276", , 水平滚动条消息 
+.常量 WM_VSCROLL, "277", , 垂直滚动条消息
+.常量 SIF_RANGE, "1", , 滚动条相应常量
+.常量 SIF_PAGE, "2", , 
+.常量 SIF_POS, "4", , 
+.常量 SIF_ALL, "23", , 
+.常量 SB_HORZ, "0", , 
+.常量 SB_VERT, "1", , 
+.常量 SB_BOTH, "3", , 
+.常量 SB_BOTTOM, "7", , 
+.常量 SB_ENDSCROLL, "8", , 
+.常量 SB_LINEUP, "0", , 
+.常量 SB_LINEDOWN, "1", , 
+.常量 SB_LINELEFT, "0", , 
+.常量 SB_PAGEUP, "2", , 
+.常量 SB_PAGEDOWN, "3", , 
+.常量 SB_PAGELEFT, "2", , 
+.常量 SB_PAGERIGHT, "3", , 
+.常量 SB_LINERIGHT, "1", , 
+.常量 SB_THUMBTRACK, "5", , 
+.常量 SB_THUMBPOSITION, "4", , 
+.常量 SB_TOP, "6", , 滚动条相应常量
+.常量 hStep, "1000", , 滚动条滑块大小
+.常量 , , , 
+.常量 , , , 
+.常量 CF_BITMAP, "2", , 
+.常量 IMAGE_BITMAP, "0", , 
+.常量 LR_COPYRETURNORG, "4", , 
+.常量 LR_COPYFROMRESOURCE, "16384", , 
+.常量 DT_EDITCONTROL, "8192", , 
+.常量 DT_WORDBREAK, "16", , 
+.常量 CBM_INIT, "4", , 
+.常量 DEFAULT_GUI_FONT, "17", , 
+.图片 cur, " ' 已保存到：D:\易语言学习\Data\画板滚动条.e\cur", , 
+.常量 IMAGE_CURSOR, "2", , 指针
+.常量 IMAGE_ICON, "1", , 图标
+.常量 , , , 
+.常量 LR_LOADFROMFILE, "16", , 载入适当类型的一个文件的名字
+.常量 图片名, "“e.bmp”", , 初始化时显示图片的文件名
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 2 0 扩展界面支持库一
+
+
+
+
+数据类型 Point, , 
+    .成员 x, 空白型, , , 
+    .成员 y, 空白型, , , 
+
+数据类型 Rect, , 
+    .成员 x1, 空白型, , , 
+    .成员 y1, 空白型, , , 
+    .成员 x2, 空白型, , , 
+    .成员 y2, 空白型, , , 
+
+数据类型 CURSORINFO, , 
+    .成员 cbSize, 空白型, , , 
+    .成员 flags, 空白型, , , 
+    .成员 hCursor, 空白型, , , 
+    .成员 ptScreenPos, Point, , , 
+
+数据类型 ICONINFO, , 
+    .成员 fIcon, 逻辑型, , , 
+    .成员 xHotspot, 整数型, , , 
+    .成员 yHotspot, 整数型, , , 
+    .成员 hbmMask, 整数型, , , 
+    .成员 hbmColor, 整数型, , , 
+
+数据类型 BITMAP, , 
+    .成员 bmType, 空白型, , , 
+    .成员 bmWidth, 空白型, , , 
+    .成员 bmHeight, 空白型, , , 
+    .成员 bmWidthBytes, 空白型, , , 
+    .成员 bmPlanes, 短整数型, , , 
+    .成员 bmBitsPixel, 短整数型, , , 
+    .成员 bmBits, 空白型, 传址, , 
+
+数据类型 BITMAPINFO, , 
+    .成员 BITMAPINFOHEADER, BITMAPINFOHEADER, , , 
+    .成员 bmiColors, 空白型, , , RGBQUAD          bmiColors[1]; 
+
+数据类型 BITMAPINFOHEADER, , 
+    .成员 biSize, 空白型, , , 
+    .成员 biWidth, 空白型, , , 
+    .成员 biHeight, 空白型, , , 
+    .成员 biPlanes, 短整数型, , , 
+    .成员 biBitCount, 短整数型, , , 
+    .成员 biCompression, 空白型, , , 
+    .成员 biSizeImage, 空白型, , , 
+    .成员 biXPelsPerMeter, 空白型, , , 
+    .成员 biYPelsPerMeter, 空白型, , , 
+    .成员 biClrUsed, 空白型, , , 
+    .成员 biClrImportant, 空白型, , , 
+
+数据类型 BITMAPFILEHEADER, , 
+    .成员 bfType, 短整数型, , , 
+    .成员 bfSize, 空白型, , , 
+    .成员 bfReserved1, 短整数型, , , 
+    .成员 bfReserved2, 短整数型, , , 
+    .成员 bfOffBits, 空白型, , , 
+
+数据类型 PAINTSTRUCT, , 
+    .成员 hdc, 整数型, , , 
+    .成员 fErase, 逻辑型, , , 
+    .成员 rcPaint, Rect, , , 可能为 RECT 结构。
+    .成员 fRestore, 逻辑型, , , 
+    .成员 fIncUpdate, 逻辑型, , , 
+    .成员 rgbReserved, 字节型, , "32", 数组：32。
+
+数据类型 SCROLLINFO, , 
+    .成员 cbSize, 整数型, , , 
+    .成员 fMask, 整数型, , , 
+    .成员 nMin, 整数型, , , 
+    .成员 nMax, 整数型, , , 
+    .成员 nPage, 整数型, , , 
+    .成员 nPos, 整数型, , , 
+    .成员 nTrackPos, 整数型, , , 
+
+数据类型 矩形_, , RECT
+    .成员 左边, 整数型, , , Left
+    .成员 顶边, 整数型, , , Top
+    .成员 右边, 整数型, , , Right
+    .成员 底边, 整数型, , , Bottom
+
+
+.DLL命令 GetStockObject, 整数型, "", "GetStockObject", , 
+    .参数 fnObject, 整数型, , 
+
+.DLL命令 SetCapture, 整数型, "", "SetCapture", , 
+    .参数 hWnd, 空白型, , 
+
+.DLL命令 ReleaseCapture, 逻辑型, "", "ReleaseCapture", , 
+
+.DLL命令 GetDC, 整数型, "user32", "GetDC", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 CreateCompatibleBitmap, 整数型, "", "CreateCompatibleBitmap", , 
+    .参数 hdc, 空白型, , 
+    .参数 nWidth, 空白型, , 
+    .参数 nHeight, 空白型, , 
+
+.DLL命令 SelectObject, 整数型, "", "SelectObject", , 
+    .参数 hdc, 空白型, , 
+    .参数 hgdiobj, 空白型, , 
+
+.DLL命令 BitBlt, 整数型, "", "BitBlt", , 
+    .参数 hdcDest, 空白型, , 
+    .参数 nXDest, 空白型, , 
+    .参数 nYDest, 空白型, , 
+    .参数 nWidth, 空白型, , 
+    .参数 nHeight, 空白型, , 
+    .参数 hdcSrc, 空白型, , 
+    .参数 nXSrc, 空白型, , 
+    .参数 nYSrc, 空白型, , 
+    .参数 dwRop, 空白型, , 
+
+.DLL命令 DeleteDC, 整数型, "", "DeleteDC", , 
+    .参数 hdc, 空白型, , 
+
+.DLL命令 CreateCompatibleDC, 整数型, "", "CreateCompatibleDC", , 
+    .参数 hdc, 整数型, , 
+
+.DLL命令 SetWindowLongA, 整数型, "", "SetWindowLongA", , 
+    .参数 hWnd, 空白型, , 
+    .参数 nIndex, 空白型, , 
+    .参数 dwNewLong, 空白型, , 
+
+.DLL命令 CallWindowProcA, 整数型, "", "CallWindowProcA", , 
+    .参数 lpPrevWndFunc, 空白型, , 
+    .参数 hWnd, 空白型, , 
+    .参数 Msg, 空白型, , 
+    .参数 wParam, 空白型, , 
+    .参数 lParam, 空白型, , 
+
+.DLL命令 DeleteObject, 整数型, "", "DeleteObject", , 
+    .参数 hObject, 空白型, , 
+
+.DLL命令 WindowFromPoint, 整数型, "", "WindowFromPoint", , 
+    .参数 x, 空白型, , 
+    .参数 y, 空白型, , 
+
+.DLL命令 FrameRect, 整数型, "", "", , 
+    .参数 hDC, 整数型, , 
+    .参数 lprc, Rect, , 可能为 RECT 结构。
+    .参数 hbr, 整数型, , 
+
+.DLL命令 CreateSolidBrush, 整数型, "", "", , 
+    .参数 crColor, 整数型, , 
+
+.DLL命令 FillRect, 整数型, "", "", , 
+    .参数 hDC, 整数型, , 
+    .参数 lprc, Rect, , 可能为 RECT 结构。
+    .参数 hbr, 整数型, , 
+
+.DLL命令 ReleaseDC, 整数型, "", "ReleaseDC", , 
+    .参数 hWnd, 整数型, , 
+    .参数 hDC, 整数型, , 
+
+.DLL命令 BeginPaint, 整数型, "", "", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpPaint, PAINTSTRUCT, , 
+
+.DLL命令 EndPaint, 逻辑型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpPaint, PAINTSTRUCT, , 
+
+.DLL命令 创建阴影刷子, 整数型, "gdi32.dll", "CreateHatchBrush", , CreateHatchBrush
+    .参数 刷子阴影类型, 整数型, , nIndex，请查看此参数的常量
+    .参数 指定刷子的RGB前景色, 整数型, , crColor，指定刷子的前景颜色值
+
+.DLL命令 加载默认皮肤, 整数型, "SkinH_EL.dll", "SkinH_Attach", 公开, 加载程序当前目录下的skinh.she皮肤，成功返回0
+
+.DLL命令 加载皮肤, 整数型, "SkinH_EL.dll", "SkinH_Attach_Ex", 公开, 加载指定的皮肤，成功返回0
+    .参数 皮肤路径, 文本型, , 皮肤文件路径
+    .参数 皮肤口令, 文本型, , 皮肤密钥
+
+.DLL命令 调整皮肤颜色, 整数型, "SkinH_EL.dll", "SkinH_Adjust_HSV", 公开, 调整色调，饱和度，亮度，成功返回0
+    .参数 色调, 整数型, , 取值范围 1-360
+    .参数 饱和度, 整数型, , 取值范围 1-256
+    .参数 亮度, 整数型, , 取值范围 1-256
+
+.DLL命令 卸载皮肤, 整数型, "SkinH_EL.dll", "SkinH_Detach", 公开, 成功返回0
+
+.DLL命令 指定不使用皮肤的组件, 整数型, "SkinH_EL.dll", "SkinH_Detach_Ex", 公开, 卸载指定句柄的窗体或者控件的皮肤，成功返回0
+    .参数 句柄, 整数型, , 指定窗体或控件的句柄
+
+.DLL命令 从资源加载皮肤, 整数型, "SkinH_EL.dll", "SkinH_Attach_Res", 公开, 从资源添加皮肤，并指定皮肤的色调，饱和度，亮度，成功返回0
+    .参数 资源皮肤, 字节集, , 皮肤数据
+    .参数 资源大小, 整数型, , 皮肤数据大小
+    .参数 皮肤密码, 文本型, , 皮肤密钥
+    .参数 色调, 整数型, , 取值范围 1-360
+    .参数 饱和度, 整数型, , 取值范围 1-256
+    .参数 亮度, 整数型, , 取值范围 1-256
+
+.DLL命令 加载皮肤并设置色调参数, 整数型, "SkinH_EL.dll", "SkinH_Attach_Ext", 公开, 加载指定皮肤，并指定皮肤的色调，饱和度，亮度，  成功返回0
+    .参数 皮肤路径, 文本型, , 皮肤文件路径
+    .参数 皮肤密码, 文本型, , 皮肤密钥
+    .参数 色调, 整数型, , 取值范围 1-360
+    .参数 饱和度, 整数型, , 取值范围 1-256
+    .参数 亮度, 整数型, , 取值范围 1-256
+
+.DLL命令 设置皮肤透明度, 整数型, "SkinH_EL.dll", "SkinH_Alpha", 公开, 设置指定句柄的窗体的透明度，成功返回0
+    .参数 句柄, 整数型, , 指定窗体句柄
+    .参数 透明度, 整数型, , 取值范围 0-255
+
+.DLL命令 获取指定点颜色, 整数型, "SkinH_EL.dll", "SkinH_GetColor", 公开, 获取指定窗口或控件在nX
+    .参数 句柄, 整数型, , 指定窗口或控件的句柄
+    .参数 横坐标, 整数型, , 指定横坐标点
+    .参数 纵坐标, 整数型, , 指定纵坐标点
+
+.DLL命令 画区域外框_, 整数型, "gdi32.dll", "FrameRgn", , FrameRgn,用指定刷子围绕指定区域画一个外框
+    .参数 设备场景, 整数型, , hdc，设备场景句柄
+    .参数 区域句柄, 整数型, , hRgn，将数据设备坐标填充的区域句柄
+    .参数 刷子句柄, 整数型, , hBrush，将用的刷子句柄
+    .参数 垂直边框宽度, 整数型, , nWidth，垂直边框宽度（以设备单元为单位）
+    .参数 水平边框高度, 整数型, , nHeight，水平边框高度（以设备单元为单位）
+
+.DLL命令 用矩形信息创建矩形区域_, 整数型, "gdi32.dll", "CreateRectRgnIndirect", , 
+    .参数 矩形结构信息, Rect, 传址, lpRect，用来创建区域的矩形
+
+.DLL命令 反转区域_, 整数型, "gdi32.dll", "InvertRgn", , 
+    .参数 设备场景句柄, 整数型, , hdc
+    .参数 将反转的区域, 整数型, , hRgn
+
+.DLL命令 刷子填充区域_, 整数型, "gdi32.dll", "FillRgn", , 
+    .参数 设备场景句柄, 整数型, , hdc，设备场景句柄
+    .参数 区域句柄, 整数型, , hRgn，以数据设备坐标填充的区域句柄
+    .参数 刷子句柄, 整数型, , hBrush，要用的刷子的句柄
+
+.DLL命令 设置窗口信息_, 整数型, "user32", "SetWindowLongA", , 在窗口结构中为指定的窗口设置信息  指定数据的前一个值
+    .参数 窗口句柄, 整数型, , hwnd，欲为其取得信息的窗口的句柄
+    .参数 窗口信息值, 整数型, , nIndex，请参考GetWindowLong函数的nIndex参数的说明
+    .参数 窗口信息新值, 整数型, , dwNewLong，由nIndex指定的窗口信息的新值
+
+.DLL命令 取得窗口信息_, 整数型, "user32", "GetWindowLongA", , 从指定窗口的结构中取得信息  由nIndex决定。零表示出错。会设置GetLastError
+    .参数 窗口句柄, 整数型, , 欲为其获取信息的窗口的句柄
+    .参数 属性, 整数型, , 欲取回的信息，可以是下述任何一个常数：;GWL_EXSTYLE：扩展窗口样式;GWL_STYLE：窗口样式;GWL_WNDPROC：该窗口的窗口函数的地址;GWL_HINSTANCE：拥有窗口的实例的句柄;GWL_HWNDPARENT：该窗口之父的句柄。不要用SetWindowWord来改变这个值;GWL_ID：对话框中一个子窗口的标识符;GWL_USERDATA：含义由应用程序规定;DWL_DLGPROC：这个窗口的对话框函数地址;DWL_MSGRESULT：在对话框函数中处理的一条消息返回的值;DWL_USER：含义由应用程序规定;
+
+.DLL命令 刷新窗口, 空白型, "user32", "UpdateWindow", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 SetScrollInfo, 整数型, "user32", "SetScrollInfo", , 
+    .参数 hwnd, 整数型, , 
+    .参数 n, 整数型, , 
+    .参数 lpcScrollInfo, SCROLLINFO, , 
+    .参数 bool, 逻辑型, , 
+
+.DLL命令 GetScrollInfo, 整数型, "user32", "GetScrollInfo", , 
+    .参数 hwnd, 整数型, , 
+    .参数 n, 整数型, , 
+    .参数 lpcScrollInfo, SCROLLINFO, , 
+
+.DLL命令 ShowScrollBar, 整数型, "user32.dll", "ShowScrollBar", , , ShowScrollBar
+    .参数 窗口句柄, 整数型, , hwnd
+    .参数 滚动条标志, 整数型, , wBar
+    .参数 显示标志, 整数型, , bShow
+
+.DLL命令 取客户区矩形_, 整数型, "user32", "GetClientRect", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 矩形区域, Rect, , 
+
+.DLL命令 移动区域_, 整数型, "gdi32.dll", "OffsetRgn", , 区域状态
+    .参数 区域句柄, 整数型, , hRgn，区域句柄
+    .参数 横向移动量, 整数型, , x，以逻辑坐标表示的水平偏移量
+    .参数 纵向移动量, 整数型, , y，以逻辑坐标表示的垂直偏移量
+
+.窗口程序集 启动窗口程序集, , , 
+
+.程序集变量 图片号, 整数型, , , 
+.程序集变量 图片宽度, 整数型, , , 
+.程序集变量 图片高度, 整数型, , , 
+.程序集变量 原始宽度, 整数型, , , 
+.程序集变量 原始高度, 整数型, , , 
+.程序集变量 缩放值, 小数型, , , 
+.程序集变量 纵移距离, 小数型, , , 
+.程序集变量 横移距离, 小数型, , , 
+.程序集变量 OldProc, 整数型, , , 
+.程序集变量 句柄, 整数型, , , 
+.程序集变量 a, SCROLLINFO, , , 
+.程序集变量 匿名程序集变量_1366, 空白型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+
+.子程序 __启动窗口_首次激活, 空白型, , 
+.局部变量 osty, 整数型, , , 
+
+赋值 (句柄, 取窗口句柄 ())
+赋值 (缩放值, 1)
+赋值 (图片号, 载入图片 (相加 (取运行目录 (), “\1.jpg”)))
+图片号.画图片 (0, 0, , , )
+赋值 (原始宽度, 图片号.取图片宽度 ())
+赋值 (原始高度, 图片号.取图片高度 ())
+赋值 (图片宽度, 原始宽度)
+赋值 (图片高度, 原始高度)
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+赋值 (a.cbSize, 7)
+赋值 (a.fMask, #SIF_ALL)
+赋值 (a.nMax, 3000)
+赋值 (a.nMin, 0)
+赋值 (a.nPage, #hStep)
+赋值 (a.nPos, 0)
+.如果真 (或者 (大于 (图片宽度, .宽度), 大于 (图片高度, .高度)))
+    SetScrollInfo (句柄, #SB_HORZ, a, 真)
+    SetScrollInfo (句柄, #SB_VERT, a, 真)
+    ShowScrollBar (句柄, #SB_BOTH, 1)
+    
+.如果真结束
+
+ ' 初始化画板 ()
+赋值 (osty, 取得窗口信息_ (句柄, #GWL_STYLE))
+设置窗口信息_ (句柄, #GWL_STYLE, 位或 (osty, #WS_HSCROLL, #WS_VSCROLL))
+赋值 (OldProc, SetWindowLongA (句柄, #GWL_WNDPROC, 到数值 (&NewProc)))
+
+.子程序 NewProc, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 ps, PAINTSTRUCT, , , 
+
+.判断开始 (等于 (Msg, #WM_PAINT))
+    BeginPaint (hWnd, ps)
+    图片号.画图片 (横移距离, 纵移距离, 图片宽度, 图片高度, )
+     ' 画调整边框 (截取矩形)
+    EndPaint (hWnd, ps)
+.判断 (等于 (Msg, #WM_HSCROLL))
+    置横向滚动条 (wParam)
+.判断 (等于 (Msg, #WM_VSCROLL))
+    置纵向滚动条 (wParam)
+.默认
+    
+.判断结束
+返回 (CallWindowProcA (OldProc, hWnd, Msg, wParam, lParam))
+
+.子程序 置横向滚动条, 空白型, , 
+.参数 wParam, 整数型, , 
+
+.局部变量 pos, 整数型, , , 
+.局部变量 flag, 整数型, , , 
+.局部变量 old, SCROLLINFO, , , 
+.局部变量 jx, Rect, , , 
+.局部变量 qy, 整数型, , , 
+
+GetScrollInfo (句柄, #SB_HORZ, old)
+赋值 (pos, 整除 (wParam, 65536)) ' 拖拽时返回的滚动条值
+赋值 (flag, 求余数 (wParam, 65536)) ' 判断滚动条的动作
+.判断开始 (等于 (flag, #SB_LINERIGHT))
+    赋值 (a.nPos, 相加 (a.nPos, #hStep))
+    .如果真 (大于或等于 (a.nPos, a.nMax))
+        赋值 (a.nPos, 3000)
+    .如果真结束
+    
+.判断 (等于 (flag, #SB_LINELEFT))
+    赋值 (a.nPos, 相减 (a.nPos, #hStep))
+    .如果真 (小于或等于 (a.nPos, a.nMin))
+        赋值 (a.nPos, 0)
+    .如果真结束
+    
+.判断 (等于 (flag, #SB_PAGELEFT))
+    赋值 (a.nPos, 相减 (a.nPos, #hStep))
+    .如果真 (小于或等于 (a.nPos, a.nMin))
+        赋值 (a.nPos, 0)
+    .如果真结束
+    
+.判断 (等于 (flag, #SB_PAGERIGHT))
+    赋值 (a.nPos, 相加 (a.nPos, #hStep))
+    .如果真 (小于或等于 (a.nPos, a.nMin))
+        赋值 (a.nPos, 3000)
+    .如果真结束
+    
+.判断 (等于 (flag, #SB_THUMBTRACK))
+    赋值 (a.nPos, pos)
+.判断 (等于 (flag, #SB_BOTTOM))
+    赋值 (a.nPos, a.nMax)
+.判断 (等于 (flag, #SB_TOP))
+    赋值 (a.nPos, a.nMin)
+.默认
+     ' 本源码来自易语言资源网(www.5A5X.com)
+.判断结束
+SetScrollInfo (取窗口句柄 (), #SB_HORZ, a, 真)
+赋值 (横移距离, 相除 (相乘 (负 (相减 (old.nPos, a.nPos)), 相减 (.宽度, 图片宽度)), 2000))
+#WM_PAINT.发送信息 (0, 0)
+
+.子程序 置纵向滚动条, 空白型, , 
+.参数 wParam, 整数型, , 
+
+.局部变量 pos, 整数型, , , 
+.局部变量 flag, 整数型, , , 
+.局部变量 old, SCROLLINFO, , , 
+
+GetScrollInfo (句柄, #SB_VERT, old)
+赋值 (pos, 整除 (wParam, 65536)) ' 拖拽时返回的滚动条值
+赋值 (flag, 求余数 (wParam, 65536)) ' 判断滚动条的动作
+.判断开始 (等于 (flag, #SB_LINEDOWN))
+    赋值 (a.nPos, 相加 (a.nPos, #hStep))
+    .如果真 (大于或等于 (a.nPos, a.nMax))
+        赋值 (a.nPos, 3000)
+    .如果真结束
+    
+.判断 (等于 (flag, #SB_LINEUP))
+    赋值 (a.nPos, 相减 (a.nPos, #hStep))
+    .如果真 (小于或等于 (a.nPos, a.nMin))
+        赋值 (a.nPos, 0)
+    .如果真结束
+    
+.判断 (等于 (flag, #SB_PAGEUP))
+    赋值 (a.nPos, 相减 (a.nPos, #hStep))
+    .如果真 (小于或等于 (a.nPos, a.nMin))
+        赋值 (a.nPos, 0)
+    .如果真结束
+    
+.判断 (等于 (flag, #SB_PAGEDOWN))
+    赋值 (a.nPos, 相加 (a.nPos, #hStep))
+    .如果真 (小于或等于 (a.nPos, a.nMin))
+        赋值 (a.nPos, 3000)
+    .如果真结束
+    
+.判断 (等于 (flag, #SB_THUMBTRACK))
+    赋值 (a.nPos, pos)
+.判断 (等于 (flag, #SB_BOTTOM))
+    赋值 (a.nPos, a.nMax)
+.判断 (等于 (flag, #SB_TOP))
+    赋值 (a.nPos, a.nMin)
+.默认
+     ' 本源码来自易语言资源网(www.5A5X.com)
+.判断结束
+SetScrollInfo (取窗口句柄 (), #SB_VERT, a, 真)
+赋值 (纵移距离, 相除 (相乘 (负 (相减 (old.nPos, a.nPos)), 相减 (.高度, 图片高度)), 2000))
+#WM_PAINT.发送信息 (0, 0)
+
+.子程序 __启动窗口_尺寸被改变, 空白型, , 
+60.移动 (0, 相减 (取用户区宽度 (), 60), 相减 (取用户区高度 (), .))
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+SetWindowLongA (句柄, #GWL_WNDPROC, OldProc)
+卸载图片 (图片号)
+
+.子程序 _按钮1_被单击, 空白型, , 
+.如果真 (等于 (缩放值, 4))
+    返回 ()
+.如果真结束
+赋值 (缩放值, 相加 (缩放值, 1))
+赋值 (图片宽度, 取整 (相乘 (原始宽度, 缩放值)))
+赋值 (图片高度, 取整 (相乘 (原始高度, 缩放值)))
+#WM_PAINT.发送信息 (0, 0)
+
+.子程序 _按钮2_被单击, 空白型, , 
+.如果真 (等于 (缩放值, 1))
+    返回 () ' 本源码来自易语言资源网(www.5A5X.com)
+.如果真结束
+赋值 (缩放值, 相减 (缩放值, 1))
+赋值 (图片宽度, 取整 (相乘 (原始宽度, 缩放值)))
+赋值 (图片高度, 取整 (相乘 (原始高度, 缩放值)))
+#WM_PAINT.发送信息 (0, 0)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

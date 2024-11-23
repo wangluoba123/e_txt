@@ -1,0 +1,510 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 306
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 MD5, "“STR_UINTIP=1;STR_QLOGIN_VERSION_ERR=2;STR_NO_UIN=3;STR_NO_PWD=4;STR_NO_VCODE=5;STR_INV_UIN=6;STR_INV_VCODE=7;STR_UIN=8;STR_PWD=9;STR_VCODE=10;STR_VCODE_TIP=11;STR_CHANGE_VCODE=12;STR_REMEMBER_PWD=13;STR_1_DAY=14;STR_1_WEEK=15;STR_1_MONTH=16;STR_HALF_YEAR=17;STR_1_YEAR=18;STR_FORGET_PWD=19;STR_LOGIN=20;STR_RESET=21;STR_SWITCH_QLOGIN=22;STR_LOGIN_TITLE=23;STR_QLOGIN_INTRO=24;STR_QLOGINING=25;STR_QLOGIN_HELP=26;STR_SWITCH_NORMAL=27;STR_QLOGIN=28;STR_QLOGIN_BUSY=29;STR_QLOGIN_OFFLINE=30;STR_QLOGIN_OTHER_ERR=31;STR_BACK=32;STR_RETRY=33;STR_NEW_REG=34;STR_QLOGIN_SELECT=35;STR_QLOGIN_VER=36;STR_QLOGIN_SELECT_TIP=37;STR_QLOGIN_NO_UIN=38;STR_QLOGIN_SELECT_OFFLINE=39;my_version=unescape("version1.0.0");function ptui_trim(A){return A.replace(/(^\s*)|(\s*$)/g,"")}function ptui_str(A){A-=1;if(A>=0&&A<g_strArray.length){return g_strArray[A]}return""}function ptui_mapStr(B){for(i=0;i<B.length;i++){var A=document.getElementById(B[i][1]);if(A!=null){if("A"==A.nodeName||"U"==A.nodeName||"OPTION"==A.nodeName||"LABEL"==A.nodeName||"P"==A.nodeName){if(A.innerHTML==""){A.innerHTML=ptui_str(B[i][0])}}else{if("INPUT"==A.nodeName){if(A.value==""){A.value=ptui_str(B[i][0])}}else{if("IMG"==A.nodeName){A.alt=ptui_str(B[i][0])}}}}}}function ptui_onUserFocus(C,A){var B=document.getElementById(C);if(ptui_str(STR_UINTIP)==B.value){B.value=""}B.style.color=A}function ptui_onUserBlue(C,A){var B=document.getElementById(C);if(""==B.value){B.value=ptui_str(STR_UINTIP);B.style.color=A}}var g_speedArray=new Array();function ptui_setSpeed(B){if(B<=0){return }var A=g_speedArray.length;g_speedArray[A]=new Array(B,new Date())}function ptui_reportSpeed(B){if(Math.random()>0.1){return }url="http://isdspeed.qq.com/cgi-bin/r.cgi?flag1=6000&flag2=1&flag3=1";for(var A=0;A<g_speedArray.length;A++){url=url+"&"+g_speedArray[A][0]+"="+(g_speedArray[A][1]-B)}imgSendTimePoint=new Image();imgSendTimePoint.src=url}function ptui_showDiv(A,B){var C=document.getElementById(A);if(null==C){return }if(B){C.style.display="block"}else{C.style.display="none"}}function ptui_notifySize(B){try{obj=document.getElementById(B);if(obj){if(parent.ptlogin2_onResize){width=1;height=1;if(obj.offsetWidth>0){width=obj.offsetWidth}if(obj.offsetHeight>0){height=obj.offsetHeight}parent.ptlogin2_onResize(width,height)}}}catch(A){}}function ptui_notifyClose(){try{if(parent.ptlogin2_onClose){parent.ptlogin2_onClose()}else{if(top==this){window.close()}}}catch(A){window.close()}}function ptui_setUinColor(D,B,A){var C=document.getElementById(D);if(ptui_str(STR_UINTIP)==C.value){C.style.color=A}else{C.style.color=B}}function ptui_onEnableLLogin(B){var A=B.low_login_enable;var C=B.low_login_hour;if(A!=null&&C!=null){C.disabled=!A.checked}}function ptui_changeImgEx(D,C,G,F){var A=document.getElementById("imgVerify");try{if(A!=null){A.src=F+"?aid="+C+"&"+Math.random();var B=document.getElementById("verifycode");if(B!=null&&B.disabled==false&&G){B.focus();B.select()}}}catch(E){}}function ptui_changeImg(B,A,C){ptui_changeImgEx(B,A,C,"http://ptlogin2."+B+"/getimage")}function ptui_changeImgHttps(B,A,C){ptui_changeImgEx(B,A,C,"./getimage")}function ptui_checkQQUin(qquin){if(qquin.length==0){return false}qquin=ptui_trim(qquin);if(!(new RegExp(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/).test(qquin))){if(qquin.length<5||qquin.length>12||parseInt(qquin)<1000){return false}var exp=eval("/^[0-9]*$/");return exp.test(qquin)}return true}function ptui_checkPwdOnInput(){if(document.getElementById("p").value.length>=16){return false}return true}function ptui_onLogin(A){try{if(parent.ptlogin2_onLogin){if(!parent.ptlogin2_onLogin()){return false}}if(parent.ptlogin2_onLoginEx){var D=A.u.value;var B=A.verifycode.value;if(ptui_str(STR_UINTIP)==D){D=""}if(!parent.ptlogin2_onLoginEx(D,B)){return false}}}catch(C){}return ptui_checkValidate(A)}function ptui_onLoginEx(B,C){if(ptui_onLogin(B)){var A=new Date();A.setHours(A.getHours()+24*30);setCookie("ptui_loginuin",B.u.value,A,"/","ui.ptlogin2."+C);return true}return false}function ptui_setDefUin(B,A){if(A==""||A==null){A=getCookie("ptui_loginuin")}A=parseInt(A);if(isNaN(A)){return }if(A<=0){A=""}if(A!=""&&A!=null){B.u.value=A}}function ptui_onReset(A){try{if(parent.ptlogin2_onReset){if(!parent.ptlogin2_onReset()){return false}}}catch(B){}return true}function ptui_initFocus(B){try{var A=B.u;var D=B.p;var E=B.verifycode;if(A.value==""||ptui_str(STR_UINTIP)==A.value){A.focus();return }if(D.value==""){D.focus();return }if(E.value==""){E.focus()}}catch(C){}}function ptui_checkValidate(B){var A=B.u;var C=B.p;var D=B.verifycode;if(A.value==""||ptui_str(STR_UINTIP)==A.value){alert(ptui_str(STR_NO_UIN));A.focus();return false}if(C.value==""){alert(ptui_str(STR_NO_PWD));C.focus();return false}if(D.value==""){alert(ptui_str(STR_NO_VCODE));D.focus();return false}A.value=ptui_trim(A.value);if(!ptui_checkQQUin(A.value)){alert(ptui_str(STR_INV_UIN));A.focus();A.select();return false}if(D.value.length!=4){alert(ptui_str(STR_INV_VCODE));D.focus();D.select();return false}C.setAttribute("maxlength","32");preprocess(B);return true}function getCookieVal(B){var A=document.cookie.indexOf(";",B);if(A==-1){A=document.cookie.length}return unescape(document.cookie.substring(B,A))}function getCookie(D){var B=D+"=";var F=B.length;var A=document.cookie.length;var E=0;while(E<A){var C=E+F;if(document.cookie.substring(E,C)==B){return getCookieVal(C)}E=document.cookie.indexOf(" ",E)+1;if(E==0){break}}return null}function setCookie(C,E){var A=setCookie.arguments;var H=setCookie.arguments.length;var B=(2<H)?A[2]:null;var G=(3<H)?A[3]:null;var D=(4<H)?A[4]:null;var F=(5<H)?A[5]:null;document.cookie=C+"="+escape(E)+((B==null)?" ":(";expires ="+B.toGMTString()))+((G==null)?"  ":(";path = "+G))+((D==null)?" ":(";domain ="+D))+((F==true)?";secure":" ")}var hexcase=1;var b64pad="";var chrsz=8;var mode=32;function preprocess(A){var B="";B+=A.verifycode.value;B=B.toUpperCase();A.p.value=md5(md5_3(A.p.value)+B);return true}function md5_3(B){var A=new Array;A=core_md5(str2binl(B),B.length*chrsz);A=core_md5(A,16*chrsz);A=core_md5(A,16*chrsz);return binl2hex(A)}function md5(A){return hex_md5(A)}function hex_md5(A){return binl2hex(core_md5(str2binl(A),A.length*chrsz))}function b64_md5(A){return binl2b64(core_md5(str2binl(A),A.length*chrsz))}function str_md5(A){return binl2str(core_md5(str2binl(A),A.length*chrsz))}function hex_hmac_md5(A,B){return binl2hex(core_hmac_md5(A,B))}function b64_hmac_md5(A,B){return binl2b64(core_hmac_md5(A,B))}function str_hmac_md5(A,B){return binl2str(core_hmac_md5(A,B))}function md5_vm_test(){return hex_md5("abc")=="900150983cd24fb0d6963f7d28e17f72"}function core_md5(K,F){K[F>>5]|=128<<((F)%32);K[(((F+64)>>>9)<<4)+14]=F;var J=1732584193;var I=-271733879;var H=-1732584194;var G=271733878;for(var C=0;C<K.length;C+=16){var E=J;var D=I;var B=H;var A=G;J=md5_ff(J,I,H,G,K[C+0],7,-680876936);G=md5_ff(G,J,I,H,K[C+1],12,-389564586);H=md5_ff(H,G,J,I,K[C+2],17,606105819);I=md5_ff(I,H,G,J,K[C+3],22,-1044525330);J=md5_ff(J,I,H,G,K[C+4],7,-176418897);G=md5_ff(G,J,I,H,K[C+5],12,1200080426);H=md5_ff(H,G,J,I,K[C+6],17,-1473231341);I=md5_ff(I,H,G,J,K[C+7],22,-45705983);J=md5_ff(J,I,H,G,K[C+8],7,1770035416);G=md5_ff(G,J,I,H,K[C+9],12,-1958414417);H=md5_ff(H,G,J,I,K[C+10],17,-42063);I=md5_ff(I,H,G,J,K[C+11],22,-1990404162);J=md5_ff(J,I,H,G,K[C+12],7,1804603682);G=md5_ff(G,J,I,H,K[C+13],12,-40341101);H=md5_ff(H,G,J,I,K[C+14],17,-1502002290);I=md5_ff(I,H,G,J,K[C+15],22,1236535329);J=md5_gg(J,I,H,G,K[C+1],5,-165796510);G=md5_gg(G,J,I,H,K[C+6],9,-1069501632);H=md5_gg(H,G,J,I,K[C+11],14,643717713);I=md5_gg(I,H,G,J,K[C+0],20,-373897302);J=md5_gg(J,I,H,G,K[C+5],5,-701558691);G=md5_gg(G,J,I,H,K[C+10],9,38016083);H=md5_gg(H,G,J,I,K[C+15],14,-660478335);I=md5_gg(I,H,G,J,K[C+4],20,-405537848);J=md5_gg(J,I,H,G,K[C+9],5,568446438);G=md5_gg(G,J,I,H,K[C+14],9,-1019803690);H=md5_gg(H,G,J,I,K[C+3],14,-187363961);I=md5_gg(I,H,G,J,K[C+8],20,1163531501);J=md5_gg(J,I,H,G,K[C+13],5,-1444681467);G=md5_gg(G,J,I,H,K[C+2],9,-51403784);H=md5_gg(H,G,J,I,K[C+7],14,1735328473);I=md5_gg(I,H,G,J,K[C+12],20,-1926607734);J=md5_hh(J,I,H,G,K[C+5],4,-378558);G=md5_hh(G,J,I,H,K[C+8],11,-2022574463);H=md5_hh(H,G,J,I,K[C+11],16,1839030562);I=md5_hh(I,H,G,J,K[C+14],23,-35309556);J=md5_hh(J,I,H,G,K[C+1],4,-1530992060);G=md5_hh(G,J,I,H,K[C+4],11,1272893353);H=md5_hh(H,G,J,I,K[C+7],16,-155497632);I=md5_hh(I,H,G,J,K[C+10],23,-1094730640);J=md5_hh(J,I,H,G,K[C+13],4,681279174);G=md5_hh(G,J,I,H,K[C+0],11,-358537222);H=md5_hh(H,G,J,I,K[C+3],16,-722521979);I=md5_hh(I,H,G,J,K[C+6],23,76029189);J=md5_hh(J,I,H,G,K[C+9],4,-640364487);G=md5_hh(G,J,I,H,K[C+12],11,-421815835);H=md5_hh(H,G,J,I,K[C+15],16,530742520);I=md5_hh(I,H,G,J,K[C+2],23,-995338651);J=md5_ii(J,I,H,G,K[C+0],6,-198630844);G=md5_ii(G,J,I,H,K[C+7],10,1126891415);H=md5_ii(H,G,J,I,K[C+14],15,-1416354905);I=md5_ii(I,H,G,J,K[C+5],21,-57434055);J=md5_ii(J,I,H,G,K[C+12],6,1700485571);G=md5_ii(G,J,I,H,K[C+3],10,-1894986606);H=md5_ii(H,G,J,I,K[C+10],15,-1051523);I=md5_ii(I,H,G,J,K[C+1],21,-2054922799);J=md5_ii(J,I,H,G,K[C+8],6,1873313359);G=md5_ii(G,J,I,H,K[C+15],10,-30611744);H=md5_ii(H,G,J,I,K[C+6],15,-1560198380);I=md5_ii(I,H,G,J,K[C+13],21,1309151649);J=md5_ii(J,I,H,G,K[C+4],6,-145523070);G=md5_ii(G,J,I,H,K[C+11],10,-1120210379);H=md5_ii(H,G,J,I,K[C+2],15,718787259);I=md5_ii(I,H,G,J,K[C+9],21,-343485551);J=safe_add(J,E);I=safe_add(I,D);H=safe_add(H,B);G=safe_add(G,A)}if(mode==16){return Array(I,H)}else{return Array(J,I,H,G)}}function md5_cmn(F,C,B,A,E,D){return safe_add(bit_rol(safe_add(safe_add(C,F),safe_add(A,D)),E),B)}function md5_ff(C,B,G,F,A,E,D){return md5_cmn((B&G)|((~B)&F),C,B,A,E,D)}function md5_gg(C,B,G,F,A,E,D){return md5_cmn((B&F)|(G&(~F)),C,B,A,E,D)}function md5_hh(C,B,G,F,A,E,D){return md5_cmn(B^G^F,C,B,A,E,D)}function md5_ii(C,B,G,F,A,E,D){return md5_cmn(G^(B|(~F)),C,B,A,E,D)}function core_hmac_md5(C,F){var E=str2binl(C);if(E.length>16){E=core_md5(E,C.length*chrsz)}var A=Array(16),D=Array(16);for(var B=0;B<16;B++){A[B]=E[B]^909522486;D[B]=E[B]^1549556828}var G=core_md5(A.concat(str2binl(F)),512+F.length*chrsz);return core_md5(D.concat(G),512+128)}function safe_add(A,D){var C=(A&65535)+(D&65535);var B=(A>>16)+(D>>16)+(C>>16);return(B<<16)|(C&65535)}function bit_rol(A,B){return(A<<B)|(A>>>(32-B))}function str2binl(D){var C=Array();var A=(1<<chrsz)-1;for(var B=0;B<D.length*chrsz;B+=chrsz){C[B>>5]|=(D.charCodeAt(B/chrsz)&A)<<(B%32)}return C}function binl2str(C){var D="";var A=(1<<chrsz)-1;for(var B=0;B<C.length*32;B+=chrsz){D+=String.fromCharCode((C[B>>5]>>>(B%32))&A)}return D}function binl2hex(C){var B=hexcase?"0123456789ABCDEF":"0123456789abcdef";var D="";for(var A=0;A<C.length*4;A++){D+=B.charAt((C[A>>2]>>((A%4)*8+4))&15)+B.charAt((C[A>>2]>>((A%4)*8))&15)}return D}function binl2b64(D){var C="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";var F="";for(var B=0;B<D.length*4;B+=3){var E=(((D[B>>2]>>8*(B%4))&255)<<16)|(((D[B+1>>2]>>8*((B+1)%4))&255)<<8)|((D[B+2>>2]>>8*((B+2)%4))&255);for(var A=0;A<4;A++){if(B*8+A*6>D.length*32){F+=b64pad}else{F+=C.charAt((E>>6*(3-A))&63)}}}return F};/*  |xGv00|fdc64de296a9e6e4a0768719da13ecb0 */”", , 
+.常量 匹配QQ号, "“{"uin":(\d+),"categories":\d*}”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+ ' 所需要的模块
+ ' 求真脚本组件模块 C:\Documents and Settings\Administrator\桌面\脚本组件模块.ec
+ ' 彗星正则表达式类 C:\Documents and Settings\Administrator\桌面\彗星正则表达式类.ec
+ ' 七号Cookies管理模块-内存版 C:\Documents and Settings\Administrator\桌面\cookie管理-内存版.ec
+
+
+
+.DLL命令 加载COM, 空白型, "ole32.dll", "CoInitialize", , 
+    .参数 pvReserved, 整数型, , 值为0
+
+.DLL命令 卸载COM, 空白型, "ole32.dll", "CoUninitialize", , 
+
+.DLL命令 创建线程, 整数型, "kernel32.dll", "CreateThread", , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 子程序指针, 子程序指针, , 
+    .参数 参数, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 线程ID, 整数型, 传址, 
+
+.窗口程序集 窗口程序集1, , , code by 被封七号
+
+.程序集变量 程序集_验证码, 文本型, , , 
+.程序集变量 程序集_clientid, 文本型, , , 
+.程序集变量 程序集_ptwebqq, 文本型, , , 
+.程序集变量 程序集_psessionid, 文本型, , , 
+.程序集变量 程序集_vfwebqq, 文本型, , , 
+.程序集变量 北京时间戳, 长整数型, , , 
+.程序集变量 启动时间, 长整数型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , code by 被封七号
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+置随机数种子 ()
+赋值 (程序集_clientid, 到文本 (取随机数 (10000000, 99999999)))
+
+.子程序 _按钮1_被单击, 空白型, , code by 被封七号
+.局部变量 局部_正则, 彗星正则表达式类, , , 
+.局部变量 n, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 局部_http, 对象, , , 
+.局部变量 局部_检测结果, 文本型, , , 
+.局部变量 id, 整数型, , , 
+
+赋值 (., 真)
+局部_http.创建 (“WinHttp.WinHttpRequest.5.1”, )
+ ' ============================================================================================
+ ' 检测是否需要验证码
+局部_http.方法 (“open”, “GET”, 相加 (“http://ptlogin2.qq.com/check?uin=”, ., “&appid=1003903&r=0.7847658565738191”), 假)
+局部_http.方法 (“SetRequestHeader”, “User-Agent”, “Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; QQDownload 663; Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1) ; .NET CLR 2.0.50727)”)
+局部_http.方法 (“send”, )
+赋值 (局部_检测结果, 高级截取文本 (局部_http.读文本属性 (“ResponseText”, ), “checkVC('”, “','”))
+.如果真 (等于 (局部_检测结果, “1”))
+    信息框 (“需要验证码!”, 0, )
+    返回 ()
+.如果真结束
+赋值 (程序集_验证码, 高级截取文本 (局部_http.读文本属性 (“ResponseText”, ), “','”, “')”))
+COM对象_保存COOKIE (局部_http, 相加 (“qq”, 程序集_clientid))
+ ' ============================================================================================
+ ' 请求登录
+局部_http.方法 (“open”, “GET”, 相加 (“http://ptlogin2.qq.com/login?u=”, ., “&p=”, 取加密密码 (., 程序集_验证码), “&verifycode=”, 程序集_验证码, “&remember_uin=1&aid=1003903&u1=http%3A%2F%2Fweb2.qq.com%2Floginproxy.html%3Fstrong%3Dtrue&h=1&ptredirect=0&ptlang=2052&from_ui=1&pttype=1&dumy=&fp=loginerroralert”), 假)
+局部_http.方法 (“SetRequestHeader”, “Referer”, “http://ui.ptlogin2.qq.com/cgi-bin/login?target=self&style=4&appid=1003903&enable_qlogin=0&no_verifyimg=1&s_url=http%3A%2F%2Fweb2.qq.com%2Floginproxy.html%3Fstrong%3Dtrue&f_url=loginerroralert”)
+局部_http.方法 (“SetRequestHeader”, “User-Agent”, “Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; QQDownload 663; Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1) ; .NET CLR 2.0.50727)”)
+ ' 本源码来自易语言资源网(www.5A5X.com)
+COM对象_设置COOKIES (局部_http, 相加 (“qq”, 程序集_clientid))
+局部_http.方法 (“send”, )
+COM对象_保存COOKIE (局部_http, 相加 (“qq”, 程序集_clientid))
+赋值 (程序集_ptwebqq, 高级截取文本 (局部_http.读文本属性 (“GetAllResponseHeaders”, ), “ptwebqq=”, “; ”))
+
+.如果真 (等于 (程序集_ptwebqq, “”))
+    信息框 (“登录失败”, 0, )
+    返回 ()
+.如果真结束
+
+ ' --------------------
+ ' 正式登录
+局部_http.方法 (“open”, “POST”, “http://d.web2.qq.com/channel/login2”, 假)
+局部_http.方法 (“SetRequestHeader”, “Referer”, “http://d.web2.qq.com/proxy.html?v=20101025002”)
+局部_http.方法 (“SetRequestHeader”, “User-Agent”, “Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; QQDownload 663; Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1) ; .NET CLR 2.0.50727)”)
+局部_http.方法 (“SetRequestHeader”, “Content-Type”, “application/x-www-form-urlencoded”)
+COM对象_设置COOKIES (局部_http, “qq”)
+局部_http.方法 (“send”, 相加 (“r=%7B%22status%22%3A%22%22%2C%22ptwebqq%22%3A%22”, 程序集_ptwebqq, “%22%2C%22passwd_sig%22%3A%22%22%2C%22clientid%22%3A%22”, 程序集_clientid, “%22%2C%22psessionid%22%3Anull%7D”))
+COM对象_保存COOKIE (局部_http, 相加 (“qq”, 程序集_clientid))
+
+ ' --------------------
+ ' 取得相关参数
+赋值 (程序集_psessionid, 高级截取文本 (局部_http.读文本属性 (“ResponseText”, ), 相加 (“psessionid”, #引号, “:”, #引号), 相加 (#引号, “}”)))
+赋值 (程序集_vfwebqq, 高级截取文本 (局部_http.读文本属性 (“ResponseText”, ), 相加 (“vfwebqq”, #引号, “:”, #引号), 相加 (#引号, “,”, #引号)))
+ ' ============================================================================================
+.如果真 (等于 (程序集_psessionid, “”))
+    信息框 (“登录失败”, 0, )
+    返回 ()
+.如果真结束
+
+
+局部_http.方法 (“open”, “POST”, “http://web2-b.qq.com/api/get_user_friends”, 假)
+局部_http.方法 (“SetRequestHeader”, “Referer”, “http://web2.qq.com/module/eqq/swf/fflist.swf?t=1289886570875”)
+局部_http.方法 (“SetRequestHeader”, “Content-Type”, “application/x-www-form-urlencoded”)
+局部_http.方法 (“SetRequestHeader”, “User-Agent”, “Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; QQDownload 663; Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1) ; .NET CLR 2.0.50727)”)
+COM对象_设置COOKIES (局部_http, 相加 (“qq”, 程序集_clientid))
+局部_http.方法 (“send”, 相加 (“r=%7B%22vfwebqq%22%3A%22”, 程序集_vfwebqq, “%22%7D”))
+COM对象_保存COOKIE (局部_http, 相加 (“qq”, 程序集_clientid))
+
+ ' ------------------------------
+局部_正则.创建 (#匹配QQ号)
+局部_正则.搜索全部 (局部_http.读文本属性 (“ResponseText”, ))
+赋值 (n, 局部_正则.取匹配数量 ())
+输出调试文本 (n)
+.计次循环首 (n, i)
+    局部_正则.取子匹配文本 (i, 1).加入项目 ()
+    处理事件 ()
+.计次循环尾 ()
+创建线程 (0, 0, &等待消息, 0, 0, id) ' 防止掉线
+创建线程 (0, 0, &线程, 0, 0, id)
+
+.子程序 线程, 空白型, , code by 被封七号
+.局部变量 局部_消息, 文本型, , , 
+.局部变量 n, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 局部_http, 对象, , , 
+.局部变量 局部_QQ, 文本型, , , 
+.局部变量 局部_索引, 整数型, , , 
+
+加载COM (0)
+局部_http.创建 (“WinHttp.WinHttpRequest.5.1”, )
+赋值 (., n)
+
+赋值 (n, 取项目数 ())
+ ' 本源码来自易语言资源网(www.5A5X.com)
+局部_http.方法 (“open”, “POST”, “http://d.web2.qq.com/channel/send_msg”, 假)
+
+局部_http.方法 (“SetRequestHeader”, “Referer”, “http://d.web2.qq.com/proxy.html?v=20101025002”)
+局部_http.方法 (“SetRequestHeader”, “Content-Type”, “application/x-www-form-urlencoded”)
+局部_http.方法 (“SetRequestHeader”, “User-Agent”, “Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; QQDownload 663; Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1) ; .NET CLR 2.0.50727)”)
+
+.判断循环首 (不等于 (n, 0))
+    赋值 (局部_QQ, 取下个帐号 (局部_索引))
+    .如果真 (等于 (局部_QQ, “”))
+        跳出循环 ()
+    .如果真结束
+    赋值 (局部_消息, 相加 (“r=%7B %22to%22%3A ”, 局部_QQ, “%2C %22face%22%3A 522%2C %22content%22%3A %22%5B %5C%22%E6%96%B0%E5%B9%B4%E5%BF%AB%E4%B9%90%5C%22%2C %5B %5C%22font%5C%22%2C %7B %5C%22name%5C%22%3A %5C%22%E5%AE%8B%E4%BD%93%5C%22%2C %5C%22size%5C%22%3A %5C%2212%5C%22%2C %5C%22style%5C%22%3A %5B 0%2C 0%2C 0 %5D%2C %5C%22color%5C%22%3A %5C%22FF0000%5C%22 %7D %5D %5D%22%2C %22msg%5Fid%22%3A 16840002%2C %22clientid%22%3A %22”, 程序集_clientid, “%22%2C %22psessionid%22%3A %22”, 程序集_psessionid, “%22 %7D”))
+    
+    COM对象_设置COOKIES (局部_http, 相加 (“qq”, 程序集_clientid))
+    局部_http.方法 (“send”, 局部_消息)
+    COM对象_保存COOKIE (局部_http, 相加 (“qq”, 程序集_clientid))
+    .如果真 (不等于 (寻找文本 (局部_http.读文本属性 (“ResponseText”, ), “ok”, , 假), -1))
+        赋值 (., i)
+        局部_索引.选中项目 (真)
+    .如果真结束
+    
+    延时 (400)
+.判断循环尾 ()
+
+ ' 退出
+局部_http.方法 (“open”, “GET”, 相加 (“http://d.web2.qq.com/channel/logout?clientid=”, 程序集_clientid, “&psessionid=”, 程序集_psessionid, “&t=1289886570875”), 假)
+局部_http.方法 (“SetRequestHeader”, “Referer”, “http://d.web2.qq.com/proxy.html?v=20101025002”)
+局部_http.方法 (“SetRequestHeader”, “User-Agent”, “Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; QQDownload 663; Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1) ; .NET CLR 2.0.50727)”)
+COM对象_设置COOKIES (局部_http, “qq”)
+局部_http.方法 (“send”, )
+赋值 (程序集_clientid, “”)
+赋值 (., 假)
+信息框 (“发送完成!”, #信息图标, )
+卸载COM ()
+
+
+.子程序 等待消息, 空白型, , 读取最新消息, 超时为 1分钟
+.局部变量 局部_http, 对象, , , 
+
+加载COM (0)
+局部_http.创建 (“WinHttp.WinHttpRequest.5.1”, )
+局部_http.方法 (“open”, “GET”, 相加 (“http://d.web2.qq.com/channel/poll?clientid=”, 程序集_clientid, “&psessionid=”, 程序集_psessionid, “&t=1289819373500&vfwebqq=”, 程序集_vfwebqq), 假)
+局部_http.方法 (“SetTimeOuts”, 3000, 3000, 10000, 62000)
+局部_http.方法 (“SetRequestHeader”, “Referer”, “http://d.web2.qq.com/proxy.html?v=20101025002”)
+局部_http.方法 (“SetRequestHeader”, “Content-Type”, “application/x-www-form-urlencoded”)
+局部_http.方法 (“SetRequestHeader”, “User-Agent”, “Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; QQDownload 663; Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1) ; .NET CLR 2.0.50727)”)
+.判断循环首 (不等于 (程序集_clientid, “”))
+    COM对象_设置COOKIES (局部_http, 相加 (“qq”, 程序集_clientid))
+    局部_http.方法 (“send”, )
+    COM对象_保存COOKIE (局部_http, 相加 (“qq”, 程序集_clientid))
+.判断循环尾 ()
+卸载COM ()
+
+.子程序 取下个帐号, 文本型, , code by 被封七号
+.参数 索引, 整数型, 参考, 
+
+.局部变量 n, 整数型, , , 
+.局部变量 i, 整数型, , , 
+
+赋值 (n, 取项目数 ())
+.计次循环首 (n, i)
+    .如果真 (等于 (相减 (i, 1).是否被选中 (), 假))
+        赋值 (索引, 相减 (i, 1))
+        返回 (相减 (i, 1).取项目文本 ())
+    .如果真结束
+    
+.计次循环尾 ()
+返回 (“”)
+
+.子程序 取加密密码, 文本型, , code by 被封七号
+.参数 参数_密码, 文本型, , 
+.参数 参数_验证码, 文本型, , 
+
+.局部变量 p, 文本型, , , 
+.局部变量 局部_密码, 文本型, , "1", 
+.局部变量 脚本, 脚本组件, , , 
+
+脚本.属性_语言 (1)
+脚本.添加代码 (#MD5)
+赋值 (局部_密码 [1], 参数_密码)
+赋值 (p, 脚本.运行 (“md5_3”, 局部_密码))
+赋值 (局部_密码 [1], 相加 (p, 参数_验证码))
+赋值 (p, 脚本.运行 (“md5”, 局部_密码))
+返回 (p)
+
+.子程序 高级截取文本, 文本型, , code by 被封七号
+.参数 完整内容, 文本型, , 
+.参数 左边文本, 文本型, , 
+.参数 右边文本, 文本型, , 
+.参数 开始位置, 整数型, 可空, 可指定开始寻找的位置，为空则不指定
+.参数 文本长度, 整数型, 参考 可空, 用一个变量来接收找到的文本长度
+.参数 最大长度, 整数型, 可空, 指定返回的文本的最大长度。为空则返回全部
+.参数 出现位置, 整数型, 参考 可空, 用一个变量来接收找到的位置
+.参数 长度限制, 逻辑型, 可空, 是否只返回 长度不超过 最大长度 的文本，如果超出则返回空文本？
+
+.局部变量 临时位置_左边, 整数型, , , 
+.局部变量 临时位置_右边, 整数型, , , 
+.局部变量 临时文本, 文本型, , , 
+
+.如果 (是否为空 (开始位置))
+    赋值 (临时位置_左边, 寻找文本 (完整内容, 左边文本, , 假))
+.否则
+    赋值 (临时位置_左边, 寻找文本 (完整内容, 左边文本, 开始位置, 假))
+.如果结束
+.如果真 (等于 (临时位置_左边, -1))
+    返回 (“”)
+.如果真结束
+赋值 (临时位置_左边, 相加 (临时位置_左边, 取文本长度 (左边文本)))
+赋值 (出现位置, 临时位置_左边)
+赋值 (临时位置_右边, 寻找文本 (完整内容, 右边文本, 临时位置_左边, 假))
+.如果真 (或者 (等于 (临时位置_右边, -1), 大于 (临时位置_左边, 临时位置_右边)))
+    返回 (“”)
+.如果真结束
+赋值 (文本长度, 相减 (临时位置_右边, 临时位置_左边))
+.如果真 (并且 (长度限制, 大于 (文本长度, 最大长度)))
+    返回 (“”)
+.如果真结束
+赋值 (临时文本, 取文本中间 (完整内容, 临时位置_左边, 文本长度))
+.如果真 (等于 (是否为空 (最大长度), 假))
+    赋值 (临时文本, 取文本左边 (临时文本, 最大长度))
+.如果真结束
+返回 (临时文本)
+
+.子程序 _按钮2_被单击, 空白型, , code by 被封七号
+ ' 0点已过咯...
+ ' 取网络时间 ()
+ ' 时钟1.时钟周期 ＝ 200
+
+.子程序 取网络时间, 空白型, , code by 被封七号
+.局部变量 局部_winhttp, 对象, , , 
+.局部变量 局部_时间戳, 长整数型, , , 
+
+局部_winhttp.创建 (“WinHttp.WinHttpRequest.5.1”, )
+局部_winhttp.方法 (“open”, “GET”, “http://open.baidu.com/app?module=beijingtime&t=1296491946250”, 假)
+局部_winhttp.方法 (“send”, )
+赋值 (局部_时间戳, 到长整数 (高级截取文本 (局部_winhttp.读文本属性 (“ResponseText”, ), 相加 (“time”, #引号, “:”), “})”)))
+.如果真 (小于或等于 (局部_时间戳, 0))
+    信息框 (“联网失败,请检查网络连接是否正常!”, 0, )
+    ' 本源码来自易语言资源网(www.5A5X.com)
+    返回 ()
+.如果真结束
+赋值 (北京时间戳, 局部_时间戳)
+赋值 (启动时间, 取启动时间 ())
+
+.子程序 _时钟1_周期事件, 空白型, , 
+.如果真 (大于或等于 (相减 (相加 (北京时间戳, 取启动时间 ()), 启动时间), 1296662400000)) ' 2011-02-03 00:00:00
+    赋值 (., 0)
+     ' _按钮1_被单击 ()
+.如果真结束
+
+
+.类模块 脚本组件, , , 
+
+.子程序 属性_语言, 整数型, , 返回以下值：0.JScript；1.VBScript；-1.语言为空。当类的语言属性未指定时，默认为1，VBScript。
+.参数 新语言属性, 整数型, 可空, 可供选择的属性值：0. JScript   1. VBScript
+
+
+
+.子程序 属性_错误信息, 错误信息, , 
+
+
+.子程序 属性_超时, 整数型, , 设置或返回时间（毫秒），此时间后用户可选择中止脚本代码的执行或允许代码继续执行。
+.参数 新超时属性值, 整数型, 可空, 当为-1时，使脚本引擎的执行无超时
+
+
+
+.子程序 属性_状态, 整数型, , 
+.参数 新状态值, 整数型, 可空, 参数值为以下值之一： 0、Initialized； 1、Connected
+
+
+
+.子程序 属性_是否使用图形界面, 逻辑型, , 
+.参数 新是否使用图形界面属性, 逻辑型, 可空, 
+
+
+
+.子程序 属性_图形界面父窗口句柄, 整数型, , 
+.参数 新父窗口句柄, 整数型, 可空, 
+
+
+
+.子程序 添加代码, 空白型, , 
+.参数 代码文本, 文本型, , 
+
+
+
+.子程序 运行, 文本型, , 在添加的代码中运行指定的过程，如有返回值返回相应文本，否则返回空文本。
+.参数 过程或函数名, 文本型, , 
+.参数 参数, 文本型, 数组, 最多支持30个参数
+
+
+
+.子程序 执行代码, 逻辑型, , 执行指定的代码文本。返回真为执行正常，返回假为出错，错误信息可以从“错误信息”属性中取得。
+.参数 脚本代码, 文本型, , 
+
+
+
+.子程序 计算表达式, 文本型, , 计算表达式并返回结果。
+.参数 表达式, 文本型, , 
+
+
+
+.子程序 清除, 空白型, , 
+
+
+.类模块 错误信息, , , 
+
+.子程序 初始化, 空白型, , 
+.参数 错误对象, 对象, , 
+
+
+
+.子程序 错误代码, 整数型, , 
+
+
+.子程序 错误源, 文本型, , 
+
+
+.子程序 错误描述, 文本型, , 
+
+
+.子程序 错误代码行文本, 文本型, , 
+
+
+.子程序 错误代码行位置, 整数型, , 
+
+
+.子程序 错误代码列位置, 整数型, , 
+
+
+.子程序 清除, 空白型, , 清除错误对象
+
+
+.子程序 错误查阅帮助文件名, 文本型, , 
+
+
+.子程序 错误查阅帮助文件上下文ID, 整数型, , 
+
+
+.类模块 彗星正则表达式类, , , 
+
+.子程序 创建, 逻辑型, , 根据指定的正则表达式文本创建一个正则表达式对象。本对象中的原有内容将被释放
+.参数 正则表达式文本, 文本型, , 比如“易语言4\.0(模块|支持库)?”
+.参数 忽略大小写, 逻辑型, 可空, 可以被省略。默认值为真。本参数指定这个正则表达式在创建成功后进行匹配、搜索、替换时，是否区分大小写。
+.参数 匹配多行, 逻辑型, 可空, 可以被省略。默认值为真。如果本成员值为真，字符“^”不仅匹配目标文本的开头，而且匹配目标文本中换行符（字符(10)，字符(13)或 #换行符）的后面；字符“$”不仅匹配目标文本的结尾，而且匹配目标文本中换行符的前面。否则字符“^”仅仅匹配目标文本的开头，“$”也仅仅匹配目标文本的结尾。
+.参数 全局匹配, 逻辑型, 可空, 
+
+
+
+.子程序 取文本, 文本型, , 返回以文本形式表示的正则表达式。如果该对象尚未创建，则返回空文本。本命令为高级对象成员命令。
+
+
+.子程序 替换, 文本型, , 替换在正则表达式查找中找到的文本。
+.参数 欲被替换的文本, 文本型, , 将要进行文本替换的字符串
+.参数 用作替换的文本, 文本型, 可空, 用作替换的文本
+
+
+
+.子程序 搜索全部, 整数型, , 使用指定的正则表达式搜索指定文本中与该表达式匹配的所有子文本。返回匹配结果数量
+.参数 欲被搜索的文本, 文本型, , 
+
+
+
+.子程序 取匹配数量, 整数型, , 
+
+
+.子程序 取匹配文本, 文本型, , 
+.参数 匹配索引, 整数型, , 第几个匹配文本，索引值从1开始
+
+
+
+.子程序 取子匹配文本, 文本型, , 
+.参数 匹配索引, 整数型, , 第几个匹配文本，索引值从1开始
+.参数 子表达式索引, 整数型, , 欲取其值的子表达式。该参数对应与正则表达式中的一个子表达式（以圆括号标记）。索引从1开始。
+
+
+
+.子程序 取子表达式个数, 整数型, , 
+
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 初始化COM库, 整数型, , 在多线程的程序里创建COM对象前先初始化，一个线程只能调用一次
+
+
+.子程序 取消COM库初始化, 空白型, , 取消COM库的初始化
+
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 存COOKIES, 逻辑型, , 
+.参数 域名, 文本型, , 
+.参数 协议头, 文本型, , 
+
+
+
+.子程序 读COOKIES, 文本型, , 
+.参数 域名, 文本型, , 例：baidu.com  google.com
+
+
+
+.子程序 删除COOKIES, 逻辑型, , Cookies不存在或清除失败返回假，成功返回真。
+.参数 域名, 文本型, , 例：baidu.com  google.com
+
+
+
+.子程序 清空COOKIES, 空白型, , 
+
+
+.子程序 COM对象_保存COOKIE, 逻辑型, , 访问返回后调用
+.参数 com, 对象, 参考, 提供一个COM对象
+.参数 域名, 文本型, , 例：baidu.com  google.com
+
+
+
+.子程序 COM对象_设置COOKIES, 逻辑型, , 访问开始前调用
+.参数 com, 对象, 参考, 提供一个COM对象
+.参数 域名, 文本型, , 例：baidu.com  google.com
+
+
+
+.子程序 修改Cookies值, 逻辑型, , 
+.参数 域名, 文本型, , 
+.参数 Cookie, 文本型, , 
+.参数 值, 文本型, , 
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

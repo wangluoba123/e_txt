@@ -1,0 +1,200 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 414
+    高度 = 350
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “WIN32API功能150个(系统对话框篇)”
+    帮助文件名 = “”
+
+
+
+.常量 常量1, "", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 3 系统核心支持库
+ ' shell 52F260023059454187AF826A3C07AF2A 1 0 操作系统界面功能支持库
+
+
+
+
+数据类型 SHELLEXECUTEINFO, , 
+    .成员 cbSize, 空白型, , , 
+    .成员 fMask, 空白型, , , 
+    .成员 hwnd, 空白型, , , 
+    .成员 lpVerb, 文本型, , , 
+    .成员 lpFile, 文本型, , , 
+    .成员 lpParameters, 文本型, , , 
+    .成员 lpDirectory, 文本型, , , 
+    .成员 nShow, 空白型, , , 
+    .成员 hInstApp, 空白型, , , 
+    .成员 lpIDList, 空白型, , , 
+    .成员 lpClass, 文本型, , , 
+    .成员 hkeyClass, 空白型, , , 
+    .成员 dwHotKey, 空白型, , , 
+    .成员 hIcon, 空白型, , , 
+    .成员 hProcess, 空白型, , , 
+
+数据类型 ChooseColor, , 
+    .成员 lStructSize, 空白型, , , 
+    .成员 hwndOwner, 空白型, , , 
+    .成员 hInstance, 空白型, , , 
+    .成员 rgbResult, 空白型, , , 
+    .成员 lpCustColors, 文本型, , , 
+    .成员 flags, 空白型, , , 
+    .成员 lCustData, 空白型, , , 
+    .成员 lpfnHook, 空白型, , , 
+    .成员 lpTemplateName, 文本型, , , 
+
+
+.DLL命令 ShellExecute, 空白型, "", "ShellExecuteA", , 
+    .参数 hwnd, 空白型, , 
+    .参数 lpOperation, 文本型, , 
+    .参数 lpFile, 文本型, , 
+    .参数 lpParameters, 空白型, , 空字符串
+    .参数 lpDirectory, 空白型, , 空字符串
+    .参数 nShowCmd, 空白型, , 
+
+.DLL命令 SHRestartSystemMB, 空白型, "Shell32.dll", "#59", , 
+    .参数 hOwner, 空白型, , 
+    .参数 sExtraPrompt, 空白型, , 空字符串
+    .参数 uFlags, 空白型, , 
+
+.DLL命令 SHRunDialog, 空白型, "Shell32.dll", "#61", , 
+    .参数 hOwner, 空白型, , 
+    .参数 UnknownP1, 空白型, , 
+    .参数 UnknownP2, 空白型, , 
+    .参数 szTitle, 整数型, , 对话框的标题
+    .参数 szPrompt, 整数型, , 对话框中的描述文字
+    .参数 uFlags, 空白型, , 
+
+.DLL命令 ShellExecuteEX, 空白型, "", "ShellExecuteEx", , 
+    .参数 SEI, SHELLEXECUTEINFO, 传址, 
+
+.DLL命令 SHShutDownDialog, 空白型, "Shell32.dll", "#60", , 
+    .参数 YourGuess, 空白型, , 
+
+.DLL命令 WNetConnectionDialog, 空白型, "mpr.dll", "WNetConnectionDialog", , 
+    .参数 hWnd, 空白型, , 
+    .参数 dwType, 空白型, , 
+
+.DLL命令 ChooseColor, 整数型, "comdlg32.dll", "ChooseColorA", , 
+    .参数 pChoosecolor, 未知类型0x41010054, 传址, 
+
+.DLL命令 GetWindowWord, 整数型, "", "GetWindowWord", , 
+    .参数 hwnd, 空白型, , 
+    .参数 nIndex, 空白型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 SW_SHOW, 空白型, , , 
+
+赋值 (SW_SHOW, 5)
+ShellExecute (0, “find”, .内容, 0, 0, SW_SHOW)
+
+.子程序 _按钮2_被单击, 空白型, , 
+.局部变量 SystemChangeRestart, 空白型, , , 
+
+赋值 (SystemChangeRestart, 4)
+SHRestartSystemMB (_启动窗口.取窗口句柄 (), 0, SystemChangeRestart)
+
+.子程序 _按钮3_被单击, 空白型, , 
+SHRunDialog (_启动窗口.取窗口句柄 (), 0, 0, 0, 0, 0)
+
+.子程序 _按钮4_被单击, 空白型, , 
+.局部变量 SEI, SHELLEXECUTEINFO, , , 
+
+.如果真 (打开 ())
+    赋值 (SEI.cbSize, 60)
+    赋值 (SEI.fMask, 1100)
+    赋值 (SEI.hwnd, _启动窗口.取窗口句柄 ())
+    赋值 (SEI.lpVerb, “properties”)
+    赋值 (SEI.lpFile, .文件名)
+    赋值 (SEI.lpParameters, “”)
+    赋值 (SEI.lpDirectory, “”)
+    赋值 (SEI.nShow, 0)
+    赋值 (SEI.hInstApp, 0)
+    赋值 (SEI.lpIDList, 0)
+    ShellExecuteEX (SEI)
+.如果真结束
+
+
+.子程序 _按钮5_被单击, 空白型, , 
+.局部变量 WinPath, 文本型, , , 
+
+赋值 (WinPath, 未知支持库函数_7 (#))
+运行 (相加 (WinPath, “rundll32.exe shell32.dll,SHFormatDrive”), 假, )
+
+.子程序 _按钮6_被单击, 空白型, , 
+WNetConnectionDialog (_启动窗口.取窗口句柄 (), 1)
+
+.子程序 _按钮7_被单击, 空白型, , 
+WNetConnectionDialog (_启动窗口.取窗口句柄 (), 2)
+
+
+.子程序 _按钮8_被单击, 空白型, , 
+SHShutDownDialog (0)
+
+.子程序 _按钮9_被单击, 空白型, , 
+.局部变量 cc, 未知类型0x41010062, , , 
+.局部变量 rtn, 空白型, , , 
+.局部变量 颜色标签, 文本型, , , 
+
+赋值 (cc., 36)
+赋值 (cc., 取窗口句柄 ())
+赋值 (cc., 未知函数_167837797 (取窗口句柄 (), -6))
+赋值 (cc., 0)
+赋值 (cc., 取空白文本 (相乘 (16, 4)))
+赋值 (rtn, 未知函数_167837798 (cc))
+.如果真 (不等于 (rtn, 0)) ' 未按取消
+    赋值 (.背景颜色, cc.rgbResult)
+    赋值 (.文本颜色, 相减 (16777215, cc.rgbResult))
+    赋值 (颜色标签, 取十六进制文本 (cc.rgbResult))
+    赋值 (颜色标签, 相加 (取重复文本 (相减 (6, 取文本长度 (颜色标签)), “0”), 颜色标签))
+    赋值 (.标题, 相加 (“#”, 取文本右边 (颜色标签, 2), 取文本中间 (颜色标签, 3, 2), 取文本左边 (颜色标签, 2)))
+.如果真结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

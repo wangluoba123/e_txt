@@ -1,0 +1,209 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 610
+    高度 = 423
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “百度找不到”
+    帮助文件名 = “”
+
+
+
+.常量 源码, "“<HTML><HEAD><TITLE>百度搜索_比我更牛X的人</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<META http-equiv=Expires content=0>
+<META http-equiv=Cache-Control content=no-cache>
+<META http-equiv=Pragma content=no-cache>
+<STYLE>
+<!--
+body,td,.p3,.p2,.formfont,.pg{font-family:arial;}
+TD {FONT-SIZE: 9pt; LINE-HEIGHT: 18px}
+.formfont {FONT-SIZE: 16px}
+.p2 {FONT-SIZE: 14px; LINE-HEIGHT: 24px; }
+.t {COLOR: #0000cc; TEXT-DECORATION: underline}
+A.t:hover {TEXT-DECORATION: underline}
+.nav {FONT-WEIGHT: bold; FONT-SIZE: 14px; COLOR: #ffffff; LINE-HEIGHT: 20px;TEXT-DECORATION: none}
+A.nav:hover {TEXT-DECORATION: underline}
+.r {FONT-SIZE: 14px; TEXT-DECORATION: underline}
+A.r:hover {COLOR: #e10900}
+.p3 {FONT-SIZE: 13px; LINE-HEIGHT: 24px; }
+.c {COLOR: #7777CC}
+.res{margin-left:18px;margin-top:0px}
+.res span{line-height:24px;font-family:Arial;font-size:14px;}
+.pg{font-size:14px;word-spacing:0px!important;word-spacing:4px;font-family:arial;padding-left:20px;clear:both}
+.pg font{font-size:16px;}
+.g{color:#666666}
+.Tit{height:21px; font-size:14px;}
+.bi {background-color:#E5ECF9;height:20px;margin-bottom:12px;margin-top:5px}
+.b{font-weight:bold;}
+.zh{table-layout:fixed;word-break:break-all}
+#ft{clear:both;line-height:20px;text-align:center}
+#ft,#ft *{color:#77C;font-size:12px;font-family:Arial}
+#ft span{color:#666;line-height:18px}
+-->
+</STYLE>
+
+<SCRIPT language=javascript>
+<!--
+function h(obj,url){
+obj.style.behavior='url(#default#homepage)';
+obj.setHomePage(url);
+}
+function showPost() {
+if (typeof(t)!= 'undefined') {
+if (!t || t.length < 1) return;
+document.getElementById('DivPost').innerHTML = t;
+}
+}
+//-->
+</SCRIPT>
+
+<META content="MSHTML 6.00.2900.5583" name=GENERATOR></HEAD>
+<BODY text=#000000 bottomMargin=0 link=#261cdc bgColor=#ffffff leftMargin=0 topMargin=6 rightMargin=0>
+<TABLE height=54 cellSpacing=0 cellPadding=0 width="100%" border=0>
+<FORM name=f1 action=/ns>
+<TBODY>
+<TR vAlign=center>
+<TD style="PADDING-LEFT: 8px; WIDTH: 37px" vAlign=top width="100%"><A href="/view.html"><IMG height=46 alt=到百度首页 src="http://www.baidu.com/img/logo-yy.gif" width=137 border=0></A></TD>
+<TD>&nbsp;&nbsp;&nbsp;</TD>
+<TD vAlign=top width="100%">
+<DIV class=Tit><SPAN class=b>网页</SPAN>&nbsp;&nbsp;&nbsp;<A href="http://www.baidu.com/s?cl=3&amp;wd=比我更牛X的人">新闻</A>&nbsp;&nbsp;&nbsp;<A href="http://tieba.baidu.com/f?kw=比我更牛X的人&amp;t=1">贴吧</A>&nbsp;&nbsp;&nbsp;<A href="http://zhidao.baidu.com/q?ct=17&amp;pn=0&amp;tn=ikaslist&amp;rn=10&amp;word=比我更牛X的人&amp;fr=nwst">知道</A>&nbsp;&nbsp;&nbsp;<A href="http://mp3.baidu.com/m?tn=baidump3&amp;ct=134217728&amp;lm=-1&amp;word=比我更牛X的人">MP3</A>&nbsp;&nbsp;&nbsp;<A href="http://image.baidu.com/i?tn=baiduimage&amp;lm=-1&amp;ct=201326592&amp;cl=2&amp;word=比我更牛X的人">图片</A>&nbsp;&nbsp;&nbsp;<A href="http://video.baidu.com/v?ct=301989888&amp;rn=20&amp;pn=0&amp;db=0&amp;s=20&amp;word=比我更牛X的人">视频</A> </DIV>
+<TABLE cellSpacing=0 cellPadding=0 border=0>
+<TBODY>
+<TR>
+<TD noWrap><INPUT class=formfont style="WIDTH: 270px; HEIGHT: 24px" maxLength=100 size=33 value=比我更牛X的人 name=word> <INPUT type=submit value=百度一下>&nbsp;&nbsp;&nbsp;</TD>
+<TD vAlign=center noWrap><A href="http://www.baidu.com/search/news_help.html">帮助</A>&nbsp;|&nbsp;<A href="advanced_news.html">高级搜索</A>&nbsp;|&nbsp;<A href="pianhao.html">偏好设置</A></TD></TR></TBODY></TABLE><LABEL for=news><INPUT id=news type=radio CHECKED value=news name=tn>模糊搜索</LABEL> <LABEL for=newstitle><INPUT id=newstitle type=radio value=newstitle name=tn>精确搜索</LABEL> <INPUT type=hidden value=news name=from> <INPUT type=hidden value=gb2312 name=ie> <INPUT type=hidden value=比我更牛X的人 name=bs> <INPUT type=hidden value=0 name=sr> <INPUT type=hidden value=2 name=cl> <INPUT type=hidden value=20 name=rn> <INPUT type=hidden value=1 name=ct> <INPUT type=hidden value=no name=prevct> </TD></TR></FORM></TBODY></TABLE>
+<TABLE class=bi cellSpacing=0 cellPadding=0 width="100%" align=center border=0>
+<TBODY>
+<TR>
+<TD noWrap>&nbsp;&nbsp;&nbsp;<A style="COLOR: #000000" onclick="h(this,'http://www.baidu.com')" href="#">把百度设为首页</A></TD>
+<TD noWrap align=right><A href="/view.html?from=ns">百度首页</A>&nbsp;&nbsp;&nbsp;&nbsp;</TD></TR></TBODY></TABLE>
+<SCRIPT src="js/radioevent.js?v=1.1"></SCRIPT>
+
+<DIV style="FONT-SIZE: 14px; MARGIN: 0px 0px 19px 15px; LINE-HEIGHT: 20px">抱歉，没有找到与“<FONT color=#c60a00>比我更牛X的人</FONT>” 相关的网页内容。 <BR><BR><SPAN style="FONT-WEIGHT: bold"><FONT style="FONT-SIZE: 14px">百度建议您：</FONT></SPAN> 
+<DIV style="MARGIN-TOP: 0px; FONT-SIZE: 14px; MARGIN-LEFT: 15px">
+<LI>在百度网页中查找“<A href="http://www.baidu.com/baidu?tn=baidu&amp;cl=3&amp;word=比我更牛X的人">比我更牛X的人</A>” 
+<LI>尽量使用简洁的关键词 
+<LI>用空格将多个关键词分开 
+<LI>看看输入的文字是否有误 </LI></DIV>
+<DIV id=DivPost style="MARGIN-LEFT: 15px"></DIV></DIV><BR><BR>
+<SCRIPT src="http://post-js.baidu.com/f?ct=301989888&amp;tn=bdFSNoResult&amp;rn=10&amp;pn=0&amp;word=比我更牛X的人"></SCRIPT>
+
+<SCRIPT>showPost();</SCRIPT>
+
+<DIV id=ft>2010 Baidu<IMG height=0 src="http://news.baidu.com/mp/s.jpg?word=比我更牛X的人&amp;tn=newsA&amp;ct=1&amp;rn=20&amp;pn=0&amp;cl=2" width=0></DIV>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<P>&nbsp;</P>
+<SCRIPT language=JavaScript src="http://s119.cnzz.com/stat.php?id=1605572&amp;web_id=1605572&amp;online=1" charset=gb2312></SCRIPT>
+</BODY></HTML>”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' HtmlView 5014D8FA6DCA40b68FA626D8183666EB 2 0 超文本浏览框支持库
+
+
+
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 上一个文件, 文本型, , , 
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 源码, 文本型, , , 
+.局部变量 最终源码, 文本型, , , 
+.局部变量 文件, 文本型, , , 
+.局部变量 文件地址, 文本型, , , 
+
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+赋值 (.可视, 假)
+删除文件 (上一个文件)
+赋值 (源码, 子文本替换 (#源码, “比我更牛X的人”, .内容, , , 真))
+.判断开始 (不等于 (寻找文本 (源码, “我”, , 假), -1))
+    赋值 (最终源码, 子文本替换 (源码, “我”, “你”, , , 真))
+.判断 (不等于 (寻找文本 (源码, “你”, , 假), -1))
+    赋值 (最终源码, 子文本替换 (源码, “你”, “我”, , , 真))
+.默认
+    赋值 (最终源码, 源码)
+.判断结束
+写到文件 (相加 (.内容, “.Htm”), 到字节集 (最终源码))
+赋值 (文件, 相加 (取运行目录 (), “/”, .内容, “.Htm”))
+赋值 (文件地址, 相加 (“file:///”, 文件))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+文件地址.未知支持库函数_1 ()
+赋值 (上一个文件, 相加 (取运行目录 (), “\”, .内容, “.Htm”))
+输出调试文本 (上一个文件)
+
+.子程序 _超文本浏览框1_标题被改变, 空白型, , 
+赋值 (., .)
+
+.子程序 _按钮2_被单击, 空白型, , 
+赋值 (.文件名, .内容)
+.如果真 (等于 (打开 (), 真))
+    写到文件 (.文件名, 快照 (取窗口句柄 (), , ))
+.如果真结束
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

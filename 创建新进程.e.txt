@@ -1,0 +1,113 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 3 系统核心支持库
+
+
+
+
+数据类型 创建进程返回数据类型, , 
+    .成员 hProcess, 空白型, , , 进程句柄
+    .成员 hThread, 空白型, , , 进程的主线程句柄  
+    .成员 dwProcessId, 空白型, , , 进程ID
+    .成员 dwThreadId, 空白型, , , 进程的主线程ID
+
+数据类型 启动信息数据, , 
+    .成员 cb, 空白型, , , 结构长度
+    .成员 lpReserved, 空白型, , , 保留
+    .成员 lpDesktop, 空白型, , , 保留
+    .成员 lpTitle, 空白型, , , 如果为控制台进程则为显示的标题
+    .成员 dwX, 空白型, , , 窗口位置
+    .成员 dwY, 空白型, , , 窗口位置
+    .成员 dwXSize, 空白型, , , 窗口大小
+    .成员 dwYSize, 空白型, , , 窗口大小
+    .成员 dwXCountChars, 空白型, , , 控制台窗口字符号宽度
+    .成员 dwYCountChars, 空白型, , , 控制台窗口字符号高度
+    .成员 dwFillAttribute, 空白型, , , 控制台窗口填充模式
+    .成员 dwFlags, 空白型, , , 创建标记
+    .成员 wShowWindow, 空白型, , , 窗口显示标记如同ShowWindow中的标记
+    .成员 cbReserved2, 空白型, , , 
+    .成员 lpReserved2, 空白型, , , 
+    .成员 hStdInput, 空白型, , , 标准输入句柄
+    .成员 hStdOutput, 空白型, , , 标准输入句柄
+    .成员 hStdError, 空白型, , , 标准输出句柄
+
+.全局变量 创建进程返回数据类型, 创建进程返回数据类型, , , 
+.全局变量 启动信息数据, 启动信息数据, , , 
+
+.DLL命令 创建进程, 逻辑型, "", "CreateProcessA", , 
+    .参数 lpApplicationName, 文本型, , 执行程序文件名
+    .参数 lpCommandLine, 整数型, , 参数行
+    .参数 lpProcessAttributes, 整数型, , 进程安全参数
+    .参数 lpThreadAttributes, 整数型, , 线程安全参数
+    .参数 bInheritHandles, 逻辑型, , 继承标记
+    .参数 dwCreationFlags, 整数型, , 创建标记
+    .参数 lpEnvironment, 整数型, , 环境变量
+    .参数 lpCurrentDirectory, 整数型, , 运行该子进程的初始目录
+    .参数 lpStartupInfo, 未知类型0x4101000F, , 创建该子进程的相关参数
+    .参数 lpProcessInformation, 未知类型0x41010010, , 创建后用于被创建子进程的信息  
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 运行命令, 文本型, , , 
+.局部变量 hProcess, 空白型, , , 
+.局部变量 创建进程返回, 逻辑型, , , 
+.局部变量 hThread, 空白型, , , 
+.局部变量 dwProcessId, 空白型, , , 
+.局部变量 dwThreadId, 空白型, , , 
+
+ ' 这个代码可以运行，但是还有些地方我一直不明白，望各位帮忙解释一下
+赋值 (运行命令, “C:\WINnt\system32\calc.exe”)
+赋值 (启动信息数据.cb, 18)
+ ' MSDN的例子有3条语句，但是我不知道如何处理它
+ ' ZeroMemory( &si, sizeof(si) );
+ ' si.cb = sizeof(si);
+
+ ' ZeroMemory( &pi, sizeof(pi) );
+
+
+
+ ' 赋值 (创建进程返回, 创建进程 (运行命令, 0, 0, 0, 假, 0, 0, 0, 启动信息数据, 创建进程返回数据类型))
+ ' 0代表null指针。如果需要有运行参数，要把lpCommandLine的数据类型修改为文本型。不能使用文本型""代替0，否则无法运行进程
+
+.如果真 (等于 (创建进程返回, 假))
+    信息框 (“创建进程失败”, 0, )
+    结束 ()
+.如果真结束
+赋值 (hProcess, 创建进程返回数据类型.hProcess)
+赋值 (hThread, 创建进程返回数据类型.hThread)
+赋值 (dwProcessId, 创建进程返回数据类型.dwProcessId)
+赋值 (dwThreadId, 创建进程返回数据类型.dwThreadId)
+
+相加 (“hProcess:”, 到文本 (hProcess), #换行符, “hThread:”, 到文本 (hThread), #换行符, “dwProcessId:”, 到文本 (dwProcessId), #换行符, “dwThreadId:”, 到文本 (dwThreadId)).加入文本 ()
+
+
+ ' 不属于任何一个程序集、类模块的函数：

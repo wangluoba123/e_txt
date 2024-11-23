@@ -1,0 +1,146 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 WSADataType, , 
+    .成员 wVersion, 短整数型, , , Windows Sockets 版本信息。
+    .成员 wHighVersion, 短整数型, , , 通过加载库文件得到的最高的支持Winsock 的版本，它通常和wVersion值相同。
+    .成员 szDescription, 文本型, , "257", 长度257，Windows Sockets 执行时的详细描述
+    .成员 szSystemStatus, 文本型, , "129", 长度129，包含了相关的状态和配置的信息
+    .成员 iMaxSockets, 短整数型, , , 表示同时打开的socket最大数，为0表示没有限制。
+    .成员 iMaxUdpDg, 短整数型, , , 表示同时打开的数据报最大数，为0表示没有限制。
+    .成员 lpVendorInfo, 整数型, , , 厂商指定信息预留
+
+数据类型 sockaddr_in, , 
+    .成员 sin_family, 短整数型, , , 
+    .成员 sin_port, 短整数型, , , 端口数值
+    .成员 sin_addr, 整数型, , , 
+    .成员 sin_zero, 字节型, , "8", IP地址
+
+数据类型 timeval, , 
+    .成员 tv_sec, 整数型, , , 
+    .成员 tv_usec, 整数型, , , 
+
+数据类型 fd_set, , 
+    .成员 fd_count, 整数型, , , 
+    .成员 fd_array, 整数型, , "1", 
+
+数据类型 LingerType, , 
+    .成员 l_onoff, 短整数型, , , 
+    .成员 l_linger, 短整数型, , , 
+
+
+.DLL命令 socket, 整数型, "ws2_32.dll", "socket", , 创建套接字
+    .参数 af, 整数型, , 使用的通信协议的协议族
+    .参数 type, 整数型, , 流套接字类型
+    .参数 protocol, 整数型, , 使用的通信协议
+
+.DLL命令 htons, 整数型, "ws2_32.dll", "htons", , 转换为network 排列方式的数目
+    .参数 hostshort, 整数型, , 端口号
+
+.DLL命令 inet_addr, 整数型, "ws2_32.dll", "inet_addr", , 点数格式转换为整数格式IP地址
+    .参数 cp, 文本型, , 欲被转换的IP地址
+
+.DLL命令 Connect, 整数型, "ws2_32.dll", "connect", , 连接到服务器(TCP)
+    .参数 s, 整数型, , 套接字描述符
+    .参数 addr, sockaddr_in, 传址, 地址信息
+    .参数 namelen, 整数型, , 地址信息长度
+
+.DLL命令 closesocket, 整数型, "ws2_32.dll", "closesocket", , 销毁套接字
+    .参数 s, 整数型, , 套接字描述符
+
+.DLL命令 WSAStartup, 整数型, "ws2_32.dll", "WSAStartup", , 初始化WnSocket服务
+    .参数 wVR, 整数型, , socket版本
+    .参数 lpWSAD, WSADataType, 传址, 服务信息
+
+.DLL命令 setsockopt, 整数型, "ws2_32.dll", "setsockopt", , 
+    .参数 网络通讯标识符, 整数型, , 
+    .参数 级别, 整数型, , 
+    .参数 操作名称, 整数型, , 
+    .参数 操作结构, LingerType, , 
+    .参数 操作结构长度, 整数型, , 
+
+.DLL命令 ioctlsocket, 整数型, "ws2_32.dll", "ioctlsocket", , 
+    .参数 s, 整数型, , 
+    .参数 cmd, 整数型, , 
+    .参数 argp, 整数型, 传址, 
+
+.DLL命令 select, 整数型, "ws2_32.dll", "select", , 
+    .参数 nfds, 整数型, , 
+    .参数 readfds, 整数型, 传址, 
+    .参数 writefds, fd_set, 传址, 
+    .参数 exceptfds, 整数型, 传址, 
+    .参数 timeout, timeval, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 StartupData, WSADataType, , , 
+.子程序 _按钮1_被单击, 空白型, , 
+
+
+.子程序 子程序1, 空白型, , 
+.局部变量 addr, sockaddr_in, , , 
+.局部变量 是否阻塞, 整数型, , , 
+.局部变量 timeval, timeval, , , 
+.局部变量 fd_set, fd_set, , , 
+.局部变量 空闲, LingerType, , , 
+.局部变量 Socket句柄, 整数型, , , 
+.局部变量 临时地址, 文本型, , , 
+
+赋值 (Socket句柄, socket (2, 1, 6))
+赋值 (addr.sin_port, htons (1973))
+赋值 (addr.sin_family, 2)
+赋值 (addr.sin_addr, inet_addr (“127.0.0.1”))
+赋值 (空闲.l_linger, 3000) ' 3秒
+setsockopt (Socket句柄, 65535, 4101, 空闲, 4)
+赋值 (空闲.l_linger, 3000) ' 3秒
+setsockopt (Socket句柄, 65535, 4102, 空闲, 4)
+赋值 (是否阻塞, 1)
+ioctlsocket (Socket句柄, -2147195266, 是否阻塞) ' 设置非阻塞模式
+赋值 (fd_set.fd_count, 1)
+赋值 (fd_set.fd_array [1], Socket句柄)
+赋值 (timeval.tv_sec, 3) ' 3秒
+Connect (Socket句柄, addr, 16) ' 连接
+赋值 (addr.sin_port, 0)
+赋值 (addr.sin_family, 0)
+.如果真 (等于 (select (Socket句柄, 0, fd_set, 0, timeval), 1))
+    输出调试文本 (“连接成功了”)
+.如果真结束
+closesocket (Socket句柄)
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+WSAStartup (2, StartupData)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

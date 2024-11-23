@@ -1,0 +1,92 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 465
+    高度 = 455
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 显图片, "“<HTML>
+<HEAD>
+<style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+        border: solid 1 #000000;
+}
+-->
+</style>
+</HEAD>
+<BODY scroll="no" oncontextmenu="return false;" onselectstart="return false;">
+</BODY>
+</HTML>”", , 
+.常量 显图片1, "“<HTML>
+<HEAD>
+<style type="text/css">
+<!--
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+        border: solid 1 #000000;
+}
+-->
+</style>
+</HEAD>
+<BODY onload="DIV1.style.visibility='hidden'" scroll="no" oncontextmenu="return false;" onselectstart="return false;">
+<IMG SRC="”", , 
+.常量 显图片2, "“" width="100%" height="100%">
+<DIV name="DIV1" id="DIV1" style="width: 100%; height: 100%">正在载入图片中...</DIV>
+</BODY>
+</HTML>”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' HtmlView 5014D8FA6DCA40b68FA626D8183666EB 1 1 超文本浏览框支持库
+
+
+
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _编辑框1_内容被改变, 空白型, , 
+写到文件 (相加 (取运行目录 (), “\$temp.html”), 到字节集 (相加 (#显图片1, .内容, #显图片2)))
+相加 (取运行目录 (), “\$temp.html”).未知支持库函数_1 ()
+
+.子程序 _按钮1_被单击, 空白型, , 
+.如果真 (等于 (打开 (), 真))
+    赋值 (.内容, .文件名)
+.如果真结束
+
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+写到文件 (相加 (取运行目录 (), “\$temp.html”), 到字节集 (#显图片))
+相加 (取运行目录 (), “\$temp.html”).未知支持库函数_1 ()
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,190 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 INF_STYLE_WIN4, "2", , 
+.常量 INF_STYLE_OLDNT, "1", , 
+.常量 SRCINFO_PATH, "1", , 路径
+.常量 SRCINFO_TAGFILE, "2", , 
+.常量 SRCINFO_DESCRIPTION, "3", , 描述
+.常量 FILE_COMPRESSION_NONE, "0", , 不压缩
+.常量 FILE_COMPRESSION_WINLZ, "1", , WINLZA
+.常量 FILE_COMPRESSION_MSZIP, "2", , MSZIP
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 PINFCONTEXT, , 
+    .成员 Inf, 整数型, , , 
+    .成员 CurrentInf, 整数型, , , 
+    .成员 Section, 整数型, , , 
+    .成员 Line, 整数型, , , 
+
+
+.DLL命令 打开Inf, 整数型, "setupapi.dll", "SetupOpenInfFileA", , HINF
+    .参数 FileName, 文本型, , 
+    .参数 InfClass, 整数型, , 
+    .参数 InfStyle, 整数型, , 常量INF_STYLE*
+    .参数 ErrorLine, 整数型, , 指针 返回错误inf行号
+
+.DLL命令 取源文件信息, 逻辑型, "setupapi.dll", "SetupGetSourceInfoA", , 取源文件所在盘符序列码、盘描述符、盘卷标号和盘序列号
+    .参数 InfHandle, 整数型, , 
+    .参数 SourceId, 整数型, , 1
+    .参数 InfoDesired, 整数型, , 常量 SRCINFO*
+    .参数 ReturnBuffer, 文本型, 传址, 
+    .参数 ReturnBufferSize, 整数型, , 
+    .参数 RequiredSize, 整数型, 传址, 
+
+.DLL命令 取节下行数, 整数型, "setupapi.dll", "SetupGetLineCountA", , 取节下行数
+    .参数 InfHandle, 整数型, , 
+    .参数 Section, 文本型, , 
+
+.DLL命令 取文本行_值, 逻辑型, "setupapi.dll", "SetupGetLineTextA", , 取指定文本行(值) 配合SetupFindFirstLine使用，有些参数可以是空
+    .参数 Context, PINFCONTEXT, , 
+    .参数 Inf句柄, 整数型, , 
+    .参数 节, 文本型, , 
+    .参数 项, 文本型, , 
+    .参数 ReturnBuffer, 文本型, 传址, 
+    .参数 ReturnBufferSize, 整数型, , 128估计够了
+    .参数 RequiredSize, 整数型, 传址, 第一次可获取缓冲区大小
+
+.DLL命令 关闭Inf, 逻辑型, "setupapi.dll", "SetupCloseInfFile", , 关闭文件
+    .参数 InfHandle, 空白型, , 
+
+.DLL命令 取Inf文件列表, 整数型, "setupapi.dll", "SetupGetInfFileListA", , 
+    .参数 DirectoryPath, 文本型, , 
+    .参数 ByValfStyle, 整数型, , 
+    .参数 ReturnBuffer, 字节集, 传址, 
+    .参数 ReturnBufferSize, 整数型, , 
+    .参数 RequiredSize, 整数型, 传址, 
+
+.DLL命令 取inf文件列表, 整数型, "setupapi.dll", "SetupGetInfFileListA", , 取inf文件列表
+    .参数 目录, 文本型, , 可空 默认为 %windir%\inf
+    .参数 ByValfStyle, 整数型, , 
+    .参数 缓冲区, 整数型, 传址, 
+    .参数 缓冲区大小, 整数型, , 
+    .参数 RequiredSize, 整数型, 传址, 如果文件较多，第一次使用此参数获取缓冲区大小给ReturnBufferSize，第二次赋0
+
+.DLL命令 取整数接节名称, 逻辑型, "setupapi.dll", "SetupGetIntField", , 取整数接节名称
+    .参数 Context, PINFCONTEXT, , 
+    .参数 FieldIndex, 整数型, , 
+    .参数 整数, 整数型, 传址, 
+
+.DLL命令 取指定节的第一行, 逻辑型, "setupapi.dll", "SetupFindFirstLineA", , 取指定节的第一行
+    .参数 Inf句柄, 整数型, , 
+    .参数 节, 文本型, , 
+    .参数 项, 整数型, , 可空
+    .参数 Context, PINFCONTEXT, 传址, 
+
+.DLL命令 取第一行, 逻辑型, "setupapi.dll", "SetupFindFirstLineA", , 
+    .参数 Inf句柄, 整数型, , 
+    .参数 节, 文本型, , 
+    .参数 项, 文本型, , 可空
+    .参数 Context, PINFCONTEXT, 传址, 
+
+.DLL命令 取配置值的个数, 整数型, "setupapi.dll", "SetupGetFieldCount", , 取配置值的个数 xx=a,b,c,d
+    .参数 Context, PINFCONTEXT, , 
+
+.DLL命令 SetupGetSourceFileLocation, 逻辑型, "setupapi.dll", "SetupGetSourceFileLocationA", , 
+    .参数 InfHandle, 整数型, , 
+    .参数 InfContext, 整数型, , 
+    .参数 FileName, 文本型, , 
+    .参数 SourceId, 整数型, 传址, 
+    .参数 缓冲区, 整数型, 传址, 
+    .参数 缓冲区大小, 整数型, , 
+    .参数 RequiredSize, 整数型, 传址, 
+
+.DLL命令 取文本节名称, 逻辑型, "setupapi.dll", "SetupGetStringFieldA", , 取文本节名称
+    .参数 Context, PINFCONTEXT, , 
+    .参数 节索引, 整数型, , 
+    .参数 缓冲区, 整数型, 传址, 
+    .参数 缓冲区大小, 整数型, , 
+    .参数 RequiredSize, 整数型, 传址, 
+
+.DLL命令 查找下一行, 逻辑型, "setupapi.dll", "SetupFindNextLine", , 查找下一行
+    .参数 Context, PINFCONTEXT, , 输入
+    .参数 Context, PINFCONTEXT, , 输出
+
+.DLL命令 取压缩文件信息, 逻辑型, "setupapi.dll", "SetupGetFileCompressionInfoExA", , 取压缩文件信息
+    .参数 源文件, 文本型, , 
+    .参数 文件名缓冲区, 文本型, 传址, 
+    .参数 缓冲区长度, 整数型, 传址, 
+    .参数 RequiredBufferLen, 整数型, 传址, 0
+    .参数 源文件大小, 整数型, 传址, 
+    .参数 压缩后大小, 整数型, 传址, 
+    .参数 压缩类型, 整数型, 传址, 
+
+.DLL命令 解压或复制文件, 整数型, "setupapi.dll", "SetupDecompressOrCopyFileA", , 解压或复制文件
+    .参数 源文件, 文本型, , 
+    .参数 目的文件, 文本型, , 
+    .参数 压缩类型, 整数型, , 自动:0
+
+.DLL命令 追加inf文件, 逻辑型, "setupapi.dll", "SetupOpenAppendInfFileA", , 追加inf文件
+    .参数 文件名, 文本型, , 
+    .参数 Inf句柄, 整数型, , 
+    .参数 错误信息, 整数型, 传址, 
+
+.DLL命令 取目标路径, 逻辑型, "setupapi.dll", "SetupGetTargetPathA", , 取目标路径 [DestinationDirs] 节
+    .参数 InfHandle, 整数型, , 
+    .参数 InfContext, PINFCONTEXT, , 
+    .参数 节, 整数型, , 
+    .参数 缓冲区, 整数型, 传址, 
+    .参数 缓冲区大小, 整数型, , 
+    .参数 RequiredSize, 整数型, , 
+
+.DLL命令 取索引节名, 逻辑型, "setupapi.dll", "SetupEnumInfSectionsA", , 取索引节名
+    .参数 InfHandle, 整数型, , 
+    .参数 EnumerationIndex, 整数型, , 索引 1:第一个 0:最有一个
+    .参数 缓冲区, 整数型, 传址, 
+    .参数 缓冲区大小, 整数型, , 
+    .参数 RequiredSize, 整数型, 传址, 
+
+.DLL命令 取配置引用值, 逻辑型, "setupapi.dll", "SetupGetMultiSzFieldA", , e.g %diskid% 配合Context
+    .参数 CONTEXT, PINFCONTEXT, , 
+    .参数 FieldIndex, 整数型, , 
+    .参数 缓冲区, 整数型, 传址, 
+    .参数 缓冲区大小, 整数型, , 
+    .参数 RequiredSize, 整数型, 传址, 
+
+.DLL命令 Unicode转Ansi_高效高速, 文本型, "setupapi.dll", "UnicodeToMultiByte", , 
+    .参数 Unicode, 字节集, , 
+    .参数 Page, 整数型, , 
+
+.DLL命令 释放, 整数型, "setupapi.dll", "MyFree", , 取完 压缩文件信息 后要释放，否则无法第二次调用
+    .参数 句柄或文件名, 整数型, , 可以是文本型 整数型 字节集等
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+返回 (0)
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+ ' Note：有些参数可以是空数据类型也不是死的，根据情况自己该。带缓冲区和缓冲区大小的，可以使用两次，
+ ' 第一次除了句柄和结构之外赋0，RequiredSize传值，第二次RequiredSize既是缓冲区大小。有些函数使用前要先调用SetupFindFirstLine。给PINFCONTEXT结构赋值
+' 本源码来自易语言资源网(www.5A5X.com)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

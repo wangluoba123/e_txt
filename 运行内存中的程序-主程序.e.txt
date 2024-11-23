@@ -1,0 +1,331 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “运行内存中的程序（简单版） 08-3-29 by dtcser”
+    帮助文件名 = “”
+
+
+
+.图片 图片1, " ' 已保存到：D:\易语言学习\Data\运行内存中的程序-主程序.e\图片1", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 PROCESS_INFORMATION, , 
+    .成员 hProcess, 整数型, , , 
+    .成员 hThread, 整数型, , , 
+    .成员 dwProcessId, 整数型, , , 
+    .成员 dwThreadId, 整数型, , , 
+
+数据类型 SECURITY_ATTRIBUTES, , SECURITY_ATTRIBUTES
+    .成员 nLength, 整数型, , , 
+    .成员 lpSecurityDescriptor, 整数型, , , 
+    .成员 bInheritHandle, 整数型, , , 
+
+数据类型 STARTUPINFO, , STARTUPINFO
+    .成员 cb, 整数型, , , 
+    .成员 lpReserved, 整数型, , , 
+    .成员 lpDesktop, 整数型, , , 
+    .成员 lpTitle, 整数型, , , 
+    .成员 dwX, 整数型, , , 
+    .成员 dwY, 整数型, , , 
+    .成员 dwXSize, 整数型, , , 
+    .成员 dwYSize, 整数型, , , 
+    .成员 dwXCountChars, 整数型, , , 
+    .成员 dwYCountChars, 整数型, , , 
+    .成员 dwFillAttribute, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+    .成员 wShowWindow, 整数型, , , 
+    .成员 cbReserved2, 整数型, , , 
+    .成员 lpReserved2, 字节型, , , 
+    .成员 hStdInput, 整数型, , , 
+    .成员 hStdOutput, 整数型, , , 
+    .成员 hStdError, 整数型, , , 
+
+数据类型 IMAGEDOSHEADER, , 
+    .成员 e_magic, 短整数型, , , ""
+    .成员 e_cblp, 短整数型, , , ""
+    .成员 e_cp, 短整数型, , , ""
+    .成员 e_crlc, 短整数型, , , ""
+    .成员 e_cparhdr, 短整数型, , , ""
+    .成员 e_minalloc, 短整数型, , , ""
+    .成员 e_maxalloc, 短整数型, , , ""
+    .成员 e_ss, 短整数型, , , ""
+    .成员 e_sp, 短整数型, , , ""
+    .成员 e_csum, 短整数型, , , ""
+    .成员 e_ip, 短整数型, , , ""
+    .成员 e_cs, 短整数型, , , ""
+    .成员 e_lfarlc, 短整数型, , , ""
+    .成员 e_ovno, 短整数型, , , ""
+    .成员 e_res, 短整数型, , "4", ""
+    .成员 e_oemid, 短整数型, , , ""
+    .成员 e_oeminfo, 短整数型, , , ""
+    .成员 e_res2, 短整数型, , "10", ""
+    .成员 e_lfanew, 整数型, , , ""
+
+数据类型 IMAGE_NT_HEADERS, , 
+    .成员 Signature, 字节型, , "4", ""
+    .成员 Machine, 短整数型, , , ""
+    .成员 NumberOfSections, 短整数型, , , ""
+    .成员 TimeDateStamp, 整数型, , , ""
+    .成员 PointerToSymbolTable, 整数型, , , ""
+    .成员 NumberOfSymbols, 整数型, , , ""
+    .成员 SizeOfOptionalHeader, 短整数型, , , ""
+    .成员 Characteristics, 短整数型, , , ""
+    .成员 Magic, 短整数型, , , ""
+    .成员 MajorLinkerVersion, 字节型, , , ""
+    .成员 MinorLinkerVersion, 字节型, , , ""
+    .成员 SizeOfCode, 整数型, , , ""
+    .成员 SizeOfInitializedData, 整数型, , , ""
+    .成员 SizeOfUninitializedData, 整数型, , , ""
+    .成员 AddressOfEntryPoint, 整数型, , , ""
+    .成员 BaseOfCode, 整数型, , , ""
+    .成员 BaseOfData, 整数型, , , ""
+    .成员 ImageBase, 整数型, , , ""
+    .成员 SectionAlignment, 整数型, , , ""
+    .成员 FileAlignment, 整数型, , , ""
+    .成员 MajorOperatingSystemVersion, 短整数型, , , ""
+    .成员 MinorOperatingSystemVersion, 短整数型, , , ""
+    .成员 MajorImageVersion, 短整数型, , , ""
+    .成员 MinorImageVersion, 短整数型, , , ""
+    .成员 MajorSubsystemVersion, 短整数型, , , ""
+    .成员 MinorSubsystemVersion, 短整数型, , , ""
+    .成员 Win32VersionValue, 整数型, , , ""
+    .成员 SizeOfImage, 整数型, , , ""
+    .成员 SizeOfHeaders, 整数型, , , ""
+    .成员 CheckSum, 整数型, , , ""
+    .成员 Subsystem, 短整数型, , , ""
+    .成员 DllCharacteristics, 短整数型, , , ""
+    .成员 SizeOfStackReserve, 整数型, , , ""
+    .成员 SizeOfStackCommit, 整数型, , , ""
+    .成员 SizeOfHeapReserve, 整数型, , , ""
+    .成员 SizeOfHeapCommit, 整数型, , , ""
+    .成员 LoaderFlags, 整数型, , , ""
+    .成员 NumberOfRvaAndSizes, 整数型, , , ""
+    .成员 rvaExportTable, 整数型, , , ""
+    .成员 ExportTableSize, 整数型, , , ""
+    .成员 rvaImportTable, 整数型, , , ""
+    .成员 DataDirectoryX, 整数型, , "29", ""
+
+
+.DLL命令 WriteProcessMemory, 整数型, "", "WriteProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 字节集, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, 传址, 
+
+.DLL命令 CloseHandle, 整数型, "kernel32", "CloseHandle", , 
+    .参数 对象句柄, 整数型, , 欲关闭的一个对象的句柄;
+
+.DLL命令 ReadProcessMemory, 整数型, "", "ReadProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 字节集, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, 传址, 
+
+.DLL命令 CreateProcessA, 整数型, "kernel32.dll", "CreateProcessA", , 
+    .参数 要执行的程序名, 文本型, , lpApplicationName，参见相关帮助
+    .参数 要执行的命令行, 整数型, , lpCommandLine，参见相关帮助
+    .参数 安全特性参数1, 整数型, , lpProcessAttributes，参见相关帮助
+    .参数 安全特性参数2, 整数型, , lpThreadAttributes，参见相关帮助
+    .参数 允许新进程继承当前进程的句柄, 整数型, , bInheritHandles，参见相关帮助
+    .参数 参数1, 整数型, , dwCreationFlags，赋0即可
+    .参数 环境指针, 整数型, , lpEnvironment，赋0即可
+    .参数 新进程当前目录路径, 整数型, , lpCurrentDriectory，参见相关帮助
+    .参数 创建进程时附加信息, STARTUPINFO, , lpStartupInfo，创建进程时附加信息
+    .参数 新进程的进程和线程标识符, PROCESS_INFORMATION, , lpProcessInformation，参见相关帮助
+
+.DLL命令 GetStartupInfoA, 整数型, "kernel32", "GetStartupInfoA", , 获取当前过程的启始信息
+    .参数 启动信息, STARTUPINFO, , 
+
+.DLL命令 ResumeThread, 整数型, "kernel32", "ResumeThread", , 开始暂停的线索
+    .参数 hThread, 整数型, , 
+
+.DLL命令 TerminateProcess, 整数型, "kernel32", "TerminateProcess", , 结束一个进程  非零表示成功，零表示失败。会设置GetLastError
+    .参数 hProcess, 整数型, , 指定要中断的一个进程的句柄
+    .参数 uExitCode, 整数型, , 进程的一个退出代码;
+
+.DLL命令 API_VirtualAllocEx, 整数型, "kernel32.dll", "VirtualAllocEx", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+    .参数 flProtect, 整数型, , 
+
+.DLL命令 NtUnmapViewOfSection, 空白型, "ntdll.dll", "NtUnmapViewOfSection", , 
+    .参数 a, 空白型, , 
+    .参数 b, 空白型, , 
+
+.DLL命令 复制IMAGEDOSHEADER, 整数型, "", "RtlMoveMemory", , 
+    .参数 目标区块, IMAGEDOSHEADER, , 
+    .参数 源区块, 整数型, , 
+    .参数 尺寸, 整数型, , SIZE=64
+
+.DLL命令 复制IMAGENTHEADER, 整数型, "", "RtlMoveMemory", , 
+    .参数 目标区块, IMAGE_NT_HEADERS, , 
+    .参数 源区块, 整数型, , 
+    .参数 尺寸, 整数型, , SIZE=248
+
+.DLL命令 取指针_字节集, 整数型, "", "lstrcpyn", , 
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 GetModuleFileNameA, 整数型, "", "", , 
+    .参数 a, 整数型, , 
+    .参数 b, 文本型, , 
+    .参数 c, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 filename, 文本型, , , 
+.局部变量 ret, 字节集, , , 
+
+.如果真 (打开 ())
+    赋值 (filename, .)
+    赋值 (ret, openfile (filename))
+    .如果真 (不等于 (ret, {  }))
+        写到文件 (相加 (filename, “.bak”), ret)
+        信息框 (相加 (“内容写到文件”, filename, “.bak中了。”), 0, )
+    .如果真结束
+    
+.如果真结束
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+runfile (#图片1)
+
+.子程序 openfile, 字节集, , 
+.参数 pathname, 文本型, , 
+
+.局部变量 stStartUp, STARTUPINFO, , , 
+.局部变量 stProcInfo, PROCESS_INFORMATION, , , 
+.局部变量 ret, 空白型, , , 
+.局部变量 buf, 字节集, , , 
+.局部变量 addr, 整数型, , , 
+.局部变量 size, 整数型, , , 
+
+GetFileInfo (pathname, addr, size) ' 这里也不是很确定的地方，有的编译器这里是取不出什么东西的。不过易编译会有的。
+GetStartupInfoA (stStartUp)
+CreateProcessA (pathname, 0, 0, 0, 0, 4, 0, 0, stStartUp, stProcInfo)
+.如果真 (等于 (stProcInfo.hProcess, 0))
+    信息框 (“创建进程失败。”, 16, )
+    返回 ({  })
+.如果真结束
+赋值 (buf, 取空白字节集 (size))
+赋值 (ret, ReadProcessMemory (stProcInfo.hProcess, addr, buf, size, 0))
+.如果真 (等于 (ret, 0))
+    TerminateProcess (stProcInfo.hProcess, -1)
+    信息框 (“读内存失败。”, 16, )
+    返回 ({  })
+.如果真结束
+TerminateProcess (stProcInfo.hProcess, -1)
+CloseHandle (stProcInfo.hProcess)
+CloseHandle (stProcInfo.hThread)
+返回 (buf)
+
+
+.子程序 runfile, 空白型, , 
+.参数 bin_, 字节集, , 
+
+.局部变量 stStartUp, STARTUPINFO, , , 
+.局部变量 stProcInfo, PROCESS_INFORMATION, , , 
+.局部变量 ret, 空白型, , , 
+.局部变量 buf, 文本型, , , 
+
+赋值 (buf, 取空白文本 (256))
+GetModuleFileNameA (0, buf, 256)
+GetStartupInfoA (stStartUp)
+CreateProcessA (buf, 0, 0, 0, 0, 4, 0, 0, stStartUp, stProcInfo)
+.如果真 (等于 (stProcInfo.hProcess, 0))
+    信息框 (“创建进程失败。”, 16, )
+    返回 ()
+.如果真结束
+NtUnmapViewOfSection (stProcInfo.hProcess, 4194304)
+赋值 (ret, API_VirtualAllocEx (stProcInfo.hProcess, 4194304, 取字节集长度 (bin_), 相加 (4096, 8192), 64))
+赋值 (ret, WriteProcessMemory (stProcInfo.hProcess, 4194304, bin_, 取字节集长度 (bin_), 0))
+.如果真 (等于 (ret, 0))
+    TerminateProcess (stProcInfo.hProcess, -1)
+    信息框 (“写内存失败。”, 16, )
+    返回 ()
+.如果真结束
+ResumeThread (stProcInfo.hThread)
+CloseHandle (stProcInfo.hProcess)
+CloseHandle (stProcInfo.hThread)
+
+.子程序 GetFileInfo, 空白型, , 
+.参数 fpath, 文本型, , 
+.参数 addbase, 整数型, 参考, 用于返回
+.参数 sizeofimage, 整数型, 参考, 用于返回
+
+.局部变量 fhandle, 整数型, , , 
+.局部变量 tmp_bin, 字节集, , , 
+.局部变量 bin_ptr, 整数型, , , 
+.局部变量 DOSHEADER, IMAGEDOSHEADER, , , 
+.局部变量 NTHEADER, IMAGE_NT_HEADERS, , , 
+
+赋值 (fhandle, 打开文件 (fpath, #读入, ))
+赋值 (tmp_bin, 读入字节集 (fhandle, 64))
+赋值 (bin_ptr, 取指针_字节集 (tmp_bin, tmp_bin, 0))
+复制IMAGEDOSHEADER (DOSHEADER, bin_ptr, 64)
+移动读写位置 (fhandle, #文件首, DOSHEADER.e_lfanew)
+赋值 (tmp_bin, 读入字节集 (fhandle, 248))
+赋值 (bin_ptr, 取指针_字节集 (tmp_bin, tmp_bin, 0))
+复制IMAGENTHEADER (NTHEADER, bin_ptr, 248)
+赋值 (addbase, NTHEADER.ImageBase)
+赋值 (sizeofimage, NTHEADER.SizeOfImage)
+关闭文件 (fhandle)
+返回 ()
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

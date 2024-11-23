@@ -1,0 +1,79 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 2 0 系统核心支持库
+
+
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 FO_DELETE, "3", , 
+.常量 FOF_ALLOWUNDO, "64", , 
+.常量 SHERB_NORMAL, "0", , 
+
+
+数据类型 ToBin, , 
+    .成员 hwnd, 空白型, , , 
+    .成员 wFunc, 空白型, , , 
+    .成员 pFrom, 文本型, , , 
+    .成员 pTo, 文本型, , , 
+    .成员 fFlags, 空白型, , , 
+    .成员 fAnyOperationsAborted, 空白型, , , 
+    .成员 hNameMappings, 空白型, , , 
+    .成员 lpszProgressTitle, 空白型, , , 
+
+
+.DLL命令 SHFileOperation, 整数型, "shell32.dll", "SHFileOperationA", , 删除文件
+    .参数 lpFileOp, ToBin, , 
+
+.DLL命令 SHEmptyRecycleBin, 整数型, "shell32.dll", "SHEmptyRecycleBinA", , 清空回收站
+    .参数 hwnd, 空白型, , 
+    .参数 pszRootPath, 文本型, , 
+    .参数 dwFlags, 空白型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 Go, ToBin, , , 
+.局部变量 strFile, 文本型, , , 
+
+.如果真 (打开 ())
+    赋值 (strFile, .)
+    赋值 (Go.wFunc, #FO_DELETE)
+    赋值 (Go.pFrom, strFile)
+    赋值 (Go.fFlags, #FOF_ALLOWUNDO)
+    SHFileOperation (Go)
+.如果真结束
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+.局部变量 RetVal, 空白型, , , 
+
+赋值 (RetVal, SHEmptyRecycleBin (0, “”, #SHERB_NORMAL))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

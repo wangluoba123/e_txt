@@ -1,0 +1,286 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 347
+    高度 = 227
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = 12632256 '  0xC0C0C0
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 真
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “”
+    帮助文件名 = “”
+
+
+
+.常量 DSTINVERT, "5570569", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 3 系统核心支持库
+
+
+
+
+数据类型 坐标, , 
+    .成员 横, 整数型, , , 
+    .成员 纵, 整数型, , , 
+
+数据类型 矩形, , 
+    .成员 左, 整数型, , , 
+    .成员 上, 整数型, , , 
+    .成员 右, 整数型, , , 
+    .成员 下, 整数型, , , 
+
+数据类型 结构, , 
+    .成员 dmDeviceName, 整数型, , , 
+    .成员 dmSpecVersion, 整数型, , , 
+    .成员 dmDriver, 整数型, , , 
+    .成员 dmSize, 整数型, , , 
+    .成员 dmDriverExtra, 整数型, , , 
+    .成员 dmFields, 整数型, , , 
+    .成员 dmOrientation, 整数型, , , 
+    .成员 dmPaperSize, 整数型, , , 
+    .成员 dmPaperLength, 整数型, , , 
+    .成员 dmPaperWidth, 整数型, , , 
+    .成员 dmScale, 整数型, , , 
+    .成员 dmCopies, 整数型, , , 
+    .成员 dmDefaultSource, 整数型, , , 
+    .成员 dmPrintQuality, 整数型, , , 
+    .成员 dmColor, 整数型, , , 
+    .成员 dmDuplex, 整数型, , , 
+    .成员 dmYResolution, 整数型, , , 
+    .成员 dmTTOption, 整数型, , , 
+    .成员 dmCollate, 整数型, , , 
+    .成员 dmFormName, 整数型, , , 
+    .成员 dmLogPixels, 整数型, , , 
+    .成员 dmBitsPerPel, 整数型, , , 
+    .成员 dmPelsWidth, 整数型, , , 
+    .成员 dmPelsHeight, 整数型, , , 
+    .成员 dmDisplayFlags, 整数型, , , 
+    .成员 dmDisplayFrequency, 整数型, , , 
+    .成员 dmICMMethod, 整数型, , , 
+    .成员 dmICMIntentAs, 整数型, , , 
+    .成员 dmMediaType, 整数型, , , 
+    .成员 dmDitherType, 整数型, , , 
+    .成员 dmICCManufacturer, 整数型, , , 
+    .成员 dmICCModel, 整数型, , , 
+
+
+.DLL命令 GetDesktopWindow, 整数型, "", "GetDesktopWindow", , 
+
+.DLL命令 GetWindow, 整数型, "", "GetWindow", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wCmd, 整数型, , 
+
+.DLL命令 GetWindowTextLength, 整数型, "", "GetWindowTextLengthA", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 窗体标题, 整数型, "", "GetWindowTextA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpString, 文本型, , 
+    .参数 cch, 整数型, , 
+
+.DLL命令 窗口是否处于活动状态, 整数型, "", "IsWindowEnabled", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 DestroyCursor, 整数型, "", "DestroyCursor", , 
+    .参数 hCursor, 整数型, , 
+
+.DLL命令 WindowFromPoint, 整数型, "", "WindowFromPoint", , 
+    .参数 xPoint, 整数型, , 
+    .参数 yPoint, 整数型, , 
+
+.DLL命令 GetWindowRect, 整数型, "", "GetWindowRect", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpRect, 矩形, , 
+
+.DLL命令 GetCursorPos, 整数型, "", "GetCursorPos", , 
+    .参数 lpPoint, 坐标, , 
+
+.DLL命令 SetCapture, 整数型, "", "SetCapture", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 ReleaseCapture, 整数型, "", "ReleaseCapture", , 
+
+.DLL命令 CreateDC, 整数型, "", "CreateDCA", , 
+    .参数 lpDriverName, 文本型, , 
+    .参数 lpDeviceName, 文本型, , 
+    .参数 lpOutput, 文本型, , 
+    .参数 lpInitData, 整数型, , 
+
+.DLL命令 PatBlt, 空白型, "", "PatBlt", , 
+    .参数 hdc, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+    .参数 dwRop, 整数型, , 
+
+.DLL命令 DeleteDC, 整数型, "", "DeleteDC", , 
+    .参数 hdc, 整数型, , 
+
+.DLL命令 SendMessage, 整数型, "", "SendMessageA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 文本型, , 
+
+.DLL命令 取窗口结构信息, 整数型, "", "GetWindowLongA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+
+.DLL命令 PostMessage, 整数型, "", "PostMessageA", , 
+    .参数 Hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 FindWindowEx, 整数型, "", "FindWindowExA", , 
+    .参数 hwndParent, 整数型, , 
+    .参数 hwndChildAfter, 整数型, , 
+    .参数 lpszClass, 文本型, , 
+    .参数 lpszWindow, 整数型, , 
+
+.DLL命令 IsRectEmpty, 整数型, "", "IsRectEmpty", , 
+    .参数 lpRect, 矩形, , 
+
+.窗口程序集 主程序, , , 
+
+.程序集变量 hWindow, 整数型, , , 
+.程序集变量 hEdit, 整数型, , , 
+.程序集变量 按下, 逻辑型, , , 
+.程序集变量 画框, 逻辑型, , , 
+.程序集变量 原句柄, 整数型, , , 
+.程序集变量 现句柄, 整数型, , , 
+.程序集变量 位置值, 坐标, , , 
+.子程序 取信息, 空白型, , 
+.局部变量 标题, 文本型, , , 
+.局部变量 句柄, 整数型, , , 
+
+赋值 (句柄, GetWindow (GetDesktopWindow (), 5))
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+赋值 (hEdit, 取窗口句柄 ())
+
+.子程序 取控件信息, 空白型, , 
+.局部变量 pt, 坐标, , , 
+.局部变量 rt, 矩形, , , 
+.局部变量 窗口柄, 整数型, , , 
+.局部变量 场景, 整数型, , , 
+.局部变量 DrawCount, 整数型, , , 
+.局部变量 ttt, 文本型, , , 
+
+赋值 (场景, CreateDC (“DISPLAY”, “”, “”, 0))
+GetCursorPos (pt)
+赋值 (窗口柄, WindowFromPoint (pt.横, pt.纵))
+.如果真 (不等于 (原句柄, 窗口柄))
+    赋值 (ttt, 取空白文本 (10000))
+    SendMessage (窗口柄, 13, 10000, ttt)
+    赋值 (., ttt)
+    .如果真 (画框)
+        GetWindowRect (原句柄, rt)
+        画边框 (场景, rt)
+        赋值 (画框, 假)
+    .如果真结束
+    GetWindowRect (窗口柄, rt)
+    画边框 (场景, rt)
+    DeleteDC (场景)
+    赋值 (原句柄, 窗口柄)
+    赋值 (画框, 真)
+.如果真结束
+
+
+.子程序 画边框, 空白型, , 
+.参数 hDC, 整数型, , 
+.参数 rcClip, 矩形, , 
+
+.如果真 (等于 (IsRectEmpty (rcClip), 0))
+    PatBlt (hDC, rcClip.左, rcClip.上, 相减 (rcClip.右, rcClip.左), 2, #DSTINVERT)
+    PatBlt (hDC, rcClip.左, rcClip.下, 2, 负 (相减 (rcClip.下, rcClip.上)), #DSTINVERT)
+    PatBlt (hDC, 相减 (rcClip.右, 2), rcClip.上, 2, 相减 (rcClip.下, rcClip.上), #DSTINVERT)
+    PatBlt (hDC, rcClip.右, 相减 (rcClip.下, 2), 负 (相减 (rcClip.右, rcClip.左)), 2, #DSTINVERT)
+.如果真结束
+
+
+.子程序 _编辑框1_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (按下, 真)
+GetCursorPos (位置值)
+
+.子程序 _编辑框1_鼠标左键被放开, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.局部变量 pt, 坐标, , , 
+.局部变量 rt, 矩形, , , 
+.局部变量 hDC, 整数型, , , 
+.局部变量 DrawCount, 整数型, , , 
+
+.如果真 (按下)
+    GetCursorPos (pt)
+    赋值 (hDC, CreateDC (“DISPLAY”, “”, “”, 0))
+    .如果真 (画框)
+        GetWindowRect (WindowFromPoint (pt.横, pt.纵), rt)
+        画边框 (hDC, rt)
+        赋值 (画框, 假)
+    .如果真结束
+    
+.如果真结束
+赋值 (hWindow, WindowFromPoint (pt.横, pt.纵))
+ReleaseCapture ()
+赋值 (按下, 假)
+赋值 (原句柄, 0)
+
+.子程序 _编辑框1_鼠标位置被移动, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.如果真 (按下)
+    SetCapture (取窗口句柄 ())
+    取控件信息 ()
+.如果真结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

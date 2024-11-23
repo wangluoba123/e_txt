@@ -1,0 +1,74 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 218
+    高度 = 128
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+
+.DLL命令 OpenFileMappingA, 整数型, "", "", , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 逻辑型, , 
+    .参数 lpName, 文本型, , 
+
+.DLL命令 MapViewOfFile, 整数型, "", "", , 
+    .参数 hFileMappingObject, 整数型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwFileOffsetHigh, 整数型, , 
+    .参数 dwFileOffsetLow, 整数型, , 
+    .参数 dwNumberOfBytesToMap, 整数型, , 
+
+.DLL命令 CloseHandle, 逻辑型, "", "", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 UnmapViewOfFile, 逻辑型, "", "", , 
+    .参数 lpBaseAddress, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 hMemFile, 空白型, , , 
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 LPSTR, 空白型, , , 
+
+LPSTR ＝ MapViewOfFile (hMemFile, 4, 0, 0, 0)'FILE_MAP_READ = 4
+信息框 (指针到文本 (LPSTR), 0, )
+UnmapViewOfFile (LPSTR)
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+赋值 (hMemFile, OpenFileMappingA (4, 真, “MyShareMemoryFile”))
+
+
+.子程序 __启动窗口_可否被关闭, 逻辑型, , 
+CloseHandle (hMemFile)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

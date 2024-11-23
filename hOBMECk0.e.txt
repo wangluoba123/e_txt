@@ -1,0 +1,295 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：登陆 PHPWind 7.2.3 取 Cookie 模块
+ ' 程序描述：登陆 PHPWind 7.2.3 取 Cookie 模块
+@备注:
+登陆 PHPWind 7.2.3 取 Cookie 模块
+ ' 程序作者：李光
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：李光
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 FD_READ, "1", , 
+.常量 FD_OOB, "4", , 
+.常量 FD_CONNECT, "16", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 WSADATA, , 
+    .成员 wVersion, 短整数型, , , 
+    .成员 lpVendorInfo, 短整数型, , , 
+    .成员 szDescription, 字节型, , "257", 
+    .成员 szSystemStatus, 字节型, , "129", 
+    .成员 wMaxSockets, 短整数型, , , 
+    .成员 wMaxUDPDG, 整数型, , , 
+    .成员 dwVendorInfo, 字节型, , "200", 
+
+数据类型 addr, , 
+    .成员 sin_family, 短整数型, , , 
+    .成员 sin_port, 短整数型, , , 
+    .成员 sin_addr, 整数型, , , 
+    .成员 sin_zero, 字节型, , "8", 
+
+数据类型 WSANETWORKEVENTS, , 
+    .成员 lNetworkEvents, 整数型, , , 
+    .成员 iErrorCode, 整数型, , "10", 
+
+数据类型 HTTP信息, , 
+    .成员 数据, 字节集, , , 
+    .成员 长度, 整数型, , , 
+
+
+.DLL命令 WSAStartup, 整数型, "ws2_32.dll", "WSAStartup", , 
+    .参数 wVersionRequiredas, 整数型, , 
+    .参数 lpWSAData, WSADATA, 传址, 
+
+.DLL命令 WSACleanup, 整数型, "ws2_32.dll", "WSACleanup", , 
+
+.DLL命令 socket, 整数型, "ws2_32.dll", "socket", , 
+    .参数 af, 整数型, , 
+    .参数 lType, 整数型, , 
+    .参数 protocol, 整数型, , 
+
+.DLL命令 closesocket, 整数型, "ws2_32.dll", "closesocket", , 
+    .参数 s, 整数型, , 
+
+.DLL命令 connect, 整数型, "ws2_32.dll", "connect", , 
+    .参数 s, 整数型, , 
+    .参数 sockaddr, addr, , 
+    .参数 namelen, 整数型, , 
+
+.DLL命令 WSACreateEvent, 整数型, "ws2_32.dll", "WSACreateEvent", , 
+
+.DLL命令 WSAEventSelect, 整数型, "ws2_32.dll", "WSAEventSelect", , 
+    .参数 s, 整数型, , 
+    .参数 hEventObject, 整数型, , 
+    .参数 lNetworkEvents, 整数型, , 
+
+.DLL命令 htons, 短整数型, "ws2_32.dll", "htons", , 
+    .参数 hostshortas, 整数型, , 
+
+.DLL命令 inet_addr, 整数型, "ws2_32.dll", "inet_addr", , 
+    .参数 cp, 文本型, , 
+
+.DLL命令 WaitForSingleObject, 整数型, "", "WaitForSingleObject", , 
+    .参数 hHandle, 整数型, , 
+    .参数 dwMilliseconds, 整数型, , 
+
+.DLL命令 send, 整数型, "ws2_32.dll", "send", , 
+    .参数 s, 整数型, , 
+    .参数 buf, 字节集, , 
+    .参数 len, 整数型, , 
+    .参数 flags, 整数型, , 
+
+.DLL命令 recv, 整数型, "ws2_32.dll", "recv", , 
+    .参数 s, 整数型, , 
+    .参数 buf, 字节集, , 
+    .参数 len, 整数型, , 
+    .参数 flags, 整数型, , 
+
+.DLL命令 WSAEnumNetworkEvents, 整数型, "ws2_32.dll", "WSAEnumNetworkEvents", , 
+    .参数 s, 整数型, , 
+    .参数 hEventObject, 整数型, , 
+    .参数 lpNetworkEvents, WSANETWORKEVENTS, 传址, 
+
+.DLL命令 CloseHandle, 整数型, "", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+输出调试文本 (登陆 (“www.phpwind.net”, “login.php”, “asdasd123123”, “123456”))
+
+.程序集 PHPWind_7_3_2, , , 
+
+.子程序 登陆, 文本型, , 成功 返回 Cookie ,失败返回 空文本
+.参数 主机名, 文本型, , 域名 或 IP  例: www.phpwind.net
+.参数 提交地址, 文本型, 可空, 例: login.php , bbs/login.php  , 可空 默认 login.php? 
+.参数 账号, 文本型, , 论坛账号
+.参数 密码, 文本型, , 论坛密码
+
+.局部变量 WSADATA, WSADATA, , , 
+.局部变量 C_Socket, 整数型, , , 
+.局部变量 hEvent, 整数型, , , 
+.局部变量 addr, addr, , , 
+.局部变量 ip, 文本型, , , 
+.局部变量 x, 整数型, , , 
+.局部变量 opst, 文本型, , , 
+.局部变量 返回数据, 字节集, , , 
+.局部变量 数据, 文本型, , , 
+.局部变量 WSANETWORKEVENTS, WSANETWORKEVENTS, , , 
+.局部变量 HTTP头, HTTP信息, , , 
+.局部变量 ck, 字节集, , , 
+
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+.如果真 (是否为空 (提交地址))
+    赋值 (提交地址, “/login.php”)
+.如果真结束
+.如果真 (等于 (取文本左边 (提交地址, 1), “\”))
+    赋值 (提交地址, 文本替换 (提交地址, 1, 1, “/”))
+.如果真结束
+.如果真 (不等于 (取文本左边 (提交地址, 1), “/”))
+    赋值 (提交地址, 相加 (“/”, 提交地址))
+.如果真结束
+赋值 (ip, 转换为IP地址 (主机名))
+
+.如果真 (等于 (ip, “”))
+    返回 (“”)
+.如果真结束
+
+.如果真 (不等于 (WSAStartup (合并整数 (2, 2), WSADATA), 0))
+    返回 (“”)
+.如果真结束
+赋值 (C_Socket, socket (2, 1, 6))
+.如果真 (小于或等于 (C_Socket, 0))
+    WSACleanup ()
+    返回 (“”)
+.如果真结束
+ ' 本源码来自易语言资源网(www.5A5X.com)
+赋值 (hEvent, WSACreateEvent ())
+.如果真 (小于或等于 (hEvent, 0))
+    closesocket (C_Socket)
+    WSACleanup ()
+    返回 (“”)
+.如果真结束
+.如果真 (不等于 (WSAEventSelect (C_Socket, hEvent, 相加 (#FD_READ, #FD_OOB, #FD_CONNECT)), 0))
+    closesocket (C_Socket)
+    CloseHandle (hEvent)
+    WSACleanup ()
+    返回 (“”)
+.如果真结束
+
+赋值 (addr.sin_family, 2)
+赋值 (addr.sin_port, htons (80))
+赋值 (addr.sin_addr, inet_addr (ip))
+
+connect (C_Socket, addr, 16)
+
+赋值 (x, WaitForSingleObject (hEvent, 10000))
+
+.如果真 (不等于 (x, 0))
+    closesocket (C_Socket)
+    CloseHandle (hEvent)
+    WSACleanup ()
+    返回 (“”)
+.如果真结束
+
+WSAEnumNetworkEvents (C_Socket, hEvent, WSANETWORKEVENTS)
+
+
+.如果真 (不等于 (WSANETWORKEVENTS.lNetworkEvents, #FD_CONNECT))
+    closesocket (C_Socket)
+    CloseHandle (hEvent)
+    WSACleanup ()
+    返回 (“”)
+.如果真结束
+
+赋值 (数据, 相加 (“forward=&jumpurl=index.php%3Fcateid%3D1&step=2&lgt=0&pwuser=”, 账号, “&pwpwd=”, 密码, “&hideid=0&cktime=31536000”))
+赋值 (opst, 相加 (“POST ”, 提交地址, “ HTTP/1.1”, #换行符))
+赋值 (opst, 相加 (opst, “Accept:application/x-ms-application, image/jpeg, application/xaml+xml, image/gif, image/pjpeg, application/x-ms-xbap, application/x-shockwave-flash, application/x-silverlight, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*”, #换行符))
+赋值 (opst, 相加 (opst, “Accept-Language:zh-CN”, #换行符))
+赋值 (opst, 相加 (opst, “Content-Type:application/x-www-form-urlencoded”, #换行符))
+赋值 (opst, 相加 (opst, “Host:”, 主机名, #换行符))
+赋值 (opst, 相加 (opst, “Content-Length:”, 到文本 (取文本长度 (数据)), #换行符))
+赋值 (opst, 相加 (opst, “Cache-Control:no-cache”, #换行符, #换行符))
+赋值 (opst, 相加 (opst, 数据))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+赋值 (x, send (C_Socket, 到字节集 (opst), 相加 (取文本长度 (opst), 1), 1))
+
+.如果真 (等于 (x, -1))
+    closesocket (C_Socket)
+    CloseHandle (hEvent)
+    WSACleanup ()
+    返回 (“”)
+.如果真结束
+
+赋值 (x, WaitForSingleObject (hEvent, 10000))
+
+.如果真 (不等于 (x, 0))
+    closesocket (C_Socket)
+    CloseHandle (hEvent)
+    WSACleanup ()
+    返回 (“”)
+.如果真结束
+
+WSAEnumNetworkEvents (C_Socket, hEvent, WSANETWORKEVENTS)
+
+.如果真 (不等于 (WSANETWORKEVENTS.lNetworkEvents, #FD_READ))
+    closesocket (C_Socket)
+    CloseHandle (hEvent)
+    WSACleanup ()
+    返回 (“”)
+.如果真结束
+
+赋值 (返回数据, 取空白字节集 (1024))
+
+赋值 (x, recv (C_Socket, 返回数据, 1024, 0))
+closesocket (C_Socket)
+CloseHandle (hEvent)
+WSACleanup ()
+.如果真 (小于或等于 (x, 0))
+    返回 (“”)
+.如果真结束
+
+赋值 (返回数据, 取字节集左边 (返回数据, x))
+
+赋值 (HTTP头.长度, 寻找字节集 (返回数据, { 13, 10, 13, 10 }, ))
+.如果真 (等于 (HTTP头.长度, -1))
+    返回 (“”)
+.如果真结束
+赋值 (HTTP头.数据, 取字节集左边 (返回数据, HTTP头.长度))
+
+赋值 (x, 寻找字节集 (HTTP头.数据, 到字节集 (“winduser=”), ))
+
+.如果真 (等于 (x, -1))
+    返回 (“”)
+.如果真结束
+
+赋值 (x, 倒找字节集 (HTTP头.数据, { 58 }, x))
+
+赋值 (ck, 取字节集右边 (HTTP头.数据, 相减 (HTTP头.长度, x)))
+' 本源码来自易语言资源网(www.5A5X.com)
+.如果真 (等于 (x, -1))
+    返回 (“”)
+.如果真结束
+赋值 (x, 相减 (寻找字节集 (ck, { 59 }, ), 1))
+.如果真 (小于 (x, 0))
+    返回 (“”)
+.如果真结束
+赋值 (ck, 取字节集左边 (ck, x))
+返回 (删首空 (到文本 (ck)))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,1470 @@
+ ' 文件类型：未知类型
+
+ ' 程序名称：Win10皮肤模块
+ ' 程序描述：
+ ' 程序作者：清风科技
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 IMAGE_DOS_SIGNATURE, "23117", , 
+.常量 IMAGE_NT_SIGNATURE, "17744", , 
+.常量 IMAGE_FILE_DLL, "8192", , 
+.常量 IMAGE_ORDINAL_FLAG32, "2147483648", , 
+.常量 IMAGE_FILE_EXECUTABLE_IMAGE, "2", , 
+.常量 MEM_COMMIT, "4096", , 
+.常量 MEM_RESERVE, "8192", , 
+.常量 MEM_RELEASE, "32768", , 
+.常量 PAGE_NOACCESS, "1", , 
+.常量 PAGE_READONLY, "2", , 
+.常量 PAGE_READWRITE, "4", , 
+.常量 PAGE_WRITECOPY, "8", , 
+.常量 PAGE_EXECUTE, "16", , 
+.常量 PAGE_EXECUTE_READ, "32", , 
+.常量 PAGE_EXECUTE_READWRITE, "64", , 
+.常量 DLL_PROCESS_ATTACH, "1", , 
+.常量 换肤类型_未知类型, "0", 公开, 换肤类型:未知类型
+.常量 换肤类型_动画控件, "1001", 公开, 换肤类型:动画控件
+.常量 换肤类型_复选框, "1002", 公开, 换肤类型:复选框
+.常量 换肤类型_组合框, "1003", 公开, 换肤类型:组合框
+.常量 换肤类型_组合下拉框, "1004", 公开, 换肤类型:组合下拉框
+.常量 换肤类型_控件栏, "1005", 公开, 换肤类型:控件栏
+.常量 换肤类型_日期控件, "1006", 公开, 换肤类型:日期控件
+.常量 换肤类型_文本框, "1007", 公开, 换肤类型:文本框
+.常量 换肤类型_分组框, "1008", 公开, 换肤类型:分组框
+.常量 换肤类型_列头控件, "1009", 公开, 换肤类型:列头控件
+.常量 换肤类型_热键控件, "1010", 公开, 换肤类型:热键控件
+.常量 换肤类型_IP地址控件, "1011", 公开, 换肤类型:IP地址控件
+.常量 换肤类型_标签控件, "1012", 公开, 换肤类型:标签控件
+.常量 换肤类型_列表框, "1013", 公开, 换肤类型:列表框
+.常量 换肤类型_列表视图, "1014", 公开, 换肤类型:列表视图
+.常量 换肤类型_MDI客户区, "1015", 公开, 换肤类型:MDI客户区
+.常量 换肤类型_菜单, "1016", 公开, 换肤类型:菜单
+.常量 换肤类型_月历控件, "1017", 公开, 换肤类型:月历控件
+.常量 换肤类型_图片框, "1018", 公开, 换肤类型:图片框
+.常量 换肤类型_进度条, "1019", 公开, 换肤类型:进度条
+.常量 换肤类型_普通按钮, "1020", 公开, 换肤类型:普通按钮
+.常量 换肤类型_单选框, "1021", 公开, 换肤类型:单选框
+.常量 换肤类型_重组栏, "1022", 公开, 换肤类型:重组栏
+.常量 换肤类型_富文本框, "1023", 公开, 换肤类型:富文本框
+.常量 换肤类型_滚动条, "1024", 公开, 换肤类型:滚动条
+.常量 换肤类型_内置滚动条的控件, "1025", 公开, 换肤类型:内置滚动条的控件
+.常量 换肤类型_调节器, "1026", 公开, 换肤类型:调节器
+.常量 换肤类型_状态栏, "1027", 公开, 换肤类型:状态栏
+.常量 换肤类型_选择夹, "1028", 公开, 换肤类型:选择夹
+.常量 换肤类型_工具栏, "1029", 公开, 换肤类型:工具栏
+.常量 换肤类型_MFC工具栏窗体, "1030", 公开, 换肤类型:MFC工具栏窗体
+.常量 换肤类型_滑条控件, "1031", 公开, 换肤类型:滑条控件
+.常量 换肤类型_树形视图, "1032", 公开, 换肤类型:树形视图
+.常量 换肤类型_标准窗体, "1034", 公开, 换肤类型:标准窗体
+.常量 换肤类型_通用换肤1, "1036", 公开, 换肤类型:通用换肤1
+.常量 换肤类型_通用换肤2, "1037", 公开, 换肤类型:通用换肤2
+.常量 换肤类型_Net_标签, "2001", 公开, 换肤类型:标签(.Net)
+.常量 换肤类型_Net_窗体, "2002", 公开, 换肤类型:窗体(.Net)
+.常量 换肤类型_Net_复选框, "2003", 公开, 换肤类型:复选框(.Net)
+.常量 换肤类型_Net_单选框, "2004", 公开, 换肤类型:单选框(.Net)
+.常量 换肤类型_Net_普通按钮, "2005", 公开, 换肤类型:普通按钮(.Net)
+.常量 换肤类型_Net_工具栏, "2006", 公开, 换肤类型:工具栏(.Net)
+.常量 换肤类型_Net_菜单栏, "2007", 公开, 换肤类型:菜单栏(.Net)
+.常量 换肤类型_Net_状态栏, "2008", 公开, 换肤类型:状态栏(.Net)
+.常量 换肤类型_Net_工具菜单, "2009", 公开, 换肤类型:工具菜单(.Net)
+.常量 换肤类型_Net_工具溢出菜单, "2010", 公开, 换肤类型:工具溢出菜单(.Net)
+.常量 换肤类型_Net_数据视图, "2011", 公开, 换肤类型:数据视图(.Net)
+.常量 换肤类型_Delphi_窗体, "3001", 公开, 换肤类型:窗体(Delphi)
+.常量 换肤类型_Delphi_位图按钮, "3002", 公开, 换肤类型:位图按钮(Delphi)
+.常量 换肤类型_Delphi_暂时未知, "3003", 公开, 换肤类型:
+.常量 换肤类型_Delphi_分组框, "3004", 公开, 换肤类型:分组框(Delphi)
+.常量 换肤类型_VB6_窗体, "4001", 公开, 换肤类型:窗体(VB6)
+.常量 换肤类型_VB6_普通按钮, "4002", 公开, 换肤类型:普通按钮(VB6)
+.常量 换肤类型_VB6_单选框, "4003", 公开, 换肤类型:单选框(VB6)
+.常量 换肤类型_VB6_复选框, "4004", 公开, 换肤类型:复选框(VB6)
+.常量 换肤类型_VB6_分组框, "4005", 公开, 换肤类型:分组框(VB6)
+.常量 换肤类型_VB6_选择夹, "4006", 公开, 换肤类型:选择夹(VB6)
+.常量 换肤类型_VB6_数据组合框, "4007", 公开, 换肤类型:数据组合框(VB6)
+.常量 换肤类型_易语言_文本框, "5001", 公开, 换肤类型:文本框(易语言)
+.常量 换肤类型_易语言_窗体, "5002", 公开, 换肤类型:窗体(易语言)
+.常量 换肤类型_易语言_颜色选择器, "5003", 公开, 换肤类型:颜色选择器(易语言)
+.常量 换肤类型_PB_窗体, "6001", 公开, 换肤类型:窗体(PB)
+.常量 换肤类型_PB_图片框, "6002", 公开, 换肤类型:图片框(PB)
+.常量 换肤类型_PB_选择夹, "6003", 公开, 换肤类型:选择夹(PB)
+.常量 GWL_WNDPROC, "-4", , 
+.常量 GRADIENT_FILL_RECT_H, "0", , 
+.常量 GRADIENT_FILL_RECT_V, "1", , 
+.常量 PS_SOLID, "0", , 
+.常量 SRCCOPY, "13369376", , 
+.常量 WM_PAINT, "15", , 
+.常量 WM_LBUTTONUP, "514", , 
+.常量 DT_CENTER, "1", , 
+.常量 DT_VCENTER, "4", , 
+.常量 DT_SINGLELINE, "32", , 
+.常量 WM_GETFONT, "49", , 
+.常量 TRANSPARENT, "1", , 
+.常量 NULL_BRUSH, "5", , 
+.常量 WM_LBUTTONDOWN, "513", , 按下鼠标左键
+.常量 BS_OWNERDRAW, "11", , 
+.常量 WM_LBUTTONDBLCLK, "515", , 
+.常量 HOVER_DEFAULT, "-1", , 
+.常量 WM_MOUSEMOVE, "512", , 
+.常量 TME_LEAVE, "2", , 
+.常量 TME_HOVER, "1", , 
+.常量 WM_MOUSELEAVE, "675", , 
+.常量 BM_SETSTYLE, "244", , 
+.常量 WM_MOUSEHOVER, "673", , 
+.常量 WM_TIMER, "275", , 
+.常量 WM_SETFOCUS, "7", , 
+.常量 WM_KILLFOCUS, "8", , 
+.常量 GWL_STYLE, "-16", , 
+.常量 RDW_INVALIDATE, "1", , 
+.常量 WM_ACTIVATE, "6", , 
+.常量 BS_AUTOCHECKBOX, "3", , 
+.常量 BS_AUTO3STATE, "6", , 
+.常量 BS_AUTORADIOBUTTON, "9", , 
+.常量 WM_DESTROY, "2", , 
+.常量 DLL_PROCESS_DETACH, "0", , 
+.图片 dll文件, " ' 已保存到：D:\易语言学习\Data\Win10.e\dll文件", , 
+.图片 皮肤_Win10, " ' 已保存到：D:\易语言学习\Data\Win10.e\皮肤_Win10", 公开, 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 3 系统核心支持库
+
+
+
+
+数据类型 GRADIENT_RECT, , 
+    .成员 UpperLeft, 整数型, , , 
+    .成员 LowerRight, 整数型, , , 
+
+数据类型 DRAWITEMSTRUCT, , 
+    .成员 CtlType, 整数型, , , 
+    .成员 CtlID, 整数型, , , 
+    .成员 itemId, 整数型, , , 
+    .成员 itenAction, 整数型, , , 
+    .成员 itemState, 整数型, , , 
+    .成员 hwndItem, 整数型, , , 
+    .成员 hdc, 整数型, , , 
+    .成员 rcTtem, RECT, , , 
+    .成员 itemData, 整数型, , , 
+
+数据类型 Font, , 
+    .成员 字体高度, 整数型, , , 
+    .成员 字体宽度, 整数型, , , 
+    .成员 旋转, 整数型, , , 
+    .成员 加粗, 整数型, , , 400正常
+    .成员 倾斜, 整数型, , , 
+    .成员 下划线, 整数型, , , 
+    .成员 删除线, 整数型, , , 
+    .成员 字体名称, 文本型, , , 
+
+数据类型 PAINTSTRUCT, , 
+    .成员 hdc, 整数型, , , 
+    .成员 fErase, 整数型, , , 
+    .成员 rcPaint, RECT, , , 
+    .成员 fRestore, 整数型, , , 
+    .成员 fIncUpdate, 整数型, , , 
+    .成员 rgbReserved, 字节型, , "32", 
+
+数据类型 POINTAPI, , 坐标_
+    .成员 X, 整数型, , , x，横向位置
+    .成员 Y, 整数型, , , y，纵向位置
+
+数据类型 RECT, , 矩形;
+    .成员 left, 整数型, , , 
+    .成员 top, 整数型, , , 
+    .成员 right, 整数型, , , 
+    .成员 bottom, 整数型, , , 
+
+数据类型 TRACKMOUSEEVENT, , 
+    .成员 cbSize, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+    .成员 hwndTrack, 整数型, , , 
+    .成员 dwHoverTime, 整数型, , , 
+
+数据类型 TRIVERTEX, , 
+    .成员 x, 整数型, , , 
+    .成员 y, 整数型, , , 
+    .成员 Red, 短整数型, , , 
+    .成员 Green, 短整数型, , , 
+    .成员 Blue, 短整数型, , , 
+    .成员 zzAlpha, 短整数型, , , 
+
+数据类型 IMAGE_DOS_HEADER, , 
+    .成员 e_magic, 短整数型, , , 
+    .成员 e_cblp, 短整数型, , , 
+    .成员 e_cp, 短整数型, , , 
+    .成员 e_crlc, 短整数型, , , 
+    .成员 e_cparhdr, 短整数型, , , 
+    .成员 e_minalloc, 短整数型, , , 
+    .成员 e_maxalloc, 短整数型, , , 
+    .成员 e_ss, 短整数型, , , 
+    .成员 e_sp, 短整数型, , , 
+    .成员 e_csum, 短整数型, , , 
+    .成员 e_ip, 短整数型, , , 
+    .成员 e_cs, 短整数型, , , 
+    .成员 e_lfarlc, 短整数型, , , 
+    .成员 e_ovno, 短整数型, , , 
+    .成员 e_res, 短整数型, , "4", 
+    .成员 e_oemid, 短整数型, , , 
+    .成员 e_oeminfo, 短整数型, , , 
+    .成员 e_res2, 短整数型, , "10", 
+    .成员 e_lfanew, 整数型, , , 
+
+数据类型 IMAGE_NT_HEADERS, , 
+    .成员 Signature, 整数型, , , 
+    .成员 FileHeader, IMAGE_FILE_HEADER, , , 
+    .成员 OptionalHeader, IMAGE_OPTIONAL_HEADER, , , 
+
+数据类型 IMAGE_FILE_HEADER, , 
+    .成员 Machine, 短整数型, , , 
+    .成员 NumberOfSections, 短整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 PointerToSymbolTable, 整数型, , , 
+    .成员 NumberOfSymbols, 整数型, , , 
+    .成员 SizeOfOptionalHeader, 短整数型, , , 
+    .成员 Characteristics, 短整数型, , , 
+
+数据类型 IMAGE_OPTIONAL_HEADER, , 
+    .成员 Magic, 短整数型, , , 
+    .成员 MajorLinkerVersion, 字节型, , , 
+    .成员 MinorLinkerVersion, 字节型, , , 
+    .成员 SizeOfCode, 整数型, , , 
+    .成员 SizeOfInitializedData, 整数型, , , 
+    .成员 SizeOfUninitializedData, 整数型, , , 
+    .成员 AddressOfEntryPoint, 整数型, , , 
+    .成员 BaseOfCode, 整数型, , , 
+    .成员 BaseOfData, 整数型, , , 
+    .成员 ImageBase, 整数型, , , 
+    .成员 SectionAlignment, 整数型, , , 
+    .成员 FileAlignment, 整数型, , , 
+    .成员 MajorOperatingSystemVersion, 短整数型, , , 
+    .成员 MinorOperatingSystemVersion, 短整数型, , , 
+    .成员 MajorImageVersion, 短整数型, , , 
+    .成员 MinorImageVersion, 短整数型, , , 
+    .成员 MajorSubsystemVersion, 短整数型, , , 
+    .成员 MinorSubsystemVersion, 短整数型, , , 
+    .成员 Win32VersionValue, 整数型, , , 
+    .成员 SizeOfImage, 整数型, , , 
+    .成员 SizeOfHeaders, 整数型, , , 
+    .成员 CheckSum, 整数型, , , 
+    .成员 Subsystem, 短整数型, , , 
+    .成员 DllCharacteristics, 短整数型, , , 
+    .成员 SizeOfStackReserve, 整数型, , , 
+    .成员 SizeOfStackCommit, 整数型, , , 
+    .成员 SizeOfHeapReserve, 整数型, , , 
+    .成员 SizeOfHeapCommit, 整数型, , , 
+    .成员 LoaderFlags, 整数型, , , 
+    .成员 NumberOfRvaAndSizes, 整数型, , , 
+    .成员 DataDirectory, IMAGE_DATA_DIRECTORY, , "16", 
+
+数据类型 IMAGE_DATA_DIRECTORY, , 
+    .成员 VirtualAddress, 整数型, , , 
+    .成员 Size, 整数型, , , 
+
+数据类型 IMAGE_SECTION_HEADER, , 
+    .成员 Name, 字节型, , "8", 
+    .成员 Misc, 整数型, , , 
+    .成员 VirtualAddress, 整数型, , , 
+    .成员 SizeOfRawData, 整数型, , , 
+    .成员 PointerToRawData, 整数型, , , 
+    .成员 PointerToRelocations, 整数型, , , 
+    .成员 PointerToLinenumbers, 整数型, , , 
+    .成员 NumberOfRelocations, 短整数型, , , 
+    .成员 NumberOfLinenumbers, 短整数型, , , 
+    .成员 Characteristics, 整数型, , , 
+
+数据类型 IMAGE_BASE_RELOCATION, , 
+    .成员 VirtualAddress, 整数型, , , 
+    .成员 SizeOfBlock, 整数型, , , 
+
+数据类型 IMAGE_IMPORT_DESCRIPTOR, , 
+    .成员 OriginalFirstThunk, 整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 ForwarderChain, 整数型, , , 
+    .成员 Name, 整数型, , , 
+    .成员 FirstThunk, 整数型, , , 
+
+数据类型 IMAGE_IMPORT_BY_NAME, , 
+    .成员 Hint, 短整数型, , , 
+    .成员 Name, 整数型, , , 
+
+数据类型 IMAGE_EXPORT_DIRECTORY, , 
+    .成员 Characteristics, 整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 MajorVersion, 短整数型, , , 
+    .成员 MinorVersion, 短整数型, , , 
+    .成员 Name, 整数型, , , 
+    .成员 Base, 整数型, , , 
+    .成员 NumberOfFunctions, 整数型, , , 
+    .成员 NumberOfNames, 整数型, , , 
+    .成员 AddressOfFunctions, 整数型, , , 
+    .成员 AddressOfNames, 整数型, , , 
+    .成员 AddressOfNameOrdinals, 整数型, , , 
+
+
+.DLL命令 lstrcpyn1, 整数型, "", "lstrcpyn", , 
+    .参数 变量, 文本型, 传址, 
+    .参数 变量, 文本型, 传址, 
+    .参数 参数, 整数型, , 
+
+.DLL命令 lstrcpyn2, 整数型, "", "lstrcpyn", , 
+    .参数 变量, 字节集, 传址, 
+    .参数 变量, 字节集, 传址, 
+    .参数 参数, 整数型, , 
+
+.DLL命令 lstrcpyn, 整数型, "", "lstrcpynA", , 
+    .参数 lpString1, 字节集, , 
+    .参数 lpString2, 整数型, , 
+    .参数 iMaxLength, 整数型, , 
+
+.DLL命令 RtlMoveMemory, 空白型, "", "", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_整数_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_整数_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 整数型, 传址, 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_字节集_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_字节集_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 字节集, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_数组_整数_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, 数组, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_数组_整数_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 整数型, 数组, 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_短整_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 短整数型, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_短整_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 短整数型, 传址, 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_DOS_HEADER_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_DOS_HEADER, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_DOS_HEADER_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, IMAGE_DOS_HEADER, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_NT_HEADERS_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_NT_HEADERS, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_NT_HEADERS_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, IMAGE_NT_HEADERS, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_SECTION_HEADER_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_SECTION_HEADER, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_SECTION_HEADER_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, IMAGE_SECTION_HEADER, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_BASE_RELOCATION_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_BASE_RELOCATION, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_BASE_RELOCATION_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, IMAGE_BASE_RELOCATION, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_IMPORT_DESCRIPTOR_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_IMPORT_DESCRIPTOR, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_IMPORT_DESCRIPTOR_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, IMAGE_IMPORT_DESCRIPTOR, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_IMPORT_BY_NAME_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_IMPORT_BY_NAME, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_IMPORT_BY_NAME_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, IMAGE_IMPORT_BY_NAME, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_EXPORT_DIRECTORY_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_EXPORT_DIRECTORY, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_EXPORT_DIRECTORY_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, IMAGE_EXPORT_DIRECTORY, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 VirtualAlloc, 整数型, "", "", , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+    .参数 flProtect, 整数型, , 
+
+.DLL命令 VirtualFree, 逻辑型, "", "", , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 dwFreeType, 整数型, , 
+
+.DLL命令 VirtualProtect, 逻辑型, "", "", , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flNewProtect, 整数型, , 
+    .参数 lpflOldProtect, 整数型, 传址, 
+
+.DLL命令 GetProcAddress, 整数型, "", "", , 
+    .参数 hModule, 整数型, , 
+    .参数 lpProcName, 整数型, , 
+
+.DLL命令 LoadLibrary, 整数型, "", "LoadLibraryA", , 
+    .参数 lpLibFileName, 整数型, , 
+
+.DLL命令 GetModuleHandle, 整数型, "", "GetModuleHandleA", , 
+    .参数 lpModuleName, 整数型, , 
+
+.DLL命令 GetDC, 整数型, "user32", "GetDC", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 _创建定时器, 整数型, "", "SetTimer", , 返回成功创建定时器的标志
+    .参数 Thwnd, 整数型, , 为空则为系统级定时器
+    .参数 nIDEvent, 整数型, , 除 0 之外任何整数型数值都可以
+    .参数 uElapse, 整数型, , 毫秒级周期
+    .参数 lpTimerFunc, 子程序指针, , 定时器触发事件
+
+.DLL命令 _销毁定时器, 整数型, "", "KillTimer", , 
+    .参数 c1, 整数型, , 
+    .参数 Timerid, 整数型, , 
+
+.程序集 程序集, , , 
+
+.程序集变量 skin, PeLoader, , , 
+.程序集变量 当前皮肤, 字节集, , , 
+.程序集变量 当前色调, 整数型, , , 
+.程序集变量 当前饱和度, 整数型, , , 
+.程序集变量 当前亮度, 整数型, , , 
+.程序集变量 当前高级透明, 逻辑型, , , 
+.程序集变量 当前透明度, 整数型, , , 
+.程序集变量 当前亮度2, 整数型, , , 
+.程序集变量 当前锐度, 整数型, , , 
+.程序集变量 当前阴影大小, 整数型, , , 
+.程序集变量 当前水平偏移, 整数型, , , 
+.程序集变量 当前垂直偏移, 整数型, , , 
+.程序集变量 当前红色分量, 整数型, , , 
+.程序集变量 当前绿色分量, 整数型, , , 
+.程序集变量 当前蓝色分量, 整数型, , , 
+.程序集变量 定时皮肤一, 字节集, , , 
+.程序集变量 定时皮肤二, 字节集, , , 
+.程序集变量 定时皮肤三, 字节集, , , 
+.程序集变量 皮肤ID, 整数型, , , 
+.程序集变量 时钟ID, 整数型, , , 
+.程序集变量 时间标志, 整数型, , , 
+.程序集变量 替换时间, 整数型, , , 
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+skin.加载 (#dll文件)
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.子程序 皮肤_资源加载, 整数型, , 在内存中加载
+.参数 资源, 字节集, , 
+.参数 密码, 文本型, 可空, 
+.参数 色调, 整数型, 可空, 
+.参数 饱和度, 整数型, 可空, 
+.参数 亮度, 整数型, 可空, 
+
+赋值 (当前皮肤, 资源)
+赋值 (当前色调, 色调)
+赋值 (当前饱和度, 饱和度)
+赋值 (当前亮度, 亮度)
+返回 (Call (skin.取函数 (“SkinH_AttachRes”), 取地址_字节集 (资源), 取字节集长度 (资源), 取地址_文本型 (密码), 色调, 饱和度, 亮度))
+
+.子程序 皮肤_颜色设置, 整数型, , 在内存中设置
+.参数 色调, 整数型, 可空, 
+.参数 饱和度, 整数型, 可空, 
+.参数 亮度, 整数型, 可空, 
+
+赋值 (当前色调, 色调)
+赋值 (当前饱和度, 饱和度)
+赋值 (当前亮度, 亮度)
+返回 (Call (skin.取函数 (“SkinH_AdjustHSV”), 色调, 饱和度, 亮度))
+
+.子程序 皮肤_资源卸载, 整数型, , 在内存中卸载
+赋值 (当前皮肤, {  })
+返回 (Call (skin.取函数 (“SkinH_Detach”)))
+
+.子程序 皮肤_设置透明, 整数型, , 在内存中设置
+.参数 窗口句柄, 整数型, , 
+.参数 透明度, 整数型, , 
+
+返回 (Call (skin.取函数 (“SkinH_SetWindowAlpha”), 窗口句柄, 透明度))
+
+.子程序 皮肤_Aero特效, 整数型, , 在内存中设置
+.参数 开启关闭, 逻辑型, , 真.开启 假.关闭
+
+.局部变量 开关, 整数型, , , 
+
+赋值 (当前高级透明, 开启关闭)
+.判断开始 (等于 (开启关闭, 真))
+    赋值 (开关, 1)
+.默认
+    赋值 (开关, 0)
+.判断结束
+返回 (Call (skin.取函数 (“SkinH_SetAero”), 开关))
+
+.子程序 皮肤_标题菜单, 整数型, , 在内存中设置
+.参数 窗口句柄, 整数型, , 
+.参数 开启关闭, 逻辑型, , 真.开启 假.关闭
+.参数 菜单栏高度, 整数型, , 
+.参数 上部偏移, 整数型, , 
+.参数 右部偏移, 整数型, , 
+
+.局部变量 开关, 整数型, , , 
+
+.判断开始 (等于 (开启关闭, 真))
+    赋值 (开关, Call (skin.取函数 (“SkinH_SetTitleMenuBar”), 窗口句柄, 1, 菜单栏高度, 上部偏移, 右部偏移))
+.默认
+    赋值 (开关, Call (skin.取函数 (“SkinH_SetTitleMenuBar”), 窗口句柄, 0, 0, 0, 0))
+.判断结束
+返回 (开关)
+
+.子程序 皮肤_加载默认, 整数型, , 在内存中加载,加载运行目录下的skinh.she
+赋值 (当前皮肤, 读入文件 (相加 (取运行目录 (), “\skinh.she”)))
+返回 (Call (skin.取函数 (“SkinH_Attach”)))
+
+.子程序 皮肤_加载指定, 整数型, , 在内存中加载指定目录下的she皮肤
+.参数 完整路径, 文本型, , 
+.参数 皮肤密码, 文本型, 可空, 
+
+赋值 (当前皮肤, 读入文件 (完整路径))
+返回 (Call (skin.取函数 (“SkinH_AttachEx”), 取地址_文本型 (完整路径), 取地址_文本型 (皮肤密码)))
+
+.子程序 皮肤_卸载指定, 整数型, , 在内存中卸载指定控件皮肤
+.参数 控件句柄, 整数型, , 欲卸载皮肤的控件
+
+返回 (Call (skin.取函数 (“SkinH_DetachEx”), 控件句柄))
+
+.子程序 皮肤_Aero设置, 整数型, , 在内存中设置
+.参数 透明度, 整数型, 可空, 
+.参数 亮度, 整数型, 可空, 
+.参数 锐度, 整数型, 可空, 
+.参数 阴影大小, 整数型, 可空, 
+.参数 水平偏移, 整数型, 可空, 
+.参数 垂直偏移, 整数型, 可空, 
+.参数 红色分量, 整数型, 可空, 
+.参数 绿色分量, 整数型, 可空, 
+.参数 蓝色分量, 整数型, 可空, 
+
+赋值 (当前透明度, 透明度)
+赋值 (当前亮度2, 亮度)
+赋值 (当前锐度, 锐度)
+赋值 (当前阴影大小, 阴影大小)
+赋值 (当前水平偏移, 水平偏移)
+赋值 (当前垂直偏移, 垂直偏移)
+赋值 (当前红色分量, 红色分量)
+赋值 (当前绿色分量, 绿色分量)
+赋值 (当前蓝色分量, 蓝色分量)
+返回 (Call (skin.取函数 (“SkinH_AdjustAero”), 透明度, 亮度, 锐度, 阴影大小, 水平偏移, 垂直偏移, 红色分量, 绿色分量, 蓝色分量))
+
+.子程序 皮肤_背景颜色, 整数型, , 在内存中设置(目前仅对单选框,复选框,分组框有效)
+.参数 控件句柄, 整数型, , 
+.参数 红色分量, 整数型, , 
+.参数 绿色分量, 整数型, , 
+.参数 蓝色分量, 整数型, , 
+
+返回 (Call (skin.取函数 (“SkinH_SetBackColor”), 控件句柄, 红色分量, 绿色分量, 蓝色分量))
+
+.子程序 皮肤_文本颜色, 整数型, , 在内存中设置(目前仅对单选框,复选框,分组框有效)
+.参数 控件句柄, 整数型, , 
+.参数 红色分量, 整数型, , 
+.参数 绿色分量, 整数型, , 
+.参数 蓝色分量, 整数型, , 
+
+返回 (Call (skin.取函数 (“SkinH_SetForeColor”), 控件句柄, 红色分量, 绿色分量, 蓝色分量))
+
+.子程序 皮肤_换肤类型, 整数型, , 在内存中设置(类型详见常量)
+.参数 控件句柄, 整数型, , 
+.参数 换肤类型, 整数型, , (类型详见常量)
+
+返回 (Call (skin.取函数 (“SkinH_Map”), 控件句柄, 换肤类型))
+
+.子程序 皮肤_接口文件, 逻辑型, , 导出破解版接口文件
+.参数 目标文件, 文本型, , 
+
+返回 (写到文件 (目标文件, #dll文件))
+
+.子程序 皮肤_绘画控件, 整数型, , 在内存中在制定位置绘画制定控件
+.参数 窗口句柄, 整数型, , 要绘画在哪个窗口上
+.参数 左边, 整数型, , 
+.参数 顶边, 整数型, , 
+.参数 右边, 整数型, , 
+.参数 底边, 整数型, , 
+.参数 皮肤控件ID, 整数型, , 
+
+返回 (Call (skin.取函数 (“SkinH_NineBlt”), GetDC (窗口句柄), 左边, 顶边, 右边, 底边, 皮肤控件ID))
+
+.子程序 皮肤_是否可移, 整数型, , 在内存中设置
+.参数 窗口句柄, 整数型, , 
+.参数 是否可移动, 逻辑型, , 真.可以 假.不可以
+
+.局部变量 有效位, 整数型, , , 
+
+.判断开始 (是否可移动)
+    赋值 (有效位, 1)
+.默认
+    赋值 (有效位, 0)
+.判断结束
+
+返回 (Call (skin.取函数 (“SkinH_SetWindowMovable”), 窗口句柄, 有效位))
+
+.子程序 皮肤_列表加载, 整数型, , 在内存中设置
+.参数 窗口句柄, 整数型, , 
+.参数 是否开启, 逻辑型, , 真.开启 假.关闭
+
+.局部变量 有效位, 整数型, , , 
+
+ ' SkinH_LockUpdate
+.判断开始 (是否开启)
+    赋值 (有效位, 1)
+.默认
+    赋值 (有效位, 0)
+.判断结束
+
+返回 (Call (skin.取函数 (“SkinH_LockUpdate”), 窗口句柄, 有效位))
+
+.子程序 皮肤_制定加载, 整数型, , 在内存中设置
+.参数 完整路径, 文本型, , 
+.参数 皮肤密码, 文本型, 可空, 
+.参数 色调, 整数型, , 取值范围-180-180,默认值0
+.参数 饱和度, 整数型, , 取值范围-180-180,默认值0
+.参数 亮度, 整数型, , 取值范围-180-180,默认值0
+
+返回 (Call (skin.取函数 (“SkinH_AttachEx”), 取地址_文本型 (完整路径), 取地址_文本型 (皮肤密码), 色调, 饱和度, 亮度))
+
+.子程序 皮肤_保存方案, 逻辑型, , 保存一套方案，便于加载
+.参数 皮肤, 字节集, , 
+.参数 色调, 整数型, 可空, 
+.参数 饱和度, 整数型, 可空, 
+.参数 亮度, 整数型, 可空, 
+.参数 是否Aero特效, 逻辑型, , 
+.参数 透明度, 整数型, 可空, 
+.参数 红色分量, 整数型, 可空, 
+.参数 蓝色分量, 整数型, 可空, 
+.参数 绿色分量, 整数型, 可空, 
+.参数 亮度2, 整数型, 可空, 
+.参数 锐度, 整数型, 可空, 
+.参数 阴影大小, 整数型, 可空, 
+.参数 水平偏移, 整数型, 可空, 
+.参数 垂直偏移, 整数型, 可空, 
+.参数 方案名, 文本型, , 保存方案的位置，可以为任何后啜名
+
+.局部变量 特效, 整数型, , , 135开 136关
+
+.判断开始 (等于 (是否Aero特效, 假))
+    赋值 (特效, 136)
+.默认
+    赋值 (特效, 135)
+.判断结束
+
+返回 (写到文件 (方案名, 相加 (皮肤, 到字节集 (“[---]”), 到文本字节 (色调), 到字节集 (“[---]”), 到文本字节 (饱和度), 到字节集 (“[---]”), 到文本字节 (亮度), 到字节集 (“[---]”), 到文本字节 (特效), 到字节集 (“[---]”), 到文本字节 (透明度), 到字节集 (“[---]”), 到文本字节 (红色分量), 到字节集 (“[---]”), 到文本字节 (蓝色分量), 到字节集 (“[---]”), 到文本字节 (绿色分量), 到字节集 (“[---]”), 到文本字节 (亮度2), 到字节集 (“[---]”), 到文本字节 (锐度), 到字节集 (“[---]”), 到文本字节 (阴影大小), 到字节集 (“[---]”), 到文本字节 (水平偏移), 到字节集 (“[---]”), 到文本字节 (垂直偏移))))
+
+.子程序 皮肤_加载方案, 逻辑型, , 载入保存的方案
+.参数 方案名, 文本型, , 
+
+.局部变量 皮肤, 字节集, , , 
+.局部变量 色调, 整数型, 静态, , 
+.局部变量 饱和度, 整数型, 静态, , 
+.局部变量 亮度, 整数型, 静态, , 
+.局部变量 是否Aero特效, 逻辑型, 静态, , 
+.局部变量 透明度, 整数型, 静态, , 
+.局部变量 红色分量, 整数型, 静态, , 
+.局部变量 蓝色分量, 整数型, 静态, , 
+.局部变量 绿色分量, 整数型, 静态, , 
+.局部变量 亮度2, 整数型, 静态, , 
+.局部变量 锐度, 整数型, 静态, , 
+.局部变量 阴影大小, 整数型, 静态, , 
+.局部变量 水平偏移, 整数型, 静态, , 
+.局部变量 垂直偏移, 整数型, 静态, , 
+.局部变量 方案, 字节集, , , 
+.局部变量 总长度, 字节集, , "0", 
+.局部变量 返回值, 逻辑型, , , 
+
+赋值 (方案, 读入文件 (方案名))
+赋值 (总长度, 分割字节集 (方案, 到字节集 (“[---]”), ))
+赋值 (皮肤, 总长度 [1])
+赋值 (色调, 到文本整数 (总长度 [2]))
+赋值 (饱和度, 到文本整数 (总长度 [3]))
+赋值 (亮度, 到文本整数 (总长度 [4]))
+.判断开始 (等于 (到文本整数 (总长度 [5]), 135))
+    赋值 (是否Aero特效, 真)
+.默认
+    赋值 (是否Aero特效, 假)
+.判断结束
+
+赋值 (透明度, 到文本整数 (总长度 [6]))
+赋值 (红色分量, 到文本整数 (总长度 [7]))
+赋值 (蓝色分量, 到文本整数 (总长度 [8]))
+赋值 (绿色分量, 到文本整数 (总长度 [9]))
+赋值 (亮度2, 到文本整数 (总长度 [10]))
+赋值 (锐度, 到文本整数 (总长度 [11]))
+赋值 (阴影大小, 到文本整数 (总长度 [12]))
+赋值 (水平偏移, 到文本整数 (总长度 [13]))
+赋值 (垂直偏移, 到文本整数 (总长度 [14]))
+皮肤_资源加载 (皮肤)
+皮肤_颜色设置 (色调, 饱和度, 亮度)
+.判断开始 (是否Aero特效)
+    皮肤_Aero特效 (真)
+    皮肤_Aero设置 (透明度, 亮度2, 锐度, 阴影大小, 水平偏移, 垂直偏移, 红色分量, 绿色分量, 蓝色分量)
+.默认
+    皮肤_Aero特效 (假)
+.判断结束
+
+赋值 (返回值, 不等于 (方案, {  }))
+返回 (返回值)
+
+
+.子程序 皮肤_资源方案, 逻辑型, , 载入保存的方案，区别是，以字节集格式载入
+.参数 方案资源, 字节集, , 可以是自己的
+
+.局部变量 皮肤, 字节集, , , 
+.局部变量 色调, 整数型, 静态, , 
+.局部变量 饱和度, 整数型, 静态, , 
+.局部变量 亮度, 整数型, 静态, , 
+.局部变量 是否Aero特效, 逻辑型, 静态, , 
+.局部变量 透明度, 整数型, 静态, , 
+.局部变量 红色分量, 整数型, 静态, , 
+.局部变量 蓝色分量, 整数型, 静态, , 
+.局部变量 绿色分量, 整数型, 静态, , 
+.局部变量 亮度2, 整数型, 静态, , 
+.局部变量 锐度, 整数型, 静态, , 
+.局部变量 阴影大小, 整数型, 静态, , 
+.局部变量 水平偏移, 整数型, 静态, , 
+.局部变量 垂直偏移, 整数型, 静态, , 
+.局部变量 总长度, 字节集, , "0", 
+.局部变量 返回值, 逻辑型, , , 
+
+赋值 (总长度, 分割字节集 (方案资源, 到字节集 (“[---]”), ))
+赋值 (皮肤, 总长度 [1])
+赋值 (色调, 到文本整数 (总长度 [2]))
+赋值 (饱和度, 到文本整数 (总长度 [3]))
+赋值 (亮度, 到文本整数 (总长度 [4]))
+.判断开始 (等于 (到文本整数 (总长度 [5]), 135))
+    赋值 (是否Aero特效, 真)
+.默认
+    赋值 (是否Aero特效, 假)
+.判断结束
+
+赋值 (透明度, 到文本整数 (总长度 [6]))
+赋值 (红色分量, 到文本整数 (总长度 [7]))
+赋值 (蓝色分量, 到文本整数 (总长度 [8]))
+赋值 (绿色分量, 到文本整数 (总长度 [9]))
+赋值 (亮度2, 到文本整数 (总长度 [10]))
+赋值 (锐度, 到文本整数 (总长度 [11]))
+赋值 (阴影大小, 到文本整数 (总长度 [12]))
+赋值 (水平偏移, 到文本整数 (总长度 [13]))
+赋值 (垂直偏移, 到文本整数 (总长度 [14]))
+皮肤_资源加载 (皮肤)
+皮肤_颜色设置 (色调, 饱和度, 亮度)
+.判断开始 (是否Aero特效)
+    皮肤_Aero特效 (真)
+    皮肤_Aero设置 (透明度, 亮度2, 锐度, 阴影大小, 水平偏移, 垂直偏移, 红色分量, 绿色分量, 蓝色分量)
+.默认
+    皮肤_Aero特效 (假)
+.判断结束
+
+赋值 (返回值, 不等于 (方案资源, {  }))
+返回 (返回值)
+
+
+
+.子程序 皮肤_方案资源, 字节集, , 获取方案的字节集，区别是，他不写出文件，而是返回字节集
+.参数 皮肤, 字节集, , 
+.参数 色调, 整数型, 可空, 
+.参数 饱和度, 整数型, 可空, 
+.参数 亮度, 整数型, 可空, 
+.参数 是否Aero特效, 逻辑型, , 
+.参数 透明度, 整数型, 可空, 
+.参数 红色分量, 整数型, 可空, 
+.参数 蓝色分量, 整数型, 可空, 
+.参数 绿色分量, 整数型, 可空, 
+.参数 亮度2, 整数型, 可空, 
+.参数 锐度, 整数型, 可空, 
+.参数 阴影大小, 整数型, 可空, 
+.参数 水平偏移, 整数型, 可空, 
+.参数 垂直偏移, 整数型, 可空, 
+
+.局部变量 特效, 整数型, , , 135开 136关
+
+.判断开始 (等于 (是否Aero特效, 假))
+    赋值 (特效, 136)
+.默认
+    赋值 (特效, 135)
+.判断结束
+
+返回 (相加 (皮肤, 到字节集 (“[---]”), 到文本字节 (色调), 到字节集 (“[---]”), 到文本字节 (饱和度), 到字节集 (“[---]”), 到文本字节 (亮度), 到字节集 (“[---]”), 到文本字节 (特效), 到字节集 (“[---]”), 到文本字节 (透明度), 到字节集 (“[---]”), 到文本字节 (红色分量), 到字节集 (“[---]”), 到文本字节 (蓝色分量), 到字节集 (“[---]”), 到文本字节 (绿色分量), 到字节集 (“[---]”), 到文本字节 (亮度2), 到字节集 (“[---]”), 到文本字节 (锐度), 到字节集 (“[---]”), 到文本字节 (阴影大小), 到字节集 (“[---]”), 到文本字节 (水平偏移), 到字节集 (“[---]”), 到文本字节 (垂直偏移)))
+
+
+.子程序 皮肤_随机皮肤, 整数型, , 随机加载3个皮肤，过多会是exe变大，返回加载的皮肤序号，失败为0
+.参数 皮肤一, 字节集, 可空, 参与随机的皮肤
+.参数 皮肤二, 字节集, 可空, 参与随机的皮肤
+.参数 皮肤三, 字节集, 可空, 参与随机的皮肤
+
+.局部变量 随机数, 整数型, , , 
+.局部变量 返回值, 整数型, , , 
+.局部变量 皮肤序号, 整数型, , , 
+
+置随机数种子 ()
+.判断开始 (并且 (等于 (是否为空 (皮肤一), 真), 等于 (是否为空 (皮肤二), 真), 等于 (是否为空 (皮肤三), 真)))
+    赋值 (返回值, 0)
+.判断 (并且 (等于 (是否为空 (皮肤一), 真), 等于 (是否为空 (皮肤二), 假), 等于 (是否为空 (皮肤三), 假)))
+    赋值 (随机数, 取随机数 (2, 3))
+    赋值 (返回值, 随机数)
+    .判断开始 (等于 (随机数, 2))
+        皮肤_资源加载 (皮肤二)
+        赋值 (当前皮肤, 皮肤二)
+    .判断 (等于 (随机数, 3))
+        皮肤_资源加载 (皮肤三)
+        赋值 (当前皮肤, 皮肤三)
+    .默认
+        
+    .判断结束
+    
+.判断 (并且 (等于 (是否为空 (皮肤一), 真), 等于 (是否为空 (皮肤二), 真), 等于 (是否为空 (皮肤三), 假)))
+    赋值 (返回值, 3)
+    皮肤_资源加载 (皮肤三)
+    赋值 (当前皮肤, 皮肤三)
+.判断 (并且 (等于 (是否为空 (皮肤一), 假), 等于 (是否为空 (皮肤二), 真), 等于 (是否为空 (皮肤三), 真)))
+    赋值 (返回值, 1)
+    皮肤_资源加载 (皮肤一)
+    赋值 (当前皮肤, 皮肤一)
+.判断 (并且 (等于 (是否为空 (皮肤一), 真), 等于 (是否为空 (皮肤二), 假), 等于 (是否为空 (皮肤三), 真)))
+    赋值 (返回值, 2)
+    皮肤_资源加载 (皮肤二)
+    赋值 (当前皮肤, 皮肤二)
+.判断 (并且 (等于 (是否为空 (皮肤一), 假), 等于 (是否为空 (皮肤二), 假), 等于 (是否为空 (皮肤三), 真)))
+    赋值 (随机数, 取随机数 (1, 2))
+    赋值 (返回值, 随机数)
+    .判断开始 (等于 (随机数, 1))
+        皮肤_资源加载 (皮肤一)
+        赋值 (当前皮肤, 皮肤一)
+    .判断 (等于 (随机数, 2))
+        皮肤_资源加载 (皮肤二)
+        赋值 (当前皮肤, 皮肤二)
+    .默认
+        
+    .判断结束
+    
+.判断 (并且 (等于 (是否为空 (皮肤一), 假), 等于 (是否为空 (皮肤二), 真), 等于 (是否为空 (皮肤三), 假)))
+    赋值 (随机数, 取随机数 (1, 3))
+    .判断开始 (等于 (随机数, 2))
+        皮肤_资源加载 (皮肤一)
+        赋值 (当前皮肤, 皮肤一)
+        赋值 (返回值, 1)
+    .判断 (等于 (随机数, 3))
+        皮肤_资源加载 (皮肤三)
+        赋值 (当前皮肤, 皮肤三)
+        赋值 (返回值, 3)
+    .判断 (等于 (随机数, 1))
+        皮肤_资源加载 (皮肤一)
+        赋值 (当前皮肤, 皮肤一)
+        赋值 (返回值, 1)
+    .默认
+        
+    .判断结束
+    
+.判断 (并且 (等于 (是否为空 (皮肤一), 假), 等于 (是否为空 (皮肤二), 假), 等于 (是否为空 (皮肤三), 假)))
+    赋值 (随机数, 取随机数 (1, 3))
+    赋值 (返回值, 随机数)
+    
+    .判断开始 (等于 (随机数, 2))
+        皮肤_资源加载 (皮肤二)
+        赋值 (当前皮肤, 皮肤二)
+    .判断 (等于 (随机数, 3))
+        皮肤_资源加载 (皮肤三)
+        赋值 (当前皮肤, 皮肤三)
+    .判断 (等于 (随机数, 1))
+        皮肤_资源加载 (皮肤一)
+        赋值 (当前皮肤, 皮肤一)
+    .默认
+        
+    .判断结束
+    
+.默认
+    
+.判断结束
+
+返回 (返回值)
+
+.子程序 皮肤_查看方案, 逻辑型, , 查看方案配置
+.参数 方案名, 文本型, , 欲查看的方案
+.参数 皮肤, 字节集, 参考, 
+.参数 色调, 整数型, 参考, 
+.参数 饱和度, 整数型, 参考, 
+.参数 亮度, 整数型, 参考, 
+.参数 是否Aero特效, 逻辑型, 参考, 
+.参数 透明度, 整数型, 参考, 
+.参数 红色分量, 整数型, 参考, 
+.参数 蓝色分量, 整数型, 参考, 
+.参数 绿色分量, 整数型, 参考, 
+.参数 亮度2, 整数型, 参考, 
+.参数 锐度, 整数型, 参考, 
+.参数 阴影大小, 整数型, 参考, 
+.参数 水平偏移, 整数型, 参考, 
+.参数 垂直偏移, 整数型, 参考, 
+
+.局部变量 方案, 字节集, , , 
+.局部变量 总长度, 字节集, , "0", 
+
+赋值 (方案, 读入文件 (方案名))
+赋值 (总长度, 分割字节集 (方案, 到字节集 (“[---]”), ))
+赋值 (皮肤, 总长度 [1])
+赋值 (色调, 到文本整数 (总长度 [2]))
+赋值 (饱和度, 到文本整数 (总长度 [3]))
+赋值 (亮度, 到文本整数 (总长度 [4]))
+.判断开始 (等于 (到文本整数 (总长度 [5]), 135))
+    赋值 (是否Aero特效, 真)
+.默认
+    赋值 (是否Aero特效, 假)
+.判断结束
+
+赋值 (透明度, 到文本整数 (总长度 [6]))
+赋值 (红色分量, 到文本整数 (总长度 [7]))
+赋值 (蓝色分量, 到文本整数 (总长度 [8]))
+赋值 (绿色分量, 到文本整数 (总长度 [9]))
+赋值 (亮度2, 到文本整数 (总长度 [10]))
+赋值 (锐度, 到文本整数 (总长度 [11]))
+赋值 (阴影大小, 到文本整数 (总长度 [12]))
+赋值 (水平偏移, 到文本整数 (总长度 [13]))
+赋值 (垂直偏移, 到文本整数 (总长度 [14]))
+返回 (真)
+
+
+.子程序 皮肤_随机配置, 整数型, , 随机进行配置
+.参数 是否进行Aero设置, 逻辑型, , 真.是 假.不是
+
+置随机数种子 ()
+皮肤_颜色设置 (取随机数 (-180, 180), 取随机数 (-100, 100), 取随机数 (-100, 100))
+.判断开始 (是否进行Aero设置)
+    皮肤_Aero设置 (取随机数 (50, 255), 取随机数 (0, 255), 取随机数 (0, 12), 取随机数 (0, 18), 0, 0, 取随机数 (0, 255), 取随机数 (0, 255), 取随机数 (0, 255))
+.默认
+    
+.判断结束
+
+返回 (0)
+
+.子程序 皮肤_导出方案, 逻辑型, , 导出当前的皮肤状态,以方案形式保存
+.参数 方案名, 文本型, , 
+
+返回 (皮肤_保存方案 (当前皮肤, 当前色调, 当前饱和度, 当前亮度, 当前高级透明, 当前透明度, 当前红色分量, 当前蓝色分量, 当前绿色分量, 当前亮度2, 当前锐度, 当前阴影大小, 当前水平偏移, 当前垂直偏移, 方案名))
+
+.子程序 皮肤_定时更换, 整数型, , 定时更换皮肤
+.参数 更换时间, 整数型, , 已秒为单位
+.参数 皮肤一, 字节集, , 
+.参数 皮肤二, 字节集, , 
+.参数 皮肤三, 字节集, , 
+
+皮肤_资源加载 (皮肤一)
+赋值 (皮肤ID, 2)
+赋值 (定时皮肤一, 皮肤一)
+赋值 (定时皮肤二, 皮肤二)
+赋值 (定时皮肤三, 皮肤三)
+赋值 (时间标志, 相乘 (取秒 (取现行时间 ()), 200))
+赋值 (替换时间, 相乘 (更换时间, 1000))
+赋值 (时钟ID, _创建定时器 (0, 时间标志, 替换时间, &皮肤_替换程序))
+返回 (时钟ID)
+
+.子程序 皮肤_定时停止, 整数型, , 停止定时更换皮肤
+返回 (_销毁定时器 (0, 时钟ID))
+
+.子程序 皮肤_继续更换, 整数型, , 继续定时更换皮肤
+赋值 (时钟ID, _创建定时器 (0, 时间标志, 替换时间, &皮肤_替换程序))
+返回 (时钟ID)
+
+.子程序 皮肤_替换程序, 空白型, , 定时更换皮肤执行子程序
+.判断开始 (或者 (小于或等于 (皮肤ID, 0), 大于或等于 (皮肤ID, 4)))
+    赋值 (皮肤ID, 1)
+.默认
+    
+.判断结束
+
+.判断开始 (等于 (皮肤ID, 1))
+    皮肤_资源加载 (定时皮肤一)
+.判断 (等于 (皮肤ID, 2))
+    皮肤_资源加载 (定时皮肤二)
+.默认
+    皮肤_资源加载 (定时皮肤三)
+.判断结束
+
+赋值 (皮肤ID, 相加 (皮肤ID, 1))
+
+
+.子程序 皮肤_释放内存, 逻辑型, , 释放内存DLL，最好在窗口结束时和皮肤卸载放着一起用
+返回 (skin.释放 ())
+
+.类模块 PeLoader, , , 
+
+.程序集变量 hLibModule, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 加载, 逻辑型, , 成功返回真,失败返回假.
+.参数 PE文件, 字节集, , 
+.参数 回调_填充输入表, 子程序指针, 可空, 整数型 回调_填充输入表 (整数型 模块名 ,整数型 函数名 ,整数型 自定义参数) , 返回函数地址.
+.参数 回调_自定义参数, 整数型, 可空, 
+
+.如果真 (不等于 (hLibModule, 0))
+    释放 ()
+.如果真结束
+
+赋值 (hLibModule, _LoadLibrary (PE文件, 到整数 (回调_填充输入表), 回调_自定义参数))
+
+返回 (不等于 (hLibModule, 0))
+
+.子程序 释放, 逻辑型, , 释放已加载的PE文件
+.如果真 (不等于 (hLibModule, 0))
+    赋值 (hLibModule, 选择 (_FreeLibrary (hLibModule), 0, hLibModule))
+.如果真结束
+返回 (等于 (hLibModule, 0))
+
+.子程序 取函数, 整数型, , 返回指定函数指针
+.参数 函数名, 文本型, , 
+
+返回 (_GetProcAddress (hLibModule, 函数名))
+
+.子程序 取入口, 整数型, , 返回入口点
+.如果 (等于 (hLibModule, 0))
+    返回 (0)
+.否则
+    返回 (_GetEntryPoint (hLibModule))
+.如果结束
+
+
+.子程序 取基址, 整数型, , 返回基址
+返回 (hLibModule)
+
+.程序集 功能程序集, , , 
+
+.子程序 取地址_字节集, 整数型, , 
+.参数 字节集, 字节集, , 
+
+返回 (lstrcpyn2 (字节集, 字节集, 0))
+
+.子程序 取地址_文本型, 整数型, , 
+.参数 文本, 文本型, , 
+
+返回 (lstrcpyn1 (文本, 文本, 0))
+
+.子程序 Call, 整数型, , 
+.参数 地址, 整数型, , 
+.参数 参数一, 整数型, 可空, 
+.参数 参数二, 整数型, 可空, 
+.参数 参数三, 整数型, 可空, 
+.参数 参数四, 整数型, 可空, 
+.参数 参数五, 整数型, 可空, 
+.参数 参数六, 整数型, 可空, 
+.参数 参数七, 整数型, 可空, 
+.参数 参数八, 整数型, 可空, 
+.参数 参数九, 整数型, 可空, 
+.参数 参数十, 整数型, 可空, 
+
+返回 (_Call (地址, 参数一, 参数二, 参数三, 参数四, 参数五, 参数六, 参数七, 参数八, 参数九, 参数十))
+
+.子程序 _Call, 整数型, , 
+.参数 地址, 整数型, , 
+.参数 参数一, 整数型, , 
+.参数 参数二, 整数型, , 
+.参数 参数三, 整数型, , 
+.参数 参数四, 整数型, , 
+.参数 参数五, 整数型, , 
+.参数 参数六, 整数型, , 
+.参数 参数七, 整数型, , 
+.参数 参数八, 整数型, , 
+.参数 参数九, 整数型, , 
+.参数 参数十, 整数型, , 
+
+置入代码 ({ 201, 88, 135, 4, 36, 255, 224 })
+返回 (0)
+
+.子程序 _LoadLibrary, 整数型, , 
+.参数 pData, 字节集, , 
+.参数 pFR_CallBack, 整数型, 可空, 整数型 pFR_CallBack (整数型 ModuleName ,整数型 ProcName ,整数型 lParam) , 返回函数地址.
+.参数 pFR_lParam, 整数型, 可空, 
+
+.局部变量 lpFileData, 整数型, , , 
+.局部变量 DataLength, 整数型, , , 
+.局部变量 DosHeader, IMAGE_DOS_HEADER, , , 
+.局部变量 NTHeader, IMAGE_NT_HEADERS, 静态, , 
+.局部变量 SectionHeader, IMAGE_SECTION_HEADER, 静态, "0", 
+.局部变量 hLibModule, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 VirtualSize, 整数型, , , 
+.局部变量 SectionSize, 整数型, , , 
+
+赋值 (lpFileData, lstrcpyn (pData, 0, 0))
+赋值 (DataLength, 取字节集长度 (pData))
+
+.如果真 (小于 (DataLength, 64))
+    返回 (0)
+.如果真结束
+
+RtlMoveMemory_IMAGE_DOS_HEADER_1 (DosHeader, lpFileData, 64)
+.如果真 (不等于 (DosHeader.e_magic, #IMAGE_DOS_SIGNATURE))
+    返回 (0)
+.如果真结束
+
+.如果真 (小于 (DataLength, 相加 (DosHeader.e_lfanew, 248)))
+    返回 (0)
+.如果真结束
+
+RtlMoveMemory_IMAGE_NT_HEADERS_1 (NTHeader, 相加 (lpFileData, DosHeader.e_lfanew), 248)
+.如果真 (不等于 (NTHeader.Signature, #IMAGE_NT_SIGNATURE))
+    返回 (0)
+.如果真结束
+
+.如果真 (等于 (位与 (NTHeader.FileHeader.Characteristics, #IMAGE_FILE_EXECUTABLE_IMAGE), 0))
+    返回 (0)
+.如果真结束
+
+.如果真 (小于 (DataLength, 相加 (DosHeader.e_lfanew, 248, 相乘 (NTHeader.FileHeader.NumberOfSections, 40))))
+    返回 (0)
+.如果真结束
+
+重定义数组 (SectionHeader, 假, NTHeader.FileHeader.NumberOfSections)
+.变量循环首 (0, 相减 (NTHeader.FileHeader.NumberOfSections, 1), 1, i)
+    
+    RtlMoveMemory_IMAGE_SECTION_HEADER_1 (SectionHeader [相加 (i, 1)], 相加 (lpFileData, DosHeader.e_lfanew, 248, 相乘 (i, 40)), 40)
+    赋值 (VirtualSize, 位与 (SectionHeader [相加 (i, 1)].Misc, 65535))
+    赋值 (SectionSize, GetAlignedSize (相加 (SectionHeader [相加 (i, 1)].VirtualAddress, 选择 (大于 (SectionHeader [相加 (i, 1)].SizeOfRawData, VirtualSize), SectionHeader [相加 (i, 1)].SizeOfRawData, VirtualSize)), NTHeader.OptionalHeader.SectionAlignment))
+    赋值 (NTHeader.OptionalHeader.SizeOfImage, 选择 (大于 (SectionSize, NTHeader.OptionalHeader.SizeOfImage), SectionSize, NTHeader.OptionalHeader.SizeOfImage))
+    
+.变量循环尾 ()
+
+.如果真 (等于 (NTHeader.OptionalHeader.SizeOfImage, 0))
+    返回 (0)
+.如果真结束
+
+赋值 (hLibModule, VirAlloc (NTHeader.OptionalHeader.ImageBase, NTHeader.OptionalHeader.SizeOfImage))
+.如果真 (等于 (hLibModule, 0))
+    返回 (0)
+.如果真结束
+
+RtlMoveMemory (hLibModule, lpFileData, 相加 (DosHeader.e_lfanew, 248, 相乘 (NTHeader.FileHeader.NumberOfSections, 40)))
+.计次循环首 (NTHeader.FileHeader.NumberOfSections, i)
+    
+    .如果真 (并且 (大于 (SectionHeader [i], SizeOfRawData, 0), 不等于 (SectionHeader [i], VirtualAddress, 0)))
+        RtlMoveMemory (相加 (hLibModule, SectionHeader [i], VirtualAddress), 相加 (lpFileData, SectionHeader [i], PointerToRawData), SectionHeader [i], SizeOfRawData)
+    .如果真结束
+    
+.计次循环尾 ()
+
+.如果真 (大于 (NTHeader.OptionalHeader.DataDirectory [6].Size, 0))
+    DoRelocation (hLibModule, NTHeader)
+.如果真结束
+
+.如果真 (大于 (NTHeader.OptionalHeader.DataDirectory [2].VirtualAddress, 0))
+    .如果真 (取反 (FillRavAddress (hLibModule, NTHeader, pFR_CallBack, pFR_lParam)))
+        VirFree (hLibModule)
+        返回 (0)
+    .如果真结束
+    
+.如果真结束
+
+.如果真 (不等于 (位与 (NTHeader.FileHeader.Characteristics, #IMAGE_FILE_DLL), 0))
+    .如果真 (等于 (Call (相加 (hLibModule, NTHeader.OptionalHeader.AddressOfEntryPoint), 0, #DLL_PROCESS_ATTACH, 0), 0))
+        Call (相加 (hLibModule, NTHeader.OptionalHeader.AddressOfEntryPoint), 0, #DLL_PROCESS_DETACH, 0)
+        VirFree (hLibModule)
+        返回 (0)
+    .如果真结束
+    
+.如果真结束
+
+返回 (hLibModule)
+
+.子程序 _FreeLibrary, 逻辑型, , 
+.参数 hLibModule, 整数型, , 
+
+.局部变量 DosHeader, IMAGE_DOS_HEADER, , , 
+.局部变量 NTHeader, IMAGE_NT_HEADERS, , , 
+
+
+RtlMoveMemory_IMAGE_DOS_HEADER_1 (DosHeader, hLibModule, 64)
+.如果真 (等于 (DosHeader.e_magic, #IMAGE_DOS_SIGNATURE))
+    RtlMoveMemory_IMAGE_NT_HEADERS_1 (NTHeader, 相加 (hLibModule, DosHeader.e_lfanew), 248)
+    .如果真 (等于 (NTHeader.Signature, #IMAGE_NT_SIGNATURE))
+        .如果真 (不等于 (位与 (NTHeader.FileHeader.Characteristics, #IMAGE_FILE_DLL), 0))
+            Call (相加 (hLibModule, NTHeader.OptionalHeader.AddressOfEntryPoint), 0, #DLL_PROCESS_DETACH, 0)
+        .如果真结束
+        
+        返回 (VirFree (hLibModule))
+    .如果真结束
+    
+.如果真结束
+
+返回 (假)
+
+.子程序 _GetProcAddress, 整数型, , 
+.参数 hLibModule, 整数型, , 
+.参数 lpProcName, 文本型, , 
+
+.局部变量 DosHeader, IMAGE_DOS_HEADER, , , 
+.局部变量 NTHeader, IMAGE_NT_HEADERS, , , 
+.局部变量 OffsetStart, 整数型, , , 
+.局部变量 ExportDirectory, IMAGE_EXPORT_DIRECTORY, , , 
+.局部变量 AddressOfNames, 整数型, , , 
+.局部变量 Str, 文本型, , , 
+.局部变量 Address, 整数型, , , 
+.局部变量 AddressOfNameOrdinals, 整数型, , , 
+.局部变量 Ordinals, 整数型, , , 
+
+
+RtlMoveMemory_IMAGE_DOS_HEADER_1 (DosHeader, hLibModule, 64)
+.如果真 (等于 (DosHeader.e_magic, #IMAGE_DOS_SIGNATURE))
+    
+    RtlMoveMemory_IMAGE_NT_HEADERS_1 (NTHeader, 相加 (hLibModule, DosHeader.e_lfanew), 248)
+    .如果真 (等于 (NTHeader.Signature, #IMAGE_NT_SIGNATURE))
+        
+        .如果真 (不等于 (NTHeader.OptionalHeader.DataDirectory [1].Size, 0))
+            
+            赋值 (OffsetStart, NTHeader.OptionalHeader.DataDirectory [1].VirtualAddress)
+            
+            RtlMoveMemory_IMAGE_EXPORT_DIRECTORY_1 (ExportDirectory, 相加 (hLibModule, OffsetStart), 40)
+            RtlMoveMemory_整数_1 (AddressOfNames, 相加 (hLibModule, ExportDirectory.AddressOfNames), 4)
+            
+            赋值 (AddressOfNames, 相加 (hLibModule, AddressOfNames))
+            赋值 (AddressOfNameOrdinals, 相加 (hLibModule, ExportDirectory.AddressOfNameOrdinals))
+            赋值 (Ordinals, 到整数 (lpProcName))
+            
+            .如果 (等于 (到文本 (Ordinals), lpProcName))
+                赋值 (Ordinals, 相减 (Ordinals, ExportDirectory.Base))
+                
+                .如果真 (并且 (小于或等于 (Ordinals, ExportDirectory.NumberOfFunctions), 大于或等于 (Ordinals, 0)))
+                    RtlMoveMemory_整数_1 (Address, 相加 (hLibModule, ExportDirectory.AddressOfFunctions, 相乘 (Ordinals, 4)), 4)
+                    .如果真 (不等于 (Address, 0))
+                        赋值 (Address, 相加 (hLibModule, Address))
+                    .如果真结束
+                    
+                .如果真结束
+                
+            .否则
+                
+                赋值 (Ordinals, 0)
+                .计次循环首 (ExportDirectory.NumberOfNames, )
+                    赋值 (Str, 指针到文本 (AddressOfNames))
+                    RtlMoveMemory_整数_1 (Ordinals, AddressOfNameOrdinals, 2)
+                    
+                    .如果真 (并且 (小于或等于 (Ordinals, ExportDirectory.NumberOfFunctions), 大于或等于 (Ordinals, 0)))
+                        .如果真 (等于 (文本比较 (lpProcName, Str, 真), 0))
+                            RtlMoveMemory_整数_1 (Address, 相加 (hLibModule, ExportDirectory.AddressOfFunctions, 相乘 (Ordinals, 4)), 4)
+                            .如果真 (不等于 (Address, 0))
+                                赋值 (Address, 相加 (hLibModule, Address))
+                                跳出循环 ()
+                            .如果真结束
+                            
+                        .如果真结束
+                        
+                    .如果真结束
+                    
+                    赋值 (AddressOfNames, 相加 (AddressOfNames, 取文本长度 (Str), 1))
+                    赋值 (AddressOfNameOrdinals, 相加 (AddressOfNameOrdinals, 2))
+                .计次循环尾 ()
+                
+            .如果结束
+            
+        .如果真结束
+        
+    .如果真结束
+    
+    
+.如果真结束
+
+
+返回 (Address)
+
+.子程序 _GetEntryPoint, 整数型, , 
+.参数 hLibModule, 整数型, , 
+
+.局部变量 pDosHeader, IMAGE_DOS_HEADER, , , 
+.局部变量 pNTHeader, IMAGE_NT_HEADERS, , , 
+
+RtlMoveMemory_IMAGE_DOS_HEADER_1 (pDosHeader, hLibModule, 64)
+RtlMoveMemory_IMAGE_NT_HEADERS_1 (pNTHeader, 相加 (hLibModule, pDosHeader.e_lfanew), 248)
+返回 (相加 (hLibModule, pNTHeader.OptionalHeader.AddressOfEntryPoint))
+
+.子程序 GetAlignedSize, 整数型, , 
+.参数 Origin, 整数型, , 
+.参数 Alignment, 整数型, , 
+
+返回 (相乘 (取整 (相除 (相减 (相加 (Origin, Alignment), 1), Alignment)), Alignment))
+
+.子程序 DoRelocation, 空白型, , 
+.参数 NewBase, 整数型, , 
+.参数 NTHeader, IMAGE_NT_HEADERS, , 
+
+.局部变量 BaseRelocation, IMAGE_BASE_RELOCATION, , , 
+.局部变量 Delta, 整数型, , , 
+.局部变量 LocData, 短整数型, , , 
+.局部变量 Offset, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 Address, 整数型, , , 
+
+
+赋值 (Delta, 相减 (NewBase, NTHeader.OptionalHeader.ImageBase))
+
+赋值 (Offset, NTHeader.OptionalHeader.DataDirectory [6].VirtualAddress)
+RtlMoveMemory_IMAGE_BASE_RELOCATION_1 (BaseRelocation, 相加 (NewBase, Offset), 8)
+
+.判断循环首 (不等于 (BaseRelocation.VirtualAddress, 0))
+    
+    .计次循环首 (相除 (相减 (BaseRelocation.SizeOfBlock, 8), 2), i)
+        RtlMoveMemory_短整_1 (LocData, 相加 (NewBase, Offset, 8, 相乘 (相减 (i, 1), 2)), 2)
+        .如果真 (等于 (位与 (LocData, 61440), 12288))
+            赋值 (Address, 相加 (NewBase, BaseRelocation.VirtualAddress, 位与 (LocData, 4095)))
+            RtlMoveMemory_整数_2 (Address, 相加 (取字节集数据 (指针到字节集 (Address, 4), #整数型, ), Delta), 4)
+        .如果真结束
+        
+    .计次循环尾 ()
+    赋值 (Offset, 相加 (Offset, BaseRelocation.SizeOfBlock))
+    RtlMoveMemory_IMAGE_BASE_RELOCATION_1 (BaseRelocation, 相加 (NewBase, Offset), 8)
+.判断循环尾 ()
+
+
+.子程序 VirAlloc, 整数型, , 
+.参数 lpAddress, 整数型, , 
+.参数 dwSize, 整数型, , 
+
+.局部变量 ret, 整数型, , , 
+
+赋值 (ret, VirtualAlloc (lpAddress, dwSize, 位或 (#MEM_COMMIT, #MEM_RESERVE), #PAGE_EXECUTE_READWRITE))
+.如果 (等于 (ret, 0))
+    返回 (VirtualAlloc (0, dwSize, 位或 (#MEM_COMMIT, #MEM_RESERVE), #PAGE_EXECUTE_READWRITE))
+.否则
+    返回 (ret)
+.如果结束
+
+
+.子程序 VirFree, 逻辑型, , 
+.参数 lpAddress, 整数型, , 
+
+返回 (VirtualFree (lpAddress, 0, #MEM_RELEASE))
+
+.子程序 FillRavAddress, 逻辑型, , 
+.参数 ImageBase, 整数型, , 
+.参数 NTHeader, IMAGE_NT_HEADERS, , 
+.参数 pFR_CallBack, 整数型, , 
+.参数 pFR_lParam, 整数型, , 
+
+.局部变量 Offset, 整数型, , , 
+.局部变量 ImportDescriptor, IMAGE_IMPORT_DESCRIPTOR, , , 
+.局部变量 RealIAT, 整数型, , , 
+.局部变量 hModule, 整数型, , , 
+.局部变量 ProcName, 整数型, , , 
+.局部变量 pProcName, 整数型, , , 
+.局部变量 Function, 整数型, , , 
+.局部变量 str, 文本型, , , 
+
+
+赋值 (Offset, NTHeader.OptionalHeader.DataDirectory [2].VirtualAddress)
+RtlMoveMemory_IMAGE_IMPORT_DESCRIPTOR_1 (ImportDescriptor, 相加 (ImageBase, Offset), 20)
+
+.判断循环首 (不等于 (ImportDescriptor.FirstThunk, 0))
+    
+    赋值 (hModule, LoadLibrary (相加 (ImageBase, ImportDescriptor.Name)))
+    
+    RtlMoveMemory_整数_1 (RealIAT, 相加 (ImageBase, ImportDescriptor.FirstThunk), 4)
+    
+    .判断循环首 (不等于 (RealIAT, 0))
+        .如果 (等于 (位与 (RealIAT, #IMAGE_ORDINAL_FLAG32), 0))
+            赋值 (ProcName, 相加 (ImageBase, RealIAT, 2))
+            赋值 (pProcName, ProcName)
+        .否则
+            赋值 (ProcName, 位与 (RealIAT, 65535))
+            赋值 (str, 到文本 (ProcName))
+            赋值 (pProcName, 取地址_文本型 (str))
+        .如果结束
+        
+        .如果 (等于 (pFR_CallBack, 0))
+            赋值 (Function, 0)
+        .否则
+            赋值 (Function, Call (pFR_CallBack, 相加 (ImageBase, ImportDescriptor.Name), pProcName, pFR_lParam))
+        .如果结束
+        
+        .如果真 (等于 (Function, 0))
+            赋值 (Function, GetProcAddress (hModule, ProcName))
+        .如果真结束
+        .如果真 (等于 (Function, 0))
+            返回 (假)
+        .如果真结束
+        
+        RtlMoveMemory_整数_2 (相加 (ImageBase, ImportDescriptor.FirstThunk), Function, 4)
+        
+        赋值 (ImportDescriptor.FirstThunk, 相加 (ImportDescriptor.FirstThunk, 4))
+        RtlMoveMemory_整数_1 (RealIAT, 相加 (ImageBase, ImportDescriptor.FirstThunk), 4)
+    .判断循环尾 ()
+    
+    赋值 (Offset, 相加 (Offset, 20))
+    RtlMoveMemory_IMAGE_IMPORT_DESCRIPTOR_1 (ImportDescriptor, 相加 (ImageBase, Offset), 20)
+.判断循环尾 ()
+
+返回 (真)
+
+.子程序 到文本字节, 字节集, , 
+.参数 i, 整数型, , 
+
+返回 (到字节集 (到文本 (i)))
+
+.子程序 到文本整数, 整数型, , 
+.参数 字节, 字节集, , 
+
+返回 (到数值 (到文本 (字节)))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

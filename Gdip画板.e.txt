@@ -1,0 +1,700 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：Gdi+画板
+ ' 程序描述：Gdi+画板
+@备注:
+Gdi+画板
+ ' 程序作者：李光
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：www.lgblog.org
+ ' 版权声明：李光<www.lgblog.org>
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 GWL_EXSTYLE, "-20", , 
+.常量 WS_EX_LAYERED, "524288", , 
+.常量 GMEM_FIXED, "0", , 
+.常量 SRCCOPY, "13369376", , 
+.常量 ULW_ALPHA, "2", , 
+.常量 SmoothingModeAntiAlias, "4", , 
+.常量 InterpolationModeHighQualityBicubic, "7", , 
+.常量 LineJoinRound, "2", , 
+.常量 FontStyleBold, "1", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 POINT, , 
+    .成员 x, 整数型, , , 
+    .成员 y, 整数型, , , 
+
+数据类型 SIZE, , 
+    .成员 cx, 整数型, , , 
+    .成员 cy, 整数型, , , 
+
+数据类型 BLENDFUNCTION, , 
+    .成员 BlendOp, 字节型, , , 
+    .成员 BlendFlags, 字节型, , , 
+    .成员 SourceConstantAlpha, 字节型, , , 
+    .成员 AlphaFormat, 字节型, , , 
+
+数据类型 BITMAPINFO, , 
+    .成员 bmiHeader, BITMAPINFOHEADER, , , 
+    .成员 bmiColors, RGBQUAD, , , 
+
+数据类型 BITMAPINFOHEADER, , 
+    .成员 biSize, 整数型, , , 
+    .成员 biWidth, 整数型, , , 
+    .成员 biHeight, 整数型, , , 
+    .成员 biPlanes, 短整数型, , , 
+    .成员 biBitCount, 短整数型, , , 
+    .成员 biCompression, 整数型, , , 
+    .成员 biSizeImage, 整数型, , , 
+    .成员 biXPelsPerMeter, 整数型, , , 
+    .成员 biYPelsPerMeter, 整数型, , , 
+    .成员 biClrUsed, 整数型, , , 
+    .成员 biClrImportant, 整数型, , , 
+
+数据类型 RGBQUAD, , 
+    .成员 rgbBlue, 字节型, , , 
+    .成员 rgbGreen, 字节型, , , 
+    .成员 rgbRed, 字节型, , , 
+    .成员 rgbReserved, 字节型, , , 
+
+数据类型 GdiplusStartupInput, , 
+    .成员 GdiplusVersion, 整数型, , , 
+    .成员 DebugEventCallback, 整数型, , , 
+    .成员 SuppressBackgroundThread, 整数型, , , 
+    .成员 SuppressExternalCodecs, 整数型, , , 
+
+数据类型 RECT, 公开, 
+    .成员 left, 整数型, , , 
+    .成员 top, 整数型, , , 
+    .成员 right, 整数型, , , 
+    .成员 bottom, 整数型, , , 
+
+数据类型 RECTF, , 
+    .成员 x, 小数型, , , 
+    .成员 y, 小数型, , , 
+    .成员 Width, 小数型, , , 
+    .成员 Height, 小数型, , , 
+
+数据类型 ColorMatrix, , 
+    .成员 m, 小数型, , "5,5", 
+
+
+.DLL命令 GdiplusStartup, 整数型, "GdiPlus.dll", "", , 
+    .参数 token, 整数型, 传址, 
+    .参数 inputbuf, GdiplusStartupInput, , 
+    .参数 outputbuf, 整数型, , 
+
+.DLL命令 GdiplusShutdown, 空白型, "GdiPlus.dll", "", , 
+    .参数 token, 整数型, , 
+
+.DLL命令 CreateStreamOnHGlobal, 整数型, "Ole32.dll", "", , 
+    .参数 hGlobal, 整数型, , 
+    .参数 fDeleteOnRelease, 逻辑型, , 
+    .参数 ppstm, 整数型, 传址, 
+
+.DLL命令 GdipLoadImageFromFile, 整数型, "GdiPlus.dll", "", , 
+    .参数 FileName, 字节集, , Unicode
+    .参数 Image, 整数型, 传址, 
+
+.DLL命令 GdipLoadImageFromStream, 整数型, "GdiPlus.dll", "", , 
+    .参数 Stream, 整数型, , 
+    .参数 Image, 整数型, 传址, 
+
+.DLL命令 GdipDisposeImage, 整数型, "GdiPlus.dll", "", , 
+    .参数 Image, 整数型, , 
+
+.DLL命令 GdipCreateFromHDC, 整数型, "GdiPlus.dll", "", , 
+    .参数 hDC, 整数型, , 
+    .参数 Graphics, 整数型, 传址, 
+
+.DLL命令 GdipDrawImageRect, 整数型, "GdiPlus.dll", "", , 
+    .参数 Graphics, 整数型, , 
+    .参数 Image, 整数型, , 
+    .参数 X, 小数型, , 
+    .参数 Y, 小数型, , 
+    .参数 Width, 小数型, , 
+    .参数 Height, 小数型, , 
+
+.DLL命令 GdipDeleteGraphics, 整数型, "GdiPlus.dll", "", , 
+    .参数 Graphics, 整数型, , 
+
+.DLL命令 UpdateLayeredWindow, 逻辑型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 hdcDst, 整数型, , 
+    .参数 pptDst, 整数型, , 
+    .参数 psize, SIZE, , 
+    .参数 hdcSrc, 整数型, , 
+    .参数 pptSrc, POINT, , 
+    .参数 crKey, 整数型, , 
+    .参数 pblend, BLENDFUNCTION, , 
+    .参数 dwFlags, 整数型, , 
+
+.DLL命令 SelectObject, 整数型, "", "", , 
+    .参数 hDC, 整数型, , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 GetDC, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 ReleaseDC, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 hDC, 整数型, , 
+
+.DLL命令 GetWindowLong, 整数型, "", "GetWindowLongA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+
+.DLL命令 SetWindowLong, 整数型, "", "SetWindowLongA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+    .参数 dwNewLong, 整数型, , 
+
+.DLL命令 CreateCompatibleDC, 整数型, "", "", , 
+    .参数 hDC, 整数型, , 
+
+.DLL命令 DeleteDC, 整数型, "", "", , 
+    .参数 hDC, 整数型, , 
+
+.DLL命令 CreateDIBSection, 整数型, "", "", , 
+    .参数 hDC, 整数型, , 
+    .参数 pBMI, BITMAPINFO, , 
+    .参数 iUsage, 整数型, , 
+    .参数 ppvBits, 整数型, , 
+    .参数 hSection, 整数型, , 
+    .参数 dwOffset, 整数型, , 
+
+.DLL命令 CreateSolidBrush, 整数型, "", "", , 
+    .参数 crColor, 整数型, , 
+
+.DLL命令 DeleteObject, 整数型, "", "", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 GlobalAlloc, 整数型, "", "", , 
+    .参数 wFlags, 整数型, , 
+    .参数 dwBytes, 整数型, , 
+
+.DLL命令 GlobalLock, 整数型, "", "", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 GlobalUnlock, 整数型, "", "", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 GlobalFree, 整数型, "", "GlobalFree", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 FillRect, 整数型, "", "", , 
+    .参数 hDC, 整数型, , 
+    .参数 lpRect, RECT, , 
+    .参数 hBrush, 整数型, , 
+
+.DLL命令 SetRect, 整数型, "", "", , 
+    .参数 lprc, RECT, , 
+    .参数 xLeft, 整数型, , 
+    .参数 yTop, 整数型, , 
+    .参数 xRight, 整数型, , 
+    .参数 yBottom, 整数型, , 
+
+.DLL命令 BitBlt, 逻辑型, "", "", , 
+    .参数 hdcDest, 整数型, , 
+    .参数 nXDest, 整数型, , 
+    .参数 nYDest, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+    .参数 hdcSrc, 整数型, , 
+    .参数 nXSrc, 整数型, , 
+    .参数 nYSrc, 整数型, , 
+    .参数 dwRop, 整数型, , 
+
+.DLL命令 MultiByteToWideChar, 整数型, "", "", , 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpWideCharStr, 字节集, , 
+    .参数 cchWideChar, 整数型, , 
+
+.DLL命令 GdipGetImageHeight, 整数型, "GdiPlus.dll", "", , 
+    .参数 Image, 整数型, , 
+    .参数 Height, 整数型, 传址, 
+
+.DLL命令 GdipGetImageWidth, 整数型, "GdiPlus.dll", "", , 
+    .参数 Image, 整数型, , 
+    .参数 Width, 整数型, 传址, 
+
+.DLL命令 GdipGetImageType, 整数型, "GdiPlus.dll", "", , 
+    .参数 Image, 整数型, , 
+    .参数 Type, 整数型, 传址, 
+
+.DLL命令 GdipDrawImageRectRect, 整数型, "GdiPlus.dll", "", , 
+    .参数 Graphics, 整数型, , 
+    .参数 Image, 整数型, , 
+    .参数 dstx, 小数型, , 
+    .参数 dsty, 小数型, , 
+    .参数 dstwidth, 小数型, , 
+    .参数 dstheight, 小数型, , 
+    .参数 srcx, 小数型, , 
+    .参数 srcy, 小数型, , 
+    .参数 srcwidth, 小数型, , 
+    .参数 srcheight, 小数型, , 
+    .参数 srcUnit, 整数型, , 
+    .参数 ImageAttributes, 整数型, , 
+    .参数 Callback, 整数型, , 
+    .参数 CallbackData, 整数型, 传址, 
+
+.DLL命令 GdipSetSmoothingMode, 整数型, "GdiPlus.dll", "", , 
+    .参数 Graphics, 整数型, , 
+    .参数 smoothingMode, 整数型, , 
+
+.DLL命令 GdipGraphicsClear, 整数型, "GdiPlus.dll", "", , 
+    .参数 graphics, 整数型, , 
+    .参数 color, 整数型, , 
+
+.DLL命令 GdipSetInterpolationMode, 整数型, "GdiPlus.dll", "", , 
+    .参数 Graphics, 整数型, , 
+    .参数 InterpolationMode, 整数型, , 
+
+.DLL命令 GdipAddPathString, 整数型, "GdiPlus.dll", "", , 
+    .参数 Path, 整数型, , 
+    .参数 String, 字节集, , 
+    .参数 Length, 整数型, , 
+    .参数 Family, 整数型, , 
+    .参数 Style, 整数型, , 
+    .参数 emSize, 小数型, , 
+    .参数 LayoutRect, RECTF, , 
+    .参数 Format, 整数型, , 
+
+.DLL命令 GdipCreatePath, 整数型, "GdiPlus.dll", "", , 
+    .参数 BrushMode, 整数型, , 
+    .参数 Path, 整数型, 传址, 
+
+.DLL命令 GdipSetPenLineJoin, 整数型, "GdiPlus.dll", "", , 
+    .参数 Pen, 整数型, , 
+    .参数 LineJoin, 整数型, , 
+
+.DLL命令 GdipDrawPath, 整数型, "GdiPlus.dll", "", , 
+    .参数 Graphics, 整数型, , 
+    .参数 Pen, 整数型, , 
+    .参数 Path, 整数型, , 
+
+.DLL命令 GdipCreateLineBrushFromRectI, 整数型, "GdiPlus.dll", "GdipCreateLineBrushFromRectI", , 
+    .参数 Rect, RECT, , 
+    .参数 color1, 整数型, , 
+    .参数 color2, 整数型, , 
+    .参数 mode, 整数型, , 
+    .参数 wrapMode, 整数型, , 
+    .参数 lineGradient, 整数型, 传址, 
+
+.DLL命令 GdipFillPath, 整数型, "GdiPlus.dll", "", , 
+    .参数 Graphics, 整数型, , 
+    .参数 Brush, 整数型, , 
+    .参数 Path, 整数型, , 
+
+.DLL命令 GdipGetPathWorldBounds, 整数型, "GdiPlus.dll", "", , 
+    .参数 Path, 整数型, , 
+    .参数 Bounds, RECTF, , 
+    .参数 Matrix, 整数型, , 
+    .参数 Pen, 整数型, , 
+
+.DLL命令 GdipCreateFontFamilyFromName, 整数型, "GdiPlus.dll", "", , 
+    .参数 Name, 字节集, , 
+    .参数 FontCollection, 整数型, , 
+    .参数 FontFamily, 整数型, 传址, 
+
+.DLL命令 GdipCreatePen1, 整数型, "GdiPlus.dll", "", , 
+    .参数 Color, 整数型, , 
+    .参数 Width, 小数型, , 
+    .参数 Unit, 整数型, , 
+    .参数 Pen, 整数型, 传址, 
+
+.DLL命令 GdipCreateSolidFill, 整数型, "GdiPlus.dll", "", , 
+    .参数 Color, 整数型, , 
+    .参数 Brush, 整数型, 传址, 
+
+.DLL命令 GdipDeleteBrush, 整数型, "GdiPlus.dll", "", , 
+    .参数 Brush, 整数型, , 
+
+.DLL命令 GdipDeletePen, 整数型, "GdiPlus.dll", "", , 
+    .参数 Pen, 整数型, , 
+
+.DLL命令 GdipDeletePath, 整数型, "GdiPlus.dll", "", , 
+    .参数 Path, 整数型, , 
+
+.DLL命令 GdipDeleteFontFamily, 整数型, "GdiPlus.dll", "", , 
+    .参数 FontFamily, 整数型, , 
+
+.DLL命令 GdipSetImageAttributesColorMatrix, 整数型, "Gdiplus.dll", "", , 
+    .参数 ImageAttributes, 整数型, , 
+    .参数 ClrAdjType, 整数型, , 
+    .参数 enableFlag, 逻辑型, , 
+    .参数 colourMatrix, ColorMatrix, , 
+    .参数 grayMatrix, 整数型, , 
+    .参数 ColorMatrixFlags, 整数型, , 
+
+.DLL命令 GdipCreateImageAttributes, 整数型, "Gdiplus.dll", "", , 
+    .参数 ImageAttributes, 整数型, 传址, 
+
+.DLL命令 GdipDisposeImageAttributes, 整数型, "GdiPlus.dll", "", , 
+    .参数 ImageAttributes, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.类模块 Gdip画板, , , 
+
+.程序集变量 token, 整数型, , , 
+.程序集变量 hWnd, 整数型, , , 
+.程序集变量 Width, 整数型, , , 
+.程序集变量 Height, 整数型, , , 
+.程序集变量 EXSTYLE, 整数型, , , 
+.程序集变量 mDC, 整数型, , , 
+.程序集变量 hDIB, 整数型, , , 
+.程序集变量 Graphics, 整数型, , , 
+.程序集变量 Point, POINT, , , 
+.程序集变量 Size, SIZE, , , 
+.程序集变量 blend, BLENDFUNCTION, , , 
+.程序集变量 hSolidBrush, 整数型, , , 
+.程序集变量 FontFamily, 整数型, , , 
+.程序集变量 Pen, 整数型, , , 
+.程序集变量 Brush, 整数型, , , 
+.程序集变量 ImageAttributes, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+.局部变量 GpInput, GdiplusStartupInput, , , 
+
+赋值 (GpInput.GdiplusVersion, 1)
+GdiplusStartup (token, GpInput, 0)
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+销毁 ()
+GdiplusShutdown (token)
+
+.子程序 创建, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+.参数 字体名称, 文本型, , 
+.参数 字体颜色, 整数型, , 
+.参数 描边颜色, 整数型, , 
+.参数 字体透明度, 整数型, , 
+.参数 高质量, 逻辑型, 可空, 
+
+.局部变量 hDC, 整数型, , , 
+.局部变量 BMI, BITMAPINFO, , , 
+
+销毁 ()
+
+赋值 (hWnd, 窗口句柄)
+赋值 (Width, 宽度)
+赋值 (Height, 高度)
+
+赋值 (Point.x, 0)
+赋值 (Point.y, 0)
+赋值 (Size.cx, Width)
+赋值 (Size.cy, Height)
+
+赋值 (blend.AlphaFormat, 1)
+赋值 (blend.BlendFlags, 0)
+赋值 (blend.BlendOp, 0)
+赋值 (blend.SourceConstantAlpha, 255)
+
+
+赋值 (EXSTYLE, GetWindowLong (hWnd, #GWL_EXSTYLE))
+SetWindowLong (hWnd, #GWL_EXSTYLE, 位或 (EXSTYLE, #WS_EX_LAYERED))
+
+赋值 (hDC, GetDC (hWnd))
+赋值 (mDC, CreateCompatibleDC (hDC))
+ReleaseDC (hWnd, hDC)
+
+
+赋值 (BMI.bmiHeader.biSize, 40)
+赋值 (BMI.bmiHeader.biWidth, Width)
+赋值 (BMI.bmiHeader.biHeight, Height)
+赋值 (BMI.bmiHeader.biPlanes, 1)
+赋值 (BMI.bmiHeader.biBitCount, 32)
+赋值 (BMI.bmiHeader.biSizeImage, 相除 (相乘 (BMI.bmiHeader.biWidth, BMI.bmiHeader.biHeight, BMI.bmiHeader.biBitCount), 8))
+赋值 (hDIB, CreateDIBSection (mDC, BMI, 0, 0, 0, 0))
+
+SelectObject (mDC, hDIB)
+
+GdipCreateFromHDC (mDC, Graphics)
+
+.如果真 (高质量)
+     ' 开启此模式后效果可能会更好 , 但会影响流畅度.
+    GdipSetInterpolationMode (Graphics, #InterpolationModeHighQualityBicubic)
+.如果真结束
+
+.如果真 (不等于 (字体名称, “”))
+    GdipSetSmoothingMode (Graphics, #SmoothingModeAntiAlias)
+    
+    GdipCreateFontFamilyFromName (A2W (字体名称), 0, FontFamily)
+    
+    GdipCreatePen1 (RGB2ARGB (描边颜色, 字体透明度), 0, 5, Pen)
+    GdipSetPenLineJoin (Pen, #LineJoinRound)
+    
+    GdipCreateSolidFill (RGB2ARGB (字体颜色, 字体透明度), Brush)
+    
+.如果真结束
+
+赋值 (hSolidBrush, CreateSolidBrush (#黑色))
+
+GdipCreateImageAttributes (ImageAttributes)
+
+
+.子程序 销毁, 空白型, , 
+.如果真 (不等于 (EXSTYLE, 0))
+    SetWindowLong (hWnd, #GWL_EXSTYLE, EXSTYLE)
+    赋值 (EXSTYLE, 0)
+.如果真结束
+.如果真 (不等于 (ImageAttributes, 0))
+    GdipDisposeImageAttributes (ImageAttributes)
+.如果真结束
+.如果真 (不等于 (Brush, 0))
+    GdipDeleteBrush (Brush)
+.如果真结束
+.如果真 (不等于 (Pen, 0))
+    GdipDeletePen (Pen)
+.如果真结束
+.如果真 (不等于 (FontFamily, 0))
+    GdipDeleteFontFamily (FontFamily)
+.如果真结束
+.如果真 (不等于 (hSolidBrush, 0))
+    DeleteObject (hSolidBrush)
+.如果真结束
+.如果真 (不等于 (Graphics, 0))
+    GdipDeleteGraphics (Graphics)
+    赋值 (Graphics, 0)
+.如果真结束
+.如果真 (不等于 (hDIB, 0))
+    DeleteObject (hDIB)
+    赋值 (hDIB, 0)
+.如果真结束
+.如果真 (不等于 (mDC, 0))
+    DeleteDC (mDC)
+    赋值 (mDC, 0)
+.如果真结束
+
+
+
+.子程序 清除, 空白型, , 
+.参数 区域, RECT, 可空, 
+
+.如果 (并且 (等于 (区域.left, 0), 等于 (区域.top, 0), 等于 (区域.right, 0), 等于 (区域.bottom, 0)))
+    GdipGraphicsClear (Graphics, 0)
+.否则
+    FillRect (mDC, 区域, hSolidBrush)
+.如果结束
+
+
+.子程序 绘图, 空白型, , 
+.参数 图片对象, Gdip图片对象, , 
+.参数 左边, 小数型, , 
+.参数 顶边, 小数型, , 
+.参数 宽度, 小数型, , 
+.参数 高度, 小数型, , 
+
+GdipDrawImageRect (Graphics, 图片对象.取句柄 (), 左边, 顶边, 宽度, 高度)
+
+.子程序 绘图Ex, 空白型, , 
+.参数 图片对象, Gdip图片对象, , 
+.参数 目标左边, 小数型, , 
+.参数 目标顶边, 小数型, , 
+.参数 目标宽度, 小数型, , 
+.参数 目标高度, 小数型, , 
+.参数 源左边, 小数型, , 
+.参数 源顶边, 小数型, , 
+.参数 源宽度, 小数型, , 
+.参数 源高度, 小数型, , 
+.参数 透明度, 小数型, 可空, 
+
+.局部变量 ColorMatrix, ColorMatrix, 静态, , 
+
+
+
+.如果 (等于 (透明度, 0))
+    
+    GdipDrawImageRectRect (Graphics, 图片对象.取句柄 (), 目标左边, 目标顶边, 目标宽度, 目标高度, 源左边, 源顶边, 源宽度, 源高度, 2, 0, 0, 0)
+    
+.否则
+    
+    赋值 (ColorMatrix.m [1] [1], 1)
+    赋值 (ColorMatrix.m [2] [2], 1)
+    赋值 (ColorMatrix.m [3] [3], 1)
+    赋值 (ColorMatrix.m [4] [4], 透明度)
+    赋值 (ColorMatrix.m [5] [5], 1)
+    
+    GdipSetImageAttributesColorMatrix (ImageAttributes, 1, 真, ColorMatrix, 0, 0)
+    
+    GdipDrawImageRectRect (Graphics, 图片对象.取句柄 (), 目标左边, 目标顶边, 目标宽度, 目标高度, 源左边, 源顶边, 源宽度, 源高度, 2, ImageAttributes, 0, 0)
+.如果结束
+
+
+.子程序 绘描边字, 空白型, , 
+.参数 文本, 文本型, , 
+.参数 左边, 小数型, , 
+.参数 顶边, 小数型, , 
+.参数 大小, 整数型, , 
+
+.局部变量 tmp, 字节集, 静态, , 
+.局部变量 RECTF, RECTF, 静态, , 
+.局部变量 Path, 整数型, 静态, , 
+
+赋值 (tmp, A2W (文本))
+
+赋值 (RECTF.x, 左边)
+赋值 (RECTF.y, 顶边)
+
+GdipCreatePath (0, Path)
+
+GdipAddPathString (Path, tmp, 相除 (取字节集长度 (tmp), 2), FontFamily, #FontStyleBold, 大小, RECTF, 0)
+GdipDrawPath (Graphics, Pen, Path)
+GdipFillPath (Graphics, Brush, Path)
+
+GdipDeletePath (Path)
+
+.子程序 取场景, 整数型, , 
+返回 (mDC)
+
+.子程序 复制到, 逻辑型, , 
+.参数 目标场景, 整数型, , 
+.参数 左边, 整数型, , 
+.参数 顶边, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+
+返回 (BitBlt (目标场景, 左边, 顶边, 宽度, 高度, mDC, 0, 0, #SRCCOPY))
+
+.子程序 刷新, 空白型, , 
+UpdateLayeredWindow (hWnd, 0, 0, Size, mDC, Point, 0, blend, #ULW_ALPHA)
+
+.类模块 Gdip图片对象, , , 
+
+.程序集变量 token, 整数型, , , 
+.程序集变量 hMem, 整数型, , , 
+.程序集变量 Image, 整数型, , , 
+.程序集变量 Width, 整数型, , , 
+.程序集变量 Height, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+.局部变量 GpInput, GdiplusStartupInput, , , 
+
+赋值 (GpInput.GdiplusVersion, 1)
+GdiplusStartup (token, GpInput, 0)
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+释放 ()
+GdiplusShutdown (token)
+
+.子程序 加载数据, 逻辑型, , 
+.参数 图片数据, 字节集, , 
+
+.局部变量 pMem, 整数型, , , 
+.局部变量 Stream, 整数型, , , 
+
+释放 ()
+
+赋值 (hMem, GlobalAlloc (#GMEM_FIXED, 取字节集长度 (图片数据)))
+.如果真 (不等于 (hMem, 0))
+    
+    赋值 (pMem, GlobalLock (hMem))
+    .如果真 (不等于 (pMem, 0))
+        
+        写到内存 (图片数据, pMem, )
+        GlobalUnlock (hMem)
+        
+        .如果真 (等于 (CreateStreamOnHGlobal (hMem, 假, Stream), 0))
+            .如果真 (等于 (GdipLoadImageFromStream (Stream, Image), 0))
+                GdipGetImageWidth (Image, Width)
+                GdipGetImageHeight (Image, Height)
+                返回 (真)
+            .如果真结束
+            
+        .如果真结束
+        
+    .如果真结束
+    
+    GlobalFree (hMem)
+    赋值 (hMem, 0)
+.如果真结束
+返回 (假)
+
+.子程序 加载文件, 逻辑型, , 
+.参数 文件路径, 文本型, , 
+
+释放 ()
+.如果 (等于 (GdipLoadImageFromFile (A2W (文件路径), Image), 0))
+    GdipGetImageWidth (Image, Width)
+    GdipGetImageHeight (Image, Height)
+    返回 (真)
+.否则
+    返回 (假)
+.如果结束
+
+
+.子程序 释放, 空白型, , 
+赋值 (Width, 0)
+赋值 (Height, 0)
+
+.如果真 (不等于 (Image, 0))
+    GdipDisposeImage (Image)
+    赋值 (Image, 0)
+.如果真结束
+.如果真 (不等于 (hMem, 0))
+    GlobalFree (hMem)
+    赋值 (hMem, 0)
+.如果真结束
+
+
+.子程序 取句柄, 整数型, , 
+返回 (Image)
+
+.子程序 取宽度, 整数型, , 
+返回 (Width)
+
+.子程序 取高度, 整数型, , 
+返回 (Height)
+
+.程序集 help, , , 
+
+.子程序 A2W, 字节集, , 
+.参数 Ansi, 文本型, , 
+
+.局部变量 len, 整数型, , , 
+.局部变量 Unicode, 字节集, , , 
+
+赋值 (len, MultiByteToWideChar (936, 0, Ansi, -1, {  }, 0))
+赋值 (Unicode, 取空白字节集 (相乘 (len, 2)))
+MultiByteToWideChar (936, 0, Ansi, -1, Unicode, 相乘 (len, 2))
+返回 (Unicode)
+
+.子程序 RGB2ARGB, 整数型, , 
+.参数 RGB颜色, 整数型, , 
+.参数 透明度, 整数型, , 
+
+.局部变量 Color, 字节集, , , 
+
+赋值 (Color, 到字节集 (RGB颜色))
+赋值 (RGB颜色, 位或 (相加 (Color [3], 相乘 (Color [2], 256), 相乘 (Color [1], 65536)), 左移 (透明度, 24))) ' 转换成GDI+的颜色值
+返回 (RGB颜色)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

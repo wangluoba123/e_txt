@@ -1,0 +1,403 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：隐藏进程
+ ' 程序描述：
+ ' 程序作者： 
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 LUID, , 进程令牌
+    .成员 LowPart, 整数型, , , 
+    .成员 HighPart, 整数型, , , 
+
+数据类型 进程权限, , 
+    .成员 PrivilegeCount, 整数型, , , 
+    .成员 LowPart, 整数型, , , 
+    .成员 HighPart, 整数型, , , 
+    .成员 Attributes, 整数型, , , 
+
+数据类型 SYSTEM_HANDLE_INFORMATION, , 16byte
+    .成员 ProcessId, 整数型, , , 进程标识符
+    .成员 ObjectTypeNumber, 字节型, , , 打开的对象的类型
+    .成员 Flags, 字节型, , , 句柄属性标志
+    .成员 Handle, 短整数型, , , 句柄数值,在进程打开的句柄中唯一标识某个句柄
+    .成员 Object, 整数型, , , 这个就是句柄对应的EPROCESS的地址
+    .成员 GrantedAccess, 整数型, , , 句柄对象的访问权限
+
+数据类型 CLIENT_ID, , 
+    .成员 UniqueProcess, 整数型, , , 
+    .成员 UniqueThread, 整数型, , , 
+
+数据类型 OBJECT_ATTRIBUTES, , 
+    .成员 Length, 整数型, , , 
+    .成员 RootDirectory, 整数型, , , 
+    .成员 ObjectName, 整数型, , , 
+    .成员 Attributes, 整数型, , , 
+    .成员 SecurityDescriptor, 整数型, , , 
+    .成员 SecurityQualityOfService, 整数型, , , 
+
+数据类型 PROCESS_BASIC_INFORMATION, , 
+    .成员 ExitStatus, 整数型, , , 
+    .成员 PebBaseAddress, 整数型, , , 
+    .成员 AffinityMask, 整数型, , , 
+    .成员 BasePriority, 整数型, , , 
+    .成员 UniqueProcessId, 整数型, , , 
+    .成员 InheritedFromUniqueProcessId, 整数型, , , 
+
+数据类型 SYSTEM_HANDLE_TABLE_ENTRY_INFO, , 
+    .成员 UniqueProcessId, 短整数型, , , ""
+    .成员 CreatorBackTraceIndex, 短整数型, , , ""
+    .成员 ObjectTypeIndex, 字节型, , , ""
+    .成员 HandleAttributes, 字节型, , , ""
+    .成员 HandleValue, 短整数型, , , ""
+    .成员 pObject, 整数型, , , ""
+    .成员 GrantedAccess, 整数型, , , ""
+
+
+.DLL命令 取字节集指针_, 整数型, "kernel32.dll", "lstrcpynA", , 成功返回保存变量指针,失败返回0
+    .参数 保存变量, 字节集, 传址, 保存的变量
+    .参数 待拷变量, 字节集, 传址, 拷与的变量或数据
+    .参数 拷贝长度, 整数型, , 拷贝长度可用0
+
+.DLL命令 NtSystemDebugControl, 整数型, "ntdll.dll", "NtSystemDebugControl", , 
+    .参数 Command, 整数型, , 8
+    .参数 InputBuffer, 字节集, , 
+    .参数 InputBufferLength, 整数型, , 
+    .参数 OutputBuffer, 整数型, , 
+    .参数 OutputBufferLength, 整数型, , 
+    .参数 ReturnLength, 整数型, 传址, 
+
+.DLL命令 取自进程ID, 整数型, "kernel32.dll", "GetCurrentProcessId", , 
+
+.DLL命令 关闭系统快照, 整数型, "kernel32.dll", "CloseHandle", , 
+    .参数 快照句柄, 整数型, , 
+
+.DLL命令 ZwQuerySystemInformation, 整数型, "ntdll.dll", "ZwQuerySystemInformation", , 
+    .参数 SystemInformationClass, 整数型, , 未知类型：SYSTEM_INFORMATION_CLASS。
+    .参数 SystemInformation, 字节集, , any
+    .参数 SystemInformationLength, 整数型, , 
+    .参数 ReturnLength, 整数型, 传址, 
+
+.DLL命令 复制内存整数, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目标地址, 整数型, 传址, 
+    .参数 源地址, 整数型, , 
+    .参数 复制长度, 整数型, , 
+
+.DLL命令 RtlMoveMemory2, 整数型, "", "RtlMoveMemory", , 
+    .参数 dest, 未知类型0x410100E0, , 
+    .参数 Source, 整数型, , 
+    .参数 len, 空白型, , 284
+
+.DLL命令 StrToInt64ExA, 整数型, "shlwapi.dll", "StrToInt64ExA", , 64-bit integer
+    .参数 pszString, 文本型, , 
+    .参数 dwFlags, 整数型, , 1为16进制，0为10进制
+    .参数 piRet, 长整数型, 传址, 
+
+.DLL命令 打开令牌对象, 逻辑型, "advapi32.dll", "OpenProcessToken", , 打开过程令牌对象
+    .参数 进程句柄, 整数型, , 
+    .参数 权限, 整数型, , 
+    .参数 令牌句柄, 整数型, 传址, 
+
+.DLL命令 取权限令牌, 整数型, "advapi32.dll", "LookupPrivilegeValueA", , 返回特权名LUID
+    .参数 系统服务名, 整数型, , lpSystemName
+    .参数 权限名, 文本型, 传址, 
+    .参数 权限结构, 未知类型0x410100E1, 传址, 
+
+.DLL命令 置进程权限, 逻辑型, "advapi32.dll", "AdjustTokenPrivileges", , 使能/取消令牌特权
+    .参数 令牌句柄, 整数型, , 
+    .参数 DisableAllPrivileges, 逻辑型, , 
+    .参数 NewState, 未知类型0x410100E2, 传址, 
+    .参数 BufferLength, 整数型, , 
+    .参数 PreviousState, 整数型, , 
+    .参数 ReturnLength, 整数型, , 
+
+.DLL命令 关闭对象, 整数型, "kernel32.dll", "CloseHandle", , 
+    .参数 对象句柄, 整数型, , 
+
+.DLL命令 ZwOpenProcess, 整数型, "ntdll.dll", "ZwOpenProcess", , 
+    .参数 hProcess, 整数型, 传址, 
+    .参数 DesiredAccess, 整数型, , 
+    .参数 ObjectAttributes, 未知类型0x410100E3, , 
+    .参数 ClientId, 未知类型0x410100E4, , 
+
+.DLL命令 RtlMoveMemory3, 整数型, "", "RtlMoveMemory", , 常规API,从地址读一个整数
+    .参数 dest, 整数型, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 len, 空白型, , 4
+
+.DLL命令 RtlMoveMemory1, 整数型, "", "RtlMoveMemory", , 常规API
+    .参数 dest, 未知类型0x410100E5, , 
+    .参数 Source, 整数型, , 
+    .参数 len, 空白型, , 284
+
+.DLL命令 ZwDuplicateObject, 整数型, "ntdll.dll", "", , 
+    .参数 SourceProcessHandle, 整数型, , 
+    .参数 SourceHandle, 整数型, , 
+    .参数 TargetProcessHandle, 整数型, , 
+    .参数 TargetHandle, 整数型, 传址, 
+    .参数 DesiredAccess, 整数型, , 
+    .参数 HandleAttributes, 整数型, , 
+    .参数 Options, 整数型, , 
+
+.DLL命令 ZwQueryInformationProcess, 整数型, "ntdll.dll", "ZwQueryInformationProcess", , 
+    .参数 SystemInformationClass, 整数型, , 未知类型：SYSTEM_INFORMATION_CLASS。
+    .参数 dd, 整数型, , 
+    .参数 SystemInformation, 未知类型0x410100E6, , any
+    .参数 SystemInformationLength, 整数型, , 
+    .参数 ReturnLength, 整数型, 传址, 
+
+.DLL命令 ZwClose, 整数型, "ntdll.dll", "ZwClose", , 
+    .参数 hnd, 空白型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.子程序 隐藏进程, 逻辑型, 公开, 隐藏自身进程（XP，XP2）
+.局部变量 pid, 整数型, , , 
+.局部变量 eprocess, 长整数型, , , 
+.局部变量 hand, 整数型, , , 
+.局部变量 temp, 字节集, , , 
+.局部变量 fw_, 长整数型, , , 
+.局部变量 bw_, 长整数型, , , 
+.局部变量 fw, 字节集, , , 
+.局部变量 bw, 字节集, , , 
+
+提升进程权限 ()
+赋值 (hand, 用保护型打开进程 (2075311, 真, 未知函数_167837762 ()))
+赋值 (eprocess, 取进程EProcess (未知函数_167837762 ()))
+未知函数_167837763 (hand)
+.如果真 (等于 (eprocess, 0))
+    返回 (假)
+.如果真结束
+
+赋值 (temp, 读物理内存 (相加 (eprocess, 136), 4))
+.如果真 (等于 (temp, {  }))
+    返回 (假)
+.如果真结束
+赋值 (fw_, 取字节集数据 (temp, #长整数型, ))
+赋值 (fw, temp)
+
+
+赋值 (temp, 读物理内存 (相加 (eprocess, 140), 4))
+.如果真 (等于 (temp, {  }))
+    返回 (假)
+.如果真结束
+赋值 (bw_, 取字节集数据 (temp, #长整数型, ))
+赋值 (bw, temp)
+
+
+.如果真 (等于 (写物理内存 (相加 (fw_, 4), bw), -1))
+    返回 (假)
+.如果真结束
+
+.如果真 (等于 (写物理内存 (bw_, fw), -1))
+    返回 (假)
+.如果真结束
+返回 (真)
+
+.子程序 用保护型打开进程, 整数型, , 
+.参数 dwDesiredAccess, 整数型, , 
+.参数 bInhert, 逻辑型, , 
+.参数 ProcessId, 整数型, , 
+
+.局部变量 st, 整数型, , , 
+.局部变量 cid, 未知类型0x41010044, , , 
+.局部变量 oa, 未知类型0x41010045, , , 
+.局部变量 NumOfHandle, 整数型, , , 
+.局部变量 pbi, 未知类型0x41010046, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 hProcessToDup, 整数型, , , 
+.局部变量 hProcessCur, 整数型, , , 
+.局部变量 hProcessToRet, 整数型, , , 
+.局部变量 匿名局部变量_30, 空白型, , , 
+.局部变量 h_info, 未知类型0x41010047, , , 
+.局部变量 匿名局部变量_32, 空白型, , , 
+.局部变量 retlen, 整数型, , , 
+.局部变量 a, 字节集, , , 
+.局部变量 b, 整数型, , , 
+.局部变量 c, 字节集, , , 
+.局部变量 匿名局部变量_37, 空白型, , , 
+.局部变量 ret, 整数型, , , 
+
+赋值 (oa., 24)
+.如果真 (bInhert)
+    赋值 (oa., 位或 (oa., 2))
+.如果真结束
+赋值 (cid., 相加 (ProcessId, 1))
+赋值 (st, 未知函数_167837768 (hProcessToRet, dwDesiredAccess, oa, cid))
+.如果真 (大于或等于 (st, 0))
+    赋值 (ret, hProcessToRet)
+    返回 (ret)
+.如果真结束
+赋值 (retlen, 1)
+.循环判断首 ()
+    赋值 (a, 取空白字节集 (retlen))
+    赋值 (ret, 未知函数_167837769 (16, a, retlen, 0))
+    .如果 (等于 (ret, -1073741820))
+        赋值 (retlen, 相乘 (retlen, 2))
+        赋值 (a, 取空白字节集 (retlen))
+    .否则
+        跳出循环 ()
+    .如果结束
+    
+.循环判断尾 (等于 (ret, -1073741820))
+赋值 (b, 未知函数_167837770 (a, a, 0))
+未知函数_167837771 (NumOfHandle, b, 4)
+赋值 (b, 相加 (b, 4))
+.计次循环首 (NumOfHandle, i)
+    未知函数_167837772 (h_info, b, 16)
+    .如果真 (等于 (h_info., 5))
+        赋值 (cid., h_info.)
+        赋值 (st, 未知函数_167837768 (hProcessToDup, 64, oa, cid))
+        .如果真 (大于或等于 (st, 0))
+            赋值 (st, 未知函数_167837775 (hProcessToDup, h_info., -1, hProcessCur, 2035711, 0, 4))
+            .如果真 (大于或等于 (st, 0))
+                赋值 (st, 未知函数_167837773 (hProcessCur, 0, pbi, 24, 0))
+                .如果真 (大于或等于 (st, 0))
+                    .如果真 (等于 (pbi., ProcessId))
+                        赋值 (st, 未知函数_167837775 (hProcessToDup, h_info., -1, hProcessToRet, dwDesiredAccess, 2, 4))
+                        .如果真 (大于或等于 (st, 0))
+                            赋值 (ret, hProcessToRet)
+                        .如果真结束
+                        
+                    .如果真结束
+                    
+                .如果真结束
+                
+            .如果真结束
+            赋值 (st, 未知函数_167837774 (hProcessCur))
+        .如果真结束
+        赋值 (st, 未知函数_167837774 (hProcessToDup))
+    .如果真结束
+    赋值 (b, 相加 (b, 16))
+.计次循环尾 ()
+返回 (ret)
+
+.子程序 提升进程权限, 逻辑型, , 成功返回真，把一个进程的权限提升到调试级权限
+.参数 进程ID, 整数型, 可空, 欲提升权限的进程ID，若空为自进程，可以协助跨进程内存读写搜索时使用
+
+.局部变量 进程句柄, 整数型, , , 
+.局部变量 令牌句柄, 整数型, , , 
+.局部变量 destLuid, 未知类型0x41010057, , , 
+.局部变量 进程权限, 未知类型0x41010058, , , 
+.局部变量 返回, 逻辑型, , , 
+
+.如果真 (等于 (0, 进程ID))
+    赋值 (进程ID, 未知函数_167837762 ())
+.如果真结束
+赋值 (进程句柄, 用保护型打开进程 (2035711, 真, 进程ID))
+未知函数_167837785 (进程句柄, 983551, 令牌句柄)
+未知函数_167837786 (0, “SeDebugPrivilege”, destLuid)
+赋值 (进程权限., 1)
+赋值 (进程权限., 2)
+赋值 (进程权限., destLuid.)
+赋值 (进程权限., destLuid.)
+赋值 (返回, 未知函数_167837787 (令牌句柄, 假, 进程权限, 0, 0, 0))
+未知函数_167837788 (进程句柄)
+返回 (返回)
+
+.子程序 写物理内存, 整数型, , 失败返回-1，成功返回0
+.参数 地址, 长整数型, , 
+.参数 数据, 字节集, , <=4096
+
+.局部变量 MEMORY_CHUNKS, 字节集, , , 
+.局部变量 ret, 整数型, , , 
+.局部变量 retlen, 整数型, , , 
+.局部变量 len, 整数型, , , 
+
+赋值 (len, 取字节集长度 (数据))
+赋值 (MEMORY_CHUNKS, 相加 (取字节集左边 (到字节集 (地址), 4), 到字节集 (未知函数_167837770 (数据, 数据, 0)), 到字节集 (len)))
+未知函数_167837795 (9, MEMORY_CHUNKS, 12, 0, 0, retlen) ' 12为MEMORY_CHUNKS的长度
+.如果真 (小于或等于 (retlen, 0))
+    赋值 (ret, -1)
+.如果真结束
+返回 (ret)
+
+
+.子程序 读物理内存, 字节集, , 失败返回{}，成功返回相应数据
+.参数 地址, 长整数型, , 
+.参数 长度, 整数型, , <=4096
+
+.局部变量 MEMORY_CHUNKS, 字节集, , , 
+.局部变量 ret, 字节集, , , 
+.局部变量 retlen, 整数型, , , 
+
+赋值 (ret, 取空白字节集 (长度))
+赋值 (MEMORY_CHUNKS, 相加 (取字节集左边 (到字节集 (地址), 4), 到字节集 (未知函数_167837770 (ret, ret, 0)), 到字节集 (长度)))
+未知函数_167837795 (8, MEMORY_CHUNKS, 12, 0, 0, retlen) ' 12为MEMORY_CHUNKS的长度
+.如果真 (小于或等于 (retlen, 0))
+    赋值 (ret, {  })
+.如果真结束
+返回 (ret)
+
+.子程序 取进程EProcess, 长整数型, , 0为失败
+.参数 pid, 整数型, , 
+
+.局部变量 ret, 空白型, , , 
+.局部变量 信息块, 字节集, , , 
+.局部变量 retlen, 空白型, , , 
+.局部变量 temp, 未知类型0x41010064, , , 
+.局部变量 信息块指针偏移, 空白型, , , 
+.局部变量 number, 空白型, , , 
+.局部变量 结果, 长整数型, , , 
+
+赋值 (retlen, 1)
+.循环判断首 ()
+    赋值 (信息块, 取空白字节集 (retlen))
+    赋值 (ret, 未知函数_167837769 (16, 信息块, retlen, 0))
+    .如果 (等于 (ret, -1073741820))
+        赋值 (retlen, 相乘 (retlen, 2))
+        赋值 (信息块, 取空白字节集 (retlen))
+    .否则
+        跳出循环 ()
+    .如果结束
+    
+.循环判断尾 (等于 (ret, -1073741820))
+
+赋值 (信息块指针偏移, 未知函数_167837770 (信息块, 信息块, 0))
+未知函数_167837798 (number, 信息块指针偏移, 4)
+赋值 (信息块指针偏移, 相加 (信息块指针偏移, 4))
+.计次循环首 (number, )
+    未知函数_167837797 (temp, 信息块指针偏移, 16)
+    .如果真 (并且 (等于 (pid, temp.), 等于 (temp., 5)))
+        返回 (十六文本至长整数 (取十六进制文本 (temp.)))
+    .如果真结束
+    赋值 (信息块指针偏移, 相加 (信息块指针偏移, 16))
+.计次循环尾 ()
+返回 (0)
+
+.子程序 十六文本至长整数, 长整数型, , 
+.参数 x, 文本型, , 要转换的十六进制文本
+
+.局部变量 ret, 长整数型, , , 
+
+未知函数_167837802 (相加 (“0x”, x), 1, ret)
+返回 (ret)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

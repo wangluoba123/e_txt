@@ -1,0 +1,112 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 704
+    高度 = 505
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 _PROCESS_QUERY_INFORMATION, "1024", , 
+.常量 _PROCESS_ALL_ACCESS, "2035711", 公开, 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 1 2 扩展界面支持库一
+ ' eAPI F7FC1AE45C5C4758AF03EF19F18A395D 1 1 应用接口支持库
+
+
+
+
+数据类型 PROCESS_MEMORY_COUNTERS, , 
+    .成员 cb, 整数型, , , 
+    .成员 PageFaultCount, 整数型, , , 
+    .成员 PeakWorkingSetSize, 整数型, , , 
+    .成员 WorkingSetSize, 整数型, , , 
+    .成员 QuotaPeakPagedPoolUsage, 整数型, , , 
+    .成员 QuotaPagedPoolUsage, 整数型, , , 
+    .成员 QuotaPeakNonPagedPoolUsage, 整数型, , , 
+    .成员 QuotaNonPagedPoolUsage, 整数型, , , 
+    .成员 PagefileUsage, 整数型, , , 
+    .成员 PeakPagefileUsage, 整数型, , , 
+
+
+.DLL命令 OpenProcess, 整数型, "", "OpenProcess", , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 逻辑型, , 
+    .参数 pid, 整数型, , 
+
+.DLL命令 GetProcessMemoryInfo, 整数型, "Psapi.dll", "GetProcessMemoryInfo", , 
+    .参数 Process, 整数型, , 
+    .参数 ppsmemCounters, PROCESS_MEMORY_COUNTERS, 传址, 
+    .参数 cb, 整数型, , 
+
+.DLL命令 GetLastError, 整数型, "", "GetLastError", , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 handle, 整数型, , , 
+.局部变量 Processmemory, PROCESS_MEMORY_COUNTERS, , , 
+
+赋值 (handle) ' 填写你要打开的PID
+
+.子程序 GetPidMemoryInfo, PROCESS_MEMORY_COUNTERS, , 
+.参数 pid, 整数型, , 
+
+.局部变量 handle, 整数型, , , 
+.局部变量 Processmemory, 未知类型0x410100A9, , , 
+
+赋值 (handle, OpenProcess (#_PROCESS_QUERY_INFORMATION, 假, pid)) ' 填写你要打开的PID
+.如果真 (等于 (handle, 0))
+     ' 信息框 (“错误！打开进程失败！请确保你有相应的权限！”, 0, )
+     ' 返回 (Processmemory)
+.如果真结束
+.如果真 (等于 (GetProcessMemoryInfo (handle, Processmemory, 40), 0))
+    输出调试文本 (GetLastError ())
+     ' 信息框 (“获取内存信息失败！”, 0, )
+     ' 返回 (Processmemory)
+.如果真结束
+返回 (Processmemory)
+
+.子程序 _时钟1_周期事件, 空白型, , 
+.局部变量 进程信息, 未知类型0x30009, , "0", 
+.局部变量 tmp, 整数型, , , 
+.局部变量 Text, 文本型, , , 
+.局部变量 pid, 整数型, , , 
+.局部变量 Processmemory, 未知类型0x410100C3, , , 
+
+赋值 (进程信息, 未知支持库函数_10 ())
+全部删除 ()
+.计次循环首 (取数组成员数 (进程信息), tmp)
+    .插入表项 ()
+    相减 (取表项数 (), 1).置标题 (0, 进程信息 [tmp], )
+    相减 (取表项数 (), 1).置标题 (1, 到文本 (进程信息 [tmp], ))
+    赋值 (pid, 进程信息 [tmp], )
+    赋值 (Processmemory, GetPidMemoryInfo (pid))
+    相减 (取表项数 (), 1).置标题 (2, 相加 (到文本 (取整 (相除 (Processmemory.WorkingSetSize, 1024))), “KB”))
+    相减 (取表项数 (), 1).置标题 (3, 相加 (到文本 (取整 (相除 (Processmemory.PeakWorkingSetSize, 1024))), “KB”))
+    
+.计次循环尾 ()
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,154 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：MPQ文件操作模块
+ ' 程序描述：MPQ文件操作模块，包括游戏的地图如魔兽的w3x,w3m,mpq等等......
+离不开电脑制作
+lbkdn@qq.com
+ ' 程序作者：离不开电脑
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：lbkdn@qq.com
+ ' 主页地址：
+ ' 版权声明：MPQ文件操作模块，包括游戏的地图如魔兽的w3x,w3m,mpq等等......
+离不开电脑制作
+lbkdn@qq.com
+ ' 版本号：1.3
+ ' 创建号：0.0
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+
+.DLL命令 Storm_SFileOpenArchive, 逻辑型, "Storm.dll", "#266", , 
+    .参数 lpFileName, 文本型, , 
+    .参数 dwPriority, 整数型, , 0
+    .参数 dwFlags, 整数型, , 0
+    .参数 hMPQ, 整数型, 传址, 返回句柄
+
+.DLL命令 Storm_SFileCloseArchive, 逻辑型, "Storm.dll", "#252", , 关闭MPQ文件
+    .参数 hMPQ, 整数型, , 
+
+.DLL命令 Storm_SFileOpenFileEx, 逻辑型, "Storm.dll", "#268", , 
+    .参数 hMPQ, 整数型, , 
+    .参数 lpFileName, 文本型, , 
+    .参数 dwSearchScope, 整数型, , 0
+    .参数 hFile, 整数型, 传址, 返回打开句柄
+
+.DLL命令 Storm_SFileFileExistsEx, 整数型, "Storm.dll", "#289", , 文件是否存在，失败返回0
+    .参数 hMPQ, 整数型, , 
+    .参数 lpszFileName, 文本型, , 
+    .参数 grfSearchScope, 整数型, , 0
+
+.DLL命令 Storm_SFileCloseFile, 逻辑型, "Storm.dll", "#253", , 关闭已经打开的MPQ里面的文件
+    .参数 hFile, 整数型, , 
+
+.DLL命令 Storm_SFileGetFileSize, 整数型, "Storm.dll", "#265", , 取文件大小
+    .参数 hFile, 整数型, , 
+    .参数 lpFileSizeHigh, 整数型, , 0
+
+.DLL命令 Storm_SFileReadFile, 逻辑型, "Storm.dll", "#269", , 读取文件
+    .参数 hFile, 整数型, , 
+    .参数 lpBuffer, 字节集, 传址, 存放读取的内容，需分配空间
+    .参数 nNumberOfBytesToRead, 整数型, , 要读取的字节数,SFileGetFileSize取得
+    .参数 lpNumberOfBytesRead, 整数型, 传址, 实际读取字节数，跟前面一样
+    .参数 lpOverlapped, 整数型, , 0
+
+.DLL命令 Storm_SFileDestroy, 逻辑型, "Storm.dll", "#262", , 初始化,放在最前面
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+.子程序 SF打开MPQ文件, 整数型, , 成功返回句柄，失败返回0
+.参数 文件, 文本型, , 要打开的文件(例如:D:\abc.w3x或者123.mpq等等所有的MPQ类型文件),不能为空
+
+.局部变量 hMPQ, 整数型, , , 
+
+Storm_SFileDestroy ()
+.如果真 (Storm_SFileOpenArchive (文件, 0, 0, hMPQ))
+    返回 (hMPQ)
+.如果真结束
+返回 (0)
+
+.子程序 SF检测MPQ里的文件是否存在, 整数型, , 存在返回1，不存在返回0
+.参数 hMPQ, 整数型, , 用"SF打开MPQ文件"获得,不能是0
+.参数 文件, 文本型, , 要检测的文件(在MPQ文件里的完整路径,例如:"Scripts\war3map.j"),不能为空
+
+.局部变量 结果, 整数型, , , 
+
+返回 (Storm_SFileFileExistsEx (hMPQ, 文件, 0))
+
+.子程序 SF打开MPQ里的文件, 整数型, , 成功返回句柄，记得要关闭，失败返回0
+.参数 句柄, 整数型, , 用"SF打开MPQ文件"获得,不能是0
+.参数 文件, 文本型, , 要打开的文件(在MPQ文件里的完整路径,例如:"Scripts\war3map.j"),不能为空
+
+.局部变量 hFile, 整数型, , , 
+
+.如果真 (Storm_SFileOpenFileEx (句柄, 文件, 0, hFile))
+    返回 (hFile)
+.如果真结束
+返回 (0)
+
+.子程序 SF读取MPQ里的文件大小, 整数型, , 返回文件的大小(单位:字节)
+.参数 hFile, 整数型, , 用"SF打开MPQ里的文件"获得,不能是0
+
+返回 (Storm_SFileGetFileSize (hFile, 0))
+
+.子程序 SF读取MPQ里的文件内容, 逻辑型, , 成功返回真
+.参数 hFile, 整数型, , 用"SF打开MPQ里的文件"获得,不能是0
+.参数 文件内容, 字节集, 参考, 请设置一个字节集变量，用于记录文件内容
+
+.局部变量 文件大小, 整数型, , , 
+
+赋值 (文件大小, Storm_SFileGetFileSize (hFile, 0))
+赋值 (文件内容, 取空白字节集 (文件大小))
+返回 (Storm_SFileReadFile (hFile, 文件内容, 文件大小, 文件大小, 0))
+
+.子程序 SF直接读取MPQ里的文件, 逻辑型, , 成功返回真
+.参数 hMPQ, 整数型, , 用"SF打开MPQ文件"获得,不能是0
+.参数 文件, 文本型, , 文件在MPQ里的完整路径,例如:"Scripts\war3map.j"
+.参数 文件内容, 字节集, 参考, 返回字节集,可以用"写到文件"命令保存到外部文件.
+
+.局部变量 文件大小, 整数型, , , 
+.局部变量 hFile, 整数型, , , 
+.局部变量 是否成功, 逻辑型, , , 
+
+.如果真 (等于 (Storm_SFileOpenFileEx (hMPQ, 文件, 0, hFile), 假))
+    返回 (假)
+.如果真结束
+赋值 (文件大小, Storm_SFileGetFileSize (hFile, 0))
+.如果真 (等于 (文件大小, 0))
+    返回 (假)
+.如果真结束
+赋值 (文件内容, 取空白字节集 (文件大小))
+赋值 (是否成功, Storm_SFileReadFile (hFile, 文件内容, 文件大小, 文件大小, 0))
+Storm_SFileCloseFile (hFile)
+返回 (是否成功)
+
+.子程序 SF关闭MPQ文件, 逻辑型, , 关闭用"SF打开MPQ文件"命令打开的MPQ文件
+.参数 hMPQ, 整数型, , 用"SF打开MPQ文件"获得,不能是0
+
+返回 (Storm_SFileCloseArchive (hMPQ))
+
+.子程序 SF关闭MPQ里的文件, 逻辑型, , 关闭用"SF打开MPQ里的文件"命令打开的MPQ文件
+.参数 hFile, 整数型, , 用"SF打开MPQ里的文件"获得,不能是0
+
+返回 (Storm_SFileCloseFile (hFile))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

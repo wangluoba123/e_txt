@@ -1,0 +1,364 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 AppName, "“HelloWin”", , 
+.常量 SND_ALIAS, "65536", , 
+.常量 SND_ASYNC, "1", , 
+.常量 OEM_FIXED_FONT, "10", , 
+.常量 WM_CREATE, "1", , 
+.常量 WM_DESTROY, "2", , 
+.常量 WM_PAINT, "15", , 
+.图片 图片1, " ' 已保存到：D:\易语言学习\Data\智能换肤演示(黑月版).e\图片1", , 
+.图片 图片2, " ' 已保存到：D:\易语言学习\Data\智能换肤演示(黑月版).e\图片2", , 
+.图片 图片3, " ' 已保存到：D:\易语言学习\Data\智能换肤演示(黑月版).e\图片3", , 
+.常量 CS_BYTEALIGNCLIENT, "4096", , 
+.常量 CS_BYTEALIGNWINDOW, "8192", , 
+.常量 CS_CLASSDC, "64", , 
+.常量 CS_DBLCLKS, "8", , 
+.常量 CS_GLOBALCLASS, "“CS_PUBLICCLASS”", , 
+.常量 CS_HREDRAW, "2", , 
+.常量 CS_IME, "65536", , 
+.常量 CS_INSERTCHAR, "8192", , 
+.常量 CS_KEYCVTWINDOW, "4", , 
+.常量 CS_NOCLOSE, "512", , 
+.常量 CS_NOKEYCVT, "256", , 
+.常量 CS_NOMOVECARET, "16384", , 
+.常量 CS_OWNDC, "32", , 
+.常量 CS_PARENTDC, "128", , 
+.常量 CS_PUBLICCLASS, "16384", , 
+.常量 CS_SAVEBITS, "2048", , 
+.常量 CS_VREDRAW, "1", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+ ' 所需要的模块
+ ' 彗星智能换肤模块 F:\易语言\自编模块\彗星智能换肤模块\智能换肤模块.ec
+
+
+数据类型 RECT, , 矩形
+    .成员 Left, 整数型, , , 
+    .成员 Top, 整数型, , , 
+    .成员 Right, 整数型, , , 
+    .成员 Bottom, 整数型, , , 
+
+数据类型 MSG, , 消息结构
+    .成员 hwnd, 整数型, , , 检索消息的窗口句柄
+    .成员 message, 整数型, , , 代表一个消息的消息质
+    .成员 wParam, 整数型, , , 消息附加信息的字参数
+    .成员 lParam, 整数型, , , 消息附加信息的长字参数
+    .成员 time, 整数型, , , 消息入队时间
+    .成员 x, 整数型, , , 消息发送时鼠标的位置 point.x
+    .成员 y, 整数型, , , 消息发送时鼠标的位置 point.y
+
+数据类型 PaintStruct, , 
+    .成员 hdc, 整数型, , , 
+    .成员 fErase, 整数型, , , 
+    .成员 Left, 整数型, , , 
+    .成员 Top, 整数型, , , 
+    .成员 Right, 整数型, , , 
+    .成员 Bottom, 整数型, , , 
+    .成员 fRestore, 整数型, , , 
+    .成员 fIncUpdate, 整数型, , , 
+    .成员 rgbReserved, 字节型, , "32", 
+
+数据类型 WNDCLASS, , 窗口类
+    .成员 style, 整数型, , , 窗口的样式
+    .成员 lpfnwndproc, 子程序指针, , , 指向窗口函数的指针
+    .成员 cbClsextra, 整数型, , , 分配在窗口类结构后的字节数
+    .成员 cbWndExtra, 整数型, , , 分配在窗口实例后的字节数
+    .成员 hInstance, 整数型, , , 定义窗口类的应用程序的实例句柄
+    .成员 hIcon, 整数型, , , 窗口类的图标
+    .成员 hCursor, 整数型, , , 窗口类的光标
+    .成员 hbrBackground, 整数型, , , 窗口类的背景刷
+    .成员 lpszMenuName, 文本型, , , 窗口类的菜单资源名
+    .成员 lpszClassName, 文本型, , , 窗口类名
+
+.全局变量 智能换肤, 彗星智能换肤类, 公开, , 
+
+.DLL命令 PlaySound, 整数型, "winmm.dll", "PlaySoundA", , 
+    .参数 lpszName, 文本型, , 
+    .参数 hModule, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+
+.DLL命令 BeginPaint, 整数型, "user32.dll", "BeginPaint", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpPaint, PaintStruct, 传址, 
+
+.DLL命令 GetClientRect, 整数型, "user32.dll", "GetClientRect", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpRect, RECT, 传址, 
+
+.DLL命令 DrawText, 整数型, "user32.dll", "DrawTextA", , 
+    .参数 hdc, 整数型, , 
+    .参数 lpStr, 文本型, , 
+    .参数 nCount, 整数型, , 
+    .参数 lpRect, RECT, 传址, 
+    .参数 wFormat, 整数型, , 
+
+.DLL命令 EndPaint, 整数型, "user32.dll", "EndPaint", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpPaint, PaintStruct, 传址, 
+
+.DLL命令 PostQuitMessage, 空白型, "user32.dll", "PostQuitMessage", , 
+    .参数 nExitCode, 整数型, , 
+
+.DLL命令 DefWindowProc, 整数型, "user32.dll", "DefWindowProcA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 LoadIcon, 整数型, "user32.dll", "LoadIconA", , 加载一个窗口图标
+    .参数 hInstance, 整数型, , 图标资源所在的模块句柄
+    .参数 lpIconName, 整数型, , 图标资源名或系统预定义的图标标识名
+
+.DLL命令 LoadCursor, 整数型, "user32.dll", "LoadCursorA", , 加载一个窗口光标
+    .参数 hInstance, 整数型, , 光标资源所在的模块句柄
+    .参数 lpIconName, 整数型, , 图标资源名或系统预定义的光标标识名
+
+.DLL命令 GetStockObject, 整数型, "gdi32.dll", "GetStockObject", , 获取系统提供的背景刷
+    .参数 nIndex, 整数型, , 背景刷标示名
+
+.DLL命令 RegisterClass, 整数型, "user32.dll", "RegisterClassA", , 注册窗口类
+    .参数 Class, WNDCLASS, 传址, 窗口的类结构
+
+.DLL命令 CreateWindow, 整数型, "user32.dll", "CreateWindowExA", , 
+    .参数 dwExStyle, 整数型, , 
+    .参数 lpClassName, 文本型, , 窗口实例的类的名字
+    .参数 lpWindowName, 文本型, , 窗口标题名
+    .参数 dwStyle, 整数型, , 新创建的窗口的样式
+    .参数 X, 整数型, , 窗口左上角的横坐标
+    .参数 Y, 整数型, , 窗口左上角的纵坐标
+    .参数 nWidth, 整数型, , 窗口的宽度
+    .参数 nHeight, 整数型, , 窗口的高度
+    .参数 hWndParent, 整数型, , 该窗口的父窗口的句柄
+    .参数 hMenu, 整数型, , 窗口主菜单句柄
+    .参数 hInstance, 整数型, , 创建窗口的应用程序当前句柄
+    .参数 lpParam, 文本型, , 指向一个传递给窗口的参数值的指针
+
+.DLL命令 ShowWindow, 整数型, "user32.dll", "ShowWindow", , 
+    .参数 hwnd, 整数型, , 
+    .参数 nCmdShow, 整数型, , 
+
+.DLL命令 UpdateWindow, 整数型, "user32.dll", "UpdateWindow", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 GetMessage, 整数型, "user32.dll", "GetMessageA", , 
+    .参数 lpMsg, MSG, 传址, 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsgFilterMin, 整数型, , 
+    .参数 wMsgFilterMax, 整数型, , 
+
+.DLL命令 TranslateMessage, 整数型, "user32.dll", "TranslateMessage", , 
+    .参数 lpMsg, MSG, 传址, 
+
+.DLL命令 DispatchMessage, 整数型, "user32.dll", "DispatchMessageA", , 
+    .参数 lpMsg, MSG, 传址, 
+
+.DLL命令 MessageBox, 整数型, "user32.dll", "MessageBoxA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpText, 文本型, , 
+    .参数 lpCaption, 文本型, , 
+    .参数 wType, 整数型, , 
+
+.DLL命令 发送消息_, 整数型, "user32", "SendMessageA", , 调用一个窗口的窗口函数，将一条消息发给那个窗口。除非消息处理完毕，否则该函数不会返回。SendMessageBynum， ;    SendMessageByString是该函数的“类型安全”声明形式  由具体的消息决定
+    .参数 窗口句柄, 整数型, , 要接收消息的那个窗口的句柄
+    .参数 信息值, 整数型, , 消息的标识符
+    .参数 参数一, 整数型, , 具体取决于消息
+    .参数 参数二, 整数型, , 具体取决于消息;
+
+.DLL命令 取实例句柄_, 整数型, "", "GetModuleHandleA", , 
+    .参数 程序名, 整数型, , 
+
+.DLL命令 延迟时间_, 整数型, "kernel32.dll", "Sleep", , Sleep
+    .参数 延迟秒数, 整数型, , dwMilliseconds
+
+.DLL命令 命令行指针_, 整数型, "kernel32", "GetCommandLineA", , 
+
+.DLL命令 UnregisterClass, 整数型, "user32.dll", "UnregisterClassA", , 
+    .参数 Class, 文本型, , 
+    .参数 句柄, 整数型, , 
+
+.DLL命令 取对象句柄_API, 整数型, "gdi32.dll", "GetStockObject", , 
+    .参数 类型, 整数型, , 
+
+.DLL命令 选入设备场景_API, 整数型, "gdi32.dll", "SelectObject", , SelectObject
+    .参数 场景句柄, 整数型, , hdc
+    .参数 对象句柄, 整数型, , hobject
+
+.DLL命令 设置前景色_API, 整数型, "gdi32", "SetTextColor", , 
+    .参数 设备场景, 整数型, , 
+    .参数 颜色, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 默认字体句柄, 整数型, , , 
+.子程序 _启动子程序, 整数型, , 
+.局部变量 实例句柄, 整数型, , , 
+.局部变量 命令行文本, 文本型, , , 
+
+赋值 (默认字体句柄, 取对象句柄_API (#OEM_FIXED_FONT)) ' 取系统默认字体句句柄
+赋值 (命令行文本, 指针到文本 (命令行指针_ ()))
+赋值 (实例句柄, 取实例句柄_ (0))
+WinMain (实例句柄, 0, 命令行文本, 1)
+返回 (0)
+
+.子程序 WndProc, 整数型, , 窗口回调函数
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.判断开始 (等于 (Msg, #WM_CREATE)) ' 区分不同的消息
+    主窗口创建完毕 (hWnd)
+    返回 (0)
+.判断 (等于 (Msg, 2))
+    PostQuitMessage (0) ' 调用PostQuitMessage发出WM_QUIT消息
+    返回 (0)
+.默认
+    返回 (DefWindowProc (hWnd, Msg, wParam, lParam)) ' 默认时采用系统消息默认处理函数
+.判断结束
+返回 (0)
+
+.子程序 WinMain, 整数型, , WinMain函数
+.参数 hInstance, 整数型, 可空, 
+.参数 hPrevInstance, 整数型, 可空, 
+.参数 szCmdLine, 文本型, 可空, 
+.参数 nCmdShow, 整数型, 可空, 
+
+.局部变量 hWnd, 整数型, , , 
+.局部变量 Msg, MSG, , , 
+.局部变量 WndClass, WNDCLASS, , , 
+
+赋值 (WndClass.style, 3)
+赋值 (WndClass.lpfnwndproc, &WndProc) ' 发生调用
+赋值 (WndClass.cbClsextra, 0)
+赋值 (WndClass.cbWndExtra, 0)
+赋值 (WndClass.hInstance, hInstance)
+赋值 (WndClass.hIcon, LoadIcon (hInstance, 129))
+赋值 (WndClass.hCursor, LoadCursor (0, 32512))
+赋值 (WndClass.hbrBackground, GetStockObject (0))
+赋值 (WndClass.lpszMenuName, “”)
+赋值 (WndClass.lpszClassName, #AppName) ' 以上为初始化窗口类
+赋值 (WndClass.style, #CS_DBLCLKS)
+.如果真 (等于 (RegisterClass (WndClass), 0)) ' 窗口类注册
+    MessageBox (0, “注册窗体类名失败!”, #AppName, 16)
+    返回 (0)
+.如果真结束
+赋值 (hWnd, CreateWindow (0, #AppName, “智能换肤演示(黑月版)”, 13565952, 2147483648, 2147483648, 2147483648, 2147483648, 0, 0, hInstance, “”)) ' 创建窗口
+ShowWindow (hWnd, nCmdShow) ' 显示窗口
+UpdateWindow (hWnd) ' 绘制用户区
+.判断循环首 (不等于 (GetMessage (Msg, 0, 0, 0), 0)) ' 消息循环
+    TranslateMessage (Msg)
+    DispatchMessage (Msg)
+.判断循环尾 ()
+UnregisterClass (#AppName, hInstance)
+返回 (Msg.wParam) ' 消息循环结束即程序终止时将信息返回系统
+
+.子程序 主窗口创建完毕, 空白型, , 
+.参数 hWnd, 整数型, , 窗口句柄
+
+智能换肤.应用皮肤 (hWnd, , , 真, 真, 真, 真, 真)
+智能换肤.事件_菜单按钮被点击 (hWnd, &菜单按钮被点击)
+智能换肤.事件_帮助按钮被点击 (hWnd, &帮助按钮被点击)
+ ' ------------------------------------------------
+hWnd.未知函数_67174826 (“选择夹1”, #图片1)
+hWnd.未知函数_67174826 (“选择夹2”, #图片2)
+智能换肤.添加选择夹 (hWnd, “选择夹3”, #图片3)
+
+.子程序 帮助按钮被点击, 空白型, , 
+信息框 (“帮助按钮被点击”, 0, )
+
+.子程序 菜单按钮被点击, 空白型, , 
+信息框 (“菜单按钮被点击”, 0, )
+
+.类模块 彗星智能换肤类, , , 该类已在内部实例化，请勿再次实例化。
+
+.子程序 设置图片皮肤, 逻辑型, , 
+.参数 底图数据, 字节集, , 图片字节集
+
+
+
+.子程序 设置图片皮肤_从文件, 逻辑型, , 
+.参数 图片文件, 文本型, , 图片文件名
+
+
+
+.子程序 设置颜色皮肤, 逻辑型, , 
+.参数 皮肤颜色, 整数型, , 
+
+
+
+.子程序 应用皮肤, 逻辑型, , 对窗口应用智能皮肤，请不要设置“窗口.随意移动=真”
+.参数 窗口句柄, 整数型, , 要应用皮肤那个窗口的句柄
+.参数 标题栏高度, 整数型, 可空, 默认为80
+.参数 状态栏高度, 整数型, 可空, 默认为26
+.参数 最小化按钮, 逻辑型, 可空, 是否有最小化按钮，默认为假
+.参数 最大化按钮, 逻辑型, 可空, 是否有最大化按钮，默认为假
+.参数 帮助按钮, 逻辑型, 可空, 是否有帮助按钮，默认为假
+.参数 菜单按钮, 逻辑型, 可空, 是否有菜单按钮，默认为假
+.参数 可调边框, 逻辑型, 可空, 是否有可调边框，如果为真可8方向调整大小，默认为假
+.参数 窗口最小宽度, 整数型, 可空, 限制窗口调整尺寸的最小宽度
+.参数 窗口最小高度, 整数型, 可空, 限制窗口调整尺寸的最小高度
+
+
+
+.子程序 置状态栏文本, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 状态栏文本, 文本型, , 
+
+
+
+.子程序 添加选择夹, 逻辑型, , 添加位于标题栏的选择夹按钮
+.参数 窗口句柄, 整数型, , 
+.参数 选择夹名称, 文本型, , 
+.参数 选择夹图标, 字节集, , 应该为32x32的图标，可以是图标文件字节集，也可以是 到字节集(图标句柄)
+.参数 关联窗口句柄, 整数型, 可空, 被关联窗口将会自动切换
+
+
+
+.子程序 选中选择夹, 逻辑型, , 按选择夹名称选中某个选择夹
+.参数 窗口句柄, 整数型, , 
+.参数 选择夹名称, 文本型, , 
+
+
+
+.子程序 事件_帮助按钮被点击, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 事件子程序指针, 子程序指针, , 
+
+
+
+.子程序 事件_菜单按钮被点击, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 事件子程序指针, 子程序指针, , 
+
+
+
+.子程序 置可调边框, 逻辑型, , 加入可调边框，窗口可手工调整尺寸
+.参数 窗口句柄, 整数型, , 
+.参数 窗口最小宽度, 整数型, 可空, 限制窗口调整尺寸的最小宽度
+.参数 窗口最小高度, 整数型, 可空, 限制窗口调整尺寸的最小高度
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,195 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 CW_USEDEFAULT, "2147483648", , 
+.常量 SW_SHOWNORMAL, "1", , 
+.常量 CS_HREDRAW, "2", , 
+.常量 CS_VREDRAW, "1", , 
+.常量 WS_CAPTION, "12582912", , 
+.常量 WS_MAXIMIZEBOX, "65536", , 
+.常量 WS_MINIMIZEBOX, "131072", , 
+.常量 WS_OVERLAPPED, "0", , 
+.常量 WS_SYSMENU, "524288", , 
+.常量 WS_THICKFRAME, "262144", , 
+.常量 IDC_ARROW, "32512", , 
+.常量 COLOR_WINDOW, "5", , 
+.常量 WM_DESTROY, "2", , 
+.常量 COLOR_BTNFACE, "15", , 
+.常量 WM_CLOSE, "16", , 当一个窗口或应用程序要关闭时发送一个信号
+.常量 CS_DBLCLKS, "8", , 
+.常量 WM_LBUTTONDBLCLK, "515", , //双击鼠标左键
+.常量 WM_LBUTTONDOWN, "513", , //按下鼠标左键
+.常量 WM_LBUTTONUP, "514", , //释放鼠标左键
+.常量 WM_MOUSEMOVE, "512", , // 移动鼠标
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 WNDCLASSEX, , 
+    .成员 cbSize, 整数型, , , 
+    .成员 style, 整数型, , , 
+    .成员 lpfnWndProc, 子程序指针, , , '<<<<注意这里要改成子程序指针类型
+    .成员 cbClsExtra, 整数型, , , 
+    .成员 cbWndExtra, 整数型, , , 
+    .成员 hInstance, 整数型, , , 
+    .成员 hIcon, 整数型, , , 
+    .成员 hCursor, 整数型, , , 
+    .成员 hbrBackground, 整数型, , , 
+    .成员 lpszMenuName, 文本型, , , 
+    .成员 lpszClassName, 文本型, , , 
+    .成员 hIconSm, 整数型, , , 
+
+数据类型 MSG, , 
+    .成员 hwnd, 整数型, , , 
+    .成员 message, 整数型, , , 
+    .成员 wParam, 整数型, , , 
+    .成员 lParam, 整数型, , , 
+    .成员 time, 整数型, , , 
+    .成员 pt, POINTAPI, , , 
+
+数据类型 POINTAPI, , 
+    .成员 横向位置, 整数型, , , 
+    .成员 纵向位置, 整数型, , , 
+
+
+.DLL命令 CreateWindowEx, 整数型, "user32", "CreateWindowExA", , 建立窗口　
+    .参数 dwExStyle, 整数型, , 
+    .参数 lpClassName, 文本型, , 
+    .参数 lpWindowName, 文本型, , 
+    .参数 dwStyle, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+    .参数 hWndParent, 整数型, , 
+    .参数 hMenu, 整数型, , 
+    .参数 hInstance, 整数型, , 
+    .参数 lpParam, 整数型, , 
+
+.DLL命令 RegisterClassEx, 整数型, "user32", "RegisterClassExA", , 　
+    .参数 pcWndClassEx, WNDCLASSEX, , 
+
+.DLL命令 ShowWindow, 整数型, "user32", "ShowWindow", , 控制窗口的可见性（在vb里使用：针对vb窗体及控件，请使用对应的vb属性）　如窗口之前是可见的，则返回TRUE（非零），否则返回FALSE（零）
+    .参数 hwnd, 整数型, , 窗口句柄，要向这个窗口应用由nCmdShow指定的命令
+    .参数 nCmdShow, 整数型, , 为窗口指定可视性方面的一个命令。请用下述任何一个常数;SW_HIDE：隐藏窗口，活动状态给令一个窗口;SW_MINIMIZE：最小化窗口，活动状态给令一个窗口;SW_RESTORE：用原来的大小和位置显示一个窗口，同时令其进入活动状态;SW_SHOW：用当前的大小和位置显示一个窗口，同时令其进入活动状态;SW_SHOWMAXIMIZED：最大化窗口，并将其激活;SW_SHOWMINIMIZED：最小化窗口，并将其激活;SW_SHOWMINNOACTIVE：最小化一个窗口，同时不改变活动窗口;SW_SHOWNA：用当前的大小和位置显示一个窗口，不改变活动窗口;SW_SHOWNOACTIVATE：用最近的大小和位置显示一个窗口，同时不改变活动窗口;SW_SHOWNORMAL：与SW_RESTORE相同;
+
+.DLL命令 UpdateWindow, 整数型, "user32", "UpdateWindow", , 强制立即更新窗口，窗口中以前屏蔽的所有区域都会重画（在vb里使用：如vb窗体或控件的任何部分需要更新，可考虑直接使用refresh方法　非零表示成功，零表示失败
+    .参数 hwnd, 整数型, , 欲更新窗口的句柄;
+
+.DLL命令 GetModuleHandle, 整数型, "kernel32", "GetModuleHandleA", , 获取一个应用程序或动态链接库的模块句柄　如执行成功成功，则返回模块句柄。零表示失败。会设置GetLastError
+    .参数 lpModuleName, 文本型, , 指定模块名，这通常是与模块的文件名相同的一个名字。例如，NOTEPAD.EXE程序的模块文件名就叫作NOTEPAD;  
+
+.DLL命令 DefWindowProc, 整数型, "user32", "DefWindowProcA", , 调用缺省窗口过程　
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 DispatchMessage, 整数型, "user32", "DispatchMessageA", , 向窗口发送消息　
+    .参数 lpMsg, MSG, , 
+
+.DLL命令 GetMessage, 整数型, "user32", "GetMessageA", , 从线索消息队列中返回一条消息　
+    .参数 lpMsg, MSG, , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsgFilterMin, 整数型, , 
+    .参数 wMsgFilterMax, 整数型, , 
+
+.DLL命令 TranslateMessage, 整数型, "user32", "TranslateMessage", , 转换虚拟关键字消息　
+    .参数 lpMsg, MSG, , 
+
+.DLL命令 LoadCursor, 整数型, "user32", "LoadCursorA", , 从指定的模块或应用程序实例中载入一个鼠标指针。LoadCursorBynum是LoadCursor函数的类型安全声明　执行成功则返回已载入的指针的句柄；零表示失败。在Windows ;    95 和Win16环境中，这个函数只能载入标准尺寸的图标
+    .参数 实例句柄, 整数型, , 一个DLL的模块句柄；或者一个实例句柄，指定包含了鼠标指针的可执行程序
+    .参数 鼠标指针标识, 整数型, , 作为一个字串，指定欲载入的指针资源。作为一个长整数值，指定欲载入的资源ID；或者设置一个常数，代表某幅固有系统指针。如装载的是一个固有系统指针，注意hInstance参数应设为零。在api32.txt文件中以前缀IDC_ 作为标志;  
+
+.DLL命令 LoadIcon, 整数型, "user32", "LoadIconA", , 从指定的模块或应用程序实例中载入一个图标。其中，LoadIconBynum是LoadIcon函数的类型安全声明　执行成功则返回已载入的图标的句柄；零表示失败。会设置GetLastError
+    .参数 实例句柄, 整数型, , 
+    .参数 图标标识, 整数型, , 
+
+.DLL命令 PostQuitMessage, 空白型, "user32", "PostQuitMessage", , 通知WINDOWS线索将中断　
+    .参数 nExitCode, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 本子程序在程序启动后最先执行
+.局部变量 窗口类, WNDCLASSEX, , , 
+.局部变量 NULL, 文本型, , , 
+.局部变量 窗口类名, 文本型, , , 
+.局部变量 消息, MSG, , , 
+.局部变量 窗口句柄, 整数型, , , 
+.局部变量 窗口样式, 整数型, , , 
+
+赋值 (窗口类名, “MyWindowClass”)
+ ' 下面的代码填写窗口类的“注册表格”
+赋值 (窗口类.cbSize, 48) ' 要指定整个结构所占的字节数，必须
+赋值 (窗口类.style, 位或 (#CS_HREDRAW, #CS_VREDRAW, #CS_DBLCLKS))
+赋值 (窗口类.hInstance, GetModuleHandle (NULL)) ' 取当前应用程序的实例句柄。
+ ' 上面这句也可以这样：
+ ' 窗口类.hInstance ＝ GetModuleHandle (取执行文件名 ())
+ ' ！！注意：LoadIcon和LoadCursor的两个函数的参数都改成了整数型。
+赋值 (窗口类.hIcon, LoadIcon (窗口类.hInstance, 129)) ' 易语言EXE文件的图标标号为129
+赋值 (窗口类.hCursor, LoadCursor (0, #IDC_ARROW))
+赋值 (窗口类.hbrBackground, 相加 (#COLOR_BTNFACE, 1)) ' 也可以使用其他的Color常量，注意在后面要＋1。
+赋值 (窗口类.lpszClassName, 窗口类名)
+赋值 (窗口类.lpfnWndProc, &窗口函数)
+ ' 注册表填写好了之后，进行注册登记窗口类。
+.如果真 (等于 (RegisterClassEx (窗口类), 0))
+    信息框 (“注册窗口类失败！”, #错误图标, )
+    返回 (1)
+.如果真结束
+ ' 窗口类注册成功了就可以创建窗口了。
+赋值 (窗口样式, 位或 (#WS_CAPTION, #WS_SYSMENU, #WS_OVERLAPPED, #WS_THICKFRAME, #WS_MAXIMIZEBOX, #WS_MINIMIZEBOX))
+赋值 (窗口句柄, CreateWindowEx (0, 窗口类名, “《易精经》例程－白手起家，凭空创建窗口”, 窗口样式, #CW_USEDEFAULT, #CW_USEDEFAULT, 400, 240, 0, 0, 窗口类.hInstance, 0))
+.如果真 (等于 (窗口句柄, 0))
+    信息框 (“创建窗口失败！”, #错误图标, )
+    返回 (1)
+.如果真结束
+ ' 将窗口显示出来。
+ShowWindow (窗口句柄, #SW_SHOWNORMAL)
+UpdateWindow (窗口句柄)
+ ' 下面就是消息循环
+ ' 当GetMessage函数发现消息的消息值为WM_QUIT的时候，就返回0，从而退出循环。
+.判断循环首 (不等于 (GetMessage (消息, 0, 0, 0), 0))
+    TranslateMessage (消息)
+    DispatchMessage (消息)
+.判断循环尾 ()
+
+返回 (消息.wParam)
+
+
+.子程序 窗口函数, 整数型, , 这是窗口过程，用来处理窗口消息
+.参数 hWnd, 整数型, , 窗口句柄
+.参数 uMsg, 整数型, , 消息值
+.参数 wParam, 整数型, , 参数一
+.参数 lParam, 整数型, , 参数二
+
+.局部变量 x, 空白型, , , 
+.局部变量 y, 空白型, , , 
+
+.判断开始 (等于 (uMsg, #WM_DESTROY))
+    PostQuitMessage (0) ' 将 WM_QUIT 消息放入消息队列中，这样GetMessage收到WM_QUIT消息时就会返回0，从而退出消息循环
+    返回 (0)
+.默认
+    
+.判断结束
+返回 (DefWindowProc (hWnd, uMsg, wParam, lParam)) ' 其他的消息通通交给DefWindowProc函数处理。
+
+
+ ' 不属于任何一个程序集、类模块的函数：

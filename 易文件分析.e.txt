@@ -1,0 +1,1776 @@
+ ' 文件类型：未知类型
+
+ ' 程序名称：易文件分析
+ ' 程序描述：
+ ' 程序作者：超级用户
+ ' 邮政编码：000000
+ ' 联系地址：无
+ ' 联系电话：无
+ ' 传真号码：无
+ ' 电子信箱：1185384801@qq.com
+ ' 主页地址：
+ ' 版权声明：超级用户
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 __输出块数据, "假", , 
+.常量 __输出属性值, "假", , 
+.常量 __输出Section列表, "假", , 
+.常量 , , , 
+.常量 __检查效验值, "假", , 
+.常量 , , , 
+.常量 文件类型_源代码, "1", 公开, 
+.常量 文件类型_模块, "3", 公开, 
+.常量 , , , 
+.常量 编译类型_Windows窗口程序, "0", 公开, 
+.常量 编译类型_Windows控制台程序, "1", 公开, 
+.常量 编译类型_Windows动态链接库, "2", 公开, 
+.常量 编译类型_Windows易语言模块, "1000", 公开, 
+.常量 编译类型_Linux控制台程序, "10000", 公开, 
+.常量 编译类型_Linux易语言模块, "11000", 公开, 
+.常量 , , , 
+.常量 , , , 
+.常量 系统信息段, "“系统信息段”", , 
+.常量 用户信息段, "“用户信息段”", , 
+.常量 程序资源段, "“程序资源段”", , 
+.常量 程序段, "“程序段”", , 
+.常量 初始模块段, "“初始模块段”", , 
+.常量 可丢失程序段, "“可丢失程序段”", , 
+.常量 编辑信息段1_Maby, "“编辑信息段1”", , 
+.常量 编辑信息段2, "“编辑信息段2”", , 
+.常量 辅助信息段1, "“辅助信息段1”", , 
+.常量 辅助信息段2, "“辅助信息段2”", , 
+.常量 易模块记录段, "“易模块记录段”", , 
+.常量 , , , 
+.常量 sizeof_系统信息段, "60", , 
+.常量 sizeof_SectionHeader, "8", , 
+.常量 sizeof_SectionInfo, "92", , 
+.常量 sizeof_DWORD, "4", , 
+.常量 , , , 
+.常量 Magic_加密源码, "1162630231", , "WTLE"
+.常量 Magic_文件标志1, "1415007811", , "CNWT"
+.常量 Magic_文件标志2, "1196576837", , "EPRG"
+.常量 Magic_Section, "353465113", , 19 73 11 15
+.常量 , , , 
+.常量 , , , 
+.常量 no_key_ec_node, "117469977", , 07 00 73 19
+.常量 , , , 
+.常量 xF0000000, "4026531840", , 0xF0000000
+.常量 x00FFFFFF, "16777215", , 0x00FFFFFF
+.常量 , , , 
+.常量 程序段_变量_属性_静态, "1", 公开, 
+.常量 程序段_变量_属性_参考, "2", 公开, 
+.常量 程序段_变量_属性_传址, "2", 公开, 
+.常量 程序段_变量_属性_可空, "4", 公开, 
+.常量 程序段_变量_属性_数组, "8", 公开, 
+.常量 程序段_变量_属性_公开, "256", 公开, 
+.常量 , , , 
+.常量 程序段_函数_属性_公开, "8", 公开, 
+.常量 , , , 
+.常量 程序段_数据类型_属性_公开, "1", 公开, 
+.常量 , , , 
+.常量 程序段_DLL_属性_公开, "2", 公开, 
+.常量 , , , 
+.常量 资源段_常量_页面_常量, "1", , 
+.常量 资源段_常量_页面_图片, "2", , 
+.常量 资源段_常量_页面_声音, "3", , 
+.常量 , , , 
+.常量 资源段_常量_类型_空白, "22", , 
+.常量 资源段_常量_类型_数值, "23", , 
+.常量 资源段_常量_类型_逻辑, "24", , 
+.常量 资源段_常量_类型_日期, "25", , 
+.常量 资源段_常量_类型_文本, "26", , 
+.常量 , , , 
+.常量 资源段_常量_属性_未检查, "1", 公开, 
+.常量 资源段_常量_属性_公开, "2", 公开, 
+.常量 资源段_常量_属性_长文本常量, "16", 公开, 
+.常量 , , , 
+.常量 数据类型_空白型, "0", 公开, 0x00000000
+.常量 数据类型_字节型, "-2147483391", 公开, 0x80000101
+.常量 数据类型_短整数, "-2147483135", 公开, 0x80000201
+.常量 数据类型_整数型, "-2147482879", 公开, 0x80000301
+.常量 数据类型_长整数型, "-2147482623", 公开, 0x80000401
+.常量 数据类型_小数型, "-2147482367", 公开, 0x80000501
+.常量 数据类型_双精度小数, "-2147482111", 公开, 0x80000601
+.常量 数据类型_逻辑型, "-2147483646", 公开, 0x80000002
+.常量 数据类型_日期时间型, "-2147483645", 公开, 0x80000003
+.常量 数据类型_文本型, "-2147483644", 公开, 0x80000004
+.常量 数据类型_字节集, "-2147483643", 公开, 0x80000005
+.常量 数据类型_子程序指针, "-2147483642", 公开, 0x80000006
+.常量 , , , 
+.常量 op4_1, "1", , 
+.常量 op4_23, "23", , 
+.常量 op4_24, "24", , 
+.常量 op4_25, "25", , 
+.常量 op4_26, "26", , 
+.常量 op4_27, "27", , 
+.常量 op4_28, "28", , 
+.常量 op4_29, "29", , 
+.常量 op4_30, "30", , 
+.常量 op4_31, "31", , 
+.常量 op4_32, "32", , 
+.常量 op4_33, "33", , 
+.常量 op4_34, "34", , 
+.常量 op4_35, "35", , 
+.常量 , , , 
+.常量 op1_33, "33", , 
+.常量 , , , 
+.常量 op1_54, "54", , 
+.常量 op1_55, "55", , 
+.常量 op1_56, "56", , 
+.常量 op1_57, "57", , 
+.常量 op1_58, "58", , 
+.常量 op1_59, "59", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 3 系统核心支持库
+
+
+
+
+数据类型 ProSet, , 
+    .成员 读取代码, 逻辑型, , , 
+    .成员 读取资源, 逻辑型, , , 
+
+数据类型 系统信息段, 公开, 
+    .成员 编译版本1, 短整数型, , , 
+    .成员 编译版本2, 短整数型, , , 
+    .成员 Unknow_1, 空白型, , , 
+    .成员 Unknow_2, 空白型, , , 
+    .成员 未知类型, 空白型, , , 
+    .成员 文件类型, 空白型, , , #文件类型_xx
+    .成员 Unknow_3, 空白型, , , 
+    .成员 编译类型, 空白型, , , #编译类型_xx
+    .成员 Unknow_9, 空白型, , "8", 
+
+数据类型 用户信息段, 公开, 
+    .成员 程序名称, 文本型, , , 
+    .成员 程序备注, 文本型, , , 
+    .成员 匿名成员998, 空白型, , , 
+    .成员 作者, 文本型, , , 
+    .成员 邮政编码, 文本型, , , 
+    .成员 联系地址, 文本型, , , 
+    .成员 电话, 文本型, , , 
+    .成员 传真, 文本型, , , 
+    .成员 电子信箱, 文本型, , , 
+    .成员 主页, 文本型, , , 
+    .成员 其他, 文本型, , , 
+    .成员 匿名成员1007, 空白型, , , 
+    .成员 版本号1, 空白型, , , 
+    .成员 版本号2, 空白型, , , 
+
+数据类型 资源段, 公开, 
+    .成员 窗体, 资源段_窗体, , "1", 
+    .成员 常量, 资源段_常量, , "1", 
+    .成员 reserve, 空白型, , , 
+
+数据类型 资源段_窗体, 公开, 
+    .成员 段头, 块段头, , , 
+    .成员 未知1, 空白型, , , 
+    .成员 未知2, 空白型, , , 
+    .成员 左边, 整数型, , , 
+    .成员 名称, 文本型, , , 
+    .成员 备注, 文本型, , , 
+    .成员 元素, 资源段_窗体_元素, , "1", 
+
+数据类型 资源段_窗体_元素, 公开, 
+    .成员 保留, 空白型, , , 
+
+数据类型 资源段_常量, 公开, 
+    .成员 标志符, 空白型, , , 
+    .成员 Offset, 空白型, , , 
+    .成员 dwLength, 空白型, , , 
+    .成员 属性, 短整数型, , , 
+    .成员 名称, 文本型, , , 
+    .成员 备注, 文本型, , , 
+    .成员 数据, 变体型, , , 
+    .成员 是否为长文本, 逻辑型, , , 
+    .成员 结果, 文本型, , , 
+
+数据类型 程序段, 公开, 
+    .成员 头信息, 程序段_头信息, , , 
+    .成员 代码页, 程序段_代码页, , "1", 
+    .成员 函数组, 程序段_函数, , "1", 
+    .成员 全局变量, 程序段_变量, , "1", 
+    .成员 数据类型, 程序段_数据类型, , "1", 
+    .成员 Dll, 程序段_Dll, , "1", 
+
+数据类型 程序段_数据类型, 公开, 
+    .成员 段头, 块段头, , , 
+    .成员 属性, 空白型, , , 
+    .成员 名称, 文本型, , , 
+    .成员 备注, 文本型, , , 
+    .成员 成员组, 程序段_变量, , "1", 
+
+数据类型 程序段_Dll, 公开, 
+    .成员 段头, 块段头, , , 
+    .成员 属性, 空白型, , , 
+    .成员 返回类型, 整数型, , , 
+    .成员 名称, 文本型, , , 
+    .成员 备注, 文本型, , , 
+    .成员 文件名, 文本型, , , 
+    .成员 命令名, 文本型, , , 
+    .成员 参数组, 程序段_变量, , "1", 
+
+数据类型 程序段_头信息, 公开, 
+    .成员 VerFlag1, 空白型, , , 
+    .成员 Unk1, 空白型, , , 
+    .成员 Unk2_1, 字节集, , , 
+    .成员 Unk2_2, 字节集, , , 
+    .成员 Unk2_3, 字节集, , , 
+    .成员 支持库信息, 文本型, , "1", 
+    .成员 Flag1, 空白型, , , 
+    .成员 Flag2, 空白型, , , 
+    .成员 Unk3_Op, 字节集, , , 
+    .成员 调试命令行, 文本型, , , 
+    .成员 ICO图标, 字节集, , , 
+
+数据类型 块段头, 公开, 
+    .成员 dwID, 空白型, , , 
+    .成员 dwUnk, 空白型, , , 
+
+数据类型 程序段_代码页, 公开, 
+    .成员 段头, 块段头, , , 
+    .成员 Unk1, 空白型, , , 
+    .成员 基类, 空白型, , , 
+    .成员 名称, 文本型, , , 
+    .成员 备注, 文本型, , , 
+    .成员 函数组标志, 整数型, , "1", 
+    .成员 页面变量, 程序段_变量, , "1", 
+
+数据类型 程序段_函数, 公开, 
+    .成员 段头, 块段头, , , 
+    .成员 类型, 空白型, , , 
+    .成员 属性, 空白型, , , 
+    .成员 返回类型, 空白型, , , 
+    .成员 名称, 文本型, , , 
+    .成员 备注, 文本型, , , 
+    .成员 变量, 程序段_变量, , "1", 
+    .成员 参数, 程序段_变量, , "1", 
+    .成员 匿名成员1796, 空白型, , , 
+    .成员 数据1, 字节集, , , 
+    .成员 数据2, 字节集, , , 
+    .成员 数据3, 字节集, , , 
+    .成员 数据4, 字节集, , , 
+    .成员 数据5, 字节集, , , 
+    .成员 代码, 字节集, , , 
+
+数据类型 程序段_代码行, , 
+    .成员 dwFuncId, 空白型, , , 
+    .成员 类型, 空白型, , , -4=？？；-3=DLL指令；-2=用户子程序；-1=空；>=0时，则为支持库索引列表
+    .成员 未验证代码, 文本型, , , 
+    .成员 备注, 文本型, , , 
+
+数据类型 程序段_变量, 公开, 
+    .成员 标志符, 整数型, , , 
+    .成员 Offset, 空白型, , , 
+    .成员 dwLength, 空白型, , , 
+    .成员 数据类型, 空白型, , , 
+    .成员 属性, 短整数型, , , 
+    .成员 数组维数, 字节型, , , 
+    .成员 数组下标值, 空白型, , "1", 
+    .成员 名称, 文本型, , , 
+    .成员 备注, 文本型, , , 
+    .成员 匿名成员2162, 空白型, , , 
+
+数据类型 初始模块段, 公开, 
+    .成员 保留, 空白型, , , 
+
+数据类型 可丢失程序段, 公开, 
+    .成员 保留, 空白型, , , 
+
+数据类型 编辑信息段1, 公开, 
+    .成员 保留, 空白型, , , 
+
+数据类型 编辑信息段2, 公开, 
+    .成员 保留, 空白型, , , 
+
+数据类型 辅助信息段1, 公开, 
+    .成员 保留, 空白型, , , 
+
+数据类型 辅助信息段2, 公开, 
+    .成员 保留, 空白型, , , 
+
+数据类型 易模块记录段, 公开, 
+    .成员 保留, 空白型, , , 
+
+数据类型 _FileHeader, , 
+    .成员 Magic1, 整数型, , , 
+    .成员 Magic2, 整数型, , , 
+
+数据类型 _SectionHeader, , 
+    .成员 Magic, 整数型, , , 
+    .成员 Info_CheckSum, 整数型, , , 
+
+数据类型 _SectionInfo, , 
+    .成员 Key, 字节型, , "4", 
+    .成员 Name, 字节型, , "30", 
+    .成员 reserve_fill_1, 短整数型, , , 
+    .成员 Index, 整数型, , , 
+    .成员 Flag1, 整数型, , , 1=ec info
+    .成员 Data_CheckSum, 整数型, , , 
+    .成员 DataLength, 整数型, , , 
+    .成员 reserve_item, 整数型, , "10", 
+
+数据类型 分析选项, 公开, 
+    .成员 禁读_主要页面, 逻辑型, , , 
+    .成员 禁读_程序代码, 逻辑型, , , 
+    .成员 禁读_资源数据, 逻辑型, , , 
+
+
+.DLL命令 CopyTo_系统信息段, 空白型, "", "RtlMoveMemory", , 
+    .参数 Dest, 系统信息段, , 
+    .参数 Src, 字节集, , 
+    .参数 Length, 空白型, , 
+
+.DLL命令 CopyTo_SectionInfo, 空白型, "", "RtlMoveMemory", , 
+    .参数 Dest, _SectionInfo, , 
+    .参数 Src, 字节集, , 
+    .参数 Length, 空白型, , 
+
+.DLL命令 CopyFrom_SectionInfo, 空白型, "", "RtlMoveMemory", , 
+    .参数 Dest, 字节集, , 
+    .参数 Src, _SectionInfo, , 
+    .参数 Length, 空白型, , 
+
+.DLL命令 CopyFrom_SectionHeader, 空白型, "", "RtlMoveMemory", , 
+    .参数 Dest, 字节集, , 
+    .参数 Src, _SectionHeader, , 
+    .参数 Length, 空白型, , 
+
+.DLL命令 Sizeof_, 整数型, "", "GlobalSize", , 
+    .参数 p, 系统信息段, , 
+
+.DLL命令 strcpy_bytes, 空白型, "", "lstrcpyA", , 
+    .参数 dest, 字节型, 数组, 
+    .参数 src, 文本型, , 
+
+.DLL命令 LoadLibraryA, 整数型, "kernel32.dll", "LoadLibraryA", , 
+    .参数 FilePath, 文本型, , 
+
+.DLL命令 GetProcAddress, 整数型, "kernel32.dll", "GetProcAddress", , 
+    .参数 hLib, 空白型, , 
+    .参数 Name, 文本型, , 
+
+.DLL命令 GetModuleHandleA, 整数型, "kernel32.dll", "LoadLibraryA", , 
+    .参数 FilePath, 文本型, , 
+
+.窗口程序集 程序集1, , , 
+
+.程序集变量 g_LastError, 文本型, , , 
+.子程序 _启动子程序, 整数型, , 
+临时子程序 ()
+返回 (0)
+
+.子程序 临时子程序, 空白型, , 
+.局部变量 opt, 分析选项, , , 
+.局部变量 sys, 系统信息段, , , 
+.局部变量 user, 用户信息段, , , 
+.局部变量 res, 资源段, , , 
+.局部变量 code, 程序段, , , 
+.局部变量 int, 初始模块段, , , 
+.局部变量 lose, 可丢失程序段, , , 
+.局部变量 edit1, 编辑信息段1, , , 
+.局部变量 edit2, 编辑信息段2, , , 
+.局部变量 help1, 辅助信息段1, , , 
+.局部变量 help2, 辅助信息段2, , , 
+.局部变量 eclist, 易模块记录段, , , 
+
+
+
+.子程序 分析_取最后错误文本, 文本型, 公开, 
+返回 (g_LastError)
+
+.子程序 分析_设置错误文本, 空白型, 公开, 
+.参数 text, 文本型, , 
+
+赋值 (g_LastError, text)
+
+.子程序 Error, 空白型, , 
+.参数 text, 文本型, , 
+
+输出调试文本 (相加 (“[Error]”, text))
+分析_设置错误文本 (text)
+ ' .如果 (是否为调试版 ())
+     ' 输出调试文本 (“[Error]” ＋ text)
+.否则
+     ' 信息框 (text, #错误图标, )
+.如果结束
+
+
+.子程序 RepairLog, 空白型, , 
+.参数 text, 文本型, , 
+
+输出调试文本 (text)
+
+.子程序 模块_分析易文件, 逻辑型, 公开, 
+.参数 文件路径, 文本型, , 
+.参数 文件密码, 文本型, 可空, 
+.参数 __修复文件, 逻辑型, 可空, 
+.参数 匿名参数_3504, 空白型, , 
+.参数 分析选项, 分析选项, 可空, 
+.参数 系统信息段, 系统信息段, 可空, 
+.参数 用户信息段, 用户信息段, 可空, 
+.参数 程序资源段, 资源段, 可空, 
+.参数 程序段, 程序段, 可空, 
+.参数 初始模块段, 初始模块段, 可空, 
+.参数 可丢失程序段, 可丢失程序段, 可空, 
+.参数 编辑信息段1, 编辑信息段1, 可空, 
+.参数 编辑信息段2, 编辑信息段2, 可空, 
+.参数 辅助信息段1, 辅助信息段1, 可空, 
+.参数 辅助信息段2, 辅助信息段2, 可空, 
+.参数 易模块记录段, 易模块记录段, 可空, 
+
+.局部变量 file, CEFile, , , 
+.局部变量 匿名局部变量_5046, 空白型, , , 
+.局部变量 Block_Data, 字节集, , , 
+.局部变量 Block_Name, 文本型, , , 
+.局部变量 匿名局部变量_70, 空白型, , , 
+.局部变量 FileHead, _FileHeader, , , 
+.局部变量 是否有密码, 逻辑型, , , 
+
+赋值 (是否有密码, file.is_have_password (文件路径))
+.如果真 (等于 (file.Open (文件路径, __修复文件, 文件密码), 假))
+    Error (“打开文件失败”)
+    返回 (假)
+.如果真结束
+赋值 (FileHead, file.Read_FileHeader ())
+.如果真 (不等于 (FileHead.Magic1, #Magic_文件标志1))
+    .如果 (等于 (是否有密码, 假))
+        Error (“头标志1错误”)
+    .否则
+        Error (“密码错误或头标志1错误”)
+    .如果结束
+    file.Close ()
+    返回 (假)
+.如果真结束
+.如果真 (不等于 (FileHead.Magic2, #Magic_文件标志2))
+    .如果 (等于 (是否有密码, 假))
+        Error (“头标志2错误”)
+    .否则
+        Error (“密码错误或头标志2错误”)
+    .如果结束
+    file.Close ()
+    返回 (假)
+.如果真结束
+赋值 (Block_Data, {  })
+.判断循环首 (真)
+    .如果真 (__修复文件)
+        Repair_NodeInfo (file, 取字节集长度 (Block_Data))
+    .如果真结束
+    .如果真 (等于 (file.Read_Section (Block_Name, Block_Data), 假))
+        跳出循环 ()
+    .如果真结束
+    .如果真 (#__输出Section列表)
+        输出调试文本 (Block_Name)
+    .如果真结束
+    .判断开始 (等于 (Block_Name, “”))
+        跳出循环 ()
+    .判断 (等于 (Block_Name, #系统信息段))
+        .如果真 (等于 (是否为空 (系统信息段), 假))
+            赋值 (系统信息段, 分析_系统信息段 (Block_Data))
+        .如果真结束
+        
+    .判断 (等于 (Block_Name, #用户信息段))
+        .如果真 (等于 (是否为空 (用户信息段), 假))
+            赋值 (用户信息段, 分析_用户信息段 (Block_Data))
+        .如果真结束
+        
+    .判断 (等于 (Block_Name, #程序资源段))
+        .如果真 (等于 (是否为空 (程序资源段), 假))
+            赋值 (程序资源段, 分析_资源段 (Block_Data, 分析选项))
+        .如果真结束
+        
+    .判断 (等于 (Block_Name, #程序段))
+        .如果真 (等于 (是否为空 (程序段), 假))
+            赋值 (程序段, 分析_程序段 (Block_Data, 分析选项))
+        .如果真结束
+        
+    .判断 (等于 (Block_Name, #初始模块段))
+        .如果真 (等于 (是否为空 (系统信息段), 假))
+            赋值 (初始模块段, 分析_初始模块段 (Block_Data))
+        .如果真结束
+        
+    .判断 (等于 (Block_Name, #可丢失程序段))
+        .如果真 (等于 (是否为空 (可丢失程序段), 假))
+            赋值 (可丢失程序段, 分析_可丢失程序段 (Block_Data))
+        .如果真结束
+        
+    .判断 (等于 (Block_Name, #编辑信息段1_Maby))
+        .如果真 (等于 (是否为空 (编辑信息段1), 假))
+            赋值 (编辑信息段1, 分析_编辑信息段1 (Block_Data))
+        .如果真结束
+        
+    .判断 (等于 (Block_Name, #编辑信息段2))
+        .如果真 (等于 (是否为空 (编辑信息段2), 假))
+            赋值 (编辑信息段2, 分析_编辑信息段2 (Block_Data))
+        .如果真结束
+        
+    .判断 (等于 (Block_Name, #辅助信息段1))
+        .如果真 (等于 (是否为空 (辅助信息段1), 假))
+            赋值 (辅助信息段1, 分析_辅助信息段1 (Block_Data))
+        .如果真结束
+        
+    .判断 (等于 (Block_Name, #辅助信息段2))
+        .如果真 (等于 (是否为空 (辅助信息段2), 假))
+            赋值 (辅助信息段2, 分析_辅助信息段2 (Block_Data))
+            
+        .如果真结束
+        
+    .判断 (等于 (Block_Name, #易模块记录段))
+        .如果真 (等于 (是否为空 (易模块记录段), 假))
+            赋值 (易模块记录段, 分析_易模块记录段 (Block_Data))
+        .如果真结束
+        
+    .默认
+        Error (相加 (“未知段[”, Block_Name, “]”))
+    .判断结束
+    .如果真 (#__输出块数据)
+        创建目录 (相加 (取运行目录 (), “\”, Block_Name))
+        .如果真 (不等于 (Block_Data, {  }))
+            写到文件 (相加 (取运行目录 (), “\”, Block_Name, “\”, 辅_取文件名称 (文件路径), “.txt”), Block_Data)
+        .如果真结束
+        
+    .如果真结束
+    
+.判断循环尾 ()
+file.Close ()
+返回 (真)
+
+.子程序 分析_易模块记录段, 易模块记录段, , 
+.参数 数据, 字节集, , 
+
+.局部变量 Info, 易模块记录段, , , 
+
+返回 (Info)
+
+.子程序 分析_辅助信息段1, 辅助信息段1, , 
+.参数 数据, 字节集, , 
+
+.局部变量 Info, 辅助信息段1, , , 
+
+返回 (Info)
+
+.子程序 分析_辅助信息段2, 辅助信息段2, , 
+.参数 数据, 字节集, , 
+
+.局部变量 Info, 辅助信息段2, , , 
+
+返回 (Info)
+
+.子程序 分析_编辑信息段1, 编辑信息段1, , 
+.参数 数据, 字节集, , 
+
+.局部变量 Info, 编辑信息段1, , , 
+
+返回 (Info)
+
+.子程序 分析_编辑信息段2, 编辑信息段2, , 
+.参数 数据, 字节集, , 
+
+.局部变量 Info, 编辑信息段2, , , 
+
+返回 (Info)
+
+.子程序 分析_可丢失程序段, 可丢失程序段, , 
+.参数 数据, 字节集, , 
+
+.局部变量 Info, 可丢失程序段, , , 
+
+返回 (Info)
+
+.子程序 分析_初始模块段, 初始模块段, , 
+.参数 数据, 字节集, , 
+
+.局部变量 Info, 初始模块段, , , 
+
+返回 (Info)
+
+.子程序 分析_系统信息段, 系统信息段, , 
+.参数 数据, 字节集, , 
+
+.局部变量 Info, 系统信息段, , , 
+
+CopyTo_系统信息段 (Info, 数据, #sizeof_系统信息段)
+.如果真 (是否为调试版 ())
+    .如果真 (或者 (不等于 (Info.Unknow_1, 1), 不等于 (Info.Unknow_2, 1), 不等于 (Info.Unknow_3, 0), 不等于 (到字节集 (Info.Unknow_9), { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 })))
+         ' 输出调试文本 (Info.Unknow_1, Info.Unknow_2, Info.Unknow_3, Info.Unknow_9)
+    .如果真结束
+    
+.如果真结束
+返回 (Info)
+
+.子程序 分析_用户信息段, 用户信息段, , 
+.参数 数据, 字节集, , 
+
+.局部变量 Info, 用户信息段, , , 
+.局部变量 offset, 空白型, , , 
+
+赋值 (offset, 1)
+赋值 (Info.程序名称, 取数据_数据文本 (数据, offset))
+赋值 (Info.程序备注, 取数据_数据文本 (数据, offset))
+赋值 (Info.作者, 取数据_数据文本 (数据, offset))
+赋值 (Info.邮政编码, 取数据_数据文本 (数据, offset))
+赋值 (Info.联系地址, 取数据_数据文本 (数据, offset))
+赋值 (Info.电话, 取数据_数据文本 (数据, offset))
+赋值 (Info.传真, 取数据_数据文本 (数据, offset))
+赋值 (Info.电子信箱, 取数据_数据文本 (数据, offset))
+赋值 (Info.主页, 取数据_数据文本 (数据, offset))
+赋值 (Info.其他, 取数据_数据文本 (数据, offset))
+赋值 (Info.版本号1, 取数据_整数 (数据, offset))
+赋值 (Info.版本号2, 取数据_整数 (数据, offset))
+返回 (Info)
+
+.子程序 Repair_NodeInfo, 逻辑型, , 
+.参数 file, CEFile, , 
+.参数 LastSize, 空白型, , 
+
+.局部变量 Header, _SectionHeader, , , 
+.局部变量 Info, _SectionInfo, , , 
+.局部变量 extern, 字节集, , , 
+.局部变量 匿名局部变量_4965, 空白型, , , 
+.局部变量 bak, 空白型, , , 
+.局部变量 length, 空白型, , , 
+.局部变量 checksum, 空白型, , , 
+.局部变量 Repair, 逻辑型, , , 
+
+.如果真 (file.IsEof ())
+    返回 (假)
+.如果真结束
+赋值 (bak, file.GetPos ())
+赋值 (Header, file.Read_SectionHeader ())
+.如果真 (不等于 (Header.Magic, #Magic_Section))
+    赋值 (length, 相减 (0, #sizeof_SectionHeader, #sizeof_SectionInfo))
+    .判断循环首 (等于 (file.IsEof (), 假))
+        file.MoveTo (#文件首, 相加 (bak, length))
+        赋值 (Header.Magic, file.ReadInt ())
+        .如果真 (等于 (Header.Magic, #Magic_Section))
+            跳出循环 ()
+        .如果真结束
+        赋值 (length, 相加 (length, 1))
+    .判断循环尾 ()
+    .如果真 (不等于 (Header.Magic, #Magic_Section))
+        file.MoveTo (#文件首, bak)
+        返回 (假)
+    .如果真结束
+    .如果 (大于或等于 (length, 0))
+        file.MoveTo (#文件首, bak)
+        赋值 (extern, file.ReadData (length))
+        赋值 (Info.DataLength, length)
+        赋值 (Info.Data_CheckSum, GetCheckValue (extern))
+        赋值 (Info.Key [1], 204)
+        赋值 (Info.Key [2], 204)
+        赋值 (Info.Key [3], 204)
+        赋值 (Info.Key [4], 204)
+        strcpy_bytes (Info.Name, “待修复”)
+        Decode_Str (Info.Name, Info.Key)
+        赋值 (Header.Info_CheckSum, GetSectionInfoCheckSum (Info))
+        file.MoveTo (#文件首, bak)
+        file.InsertSection (Header, Info)
+         ' bak ＝ bak ＋ #sizeof_SectionHeader ＋ #sizeof_SectionInfo ＋ length
+        file.MoveTo (#文件首, bak)
+         ' 输出调试文本 (file.ReadData (64))
+        赋值 (Header, file.Read_SectionHeader ())
+    .否则
+        
+    .如果结束
+    
+.如果真结束
+赋值 (Info, file.Read_SectionInfo ())
+赋值 (extern, file.ReadData (Info.DataLength))
+赋值 (checksum, GetCheckValue (extern))
+.如果真 (不等于 (Info.Data_CheckSum, checksum))
+    赋值 (Info.Data_CheckSum, checksum)
+    赋值 (Repair, 真)
+.如果真结束
+赋值 (checksum, GetSectionInfoCheckSum (Info))
+.如果真 (不等于 (Header.Info_CheckSum, checksum))
+    赋值 (Header.Info_CheckSum, checksum)
+    赋值 (Repair, 真)
+.如果真结束
+.如果真 (等于 (Repair, 真))
+    file.MoveTo (#文件首, bak)
+    file.Write_SectionHeader (Header)
+    file.Write_SectionInfo (Info)
+    Decode_Str (Info.Name, Info.Key)
+    RepairLog (相加 (“[”, 到文本 (Info.Name), “]损坏”))
+    
+.如果真结束
+file.MoveTo (#文件首, bak)
+返回 (真)
+
+.子程序 Repair_Write, 空白型, , 
+.参数 hFile, 空白型, , 
+.参数 CheckAddr_Head, 空白型, , 
+.参数 CheckAddr_Data, 空白型, , 
+.参数 HeadAddr, 空白型, , 
+.参数 HeadSize, 空白型, , 
+.参数 DataAddr, 空白型, , 
+.参数 DataSize, 空白型, , 
+
+.局部变量 bak, 空白型, , , 
+.局部变量 bin, 字节集, , , 
+
+赋值 (bak, 取读写位置 (hFile))
+移动读写位置 (hFile, , DataAddr)
+赋值 (bin, 读入字节集 (hFile, DataSize))
+移动读写位置 (hFile, , CheckAddr_Data)
+.如果真 (等于 (写出数据 (hFile, GetCheckValue (bin)), 假))
+    Error (“修正失败[数据]”)
+.如果真结束
+移动读写位置 (hFile, , HeadAddr)
+赋值 (bin, 读入字节集 (hFile, HeadSize))
+移动读写位置 (hFile, , CheckAddr_Head)
+.如果真 (等于 (写出数据 (hFile, GetCheckValue (bin)), 假))
+    Error (“修正失败[头]”)
+.如果真结束
+移动读写位置 (hFile, , bak)
+
+.子程序 GetCheckValue, 整数型, , 
+.参数 data, 字节集, , 
+
+.局部变量 data_len, 空白型, , , 
+.局部变量 key, 字节集, , , 
+.局部变量 key_len, 空白型, , , 
+.局部变量 i, 空白型, , , 
+.局部变量 ret_key, 空白型, , , 
+
+赋值 (key_len, 4)
+赋值 (key, 取空白字节集 (key_len))
+赋值 (data_len, 取字节集长度 (data))
+赋值 (i, 0)
+.判断循环首 (小于 (i, data_len))
+    赋值 (key [相加 (求余数 (i, key_len), 1)], 位异或 (key [相加 (求余数 (i, key_len), 1)], data [相加 (i, 1)]))
+    赋值 (i, 相加 (i, 1))
+.判断循环尾 ()
+赋值 (ret_key, 取字节集数据 (key, #整数型, ))
+返回 (ret_key)
+
+.子程序 Decode_Str, 空白型, , 
+.参数 data, 字节型, 数组, 
+.参数 key, 字节型, 数组, 
+
+.局部变量 key_i, 空白型, , , 
+.局部变量 key_len, 空白型, , , 
+.局部变量 i, 整数型, , , 
+
+赋值 (key_len, 取数组成员数 (key))
+赋值 (key_i, 1)
+.计次循环首 (取数组成员数 (data), i)
+    赋值 (data [i], 位异或 (data [i], key [相加 (求余数 (key_i, key_len), 1)]))
+    赋值 (key_i, 相加 (key_i, 1))
+.计次循环尾 ()
+
+.程序集 数据操作, , , 
+
+.子程序 GET_HIGHT_TYPE, 整数型, , 
+.参数 DWORD, 空白型, , 
+
+返回 (右移 (位与 (DWORD, #xF0000000), 相加 (8, 8, 8, 4)))
+
+.子程序 GET_LINK_TYPE, 整数型, , 
+.参数 DWORD, 整数型, , 
+
+返回 (位与 (DWORD, #x00FFFFFF))
+
+.子程序 取数据_字节, 短整数型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+
+返回 (取字节集数据 (数据, #字节型, offset))
+
+.子程序 取数据_短整数, 短整数型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+
+返回 (取字节集数据 (数据, #短整数型, offset))
+
+.子程序 取数据_整数, 整数型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+
+返回 (取字节集数据 (数据, #整数型, offset))
+
+.子程序 取数据_逻辑, 逻辑型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+
+返回 (取字节集数据 (数据, #逻辑型, offset))
+
+.子程序 取数据_双精度小数, 双精度小数型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+
+返回 (取字节集数据 (数据, #双精度小数型, offset))
+
+.子程序 取数据_日期时间, 日期时间型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+
+返回 (取字节集数据 (数据, #日期时间型, offset))
+
+.子程序 取数据_文本数组, 空白型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+.参数 ret_arg, 文本型, 数组, 
+
+.局部变量 wCount, 短整数型, , , 
+.局部变量 i, 空白型, , , 
+
+赋值 (wCount, 取数据_短整数 (数据, offset))
+重定义数组 (ret_arg, 假, wCount)
+.计次循环首 (wCount, i)
+    赋值 (ret_arg [i], 取数据_数据文本 (数据, offset))
+.计次循环尾 ()
+
+.子程序 取数据_数据文本, 文本型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+
+返回 (到文本 (取数据_动态数据 (数据, offset)))
+
+.子程序 取数据_标准文本, 文本型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+
+返回 (取字节集数据 (数据, #文本型, offset))
+
+.子程序 取数据_动态数据, 字节集, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+
+.局部变量 len, 空白型, , , 
+
+赋值 (len, 取数据_整数 (数据, offset))
+返回 (取数据_指定数据 (数据, offset, len))
+
+.子程序 取数据_指定数据, 字节集, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+.参数 length, 空白型, , 
+
+.局部变量 data, 字节集, , , 
+
+.如果真 (小于 (length, 0))
+    Error (“Read Data Error”)
+    返回 ({  })
+.如果真结束
+.如果真 (等于 (length, 0))
+    返回 ({  })
+.如果真结束
+赋值 (data, 取字节集中间 (数据, offset, length))
+赋值 (offset, 相加 (offset, length))
+返回 (data)
+
+.子程序 取数据_跳过动态数据, 字节集, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+
+.局部变量 len, 空白型, , , 
+
+赋值 (len, 取数据_整数 (数据, offset))
+赋值 (offset, 相加 (offset, len))
+返回 ({  })
+
+
+.子程序 数据转换, 文本型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+
+.局部变量 i, 整数型, , , 
+
+赋值 (i, 取字节集数据 (数据, #整数型, offset))
+返回 (到文本 (readBytes (i, 数据, offset)))
+
+.子程序 readBytes, 字节集, 公开, 
+.参数 length, 整数型, , 
+.参数 data, 字节集, , 
+.参数 offset, 空白型, 参考, 
+
+.局部变量 d, 字节集, , , 
+
+赋值 (d, 取字节集中间 (data, offset, length))
+赋值 (offset, 相加 (offset, length))
+返回 (d)
+
+.程序集 程序段, , , 
+
+.子程序 分析_程序段, 程序段, , 
+.参数 数据, 字节集, , 
+.参数 分析选项, 分析选项, , 
+
+.局部变量 offset, 空白型, , , 
+.局部变量 Info, 程序段, , , 
+.局部变量 匿名局部变量_2916, 空白型, , , 
+.局部变量 Count, 空白型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 段组, 块段头, , "0", 
+.局部变量 匿名局部变量_3289, 空白型, , , 
+
+赋值 (offset, 1)
+分析_程序段_基本信息 (数据, offset, Info.头信息)
+
+.如果真 (等于 (分析选项.禁读_主要页面, 假))
+    赋值 (Count, 分析_块_段头 (数据, offset, 段组))
+    重定义数组 (Info.代码页, 假, Count)
+    .计次循环首 (Count, i)
+        赋值 (Info.代码页 [i], 段头, 段组 [i])
+        分析_程序段_程序集 (数据, offset, Info.代码页 [i])
+    .计次循环尾 ()
+    
+    赋值 (Count, 分析_块_段头 (数据, offset, 段组))
+    重定义数组 (Info.函数组, 假, Count)
+    .计次循环首 (Count, i)
+        赋值 (Info.函数组 [i], 段头, 段组 [i])
+        分析_程序段_函数 (数据, offset, Info.函数组 [i], Info, 分析选项)
+    .计次循环尾 ()
+    
+    分析_程序段_变量_数据 (Info.全局变量, 取数据_整数 (数据, offset), 取数据_动态数据 (数据, offset))
+    
+    赋值 (Count, 分析_块_段头 (数据, offset, 段组))
+    重定义数组 (Info.数据类型, 假, Count)
+    .计次循环首 (Count, i)
+        赋值 (Info.数据类型 [i], 段头, 段组 [i])
+        分析_程序段_数据类型 (数据, offset, Info.数据类型 [i])
+    .计次循环尾 ()
+    
+    赋值 (Count, 分析_块_段头 (数据, offset, 段组))
+    重定义数组 (Info.Dll, 假, Count)
+    .计次循环首 (Count, i)
+        赋值 (Info.Dll [i], 段头, 段组 [i])
+        分析_程序段_Dll (数据, offset, Info.Dll [i])
+    .计次循环尾 ()
+.如果真结束
+
+返回 (Info)
+
+.子程序 分析_程序段_数据类型, 空白型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+.参数 Info, 程序段_数据类型, , 
+
+.局部变量 Count, 空白型, , , 
+
+赋值 (Info.属性, 取数据_整数 (数据, offset))
+赋值 (Info.名称, 取数据_数据文本 (数据, offset))
+赋值 (Info.备注, 取数据_数据文本 (数据, offset))
+分析_程序段_变量_数据 (Info.成员组, 取数据_整数 (数据, offset), 取数据_动态数据 (数据, offset))
+
+.子程序 分析_程序段_Dll, 空白型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+.参数 Info, 程序段_Dll, , 
+
+.局部变量 Count, 空白型, , , 
+
+赋值 (Info.属性, 取数据_整数 (数据, offset))
+赋值 (Info.返回类型, 取数据_整数 (数据, offset))
+
+赋值 (Info.名称, 取数据_数据文本 (数据, offset))
+赋值 (Info.备注, 取数据_数据文本 (数据, offset))
+
+赋值 (Info.文件名, 取数据_数据文本 (数据, offset))
+赋值 (Info.命令名, 取数据_数据文本 (数据, offset))
+分析_程序段_变量_数据 (Info.参数组, 取数据_整数 (数据, offset), 取数据_动态数据 (数据, offset))
+
+.子程序 分析_块_段头, 整数型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+.参数 List, 块段头, 数组, 
+
+.局部变量 Length, 空白型, , , 
+.局部变量 Count, 空白型, , , 
+.局部变量 i, 整数型, , , 
+
+赋值 (Length, 取数据_整数 (数据, offset))
+赋值 (Count, 相除 (Length, 8))
+重定义数组 (List, 假, Count)
+赋值 (i, offset)
+.计次循环首 (Count, i)
+    赋值 (List [i], dwID, 取数据_整数 (数据, offset))
+.计次循环尾 ()
+.计次循环首 (Count, i)
+    赋值 (List [i], dwUnk, 取数据_整数 (数据, offset))
+.计次循环尾 ()
+返回 (Count)
+
+.子程序 分析_程序段_函数, 空白型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+.参数 Info, 程序段_函数, , 
+.参数 global, 程序段, , 
+.参数 分析选项, 分析选项, , 
+
+.局部变量 count, 整数型, , , 
+
+赋值 (Info.类型, 取数据_整数 (数据, offset))
+赋值 (Info.属性, 取数据_整数 (数据, offset))
+赋值 (Info.返回类型, 取数据_整数 (数据, offset))
+赋值 (Info.名称, 取数据_数据文本 (数据, offset))
+赋值 (Info.备注, 取数据_数据文本 (数据, offset))
+分析_程序段_变量_数据 (Info.变量, 取数据_整数 (数据, offset), 取数据_动态数据 (数据, offset))
+分析_程序段_变量_数据 (Info.参数, 取数据_整数 (数据, offset), 取数据_动态数据 (数据, offset))
+.如果 (分析选项.禁读_程序代码)
+    赋值 (Info.数据1, 取数据_跳过动态数据 (数据, offset))
+    赋值 (Info.数据2, 取数据_跳过动态数据 (数据, offset))
+    赋值 (Info.数据3, 取数据_跳过动态数据 (数据, offset))
+    赋值 (Info.数据4, 取数据_跳过动态数据 (数据, offset))
+    赋值 (Info.数据5, 取数据_跳过动态数据 (数据, offset))
+    赋值 (Info.代码, 取数据_跳过动态数据 (数据, offset))
+.否则
+    赋值 (Info.数据1, 取数据_动态数据 (数据, offset))
+    赋值 (Info.数据2, 取数据_动态数据 (数据, offset))
+    赋值 (Info.数据3, 取数据_动态数据 (数据, offset))
+    赋值 (Info.数据4, 取数据_动态数据 (数据, offset))
+    赋值 (Info.数据5, 取数据_动态数据 (数据, offset))
+    赋值 (Info.代码, 取数据_动态数据 (数据, offset))
+    输出调试文本 (选择 (等于 (Info.名称, “”), 相加 (“sub_”, 取十六进制文本 (Info.段头.dwID)), Info.名称))
+    分析_程序段_代码 (Info.代码, global)
+.如果结束
+ ' 输出调试文本 (Info.数据1)
+ ' 输出调试文本 (Info.数据2)
+ ' 输出调试文本 (Info.数据3)
+ ' 输出调试文本 (Info.数据4)
+ ' 输出调试文本 (Info.数据5)
+ ' 输出调试文本 (Info.名称, 取十六进制文本 (Info.类型), Info.代码)
+
+.子程序 分析_程序段_代码, 空白型, , 
+.参数 数据, 字节集, , 
+.参数 Info, 程序段, , 
+
+.局部变量 offset, 空白型, , , 
+
+赋值 (offset, 1)
+.判断循环首 (并且 (小于或等于 (offset, 取字节集长度 (数据)), 不等于 (offset, -1)))
+    .如果真 (等于 (IsUnkType (取数据_字节 (数据, offset)), 假))
+        到循环尾 ()
+    .如果真结束
+    .如果真 (等于 (位与 (取数据_字节 (数据, 相加 (offset, 6)), 40), 32))
+        到循环尾 ()
+    .如果真结束
+    分析_程序段_行 (数据, offset, Info)
+    赋值 (offset, 相加 (offset, GetFEndLen3 (数据, offset)))
+.判断循环尾 ()
+
+.子程序 分析_程序段_行, 空白型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, , 
+.参数 Info, 程序段, , 
+
+.局部变量 line, 程序段_代码行, , , 
+.局部变量 tmp, 空白型, , , 
+
+
+赋值 (line.dwFuncId, 取数据_整数 (数据, offset))
+赋值 (line.类型, 取数据_短整数 (数据, offset))
+赋值 (tmp, 取数据_短整数 (数据, offset))
+赋值 (line.未验证代码, 取数据_数据文本 (数据, offset))
+赋值 (line.备注, 取数据_数据文本 (数据, offset))
+.判断开始 (大于或等于 (line.类型, 0))
+    输出调试文本 (取支持库信指令 (Info.头信息, line.类型, line.dwFuncId), line.未验证代码, line.类型, tmp)
+.判断 (等于 (line.类型, -2))
+    输出调试文本 (取用户定义指令 (Info.函数组, line.dwFuncId), line.未验证代码, line.类型, tmp)
+.默认
+    输出调试文本 (取十六进制文本 (line.dwFuncId), line.未验证代码, line.类型, tmp)
+.判断结束
+赋值 (tmp, 取数据_字节 (数据, offset))
+
+.子程序 GetFHdrType1, 整数型, , 
+.参数 type, 字节型, , 
+
+.判断开始 (并且 (大于或等于 (type, 106), 小于或等于 (type, 117)))
+    返回 (4)
+.判断 (并且 (大于或等于 (type, 80), 小于或等于 (type, 85)))
+    返回 (5)
+.判断 (并且 (大于或等于 (type, 54), 小于或等于 (type, 59)))
+    返回 (2)
+.判断 (并且 (大于或等于 (type, 22), 小于或等于 (type, 35)))
+    返回 (1)
+.判断 (等于 (type, 1))
+    返回 (3)
+.默认
+    返回 (0)
+.判断结束
+
+
+.子程序 GetFEndLen1, 整数型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, , 
+
+.局部变量 tmp, 空白型, , , 
+.局部变量 bak_offset, 空白型, , , 
+
+赋值 (bak_offset, offset)
+赋值 (tmp, 取数据_字节 (数据, offset))
+.如果真 (等于 (tmp, #op1_54))
+    返回 (1)
+.如果真结束
+赋值 (tmp, 取数据_整数 (数据, offset))
+.判断循环首 (真)
+    赋值 (tmp, 取数据_字节 (数据, offset))
+    .判断开始 (等于 (tmp, #op1_56))
+        赋值 (offset, 相加 (相减 (offset, 1), GetFEndLen1 (数据, offset)))
+    .判断 (等于 (tmp, #op1_57))
+        赋值 (tmp, 取数据_整数 (数据, offset))
+        赋值 (tmp, 取数据_整数 (数据, offset))
+    .判断 (等于 (tmp, #op1_58))
+         ' 到循环尾 ()
+    .判断 (等于 (tmp, #op1_59))
+        赋值 (tmp, 取数据_整数 (数据, offset))
+    .判断 (等于 (tmp, #op1_33))
+        赋值 (offset, 相加 (offset, GetFEndLen3 (数据, offset)))
+    .判断 (等于 (tmp, #op1_55))
+        跳出循环 ()
+    .默认
+        输出调试文本 (相加 (“unknow type cmd1:”, 到文本 (tmp)))
+        跳出循环 ()
+    .判断结束
+    
+.判断循环尾 ()
+.如果真 (等于 (offset, -1))
+    暂停 ()
+    返回 (0)
+.如果真结束
+返回 (相减 (offset, bak_offset))
+
+.子程序 GetFEndLen4, 整数型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, , 
+
+.局部变量 tmp, 空白型, , , 
+.局部变量 bak_offset, 空白型, , , 
+.局部变量 tmp_str, 文本型, , , 
+
+赋值 (bak_offset, offset)
+赋值 (tmp, 取数据_字节 (数据, offset))
+.判断开始 (等于 (tmp, 0))
+    
+.判断 (等于 (tmp, #op4_1))
+     ' //
+.判断 (等于 (tmp, #op4_24))
+    赋值 (tmp, 取数据_短整数 (数据, offset))
+.判断 (等于 (tmp, #op4_26))
+    赋值 (tmp_str, 取数据_数据文本 (数据, offset)) ' 文本参数
+.判断 (等于 (tmp, #op4_28))
+    赋值 (tmp, 取数据_整数 (数据, offset))
+.判断 (或者 (等于 (tmp, #op4_27), 等于 (tmp, #op4_30)))
+    赋值 (tmp, 取数据_整数 (数据, offset))
+.判断 (等于 (tmp, #op4_35))
+    赋值 (tmp, 取数据_整数 (数据, offset))
+    赋值 (tmp, 取数据_整数 (数据, offset))
+.判断 (或者 (等于 (tmp, #op4_23), 等于 (tmp, #op4_25))) ' 数据参数
+    赋值 (tmp, 取数据_整数 (数据, offset))
+    赋值 (tmp, 取数据_整数 (数据, offset))
+.判断 (等于 (tmp, #op4_29))
+    赋值 (offset, 相加 (offset, GetFEndLen1 (数据, offset)))
+.判断 (或者 (等于 (tmp, #op4_33), 等于 (tmp, #op4_34)))
+    赋值 (offset, 相加 (offset, GetFEndLen3 (数据, offset)))
+.判断 (等于 (tmp, #op4_31))
+    .判断循环首 (并且 (不等于 (取数据_字节 (数据, offset), #op4_32), 不等于 (offset, -1)))
+        赋值 (offset, 相加 (offset, GetFEndLen4 (数据, offset)))
+    .判断循环尾 ()
+.判断 (等于 (tmp, 22))
+    
+.默认
+    输出调试文本 (相加 (“unknow type cmd4:”, 到文本 (tmp)))
+.判断结束
+.如果真 (等于 (offset, -1))
+    返回 (1)
+.如果真结束
+返回 (相减 (offset, bak_offset))
+
+.子程序 GetFEndLen3, 整数型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, , 
+
+.局部变量 bak_offset, 空白型, , , 
+.局部变量 tmp_str, 文本型, , , 
+
+赋值 (bak_offset, offset)
+赋值 (offset, 相加 (offset, 8))
+赋值 (tmp_str, 取数据_数据文本 (数据, offset)) ' cmd
+检查 (不等于 (offset, -1))
+赋值 (tmp_str, 取数据_数据文本 (数据, offset)) ' desc
+检查 (不等于 (offset, -1))
+赋值 (offset, 相加 (offset, GetFEndLen1 (数据, offset)))
+检查 (不等于 (offset, -1))
+赋值 (offset, 相加 (offset, GetFEndLen4_loop (数据, offset)))
+返回 (相减 (offset, bak_offset))
+
+.子程序 GetFEndLen4_loop, 整数型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, , 
+
+.局部变量 bak_offset, 空白型, , , 
+
+赋值 (bak_offset, offset)
+.判断循环首 (不等于 (取数据_字节 (数据, 相减 (相加 (offset, 1), 1)), #op4_1))
+    赋值 (offset, 相加 (offset, GetFEndLen4 (数据, offset)))
+.判断循环尾 ()
+赋值 (offset, 相加 (offset, 1))
+返回 (相减 (offset, bak_offset))
+
+.子程序 IsUnkType, 逻辑型, , 
+.参数 type, 字节型, , 
+
+.判断开始 (等于 (type, 33))
+    返回 (真)
+.判断 (并且 (等于 (GetFHdrType1 (type), 4), 不等于 (type, 114), 不等于 (type, 115), 不等于 (type, 116), 不等于 (type, 109), 不等于 (type, 111), 不等于 (type, 117)))
+    返回 (真)
+.默认
+    返回 (假)
+.判断结束
+
+
+.子程序 分析_程序段_程序集, 空白型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+.参数 Info, 程序段_代码页, , 
+
+.局部变量 Bin, 字节集, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 length, 空白型, , , 
+.局部变量 count, 空白型, , , 
+
+赋值 (Info.Unk1, 取数据_整数 (数据, offset))
+赋值 (Info.基类, 取数据_整数 (数据, offset))
+赋值 (Info.名称, 取数据_数据文本 (数据, offset))
+赋值 (Info.备注, 取数据_数据文本 (数据, offset))
+赋值 (length, 取数据_整数 (数据, offset))
+赋值 (count, 相除 (length, 4))
+重定义数组 (Info.函数组标志, 假, count)
+.计次循环首 (count, i)
+    赋值 (Info.函数组标志 [i], 取数据_整数 (数据, offset))
+.计次循环尾 ()
+分析_程序段_变量_数据 (Info.页面变量, 取数据_整数 (数据, offset), 取数据_动态数据 (数据, offset))
+
+.子程序 分析_程序段_变量_数据, 空白型, , 
+.参数 list, 程序段_变量, 数组, 
+.参数 count, 空白型, , 
+.参数 数据, 字节集, , 
+
+.局部变量 offset, 空白型, , , 
+.局部变量 i, 空白型, , , 
+.局部变量 i2, 空白型, , , 
+.局部变量 text, 文本型, , , 
+
+重定义数组 (list, 假, count)
+.如果真 (等于 (count, 0))
+    返回 ()
+.如果真结束
+赋值 (offset, 1)
+.计次循环首 (count, i)
+    赋值 (list [i], 标志符, 取数据_整数 (数据, offset))
+.计次循环尾 ()
+.计次循环首 (count, i)
+    赋值 (list [i], Offset, 取数据_整数 (数据, offset))
+.计次循环尾 ()
+.计次循环首 (count, i)
+    赋值 (list [i], Offset, 相加 (list [i], Offset, offset))
+.计次循环尾 ()
+ ' text ＝ “.版本 2” ＋ #换行符 ＋ #换行符
+.计次循环首 (取数组成员数 (list), i)
+    赋值 (offset, list [i], Offset)
+    赋值 (list [i], dwLength, 取数据_整数 (数据, offset))
+    赋值 (list [i], 数据类型, 取数据_整数 (数据, offset))
+    赋值 (list [i], 属性, 取数据_短整数 (数据, offset))
+    赋值 (list [i], 数组维数, 取数据_字节 (数据, offset))
+    重定义数组 (list [i], 数组下标值, 假, list [i], 数组维数)
+    .计次循环首 (list [i], 数组维数, i2)
+        赋值 (list [i], 数组下标值 [i2], 取数据_整数 (数据, offset))
+    .计次循环尾 ()
+    赋值 (list [i], 名称, 取数据_标准文本 (数据, offset))
+    赋值 (list [i], 备注, 取数据_标准文本 (数据, offset))
+     ' text ＝ text ＋ “.常量 数据类型_” ＋ list [i].名称 ＋ “, ” ＋ #引号 ＋ 到文本 (list [i].数据类型) ＋ #引号 ＋ “, 公开, 0x” ＋ 取十六进制文本 (list [i].数据类型) ＋ #换行符
+    
+.计次循环尾 ()
+ ' 输出调试文本 (text)
+
+.子程序 分析_程序段_基本信息, 空白型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 空白型, 参考, 
+.参数 Info, 程序段_头信息, , 
+
+赋值 (Info.VerFlag1, 取数据_整数 (数据, offset))
+赋值 (Info.Unk1, 取数据_整数 (数据, offset))
+赋值 (Info.Unk2_1, 取数据_动态数据 (数据, offset))
+赋值 (Info.Unk2_2, 取数据_动态数据 (数据, offset))
+赋值 (Info.Unk2_3, 取数据_动态数据 (数据, offset))
+取数据_文本数组 (数据, offset, Info.支持库信息)
+赋值 (Info.Flag1, 取数据_整数 (数据, offset))
+赋值 (Info.Flag2, 取数据_整数 (数据, offset))
+.如果真 (不等于 (位与 (Info.Flag1, 1), 0))
+    赋值 (Info.Unk3_Op, 取数据_指定数据 (数据, offset, 16))
+.如果真结束
+赋值 (Info.ICO图标, 取数据_动态数据 (数据, offset))
+赋值 (Info.调试命令行, 取数据_数据文本 (数据, offset))
+
+
+.程序集 程序资源段, , , 
+
+.子程序 分析_资源段, 资源段, , 
+.参数 数据, 字节集, , 
+.参数 分析选项, 分析选项, , 
+
+.局部变量 Info, 资源段, , , 
+.局部变量 offset, 空白型, , , 
+.局部变量 i, 空白型, , , 
+.局部变量 Count, 空白型, , , 
+.局部变量 段组, 块段头, , "0", 
+
+赋值 (offset, 1)
+赋值 (Count, 分析_块_段头 (数据, offset, 段组))
+重定义数组 (Info.窗体, 假, Count)
+.计次循环首 (Count, i)
+    赋值 (Info.窗体 [i], 段头, 段组 [i])
+    分析_资源段_窗体 (数据, offset, Info.窗体 [i])
+.计次循环尾 ()
+分析_资源段_常量 (Info.常量, 取数据_整数 (数据, offset), 取数据_动态数据 (数据, offset), 分析选项)
+赋值 (Info.reserve, 取数据_整数 (数据, offset))
+返回 (Info)
+
+.子程序 分析_资源段_窗体, 空白型, , 
+.参数 数据, 字节集, , 
+.参数 offset, 整数型, 参考, 
+.参数 info, 资源段_窗体, , 
+
+.局部变量 count, 空白型, , , 
+
+赋值 (info.未知1, 取数据_整数 (数据, offset))
+赋值 (info.未知2, 取数据_整数 (数据, offset))
+赋值 (info.名称, 取数据_数据文本 (数据, offset))
+赋值 (info.备注, 取数据_数据文本 (数据, offset))
+分析_资源段_窗体_元素 (info.元素, 取数据_整数 (数据, offset), 取数据_动态数据 (数据, offset))
+
+.子程序 分析_资源段_窗体_元素, 空白型, , 
+.参数 list, 资源段_窗体_元素, 数组, 
+.参数 count, 空白型, , 
+.参数 数据, 字节集, , 
+
+重定义数组 (list, 假, count)
+.如果真 (等于 (count, 0))
+    返回 ()
+.如果真结束
+
+
+.子程序 分析_资源段_常量, 空白型, , 
+.参数 list, 资源段_常量, 数组, 
+.参数 count, 空白型, , 
+.参数 数据, 字节集, , 
+.参数 分析选项, 分析选项, , 
+
+.局部变量 offset, 空白型, , , 
+.局部变量 i, 空白型, , , 
+.局部变量 类型, 空白型, , , 
+
+重定义数组 (list, 假, count)
+.如果真 (等于 (count, 0))
+    返回 ()
+.如果真结束
+赋值 (offset, 1)
+.计次循环首 (count, i)
+    赋值 (list [i], 标志符, 取数据_整数 (数据, offset))
+.计次循环尾 ()
+.计次循环首 (count, i)
+    赋值 (list [i], Offset, 取数据_整数 (数据, offset))
+.计次循环尾 ()
+.计次循环首 (count, i)
+    赋值 (list [i], Offset, 相加 (list [i], Offset, offset))
+.计次循环尾 ()
+.计次循环首 (取数组成员数 (list), i)
+    赋值 (offset, list [i], Offset)
+    赋值 (list [i], dwLength, 取数据_整数 (数据, offset))
+    赋值 (list [i], 属性, 取数据_短整数 (数据, offset))
+    赋值 (list [i], 名称, 取数据_标准文本 (数据, offset))
+    赋值 (list [i], 备注, 取数据_标准文本 (数据, offset))
+    赋值 (类型, GET_HIGHT_TYPE (list [i], 标志符))
+    .判断开始 (等于 (类型, #资源段_常量_页面_常量))
+        赋值 (类型, 取数据_字节 (数据, offset))
+        .判断开始 (等于 (类型, #资源段_常量_类型_空白))
+            
+        .判断 (等于 (类型, #资源段_常量_类型_数值))
+            list.赋值 ( [i], 数据, 取数据_双精度小数 (数据, offset), )
+        .判断 (等于 (类型, #资源段_常量_类型_逻辑))
+            list.赋值 ( [i], 数据, 取数据_逻辑 (数据, offset), )
+        .判断 (等于 (类型, #资源段_常量_类型_日期))
+            list.赋值 ( [i], 数据, 取数据_日期时间 (数据, offset), )
+        .判断 (等于 (类型, #资源段_常量_类型_文本))
+            list.赋值 ( [i], 数据, 数据转换 (数据, offset), )
+            赋值 (list [i], 是否为长文本, 不等于 (位与 (取数据_短整数 (数据, offset), #资源段_常量_属性_长文本常量), 0))
+        .默认
+            Error (相加 (“未知常量类型[”, 到文本 (类型), “]”))
+        .判断结束
+        赋值 (list [i], 结果, “文本”)
+    .判断 (等于 (类型, #资源段_常量_页面_图片))
+        .如果 (分析选项.禁读_资源数据)
+            list.赋值 ( [i], 数据, 取数据_跳过动态数据 (数据, offset), )
+        .否则
+            list.赋值 ( [i], 数据, 取数据_动态数据 (数据, offset), )
+        .如果结束
+        赋值 (list [i], 结果, “图片”)
+    .判断 (等于 (类型, #资源段_常量_页面_声音))
+        .如果 (分析选项.禁读_资源数据)
+            list.赋值 ( [i], 数据, 取数据_跳过动态数据 (数据, offset), )
+        .否则
+            list.赋值 ( [i], 数据, 取数据_动态数据 (数据, offset), )
+        .如果结束
+        赋值 (list [i], 结果, “声音”)
+    .默认
+        Error (相加 (“未知常量页面[”, 到文本 (类型), “]”))
+    .判断结束
+    .如果真 (#__输出属性值)
+        .如果真 (不等于 (list [i], 属性, 0))
+            输出调试文本 (相加 (list [i], 名称, “.属性=”, 到文本 (list [i], 属性)))
+        .如果真结束
+        
+    .如果真结束
+    
+.计次循环尾 ()
+
+
+.类模块 CEFile, , , 
+
+.程序集变量 m_hFile, 空白型, , , 
+.子程序 is_have_password, 逻辑型, 公开, 
+.参数 path, 文本型, , 
+
+.局部变量 result, 逻辑型, , , 
+.局部变量 FileHead, _FileHeader, , , 
+.局部变量 hFile, 空白型, , , 
+
+赋值 (hFile, 打开文件 (path, #读入, ))
+.如果真 (小于或等于 (hFile, 0))
+    返回 (假)
+.如果真结束
+赋值 (FileHead, raw_Read_FileHeader (hFile))
+赋值 (result, 等于 (FileHead.Magic1, #Magic_加密源码))
+关闭文件 (hFile)
+返回 (result)
+
+.子程序 raw_Open, 整数型, , 
+.参数 path, 文本型, , 
+.参数 Write, 逻辑型, 可空, 
+.参数 password, 文本型, , 
+
+.局部变量 type, 空白型, , , 
+.局部变量 hFile, 空白型, , , 
+.局部变量 是否有密码, 逻辑型, , , 
+
+.如果 (Write)
+    赋值 (type, #改读)
+.否则
+    赋值 (type, #读入)
+.如果结束
+.如果 (is_have_password (path))
+    赋值 (hFile, 打开加密文件 (path, type, , password, 8))
+    移动读写位置 (hFile, #现行位置, 相加 (8, 32))
+.否则
+    赋值 (hFile, 打开文件 (path, type, ))
+.如果结束
+返回 (hFile)
+
+.子程序 Open, 逻辑型, 公开, 
+.参数 path, 文本型, , 
+.参数 Write, 逻辑型, 可空, 
+.参数 password, 文本型, , 
+
+赋值 (m_hFile, raw_Open (path, Write, password))
+返回 (大于 (m_hFile, 0))
+
+.子程序 Close, 空白型, 公开, 
+关闭文件 (m_hFile)
+赋值 (m_hFile, 0)
+
+.子程序 IsEof, 逻辑型, 公开, 
+返回 (是否在文件尾 (m_hFile, ))
+
+.子程序 GetPos, 整数型, 公开, 
+返回 (取读写位置 (m_hFile))
+
+.子程序 MoveTo, 空白型, 公开, 
+.参数 Type, 空白型, , 
+.参数 Pos, 空白型, , 
+
+移动读写位置 (m_hFile, Type, Pos)
+
+.子程序 ReadInt, 整数型, 公开, 
+.局部变量 v, 空白型, , , 
+
+读入数据 (m_hFile, v)
+返回 (v)
+
+.子程序 ReadData, 字节集, 公开, 
+.参数 length, 空白型, , 
+
+返回 (读入字节集 (m_hFile, length))
+
+.子程序 Read_FileHeader, _FileHeader, 公开, 
+返回 (raw_Read_FileHeader (m_hFile))
+
+.子程序 Read_SectionHeader, _SectionHeader, 公开, 
+返回 (raw_Read_SectionHeader (m_hFile))
+
+.子程序 Read_SectionInfo, _SectionInfo, 公开, 
+返回 (raw_Read_SectionInfo (m_hFile))
+
+.子程序 Read_Section, 逻辑型, 公开, 
+.参数 Block_Name, 文本型, 参考, 
+.参数 Block_Data, 字节集, 参考, 
+
+.局部变量 Bin, 字节集, , , 
+.局部变量 header, _SectionHeader, , , 
+.局部变量 Info, _SectionInfo, , , 
+
+.如果真 (IsEof ())
+    返回 (假)
+.如果真结束
+赋值 (header, Read_SectionHeader ())
+.如果真 (不等于 (header.Magic, #Magic_Section))
+    Error (“SectionHeader标志错误”)
+    返回 (假)
+.如果真结束
+赋值 (Info, Read_SectionInfo ())
+.如果真 (不等于 (header.Info_CheckSum, GetSectionInfoCheckSum (Info)))
+    .如果真 (#__检查效验值)
+        Error (“SectionInfo效验值错误”)
+        返回 (假)
+    .如果真结束
+    
+.如果真结束
+.如果 (不等于 (到字节集 (Info.Key), { 25, 115, 0, 7 }))
+    Decode_Str (Info.Name, Info.Key)
+.否则
+     ' 输出调试文本 (“未加密”)
+.如果结束
+赋值 (Block_Name, 到文本 (Info.Name))
+赋值 (Block_Data, ReadData (Info.DataLength))
+.如果真 (不等于 (Info.Data_CheckSum, GetCheckValue (Block_Data)))
+    .如果真 (#__检查效验值)
+        Error (“SectionInfo效验值错误”)
+        返回 (假)
+    .如果真结束
+    
+.如果真结束
+ ' 输出调试文本 (Block_Name, 取字节集数据 (到字节集 (Info.Key), #整数型, ))
+返回 (真)
+
+.子程序 Write_SectionHeader, 空白型, 公开, 
+.参数 Header, _SectionHeader, , 
+
+raw_Write_SectionHeader (m_hFile, Header)
+
+.子程序 Write_SectionInfo, 空白型, 公开, 
+.参数 info, _SectionInfo, , 
+
+raw_Write_SectionInfo (m_hFile, info)
+
+
+.子程序 InsertSection, 空白型, 公开, 
+.参数 header, _SectionHeader, , 
+.参数 info, _SectionInfo, , 
+
+.局部变量 bin, 字节集, , , 
+
+赋值 (bin, 取空白字节集 (#sizeof_SectionHeader))
+CopyFrom_SectionHeader (bin, header, #sizeof_SectionHeader)
+插入字节集 (m_hFile, bin)
+赋值 (bin, 取空白字节集 (#sizeof_SectionInfo))
+CopyFrom_SectionInfo (bin, info, #sizeof_SectionInfo)
+插入字节集 (m_hFile, bin)
+
+
+.程序集 struct, , , 
+
+.子程序 raw_Read_FileHeader, _FileHeader, , 
+.参数 hFile, 空白型, , 
+
+.局部变量 FileHead, _FileHeader, , , 
+
+读入数据 (hFile, FileHead.Magic1)
+读入数据 (hFile, FileHead.Magic2)
+返回 (FileHead)
+
+.子程序 raw_Read_SectionHeader, _SectionHeader, , 
+.参数 hFile, 空白型, , 
+
+.局部变量 header, _SectionHeader, , , 
+
+读入数据 (hFile, header.Magic)
+读入数据 (hFile, header.Info_CheckSum)
+返回 (header)
+
+.子程序 raw_Write_SectionHeader, 空白型, , 
+.参数 hFile, 空白型, , 
+.参数 NodeCheck, _SectionHeader, , 
+
+写出数据 (hFile, NodeCheck.Magic)
+写出数据 (hFile, NodeCheck.Info_CheckSum)
+
+.子程序 raw_Read_SectionInfo, _SectionInfo, , 
+.参数 hFile, 空白型, , 
+
+.局部变量 Info, _SectionInfo, , , 
+.局部变量 Bin, 字节集, , , 
+.局部变量 bak, 整数型, , , 
+
+赋值 (Bin, 读入字节集 (hFile, #sizeof_SectionInfo))
+CopyTo_SectionInfo (Info, Bin, #sizeof_SectionInfo)
+返回 (Info)
+
+.子程序 raw_Write_SectionInfo, 空白型, , 
+.参数 hFile, 空白型, , 
+.参数 SectionInfo, _SectionInfo, , 
+
+.局部变量 bin, 字节集, , , 
+
+赋值 (bin, 取空白字节集 (#sizeof_SectionInfo))
+CopyFrom_SectionInfo (bin, SectionInfo, #sizeof_SectionInfo)
+写出字节集 (hFile, bin)
+
+.子程序 GetSectionInfoCheckSum, 整数型, , 
+.参数 Info, _SectionInfo, , 
+
+.局部变量 bin, 字节集, , , 
+
+赋值 (bin, 取空白字节集 (#sizeof_SectionInfo))
+CopyFrom_SectionInfo (bin, Info, #sizeof_SectionInfo)
+返回 (GetCheckValue (bin))
+
+
+.程序集 help, , , 
+
+.子程序 辅_取文件名称, 文本型, , 
+.参数 txt, 文本型, , 
+
+.局部变量 addr, 空白型, , , 
+.局部变量 next, 空白型, , , 
+
+赋值 (addr, 倒找文本 (txt, “\”, , 假))
+赋值 (next, 寻找文本 (txt, “/”, , 假))
+.如果真 (不等于 (next, -1))
+    赋值 (addr, next)
+.如果真结束
+.如果真 (不等于 (addr, -1))
+    返回 (文本替换 (txt, 1, addr, ))
+.如果真结束
+返回 (txt)
+
+.子程序 CALL, 整数型, , 
+.参数 dest, 空白型, , 
+.参数 arg1, 空白型, 可空, 
+.参数 arg2, 空白型, 可空, 
+.参数 arg3, 空白型, 可空, 
+.参数 arg4, 空白型, 可空, 
+.参数 arg5, 空白型, 可空, 
+
+ ' log (“CALL”)
+返回 (_RawCall (dest, arg1, arg2, arg3, arg4, arg5))
+
+.子程序 _RawCall, 整数型, , 
+.参数 dest, 空白型, , 
+.参数 arg1, 空白型, , 
+.参数 arg2, 空白型, , 
+.参数 arg3, 空白型, , 
+.参数 arg4, 空白型, , 
+.参数 arg5, 空白型, , 
+
+ ' log (“_RawCall”)
+ ' __asm (“leave | pop eax | xchg [esp],eax | jmp eax ”)
+置入代码 ({ 201, 88, 135, 4, 36, 255, 224 })
+返回 (0)
+
+.子程序 read_offset_memory, 整数型, , 
+.参数 ptr, 空白型, , 
+.参数 offset, 空白型, , 
+
+ ' __asm (“mov eax, [ebp+8] | mov ecx, [ebp+0c] | mov eax,[eax+ecx] | leave | retn 8”)
+置入代码 ({ 139, 69, 8, 139, 77, 12, 139, 4, 8, 201, 194, 8, 0 })
+返回 (0)
+
+.子程序 辅_取支持库信指令, 文本型, , 
+.参数 hLib, 空白型, , 
+.参数 fid, 空白型, , 
+
+.局部变量 addr, 空白型, , , 
+.局部变量 count, 整数型, , , 
+.局部变量 ptr, 空白型, , , 
+.局部变量 匿名局部变量_5944, 空白型, , , 
+.局部变量 last_paddr, 空白型, 静态, , 
+.局部变量 last_lib, 空白型, 静态, , 
+
+.如果 (不等于 (last_lib, hLib))
+    赋值 (addr, GetProcAddress (hLib, “GetNewInf”))
+    .如果真 (等于 (addr, 0))
+        返回 (“”)
+    .如果真结束
+    赋值 (addr, CALL (addr))
+    .如果真 (等于 (addr, 0))
+        返回 (“”)
+    .如果真结束
+    赋值 (last_lib, hLib)
+    赋值 (last_paddr, addr)
+.否则
+    赋值 (addr, last_paddr)
+.如果结束
+赋值 (count, read_offset_memory (addr, 100))
+.如果真 (大于 (fid, count))
+    返回 (“”)
+.如果真结束
+赋值 (ptr, read_offset_memory (addr, 104))
+赋值 (ptr, read_offset_memory (ptr, 相加 (相乘 (36, fid), 0)))
+返回 (指针到文本 (ptr))
+
+.子程序 取支持库信指令, 文本型, , 
+.参数 basic, 程序段_头信息, , 
+.参数 index, 空白型, , 
+.参数 fid, 空白型, , 
+
+.局部变量 hLib, 空白型, , , 
+.局部变量 str_list, 文本型, , "0", 
+
+赋值 (index, 相加 (index, 1))
+.如果真 (或者 (小于或等于 (index, 0), 大于 (index, 取数组成员数 (basic.支持库信息))))
+    返回 (“”)
+.如果真结束
+赋值 (str_list, 分割文本 (basic.支持库信息 [index], 字符 (#回车键), ))
+赋值 (hLib, GetModuleHandleA (str_list [1]))
+.如果真 (等于 (hLib, 0))
+    赋值 (hLib, GetModuleHandleA (相加 (str_list [1], “.fne”)))
+    .如果真 (等于 (hLib, 0))
+        赋值 (hLib, LoadLibraryA (相加 (str_list [1], “.fne”)))
+        .如果真 (等于 (hLib, 0))
+            赋值 (hLib, LoadLibraryA (相加 (取文本注册项 (#现行用户, “Software\FlySky\E\Install\Path”, ), str_list [1], “.fne”)))
+        .如果真结束
+        
+    .如果真结束
+    
+.如果真结束
+.如果真 (等于 (hLib, 0))
+    返回 (“”)
+.如果真结束
+返回 (辅_取支持库信指令 (hLib, fid))
+
+.子程序 取用户定义指令, 文本型, , 
+.参数 list, 程序段_函数, 数组, 
+.参数 id, 空白型, , 
+
+.局部变量 i, 整数型, , , 
+
+.计次循环首 (取数组成员数 (list), i)
+    .如果真 (等于 (list [i], 段头.dwID, id))
+        .如果 (不等于 (list [i], 名称, “”))
+            返回 (list [i], 名称)
+        .否则
+            返回 (相加 (“sub_”, 取十六进制文本 (id)))
+        .如果结束
+        
+    .如果真结束
+    
+.计次循环尾 ()
+返回 (相加 (“unk_”, 取十六进制文本 (id)))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

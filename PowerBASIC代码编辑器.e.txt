@@ -1,0 +1,6248 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 690
+    高度 = 480
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 1
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 3
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 假
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “PowerBASIC代码编辑器V1.0”
+    帮助文件名 = “”
+
+窗口 查找窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 412
+    高度 = 128
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “查找”
+    帮助文件名 = “”
+
+窗口 替换窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 409
+    高度 = 186
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “替换”
+    帮助文件名 = “”
+
+窗口 关于窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 305
+    高度 = 182
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “关于本软件”
+    帮助文件名 = “”
+
+窗口 设置窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 394
+    高度 = 286
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “设置”
+    帮助文件名 = “”
+
+窗口 是否保存对话框
+    左边 = 50
+    顶边 = 50
+    宽度 = 415
+    高度 = 141
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “文件已经修改”
+    帮助文件名 = “”
+
+
+
+.图片 PB命令函数树形数据, " ' 已保存到：D:\易语言学习\Data\PowerBASIC代码编辑器.e\PB命令函数树形数据", , 通过编程把数据库里的数据合成好
+.常量 滚动条_垂直, "1", , SB_VERT
+.常量 滚动条_水平, "0", , SB_HORZ
+.常量 消息_水平滚动条, "276", , WM_HSCROLL
+.常量 滚动条_左移, "0", , SB_LINELEFT
+.常量 滚动条_右移, "1", , SB_LINERIGHT
+.常量 消息_垂直滚动条, "277", , WM_VSCROLL
+.常量 滚动条_上移, "0", , SB_LINEUP
+.常量 滚动条_下移, "1", , SB_LINEDOWN
+.常量 滚动条_左翻页, "2", , SB_PAGELEFT
+.常量 滚动条_右翻页, "3", , SB_PAGERIGHT
+.常量 滚动条_上翻页, "2", , SB_PAGEUP
+.常量 滚动条_下翻页, "3", , SB_PAGEDOWN
+.常量 滚动条_滑块定位, "4", , SB_THUMBPOSITION
+.常量 滚动条_滑块跟踪, "5", , SB_THUMBTRACK
+.常量 滚动条信息_页数, "2", , SIF_PAGE
+.常量 滚动条信息_范围, "1", , SIF_RANGE
+.常量 类风格_水平重画, "2", , CS_HREDRAW
+.常量 类风格_垂直重画, "1", , CS_VREDRAW
+.常量 文本编辑指针, "32513", , 
+.常量 WM_ERASEBKGND, "20", , 
+.常量 , , , 
+.常量 WS_TABSTOP, "65536", 公开, 使得这个窗口(控件)在用户按下TAB键时可以获得键盘焦点
+.常量 WS_HSCROLL, "1048576", 公开, 使窗口具有水平滚动条.
+.常量 WS_MAXIMIZE, "16777216", 公开, 使窗口具有最大化按钮
+.常量 WS_VISIBLE, "268435456", 公开, 使窗口初始状态为可见.
+.常量 WS_GROUP, "131072", 公开, 指定一组控件的第一个控件
+.常量 WS_VSCROLL, "2097152", 公开, 使窗口具有垂直滚动条.
+.常量 WS_CLIPCHILDREN, "33554432", 公开, 指定当在父窗口内绘图时
+.常量 WS_MINIMIZE, "536870912", 公开, 使窗口初始状态为最小化.
+.常量 WS_THICKFRAME, "262144", 公开, 用来创建一个具有可调边框的窗口
+.常量 WS_DLGFRAME, "4194304", 公开, 用来创建一个带对话框边框风格的窗口
+.常量 WS_CLIPSIBLINGS, "67108864", 公开, 使窗口排除子窗口之间的相对区域
+.常量 WS_CHILD, "1073741824", 公开, 用于创建一个子窗口
+.常量 WS_SYSMENU, "524288", 公开, 用于创建一个在标题条上带有窗口菜单的窗口
+.常量 WS_BORDER, "8388608", 公开, 用于创建一个单边框的窗口.
+.常量 WS_DISABLED, "134217728", 公开, 用于创建一个初始状态为禁止的子窗口
+.常量 WS_POPUP, "-2147483648", 公开, 用于创建一个弹出式窗口
+.常量 WS_POPUPWINDOW, "-2138570752", 公开, 用于创建一个具有WS_BORDR
+.常量 WS_CAPTION, "12582912", 公开, 用于创建一个有标题框的窗口(包括WS_BODER风格).
+.常量 WS_OVERLAPPEDWINDOW, "13565952", 公开, 用于创建一个具有WS_OVERLAPPED
+.常量 WS_OVERLAPPED, "16777215", 公开, 用于创建一个层叠的窗口
+.常量 , , , 
+.常量 WS_EX_DLGMODALFRAME, "1", 公开, 此风格用于创建一个带双边的窗口
+.常量 WS_EX_ACCEPTFILES, "16", 公开, 此风格用于创建一个能接受拖拽文件的窗口.
+.常量 WS_EX_WINDOWEDGE, "256", 公开, 暂无该风格说明。
+.常量 WS_EX_RIGHT, "4096", 公开, 窗口具有普通的右对齐属性
+.常量 WS_EX_CONTROLPARENT, "65536", 公开, 此风格允许用户使用TAB键在窗口的子窗口间搜索.
+.常量 WS_EX_NOINHERITLAYOUT, "1048576", 公开, 暂无该风格说明。
+.常量 WS_EX_PALETTEWINDOW, "392", 公开, 此风格为WS_EX_WINDOWEDGE
+.常量 WS_EX_TRANSPARENT, "32", 公开, 此风格指定以这个风格创建的窗口在窗口下的同属窗口已重画时
+.常量 WS_EX_CLIENTEDGE, "512", 公开, 指定窗口有一个带阴影的边界.
+.常量 WS_EX_RTLREADING, "8192", 公开, 如果外壳语言支持
+.常量 WS_EX_STATICEDGE, "131072", 公开, 为不接受用户输入的项创建一个三维边界风格.
+.常量 WS_EX_OVERLAPPEDWINDOW, "768", 公开, 此风格为WS_EX_WINDOWEDGE和WS_EX_CLENTEDGE的组合.
+.常量 WS_EX_NOPARENTNOTIFY, "4", 公开, 指明以这个风格创建的窗口在被创建和销毁时不向父窗口发送WM_PARENINOTIFY消息.
+.常量 WS_EX_MDICHILD, "64", 公开, 此风格用于创建一个MDI子窗口.
+.常量 WS_EX_CONTEXTHELP, "1024", 公开, 在窗口的标题栏包含一个问号标志.
+.常量 WS_EX_LEFTSCROLLBAR, "16384", 公开, 如果外壳语言支持
+.常量 WS_EX_APPWINDOW, "262144", 公开, 当窗口可见时
+.常量 WS_EX_LAYOUTRTL, "4194304", 公开, 暂无该风格说明。
+.常量 WS_EX_TOPMOST, "8", 公开, 指明以该风格创建的窗口应放置在所有非最高层窗口的上面且停留在其上
+.常量 WS_EX_TOOLWINDOW, "128", 公开, 此风格用于创建一个工具窗口
+.常量 WS_EX_LAYERED, "524288", 公开, 暂无该风格说明。
+.常量 WS_EX_NOACTIVATE, "134217728", 公开, 暂无该风格说明。
+.常量 WS_EX_LEFT, "-1", 公开, 窗口具有左对齐属性.
+.常量 WS_EX_LTRREADING, "-1", 公开, 窗口文本从左到右显示.
+.常量 WS_EX_RIGHTSCROLLBAR, "-1", 公开, 垂直滚动条在窗口右边界.
+.常量 SWP_FRAMECHANGED, "32", , 
+.常量 SWP_DRAWFRAME, "32", , 
+.常量 HEAP_ZERO_MEMORY, "8", , 
+.常量 , , , 
+.常量 行号条宽, "40", , 
+.常量 类风格_双击消息, "8", , CS_DBLCLKS
+.常量 回车换行, "1", , 
+.常量 退格删除, "2", , 
+.常量 输入字符, "3", , 
+.常量 删除字符, "4", , 
+.常量 块删除, "5", , 
+.常量 粘贴, "6", , 
+.常量 全部替换, "7", , 
+.常量 CF_BOTH, "3", , 
+.常量 CF_EFFECTS, "256", , 
+.常量 CF_FORCEFONTEXIST, "65536", , 
+.常量 CF_INITTOLOGFONTSTRUCT, "64", , 
+.常量 CF_LIMITSIZE, "8192", , 
+.常量 DEFAULT_GUI_FONT, "17", , 
+.常量 类风格_父窗口DC, "128", , CS_PARENTDC
+.常量 , , , 
+.常量 系统关键字列表, "“PBMAIN,WINMAIN,MAIN,PBLIBMAIN,DLLMAIN,LIBMAIN,#BLOAT,#COMPILE,#COMPILER,#DEBUG,#DIM,#IF,#ELSEIF,#ELSE,#ENDIF,#INCLUDE,#OPTION,#PBFORMS,#REGISTER,#RESOURCE,#STACK,#TOOLS,%DEF,%PB_CC32,%PB_DLL16,%PB_DLL32,%PB_WIN32,%PB_REVISION,%PB_REVLETTER,%PB_EXE,%MIX_BLACKNESS,%MIX_NOTMERGESRC,%MIX_MASKNOTSRC,%MIX_NOTCOPYSRC,%MIX_MASKSRCNOT,%MIX_NOT,%MIX_XORSRC,%MIX_NOTMASKSRC,%MIX_MASKSRC,%MIX_NOTXORSRC,%MIX_NOP,%MIX_MERGENOTSRC,%MIX_COPYSRC,%MIX_MERGESRCNOT,%MIX_MERGESRC,%MIX_WHITENESS,EXPLICIT,$NUL,$BEL,$BS,$TAB,$LF,$VT,$FF,$CR,$CRLF,$EOF,$ESC,$SPC,$DQ,EXE,DLL,ALL,NONE,%VARCLASS_BYT,%VARCLASS_WRD,%VARCLASS_DWD,%VARCLASS_INT,%VARCLASS_LNG,%VARCLASS_BIT,%VARCLASS_SBT,%VARCLASS_QUD,%VARCLASS_SNG,%VARCLASS_DBL,%VARCLASS_EXT,%VARCLASS_CUR,%VARCLASS_CUX,%VARCLASS_VRNT,%VARCLASS_IFAC,%VARCLASS_GUID,%VARCLASS_TYPE,%VARCLASS_ASC,%VARCLASS_FIX,%VARCLASS_STR,%VARCLASS_FLD,PBCC,PBWIN,VERSION3,VERSION4,VERSION5,OFF,%BLACK,%BLUE,%GREEN,%CYAN,%RED,%MAGENTA,%YELLOW,%WHITE,%GRAY,%LTGRAY”", , 
+.常量 命令关键字列表, "“ABS,ACCEL,ATTACH,ACODE$,AND,ARRAY,ASSIGN,DELETE,INSERT,SCAN,SORT,FROM,COLLATE,TAGARRAY,ASCEND,DESCEND,ARRAYATTR,ASC,ASM,ATN,BEEP,BGR,BIN$,BIT,CALC,SET,RESET,TOGGLE,BITS,CALL,BDECL,CDECL,SDECL,USING,CALLSTK,CALLSTK$,CALLSTKCOUNT,CBCTL,CBCTLMSG,CBHNDL,CBLPARAM,CBMSG,CBWPARAM,CBYT,CCUR,CCUX,CDBL,CDWD,CEIL,CEXT,CINT,CHDIR,CHDRIVE,CHOOSE,CHR$,CINT,CLNG,CLOSE,CLSID$,CODEPTR,COMBOBOX,ADD,GET,TEXT,COMM,LINE,OPEN,PRINT,RECV,SEND,COMMAND$,CONTROL,BUTTON,CHECK3STATE,CHECKBOX,FRAME,GRAPHIC,IMAGE,IMAGEX,IMGBUTTON,IMGBUTTONX,LABEL,LISTBOX,OPTION,SCROLLBAR,TEXTBOX,DISABLE,ENABLE,CHECK,CLIENT,LOC,SIZE,USER,HANDLE,KILL,POST,REDRAW,COLOR,FOCUS,SHOW,STATE,COS,CQUD,CSET,CSET$,CSNG,CURDIR$,CVBYT,CVCUR,CVCUX,CVD,CVWRD,CVE,CVI,CVL,CVQ,CVS,CVDWD,CWRD,DATA,DATACOUNT,DATE$,DECLARE,SUB,FUNCTION,LIB,ALIAS,CALLBACK,DECR,DEFBYT,DEFCUR,DEFCUX,DEFDBL,DEFDWD,DEFEXT,DEFINT,DEFLNG,DEFQUD,DEFSNG,DEFSTR,DEFWRD,DESKTOP,DIALOG,DOEVENTS,END,FONT,NEW,PIXELS,UNITS,ICON,MODAL,MODELESS,DIM,AS,GLOBAL,LOCAL,STATIC,THREADED,PTR,POINTER,AT,BYTE,WORD,INTEGER,DWORD,LONG,QUAD,SINGLE,DOUBLE,EXT,EXTENDED,CUR,CURRENCY,CUX,CURRENCYX,STRING,ASCIIZ,ASCIZ,VARIANT,DISPATCH,GUID,FIELD,DIR$,DISKFREE,DISKSIZE,DO,WHILE,UNTIL,EXIT,ITERATE,LOOP,ENVIRON,ENVIRON$,EOF,EQV,ERASE,ERL,ERR,ERRAPI,ERRCLEAR,ERROR,ERROR$,EXP,EXP2,EXP10,EXTRACT$,ANY,FILEATTR,FILECOPY,FILENAME$,FILESCAN,FIX,FLUSH,FOR,TO,STEP,NEXT,FORMAT$,FRAC,FREEFILE,FUNCNAME$,EXPORT,PRIVATE,GET$,GETATTR,GOSUB,GOTO,ARC,BITMAP,LOAD,BOX,CHR,CLEAR,COPY,ELLIPSE,DC,MIX,PIXEL,POS,PPI,PIE,POLYGON,POLYLINE,RENDER,SAVE,SCALE,STRETCH,STYLE,WIDTH,WINDOW,GUID$,GUIDTXT$,HEX$,HI,HIBYT,HIINT,HIWRD,HOST,ADDR,NAME,IF,THEN,ELSE,ELSEIF,IIF,IMP,INCR,INPUT,INPUTBOX$,INSTR,INT,INTERFACE,MEMBER,LET,OPTIONAL,IN,OUT,INOUT,ISFALSE,ISTRUE,ISNOTHING,ISOBJECT,JOIN$,BINARY,LBOUND,LCASE$,LEFT$,LEN,LO,LOBYT,LOCK,LOF,LOG,LOG2,LOG10,LOINT,LOWRD,LPRINT,FORMFEED,LPRINT$,LSET,LSET$,LTRIM$,MACRO,MACROTEMP,MAK,MAKDWD,MAKINT,MAKLNG,MAKPTR,MAT,MAX,MCASE$,ANSI,OEM,MENU,POPUP,BYCMD,DRAW,BAR,MID$,MIN,MIN&,MIN$,CHOOSE&,CHOOSE$,IIF&,IIF$,MKBYT$,MKCUR$,MKCUX$,MKD$,MKDWD$,MKE$,MKI$,MKL$,MKQ$,MKS$,MKWRD$,MOD,MOUSEPTR,MSGBOX,NOT,NUL$,OBJACTIVE,OBJECT,OBJPTR,OBJRESULT,OCT$,ON,RESUME,ACCESS,BASE,OUTPUT,APPEND,RANDOM,READ,WRITE,SHARED,OR,PARSE,PARSE$,PARSECOUNT,PEEK,PEEK$,POKE,POKE$,PRINTER$,PORT,PRINTERCOUNT,PROFILE,PROGID$,PUT,PUT$,RANDOMIZE,READ$,REDIM,PRESERVE,REGEXPR,REGISTER,REGREPL,REM,REMAIN$,REMOVE$,REPEAT$,REPLACE,WITH,RETAIN$,RETURN,RGB,RIGHT$,RMDIR,RND,ROTATE,LEFT,RIGHT,ROUND,RSET,RSET$,RTRIM$,SEEK,SELECT,CASE,CONST,CONST$,IS,SETATTR,SETEOF,SGN,SHELL,HANDLES,SHIFT,SIGNED,SIN,SIZEOF,SLEEP,SPACE$,SQR,STR$,STRDELETE$,STRING$,STRINSERT$,STRPTR,STRREVERSE$,SWAP,SWITCH,SWITCH&,SWITCH$,TAB$,TALLY,TAN,TCP,ACCEPT,NOTIFY,CONNECT,TIMEOUT,SERVER,THREAD,CREATE,STATUS,SUSPEND,THREADCOUNT,THREADID,TIME$,TIMER,TRACE,TRIM$,TRY,CATCH,FINALLY,TYPE,QWORD,FILL,UBOUND,UCASE$,UCASE,UCODE$,UDP,UNION,UNLOCK,USING$,VAL,VARIANT#,VARIANT$,VARIANTVT,VARPTR,VERIFY,WEND,XOR,XPRINT,DEFAULT,CANCEL,LINES,MARGIN,ORIENTATION,QUALITY,XPRINT$,BYVAL,BYREF,BYCOPY,BAUD,BREAK,CD,CTSFLOW,DSRFLOW,DSRSENS,DTRFLOW,DTRLINE,NULL,PARITY,PARITYCHAR,PARITYREPL,PARITYTYPE,RING,RLSD,RTSFLOW,RXBUFFER,RXQUE,STOP,TXBUFFER,TXQUE,XINPFLOW,XOUTFLOW,STDCALL,OPT,SPC,TAB”", , 
+.常量 EXE源码文档模板, "“#COMPILE EXE
+#DIM ALL
+
+FUNCTION PBMAIN () AS LONG
+
+    
+
+END FUNCTION       ”", , 
+.常量 DLL源码文档模板, "“#COMPILE DLL
+#DIM ALL
+
+%USEMACROS = 1
+#INCLUDE "Win32API.inc"
+
+GLOBAL ghInstance AS DWORD
+
+
+
+
+
+
+
+'-------------------------------------------------------------------------------
+' Main DLL entry point called by Windows...
+'
+FUNCTION LIBMAIN (BYVAL hInstance   AS LONG, _
+                  BYVAL fwdReason   AS LONG, _
+                  BYVAL lpvReserved AS LONG) AS LONG
+
+    SELECT CASE fwdReason
+
+    CASE %DLL_PROCESS_ATTACH
+        'Indicates that the DLL is being loaded by another process (a DLL
+        'or EXE is loading the DLL).  DLLs can use this opportunity to
+        'initialize any instance or global data, such as arrays.
+
+        ghInstance = hInstance
+
+        FUNCTION = 1   'success!
+
+        'FUNCTION = 0   'failure!  This will prevent the EXE from running.
+
+    CASE %DLL_PROCESS_DETACH
+        'Indicates that the DLL is being unloaded or detached from the
+        'calling application.  DLLs can take this opportunity to clean
+        'up all resources for all threads attached and known to the DLL.
+
+        FUNCTION = 1   'success!
+
+        'FUNCTION = 0   'failure!
+
+    CASE %DLL_THREAD_ATTACH
+        'Indicates that the DLL is being loaded by a new thread in the
+        'calling application.  DLLs can use this opportunity to
+        'initialize any thread local storage (TLS).
+
+        FUNCTION = 1   'success!
+
+        'FUNCTION = 0   'failure!
+
+    CASE %DLL_THREAD_DETACH
+        'Indicates that the thread is exiting cleanly.  If the DLL has
+        'allocated any thread local storage, it should be released.
+
+        FUNCTION = 1   'success!
+
+        'FUNCTION = 0   'failure!
+
+    END SELECT
+
+END FUNCTION”", , 
+.常量 RC脚本文档模板, "“#include "resource.h"
+
+// * Version info.
+//
+//
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION 1, 0, 0, 0
+PRODUCTVERSION 1, 0, 0, 0
+FILEOS VOS_WINDOWS32
+FILETYPE VFT_APP
+BEGIN
+  BLOCK "StringFileInfo"
+  BEGIN
+    BLOCK "080403A8"
+    BEGIN
+      VALUE "CompanyName",      "开发公司, Inc.\000"
+      VALUE "FileDescription",  "文件说明\000"
+      VALUE "FileVersion",      "01.00.0000\000"
+      VALUE "InternalName",     "产品开发名称\000"
+      VALUE "OriginalFilename", "软件文件名.EXE\000"
+      VALUE "LegalCopyright",   "Copyright \251 2004 My Company, Inc.\000"
+      VALUE "ProductName",      "软件说明\000"
+      VALUE "ProductVersion",   "01.00.0000\000"
+      VALUE "Comments",         "Rah! Rah! Rah!\000"
+    END
+  END
+  BLOCK "VarFileInfo"
+  BEGIN
+    VALUE "Translation", 0x0804 0x03A8
+  END
+END”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 1 2 扩展界面支持库一
+ ' iext2 AF6AD80AA4244A59AFB3D83ECF5173CC 1 1 扩展界面支持库二
+ ' iext3 {B6F7542F-B8FE-46a8-9605-98856A687097} 2 6 扩展界面支持库三
+
+
+
+
+数据类型 滚动条信息, , 28 SCROLLINFO
+    .成员 尺寸, 整数型, , , cbSize
+    .成员 标志, 整数型, , , fMask
+    .成员 最小值, 整数型, , , nMin
+    .成员 最大值, 整数型, , , nMax
+    .成员 页数, 整数型, , , nPage
+    .成员 位置, 整数型, , , nPos
+    .成员 跟踪, 整数型, , , nTrackPos
+
+数据类型 文档座标, , 
+    .成员 文档纵座标, 整数型, , , 单位为行，从0开始
+    .成员 文档横座标, 整数型, , , 单位为字节数，为每行的从左起第几个字符
+
+数据类型 坐标_, , POINTAPI
+    .成员 横向位置, 整数型, , , x，横向位置
+    .成员 纵向位置, 整数型, , , y，纵向位置
+
+数据类型 窗体类型_, , WNDCLASS
+    .成员 风格, 整数型, , , STYLE
+    .成员 窗体程序, 子程序指针, , , lpfnwndproc
+    .成员 类型附加, 整数型, , , cbClsextra
+    .成员 窗体附加, 整数型, , , cbWndExtra
+    .成员 实例句柄, 整数型, , , hInstance
+    .成员 图标句柄, 整数型, , , hIcon
+    .成员 光标句柄, 整数型, , , hCursor
+    .成员 背景句柄, 整数型, , , hbrBackground
+    .成员 菜单名, 文本型, , , lpszMenuName
+    .成员 类名, 文本型, , , lpszClassName
+
+数据类型 逻辑字体_, , LOGFONT 60
+    .成员 高度, 整数型, , , lfHeight
+    .成员 宽度, 整数型, , , lfWidth
+    .成员 控制摆, 整数型, , , lfEscapement
+    .成员 定方位, 整数型, , , lfOrientation
+    .成员 加粗, 整数型, , , lfWeight
+    .成员 斜体, 字节型, , , lfItalic
+    .成员 下划线, 字节型, , , lfUnderline
+    .成员 删除线, 字节型, , , lfStrikeOut
+    .成员 字符集, 字节型, , , lfCharSet
+    .成员 出自精确, 字节型, , , lfOutPrecision
+    .成员 修剪精确, 字节型, , , lfClipPrecision
+    .成员 性质, 字节型, , , lfQuality
+    .成员 间距, 字节型, , , lfPitchAndFamily
+    .成员 字体名称, 字节型, , "32", 用LF_FACESIZE,lfFaceName?
+
+数据类型 矩形_, , RECT
+    .成员 左边, 整数型, , , Left
+    .成员 顶边, 整数型, , , Top
+    .成员 右边, 整数型, , , Right
+    .成员 底边, 整数型, , , Bottom
+
+数据类型 绘制结构, , PAINTSTRUCT
+    .成员 场景句柄, 整数型, , , hDC
+    .成员 消除, 整数型, , , fErase
+    .成员 画出区域, 矩形_, , , rcPaint
+    .成员 恢复, 整数型, , , fRestore
+    .成员 包括更新, 整数型, , , fIncUpdate
+    .成员 RGB保留, 字节型, , "32", 
+
+数据类型 选择窗体_, , CANDIDATEFORM
+    .成员 风格, 整数型, , , dwStyle
+    .成员 位置, 坐标_, , , ptCurrentPos
+    .成员 范围, 矩形_, , , rcArea
+
+数据类型 撤消重做数据, , 
+    .成员 操作类型, 空白型, , , 1,回车换行,2,退格删除,3,输入字符,4,删除字符,5,块删除,6,粘贴
+    .成员 滚动条位置, 文档座标, , , 
+    .成员 行数, 整数型, , , 编辑器当前信息
+    .成员 最长文本行号, 整数型, , , 
+    .成员 最长文本, 整数型, , , 
+    .成员 光标位置, 文档座标, , , 
+    .成员 开始选择, 文档座标, , , 
+    .成员 结束选择, 文档座标, , , 
+    .成员 已修改, 逻辑型, , , 
+    .成员 有文本选择, 逻辑型, , , 编辑器当前信息
+    .成员 TAB数, 整数型, , , 回车换行用到
+    .成员 操作文本, 文本型, , , 退格删除,输入字符,删除字符用到
+    .成员 粘贴前文本行, 文本型, , , 粘贴多行操作
+    .成员 粘贴后文本行, 文本型, , , 粘贴多行操作
+    .成员 粘贴行数, 整数型, , , 
+    .成员 有块删除, 逻辑型, , , 
+    .成员 删除前文本行, 文本型, , , 块删除操作
+    .成员 删除前光标, 文档座标, , , 
+    .成员 被替换的词条, 文本型, , , 
+    .成员 替换为的词条, 文本型, , , 
+    .成员 区分大小写, 逻辑型, , , 
+
+数据类型 选择字体_, , CHOOSEFONT 60
+    .成员 结构大小, 整数型, , , lStructSize
+    .成员 窗口句柄, 整数型, , , hwndOwner，caller's window handle
+    .成员 设备场景句柄, 整数型, , , hDC，printer DC/IC or NULL
+    .成员 字体结构指针, 逻辑字体_, 传址, , lpLogFont‘ptr. to a LOGFONT struct
+    .成员 点大小, 整数型, , , iPointSize，10 * size in points of selected font
+    .成员 标志, 整数型, , , flags，enum. type flags
+    .成员 颜色值, 整数型, , , rgbColors，returned text color
+    .成员 自定义数据, 整数型, , , lCustData，data passed to hook fn.
+    .成员 回调函数地址, 整数型, , , lpfnHook，ptr. to hook function
+    .成员 模板名称, 文本型, , , lpTemplateName，custom template name
+    .成员 实例句柄, 整数型, , , hInstance，instance handle of.EXE that contains cust. dlg. template
+    .成员 字体风格, 文本型, , , lpszStyle，return the style field here must be LF_FACESIZE(32) or bigger
+    .成员 字体类型, 短整数型, , , nFontType，same value reported to the EnumFonts,call back with the extra FONTTYPE_ bits added
+    .成员 空白队列, 短整数型, , , 
+    .成员 最小尺寸, 整数型, , , 
+    .成员 最大尺寸, 整数型, , , 
+
+数据类型 关键字类型, , 
+    .成员 关键字, 文本型, , , 
+    .成员 关键字分类, 整数型, , , 0,系统关键字;1,保留关键字
+
+数据类型 查找的文件信息_, , WIN32_FIND_DATA
+    .成员 成员, 字节型, , "44", 只能到后面两成员,这部分不用详细定义了
+    .成员 文件名, 字节型, , "260", cFileName
+    .成员 cAlternate, 字节型, , "14", 
+
+.全局变量 文档列表, 代码编辑框类, , "0", 
+.全局变量 行间距, 整数型, , , 
+.全局变量 TAB空格数, 整数型, , , 
+.全局变量 默认文本颜色, 整数型, , , 
+.全局变量 光标行条颜色, 整数型, , , 
+.全局变量 背景刷子句柄, 整数型, , , 
+.全局变量 背景颜色, 整数型, , , 
+.全局变量 字体句柄, 整数型, , , 
+.全局变量 编辑框字体, 逻辑字体_, , , 
+.全局变量 行首缩进, 整数型, , , 
+.全局变量 行号条宽, 整数型, , , 
+.全局变量 高亮条刷子, 整数型, , , 
+.全局变量 注释颜色, 整数型, , , 
+.全局变量 汇编代码颜色, 整数型, , , 
+.全局变量 引号文本颜色, 整数型, , , 
+.全局变量 运算符, 字节集, , , 
+.全局变量 运算符颜色, 整数型, , , 
+.全局变量 成员方法颜色, 整数型, , , 
+.全局变量 系统关键字颜色, 整数型, , , 
+.全局变量 保留字颜色, 整数型, , , 
+.全局变量 文本常量颜色, 整数型, , , 
+.全局变量 数值常量颜色, 整数型, , , 
+.全局变量 源码自动缩进, 逻辑型, , , 
+.全局变量 命令补全提示, 逻辑型, , , 
+.全局变量 编译器路径, 文本型, , , 
+
+.DLL命令 取窗体参数_API, 整数型, "", "GetWindowLongA", , 
+    .参数 hwnd, 空白型, , 
+    .参数 nIndex, 空白型, , 
+
+.DLL命令 置窗体参数_API, 整数型, "", "SetWindowLongA", , 
+    .参数 hwnd, 空白型, , 
+    .参数 nIndex, 空白型, , 
+    .参数 dwNewLong, 空白型, , 
+
+.DLL命令 跳转到窗口入口_API, 整数型, "", "CallWindowProcA", , 
+    .参数 lpPrevWndFunc, 空白型, , 
+    .参数 hwnd, 空白型, , 
+    .参数 Msg, 空白型, , 
+    .参数 wParam, 空白型, , 
+    .参数 lParam, 空白型, , 
+
+.DLL命令 默认窗体处理_API, 整数型, "", "DefWindowProcA", , 
+    .参数 hwnd, 空白型, , 
+    .参数 Msg, 空白型, , 
+    .参数 wParam, 空白型, , 
+    .参数 lParam, 空白型, , 
+
+.DLL命令 注册窗体类_API, 逻辑型, "USER32.DLL", "RegisterClassA", , 
+    .参数 窗体信息, 窗体类型_, , 
+
+.DLL命令 取消注册窗体类_API, 逻辑型, "USER32.DLL", "UnregisterClassA", , 
+    .参数 窗体类名, 文本型, , 
+    .参数 实例句柄, 整数型, , 
+
+.DLL命令 发送消息_API, 整数型, "", "SendMessageA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 显示滚动条_API, 整数型, "user32.dll", "ShowScrollBar", , ShowScrollBar
+    .参数 窗口句柄, 整数型, , hwnd
+    .参数 滚动条标志, 整数型, , wBar
+    .参数 显示标志, 逻辑型, , bShow
+
+.DLL命令 置滚动条范围_API, 整数型, "user32.dll", "SetScrollRange", , 
+    .参数 窗口句柄, 整数型, , hwnd
+    .参数 滚动条标志, 整数型, , wBar
+    .参数 最小位置, 整数型, , 
+    .参数 最大位置, 整数型, , 
+    .参数 是否重画, 逻辑型, , 
+
+.DLL命令 置滚动条位置_API, 整数型, "user32.dll", "SetScrollPos", , 
+    .参数 窗口句柄, 整数型, , hwnd
+    .参数 滚动条标志, 整数型, , wBar
+    .参数 位置, 整数型, , 
+    .参数 是否重画, 逻辑型, , 
+
+.DLL命令 取滚动条位置_API, 整数型, "user32.dll", "GetScrollPos", , 
+    .参数 窗口句柄, 整数型, , hwnd
+    .参数 滚动条标志, 整数型, , wBar
+
+.DLL命令 置滚动条信息_API, 整数型, "user32.dll", "SetScrollInfo", , 
+    .参数 窗口句柄, 整数型, , hwnd
+    .参数 滚动条标志, 整数型, , wBar
+    .参数 信息, 滚动条信息, , 
+    .参数 是否重画, 逻辑型, , 
+
+.DLL命令 取滚动条信息_API, 整数型, "user32.dll", "GetScrollInfo", , 
+    .参数 窗口句柄, 整数型, , hwnd
+    .参数 滚动条标志, 整数型, , wBar
+    .参数 信息, 滚动条信息, , 
+
+.DLL命令 屏蔽窗口矩形_API, 整数型, "user32.dll", "InvalidateRect", , 这个函数屏蔽一个窗口客户区的全部或部分区域
+    .参数 窗口句柄, 整数型, , hwnd,待屏蔽窗口的句柄
+    .参数 屏蔽矩形, 整数型, , lpRect,用于描述待屏蔽矩形部分的一个矩形结构
+    .参数 重画前删除, 整数型, , bErase,TRUE（非零）导致指定的区域在重画前先删除
+
+.DLL命令 创建插入符_API, 整数型, "user32.dll", "CreateCaret", , CreateCaret，根据指定的信息创建一个插入符（光标），并将它选定为指定窗口的默认插入符。插入符可以是一根短线、一个方块或者一幅位图。通常用插入符指示文字在文字框中的插入位置
+    .参数 窗口句柄, 整数型, , hwnd，窗口句柄
+    .参数 位图句柄, 整数型, , hBitmap，位图句柄
+    .参数 宽度, 整数型, , nWidth，宽度
+    .参数 高度, 整数型, , nHeight，高度
+
+.DLL命令 显示插入符_API, 整数型, "user32.dll", "ShowCaret", , ShowCaret，在指定的窗口里显示插入符（光标）
+    .参数 窗口句柄, 整数型, , hwnd，包含了插入符的窗口的句柄。可以为零；此时，只有在插入符包含于由活动任务拥有的一个窗口时，它才会显示出来
+
+.DLL命令 隐藏插入符_API, 整数型, "user32.dll", "HideCaret", , 在指定的窗口隐藏插入符（光标）
+    .参数 窗口句柄, 整数型, , hwnd,包含了插入符的窗口的句柄
+
+.DLL命令 清除插入符_API, 整数型, "user32.dll", "DestroyCaret", , 清除（破坏）一个插入符
+
+.DLL命令 置插入符位置_API, 整数型, "user32.dll", "SetCaretPos", , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+
+.DLL命令 取文本范围_API, 整数型, "gdi32", "GetTextExtentPoint32A", , 
+    .参数 设备场景句柄, 整数型, , hdc
+    .参数 文本, 文本型, , lpsz
+    .参数 文本长度, 整数型, , cbString
+    .参数 范围, 坐标_, , lpSize
+
+.DLL命令 载入鼠标指针_API, 整数型, "user32.dll", "LoadCursorA", , 从指定的模块或应用程序实例中载入一个鼠标指针
+    .参数 实例句柄, 整数型, , hInstance,参见相关帮助
+    .参数 鼠标指针标识, 空白型, , lpCursorName,参见相关帮助
+
+.DLL命令 取实例句柄_API, 整数型, "", "GetModuleHandleA", , 
+    .参数 程序名, 整数型, , 
+
+.DLL命令 使用指定属性创建逻辑字体_API, 整数型, "gdi32.dll", "CreateFontIndirectA", , 执行成功则返回逻辑字体句柄，零表示失败
+    .参数 字体结构信息, 逻辑字体_, 传址, lpLogFont，字体结构信息
+
+.DLL命令 创建纯色刷子_API, 整数型, "gdi32.dll", "CreateSolidBrush", , 
+    .参数 颜色值, 整数型, , crColor，颜色值
+
+.DLL命令 创建内存场景_API, 整数型, "Gdi32.dll", "CreateCompatibleDC", , 
+    .参数 设备场景句柄, 整数型, , 
+
+.DLL命令 创建设备位图_API, 整数型, "gdi32", "CreateCompatibleBitmap", , 
+    .参数 设备场景句柄, 整数型, , 
+    .参数 宽度, 整数型, , 
+    .参数 高度, 整数型, , 
+
+.DLL命令 删除对象_API, 整数型, "gdi32.dll", "DeleteObject", , DeleteObject
+    .参数 对象句柄, 整数型, , hObject,一个GDI对象的句柄
+
+.DLL命令 释放设备场景_API, 整数型, "user32.dll", "ReleaseDC", , ReleaseDC
+    .参数 窗口句柄, 整数型, , hwnd，要释放的设备场景相关的窗口句柄
+    .参数 设备场景, 整数型, , hdc，要释放的设备场景句柄
+
+.DLL命令 取设备场景_API, 整数型, "user32.dll", "GetDC", , 获取指定窗口的设备场景  指定窗口的设备场景句柄，出错则为0
+    .参数 窗口的句柄, 整数型, , 将获取其设备场景的窗口的句柄。若为0，则要获取整个屏幕的DC;
+
+.DLL命令 取设备场景信息_API, 整数型, "gdi32.dll", "GetDeviceCaps", , 
+    .参数 设备场景, 整数型, , 
+    .参数 值, 整数型, , 
+
+.DLL命令 乘除计算_API, 整数型, "kernel32.dll", "MulDiv", , 
+    .参数 乘数1, 整数型, , nNumber
+    .参数 乘数2, 整数型, , nNumerator
+    .参数 除数, 整数型, , nDenominator
+
+.DLL命令 复制字体名_API, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目的变量, 字节型, 传址 数组, pTo
+    .参数 源, 文本型, , uFrom
+    .参数 尺寸, 整数型, , lSize
+
+.DLL命令 删除设备场景_API, 整数型, "gdi32.dll", "DeleteDC", , 
+    .参数 设备场景句柄, 整数型, , hdc，将要删除的设备场景
+
+.DLL命令 创建窗口_API, 整数型, "user32.dll", "CreateWindowExA", , 
+    .参数 扩展风格, 整数型, , 
+    .参数 类名, 文本型, , 刚才注册的类名
+    .参数 窗口标题, 文本型, , 
+    .参数 风格, 整数型, , 
+    .参数 屏幕横坐标, 整数型, , 
+    .参数 屏幕纵坐标, 整数型, , 
+    .参数 宽度, 整数型, , 
+    .参数 高度, 整数型, , 
+    .参数 父窗口句柄, 整数型, , 没有就写0
+    .参数 菜单句柄, 整数型, , 
+    .参数 模块句柄, 整数型, , 
+    .参数 参数, 整数型, , 
+
+.DLL命令 改变窗口_API, 整数型, "user32.dll", "MoveWindow", , 
+    .参数 窗口句柄, 整数型, , hwnd，欲移动窗口的句柄
+    .参数 左侧位置, 整数型, , x，窗口新的左侧位置
+    .参数 顶部位置, 整数型, , y，窗口新的顶部位置
+    .参数 新宽度, 整数型, , nWidth，窗口的新宽度
+    .参数 高宽度, 整数型, , nHeight，窗口的高宽度
+    .参数 是否重画, 整数型, , bRepaint，如窗口此时应重画，则设为TRUE（非零）
+
+.DLL命令 显示窗口_API, 整数型, "user32", "ShowWindow", , ShowWindow
+    .参数 窗口句柄, 整数型, , hwnd，欲接收ShowWindow命令的窗口
+    .参数 可视性类型, 逻辑型, , nCmdShow，与ShowWindow相同
+
+.DLL命令 设置焦点_API, 整数型, "user32.dll", "SetFocus", , 
+    .参数 窗口句柄, 整数型, , 
+
+.DLL命令 选入设备场景_API, 整数型, "gdi32.dll", "SelectObject", , SelectObject
+    .参数 场景句柄, 整数型, , hdc
+    .参数 对象句柄, 整数型, , hobject
+
+.DLL命令 取客户区矩形_API, 整数型, "user32", "GetClientRect", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 矩形区域, 矩形_, , 
+
+.DLL命令 开始绘制_API, 整数型, "user32.dll", "BeginPaint", , Gdi32.dll
+    .参数 h, 空白型, , 
+    .参数 p, 绘制结构, , 
+
+.DLL命令 结束绘制_API, 整数型, "user32.dll", "EndPaint", , 
+    .参数 h, 空白型, , 
+    .参数 p, 绘制结构, , 
+
+.DLL命令 填充矩形_API, 整数型, "user32.dll", "FillRect", , FillRect,用指定的刷子填充一个矩形
+    .参数 设备场景, 整数型, , hdc，设备场景的句柄
+    .参数 填充区域, 矩形_, , lpRect，对填充区域进行描述的一个矩形，采用逻辑坐标
+    .参数 刷子句柄, 整数型, , hBrush，欲使用的刷子的句柄
+
+.DLL命令 复制场景位图_API, 整数型, "gdi32.dll", "BitBlt", , 
+    .参数 目标设备场景, 整数型, , hDestDC,目标设备场景
+    .参数 目标横坐标, 整数型, , x,对目标设备场景中目标矩形左上角位置进行描述的那个点
+    .参数 目标纵坐标, 整数型, , y,对目标设备场景中目标矩形左上角位置进行描述的那个点
+    .参数 传输图像宽度, 整数型, , nWidth,欲传输图象的宽度
+    .参数 传输图像高度, 整数型, , nHeight,欲传输图象的高度
+    .参数 源设备场景, 整数型, , hSrcDC,源设备场景。如光栅运算未指定源，则应设为0
+    .参数 源横坐标, 整数型, , xSrc,对源设备场景中源矩形左上角位置进行描述的那个点
+    .参数 源纵坐标, 整数型, , ySrc,对源设备场景中源矩形左上角位置进行描述的那个点
+    .参数 光栅运算方式, 整数型, , dwRop,传输过程要执行的光栅运算
+
+.DLL命令 设置前景色_API, 整数型, "gdi32", "SetTextColor", , 
+    .参数 设备场景, 整数型, , 
+    .参数 颜色, 整数型, , 
+
+.DLL命令 文本绘图_API, 整数型, "gdi32.dll", "TextOutA", , Long，非零表示成功，零表示失败。会设置GetLastError
+    .参数 设备场景, 整数型, , hdc，设备场景的句柄
+    .参数 横, 整数型, , x，绘图的起点，采用逻辑坐标
+    .参数 纵, 整数型, , y，绘图的起点，采用逻辑坐标
+    .参数 内容, 文本型, , lpstring，欲描绘的字串
+    .参数 内容数量, 整数型, , ncount，字串中要描绘的字符数量
+
+.DLL命令 设置背景颜色_API, 整数型, "gdi32.dll", "SetBkColor", , SetBkColor，背景颜色用于填充阴影刷子、虚线画笔以及字符（如背景模式为OPAQUE）中的空隙。也在位图颜色转换期间使用。参考SetBkMode,Long，前一个背景色，CLR_INVALID表示出错
+    .参数 设备场景句柄, 整数型, , hdc，设备场景的句柄
+    .参数 RGB颜色值, 整数型, , crColor，新背景颜色的RGB颜色值
+
+.DLL命令 设置背景模式_API, 整数型, "gdi32", "SetBkMode", , SetBkMode，Long，前一个背景模式的值
+    .参数 设备场景句柄, 整数型, , hdc，设备场景的句柄
+    .参数 方式, 整数型, , nBkMode，下述常数之一：OPAQUE用当前的背景色填充虚线画笔、阴影刷子以及字符的空隙TRANSPARENT透明处理，即不作上述填充
+
+.DLL命令 宽字符到窄字符_API, 整数型, "SHLWAPI", "#217", , SHUnicodeToAnsi
+    .参数 宽字符文本, 整数型, 传址, lpMultiBVytestyr
+    .参数 窄字符文本, 整数型, 传址, lpWideCharStr
+    .参数 宽字符文本长度, 整数型, , cchWideChar
+
+.DLL命令 IMM取设备场景_API, 整数型, "imm32.dll", "ImmGetContext", , 
+    .参数 窗口句柄, 空白型, , 
+
+.DLL命令 IMM释放设备场景_API, 整数型, "imm32.dll", "ImmReleaseContext", , 
+    .参数 窗口句柄, 空白型, , 
+    .参数 场景句柄, 空白型, , 
+
+.DLL命令 IMM锁定IMC_API, 整数型, "imm32.dll", "ImmLockIMC", , 
+    .参数 场景句柄, 空白型, , 
+
+.DLL命令 IMM解锁IMC_API, 逻辑型, "imm32.dll", "ImmUnlockIMC", , 
+    .参数 场景句柄, 空白型, , 
+
+.DLL命令 IMM取输入文本_API, 整数型, "imm32.dll", "ImmGetCompositionStringA", , 
+    .参数 场景句柄, 空白型, , 
+    .参数 标志, 空白型, , 
+    .参数 内容, 文本型, , 
+    .参数 长度, 空白型, , 
+
+.DLL命令 IMM置输入窗口_API, 整数型, "imm32.dll", "ImmSetCompositionWindow", , 
+    .参数 hct, 空白型, , 
+    .参数 f, 选择窗体_, , 
+
+.DLL命令 取插入符位置_API, 整数型, "user32.dll", "GetCaretPos", , 
+    .参数 位置, 坐标_, 传址, 
+
+.DLL命令 描绘标准组件_API, 整数型, "user32.dll", "DrawFrameControl", , 这个函数用于描绘一个标准组件
+    .参数 设备场景, 整数型, , hDC,要在其中作画的设备场景 
+    .参数 矩形轮廓, 矩形_, , lpRect,指定帧的位置及大小的一个矩形 
+    .参数 外貌, 整数型, , un1,指定帧类型的一个常数
+    .参数 状态, 整数型, , un2,一个常数，指定欲描绘的帧的状态
+
+.DLL命令 描绘矩形文本_API, 整数型, "user32.dll", "DrawTextA", , 将文本描绘到指定的矩形中
+    .参数 设备场景句柄, 整数型, , hdc,欲在其中显示文字的一个设备场景的句柄 
+    .参数 描绘的字串, 文本型, , lpStr,欲描绘的文本字串 
+    .参数 描绘的字串数量, 整数型, , n,欲描绘的字符数量
+    .参数 描绘文本区域, 矩形_, , lpRect,指定用于绘图的一个格式化矩形（采用逻辑坐标） 
+    .参数 格式, 整数型, , wFormat,一个标志位数组，决定了以何种形式执行绘图 
+
+.DLL命令 置鼠标捕获窗口_API, 整数型, "", "SetCapture", , 
+    .参数 hwnd, 空白型, , 
+
+.DLL命令 取消鼠标捕获窗口_API, 整数型, "", "ReleaseCapture", , 
+
+.DLL命令 取系统默认色_API, 整数型, "user32", "GetSysColor", , 
+    .参数 类型, 整数型, , 
+
+.DLL命令 取文本指针_API, 整数型, "", "lstrcpyn", , 
+    .参数 欲取其指针的整数, 文本型, , 一定要传址
+    .参数 欲取其指针的整数, 文本型, , 一定要传址.重复一次,骗骗Windows:)
+    .参数 保留, 整数型, , 0
+
+.DLL命令 取文本像素范围_API, 整数型, "gdi32", "GetTextExtentPoint32A", , 
+    .参数 设备场景句柄, 整数型, , hdc
+    .参数 文本指针, 整数型, , lpsz
+    .参数 文本长度, 整数型, , cbString
+    .参数 范围, 坐标_, , lpSize
+
+.DLL命令 文本绘出_API, 整数型, "gdi32.dll", "TextOutA", , Long，非零表示成功，零表示失败。会设置GetLastError
+    .参数 设备场景, 整数型, , hdc，设备场景的句柄
+    .参数 横, 整数型, , x，绘图的起点，采用逻辑坐标
+    .参数 纵, 整数型, , y，绘图的起点，采用逻辑坐标
+    .参数 文本指针, 整数型, , lpstring，欲描绘的字串
+    .参数 内容数量, 整数型, , ncount，字串中要描绘的字符数量
+
+.DLL命令 文本比较_API, 整数型, "shlwapi.dll", "StrCmpNA", , 文本1大于文本2为1,反之为-1,相等为0
+    .参数 文本1, 整数型, , lpStr1
+    .参数 文本2, 文本型, , lpStr2
+    .参数 字符数, 整数型, , nChar
+
+.DLL命令 复制ASC码_API, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目的变量, 字节型, 传址, pTo
+    .参数 源, 整数型, , uFrom
+    .参数 尺寸, 整数型, , lSize
+
+.DLL命令 复制文本_API, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目的变量, 文本型, , pTo
+    .参数 源, 整数型, , uFrom
+    .参数 尺寸, 整数型, , lSize
+
+.DLL命令 寻找文本_API, 整数型, "shlwapi.dll", "StrStrA", , 
+    .参数 被寻找文本, 整数型, , lpSource
+    .参数 欲寻找文本, 文本型, , lpLast
+
+.DLL命令 当前线程标志符_API, 整数型, "kernel32", "GetCurrentThreadId", , 
+
+.DLL命令 设置系统钩子_API, 整数型, "user32.dll", "SetWindowsHookExA", , SetWindowsHookEx
+    .参数 钩子类型, 整数型, , idHook
+    .参数 回调函数地址, 子程序指针, , lpfn
+    .参数 实例句柄, 整数型, , hmod
+    .参数 线程ID, 整数型, , dwThreadId
+
+.DLL命令 释放系统钩子_API, 整数型, "user32.dll", "UnhookWindowsHookEx", , UnhookWindowsHookEx
+    .参数 钩子句柄, 整数型, , hHook
+
+.DLL命令 呼叫下一钩子_API, 整数型, "user32.dll", "CallNextHookEx", , CallNextHookEx
+    .参数 钩子句柄, 整数型, , hHook
+    .参数 代码值, 整数型, , ncode
+    .参数 附加参数1, 整数型, , wParam
+    .参数 附加参数2, 整数型, , lParam
+
+.DLL命令 取按键状态_API, 整数型, "user32", "GetKeyState", , 
+    .参数 键代码, 整数型, , vKey Long，欲测试的虚拟键的键码 
+
+.DLL命令 取得类名称_API, 逻辑型, "user32", "GetClassNameA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 缓冲区, 文本型, 传址, 
+    .参数 缓冲区长度, 整数型, , 
+
+.DLL命令 取获取焦点窗口_API, 整数型, "user32.dll", "GetFocus", , GetFocus，获得拥有输入焦点的窗口的句柄
+
+.DLL命令 取绘画类型_API, 整数型, "gdi32", "GetROP2", , 
+    .参数 设备场景句柄, 整数型, , 
+
+.DLL命令 置绘画类型_API, 整数型, "gdi32", "SetROP2", , 
+    .参数 设备场景, 整数型, , 
+    .参数 光栅运算方式, 整数型, , 
+
+.DLL命令 反转矩形颜色_API, 整数型, "user32.dll", "InvertRect", , 
+    .参数 设备场景句柄, 整数型, , hdc,设备场景的句柄
+    .参数 要反转的矩形, 矩形_, , lpRect,要反转的矩形，用逻辑坐标指定
+
+.DLL命令 赋值字体数据_API, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目的变量, 逻辑字体_, , pTo
+    .参数 源, 字节集, , uFrom
+    .参数 尺寸, 整数型, , lSize
+
+.DLL命令 取回字体数据_API, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目的变量, 字节集, , pTo
+    .参数 源, 逻辑字体_, , uFrom
+    .参数 尺寸, 整数型, , lSize
+
+.DLL命令 选择字体对话框_API, 逻辑型, "comdlg32.dll", "ChooseFontA", , 建立一个字体选择对话框
+    .参数 字体对话框结构, 选择字体_, , 
+
+.DLL命令 取对象属性_API, 整数型, "gdi32.dll", "GetObjectA", , 
+    .参数 对象句柄, 整数型, , 
+    .参数 数据尺寸, 整数型, , 
+    .参数 属性, 逻辑字体_, , 
+
+.DLL命令 取对象句柄_API, 整数型, "gdi32.dll", "GetStockObject", , 
+    .参数 类型, 整数型, , 
+
+.DLL命令 取窗口区域位置_API, 整数型, "user32.dll", "ClientToScreen", , 非零表示成功，零表示失败
+    .参数 窗口句柄, 整数型, , hwnd，要取出区域坐标的窗口句柄
+    .参数 位置变量, 坐标_, , lpPoint，参见相关帮助
+
+.DLL命令 命令文本比较_API, 整数型, "shlwapi.dll", "StrCmpNA", , 文本1大于文本2为1,反之为-1,相等为0
+    .参数 文本1, 文本型, , lpStr1
+    .参数 文本2, 文本型, , lpStr2
+    .参数 字符数, 整数型, , nChar
+
+.DLL命令 到客户区坐标_API, 整数型, "user32.dll", "ScreenToClient", , ScreenToClient，Long，非零表示成功，零表示失败
+    .参数 窗口句柄, 整数型, , hwnd，Long，一个窗口的句柄，该窗口定义了要使用的客户区坐标系统
+    .参数 点, 坐标_, , POINTAPI，屏幕坐标系统中包含了屏幕点的结构。这个函数会随同相应的客户区坐标（由hwnd决定）载入结构
+
+.DLL命令 查找文件_API, 整数型, "kernel32.dll", "FindFirstFileA", , 
+    .参数 文件名, 文本型, , lpFileName，欲搜索的文件名
+    .参数 文件信息, 查找的文件信息_, , lpFindFileData，参见相关帮助
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 工具条显示, 逻辑型, , , 
+.程序集变量 状态条显示, 逻辑型, , , 
+.程序集变量 工作夹显示, 逻辑型, , , 
+.程序集变量 状态夹显示, 逻辑型, , , 
+.程序集变量 行号条显示, 逻辑型, , , 
+.程序集变量 选择夹显示, 逻辑型, , , 
+.程序集变量 软件注册项, 文本型, , , 
+.程序集变量 软件标题, 文本型, , , 
+.程序集变量 编辑框左边, 整数型, , , 
+.程序集变量 编辑框顶边, 整数型, , , 
+.程序集变量 编辑框宽度, 整数型, , , 
+.程序集变量 编辑框高度, 整数型, , , 
+.程序集变量 空文档序号, 整数型, , , 
+.程序集变量 最后路径列表, 文本型, , "0", 
+.程序集变量 右键菜单子夹索引, 整数型, , , 
+.程序集变量 关键字管理, 关键字管理类, , , 
+.程序集变量 数据库打开, 逻辑型, , , 
+.子程序 __启动窗口_将被销毁, 空白型, , 
+代码编辑框类结束 ()
+保存最后文件列表 ()
+.如果真 (数据库打开)
+    关闭 () ' 关闭数据库
+.如果真结束
+结束 ()
+
+.子程序 读入最后文件列表, 空白型, , 
+.局部变量 N, 整数型, , , 
+.局部变量 菜单, 菜单, , , 
+.局部变量 最后路径名, 文本型, , , 
+
+.计次循环首 (7, N)
+    赋值 (菜单, 多项选择 (N, , , , , , , ))
+    事件转移 (菜单, ) ' 移到1号菜单上,以便统一调用
+.计次循环尾 ()
+.计次循环首 (8, N)
+    赋值 (最后路径名, 取文本注册项 (#现行用户, 相加 (软件注册项, “最后文件\”, 到文本 (N)), “”))
+    赋值 (菜单, 多项选择 (N, , , , , , , , ))
+    .如果真 (等于 (最后路径名, “”))
+        跳出循环 ()
+    .如果真结束
+    赋值 (菜单.可视, 真)
+    赋值 (菜单.标题, 相加 (“&”, 到文本 (N), “ ”, 最后路径名))
+    加入成员 (最后路径列表, 最后路径名)
+.计次循环尾 ()
+
+.子程序 保存最后文件列表, 空白型, , 
+.局部变量 N, 整数型, , , 
+
+.计次循环首 (取数组成员数 (最后路径列表), N)
+    写注册项 (#现行用户, 相加 (软件注册项, “最后文件\”, 到文本 (N)), 最后路径列表 [N])
+.计次循环尾 ()
+
+
+.子程序 加入最后文件列表, 空白型, , 
+.参数 路径名, 文本型, , 
+
+.局部变量 菜单, 菜单, , , 
+.局部变量 N, 整数型, , , 
+
+.计次循环首 (取数组成员数 (最后路径列表), N)
+    .如果真 (等于 (到小写 (路径名), 到小写 (最后路径列表 [N]))) ' 已经在列表里了
+        .如果真 (大于 (N, 1))
+            删除成员 (最后路径列表, N, 1) ' 移到最上边
+            跳出循环 ()
+        .如果真结束
+        返回 ()
+    .如果真结束
+    
+.计次循环尾 ()
+插入成员 (最后路径列表, 1, 路径名)
+.如果真 (等于 (取数组成员数 (最后路径列表), 9)) ' 超过8条目了
+    删除成员 (最后路径列表, 9, )
+.如果真结束
+.计次循环首 (取数组成员数 (最后路径列表), N)
+    赋值 (菜单, 多项选择 (N, , , , , , , , ))
+    赋值 (菜单.可视, 真)
+    赋值 (菜单.标题, 相加 (“&”, 到文本 (N), “ ”, 最后路径列表 [N]))
+.计次循环尾 ()
+
+
+.子程序 读取配色方案, 空白型, , 
+.参数 配色组, 整数型, 参考 数组, 
+
+.局部变量 配色数据, 字节集, , , 
+.局部变量 N, 整数型, , , 
+
+ ' 1默认文本颜色
+ ' 2汇编代码颜色
+ ' 3背景颜色
+ ' 4光标行条颜色
+ ' 5成员方法颜色
+ ' 6系统关键字颜色
+ ' 7保留字颜色
+ ' 8运算符颜色
+ ' 9注释颜色
+ ' 10引号文本颜色
+ ' 11文本常量颜色
+ ' 12数值常量颜色
+赋值 (配色数据, 取字节集注册项 (#现行用户, 相加 (软件注册项, “编辑器配置\配色数据”), ))
+.如果 (等于 (取字节集长度 (配色数据), 0))
+     ' 使用默认配色
+    .计次循环首 (12, N)
+        赋值 (配色组 [N], 多项选择 (N, #黑色, #紫红, #白色, #黄色, #红褐, #红色, #蓝色, #藏青, #墨绿, #深青, #紫色, #黄褐))
+    .计次循环尾 ()
+    
+.否则
+     ' 分解配色
+    .计次循环首 (12, N)
+        赋值 (配色组 [N], 取字节集数据 (配色数据, #整数型, 相加 (相乘 (相减 (N, 1), 4), 1)))
+    .计次循环尾 ()
+.如果结束
+
+
+.子程序 读取配置, 空白型, , 
+.局部变量 配色组, 整数型, 静态, "12", 
+.局部变量 字体数据, 字节集, , , 
+.局部变量 PB注册表路径, 文本型, , , 
+.局部变量 n, 整数型, , , 
+
+读取配色方案 (配色组)
+赋值 (默认文本颜色, 配色组 [1])
+赋值 (汇编代码颜色, 配色组 [2])
+赋值 (背景颜色, 配色组 [3])
+赋值 (光标行条颜色, 配色组 [4])
+赋值 (成员方法颜色, 配色组 [5])
+赋值 (系统关键字颜色, 配色组 [6])
+赋值 (保留字颜色, 配色组 [7])
+赋值 (运算符颜色, 配色组 [8])
+赋值 (注释颜色, 配色组 [9])
+赋值 (引号文本颜色, 配色组 [10])
+赋值 (文本常量颜色, 配色组 [11])
+赋值 (数值常量颜色, 配色组 [12])
+
+赋值 (TAB空格数, 取数值注册项 (#现行用户, 相加 (软件注册项, “编辑器配置\TAB空格”), 4))
+赋值 (字体数据, 取字节集注册项 (#现行用户, 相加 (软件注册项, “编辑器配置\字体”), ))
+.如果 (等于 (取字节集长度 (字体数据), 0))
+    产生默认字体 ()
+.否则
+    赋值字体数据_API (编辑框字体, 字体数据, 40)
+.如果结束
+
+赋值 (命令补全提示, 不等于 (取数值注册项 (#现行用户, 相加 (软件注册项, “编辑器配置\命令补全提示”), 1), 0))
+赋值 (源码自动缩进, 不等于 (取数值注册项 (#现行用户, 相加 (软件注册项, “编辑器配置\源码自动缩进”), 1), 0))
+赋值 (编译器路径, 取文本注册项 (#现行用户, 相加 (软件注册项, “编辑器配置\编译器路径”), ))
+.如果真 (等于 (编译器路径, “”))
+    .计次循环首 (4, n)
+         ' 枚举可能安装的各版本PB8.01~PB8.04
+        赋值 (PB注册表路径, 相加 (“Software\PowerBASIC\PB/Win\8.0”, 到文本 (相减 (5, n)), “\Compiler\Compiler”))
+        赋值 (编译器路径, 取文本注册项 (#现行用户, PB注册表路径, ))
+        .如果真 (不等于 (编译器路径, “”))
+            跳出循环 ()
+        .如果真结束
+        
+    .计次循环尾 ()
+.如果真结束
+
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+赋值 (.图标, #PB命令函数树形数据)
+
+赋值 (软件注册项, “Software\SitaStudio\PowerBASIC编程助手\”)
+赋值 (软件标题, .)
+赋值 (行间距, 3)
+赋值 (行首缩进, 3)
+赋值 (行号条宽, #行号条宽)
+读取配置 ()
+
+代码编辑框类初始化 ()
+读取外观布局配置 ()
+读入最后文件列表 ()
+打开源码文档 (“”, 1)
+
+.如果 (打开 (“PB命令函数库.edb”, , 真, , , , ))
+    赋值 (数据库打开, 真)
+.否则
+    信息框 (“PowerBASIC8.0的命令函数信息数据库打开失败,不能进行查看命令说明操作”, #警告图标, )
+.如果结束
+
+
+.子程序 __启动窗口_尺寸被改变, 空白型, , 
+外观布局 ()
+
+.子程序 读取外观布局配置, 空白型, , 
+.局部变量 N, 整数型, , , 
+.局部变量 菜单条, 菜单, , , 
+
+赋值 (工具条显示, 不等于 (取数值注册项 (#现行用户, 相加 (软件注册项, “外观配置\工具条”), 1), 0))
+赋值 (状态条显示, 不等于 (取数值注册项 (#现行用户, 相加 (软件注册项, “外观配置\状态条”), 1), 0))
+赋值 (工作夹显示, 不等于 (取数值注册项 (#现行用户, 相加 (软件注册项, “外观配置\工作夹”), 1), 0))
+赋值 (状态夹显示, 不等于 (取数值注册项 (#现行用户, 相加 (软件注册项, “外观配置\状态夹”), 1), 0))
+赋值 (行号条显示, 不等于 (取数值注册项 (#现行用户, 相加 (软件注册项, “外观配置\行号条”), 1), 0))
+赋值 (选择夹显示, 不等于 (取数值注册项 (#现行用户, 相加 (软件注册项, “外观配置\选择夹”), 1), 0))
+
+赋值 (., 工具条显示)
+赋值 (., 状态条显示)
+赋值 (.可视, 工作夹显示)
+赋值 (.可视, 状态夹显示)
+赋值 (., 选择夹显示)
+
+.如果 (行号条显示)
+    赋值 (行号条宽, #行号条宽)
+.否则
+    赋值 (行号条宽, 0)
+.如果结束
+.计次循环首 (6, N)
+    赋值 (菜单条, 多项选择 (N, , , , , , ))
+    .如果真 (大于 (N, 1)) ' 自身除外
+        事件转移 (菜单条, ) ' 事件转移到"工具条"菜单,以便统一管理
+    .如果真结束
+    赋值 (菜单条.选中, 多项选择 (N, 工具条显示, 状态条显示, 工作夹显示, 状态夹显示, 选择夹显示, 行号条显示))
+.计次循环尾 ()
+
+.子程序 外观布局, 空白型, , 
+.局部变量 左边值, 空白型, , , 
+.局部变量 顶边值, 空白型, , , 
+.局部变量 底边高, 空白型, , , 
+.局部变量 可用高, 空白型, , , 
+.局部变量 可用宽, 空白型, , , 
+.局部变量 N, 整数型, , , 
+
+赋值 (可用高, 取用户区高度 ())
+赋值 (可用宽, 取用户区宽度 ())
+.如果真 (工具条显示)
+    赋值 (可用高, 相减 (可用高, .可视))
+    赋值 (顶边值, .可视)
+.如果真结束
+赋值 (.选中, 工具条显示)
+
+.如果真 (状态条显示)
+    赋值 (可用高, 相减 (可用高, .))
+.如果真结束
+赋值 (.选中, 状态条显示)
+
+
+.如果 (状态夹显示)
+    赋值 (.可视, 假) ' 防止调整时闪烁
+    赋值 (.顶边, 相减 (取用户区高度 (), .高度))
+    .如果真 (状态条显示)
+        赋值 (.顶边, 相减 (.顶边, .))
+    .如果真结束
+    
+    赋值 (., 相减 (.顶边, 3))
+    赋值 (.宽度, 取用户区宽度 ())
+    赋值 (., .宽度)
+    赋值 (.高度, .高度)
+    
+    赋值 (.宽度, 相减 (.宽度, .左边, 3))
+    赋值 (.高度, 相减 (.高度, .顶边))
+    赋值 (底边高, .高度)
+    赋值 (., 真)
+    赋值 (.可视, 真)
+    17.加入状态 (#选中)
+    赋值 (可用高, 相减 (可用高, 底边高))
+    赋值 (.可视, 真) ' 防止调整时闪烁
+    
+.否则
+    赋值 (底边高, 0)
+    赋值 (., 假)
+    赋值 (.可视, 假)
+    17.去除状态 (#选中)
+.如果结束
+赋值 (.选中, 状态夹显示)
+
+.如果 (工作夹显示)
+    赋值 (.可视, 假) ' 防止调整时闪烁
+    赋值 (.顶边, 顶边值)
+    赋值 (.高度, 可用高)
+    赋值 (.宽度, .宽度)
+    赋值 (.高度, 相减 (.高度, 21))
+    赋值 (.宽度, 相减 (.宽度, 6))
+    赋值 (.高度, 相减 (.高度, 30))
+    赋值 (.宽度, 相减 (.宽度, 6))
+    赋值 (.高度, 相减 (.高度, 30))
+    
+    赋值 (.左边, 相减 (.宽度, 16))
+    赋值 (.宽度, 相减 (.宽度, 25))
+    赋值 (.顶边, 相加 (顶边值, 10))
+    
+    赋值 (., 顶边值)
+    赋值 (., .宽度)
+    赋值 (., 相加 (.高度, 2))
+    赋值 (左边值, 相加 (.宽度, 3))
+    赋值 (可用宽, 相减 (可用宽, 左边值))
+    
+    赋值 (., 真)
+    赋值 (.可视, 真)
+    16.加入状态 (#选中)
+    赋值 (.可视, 真) ' 防止调整时闪烁
+    
+.否则
+    赋值 (左边值, 0)
+    赋值 (., 假)
+    赋值 (.可视, 假)
+    16.去除状态 (#选中)
+.如果结束
+赋值 (.选中, 工作夹显示)
+
+.如果真 (选择夹显示)
+    赋值 (., 顶边值)
+    赋值 (., 左边值)
+    赋值 (., 可用宽)
+    赋值 (顶边值, 相加 (顶边值, .))
+    赋值 (可用高, 相减 (可用高, .))
+.如果真结束
+赋值 (.选中, 选择夹显示)
+
+赋值 (.选中, 行号条显示)
+
+赋值 (编辑框顶边, 顶边值)
+赋值 (编辑框左边, 左边值)
+赋值 (编辑框宽度, 可用宽)
+赋值 (编辑框高度, 可用高)
+赋值 (N, .)
+.如果真 (大于 (N, 0))
+    文档列表.移动窗口 ( [N], 编辑框左边, 编辑框顶边, 编辑框宽度, 编辑框高度)
+.如果真结束
+
+
+
+.子程序 _分隔条1_被拖动, 空白型, , 
+.参数 原位置, 整数型, , 
+.参数 目的位置, 整数型, , 
+
+赋值 (., 目的位置)
+赋值 (.宽度, 相减 (目的位置, 3))
+外观布局 ()
+
+.子程序 _分隔条2_被拖动, 空白型, , 
+.参数 原位置, 整数型, , 
+.参数 目的位置, 整数型, , 
+
+赋值 (., 目的位置)
+赋值 (.顶边, 相加 (目的位置, 3))
+赋值 (.高度, 相减 (取用户区高度 (), 目的位置))
+.如果真 (状态条显示)
+    赋值 (.高度, 相减 (.高度, .))
+.如果真结束
+外观布局 ()
+
+
+.子程序 处理窗口单元显示, 空白型, , 
+.参数 编号, 整数型, , 1工具条, 2状态条, 3工作夹, 4状态夹, 5选择夹, 6行号条
+.参数 显示, 逻辑型, , 
+
+.局部变量 N, 整数型, , , 
+
+.判断开始 (等于 (编号, 1))
+    赋值 (工具条显示, 显示)
+    赋值 (., 工具条显示)
+.判断 (等于 (编号, 2))
+    赋值 (状态条显示, 显示)
+    赋值 (., 状态条显示)
+.判断 (等于 (编号, 3))
+    赋值 (工作夹显示, 显示)
+    赋值 (.可视, 工作夹显示)
+.判断 (等于 (编号, 4))
+    赋值 (状态夹显示, 显示)
+    赋值 (.可视, 状态夹显示)
+.判断 (等于 (编号, 5))
+    赋值 (选择夹显示, 显示)
+    赋值 (., 选择夹显示)
+.判断 (等于 (编号, 6))
+    赋值 (行号条显示, 显示)
+    .如果 (行号条显示)
+        赋值 (行号条宽, #行号条宽)
+    .否则
+        赋值 (行号条宽, 0)
+    .如果结束
+    赋值 (N, .)
+    文档列表.重画 ( [N])
+.默认
+    
+.判断结束
+写注册项 (#现行用户, 相加 (软件注册项, “外观配置\”, 多项选择 (编号, “工具条”, “状态条”, “工作夹”, “状态夹”, “选择夹”, “行号条”)), 到数值 (显示))
+外观布局 ()
+
+
+.子程序 _工具条_被选择, 空白型, , 
+.局部变量 N, 整数型, , , 
+.局部变量 菜单条, 菜单, , , 
+.局部变量 事件菜单, 菜单, , , 
+.局部变量 显示, 逻辑型, , , 
+
+赋值 (事件菜单, 取事件组件 ()) ' 取发生事件的菜单,因为六个菜单条已经归为一个子程序处理
+.计次循环首 (6, N)
+    赋值 (菜单条, 多项选择 (N, , , , , , ))
+    .如果真 (等于 (事件菜单, 菜单条)) ' 判断是点中了哪个菜单
+        赋值 (显示, 取反 (菜单条.选中)) ' 与原状态相反
+        处理窗口单元显示 (N, 显示)
+        跳出循环 ()
+    .如果真结束
+    
+.计次循环尾 ()
+
+
+.子程序 _图形按钮2_被单击, 空白型, , 
+处理窗口单元显示 (3, 假) ' 关闭工作夹
+
+.子程序 _图形按钮1_被单击, 空白型, , 
+处理窗口单元显示 (4, 假) ' 关闭状态夹
+
+.子程序 打开源码文档, 空白型, , 返回当前激活的文档编辑框
+.参数 文档路径, 文本型, , 
+.参数 模板, 整数型, 可空, 
+
+.局部变量 N, 整数型, , , 
+.局部变量 文件句柄, 整数型, , , 
+.局部变量 新文档序号, 整数型, , , 
+.局部变量 新文档标题, 文本型, , , 
+.局部变量 新文档, 代码编辑框类, , , 
+.局部变量 文件类型, 整数型, , , 
+
+.如果 (等于 (文档路径, “”)) ' 空时为新建空文档
+    赋值 (空文档序号, 相加 (空文档序号, 1))
+    赋值 (新文档标题, 相加 (“未命名”, 到文本 (空文档序号)))
+    .判断开始 (并且 (小于 (0, 模板), 小于 (模板, 3)))
+        赋值 (新文档标题, 相加 (新文档标题, “.bas”))
+    .判断 (等于 (模板, 3))
+        赋值 (新文档标题, 相加 (新文档标题, “.rc”))
+    .默认
+        
+    .判断结束
+    
+.否则
+     ' 从通用对话框打开的
+    .计次循环首 (取数组成员数 (文档列表), N)
+        .如果真 (文档列表.是否已经打开 ( [N], 文档路径)) ' 如果文件已经打开,不再重复打开
+            赋值 (., N) ' 而是跳转到已经打开的子夹
+            返回 ()
+        .如果真结束
+        
+    .计次循环尾 ()
+     ' 取文件名做为标题
+    赋值 (N, 倒找文本 (文档路径, “\”, , 假))
+    赋值 (新文档标题, 取文本右边 (文档路径, 相减 (取文本长度 (文档路径), N)))
+    加入最后文件列表 (文档路径)
+    
+.如果结束
+.如果真 (等于 (新文档.创建 (_启动窗口, 编辑框左边, 编辑框顶边, 编辑框宽度, 编辑框高度), 假))
+    信息框 (“创建新文档失败！”, #错误图标, “系统错误”)
+    返回 ()
+.如果真结束
+
+加入成员 (文档列表, 新文档)
+
+赋值 (N, 新文档标题.未知支持库函数_31 (0, , )) ' 把文件名加入标题,N为新增加的子夹序号
+赋值 (新文档序号, 取数组成员数 (文档列表))
+文档列表.置标题 ( [新文档序号], 新文档标题)
+.如果真 (等于 (新文档序号, 1))
+    0.未知支持库函数_69 (真) ' 如果第一次打开文档，就把设计时出现的子夹隐藏，因为它不能动态删除
+.如果真结束
+.如果 (不等于 (文档路径, “”)) ' 不是空文档
+    N.未知支持库函数_51 (文档路径) ' 同时添加全路径做为提示
+     ' 并读入文档
+    .如果真 (等于 (文档列表.读入文档 ( [新文档序号], 文档路径, 文件类型), 假))
+         ' 可能被锁定
+        信息框 (相加 (“读入文档:”, #引号, 文档路径, #引号, “失败！”), #错误图标, “系统错误”)
+        
+    .如果真结束
+    N.未知支持库函数_43 (文件类型, , )
+.否则
+    
+    文档列表.新建模板文档 ( [新文档序号], 模板)
+    .如果真 (或者 (等于 (0, 模板), 等于 (模板, 3)))
+        N.未知支持库函数_43 (2, , )
+    .如果真结束
+    
+.如果结束
+赋值 (., N) ' 置为当前子夹
+
+.子程序 显示文档标题, 空白型, , 
+.参数 序号, 整数型, , 
+
+.局部变量 文档标题, 文本型, , , 
+
+赋值 (文档标题, 文档列表.取标题 ( [序号]))
+.如果真 (文档列表.已修改 ( [序号]))
+    赋值 (文档标题, 相加 (文档标题, “*”))
+.如果真结束
+序号.未知支持库函数_41 (文档标题)
+
+.子程序 显示窗口标题, 空白型, , 
+.参数 序号, 整数型, , 
+
+.局部变量 窗口标题, 文本型, , , 
+
+
+赋值 (窗口标题, 文档列表.窗口标题 ( [序号]))
+.如果真 (文档列表.已修改 ( [序号]))
+    赋值 (窗口标题, 相加 (窗口标题, “*”))
+.如果真结束
+赋值 (., 相加 (软件标题, “ - [”, 窗口标题, “]”))
+
+.子程序 _文件选择夹_子夹被改变, 空白型, , 
+.局部变量 N, 整数型, , , 
+.局部变量 子夹索引, 整数型, , , 
+
+.计次循环首 (取数组成员数 (文档列表), N)
+    文档列表.隐藏视图 ( [N]) ' 把所有编辑框隐藏
+.计次循环尾 ()
+外观布局 ()
+赋值 (子夹索引, .)
+文档列表.显示视图 ( [子夹索引]) ' 当移动完之后再显出,以免显示闪烁
+文档列表.获取焦点 ( [子夹索引])
+ ' 显示窗口标题 (子夹索引)
+ ' 显示文档标题 (子夹索引)
+文档列表.更新状态条 ( [子夹索引])
+
+.子程序 _新建_被选择, 空白型, , 
+打开源码文档 (“”, 1)
+
+.子程序 _打开_被选择, 空白型, , 
+赋值 (.类型, 0)
+赋值 (.标题, “请选择要打开的文件”)
+.如果真 (打开 ())
+    打开源码文档 (.文件名)
+.如果真结束
+
+
+.子程序 关闭文档窗口, 空白型, , 
+.参数 序号, 整数型, , 
+
+.局部变量 文件名, 文本型, , , 
+.局部变量 返回值, 整数型, , , 
+
+.如果真 (文档列表.已修改 ( [序号]))
+    赋值 (文件名, 文档列表.取标题 ( [序号]))
+    赋值 (返回值, 信息框 (相加 (#引号, 文件名, #引号, “已经修改，是否保存？”), 相加 (#信息图标, #取消是否钮), “文件已经修改”))
+    .判断开始 (等于 (返回值, #是钮))
+        保存文档 (序号)
+    .判断 (等于 (返回值, #取消钮))
+        返回 ()
+    .默认
+        
+    .判断结束
+    
+.如果真结束
+.如果真 (等于 (取数组成员数 (文档列表), 1))
+     ' 最后一个了,关闭主窗口
+    发送信息 (16, 0, 0) ' 关闭窗口消息,用来触发"可否被关闭"事件
+    返回 ()
+.如果真结束
+文档列表.销毁 ( [序号]) ' 把编辑器窗口销毁了
+删除成员 (文档列表, 序号, )
+序号.未知支持库函数_32 ()
+_文件选择夹_子夹被改变 () ' 高级选择夹的BUG,删除子夹没有这个事件
+
+.子程序 _关闭_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+
+赋值 (序号, .)
+关闭文档窗口 (序号)
+
+.子程序 保存文档, 逻辑型, , 
+.参数 序号, 整数型, , 
+
+.局部变量 文档路径, 文本型, , , 
+
+.如果真 (文档列表.未名命文档 ( [序号]))
+    赋值 (.类型, 1)
+    赋值 (.标题, “请输入要保存文件的路径”)
+    赋值 (.文件名, 文档列表.取标题 ( [序号]))
+    .如果 (打开 ())
+        赋值 (文档路径, .文件名)
+    .否则
+        返回 (假)
+    .如果结束
+    
+.如果真结束
+.如果真 (等于 (文档列表.保存 ( [序号], 文档路径), 假))
+    信息框 (相加 (“保存文档”, #引号, 文档路径, #引号, “失败！”), #错误图标, “出错：”)
+    返回 (假)
+.如果真结束
+返回 (真)
+
+.子程序 _保存_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+
+赋值 (序号, .)
+.如果真 (等于 (文档列表.已修改 ( [序号]), 假))
+    返回 ()
+.如果真结束
+保存文档 (序号)
+
+.子程序 _另存为_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+
+赋值 (序号, .)
+赋值 (.类型, 1)
+赋值 (.标题, “请输入要保存文件的路径”)
+赋值 (.文件名, 文档列表.取标题 ( [序号]))
+.如果真 (打开 ())
+    .如果 (文档列表.保存 ( [序号], .文件名))
+        显示文档标题 (序号)
+        显示窗口标题 (序号)
+    .否则
+        信息框 (相加 (“保存文档”, #引号, .文件名, #引号, “失败！”), #错误图标, “出错：”)
+    .如果结束
+    
+.如果真结束
+
+
+.子程序 _全部保存_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+
+.计次循环首 (取数组成员数 (文档列表), 序号)
+    .如果真 (等于 (文档列表.已修改 ( [序号]), 假))
+        保存文档 (序号)
+    .如果真结束
+    
+.计次循环尾 ()
+
+
+.子程序 _打印程序_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+
+.如果真 (.开始打印 ())
+    赋值 (序号, .)
+    文档列表.打印 ( [序号], )
+    结束打印 ()
+.如果真结束
+
+
+.子程序 _退出_被选择, 空白型, , 
+发送信息 (16, 0, 0) ' 关闭窗口消息,用来触发"可否被关闭"事件
+
+
+.子程序 __启动窗口_可否被关闭, 逻辑型, , 
+.局部变量 N, 整数型, , , 
+.局部变量 文件名, 文本型, , , 
+.局部变量 全保存, 逻辑型, , , 
+
+.计次循环首 (取数组成员数 (文档列表), N)
+    .如果真 (文档列表.已修改 ( [N]))
+        .如果真 (全保存)
+            保存文档 (N)
+            返回 ()
+        .如果真结束
+        赋值 (文件名, 文档列表.取标题 ( [N]))
+        赋值 (是否保存对话框., 相加 (#引号, 文件名, #引号, “已经修改，是否保存？”))
+        载入 (是否保存对话框, _启动窗口, 真)
+        .判断开始 (等于 (是否保存对话框., 1)) ' 是
+            保存文档 (N)
+        .判断 (等于 (是否保存对话框., 2)) ' 全是
+            赋值 (全保存, 真)
+            保存文档 (N)
+        .判断 (等于 (是否保存对话框., 3)) ' 否
+            到循环尾 ()
+        .判断 (等于 (是否保存对话框., 4)) ' 全否
+            跳出循环 ()
+        .判断 (等于 (是否保存对话框., 5)) ' 取消
+            返回 (假)
+        .默认
+            
+        .判断结束
+        
+    .如果真结束
+    
+.计次循环尾 ()
+
+.子程序 _撤消_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+
+赋值 (序号, .)
+文档列表.撤消 ( [序号])
+
+.子程序 _重做_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+
+赋值 (序号, .)
+文档列表.重做 ( [序号])
+
+.子程序 _剪切_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+
+赋值 (序号, .)
+文档列表.剪切 ( [序号])
+
+
+.子程序 _复制_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+
+赋值 (序号, .)
+文档列表.复制 ( [序号])
+
+.子程序 _粘贴_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+
+赋值 (序号, .)
+文档列表.粘贴 ( [序号])
+
+.子程序 _删除_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+
+赋值 (序号, .)
+文档列表.删除文本 ( [序号])
+
+.子程序 _全选_被选择, 空白型, , 
+.局部变量 N, 整数型, , , 
+
+赋值 (N, .)
+文档列表.全选 ( [N])
+
+.子程序 __启动窗口_获得焦点, 空白型, , 
+.局部变量 N, 整数型, , , 
+
+赋值 (N, .)
+.如果真 (大于 (N, 0))
+    文档列表.获取焦点 ( [N])
+.如果真结束
+
+
+.子程序 _关闭选中_被选择, 空白型, , 
+关闭文档窗口 (右键菜单子夹索引)
+
+.子程序 _保存选中_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+
+赋值 (序号, 右键菜单子夹索引)
+.如果真 (等于 (文档列表.已修改 ( [序号]), 假))
+    返回 ()
+.如果真结束
+保存文档 (序号)
+
+.子程序 _右键菜单全部保存_被选择, 空白型, , 
+_全部保存_被选择 ()
+
+.子程序 _文件选择夹_子夹头被右击, 空白型, , 
+.参数 子夹索引, 整数型, , 
+
+赋值 (右键菜单子夹索引, 子夹索引)
+弹出菜单 ()
+
+.子程序 _选中另存为_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+
+赋值 (序号, 右键菜单子夹索引)
+赋值 (.类型, 1)
+赋值 (.标题, “请输入要保存文件的路径”)
+赋值 (.文件名, 文档列表.取标题 ( [序号]))
+.如果真 (打开 ())
+    .如果 (文档列表.保存 ( [序号], .文件名))
+        显示文档标题 (序号)
+        .如果真 (等于 (序号, .))
+            显示窗口标题 (序号) ' 是当前子夹,要改变标题
+        .如果真结束
+        
+    .否则
+        信息框 (相加 (“保存文档”, #引号, .文件名, #引号, “失败！”), #错误图标, “出错：”)
+    .如果结束
+    
+.如果真结束
+
+
+.子程序 _到指定行_被选择, 空白型, , 
+.局部变量 行号, 空白型, , , 
+.局部变量 N, 整数型, , , 
+
+.如果真 (输入框 (“请输入要跳转到的行号:(1~xxxxx)”, , , 行号, #输入整数))
+    赋值 (N, .)
+    文档列表.全选 ( [N])
+    .如果真 (等于 (文档列表.跳到行 ( [N], 行号), 假))
+        信息框 (“行号已经超出范围”, #信息图标, )
+    .如果真结束
+    
+.如果真结束
+
+
+.子程序 _查找_被选择, 空白型, , 
+载入 (查找窗口, , 真)
+
+.子程序 _查找上一个_被选择, 空白型, , 
+.局部变量 N, 整数型, , , 
+
+赋值 (N, .)
+文档列表.查找上一个 ( [N])
+
+
+.子程序 _查找下一个_被选择, 空白型, , 
+.局部变量 N, 整数型, , , 
+
+赋值 (N, .)
+文档列表.查找下一个 ( [N])
+
+
+.子程序 _替换_被选择, 空白型, , 
+载入 (替换窗口, , 真)
+
+.子程序 _最后文件1_被选择, 空白型, , 
+.局部变量 菜单, 菜单, , , 
+.局部变量 当前菜单, 菜单, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 路径名, 文本型, , , 
+
+赋值 (当前菜单, 取事件组件 ())
+.计次循环首 (取数组成员数 (最后路径列表), N)
+    赋值 (菜单, 多项选择 (N, , , , , , , , ))
+    .如果真 (等于 (菜单, 当前菜单))
+        赋值 (路径名, 最后路径列表 [N])
+        打开源码文档 (路径名)
+        跳出循环 ()
+    .如果真结束
+    
+.计次循环尾 ()
+
+
+.子程序 _工具条1_被下拉, 空白型, , 
+.参数 按钮索引, 整数型, , 
+.参数 下拉横座标, 整数型, , 
+.参数 下拉纵座标, 整数型, , 
+
+.判断开始 (等于 (按钮索引, 1))
+    弹出菜单 (下拉横座标, 下拉纵座标)
+.判断 (等于 (按钮索引, 0))
+    弹出菜单 (下拉横座标, 下拉纵座标)
+.默认
+    
+.判断结束
+
+
+.子程序 _工具条1_被单击, 空白型, , 
+.参数 按钮索引, 整数型, , 
+
+.局部变量 显示, 逻辑型, , , 
+
+
+.判断开始 (等于 (按钮索引, 0))
+    _新建_被选择 ()
+.判断 (等于 (按钮索引, 16))
+    赋值 (显示, 等于 (位与 (16.取状态 (), #选中), #选中))
+    赋值 (.选中, 显示)
+    处理窗口单元显示 (3, 显示)
+.判断 (等于 (按钮索引, 17))
+    赋值 (显示, 等于 (位与 (17.取状态 (), #选中), #选中))
+    赋值 (.选中, 显示)
+    处理窗口单元显示 (4, 显示)
+    
+.判断 (等于 (按钮索引, 1))
+    _打开_被选择 ()
+.判断 (等于 (按钮索引, 2))
+    _保存_被选择 ()
+.判断 (等于 (按钮索引, 3))
+    _全部保存_被选择 ()
+.判断 (等于 (按钮索引, 4))
+    _打印程序_被选择 ()
+.判断 (等于 (按钮索引, 6))
+    _剪切_被选择 ()
+.判断 (等于 (按钮索引, 7))
+    _复制_被选择 ()
+.判断 (等于 (按钮索引, 8))
+    _粘贴_被选择 ()
+.判断 (等于 (按钮索引, 9))
+    _删除_被选择 ()
+.判断 (等于 (按钮索引, 10))
+    _撤消_被选择 ()
+.判断 (等于 (按钮索引, 11))
+    _重做_被选择 ()
+.判断 (等于 (按钮索引, 13))
+    _查找_被选择 ()
+.判断 (等于 (按钮索引, 14))
+    _替换_被选择 ()
+.判断 (等于 (按钮索引, 19))
+    _使用帮助_被选择 ()
+.默认
+    
+.判断结束
+
+
+.子程序 _编辑器配置_被选择, 空白型, , 
+载入 (设置窗口, , 真)
+
+.子程序 _计算器_被选择, 空白型, , 
+运行 (“calc.exe”, 假, )
+
+.子程序 取关键字函数颜色, 整数型, , 如果不是关键字,则返回默认文本颜色
+.参数 关键字文本, 文本型, 参考, 
+
+.局部变量 关键字类型, 整数型, , , 
+
+赋值 (关键字类型, 关键字管理.取关键字类型 (关键字文本))
+.判断开始 (等于 (关键字类型, 0))
+    返回 (系统关键字颜色)
+.判断 (等于 (关键字类型, 1))
+    返回 (保留字颜色)
+.默认
+    
+.判断结束
+返回 (默认文本颜色)
+
+.子程序 _新建EXE程序_被选择, 空白型, , 
+打开源码文档 (“”, 1)
+
+.子程序 _新建DLL程序_被选择, 空白型, , 
+打开源码文档 (“”, 2)
+
+.子程序 _新建RC脚本_被选择, 空白型, , 
+打开源码文档 (“”, 3)
+
+.子程序 _新建纯文本_被选择, 空白型, , 
+打开源码文档 (“”, 0)
+
+.子程序 填充命令补全框, 空白型, , 
+.参数 命令, 文本型, 参考, 
+
+清空 ()
+关键字管理.填充补全框 (命令, )
+.如果 (大于 (取项目数 (), 0))
+    赋值 (.可视, 真)
+    赋值 (.最大化按钮, 0)
+.否则
+    赋值 (.可视, 假)
+.如果结束
+
+
+.子程序 _树型框1_项目被选择, 空白型, , 
+.参数 选择方式, 整数型, , 
+
+.局部变量 序号, 整数型, , , 
+
+.如果真 (等于 (选择方式, 1))
+    赋值 (序号, .)
+    补全输入命令 (序号)
+.如果真结束
+
+
+.子程序 _树型框1_获得焦点, 空白型, , 
+.局部变量 序号, 整数型, , , 
+
+赋值 (序号, .)
+文档列表.获取焦点 ( [序号])
+
+
+.子程序 _程序集_双击项目, 空白型, , 
+_跳转到_被选择 ()
+
+.子程序 _程序集_右键单击项目, 空白型, , 
+.局部变量 N, 整数型, , , 
+
+赋值 (N, .最大化按钮)
+.如果 (大于 (N, 0))
+    赋值 (.禁止, 假)
+.否则
+    赋值 (.禁止, 真)
+.如果结束
+弹出菜单 ()
+
+.子程序 _跳转到_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 函数名, 文本型, , , 
+
+赋值 (N, .最大化按钮)
+.如果真 (小于或等于 (N, 0))
+    返回 ()
+.如果真结束
+赋值 (函数名, N.取项目文本 ())
+
+赋值 (序号, .)
+.如果真 (等于 (文档列表.寻找命令函数 ( [序号], 函数名), 假))
+    .如果真 (等于 (信息框 (“没有找到这个函数或子程序。是否刷新列表？”, 相加 (#询问图标, #是否钮), “未找到”), #是钮))
+        _刷新_被选择 ()
+    .如果真结束
+    
+.如果真结束
+
+
+.子程序 _刷新_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+
+赋值 (序号, .)
+文档列表.填充程序列表框 ( [序号])
+
+
+.子程序 _查看函数库_被选择, 空白型, , 
+赋值 (.现行子夹, 0)
+
+.子程序 _查看程序集_被选择, 空白型, , 
+赋值 (.现行子夹, 1)
+
+.子程序 _编译程序_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+
+赋值 (序号, .)
+编译程序 (序号)
+
+.子程序 编译程序, 逻辑型, , 
+.参数 序号, 整数型, , 
+
+.局部变量 未名命文档, 逻辑型, , , 
+.局部变量 文件名, 文本型, , , 
+.局部变量 返回值, 整数型, , , 
+.局部变量 运行行命令, 文本型, , , 
+.局部变量 记录文件路径, 文本型, , , 
+.局部变量 日志信息, 文本型, , , 
+.局部变量 位置1, 整数型, , , 
+.局部变量 位置2, 整数型, , , 
+.局部变量 行号文本, 文本型, , , 
+.局部变量 错误号, 文本型, , , 
+
+.如果真 (等于 (编译器路径, “”))
+    信息框 (“未设定PowerBasic编译器的路径！”, #警告图标, “无法编译”)
+    返回 (假)
+.如果真结束
+赋值 (未名命文档, 文档列表.未名命文档 ( [序号]))
+.如果真 (或者 (未名命文档, 文档列表.已修改 ( [序号])))
+    赋值 (文件名, 文档列表.取标题 ( [序号]))
+    赋值 (返回值, 信息框 (相加 (#引号, 文件名, #引号, “已经修改或未保存，是否保存？”), 相加 (#信息图标, #取消是否钮), “文件未保存”))
+    .判断开始 (等于 (返回值, #是钮))
+        .如果真 (等于 (保存文档 (序号), 假))
+            返回 (假)
+        .如果真结束
+        
+    .判断 (等于 (返回值, #取消钮))
+        .如果真 (未名命文档) ' 取消对于已经保存的文件，不保存修改，而编译。对于未命名的文档是不编译。
+            返回 (假)
+        .如果真结束
+        
+    .默认
+        
+    .判断结束
+    
+.如果真结束
+.如果真 (等于 (文档列表.取类型 ( [序号]), 2)) ' 纯文本文件，不能编译
+    返回 (假)
+.如果真结束
+赋值 (运行行命令, 文档列表.取编译运行命令 ( [序号]))
+赋值 (.内容, “正在编译程序，请等待...”)
+处理事件 ()
+改变目录 (文档列表.取文档目录 ( [序号]))
+.如果 (运行 (运行行命令, 真, ))
+    赋值 (记录文件路径, 文档列表.取指定文件路径 ( [序号], 0))
+    赋值 (日志信息, 到文本 (读入文件 (记录文件路径)))
+    赋值 (位置1, 寻找文本 (日志信息, 相加 (#换行符, “Error”), , 假))
+    赋值 (.内容, 日志信息)
+    赋值 (.被选择字符数, -1)
+    .如果真 (大于或等于 (位置1, 0)) ' 出错了,寻找错误行
+        赋值 (位置1, 相加 (位置1, 7))
+        赋值 (位置2, 寻找文本 (日志信息, “in”, 位置1, 假))
+        赋值 (错误号, 取文本中间 (日志信息, 位置1, 相减 (位置2, 位置1)))
+        赋值 (位置1, 寻找文本 (日志信息, 相加 (#换行符, “Line”), 位置1, 假))
+        .如果真 (大于或等于 (位置1, 0)) ' 有错误行
+            赋值 (位置1, 相加 (位置1, 6))
+            赋值 (位置2, 寻找文本 (日志信息, “:”, 位置1, 假))
+            .如果真 (大于或等于 (位置2, 0))
+                赋值 (行号文本, 取文本中间 (日志信息, 位置1, 相减 (位置2, 位置1)))
+                赋值 (行号文本, 删首尾空 (行号文本))
+                赋值 (位置1, 到整数 (行号文本))
+                 ' 把光标移到错误行
+                文档列表.全选 ( [序号])
+                文档列表.跳到行 ( [序号], 位置1)
+            .如果真结束
+            
+        .如果真结束
+        信息框 (相加 (“编译时出错，请看错误提示！错误代号:”, 错误号), #错误图标, “编译失败”)
+        返回 (假)
+    .如果真结束
+    
+.否则
+    赋值 (.内容, “运行编译器失败，请检测编译器路径是否正确”)
+    返回 (假)
+.如果结束
+鸣叫 () ' 编译成功的提示
+返回 (真)
+
+.子程序 _运行_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+.局部变量 运行EXE路径, 文本型, , , 
+
+赋值 (序号, .)
+赋值 (运行EXE路径, 文档列表.取指定文件路径 ( [序号], 1))
+.如果真 (等于 (运行EXE路径, “”))
+    返回 ()
+.如果真结束
+运行 (运行EXE路径, 假, )
+
+
+.子程序 _编译并运行_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+
+赋值 (序号, .)
+.如果真 (编译程序 (序号))
+    _运行_被选择 ()
+.如果真结束
+
+
+.子程序 _函数库_双击项目, 空白型, , 
+.局部变量 N, 整数型, , , 
+
+赋值 (N, .最大化按钮)
+.如果真 (小于或等于 (N.取父项目 (), 0))
+     ' 点在分类项目上,不是点在函数命令名上
+    返回 ()
+.如果真结束
+_输出到编辑器_被选择 ()
+
+.子程序 _函数库_右键单击项目, 空白型, , 
+.局部变量 N, 整数型, , , 
+
+赋值 (N, .最大化按钮)
+.如果真 (小于或等于 (N.取父项目 (), 0))
+     ' 点在分类项目上,不是点在函数命令名上
+    返回 ()
+.如果真结束
+弹出菜单 ()
+
+.子程序 _输出到编辑器_被选择, 空白型, , 
+.局部变量 N, 整数型, , , 
+.局部变量 类型, 整数型, , , 
+.局部变量 命令名, 文本型, , , 
+.局部变量 序号, 整数型, , , 
+.局部变量 TAB数, 整数型, , , 
+
+赋值 (N, .最大化按钮)
+赋值 (类型, N.取项目数值 ())
+赋值 (命令名, N.取项目文本 ())
+赋值 (序号, .)
+
+赋值 (类型, 右移 (类型, 16)) ' 低位为记录号,高位为类型值
+.判断开始 (等于 (类型, 1)) ' 函数
+    文档列表.输入文字 ( [序号], 相加 (“ ”, 命令名, “ ()”))
+.判断 (等于 (类型, 2)) ' 命令
+    文档列表.光标到行尾 ( [序号])
+    文档列表.粘贴入 ( [序号], 相加 (#换行符, 命令名)) ' 另起一行
+.判断 (等于 (类型, 3)) ' 多行语句块
+    文档列表.光标到行尾 ( [序号])
+    赋值 (TAB数, 文档列表.输入回车键 ( [序号])) ' 另起一行
+    赋值 (命令名, 子文本替换 (命令名, “...”, 相加 (#换行符, 取重复文本 (相加 (TAB数, 1), 字符 (9)), #换行符, 取重复文本 (TAB数, 字符 (9))), , , 真))
+    文档列表.粘贴入 ( [序号], 命令名)
+.默认
+    
+     ' 常量,操作符
+    文档列表.输入文字 ( [序号], 命令名)
+.判断结束
+文档列表.获取焦点 ( [序号])
+
+.子程序 _函数库_项目被选择, 空白型, , 
+.参数 选择方式, 整数型, , 
+
+.局部变量 N, 整数型, , , 
+.局部变量 父项目, 整数型, , , 
+.局部变量 显示信息, 文本型, , , 
+.局部变量 类型, 整数型, , , 
+.局部变量 记录号, 整数型, , , 
+
+.如果真 (等于 (数据库打开, 假))
+    赋值 (.内容, “”)
+    返回 ()
+.如果真结束
+赋值 (N, .最大化按钮)
+赋值 (父项目, N.取父项目 ())
+.判断开始 (等于 (父项目, -1)) ' 点在根目录上
+    赋值 (显示信息, “点击命令函数名，查看帮助说明”)
+.判断 (等于 (父项目, 0)) ' 点在分类上
+    赋值 (显示信息, “命令类别将命令分为若干类，以便于用户寻找所需要的命令。”)
+.默认
+    
+     ' 点在命令上
+    赋值 (类型, N.取项目数值 ())
+    赋值 (记录号, 位与 (类型, 65535)) ' 低位为记录号,高位为类型值
+    跳到 (记录号)
+    赋值 (类型, 右移 (类型, 16)) ' 低位为记录号,高位为类型值
+    
+    .如果 (等于 (类型, 4)) ' 为常量和数据类型，显示的格式不同
+        赋值 (显示信息, 相加 (读 (“中文名称”), #换行符, 读 (“用法”)))
+    .否则
+         ' 为命令函数
+        赋值 (显示信息, 相加 (“    英文名称：”, 读 (“英文名称”), #换行符, “    中文名称：”, 读 (“中文名称”), #换行符, #换行符, “【使用方法】”, #换行符, 读 (“用法”), #换行符, #换行符, “【说明】”, #换行符, 读 (“详细说明”)))
+    .如果结束
+    
+    
+.判断结束
+赋值 (.内容, 显示信息)
+
+
+.子程序 _即时帮助_被选择, 空白型, , 
+.局部变量 序号, 整数型, , , 
+.局部变量 关键字, 文本型, , , 
+.局部变量 关键字2, 文本型, , , 
+.局部变量 关键词列表, 文本型, , , 
+.局部变量 命令关键字, 文本型, , "0", 
+.局部变量 临时文本, 文本型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 找到次数, 整数型, , , 
+.局部变量 相关信息, 文本型, , , 
+
+.如果真 (等于 (数据库打开, 假))
+    赋值 (.内容, “PowerBASIC8.0的命令函数信息数据库未能打开，即使帮助不能使用”)
+    返回 ()
+.如果真结束
+赋值 (序号, .)
+赋值 (关键字, 文档列表.取选中文本 ( [序号]))
+.如果真 (等于 (关键字, “”))
+    返回 ()
+.如果真结束
+赋值 (.内容, 相加 (“正在寻找与关键字：”, #左引号, 关键字, #右引号, “相关的帮助信息，请等待...”))
+处理事件 ()
+赋值 (关键字2, 相加 (“,”, 关键字, “,”))
+到首记录 ()
+.计次循环首 (取记录数 (), )
+    赋值 (关键词列表, 读 (“英文名称”))
+    赋值 (关键词列表, 子文本替换 (关键词列表, “...”, “ ”, , , 真))
+    赋值 (关键词列表, 子文本替换 (关键词列表, “  ”, “ ”, , , 真))
+    赋值 (命令关键字, 分割文本 (关键词列表, “ ”, ))
+    赋值 (关键词列表, “,”)
+    .计次循环首 (取数组成员数 (命令关键字), N)
+        赋值 (关键词列表, 相加 (关键词列表, 命令关键字 [N], “,”))
+    .计次循环尾 ()
+    赋值 (临时文本, 读 (“关键字”))
+    .如果真 (不等于 (临时文本, “”))
+        赋值 (关键词列表, 相加 (关键词列表, 临时文本, “,”))
+    .如果真结束
+    .如果真 (大于 (寻找文本 (关键词列表, 关键字2, , 真), 0))
+         ' 当前记录包含有关键字了
+        赋值 (找到次数, 相加 (找到次数, 1))
+        赋值 (相关信息, 相加 (相关信息, #换行符, #换行符, “-----------------------第”, 到文本 (找到次数), “次-----------------------”, #换行符, #换行符))
+        赋值 (相关信息, 相加 (相关信息, “    英文名称：”, 读 (“英文名称”), #换行符, “    中文名称：”, 读 (“中文名称”), #换行符, #换行符, “【使用方法】”, #换行符, 读 (“用法”)))
+    .如果真结束
+    跳过 ()
+.计次循环尾 ()
+赋值 (.内容, 相加 (“找到与关键字：”, #左引号, 关键字, #右引号, “相关的帮助信息 ”, 到文本 (找到次数), “ 个”, 相关信息))
+
+
+.子程序 _关于_被选择, 空白型, , 
+载入 (关于窗口, _启动窗口, 真)
+
+.子程序 _使用帮助_被选择, 空白型, , 
+
+运行 (相加 (“hh ”, #引号, 取运行目录 (), “\帮助文档.CHM”, #引号), 真, )
+
+
+.程序集 代码编辑框实现程序集, , , 
+
+.程序集变量 模块句柄, 整数型, , , 
+.程序集变量 组件类名, 文本型, , , 
+.程序集变量 左键按下, 逻辑型, , , 
+.程序集变量 拖动开始, 逻辑型, , , 
+.程序集变量 钩子句柄, 整数型, , , 
+.程序集变量 当前编辑框句柄, 整数型, , , 
+.程序集变量 开始补全命令, 逻辑型, , , 
+.程序集变量 输入命令缓冲, 文本型, , , 
+.子程序 代码编辑框类初始化, 空白型, , 用在程序开始
+.局部变量 窗体组件信息, 窗体类型_, , , 
+
+赋值 (组件类名, “PBCodeEdit”) ' 代码编辑框的类名,也可改成你自己的
+
+赋值 (模块句柄, 取实例句柄_API (0))
+赋值 (窗体组件信息.风格, 相加 (#类风格_水平重画, #类风格_垂直重画, #类风格_双击消息, #类风格_父窗口DC)) ' 有双击事件
+
+赋值 (窗体组件信息.窗体程序, &代码编辑框消息处理)
+赋值 (窗体组件信息.实例句柄, 模块句柄)
+赋值 (窗体组件信息.光标句柄, 载入鼠标指针_API (0, #文本编辑指针))
+赋值 (窗体组件信息.背景句柄, 16)
+赋值 (窗体组件信息.类名, 组件类名)
+.如果真 (注册窗体类_API (窗体组件信息))
+    赋值 (高亮条刷子, 创建纯色刷子_API (光标行条颜色))
+    赋值 (背景刷子句柄, 创建纯色刷子_API (背景颜色))
+    赋值 (字体句柄, 使用指定属性创建逻辑字体_API (编辑框字体))
+    
+    赋值 (运算符, 到字节集 (“(){}=+-*/\|~^?:;[]<>,@!”))
+    
+    .如果真 (等于 (字体句柄, 0)) ' 从注册表读取的配置数据无法创建字体，则使用默认字体
+        产生默认字体 ()
+        赋值 (字体句柄, 使用指定属性创建逻辑字体_API (编辑框字体))
+    .如果真结束
+    
+    赋值 (钩子句柄, 设置系统钩子_API (2, &键盘钩子程序, 0, 当前线程标志符_API ())) ' 获取TAB键,它对编程的输入格式很重要
+     ' WH_KEYBOARD
+    返回 ()
+.如果真结束
+信息框 (相加 (“不能注册类名为”, 组件类名, “的窗体组件”), #错误图标, “系统错误”)
+结束 ()
+
+.子程序 代码编辑框类结束, 空白型, , 用在程序退出后
+删除对象_API (高亮条刷子)
+删除对象_API (背景刷子句柄)
+删除对象_API (字体句柄)
+.如果真 (不等于 (钩子句柄, 0))
+    释放系统钩子_API (钩子句柄)
+.如果真结束
+取消注册窗体类_API (组件类名, 模块句柄)
+
+.子程序 创建编辑框, 整数型, , 
+.参数 父窗口句柄, 整数型, , 
+.参数 左边, 整数型, , 
+.参数 顶边, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+
+.局部变量 句柄, 整数型, , , 
+.局部变量 扩展风格, 整数型, , , 
+.局部变量 风格, 整数型, , , 
+
+赋值 (风格, 位或 (#WS_CHILD, #WS_TABSTOP, #WS_CLIPSIBLINGS, #WS_CLIPCHILDREN)) ' 子窗口，TAB停留
+
+赋值 (扩展风格, #WS_EX_CLIENTEDGE) ' 凹入式
+赋值 (句柄, 创建窗口_API (扩展风格, 组件类名, “”, 风格, 左边, 顶边, 宽度, 高度, 父窗口句柄, 0, 模块句柄, 0))
+返回 (句柄)
+
+.子程序 产生默认字体, 空白型, , 
+.局部变量 场景句柄, 整数型, , , 
+.局部变量 默认字体句柄, 整数型, , , 
+
+赋值 (默认字体句柄, 取对象句柄_API (#DEFAULT_GUI_FONT)) ' 取系统默认字体句句柄
+取对象属性_API (默认字体句柄, 60, 编辑框字体) ' 读取到逻辑字体结构
+
+.子程序 截取窗体消息, 逻辑型, , 
+.参数 句柄, 整数型, , 
+.参数 消息子程序, 子程序指针, , 
+
+.局部变量 入口地址, 整数型, , , 
+
+赋值 (入口地址, 置窗体参数_API (句柄, -4, 到数值 (消息子程序)))
+.如果真 (不等于 (入口地址, 0))
+    置窗体参数_API (句柄, -21, 入口地址) ' 把指针放到"用户数据"里,以便调用
+    返回 (真)
+.如果真结束
+返回 (假)
+
+.子程序 代码编辑框消息处理, 整数型, , 
+.参数 句柄, 整数型, , 
+.参数 消息号, 整数型, , 
+.参数 参数一, 整数型, , 
+.参数 参数二, 整数型, , 
+
+.局部变量 滚动位置, 整数型, , , 
+.局部变量 X, 整数型, , , 
+.局部变量 Y, 整数型, , , 
+.局部变量 偏移量, 整数型, , , 
+
+
+.判断开始 (等于 (消息号, #WM_ERASEBKGND)) ' 背景重画
+    返回 (1)
+.判断 (等于 (消息号, #消息_水平滚动条)) ' 横向滚动
+    
+    赋值 (滚动位置, 取滚动条位置_API (句柄, #滚动条_水平))
+    
+    .判断开始 (等于 (参数一, #滚动条_左移)) ' 左移
+        赋值 (偏移量, 3)
+        赋值 (滚动位置, 相减 (滚动位置, 偏移量))
+    .判断 (等于 (参数一, #滚动条_右移)) ' 右移
+        赋值 (偏移量, 3)
+        赋值 (滚动位置, 相加 (滚动位置, 偏移量))
+    .判断 (等于 (参数一, #滚动条_左翻页)) ' 左移一页
+        赋值 (偏移量, 100)
+        赋值 (滚动位置, 相减 (滚动位置, 偏移量))
+    .判断 (等于 (参数一, #滚动条_右翻页)) ' 右移一页
+        赋值 (偏移量, 100)
+        赋值 (滚动位置, 相加 (滚动位置, 偏移量))
+    .判断 (大于或等于 (参数一, #滚动条_滑块定位)) ' 用鼠标定位
+        赋值 (X, 位与 (65535, 参数一))
+        .如果真 (或者 (等于 (X, #滚动条_滑块定位), 等于 (X, #滚动条_滑块跟踪)))
+            赋值 (滚动位置, 右移 (参数一, 16))
+        .如果真结束
+        
+    .默认
+        
+    .判断结束
+    置滚动条位置_API (句柄, #滚动条_水平, 滚动位置, 真)
+    
+    屏蔽窗口矩形_API (句柄, 0, 0) ' 发出重画消息
+    关闭命令补全框 ()
+    
+.判断 (等于 (消息号, #消息_垂直滚动条)) ' 纵向滚动
+    赋值 (滚动位置, 取滚动条位置_API (句柄, #滚动条_垂直))
+    .判断开始 (等于 (参数一, #滚动条_上移)) ' 上移
+        赋值 (偏移量, 1)
+        赋值 (滚动位置, 相减 (滚动位置, 偏移量))
+    .判断 (等于 (参数一, #滚动条_下移)) ' 下移
+        赋值 (偏移量, 1)
+        赋值 (滚动位置, 相加 (滚动位置, 偏移量))
+    .判断 (等于 (参数一, #滚动条_上翻页)) ' 上移一页
+        赋值 (偏移量, 3)
+        赋值 (滚动位置, 相减 (滚动位置, 偏移量))
+    .判断 (等于 (参数一, #滚动条_下翻页)) ' 下移一页
+        赋值 (偏移量, 3)
+        赋值 (滚动位置, 相加 (滚动位置, 偏移量))
+        
+    .判断 (大于或等于 (参数一, #滚动条_滑块定位)) ' 用鼠标定位
+        赋值 (Y, 位与 (65535, 参数一))
+        .如果真 (或者 (等于 (Y, #滚动条_滑块定位), 等于 (Y, #滚动条_滑块跟踪)))
+            赋值 (滚动位置, 右移 (参数一, 16))
+        .如果真结束
+        
+    .默认
+        
+    .判断结束
+    
+    置滚动条位置_API (句柄, #滚动条_垂直, 滚动位置, 真)
+    屏蔽窗口矩形_API (句柄, 0, 0) ' 发出重画消息
+    关闭命令补全框 ()
+    
+.判断 (或者 (等于 (消息号, 15), 等于 (消息号, 133))) ' 绘画事件
+    .计次循环首 (取数组成员数 (文档列表), X)
+        .如果真 (文档列表.句柄是否相同 ( [X], 句柄))
+            文档列表.绘制文档 ( [X])
+            跳出循环 ()
+        .如果真结束
+        
+    .计次循环尾 ()
+    设置输入法框窗口 (句柄)
+    显示窗口标题 (X)
+    显示文档标题 (X)
+    
+.判断 (等于 (消息号, 5)) ' WM_SIZE 文档窗体大小改变,要重新设置滚动条
+    .计次循环首 (取数组成员数 (文档列表), X)
+        .如果真 (文档列表.句柄是否相同 ( [X], 句柄))
+            文档列表.设置滚动条 ( [X])
+            跳出循环 ()
+        .如果真结束
+        
+    .计次循环尾 ()
+    
+.判断 (等于 (消息号, 7)) ' WM_SETFOCUS  获得焦点后
+    .计次循环首 (取数组成员数 (文档列表), X)
+        .如果真 (文档列表.句柄是否相同 ( [X], 句柄))
+            文档列表.创建插入符 ( [X])
+            跳出循环 ()
+        .如果真结束
+        
+    .计次循环尾 ()
+    
+.判断 (等于 (消息号, 8)) ' WM_KILLFOCUS 失去焦点
+    清除插入符_API ()
+    关闭命令补全框 ()
+.判断 (等于 (消息号, 24)) ' WM_SHOWWINDOW 隐藏或显示窗口
+    .如果 (等于 (参数一, 1)) ' 显示
+        .计次循环首 (取数组成员数 (文档列表), X)
+            .如果真 (文档列表.句柄是否相同 ( [X], 句柄))
+                文档列表.创建插入符 ( [X])
+                跳出循环 ()
+            .如果真结束
+            
+        .计次循环尾 ()
+        
+    .否则
+         ' 隐藏
+        清除插入符_API ()
+    .如果结束
+    
+.判断 (等于 (消息号, 258)) ' WM_CHAR 字符输入事件
+    编辑框_字符输入 (句柄, 参数一)
+    
+.判断 (等于 (消息号, 513)) ' WM_LBUTTONDOWN 按下鼠标左键
+    赋值 (X, 位与 (参数二, 65535))
+    赋值 (Y, 右移 (参数二, 16))
+    置鼠标捕获窗口_API (句柄)
+    编辑框_鼠标左键被按下 (句柄, X, Y, 取功能键状态 ())
+    设置焦点_API (句柄)
+    
+.判断 (等于 (消息号, 514)) ' WM_LBUTTONUP 放开鼠标左键
+    赋值 (X, 位与 (参数二, 65535))
+    赋值 (Y, 右移 (参数二, 16))
+    取消鼠标捕获窗口_API ()
+    编辑框_鼠标左键被放开 (句柄, X, Y, 取功能键状态 ())
+    
+.判断 (等于 (消息号, 512)) ' WM_MOUSEMOVE 鼠标移动
+    赋值 (X, 位与 (参数二, 65535))
+    赋值 (Y, 右移 (参数二, 16))
+    编辑框_鼠标位置被移动 (句柄, X, Y, 取功能键状态 ()) ' 取功能键状态 ()
+    
+.判断 (等于 (消息号, 522)) ' WM_MOUSEWHEEL  鼠标滚轮被滚动
+    编辑框_滚轮被滚动 (句柄, 取符号 (参数一), 取功能键状态 ())
+.判断 (等于 (消息号, 256)) ' WM_KEYDOWN 按下一个键
+    编辑框_按下某键 (句柄, 参数一, 取功能键状态 ())
+.判断 (等于 (消息号, 515)) ' WM_LBUTTONDBLCLK 鼠标双击
+    赋值 (X, 位与 (参数二, 65535))
+    赋值 (Y, 右移 (参数二, 16))
+    编辑框_被双击 (句柄, X, Y, 取功能键状态 ())
+.判断 (等于 (消息号, 123)) ' WM_CONTEXTMENU  右键菜单
+    _启动窗口.弹出菜单 (_启动窗口., , )
+.默认
+    
+.判断结束
+
+返回 (默认窗体处理_API (句柄, 消息号, 参数一, 参数二))
+
+
+.子程序 设置输入法框窗口, 空白型, , 
+.参数 句柄, 整数型, , 
+
+.局部变量 IMM句柄, 整数型, , , 
+.局部变量 输入提示框, 选择窗体_, , , 
+.局部变量 X, 空白型, 静态, , 
+.局部变量 Y, 空白型, 静态, , 
+
+赋值 (IMM句柄, IMM取设备场景_API (句柄))
+.如果真 (不等于 (IMM句柄, 0))
+    取插入符位置_API (输入提示框.位置)
+    
+     ' 保存出界前的位置，避免输入法提示框到处乱跳
+    .如果 (小于 (输入提示框.位置.横向位置, 0))
+        赋值 (输入提示框.位置.横向位置, X)
+    .否则
+        赋值 (X, 输入提示框.位置.横向位置)
+    .如果结束
+    .如果 (小于 (输入提示框.位置.纵向位置, 0))
+        赋值 (输入提示框.位置.纵向位置, Y)
+    .否则
+        赋值 (Y, 输入提示框.位置.纵向位置)
+    .如果结束
+    
+    赋值 (输入提示框.风格, 2) ' CFS_POINT
+    IMM置输入窗口_API (IMM句柄, 输入提示框)
+    IMM释放设备场景_API (句柄, IMM句柄)
+.如果真结束
+
+
+
+.子程序 编辑框_鼠标左键被按下, 空白型, , 
+.参数 句柄, 空白型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 1、#Ctrl键状态； 2、#Shift键状态； 4、#Alt键状态
+
+.局部变量 X, 整数型, , , 
+
+赋值 (左键按下, 真)
+
+.如果真 (小于 (横向位置, 相加 (行首缩进, 行号条宽)))
+    赋值 (横向位置, 相加 (行首缩进, 行号条宽))
+    
+.如果真结束
+.计次循环首 (取数组成员数 (文档列表), X)
+    .如果真 (文档列表.句柄是否相同 ( [X], 句柄))
+        文档列表.置光标 ( [X], 横向位置, 纵向位置)
+        跳出循环 ()
+    .如果真结束
+    
+.计次循环尾 ()
+关闭命令补全框 ()
+ ' 输出调试文本 (取十六进制文本 (功能键状态))
+
+.子程序 编辑框_鼠标左键被放开, 空白型, , 
+.参数 句柄, 整数型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 1、#Ctrl键状态； 2、#Shift键状态； 4、#Alt键状态
+
+.局部变量 X, 整数型, , , 
+
+赋值 (左键按下, 假)
+赋值 (拖动开始, 假)
+
+.子程序 编辑框_鼠标位置被移动, 空白型, , 
+.参数 句柄, 整数型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 1、#Ctrl键状态； 2、#Shift键状态； 4、#Alt键状态
+
+.局部变量 X, 整数型, , , 
+
+.如果真 (左键按下) ' 移动时左键仍被按下,说明拖动开始
+    赋值 (拖动开始, 真)
+.如果真结束
+.如果真 (等于 (拖动开始, 假))
+    返回 ()
+.如果真结束
+.计次循环首 (取数组成员数 (文档列表), X)
+    .如果真 (文档列表.句柄是否相同 ( [X], 句柄))
+        .如果 (左键按下)
+            赋值 (左键按下, 假)
+            文档列表.拖拽开始 ( [X], 横向位置, 纵向位置)
+        .否则
+            
+            文档列表.拖拽光标 ( [X], 横向位置, 纵向位置)
+        .如果结束
+        跳出循环 ()
+    .如果真结束
+    
+.计次循环尾 ()
+
+
+
+
+.子程序 编辑框_滚轮被滚动, 空白型, , 
+.参数 句柄, 空白型, , 
+.参数 滚动距离, 整数型, , 
+.参数 功能键状态, 整数型, , 1、#Ctrl键状态； 2、#Shift键状态； 4、#Alt键状态
+
+.局部变量 滚动位置, 整数型, , , 
+
+.如果真 (大于 (功能键状态, 0))
+    返回 ()
+.如果真结束
+赋值 (滚动位置, 取滚动条位置_API (句柄, #滚动条_垂直))
+.如果 (小于 (滚动距离, 0))
+    赋值 (滚动位置, 相加 (滚动位置, 3))
+.否则
+    赋值 (滚动位置, 相减 (滚动位置, 3))
+.如果结束
+置滚动条位置_API (句柄, #滚动条_垂直, 滚动位置, 真)
+屏蔽窗口矩形_API (句柄, 0, 0) ' 发出重画消息
+关闭命令补全框 ()
+
+.子程序 编辑框_被双击, 空白型, , 
+.参数 句柄, 整数型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.局部变量 X, 整数型, , , 
+
+.计次循环首 (取数组成员数 (文档列表), X)
+    .如果真 (文档列表.句柄是否相同 ( [X], 句柄))
+        文档列表.双击选中词条 ( [X], 横向位置, 纵向位置)
+        跳出循环 ()
+    .如果真结束
+    
+.计次循环尾 ()
+
+
+.子程序 编辑框_按下某键, 空白型, , 
+.参数 句柄, 空白型, , 
+.参数 键代码, 整数型, , 
+.参数 功能键状态, 整数型, , 1、#Ctrl键状态； 2、#Shift键状态； 4、#Alt键状态
+
+.局部变量 X, 整数型, , , 
+
+ ' 执行各功能键
+.判断开始 (等于 (键代码, #PageDown键)) ' 上下翻页
+    发送消息_API (句柄, #消息_垂直滚动条, #滚动条_下翻页, 0)
+.判断 (等于 (键代码, #PageUp键))
+    发送消息_API (句柄, #消息_垂直滚动条, #滚动条_上翻页, 0)
+.默认
+    
+    .计次循环首 (取数组成员数 (文档列表), X)
+        .如果真 (文档列表.句柄是否相同 ( [X], 句柄))
+            .判断开始 (等于 (键代码, #上光标键))
+                文档列表.光标上移 ( [X])
+            .判断 (等于 (键代码, #下光标键))
+                文档列表.光标下移 ( [X])
+            .判断 (等于 (键代码, #右光标键))
+                文档列表.光标右移 ( [X])
+            .判断 (等于 (键代码, #左光标键))
+                文档列表.光标左移 ( [X])
+            .判断 (等于 (键代码, #Home键))
+                .判断开始 (等于 (功能键状态, 0))
+                    文档列表.光标到行首 ( [X])
+                .判断 (等于 (功能键状态, #Ctrl键状态))
+                    文档列表.光标到文档首 ( [X])
+                .判断 (等于 (功能键状态, #Shift键状态))
+                    文档列表.光标处选择到行首 ( [X])
+                .判断 (等于 (功能键状态, 相加 (#Ctrl键状态, #Shift键状态)))
+                    文档列表.光标处选择到文档首 ( [X])
+                .默认
+                    
+                .判断结束
+                
+            .判断 (等于 (键代码, #End键))
+                .判断开始 (等于 (功能键状态, 0))
+                    文档列表.光标到行尾 ( [X])
+                .判断 (等于 (功能键状态, #Ctrl键状态))
+                    文档列表.光标到文档尾 ( [X])
+                .判断 (等于 (功能键状态, #Shift键状态))
+                    文档列表.光标处选择到行尾 ( [X])
+                .判断 (等于 (功能键状态, 相加 (#Ctrl键状态, #Shift键状态)))
+                    文档列表.光标处选择到文档尾 ( [X])
+                .默认
+                    
+                .判断结束
+                
+            .判断 (等于 (键代码, #Del键))
+                 ' 文档列表 [X].删除文本 ()'已经在菜单快捷键实现
+            .默认
+                
+            .判断结束
+            
+            跳出循环 ()
+        .如果真结束
+        
+    .计次循环尾 ()
+    
+.判断结束
+
+
+.子程序 编辑框_字符输入, 空白型, , 
+.参数 句柄, 空白型, , 
+.参数 字符代码, 整数型, , 
+
+.局部变量 X, 整数型, , , 
+.局部变量 单字编码, 整数型, , , 
+.局部变量 光标高, 整数型, , , 
+
+.计次循环首 (取数组成员数 (文档列表), X)
+    .如果真 (文档列表.句柄是否相同 ( [X], 句柄))
+        跳出循环 ()
+    .如果真结束
+    
+.计次循环尾 ()
+赋值 (光标高, 文档列表.取光标高 ( [X]))
+.如果真 (并且 (小于 (字符代码, 32), 不等于 (字符代码, #Tab键))) ' 操作符 Tab键除外
+    .判断开始 (等于 (字符代码, #回车键))
+        .如果真 (等于 (_启动窗口..可视, 假))
+            文档列表.输入回车键 ( [X])
+        .如果真结束
+        关闭命令补全框 ()
+        
+    .判断 (等于 (字符代码, #退格键))
+        文档列表.输入退格键 ( [X])
+        .如果真 (开始补全命令)
+            输入退格键到缓冲 ()
+            开启命令补全框 (句柄, 光标高)
+        .如果真结束
+        
+    .默认
+        
+    .判断结束
+    
+    返回 ()
+.如果真结束
+.如果真 (等于 (字符代码, 32))
+    .如果 (并且 (开始补全命令, _启动窗口..可视))
+        补全输入命令 (X)
+        返回 ()
+    .否则
+        关闭命令补全框 ()
+    .如果结束
+    
+.如果真结束
+ ' 兼容各种输入法：
+ ' 第一、常见的英文半角符号输入
+ ' 第二、分两次WM_CHAR事件输入的外挂输入法
+ ' 第三、输入两字节UNICODE外挂输入法
+赋值 (字符代码, 位与 (字符代码, 65535))
+.如果真 (大于 (字符代码, 255)) ' UNICODE编码
+    赋值 (单字编码, 字符代码)
+    宽字符到窄字符_API (单字编码, 字符代码, 4)
+.如果真结束
+文档列表.输入字符 ( [X], 字符代码)
+.如果真 (并且 (命令补全提示, 不等于 (文档列表.取类型 ( [X]), 2))) ' 设置为不显示和纯文本文档不显示提示框
+    .如果真 (输入到缓冲 (字符代码))
+        开启命令补全框 (句柄, 光标高)
+    .如果真结束
+    
+.如果真结束
+
+
+
+.子程序 输入退格键到缓冲, 空白型, , 
+.局部变量 字符位置, 整数型, , , 
+.局部变量 缓冲长, 整数型, , , 
+.局部变量 代码值, 整数型, , , 
+.局部变量 字符长, 整数型, , , 
+
+赋值 (字符位置, 1)
+赋值 (缓冲长, 取文本长度 (输入命令缓冲))
+.判断循环首 (小于或等于 (字符位置, 缓冲长))
+    赋值 (代码值, 取代码 (输入命令缓冲, 字符位置))
+    .如果 (小于 (代码值, 0)) ' 汉字
+        赋值 (字符长, 2)
+    .否则
+        赋值 (字符长, 1)
+    .如果结束
+    赋值 (字符位置, 相加 (字符位置, 字符长))
+.判断循环尾 ()
+赋值 (输入命令缓冲, 取文本左边 (输入命令缓冲, 相减 (缓冲长, 字符长)))
+
+.子程序 输入到缓冲, 逻辑型, , 
+.参数 字符代码, 整数型, , 小于128是英文字符，大于的是汉字编码
+
+.局部变量 等待后半角, 逻辑型, 静态, , 
+.局部变量 输入字, 字节型, 静态, "2", 
+.局部变量 字符长, 整数型, , , 
+
+ ' 兼容各种输入法：
+ ' 第一、常见的英文半角符号输入
+ ' 第二、分两次WM_CHAR事件输入的外挂输入法，所以不能用“字符（）”命令来转成文本型
+ ' 第三、输入的两字节UNICODE外挂输入法，在上级调用时已经把UNICODE转成汉字
+
+.如果 (小于或等于 (字符代码, 255))
+    .如果 (等待后半角)
+        赋值 (输入字 [2], 字符代码)
+        赋值 (字符长, 2)
+    .否则
+        赋值 (输入字 [1], 字符代码)
+        .如果真 (大于 (字符代码, 128)) ' 全角前半
+            赋值 (等待后半角, 真)
+            返回 (假)
+        .如果真结束
+         ' 英文半角
+        赋值 (输入字 [2], 0)
+        赋值 (字符长, 1)
+        .如果 (开始补全命令)
+            .如果 (或者 (并且 (小于或等于 (65, 字符代码), 小于或等于 (字符代码, 90)), 并且 (小于或等于 (97, 字符代码), 小于或等于 (字符代码, 122)), 并且 (小于或等于 (48, 字符代码), 小于或等于 (字符代码, 57)), 等于 (字符代码, 46), 等于 (字符代码, 95))) ' 如果是英文或数字或句号或下划线,就一直取词
+                
+            .否则
+                关闭命令补全框 ()
+                返回 (假)
+            .如果结束
+            
+        .否则
+            .如果真 (或者 (大于 (35, 字符代码), 并且 (大于 (字符代码, 37), 大于 (65, 字符代码)), 并且 (大于 (字符代码, 90), 大于 (97, 字符代码)), 大于 (字符代码, 122)))
+                返回 (假) ' 开始输入不为英文和# $ % 字符开头的就不出现提示框
+            .如果真结束
+            
+        .如果结束
+        
+    .如果结束
+    赋值 (等待后半角, 假)
+     ' 英文半角或全角的一部分
+.否则
+    赋值 (输入字 [1], 位与 (字符代码, 255))
+    赋值 (输入字 [2], 右移 (字符代码, 8))
+    赋值 (字符长, 2)
+.如果结束
+.如果真 (等于 (字符长, 2))
+    关闭命令补全框 ()
+    返回 (假)
+.如果真结束
+赋值 (输入命令缓冲, 相加 (输入命令缓冲, 到大写 (到文本 (输入字))))
+返回 (真)
+
+.子程序 取文本指针, 整数型, , 
+.参数 文本, 文本型, 参考, 
+
+返回 (取文本指针_API (文本, 文本, 0))
+
+
+.子程序 键盘钩子程序, 整数型, , 用来接收TAB键
+.参数 代码, 整数型, , 
+.参数 参数一, 整数型, , 
+.参数 参数二, 整数型, , 
+
+.局部变量 句柄, 整数型, , , 
+.局部变量 类名, 文本型, , , 
+.局部变量 键状态, 整数型, , , 
+.局部变量 X, 整数型, , , 
+
+.如果真 (大于或等于 (代码, 0))
+    .如果真 (不等于 (位与 (参数二, 1073741824), 0)) ' 按下键 0x40000000
+        .如果真 (等于 (参数一, #Tab键))
+            赋值 (句柄, 取获取焦点窗口_API ())
+            赋值 (类名, 取空白文本 (20))
+            .如果真 (取得类名称_API (句柄, 类名, 20))
+                .如果真 (等于 (类名, 组件类名)) ' 是代码编辑框正在输入
+                    编辑框_字符输入 (句柄, 参数一) ' 转到移代码编辑框
+                    返回 (1)
+                .如果真结束
+                
+            .如果真结束
+            
+        .如果真结束
+        
+    .如果真结束
+    
+.如果真结束
+返回 (呼叫下一钩子_API (钩子句柄, 代码, 参数一, 参数二))
+
+.子程序 取功能键状态, 整数型, , 1、#Ctrl键状态； 2、#Shift键状态； 4、#Alt键状态
+.局部变量 键状态, 整数型, , , 
+
+.如果真 (不等于 (位与 (取按键状态_API (#Ctrl键), 16384), 0)) ' 0x4000
+    赋值 (键状态, 相加 (键状态, #Ctrl键状态))
+.如果真结束
+.如果真 (不等于 (位与 (取按键状态_API (#Shift键), 16384), 0))
+    赋值 (键状态, 相加 (键状态, #Shift键状态))
+.如果真结束
+.如果真 (不等于 (位与 (取按键状态_API (#Alt键), 16384), 0))
+    赋值 (键状态, 相加 (键状态, #Alt键状态))
+.如果真结束
+返回 (键状态)
+
+
+.子程序 开启命令补全框, 空白型, , 
+.参数 句柄, 整数型, , 
+.参数 光标高, 整数型, , 
+
+.局部变量 插入符位置, 坐标_, , , 
+.局部变量 X, 整数型, , , 
+.局部变量 Y, 整数型, , , 
+
+
+.如果真 (不等于 (当前编辑框句柄, 句柄))
+     ' 调整命令补全框位置
+    取插入符位置_API (插入符位置)
+    赋值 (插入符位置.纵向位置, 相加 (插入符位置.纵向位置, 光标高))
+    取窗口区域位置_API (句柄, 插入符位置)
+    到客户区坐标_API (_启动窗口.取窗口句柄 (), 插入符位置)
+    赋值 (X, 插入符位置.横向位置)
+    赋值 (Y, 插入符位置.纵向位置)
+    赋值 (_启动窗口..左边, X)
+    赋值 (_启动窗口..顶边, Y)
+    _启动窗口.调整层次 (., )
+    赋值 (当前编辑框句柄, 句柄)
+    赋值 (开始补全命令, 真)
+.如果真结束
+
+填充命令补全框 (输入命令缓冲)
+
+
+
+.子程序 关闭命令补全框, 空白型, , 
+.如果真 (等于 (当前编辑框句柄, 0))
+    返回 ()
+.如果真结束
+赋值 (开始补全命令, 假)
+赋值 (输入命令缓冲, “”)
+赋值 (_启动窗口..可视, 假)
+赋值 (当前编辑框句柄, 0)
+
+
+.子程序 补全输入命令, 空白型, , 
+.参数 序号, 整数型, , 
+
+文档列表.补全命令 ( [序号], 输入命令缓冲, _启动窗口.)
+关闭命令补全框 ()
+
+.子程序 长文件名到短文件名, 文本型, , 编译器要用到的
+.参数 逻辑文件路径, 文本型, , 
+
+.局部变量 第一个斜杠, 整数型, , , 
+.局部变量 文本段, 文本型, , , 
+.局部变量 I, 整数型, , , 
+.局部变量 转化中, 逻辑型, , , 
+.局部变量 路径部分, 文本型, , , 
+.局部变量 文本段2, 文本型, , , 
+.局部变量 转化文本, 文本型, , , 
+
+赋值 (第一个斜杠, 寻找文本 (逻辑文件路径, “\”, , 假))
+.如果真 (等于 (第一个斜杠, -1))
+    返回 (“”)
+.如果真结束
+
+赋值 (文本段, 取文本左边 (逻辑文件路径, 第一个斜杠))
+赋值 (I, 相加 (第一个斜杠, 1))
+
+赋值 (转化中, 真)
+.判断循环首 (转化中)
+    .如果 (大于 (I, 取文本长度 (逻辑文件路径)))
+        赋值 (转化中, 假)
+    .否则
+        赋值 (路径部分, 取标记部分 (取文本右边 (逻辑文件路径, 相加 (相减 (取文本长度 (逻辑文件路径), I), 1)), “\”))
+        赋值 (文本段2, 相加 (文本段, 路径部分))
+        赋值 (转化文本, 取短文件名部分 (文本段2))
+        .如果 (等于 (转化文本, “”))
+            返回 (“”)
+        .否则
+            赋值 (文本段, 相加 (文本段, 转化文本, “\”))
+        .如果结束
+        赋值 (I, 相加 (I, 取文本长度 (路径部分), 1))
+    .如果结束
+    
+.判断循环尾 ()
+
+返回 (取文本左边 (文本段, 相减 (取文本长度 (文本段), 1)))
+
+
+.子程序 取标记部分, 文本型, , 
+.参数 目标文本, 文本型, , 
+.参数 分符符, 文本型, , 
+
+.局部变量 位置, 整数型, , , 
+
+赋值 (位置, 寻找文本 (目标文本, 分符符, , 真))
+.如果真 (等于 (位置, -1))
+    返回 (目标文本)
+.如果真结束
+返回 (取文本左边 (目标文本, 相减 (位置, 1)))
+
+
+.子程序 取短文件名部分, 文本型, , 
+.参数 逻辑文件名, 文本型, , 
+
+.局部变量 返回值, 整数型, , , 
+.局部变量 查找的文件信息, 查找的文件信息_, , , 
+.局部变量 文本, 文本型, , , 
+
+赋值 (返回值, 查找文件_API (逻辑文件名, 查找的文件信息))
+.如果真 (等于 (返回值, -1)) ' INVALID_HANDLE_VALUE 无效的句柄
+    返回 (“”)
+.如果真结束
+赋值 (文本, 到文本 (查找的文件信息.cAlternate))
+.如果真 (等于 (文本, “”))
+    赋值 (文本, 到文本 (查找的文件信息.文件名))
+.如果真结束
+返回 (文本)
+
+
+.类模块 代码编辑框类, , , 
+
+.程序集变量 句柄, 整数型, , , 代码编辑器组件的句柄,用于API操作和认别
+.程序集变量 标题, 文本型, , , 文档标题,对已经存在文件是用文件名
+.程序集变量 路径, 文本型, , , 文件保存的路径
+.程序集变量 行文本, 文本型, , "0", 文件的文本内容,把每一行分割到数组
+.程序集变量 行数, 整数型, , , 文本行数
+.程序集变量 最长文本行号, 整数型, , , 最长的文本行号,用来设定纵向滚动条的范围
+.程序集变量 最长文本, 整数型, , , 所有行中,文本最长的那一行的文本长度
+.程序集变量 光标位置, 文档座标, , , 编辑器光标的位置
+.程序集变量 开始选择, 文档座标, , , 选中文本内容的区域开始位置
+.程序集变量 结束选择, 文档座标, , , 选中文本内容的区域结束位置
+.程序集变量 已修改, 逻辑型, , , 
+.程序集变量 有文本选择, 逻辑型, , , 有选黑区域
+.程序集变量 文件类型, 整数型, , , 0-BAS文件;1-INC文本;2-纯文本
+.程序集变量 撤消重做堆栈, 撤消重做数据, , "0", 
+.程序集变量 撤消次数, 整数型, , , 
+.程序集变量 堆栈指针, 整数型, , , 撤消重做的
+.程序集变量 查找关键字, 文本型, , , 查找对话框输入的
+.程序集变量 区分大小写, 逻辑型, , , 查找对话框设定的
+.程序集变量 光标高, 整数型, , , 根据字体大小而算出的
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+加入成员 (行文本, “”)
+赋值 (行数, 1)
+赋值 (最长文本行号, 1)
+ ' 最长文本 ＝ 2
+赋值 (文件类型, 2)
+赋值 (撤消次数, 50)
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 新建模板文档, 空白型, 公开, 根据指定类型产生新文档的内容
+.参数 模板类型, 整数型, , 
+
+.局部变量 文件内容, 文本型, , , 
+
+.判断开始 (等于 (模板类型, 1)) ' EXE源码文档
+    赋值 (文件类型, 0)
+    赋值 (文件内容, #EXE源码文档模板)
+.判断 (等于 (模板类型, 2)) ' DLL源码文档
+    赋值 (文件类型, 0)
+    赋值 (文件内容, #DLL源码文档模板)
+.判断 (等于 (模板类型, 3)) ' RC脚本文档
+    赋值 (文件类型, 2)
+    赋值 (文件内容, #RC脚本文档模板)
+.默认
+    返回 ()
+.判断结束
+
+赋值 (行文本, 分割文本 (文件内容, #换行符, )) ' 用换行符分割
+取最长文本行 ()
+
+.子程序 创建, 逻辑型, 公开, 创建代码编辑器的窗口组件
+.参数 父窗口, 窗口, , 
+.参数 左边, 整数型, , 
+.参数 顶边, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+
+赋值 (句柄, 创建编辑框 (父窗口.取窗口句柄 (), 左边, 顶边, 宽度, 高度))
+.如果真 (等于 (句柄, 0))
+    返回 (假) ' 创建失败
+.如果真结束
+返回 (真)
+
+.子程序 移动窗口, 空白型, 公开, 移动代码编辑器的窗口
+.参数 左边, 整数型, , 
+.参数 顶边, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+
+改变窗口_API (句柄, 左边, 顶边, 宽度, 高度, 1)
+
+.子程序 隐藏视图, 空白型, 公开, 隐藏代码编辑器
+显示窗口_API (句柄, 假)
+
+.子程序 显示视图, 空白型, 公开, 显示代码编辑器
+显示窗口_API (句柄, 真)
+填充程序列表框 ()
+
+.子程序 是否已经打开, 逻辑型, 公开, 测试当前文件路径与检测的路径是否相同,以确定这个文件是否已经存在文档数组中
+.参数 文档路径, 文本型, , 
+
+.如果真 (等于 (到小写 (路径), 到小写 (文档路径))) ' 如果文件已经打开,不再重复打开
+    返回 (真)
+.如果真结束
+返回 (假)
+
+.子程序 置标题, 空白型, 公开, 文档标题
+.参数 标题名, 文本型, , 
+
+赋值 (标题, 标题名)
+
+.子程序 取标题, 文本型, 公开, 文档标题
+返回 (标题)
+
+
+.子程序 已修改, 逻辑型, 公开, 
+返回 (已修改)
+
+
+.子程序 获取焦点, 空白型, 公开, 
+设置焦点_API (句柄)
+
+.子程序 窗口标题, 文本型, 公开, 显示到主窗口的文档标题
+.如果真 (等于 (路径, “”))
+    返回 (标题)
+.如果真结束
+返回 (路径)
+
+.子程序 句柄是否相同, 逻辑型, 公开, 用来从文档数组中寻找指定的代码编辑器
+.参数 待检句柄, 整数型, , 
+
+.如果真 (等于 (待检句柄, 句柄))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+.子程序 重画, 空白型, 公开, 代码编辑器窗口重画
+屏蔽窗口矩形_API (句柄, 0, 0) ' 发出重画消息
+
+.子程序 取最长文本行, 空白型, , 设置横向滚动的范围
+.局部变量 N, 整数型, , , 
+.局部变量 长度, 整数型, , , 
+.局部变量 X, 整数型, , , 
+
+赋值 (行数, 取数组成员数 (行文本))
+赋值 (最长文本, 0)
+赋值 (最长文本行号, 1)
+.计次循环首 (行数, N) ' 检测最长的文本行有多长,以便设置横向滚动条
+    赋值 (长度, 取文本长度 (行文本 [N]))
+     ' 检测有多少个TAB键，按实际显示的再增长
+    赋值 (X, 寻找文本 (行文本 [N], 字符 (9), , 假))
+    .判断循环首 (大于 (X, 0))
+        赋值 (长度, 相减 (相加 (长度, TAB空格数), 1))
+        赋值 (X, 寻找文本 (行文本 [N], 字符 (9), 相加 (X, 1), 假))
+    .判断循环尾 ()
+    .如果真 (小于 (最长文本, 长度))
+        赋值 (最长文本, 长度)
+        赋值 (最长文本行号, N)
+    .如果真结束
+    
+.计次循环尾 ()
+设置滚动条 ()
+
+
+.子程序 取文件类型, 空白型, 公开, 根据文件的扩展名
+.局部变量 位置, 整数型, , , 
+.局部变量 扩展名, 文本型, , , 
+
+赋值 (位置, 倒找文本 (路径, “.”, , 假))
+赋值 (扩展名, 到大写 (取文本右边 (路径, 相减 (取文本长度 (路径), 位置))))
+.判断开始 (等于 (扩展名, “BAS”))
+    赋值 (文件类型, 0)
+.判断 (等于 (扩展名, “INC”))
+    赋值 (文件类型, 1)
+.默认
+    赋值 (文件类型, 2) ' 为纯文本文件,不加色
+.判断结束
+
+
+.子程序 取类型, 整数型, 公开, 
+返回 (文件类型)
+
+.子程序 读入文档, 逻辑型, 公开, 从磁盘上读取文件
+.参数 文档路径, 文本型, , 
+.参数 类型, 整数型, 参考, 
+
+.局部变量 文件号, 整数型, , , 
+.局部变量 文本行, 文本型, , , 
+.局部变量 文件长度, 整数型, , , 
+.局部变量 文件内容, 文本型, , , 
+
+
+赋值 (文件号, 打开文件 (文档路径, #读入, )) ' 只读方式
+.如果真 (不等于 (文件号, 0))
+    赋值 (文件长度, 取文件长度 (文件号))
+    .如果真 (等于 (文件长度, -1))
+        关闭文件 (文件号)
+        返回 (假) ' 可能被锁定
+    .如果真结束
+    置等待鼠标 ()
+    赋值 (文件内容, 读入文本 (文件号, 文件长度))
+    关闭文件 (文件号)
+    赋值 (行文本, 分割文本 (文件内容, #换行符, )) ' 用换行符分割
+    .如果真 (等于 (取文本右边 (文件内容, 2), #换行符))
+        加入成员 (行文本, “”) ' 有换行符在尾部加一空行
+    .如果真结束
+    取最长文本行 ()
+    恢复鼠标 ()
+    赋值 (路径, 文档路径)
+    取文件类型 ()
+    赋值 (类型, 文件类型)
+    返回 (真)
+     ' 这里不用"读入一行 (文件号)"来读取一行,而直接一次读取再分割
+     ' 因为读入一行不好区分最后一行结尾是否有换行符
+.如果真结束
+返回 (假) ' 可能被锁定
+
+
+.子程序 取用户区大小, 空白型, , 编辑区
+.参数 用户区宽度, 整数型, 参考, 
+.参数 用户区高度, 整数型, 参考, 
+
+.局部变量 矩形范围, 矩形_, , , 
+
+取客户区矩形_API (句柄, 矩形范围)
+赋值 (用户区宽度, 相减 (矩形范围.右边, 行首缩进, 行号条宽))
+赋值 (用户区高度, 矩形范围.底边)
+
+.子程序 取文本高宽, 空白型, , 根据设定的字体
+.参数 场景句柄, 整数型, , 
+.参数 文本, 文本型, 参考, 
+.参数 文本长度, 整数型, , 
+.参数 文本宽度, 整数型, 参考, 
+.参数 字高度, 整数型, 参考, 
+
+.局部变量 范围, 坐标_, , , 
+
+取文本范围_API (场景句柄, 文本, 文本长度, 范围)
+
+赋值 (文本宽度, 范围.横向位置)
+赋值 (字高度, 范围.纵向位置)
+
+.子程序 取横向滚动条位置, 整数型, , 文档座标系
+.局部变量 位置, 整数型, , , 
+
+赋值 (位置, 相减 (取滚动条位置_API (句柄, #滚动条_水平), 行首缩进, 行号条宽))
+返回 (位置)
+
+.子程序 取纵向滚动条位置, 整数型, , 文档座标系
+返回 (取滚动条位置_API (句柄, #滚动条_垂直))
+
+.子程序 置横向滚动条位置, 空白型, , 文档座标系
+.参数 位置, 整数型, , 
+.参数 是否重画, 逻辑型, , 
+
+置滚动条位置_API (句柄, #滚动条_水平, 位置, 是否重画)
+关闭命令补全框 ()
+
+.子程序 置纵向滚动条位置, 空白型, , 文档座标系
+.参数 位置, 整数型, , 
+.参数 是否重画, 逻辑型, , 
+
+置滚动条位置_API (句柄, #滚动条_垂直, 位置, 是否重画)
+关闭命令补全框 ()
+
+.子程序 设置滚动条, 空白型, 公开, 
+.局部变量 字高度, 整数型, , , 
+.局部变量 用户区宽度, 整数型, , , 
+.局部变量 用户区高度, 整数型, , , 
+.局部变量 宽最长, 整数型, , , 
+.局部变量 滚动条信息, 滚动条信息, , , 
+.局部变量 匿名局部变量_4324, 空白型, , , 
+.局部变量 高最大, 整数型, , , 
+.局部变量 可视行数, 整数型, , , 
+.局部变量 有横向滚动条, 逻辑型, , , 
+.局部变量 有纵向滚动条, 逻辑型, , , 
+.局部变量 场景句柄, 整数型, , , 
+.局部变量 原句柄, 整数型, , , 
+.局部变量 最长行, 文本型, , , 
+
+赋值 (场景句柄, 取设备场景_API (句柄))
+赋值 (原句柄, 选入设备场景_API (场景句柄, 字体句柄))
+
+赋值 (最长行, 子文本替换 (行文本 [最长文本行号], 字符 (9), 取空白文本 (TAB空格数), , , 真))
+.如果 (大于 (最长文本, 0))
+    取文本高宽 (场景句柄, 最长行, 最长文本, 宽最长, 字高度)
+.否则
+    取文本高宽 (场景句柄, “易”, 2, 宽最长, 字高度)
+    赋值 (宽最长, 0) ' 原来是空文档的,恢复为0
+.如果结束
+
+ ' 取出最长文本的宽度（点像素单位）主要是为了计算后决定是否显示滚动条
+
+选入设备场景_API (场景句柄, 原句柄)
+释放设备场景_API (句柄, 场景句柄)
+
+取用户区大小 (用户区宽度, 用户区高度)
+ ' 检测是否有横向滚动条
+ ' 单位为像素
+ ' 检测是否有纵向滚动条
+赋值 (高最大, 相乘 (行数, 相加 (字高度, 行间距))) ' 单位为像素
+赋值 (有横向滚动条, 大于 (宽最长, 用户区宽度))
+赋值 (有纵向滚动条, 大于 (高最大, 用户区高度))
+
+.如果真 (或者 (有横向滚动条, 有纵向滚动条))
+     ' 因为增加纵向滚动条,用户区宽度必将减少,同理有横向滚动条也一样
+     ' 所以为了精确计算,必须要这些繁琐步骤
+    .如果 (并且 (有横向滚动条, 有纵向滚动条)) ' 两者都有,那就简单了
+        赋值 (用户区宽度, 相减 (用户区宽度, 15))
+        赋值 (用户区高度, 相减 (用户区高度, 15))
+        
+    .否则
+        .如果 (有横向滚动条) ' 只有横向滚动条
+            赋值 (用户区高度, 相减 (用户区高度, 15))
+            赋值 (有纵向滚动条, 大于 (高最大, 用户区高度)) ' 用户区变化了,再判断
+            .如果真 (有纵向滚动条)
+                赋值 (用户区宽度, 相减 (用户区宽度, 15))
+            .如果真结束
+            
+        .否则
+             ' 只有纵向滚动条
+            赋值 (用户区宽度, 相减 (用户区宽度, 15))
+            赋值 (有横向滚动条, 大于 (宽最长, 用户区宽度)) ' 用户区变化了,再判断
+            .如果真 (有横向滚动条)
+                赋值 (用户区高度, 相减 (用户区高度, 15))
+            .如果真结束
+            
+        .如果结束
+        
+    .如果结束
+    
+.如果真结束
+
+.如果 (有横向滚动条)
+    显示滚动条_API (句柄, #滚动条_水平, 真)
+    赋值 (滚动条信息.尺寸, 28)
+    赋值 (滚动条信息.页数, 用户区宽度)
+    赋值 (滚动条信息.最小值, 0)
+    赋值 (滚动条信息.最大值, 相加 (宽最长, 10))
+    赋值 (滚动条信息.标志, 相加 (#滚动条信息_页数, #滚动条信息_范围))
+    置滚动条信息_API (句柄, #滚动条_水平, 滚动条信息, 真)
+    
+.否则
+    显示滚动条_API (句柄, #滚动条_水平, 假)
+.如果结束
+
+.如果 (有纵向滚动条)
+    赋值 (可视行数, 相除 (用户区高度, 相加 (字高度, 行间距)))
+    显示滚动条_API (句柄, #滚动条_垂直, 真)
+    赋值 (滚动条信息.尺寸, 28)
+    赋值 (滚动条信息.页数, 可视行数)
+    赋值 (滚动条信息.最小值, 0)
+    赋值 (滚动条信息.最大值, 行数)
+    赋值 (滚动条信息.标志, 相加 (#滚动条信息_页数, #滚动条信息_范围))
+    置滚动条信息_API (句柄, #滚动条_垂直, 滚动条信息, 真)
+    
+    
+.否则
+    显示滚动条_API (句柄, #滚动条_垂直, 假)
+.如果结束
+
+
+.子程序 画出文本, 空白型, , 
+.参数 场景句柄, 整数型, , 
+.参数 横座标, 整数型, 参考, 会随着画出文本自动增加
+.参数 纵座标, 整数型, , 
+.参数 文本指针, 整数型, 参考, 会随着画出文本自动移动
+.参数 文本长度, 整数型, , 
+.参数 文本颜色, 整数型, , 
+
+.局部变量 画出宽度, 整数型, , , 
+.局部变量 范围, 坐标_, , , 
+
+设置前景色_API (场景句柄, 文本颜色)
+文本绘出_API (场景句柄, 横座标, 纵座标, 文本指针, 文本长度)
+取文本像素范围_API (场景句柄, 文本指针, 文本长度, 范围)
+赋值 (画出宽度, 范围.横向位置)
+赋值 (横座标, 相加 (横座标, 画出宽度)) ' 移动画出位置
+赋值 (文本指针, 相加 (文本指针, 文本长度))
+
+
+.子程序 画出大写关键字, 空白型, , 把小写字母转到大写再画出
+.参数 场景句柄, 整数型, , 
+.参数 横座标, 整数型, 参考, 会随着画出文本自动增加
+.参数 纵座标, 整数型, , 
+.参数 文本指针, 整数型, 参考, 会随着画出文本自动移动
+.参数 文本长度, 整数型, , 
+.参数 文本颜色, 整数型, , 
+
+.局部变量 画出宽度, 整数型, , , 
+.局部变量 范围, 坐标_, , , 
+.局部变量 关键词, 文本型, , , 
+.局部变量 关键词指针, 整数型, , , 
+
+设置前景色_API (场景句柄, 文本颜色)
+赋值 (关键词, 取空白文本 (文本长度))
+复制文本_API (关键词, 文本指针, 文本长度)
+赋值 (关键词, 到大写 (关键词))
+赋值 (关键词指针, 取文本指针 (关键词))
+文本绘出_API (场景句柄, 横座标, 纵座标, 关键词指针, 文本长度)
+取文本像素范围_API (场景句柄, 关键词指针, 文本长度, 范围)
+赋值 (画出宽度, 范围.横向位置)
+赋值 (横座标, 相加 (横座标, 画出宽度)) ' 移动画出位置
+赋值 (文本指针, 相加 (文本指针, 文本长度))
+
+.子程序 源码分析着色, 空白型, , 分析行语句,并提取出词条
+.参数 场景句柄, 整数型, , 
+.参数 横座标, 整数型, 参考, 会随着画出文本自动增加
+.参数 纵座标, 整数型, , 
+.参数 文本指针, 整数型, 参考, 会随着画出文本自动移动
+.参数 文本长度, 整数型, , 
+
+.局部变量 位置, 整数型, , , 
+.局部变量 索引, 整数型, , , 
+.局部变量 代码, 字节型, , , 
+.局部变量 当前指针, 整数型, , , 
+.局部变量 单词开始指针, 整数型, , , 
+.局部变量 单词长度, 整数型, , , 
+.局部变量 长度, 整数型, , , 
+.局部变量 停止取词, 逻辑型, , , 
+.局部变量 关键词, 文本型, , , 
+.局部变量 指针, 整数型, , , 
+.局部变量 结束指针, 整数型, , , 
+.局部变量 有转义符, 逻辑型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 取词成功, 逻辑型, , , 
+.局部变量 句号位置, 整数型, , , 
+.局部变量 颜色值, 整数型, , , 
+.局部变量 方法颜色, 整数型, , , 
+.局部变量 常量标记, 逻辑型, , , 
+.局部变量 有冒号, 逻辑型, , , 
+.局部变量 汇编语句行, 逻辑型, , , 
+
+.如果真 (等于 (文本长度, 0))
+    返回 ()
+.如果真结束
+
+赋值 (结束指针, 相加 (文本指针, 文本长度))
+赋值 (当前指针, 文本指针)
+
+.循环判断首 ()
+     ' 检测注释行,有'为注释行开始
+    .判断开始 (等于 (文本比较_API (当前指针, “'”, 1), 0))
+        画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 相减 (结束指针, 当前指针), 注释颜色)
+        跳出循环 ()
+        
+    .判断 (等于 (文本比较_API (当前指针, “!”, 1), 0)) ' 为ASM汇编语句行
+         ' 进一步判断是否为ASM汇编语句行
+        赋值 (指针, 相减 (当前指针, 1))
+        赋值 (汇编语句行, 真)
+        .判断循环首 (大于或等于 (指针, 相减 (结束指针, 文本长度)))
+            .如果真 (不等于 (文本比较_API (指针, “ ”, 1), 0)) ' 从!处往前搜索,如果除了空格还要别的符号,就不算是汇编开始符
+                赋值 (汇编语句行, 假)
+                跳出循环 ()
+            .如果真结束
+            赋值 (指针, 相减 (指针, 1))
+        .判断循环尾 ()
+        .如果真 (汇编语句行)
+            赋值 (指针, 当前指针)
+            赋值 (当前指针, 相加 (当前指针, 1))
+            
+            .判断循环首 (小于 (当前指针, 结束指针))
+                复制ASC码_API (代码, 当前指针, 1)
+                .如果 (大于 (代码, 128)) ' 为汉字
+                    赋值 (当前指针, 相加 (当前指针, 2))
+                    
+                .否则
+                    .如果真 (等于 (代码, 59)) ' 内联汇编的注释符为;号
+                        画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 相减 (当前指针, 指针), 汇编代码颜色)
+                        画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 相减 (结束指针, 当前指针), 注释颜色)
+                        返回 ()
+                    .如果真结束
+                    赋值 (当前指针, 相加 (当前指针, 1))
+                .如果结束
+                
+            .判断循环尾 ()
+            画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 相减 (结束指针, 指针), 汇编代码颜色) ' 汇编行内无注释符
+            跳出循环 ()
+            
+        .如果真结束
+        
+    .判断 (等于 (文本比较_API (当前指针, #引号, 1), 0)) ' 检测文本引号
+        赋值 (指针, 相加 (当前指针, 1))
+        .判断循环首 (小于 (指针, 结束指针))
+            复制ASC码_API (代码, 指针, 1)
+            .如果 (大于 (代码, 128)) ' 为汉字
+                赋值 (指针, 相加 (指针, 2))
+            .否则
+                
+                .如果真 (等于 (文本比较_API (指针, #引号, 1), 0)) ' 找到后引号
+                    .如果 (不等于 (文本比较_API (相加 (指针, 1), #引号, 1), 0)) ' BASIC文本有个特点,两个引号连写为文本内容中的引号
+                        赋值 (长度, 相减 (相加 (指针, 1), 当前指针))
+                        画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 长度, 引号文本颜色)
+                        赋值 (当前指针, 文本指针)
+                        跳出循环 ()
+                    .否则
+                        赋值 (指针, 相加 (指针, 1))
+                    .如果结束
+                    
+                .如果真结束
+                
+                赋值 (指针, 相加 (指针, 1))
+            .如果结束
+            
+        .判断循环尾 ()
+        赋值 (停止取词, 假)
+        .如果真 (等于 (指针, 结束指针))
+            画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 相减 (结束指针, 当前指针), 默认文本颜色)
+            跳出循环 ()
+            
+        .如果真结束
+        
+    .默认
+        
+    .判断结束
+    
+    
+    
+    复制ASC码_API (代码, 当前指针, 1)
+    .如果 (大于 (代码, 128)) ' 为汉字
+        赋值 (当前指针, 相加 (当前指针, 2))
+        .判断循环首 (小于 (当前指针, 结束指针))
+            复制ASC码_API (代码, 当前指针, 1)
+            .如果 (大于 (代码, 128)) ' 为汉字
+                赋值 (当前指针, 相加 (当前指针, 2))
+            .否则
+                赋值 (停止取词, 真)
+                跳出循环 ()
+            .如果结束
+            
+        .判断循环尾 ()
+        画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 相减 (当前指针, 文本指针), 默认文本颜色)
+        
+    .否则
+        赋值 (当前指针, 相加 (当前指针, 1))
+        
+        .计次循环首 (23, N)
+            .如果真 (等于 (运算符 [N], 代码))
+                画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 相减 (当前指针, 文本指针), 运算符颜色)
+                赋值 (停止取词, 假)
+                跳出循环 ()
+            .如果真结束
+            
+        .计次循环尾 ()
+        .如果真 (大于 (N, 23))
+            赋值 (常量标记, 假)
+            .如果真 (并且 (小于或等于 (35, 代码), 小于或等于 (代码, 37))) ' 为 # $ % 字符开头的,分别为预处理命令,文本常量,常数
+                赋值 (常量标记, 真)
+                复制ASC码_API (代码, 当前指针, 1)
+                
+            .如果真结束
+            .如果 (并且 (等于 (停止取词, 假), 或者 (并且 (小于或等于 (65, 代码), 小于或等于 (代码, 90)), 并且 (小于或等于 (97, 代码), 小于或等于 (代码, 122))))) ' 为英文开始
+                赋值 (单词开始指针, 相减 (当前指针, 1))
+                赋值 (取词成功, 假)
+                .判断循环首 (小于 (当前指针, 结束指针))
+                    复制ASC码_API (代码, 当前指针, 1)
+                    .如果 (或者 (并且 (小于或等于 (65, 代码), 小于或等于 (代码, 90)), 并且 (小于或等于 (97, 代码), 小于或等于 (代码, 122)), 并且 (小于或等于 (48, 代码), 小于或等于 (代码, 57)), 等于 (代码, 46), 等于 (代码, 95))) ' 如果是英文或数字或句号或下划线,就一直取词
+                        赋值 (当前指针, 相加 (当前指针, 1))
+                    .否则
+                        .如果真 (小于或等于 (代码, 128)) ' 不为汉字
+                            .如果真 (并且 (等于 (常量标记, 假), 或者 (并且 (小于或等于 (35, 代码), 小于或等于 (代码, 36)), 等于 (代码, 38))))
+                                赋值 (当前指针, 相加 (当前指针, 1)) ' PB有以# $ &为结束的命令,所以要包括进去
+                            .如果真结束
+                            赋值 (取词成功, 真)
+                            跳出循环 ()
+                        .如果真结束
+                        
+                        跳出循环 ()
+                    .如果结束
+                    
+                .判断循环尾 ()
+                .如果 (或者 (等于 (当前指针, 结束指针), 取词成功))
+                     ' 分析单词:英文加数字(变量 或函数),有句号(自定义结构型),纯英文(可能是关键字)
+                    赋值 (长度, 相减 (当前指针, 单词开始指针))
+                    赋值 (关键词, 取空白文本 (长度))
+                    复制文本_API (关键词, 单词开始指针, 长度)
+                    赋值 (句号位置, 寻找文本 (关键词, “.”, , 假))
+                    赋值 (关键词, 到大写 (关键词))
+                    .如果真 (等于 (代码, 32)) ' 以空格结束的关键字
+                        .判断开始 (等于 (关键词, “REM”)) ' 为注释行
+                            画出大写关键字 (场景句柄, 横座标, 纵座标, 文本指针, 3, 保留字颜色)
+                            画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 相减 (结束指针, 文本指针), 注释颜色)
+                            跳出循环 ()
+                        .判断 (等于 (关键词, “ASM”)) ' 为汇编行
+                            画出大写关键字 (场景句柄, 横座标, 纵座标, 文本指针, 3, 保留字颜色)
+                            
+                            赋值 (指针, 当前指针)
+                            赋值 (当前指针, 相加 (当前指针, 1))
+                            .判断循环首 (小于 (当前指针, 结束指针))
+                                复制ASC码_API (代码, 当前指针, 1)
+                                .如果 (大于 (代码, 128)) ' 为汉字
+                                    赋值 (当前指针, 相加 (当前指针, 2))
+                                    
+                                .否则
+                                    .如果真 (等于 (代码, 59)) ' 内联汇编的注释符为;号
+                                        画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 相减 (当前指针, 指针), 汇编代码颜色)
+                                        画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 相减 (结束指针, 当前指针), 注释颜色)
+                                        返回 ()
+                                    .如果真结束
+                                    赋值 (当前指针, 相加 (当前指针, 1))
+                                .如果结束
+                                
+                            .判断循环尾 ()
+                            画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 相减 (结束指针, 指针), 汇编代码颜色) ' 汇编行内无注释符
+                            跳出循环 ()
+                        .判断 (等于 (关键词, “DATA”)) ' 为文本数据行
+                            画出大写关键字 (场景句柄, 横座标, 纵座标, 文本指针, 4, 保留字颜色)
+                            
+                            赋值 (指针, 当前指针)
+                            赋值 (当前指针, 相加 (当前指针, 1))
+                            赋值 (有冒号, 假)
+                            .判断循环首 (小于 (当前指针, 结束指针))
+                                复制ASC码_API (代码, 当前指针, 1)
+                                .如果 (大于 (代码, 128)) ' 为汉字
+                                    赋值 (当前指针, 相加 (当前指针, 2))
+                                    
+                                .否则
+                                    .如果真 (等于 (代码, 58)) ' DATA数据行,加上:号为新命令行开始
+                                        画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 相减 (当前指针, 指针), 默认文本颜色)
+                                        赋值 (有冒号, 真)
+                                        跳出循环 ()
+                                    .如果真结束
+                                    赋值 (当前指针, 相加 (当前指针, 1))
+                                .如果结束
+                                
+                            .判断循环尾 ()
+                            .如果真 (等于 (有冒号, 假))
+                                画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 相减 (结束指针, 文本指针), 默认文本颜色)
+                                跳出循环 ()
+                            .如果真结束
+                            到循环尾 ()
+                        .默认
+                            
+                        .判断结束
+                        
+                    .如果真结束
+                    .如果 (小于或等于 (句号位置, 0))
+                         ' 可能是变量或命令或保留关键字
+                        赋值 (颜色值, 取关键字函数颜色 (关键词))
+                        
+                        .如果 (等于 (颜色值, 默认文本颜色)) ' 不是关键字
+                            .如果真 (常量标记)
+                                赋值 (代码, 取代码 (关键词, 1)) ' 取第一个字符代码
+                                .判断开始 (等于 (代码, 36)) ' $ 是文本常量
+                                    赋值 (颜色值, 文本常量颜色)
+                                .判断 (等于 (代码, 37)) ' % 是整数常量
+                                    赋值 (颜色值, 数值常量颜色)
+                                .默认
+                                    
+                                .判断结束
+                                
+                            .如果真结束
+                            画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 相减 (当前指针, 文本指针), 颜色值)
+                        .否则
+                            
+                            画出大写关键字 (场景句柄, 横座标, 纵座标, 文本指针, 相减 (当前指针, 文本指针), 颜色值)
+                            
+                        .如果结束
+                        
+                        
+                    .否则
+                        
+                         ' 多级成员属性,为自定义结构型
+                        画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 相减 (句号位置, 1), 默认文本颜色)
+                        画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 相加 (相减 (长度, 句号位置), 1), 成员方法颜色)
+                        
+                    .如果结束
+                    
+                    
+                .否则
+                    画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 相减 (当前指针, 文本指针), 默认文本颜色)
+                .如果结束
+                
+            .否则
+                .如果 (并且 (小于或等于 (48, 代码), 小于或等于 (代码, 57))) ' 在数字之后不取词
+                    赋值 (停止取词, 真)
+                .否则
+                    赋值 (停止取词, 假)
+                .如果结束
+                
+                画出文本 (场景句柄, 横座标, 纵座标, 文本指针, 相减 (当前指针, 文本指针), 默认文本颜色)
+            .如果结束
+            
+        .如果真结束
+        
+    .如果结束
+    
+    
+.循环判断尾 (小于 (当前指针, 结束指针))
+
+
+.子程序 是否有数字, 逻辑型, , 及下划线
+.参数 检测的文本, 文本型, 参考, 
+
+.局部变量 N, 整数型, , , 
+.局部变量 代码, 整数型, , , 
+
+.计次循环首 (取文本长度 (检测的文本), N)
+    赋值 (代码, 取代码 (检测的文本, N))
+    .如果真 (或者 (并且 (小于或等于 (48, 代码), 小于或等于 (代码, 57)), 等于 (代码, 95)))
+        返回 (真)
+    .如果真结束
+    
+.计次循环尾 ()
+返回 (假)
+
+.子程序 绘制文档, 空白型, 公开, 在绘制事件中
+.局部变量 字宽度, 整数型, , , 
+.局部变量 字高度, 整数型, , , 
+.局部变量 用户区宽度, 整数型, , , 
+.局部变量 用户区高度, 整数型, , , 
+.局部变量 开始行, 整数型, , , 
+.局部变量 结束行, 整数型, , , 
+.局部变量 绘制横座标, 整数型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 相对行号, 整数型, , , 
+.局部变量 Y, 整数型, , , 
+.局部变量 X, 整数型, , , 
+.局部变量 编辑框左边, 整数型, , , 
+.局部变量 编辑框右边, 整数型, , , 
+.局部变量 行数据, 文本型, , , 
+.局部变量 序号, 整数型, , , 
+.局部变量 文本行, 文本型, , , 
+.局部变量 绘制纵座标, 整数型, , , 
+.局部变量 绘制结构, 绘制结构, , , 
+.局部变量 场景句柄, 整数型, , , 
+.局部变量 内存场景句柄, 整数型, , , 
+.局部变量 文字宽度, 整数型, , , 
+.局部变量 空白位图, 整数型, , , 
+.局部变量 原位图, 整数型, , , 
+.局部变量 原字体, 整数型, , , 
+.局部变量 使用矩形, 矩形_, , , 
+.局部变量 原刷子, 整数型, , , 
+.局部变量 当前光标位置, 整数型, , , 
+.局部变量 光标所在行, 文本型, , , 
+.局部变量 开始选择位, 整数型, , , 
+.局部变量 结束选择位, 整数型, , , 
+.局部变量 选黑左边, 整数型, , , 
+.局部变量 选黑右边, 整数型, , , 
+.局部变量 首行全, 逻辑型, , , 
+.局部变量 尾行全, 逻辑型, , , 
+.局部变量 开始选择行, 整数型, , , 
+.局部变量 结束选择行, 整数型, , , 
+.局部变量 位置1, 整数型, , , 
+.局部变量 位置2, 整数型, , , 
+.局部变量 代码类型, 整数型, , , 
+.局部变量 行文本指针, 整数型, , , 
+.局部变量 检测位置, 整数型, , , 
+.局部变量 行长度, 整数型, , , 
+.局部变量 块注释尾, 逻辑型, , , 
+.局部变量 原绘制方式, 整数型, , , 
+
+
+赋值 (场景句柄, 开始绘制_API (句柄, 绘制结构))
+取客户区矩形_API (句柄, 使用矩形)
+赋值 (用户区宽度, 使用矩形.右边)
+赋值 (用户区高度, 使用矩形.底边)
+
+赋值 (内存场景句柄, 创建内存场景_API (场景句柄)) ' 因为直接画到场景上会闪烁,所以先画到内存场景 也称双缓冲
+赋值 (空白位图, 创建设备位图_API (场景句柄, 用户区宽度, 用户区高度))
+赋值 (原位图, 选入设备场景_API (内存场景句柄, 空白位图))
+赋值 (原字体, 选入设备场景_API (内存场景句柄, 字体句柄))
+
+赋值 (原刷子, 选入设备场景_API (内存场景句柄, 背景刷子句柄))
+填充矩形_API (内存场景句柄, 使用矩形, 背景刷子句柄) ' 刷上背景颜色
+选入设备场景_API (内存场景句柄, 原刷子)
+
+设置背景模式_API (内存场景句柄, 1) ' 背景透明
+
+取文本高宽 (内存场景句柄, “易”, 2, 文字宽度, 字高度)
+取显示行范围 (用户区高度, 字高度, 开始行, 结束行)
+
+赋值 (绘制横座标, 负 (取横向滚动条位置 ())) ' 窗口座标系
+ ' ----------------------------绘制光标行高亮背景条和设定光标位置-----------------------------------
+.如果 (并且 (小于或等于 (开始行, 光标位置.文档纵座标), 小于或等于 (光标位置.文档纵座标, 结束行))) ' 光标所在行在显示范围内
+     ' 画出选中的高亮背景条
+    赋值 (相对行号, 相减 (光标位置.文档纵座标, 开始行)) ' 以可视的第一行为基准
+    赋值 (Y, 相乘 (相对行号, 相加 (字高度, 行间距))) ' 高亮背景条纵向座标
+    
+    
+    赋值 (使用矩形.左边, 0)
+    赋值 (使用矩形.顶边, Y)
+    赋值 (使用矩形.底边, 相加 (Y, 字高度, 行间距))
+    赋值 (原刷子, 选入设备场景_API (内存场景句柄, 高亮条刷子))
+    填充矩形_API (内存场景句柄, 使用矩形, 高亮条刷子) ' 刷上高亮条背景颜色
+    选入设备场景_API (内存场景句柄, 原刷子)
+    
+    
+     ' 再检测光标是否也在显示范围内
+    赋值 (编辑框左边, 取横向滚动条位置 ()) ' 以显示文档的最左边和最顶边为0点,即行首和列首,以下皆是
+    赋值 (编辑框右边, 相加 (编辑框左边, 用户区宽度))
+    
+    赋值 (当前光标位置, 光标位置.文档横座标)
+    .如果真 (大于 (当前光标位置, 0))
+        赋值 (光标所在行, 取文本左边 (行文本 [相加 (光标位置.文档纵座标, 1)], 当前光标位置))
+        赋值 (光标所在行, 子文本替换 (光标所在行, 字符 (9), 取空白文本 (TAB空格数), , , 真)) ' 把TAB符替换成空格
+        取文本高宽 (内存场景句柄, 光标所在行, 取文本长度 (光标所在行), X, N)
+    .如果真结束
+     ' 每次都要测量,因为可能字体改变了,并不是一个固定值
+    .如果 (并且 (小于或等于 (相加 (编辑框左边, 行号条宽, 行首缩进), X), 小于 (X, 编辑框右边))) ' 可见范围内
+        赋值 (X, 相减 (X, 编辑框左边)) ' 转为编辑窗口座标系
+        置插入符位置_API (X, Y)
+    .否则
+        置插入符位置_API (-100, -100) ' 移出可视范围
+    .如果结束
+    
+.否则
+    
+     ' 隐藏插入符_API (句柄)
+    置插入符位置_API (-100, -100)
+.如果结束
+
+赋值 (绘制纵座标, 0)
+赋值 (X, 绘制横座标)
+.如果 (等于 (文件类型, 2)) ' 为纯文本文件,不加色
+    设置前景色_API (内存场景句柄, 默认文本颜色)
+    .变量循环首 (开始行, 结束行, 1, N)
+        赋值 (Y, 相加 (相乘 (绘制纵座标, 相加 (字高度, 行间距)), 行间距))
+        赋值 (行数据, 子文本替换 (行文本 [相加 (N, 1)], 字符 (9), 取空白文本 (TAB空格数), , , 真))
+        文本绘图_API (内存场景句柄, X, Y, 行数据, 取文本长度 (行数据))
+        赋值 (绘制纵座标, 相加 (绘制纵座标, 1))
+    .变量循环尾 ()
+    
+.否则
+     ' 为源码文件,要加色
+    .变量循环首 (开始行, 结束行, 1, N)
+        赋值 (Y, 相加 (相乘 (绘制纵座标, 相加 (字高度, 行间距)), 行间距))
+        赋值 (行数据, 子文本替换 (行文本 [相加 (N, 1)], 字符 (9), 取空白文本 (TAB空格数), , , 真))
+        赋值 (行长度, 取文本长度 (行数据))
+        赋值 (行文本指针, 取文本指针 (行数据)) ' 用指针操作效率高,省内存
+        
+         ' 交给脚本分析
+        源码分析着色 (内存场景句柄, X, Y, 行文本指针, 行长度)
+        
+        
+        赋值 (绘制纵座标, 相加 (绘制纵座标, 1)) ' 换到下行
+        赋值 (X, 绘制横座标) ' 从头再开始画
+    .变量循环尾 ()
+    
+    
+    
+.如果结束
+ ' ------------------------画被选黑的文本及整行---------------------------------
+.如果真 (有文本选择)
+    
+    .如果 (大于 (开始选择.文档纵座标, 结束选择.文档纵座标)) ' 分检出头尾位置
+        赋值 (开始选择行, 结束选择.文档纵座标)
+        赋值 (结束选择行, 开始选择.文档纵座标)
+        赋值 (开始选择位, 结束选择.文档横座标)
+        赋值 (结束选择位, 开始选择.文档横座标)
+        
+    .否则
+        赋值 (开始选择行, 开始选择.文档纵座标)
+        赋值 (结束选择行, 结束选择.文档纵座标)
+        赋值 (开始选择位, 开始选择.文档横座标)
+        赋值 (结束选择位, 结束选择.文档横座标)
+        
+    .如果结束
+    .如果真 (取反 (或者 (大于 (开始选择行, 结束行), 小于 (结束选择行, 开始行)))) ' 选中块是否在显示范围内(有无交集)
+        
+        
+        .如果 (等于 (开始选择行, 结束选择行)) ' 同一行内的选中中间
+            .如果 (大于 (开始选择.文档横座标, 结束选择.文档横座标))
+                赋值 (开始选择位, 结束选择.文档横座标)
+                赋值 (结束选择位, 开始选择.文档横座标)
+            .否则
+                
+                赋值 (开始选择位, 开始选择.文档横座标)
+                赋值 (结束选择位, 结束选择.文档横座标)
+            .如果结束
+            
+            赋值 (光标所在行, 取文本左边 (行文本 [相加 (开始选择.文档纵座标, 1)], 开始选择位))
+            赋值 (光标所在行, 子文本替换 (光标所在行, 字符 (9), 取空白文本 (TAB空格数), , , 真)) ' 把TAB符替换成空格
+            取文本高宽 (内存场景句柄, 光标所在行, 取文本长度 (光标所在行), 选黑左边, N)
+            
+            赋值 (光标所在行, 取文本左边 (行文本 [相加 (开始选择.文档纵座标, 1)], 结束选择位))
+            赋值 (光标所在行, 子文本替换 (光标所在行, 字符 (9), 取空白文本 (TAB空格数), , , 真)) ' 把TAB符替换成空格
+            取文本高宽 (内存场景句柄, 光标所在行, 取文本长度 (光标所在行), 选黑右边, N)
+            
+            赋值 (使用矩形.左边, 相加 (选黑左边, 绘制横座标))
+            赋值 (使用矩形.右边, 相加 (选黑右边, 绘制横座标))
+            赋值 (使用矩形.顶边, 相乘 (相减 (开始选择.文档纵座标, 开始行), 相加 (字高度, 行间距)))
+            
+            赋值 (使用矩形.底边, 相加 (使用矩形.顶边, 字高度, 行间距))
+            
+            反转矩形颜色_API (内存场景句柄, 使用矩形)
+            
+            
+        .否则
+             ' 多行选中,头尾各断开,中间全画出
+            .如果真 (小于 (开始选择行, 开始行))
+                赋值 (开始选择行, 开始行)
+                赋值 (首行全, 真)
+            .如果真结束
+            .如果真 (大于 (结束选择行, 结束行))
+                赋值 (结束选择行, 结束行)
+                赋值 (尾行全, 真)
+            .如果真结束
+            
+            .变量循环首 (开始选择行, 结束选择行, 1, Y)
+                
+                .判断开始 (并且 (等于 (Y, 开始选择行), 等于 (首行全, 假)))
+                    赋值 (行数据, 取文本右边 (行文本 [相加 (Y, 1)], 相减 (取文本长度 (行文本 [相加 (Y, 1)]), 开始选择位)))
+                    
+                    赋值 (光标所在行, 取文本左边 (行文本 [相加 (Y, 1)], 开始选择位))
+                    赋值 (光标所在行, 子文本替换 (光标所在行, 字符 (9), 取空白文本 (TAB空格数), , , 真)) ' 把TAB符替换成空格
+                    取文本高宽 (内存场景句柄, 光标所在行, 取文本长度 (光标所在行), 选黑左边, N)
+                    
+                    赋值 (光标所在行, 子文本替换 (行文本 [相加 (Y, 1)], 字符 (9), 取空白文本 (TAB空格数), , , 真)) ' 把TAB符替换成空格
+                    取文本高宽 (内存场景句柄, 光标所在行, 取文本长度 (光标所在行), 选黑右边, N)
+                    
+                    赋值 (使用矩形.左边, 相加 (选黑左边, 绘制横座标))
+                    赋值 (使用矩形.右边, 相加 (选黑右边, 绘制横座标))
+                    赋值 (使用矩形.顶边, 相乘 (相减 (Y, 开始行), 相加 (字高度, 行间距)))
+                    
+                    赋值 (使用矩形.底边, 相加 (使用矩形.顶边, 字高度, 行间距))
+                    反转矩形颜色_API (内存场景句柄, 使用矩形)
+                    
+                .判断 (并且 (等于 (Y, 结束选择行), 等于 (尾行全, 假)))
+                    赋值 (光标所在行, 取文本左边 (行文本 [相加 (Y, 1)], 结束选择位))
+                    
+                    赋值 (光标所在行, 子文本替换 (光标所在行, 字符 (9), 取空白文本 (TAB空格数), , , 真)) ' 把TAB符替换成空格
+                    取文本高宽 (内存场景句柄, 光标所在行, 取文本长度 (光标所在行), 选黑右边, N)
+                    
+                    赋值 (使用矩形.左边, 绘制横座标)
+                    赋值 (使用矩形.右边, 相加 (选黑右边, 绘制横座标))
+                    赋值 (使用矩形.顶边, 相乘 (相减 (Y, 开始行), 相加 (字高度, 行间距)))
+                    
+                    赋值 (使用矩形.底边, 相加 (使用矩形.顶边, 字高度, 行间距))
+                    反转矩形颜色_API (内存场景句柄, 使用矩形)
+                    
+                .默认
+                     ' 中间部分为全选
+                    赋值 (行数据, 子文本替换 (行文本 [相加 (Y, 1)], 字符 (9), 取空白文本 (TAB空格数), , , 真)) ' 把TAB符替换成空格
+                    取文本高宽 (内存场景句柄, 行数据, 取文本长度 (行数据), 选黑右边, N)
+                    赋值 (使用矩形.左边, 绘制横座标)
+                    赋值 (使用矩形.右边, 相加 (选黑右边, 绘制横座标))
+                    赋值 (使用矩形.顶边, 相乘 (相减 (Y, 开始行), 相加 (字高度, 行间距)))
+                    赋值 (使用矩形.底边, 相加 (使用矩形.顶边, 字高度, 行间距))
+                    
+                    反转矩形颜色_API (内存场景句柄, 使用矩形)
+                .判断结束
+                
+            .变量循环尾 ()
+            
+        .如果结束
+        
+    .如果真结束
+    
+    
+.如果真结束
+ ' -----------------------画出行号条-------------------------------------------
+赋值 (使用矩形.左边, 0)
+赋值 (使用矩形.顶边, 0)
+赋值 (使用矩形.右边, 相加 (行号条宽, 行首缩进))
+赋值 (使用矩形.底边, 用户区高度)
+填充矩形_API (内存场景句柄, 使用矩形, 背景刷子句柄) ' 刷上背景颜色
+.如果真 (大于 (行号条宽, 0))
+    赋值 (Y, 整除 (用户区高度, 相加 (字高度, 行间距)))
+    .如果真 (大于 (求余数 (用户区高度, 相加 (字高度, 行间距)), 0))
+        赋值 (Y, 相加 (Y, 1))
+    .如果真结束
+    赋值 (使用矩形.右边, 行号条宽)
+    赋值 (N, 0)
+    设置前景色_API (内存场景句柄, #黑色)
+    .计次循环首 (Y, X)
+        赋值 (使用矩形.顶边, N)
+        赋值 (N, 相加 (N, 字高度, 行间距))
+        赋值 (使用矩形.底边, N)
+        .如果 (等于 (光标位置.文档纵座标, 相减 (相加 (X, 开始行), 1)))
+            描绘标准组件_API (内存场景句柄, 使用矩形, 4, 相加 (16, 16384, 1024)) ' DFC_BUTTON画出按钮形状
+             ' DFCS_BUTTONPUSH 按钮
+             ' DFCS_FLAT 平面风格
+             ' DFCS_CHECKED 选中的
+        .否则
+            描绘标准组件_API (内存场景句柄, 使用矩形, 4, 相加 (16, 16384)) ' DFC_BUTTON画出按钮形状
+             ' DFCS_BUTTONPUSH 按钮
+             ' DFCS_FLAT 平面风格
+        .如果结束
+        .如果真 (小于或等于 (X, 相加 (相减 (结束行, 开始行), 1)))
+            赋值 (文本行, 到文本 (相加 (X, 开始行)))
+            描绘矩形文本_API (内存场景句柄, 文本行, 取文本长度 (文本行), 使用矩形, 37) ' 画上数字
+             ' DT_CENTER 文本水平居中
+             ' DT_VCENTER 文本垂直居中
+             ' DT_SINGLE 单行
+        .如果真结束
+        
+    .计次循环尾 ()
+.如果真结束
+ ' 整个复制到窗体场景
+复制场景位图_API (场景句柄, 0, 0, 用户区宽度, 用户区高度, 内存场景句柄, 0, 0, 13369376)
+选入设备场景_API (内存场景句柄, 原字体)
+选入设备场景_API (内存场景句柄, 原位图)
+删除对象_API (空白位图)
+删除设备场景_API (内存场景句柄)
+
+结束绘制_API (句柄, 绘制结构)
+更新状态条 ()
+更新菜单工具条状态 ()
+
+.子程序 置光标, 空白型, 公开, 静态的光标
+.参数 横向位置, 整数型, , 编辑窗口的座标系
+.参数 纵向位置, 整数型, , 编辑窗口的座标系
+
+检测光标位置 (横向位置, 纵向位置, 光标位置)
+赋值 (有文本选择, 假)
+重画 ()
+
+
+.子程序 检测光标位置, 整数型, , 返回的是列号,用于显示在状态栏的
+.参数 横向位置, 整数型, , 编辑窗口的座标系
+.参数 纵向位置, 整数型, , 编辑窗口的座标系
+.参数 光标位置值, 文档座标, 参考, 
+
+.局部变量 场景句柄, 整数型, , , 
+.局部变量 文字宽度, 整数型, , , 
+.局部变量 字高度, 整数型, , , 
+.局部变量 原句柄, 整数型, , , 
+.局部变量 用户区宽度, 整数型, , , 
+.局部变量 用户区高度, 整数型, , , 
+.局部变量 开始行, 整数型, , , 
+.局部变量 结束行, 整数型, , , 
+.局部变量 光标行号, 整数型, , , 
+.局部变量 行长度, 整数型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 X, 整数型, , , 
+.局部变量 检测行, 文本型, , , 
+.局部变量 横向偏移, 整数型, , , 
+.局部变量 列数, 整数型, , , 
+.局部变量 前站, 整数型, , , 
+.局部变量 字符宽, 整数型, , , 
+.局部变量 左边界, 整数型, , , 
+.局部变量 字符值, 整数型, , , 
+
+赋值 (场景句柄, 取设备场景_API (句柄))
+赋值 (原句柄, 选入设备场景_API (场景句柄, 字体句柄))
+
+取用户区大小 (用户区宽度, 用户区高度)
+取文本高宽 (场景句柄, “易”, 2, 文字宽度, 字高度)
+取显示行范围 (用户区高度, 字高度, 开始行, 结束行)
+
+
+赋值 (光标行号, 相加 (开始行, 整除 (纵向位置, 相加 (字高度, 行间距)))) ' 确定光标所在行
+.如果真 (大于 (光标行号, 相减 (行数, 1))) ' 超出总行数
+    赋值 (光标行号, 相减 (行数, 1))
+.如果真结束
+.如果真 (小于 (光标行号, 0))
+    赋值 (光标行号, 0)
+.如果真结束
+赋值 (横向偏移, 取横向滚动条位置 ())
+赋值 (横向位置, 相加 (横向位置, 横向偏移)) ' 转化成文档座标系
+赋值 (光标位置值.文档纵座标, 光标行号)
+赋值 (光标位置值.文档横座标, 0)
+.如果真 (大于 (横向位置, 0))
+    赋值 (检测行, 子文本替换 (行文本 [相加 (光标行号, 1)], 字符 (9), 取空白文本 (TAB空格数), , , 真))
+    赋值 (行长度, 取文本长度 (行文本 [相加 (光标行号, 1)]))
+    赋值 (N, 1)
+    赋值 (X, 0)
+    
+    .判断循环首 (小于或等于 (N, 行长度))
+        赋值 (字符值, 取代码 (行文本 [相加 (光标行号, 1)], N))
+        .如果 (等于 (字符值, 9)) ' TAB符
+            赋值 (X, 相加 (X, TAB空格数))
+        .否则
+            
+            .如果 (小于 (字符值, 0))
+                赋值 (X, 相加 (X, 2))
+            .否则
+                赋值 (X, 相加 (X, 1))
+            .如果结束
+            
+        .如果结束
+        取文本高宽 (场景句柄, 检测行, X, 文字宽度, 字高度)
+        .如果真 (小于 (字符值, 0))
+            赋值 (N, 相加 (N, 1))
+        .如果真结束
+        .如果 (大于 (横向位置, 文字宽度))
+            赋值 (左边界, 文字宽度) ' 未定位到，但记录为区域左边界
+            赋值 (前站, N)
+        .否则
+            
+             ' 已经定位到，但要确定是点在字符的左半部或右半部
+            赋值 (字符宽, 相减 (文字宽度, 左边界))
+            .如果 (大于 (横向位置, 相加 (左边界, 相除 (字符宽, 2)))) ' 左半部
+                赋值 (光标位置值.文档横座标, N)
+            .否则
+                 ' 右半部
+                赋值 (光标位置值.文档横座标, 前站)
+            .如果结束
+            跳出循环 () ' 结束检测
+        .如果结束
+        赋值 (N, 相加 (N, 1))
+        赋值 (列数, 相加 (列数, 1))
+    .判断循环尾 ()
+    .如果真 (大于 (N, 行长度))
+        赋值 (光标位置值.文档横座标, 行长度) ' 点在行尾之后
+    .如果真结束
+    
+.如果真结束
+选入设备场景_API (场景句柄, 原句柄)
+释放设备场景_API (句柄, 场景句柄)
+返回 (列数)
+
+.子程序 取显示行范围, 空白型, , 根据编辑区大小
+.参数 用户区高度, 整数型, , 
+.参数 字高度, 整数型, , 
+.参数 开始行, 整数型, 参考, 以0开始的
+.参数 结束行, 整数型, 参考, 
+
+.局部变量 显示行, 整数型, , , 
+
+赋值 (开始行, 取纵向滚动条位置 ())
+赋值 (显示行, 整除 (用户区高度, 相加 (字高度, 行间距)))
+赋值 (结束行, 相减 (相加 (开始行, 显示行), 1))
+.如果真 (大于 (结束行, 相减 (行数, 1))) ' 超过总行数,设为最末行
+    赋值 (结束行, 相减 (行数, 1))
+.如果真结束
+
+
+.子程序 创建插入符, 空白型, 公开, 获取焦点时才创建
+.局部变量 场景句柄, 整数型, , , 
+.局部变量 原句柄, 整数型, , , 
+.局部变量 文字宽度, 整数型, , , 为光标前的文字宽度
+
+赋值 (场景句柄, 取设备场景_API (句柄))
+赋值 (原句柄, 选入设备场景_API (场景句柄, 字体句柄))
+取文本高宽 (场景句柄, “易”, 2, 文字宽度, 光标高)
+选入设备场景_API (场景句柄, 原句柄)
+释放设备场景_API (句柄, 场景句柄)
+赋值 (光标高, 相加 (光标高, 相乘 (2, 行间距)))
+创建插入符_API (句柄, 0, 1, 光标高) ' 光标宽为1点像素,高度为行高
+显示插入符_API (句柄)
+
+.子程序 取光标高, 整数型, 公开, 
+返回 (光标高)
+
+.子程序 追随光标, 空白型, , 把文档窗口移到光标可见的位置
+.局部变量 场景句柄, 整数型, , , 
+.局部变量 原句柄, 整数型, , , 
+.局部变量 行文本长, 整数型, , , 
+.局部变量 文字宽度, 整数型, , , 
+.局部变量 字符高, 整数型, , , 
+.局部变量 测试行, 文本型, , , 
+.局部变量 用户区高度, 整数型, , , 
+.局部变量 开始行, 整数型, , , 
+.局部变量 结束行, 整数型, , , 
+.局部变量 编辑框左边, 整数型, , , 
+.局部变量 编辑框右边, 整数型, , , 
+.局部变量 用户区宽度, 整数型, , , 
+
+取用户区大小 (用户区宽度, 用户区高度)
+赋值 (编辑框左边, 取横向滚动条位置 ()) ' 以显示文档的最左边和最顶边为0点,即行首和列首,以下皆是
+赋值 (编辑框右边, 相加 (编辑框左边, 用户区宽度))
+
+赋值 (场景句柄, 取设备场景_API (句柄))
+赋值 (原句柄, 选入设备场景_API (场景句柄, 字体句柄))
+赋值 (行文本长, 取文本长度 (行文本 [相加 (光标位置.文档纵座标, 1)]))
+
+.如果 (或者 (等于 (行文本长, 0), 等于 (光标位置.文档横座标, 0)))
+    取文本高宽 (场景句柄, “易”, 2, 文字宽度, 字符高) ' 该行没有文字也要测试，一定要知道字高
+    赋值 (文字宽度, 0) ' 转成窗口座标系
+.否则
+    
+    赋值 (行文本长, 光标位置.文档横座标)
+    赋值 (测试行, 取文本左边 (行文本 [相加 (光标位置.文档纵座标, 1)], 行文本长))
+    赋值 (测试行, 子文本替换 (测试行, 字符 (9), 取空白文本 (TAB空格数), , , 真)) ' 把TAB符替换成空格
+    取文本高宽 (场景句柄, 测试行, 行文本长, 文字宽度, 字符高)
+    
+.如果结束
+选入设备场景_API (场景句柄, 原句柄)
+释放设备场景_API (句柄, 场景句柄)
+
+取显示行范围 (用户区高度, 字符高, 开始行, 结束行)
+.如果 (小于 (光标位置.文档纵座标, 开始行))
+    置纵向滚动条位置 (光标位置.文档纵座标, 真)
+    
+.否则
+    .如果真 (大于 (光标位置.文档纵座标, 结束行))
+        置纵向滚动条位置 (相减 (相加 (开始行, 光标位置.文档纵座标), 结束行), 真)
+    .如果真结束
+    
+.如果结束
+
+.如果 (小于 (文字宽度, 编辑框左边))
+    置横向滚动条位置 (文字宽度, 真)
+.否则
+    
+    .如果真 (大于 (文字宽度, 编辑框右边))
+        置横向滚动条位置 (相减 (文字宽度, 相除 (用户区宽度, 2)), 真)
+    .如果真结束
+    
+.如果结束
+
+
+.子程序 保存编辑器环境, 空白型, , 用于恢复"撤消重做"
+.参数 操作, 撤消重做数据, 参考, 
+
+赋值 (操作.行数, 行数)
+赋值 (操作.最长文本, 最长文本)
+赋值 (操作.最长文本行号, 最长文本行号)
+赋值 (操作.光标位置, 光标位置)
+赋值 (操作.有文本选择, 有文本选择)
+赋值 (操作.开始选择, 开始选择)
+赋值 (操作.结束选择, 结束选择)
+赋值 (操作.已修改, 已修改)
+赋值 (操作.滚动条位置.文档纵座标, 取纵向滚动条位置 ())
+赋值 (操作.滚动条位置.文档横座标, 取横向滚动条位置 ())
+
+.子程序 恢复编辑器环境, 空白型, , 
+.参数 操作, 撤消重做数据, 参考, 
+.参数 是否重做, 逻辑型, 可空, 
+
+.局部变量 文本行, 文本型, , "0", 
+.局部变量 N, 整数型, , , 
+.局部变量 选择行数, 整数型, , , 
+.局部变量 删除操作, 撤消重做数据, , , 
+
+赋值 (行数, 操作.行数)
+赋值 (最长文本, 操作.最长文本)
+赋值 (最长文本行号, 操作.最长文本行号)
+赋值 (有文本选择, 操作.有文本选择)
+赋值 (开始选择, 操作.开始选择)
+赋值 (结束选择, 操作.结束选择)
+赋值 (已修改, 操作.已修改)
+置纵向滚动条位置 (操作.滚动条位置.文档纵座标, 假)
+置横向滚动条位置 (操作.滚动条位置.文档横座标, 假)
+
+.如果 (等于 (是否重做, 假)) ' 恢复删除块
+    .如果 (操作.有块删除)
+        赋值 (文本行, 分割文本 (操作.删除前文本行, #换行符, ))
+        删除成员 (行文本, 相加 (操作.开始选择.文档纵座标, 1), )
+        赋值 (选择行数, 取数组成员数 (文本行))
+        .计次循环首 (选择行数, N)
+            插入成员 (行文本, 相加 (操作.开始选择.文档纵座标, 1), 文本行 [相加 (相减 (选择行数, N), 1)])
+        .计次循环尾 ()
+        赋值 (光标位置, 操作.删除前光标)
+    .否则
+        赋值 (光标位置, 操作.光标位置)
+    .如果结束
+    
+.否则
+    .如果 (操作.有块删除)
+        赋值 (光标位置, 操作.删除前光标)
+        删除块 (删除操作)
+        取最长文本行 ()
+        追随光标 ()
+        重画 ()
+        
+    .否则
+        赋值 (光标位置, 操作.光标位置)
+    .如果结束
+    
+    
+.如果结束
+
+
+.子程序 加入撤销堆栈, 空白型, , 
+.参数 操作, 撤消重做数据, 参考, 
+
+.局部变量 堆栈总数, 整数型, , , 
+
+赋值 (堆栈总数, 取数组成员数 (撤消重做堆栈))
+.如果真 (大于 (堆栈总数, 堆栈指针)) ' 在堆栈中间
+    删除成员 (撤消重做堆栈, 相加 (堆栈指针, 1), 相减 (堆栈总数, 堆栈指针)) ' 删除已经完成的重做数据
+     ' 重新加入新操作
+.如果真结束
+
+加入成员 (撤消重做堆栈, 操作)
+赋值 (堆栈指针, 相加 (堆栈指针, 1))
+.如果真 (大于 (堆栈指针, 撤消次数)) ' 超出次数了,开始删除
+    删除成员 (撤消重做堆栈, 1, ) ' 堆栈底开始删除
+    赋值 (堆栈指针, 撤消次数)
+.如果真结束
+
+
+.子程序 输入回车键, 整数型, 公开, 
+.参数 是否重做, 逻辑型, 可空, 重做操作不入堆栈
+
+.局部变量 前半句, 文本型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 TAB数, 整数型, , , 
+.局部变量 操作, 撤消重做数据, , , 
+
+.如果真 (等于 (是否重做, 假))
+    赋值 (操作.操作类型, #回车换行)
+    保存编辑器环境 (操作)
+.如果真结束
+删除块 (操作)
+赋值 (前半句, 取文本左边 (行文本 [相加 (光标位置.文档纵座标, 1)], 光标位置.文档横座标))
+.如果真 (源码自动缩进)
+    .计次循环首 (取文本长度 (前半句), N)
+        .如果 (等于 (取代码 (前半句, N), 9))
+            赋值 (TAB数, 相加 (TAB数, 1)) ' 产生与前行缩进的效果
+        .否则
+            跳出循环 ()
+        .如果结束
+        
+    .计次循环尾 ()
+.如果真结束
+
+赋值 (行文本 [相加 (光标位置.文档纵座标, 1)], 相加 (取重复文本 (TAB数, 字符 (9)), 取文本右边 (行文本 [相加 (光标位置.文档纵座标, 1)], 相减 (取文本长度 (行文本 [相加 (光标位置.文档纵座标, 1)]), 光标位置.文档横座标)))) ' 后半句
+插入成员 (行文本, 相加 (光标位置.文档纵座标, 1), 前半句)
+ ' 重置光标
+赋值 (光标位置.文档横座标, TAB数)
+赋值 (光标位置.文档纵座标, 相加 (光标位置.文档纵座标, 1))
+赋值 (已修改, 真)
+取最长文本行 ()
+追随光标 ()
+重画 ()
+.如果真 (等于 (是否重做, 假))
+    赋值 (操作.TAB数, TAB数)
+    加入撤销堆栈 (操作)
+.如果真结束
+返回 (TAB数)
+
+.子程序 输入退格键, 空白型, 公开, 
+.参数 是否重做, 逻辑型, 可空, 重做操作不入堆栈
+
+.局部变量 X, 整数型, , , 
+.局部变量 代码值, 整数型, , , 
+.局部变量 字符长, 整数型, , , 
+.局部变量 光标新X, 整数型, , , 
+.局部变量 操作, 撤消重做数据, , , 
+
+.如果真 (等于 (是否重做, 假))
+    .如果真 (有文本选择) ' 改变操作类型,不删除前一个字符了
+        删除文本 ()
+        返回 ()
+    .如果真结束
+    赋值 (操作.操作类型, #退格删除)
+    保存编辑器环境 (操作)
+    
+.如果真结束
+.如果 (等于 (光标位置.文档横座标, 0)) ' 在句首，有可能合并两行
+    .如果 (等于 (光标位置.文档纵座标, 0)) ' 光标在左上角，不可能合并
+        返回 ()
+    .否则
+        
+        赋值 (操作.操作文本, #换行符)
+         ' 合并两行
+        赋值 (光标新X, 取文本长度 (行文本 [光标位置].文档纵座标))
+        赋值 (操作.结束选择.文档横座标, 光标新X)
+        赋值 (行文本 [光标位置].文档纵座标, 相加 (行文本 [光标位置].文档纵座标, 行文本 [相加 (光标位置.文档纵座标, 1)]))
+        删除成员 (行文本, 相加 (光标位置.文档纵座标, 1), )
+         ' 重置光标
+        赋值 (光标位置.文档横座标, 光标新X)
+        赋值 (光标位置.文档纵座标, 相减 (光标位置.文档纵座标, 1))
+    .如果结束
+    
+    
+.否则
+    
+    
+     ' 前面是汉字全角或英文半角未知，要从头到光标处扫描一遍
+    赋值 (X, 1)
+    .判断循环首 (小于或等于 (X, 光标位置.文档横座标))
+        赋值 (代码值, 取代码 (行文本 [相加 (光标位置.文档纵座标, 1)], X))
+        .如果 (小于 (代码值, 0)) ' 汉字
+            赋值 (字符长, 2)
+        .否则
+            赋值 (字符长, 1)
+        .如果结束
+        赋值 (X, 相加 (X, 字符长))
+    .判断循环尾 ()
+    赋值 (光标新X, 相减 (光标位置.文档横座标, 字符长))
+    赋值 (操作.操作文本, 取文本中间 (行文本 [相加 (光标位置.文档纵座标, 1)], 相加 (光标新X, 1), 字符长))
+    赋值 (行文本 [相加 (光标位置.文档纵座标, 1)], 文本替换 (行文本 [相加 (光标位置.文档纵座标, 1)], 相加 (光标新X, 1), 字符长, )) ' 从中间删除
+     ' 重置光标
+    赋值 (光标位置.文档横座标, 光标新X)
+    
+.如果结束
+赋值 (已修改, 真)
+取最长文本行 ()
+追随光标 ()
+重画 ()
+.如果真 (等于 (是否重做, 假))
+    加入撤销堆栈 (操作)
+.如果真结束
+
+
+.子程序 输入文字, 空白型, 公开, 
+.参数 文字, 文本型, 参考, 
+.参数 是否重做, 逻辑型, 可空, 重做操作不入堆栈
+
+.局部变量 前半句, 文本型, , , 
+.局部变量 后半句, 文本型, , , 
+.局部变量 操作, 撤消重做数据, , , 
+
+.如果真 (等于 (是否重做, 假))
+    赋值 (操作.操作类型, #输入字符)
+    保存编辑器环境 (操作)
+.如果真结束
+删除块 (操作)
+赋值 (前半句, 取文本左边 (行文本 [相加 (光标位置.文档纵座标, 1)], 光标位置.文档横座标))
+赋值 (后半句, 取文本右边 (行文本 [相加 (光标位置.文档纵座标, 1)], 相减 (取文本长度 (行文本 [相加 (光标位置.文档纵座标, 1)]), 光标位置.文档横座标)))
+赋值 (行文本 [相加 (光标位置.文档纵座标, 1)], 相加 (前半句, 文字, 后半句))
+赋值 (操作.操作文本, 文字)
+ ' 重置光标
+赋值 (光标位置.文档横座标, 相加 (光标位置.文档横座标, 取文本长度 (文字)))
+赋值 (已修改, 真)
+取最长文本行 ()
+追随光标 ()
+重画 ()
+.如果真 (等于 (是否重做, 假))
+    加入撤销堆栈 (操作)
+.如果真结束
+
+
+.子程序 输入字符, 空白型, 公开, 
+.参数 字符代码, 整数型, , 小于128是英文字符，大于的是汉字编码
+
+.局部变量 等待后半角, 逻辑型, 静态, , 
+.局部变量 输入字, 字节型, 静态, "2", 
+.局部变量 字符长, 整数型, , , 
+
+ ' 兼容各种输入法：
+ ' 第一、常见的英文半角符号输入
+ ' 第二、分两次WM_CHAR事件输入的外挂输入法，所以不能用“字符（）”命令来转成文本型
+ ' 第三、输入的两字节UNICODE外挂输入法，在上级调用时已经把UNICODE转成汉字
+
+.如果 (小于或等于 (字符代码, 255))
+    .如果 (等待后半角)
+        赋值 (输入字 [2], 字符代码)
+        赋值 (字符长, 2)
+    .否则
+        赋值 (输入字 [1], 字符代码)
+        .如果真 (大于 (字符代码, 128)) ' 全角前半
+            赋值 (等待后半角, 真)
+            返回 ()
+        .如果真结束
+         ' 英文半角
+        赋值 (输入字 [2], 0)
+        赋值 (字符长, 1)
+    .如果结束
+    赋值 (等待后半角, 假)
+     ' 英文半角或全角的一部分
+.否则
+    赋值 (输入字 [1], 位与 (字符代码, 255))
+    赋值 (输入字 [2], 右移 (字符代码, 8))
+    赋值 (字符长, 2)
+.如果结束
+
+输入文字 (到文本 (输入字))
+
+
+.子程序 拖拽开始, 空白型, 公开, 
+.参数 横向位置, 整数型, , 编辑窗口的座标系
+.参数 纵向位置, 整数型, , 编辑窗口的座标系
+
+赋值 (开始选择, 光标位置)
+
+.子程序 拖拽光标, 空白型, 公开, 
+.参数 横向位置, 整数型, , 编辑窗口的座标系
+.参数 纵向位置, 整数型, , 编辑窗口的座标系
+
+检测光标位置 (横向位置, 纵向位置, 结束选择)
+赋值 (光标位置, 结束选择)
+赋值 (有文本选择, 是否有选择 ())
+追随光标 ()
+重画 ()
+
+.子程序 是否有选择, 逻辑型, , 
+.局部变量 临时位置, 文档座标, , , 
+
+.如果真 (并且 (等于 (开始选择.文档横座标, 结束选择.文档横座标), 等于 (开始选择.文档纵座标, 结束选择.文档纵座标)))
+    返回 (假)
+.如果真结束
+返回 (真)
+
+.子程序 光标上移, 空白型, 公开, 
+.局部变量 上一行长, 整数型, , , 
+.局部变量 序号, 整数型, , , 
+
+.如果真 (等于 (光标位置.文档纵座标, 0)) ' 到顶了
+    返回 ()
+.如果真结束
+赋值 (光标位置.文档纵座标, 相减 (光标位置.文档纵座标, 1)) ' 移到上一行
+赋值 (上一行长, 取文本长度 (行文本 [相加 (光标位置.文档纵座标, 1)]))
+.如果 (小于或等于 (上一行长, 光标位置.文档横座标))
+    赋值 (光标位置.文档横座标, 上一行长) ' 比原来的短,比较简单,移到它未尾就行了
+.否则
+     ' 不好直接判断,因为有汉字和英文混合
+    赋值 (序号, 1)
+    .循环判断首 ()
+        .如果真 (大于 (序号, 光标位置.文档横座标))
+            跳出循环 ()
+        .如果真结束
+        .如果 (小于 (取代码 (行文本 [相加 (光标位置.文档纵座标, 1)], 序号), 0)) ' 汉字
+            赋值 (序号, 相加 (序号, 2))
+        .否则
+            赋值 (序号, 相加 (序号, 1))
+        .如果结束
+        
+    .循环判断尾 (小于 (序号, 上一行长))
+    
+.如果结束
+追随光标 ()
+重画 ()
+
+
+.子程序 光标下移, 空白型, 公开, 
+.局部变量 下一行长, 整数型, , , 
+.局部变量 序号, 整数型, , , 
+
+.如果真 (等于 (光标位置.文档纵座标, 相减 (行数, 1))) ' 到底了
+    返回 ()
+.如果真结束
+赋值 (光标位置.文档纵座标, 相加 (光标位置.文档纵座标, 1)) ' 移到下一行
+赋值 (下一行长, 取文本长度 (行文本 [相加 (光标位置.文档纵座标, 1)]))
+.如果 (小于或等于 (下一行长, 光标位置.文档横座标))
+    赋值 (光标位置.文档横座标, 下一行长) ' 比原来的短,比较简单,移到它未尾就行了
+.否则
+     ' 不好直接判断,因为有汉字和英文混合
+    赋值 (序号, 1)
+    .循环判断首 ()
+        .如果真 (大于 (序号, 光标位置.文档横座标))
+            跳出循环 ()
+        .如果真结束
+        .如果 (小于 (取代码 (行文本 [相加 (光标位置.文档纵座标, 1)], 序号), 0)) ' 汉字
+            赋值 (序号, 相加 (序号, 2))
+        .否则
+            赋值 (序号, 相加 (序号, 1))
+        .如果结束
+        
+    .循环判断尾 (小于 (序号, 下一行长))
+    
+.如果结束
+追随光标 ()
+重画 ()
+
+.子程序 光标右移, 空白型, 公开, 
+.局部变量 行长, 整数型, , , 
+.局部变量 序号, 整数型, , , 
+
+赋值 (行长, 取文本长度 (行文本 [相加 (光标位置.文档纵座标, 1)]))
+.如果真 (等于 (光标位置.文档横座标, 行长)) ' 在尾了
+    .如果真 (等于 (光标位置.文档纵座标, 相减 (行数, 1))) ' 到底了
+        返回 ()
+    .如果真结束
+    赋值 (光标位置.文档纵座标, 相加 (光标位置.文档纵座标, 1)) ' 移到下一行首
+    赋值 (光标位置.文档横座标, 0)
+    追随光标 ()
+    重画 ()
+    返回 ()
+.如果真结束
+.如果 (小于 (取代码 (行文本 [相加 (光标位置.文档纵座标, 1)], 光标位置.文档横座标), 0)) ' 汉字
+    赋值 (光标位置.文档横座标, 相加 (光标位置.文档横座标, 2))
+.否则
+    赋值 (光标位置.文档横座标, 相加 (光标位置.文档横座标, 1))
+.如果结束
+.如果真 (大于 (序号, 行长))
+    赋值 (光标位置.文档横座标, 行长)
+.如果真结束
+追随光标 ()
+重画 ()
+
+
+.子程序 光标左移, 空白型, 公开, 
+.局部变量 行长, 整数型, , , 
+.局部变量 序号, 整数型, , , 
+.局部变量 字符长, 整数型, , , 
+
+.如果真 (等于 (光标位置.文档横座标, 0)) ' 在头了
+    .如果真 (等于 (光标位置.文档纵座标, 0)) ' 到顶了
+        返回 ()
+    .如果真结束
+    赋值 (光标位置.文档纵座标, 相减 (光标位置.文档纵座标, 1)) ' 移到上一行未尾
+    赋值 (光标位置.文档横座标, 取文本长度 (行文本 [相加 (光标位置.文档纵座标, 1)]))
+    追随光标 ()
+    重画 ()
+    返回 ()
+.如果真结束
+ ' 不好直接判断,因为有汉字和英文混合
+赋值 (序号, 1)
+.循环判断首 ()
+    .如果 (小于 (取代码 (行文本 [相加 (光标位置.文档纵座标, 1)], 序号), 0)) ' 汉字
+        赋值 (序号, 相加 (序号, 2))
+        赋值 (字符长, 2)
+    .否则
+        赋值 (序号, 相加 (序号, 1))
+        赋值 (字符长, 1)
+    .如果结束
+    
+.循环判断尾 (小于 (序号, 光标位置.文档横座标))
+赋值 (光标位置.文档横座标, 相减 (光标位置.文档横座标, 字符长))
+追随光标 ()
+重画 ()
+
+.子程序 光标到行首, 空白型, 公开, 
+.如果真 (等于 (光标位置.文档横座标, 0))
+    返回 ()
+.如果真结束
+赋值 (光标位置.文档横座标, 0)
+追随光标 ()
+重画 ()
+
+
+.子程序 光标到行尾, 空白型, 公开, 
+.局部变量 行长, 整数型, , , 
+
+赋值 (行长, 取文本长度 (行文本 [相加 (光标位置.文档纵座标, 1)]))
+.如果真 (等于 (光标位置.文档横座标, 行长)) ' 在尾了
+    返回 ()
+.如果真结束
+赋值 (光标位置.文档横座标, 行长)
+追随光标 ()
+重画 ()
+
+
+.子程序 光标到文档首, 空白型, 公开, 到第一行的行首
+.如果真 (并且 (等于 (光标位置.文档横座标, 0), 等于 (光标位置.文档纵座标, 0)))
+    返回 ()
+.如果真结束
+赋值 (光标位置.文档横座标, 0)
+赋值 (光标位置.文档纵座标, 0)
+追随光标 ()
+重画 ()
+
+.子程序 光标到文档尾, 空白型, 公开, 到末行的尾部
+.局部变量 行长, 整数型, , , 
+
+赋值 (行长, 取文本长度 (行文本 [行数]))
+.如果真 (并且 (等于 (光标位置.文档横座标, 行长), 等于 (光标位置.文档纵座标, 相减 (行数, 1)))) ' 在尾了
+    返回 ()
+.如果真结束
+赋值 (光标位置.文档横座标, 行长)
+赋值 (光标位置.文档纵座标, 相减 (行数, 1))
+追随光标 ()
+重画 ()
+ ' ---------------
+
+
+.子程序 光标处选择到行首, 空白型, 公开, 
+.如果真 (等于 (光标位置.文档横座标, 0))
+    返回 ()
+.如果真结束
+赋值 (结束选择, 光标位置)
+赋值 (光标位置.文档横座标, 0)
+赋值 (开始选择, 光标位置)
+赋值 (有文本选择, 真)
+追随光标 ()
+重画 ()
+
+
+.子程序 光标处选择到行尾, 空白型, 公开, 
+.局部变量 行长, 整数型, , , 
+
+赋值 (行长, 取文本长度 (行文本 [相加 (光标位置.文档纵座标, 1)]))
+.如果真 (等于 (光标位置.文档横座标, 行长)) ' 在尾了
+    返回 ()
+.如果真结束
+赋值 (开始选择, 光标位置)
+赋值 (光标位置.文档横座标, 行长)
+赋值 (结束选择, 光标位置)
+赋值 (有文本选择, 真)
+追随光标 ()
+重画 ()
+
+
+.子程序 光标处选择到文档首, 空白型, 公开, 到第一行的行首
+.如果真 (并且 (等于 (光标位置.文档横座标, 0), 等于 (光标位置.文档纵座标, 0)))
+    返回 ()
+.如果真结束
+赋值 (结束选择, 光标位置)
+赋值 (光标位置.文档横座标, 0)
+赋值 (光标位置.文档纵座标, 0)
+赋值 (开始选择, 光标位置)
+赋值 (有文本选择, 真)
+
+追随光标 ()
+重画 ()
+
+.子程序 光标处选择到文档尾, 空白型, 公开, 到末行的尾部
+.局部变量 行长, 整数型, , , 
+
+赋值 (行长, 取文本长度 (行文本 [行数]))
+.如果真 (并且 (等于 (光标位置.文档横座标, 行长), 等于 (光标位置.文档纵座标, 相减 (行数, 1)))) ' 在尾了
+    返回 ()
+.如果真结束
+赋值 (开始选择, 光标位置)
+赋值 (光标位置.文档横座标, 行长)
+赋值 (光标位置.文档纵座标, 相减 (行数, 1))
+赋值 (结束选择, 光标位置)
+赋值 (有文本选择, 真)
+追随光标 ()
+重画 ()
+
+.子程序 全选, 空白型, 公开, 
+.局部变量 行长, 整数型, , , 
+
+赋值 (行长, 取文本长度 (行文本 [行数]))
+赋值 (开始选择.文档纵座标, 0)
+赋值 (开始选择.文档横座标, 0)
+赋值 (光标位置.文档横座标, 行长)
+赋值 (光标位置.文档纵座标, 相减 (行数, 1))
+赋值 (结束选择, 光标位置)
+赋值 (有文本选择, 真)
+追随光标 ()
+重画 ()
+
+.子程序 删除字符, 空白型, 公开, 删除光标后的字符
+.参数 是否重做, 逻辑型, 可空, 重做操作不入堆栈
+
+.局部变量 行长, 整数型, , , 
+.局部变量 字符长, 整数型, , , 
+.局部变量 操作, 撤消重做数据, , , 
+
+.如果真 (等于 (是否重做, 假))
+    赋值 (操作.操作类型, #删除字符)
+    保存编辑器环境 (操作)
+.如果真结束
+
+赋值 (行长, 取文本长度 (行文本 [相加 (光标位置.文档纵座标, 1)]))
+.如果 (等于 (光标位置.文档横座标, 行长)) ' 在尾了
+    .如果真 (等于 (光标位置.文档纵座标, 相减 (行数, 1)))
+        返回 () ' 在文档尾了,没有什么可删除
+    .如果真结束
+    赋值 (操作.操作文本, #换行符)
+    赋值 (行文本 [相加 (光标位置.文档纵座标, 1)], 相加 (行文本 [相加 (光标位置.文档纵座标, 1)], 行文本 [相加 (光标位置.文档纵座标, 2)]))
+     ' 两行全并
+    删除成员 (行文本, 相加 (光标位置.文档纵座标, 2), )
+.否则
+    
+    .如果 (小于 (取代码 (行文本 [相加 (光标位置.文档纵座标, 1)], 相加 (光标位置.文档横座标, 1)), 0)) ' 汉字
+        赋值 (字符长, 2)
+    .否则
+        赋值 (字符长, 1)
+    .如果结束
+    赋值 (操作.操作文本, 取文本中间 (行文本 [相加 (光标位置.文档纵座标, 1)], 相加 (光标位置.文档横座标, 1), 字符长))
+    赋值 (行文本 [相加 (光标位置.文档纵座标, 1)], 文本替换 (行文本 [相加 (光标位置.文档纵座标, 1)], 相加 (光标位置.文档横座标, 1), 字符长, ))
+     ' 从中间删除
+.如果结束
+赋值 (已修改, 真)
+取最长文本行 ()
+追随光标 ()
+重画 ()
+.如果真 (等于 (是否重做, 假))
+    加入撤销堆栈 (操作)
+.如果真结束
+
+
+.子程序 双击选中词条, 空白型, 公开, 
+.参数 横向位置, 整数型, , 编辑窗口的座标系
+.参数 纵向位置, 整数型, , 编辑窗口的座标系
+
+.局部变量 场景句柄, 整数型, , , 
+.局部变量 文字宽度, 整数型, , , 
+.局部变量 字高度, 整数型, , , 
+.局部变量 原句柄, 整数型, , , 
+.局部变量 用户区宽度, 整数型, , , 
+.局部变量 用户区高度, 整数型, , , 
+.局部变量 开始行, 整数型, , , 
+.局部变量 结束行, 整数型, , , 
+.局部变量 光标行号, 整数型, , , 
+.局部变量 行长度, 整数型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 X, 整数型, , , 
+.局部变量 检测行, 文本型, , , 
+.局部变量 横向偏移, 整数型, , , 
+.局部变量 定位, 整数型, , , 
+.局部变量 字符宽, 整数型, , , 
+.局部变量 左边界, 整数型, , , 
+.局部变量 字符值, 整数型, , , 
+
+赋值 (场景句柄, 取设备场景_API (句柄))
+赋值 (原句柄, 选入设备场景_API (场景句柄, 字体句柄))
+
+取用户区大小 (用户区宽度, 用户区高度)
+取文本高宽 (场景句柄, “易”, 2, 文字宽度, 字高度)
+取显示行范围 (用户区高度, 字高度, 开始行, 结束行)
+
+
+赋值 (光标行号, 相加 (开始行, 整除 (纵向位置, 相加 (字高度, 行间距)))) ' 确定光标所在行
+.如果真 (大于 (光标行号, 相减 (行数, 1))) ' 超出总行数
+    赋值 (光标行号, 相减 (行数, 1))
+.如果真结束
+.如果真 (小于 (光标行号, 0))
+    赋值 (光标行号, 0)
+.如果真结束
+赋值 (横向偏移, 取横向滚动条位置 ())
+赋值 (横向位置, 相加 (横向位置, 横向偏移)) ' 转化成文档座标系
+赋值 (开始选择.文档纵座标, 光标行号)
+赋值 (结束选择.文档纵座标, 光标行号)
+
+.如果真 (大于 (横向位置, 0)) ' 点在编辑区内
+    赋值 (检测行, 子文本替换 (行文本 [相加 (光标行号, 1)], 字符 (9), 取空白文本 (TAB空格数), , , 真))
+    赋值 (行长度, 取文本长度 (行文本 [相加 (光标行号, 1)]))
+    赋值 (N, 1)
+    赋值 (X, 0)
+    .判断循环首 (小于或等于 (N, 行长度))
+        赋值 (字符值, 取代码 (行文本 [相加 (光标行号, 1)], N))
+        .如果 (等于 (字符值, 9)) ' TAB符
+            赋值 (X, 相加 (X, TAB空格数))
+            赋值 (定位, 0)
+        .否则
+            
+            .如果 (小于 (字符值, 0))
+                赋值 (X, 相加 (X, 2))
+                .如果真 (等于 (定位, 0))
+                    赋值 (定位, N) ' 确定词的开始
+                .如果真结束
+                
+            .否则
+                赋值 (X, 相加 (X, 1))
+                .如果 (或者 (并且 (小于或等于 (65, 字符值), 小于或等于 (字符值, 90)), 并且 (小于或等于 (97, 字符值), 小于或等于 (字符值, 122))))
+                     ' 为英文字母,也定下词的开始
+                    .如果真 (等于 (定位, 0))
+                        赋值 (定位, N) ' 确定词的开始
+                    .如果真结束
+                    
+                .否则
+                    赋值 (定位, 0)
+                .如果结束
+                
+            .如果结束
+            
+        .如果结束
+        取文本高宽 (场景句柄, 检测行, X, 文字宽度, 字高度)
+        .如果真 (小于 (字符值, 0))
+            赋值 (N, 相加 (N, 1))
+        .如果真结束
+        赋值 (N, 相加 (N, 1))
+        
+        .如果真 (小于或等于 (横向位置, 文字宽度)) ' 已经到达光标位置,开始取词的尾部
+            .如果 (大于 (定位, 0))
+                赋值 (开始选择.文档横座标, 相减 (定位, 1))
+                .判断循环首 (小于或等于 (N, 行长度))
+                    赋值 (字符值, 取代码 (行文本 [相加 (光标行号, 1)], N))
+                    .如果真 (并且 (大于 (字符值, 0), 取反 (或者 (并且 (小于或等于 (65, 字符值), 小于或等于 (字符值, 90)), 并且 (小于或等于 (97, 字符值), 小于或等于 (字符值, 122))))))
+                         ' 不为汉字英文字母
+                        赋值 (结束选择.文档横座标, 相减 (N, 1))
+                        赋值 (有文本选择, 是否有选择 ())
+                        .如果真 (有文本选择)
+                            赋值 (光标位置, 结束选择)
+                            重画 ()
+                        .如果真结束
+                        跳出循环 ()
+                    .如果真结束
+                    
+                    .如果 (小于 (字符值, 0))
+                        赋值 (N, 相加 (N, 2))
+                    .否则
+                        赋值 (N, 相加 (N, 1))
+                    .如果结束
+                    
+                .判断循环尾 ()
+                .如果 (大于 (N, 行长度))
+                    赋值 (结束选择.文档横座标, 行长度)
+                    赋值 (有文本选择, 是否有选择 ())
+                    .如果真 (有文本选择)
+                        赋值 (光标位置, 结束选择)
+                        重画 ()
+                    .如果真结束
+                    
+                .否则
+                    跳出循环 () ' 跳出两层循环
+                .如果结束
+                
+                
+            .否则
+                跳出循环 () ' 双击处没有词条
+            .如果结束
+            
+        .如果真结束
+        
+    .判断循环尾 ()
+    
+.如果真结束
+选入设备场景_API (场景句柄, 原句柄)
+释放设备场景_API (句柄, 场景句柄)
+
+
+.子程序 销毁, 空白型, 公开, 
+发送消息_API (句柄, 16, 0, 0) ' WM_CLOSE 窗口关闭消息
+
+
+.子程序 未名命文档, 逻辑型, 公开, 
+返回 (等于 (路径, “”))
+
+.子程序 打印, 空白型, 公开, 
+.参数 打印机, 打印机, , 
+
+.局部变量 总行数, 整数型, , , 
+.局部变量 N, 整数型, , , 
+
+赋值 (总行数, 取数组成员数 (行文本))
+.如果真 (等于 (行文本 [总行数], “”))
+    赋值 (总行数, 相减 (总行数, 1)) ' 最末的空行不写出回车换行符
+.如果真结束
+.计次循环首 (总行数, N)
+    打印机.写文本行 (行文本 [N])
+.计次循环尾 ()
+
+
+.子程序 保存, 逻辑型, 公开, 保存到磁盘文件
+.参数 文档路径, 文本型, 可空, 不空时为另存
+
+.局部变量 N, 整数型, , , 
+.局部变量 文件号, 整数型, , , 
+.局部变量 末行为空, 逻辑型, , , 
+.局部变量 总行数, 整数型, , , 
+
+.如果 (等于 (文档路径, “”))
+    .如果真 (等于 (路径, “”))
+        返回 (假)
+    .如果真结束
+    
+.否则
+     ' 另存
+    赋值 (N, 倒找文本 (文档路径, “\”, , 假))
+    赋值 (标题, 取文本右边 (文档路径, 相减 (取文本长度 (文档路径), N)))
+    赋值 (路径, 文档路径)
+    取文件类型 ()
+.如果结束
+赋值 (文件号, 打开文件 (路径, #重写, ))
+.如果真 (等于 (文件号, 0))
+    返回 (假)
+.如果真结束
+赋值 (总行数, 取数组成员数 (行文本))
+.如果真 (等于 (行文本 [总行数], “”))
+    赋值 (末行为空, 真)
+    赋值 (总行数, 相减 (总行数, 1)) ' 最末的空行不写出回车换行符
+.如果真结束
+.计次循环首 (总行数, N)
+    .如果真 (并且 (等于 (N, 总行数), 等于 (末行为空, 假)))
+        写出文本 (文件号, 行文本 [N]) ' 原文件末行尾并无回车，所以不用写出行
+        跳出循环 ()
+    .如果真结束
+    .如果真 (等于 (写文本行 (文件号, 行文本 [N]), 假))
+        关闭文件 (文件号)
+        返回 (假)
+    .如果真结束
+    
+.计次循环尾 ()
+关闭文件 (文件号)
+赋值 (已修改, 假)
+返回 (真)
+
+.子程序 可否复制, 逻辑型, , 
+返回 (有文本选择)
+
+.子程序 可否粘贴, 逻辑型, , 
+返回 (剪辑板中可有文本 ())
+
+.子程序 可否剪切, 逻辑型, , 
+返回 (有文本选择)
+
+.子程序 更新状态条, 空白型, 公开, 
+_启动窗口.置文本 (., 1, 到文本 (行数))
+_启动窗口.置文本 (., 2, 相加 (“行:”, 到文本 (相加 (光标位置.文档纵座标, 1))))
+_启动窗口.置文本 (., 3, 相加 (“列:”, 到文本 (光标位置.文档横座标)))
+
+.子程序 更新菜单工具条状态, 空白型, , 
+ ' 编辑菜单
+.如果 (可否剪切 ())
+    赋值 (_启动窗口..禁止, 假)
+    _启动窗口.去除状态 (., 6, #禁止)
+    
+.否则
+    赋值 (_启动窗口..禁止, 真)
+    _启动窗口.加入状态 (., 6, #禁止)
+    
+.如果结束
+.如果 (可否复制 ())
+    赋值 (_启动窗口..禁止, 假)
+    _启动窗口.去除状态 (., 7, #禁止)
+    
+.否则
+    赋值 (_启动窗口..禁止, 真)
+    _启动窗口.加入状态 (., 7, #禁止)
+    
+.如果结束
+.如果 (可否粘贴 ())
+    赋值 (_启动窗口..禁止, 假)
+    _启动窗口.去除状态 (., 8, #禁止)
+    
+.否则
+    赋值 (_启动窗口..禁止, 真)
+    _启动窗口.加入状态 (., 8, #禁止)
+    
+.如果结束
+.如果 (可否撤消 ())
+    赋值 (_启动窗口..禁止, 假)
+    _启动窗口.去除状态 (., 10, #禁止)
+    
+.否则
+    赋值 (_启动窗口..禁止, 真)
+    _启动窗口.加入状态 (., 10, #禁止)
+.如果结束
+.如果 (可否重做 ())
+    赋值 (_启动窗口..禁止, 假)
+    _启动窗口.去除状态 (., 11, #禁止)
+    
+.否则
+    赋值 (_启动窗口..禁止, 真)
+    _启动窗口.加入状态 (., 11, #禁止)
+.如果结束
+
+
+.子程序 取选中文本, 文本型, 公开, 单行选黑的文本
+.局部变量 开始选择行, 整数型, , , 
+.局部变量 结束选择行, 整数型, , , 
+.局部变量 开始选择位, 整数型, , , 
+.局部变量 结束选择位, 整数型, , , 
+.局部变量 选中文本, 文本型, , , 
+.局部变量 N, 整数型, , , 
+
+.如果真 (可否复制 ())
+    .如果 (大于 (开始选择.文档纵座标, 结束选择.文档纵座标)) ' 分检出头尾位置
+        赋值 (开始选择行, 结束选择.文档纵座标)
+        赋值 (结束选择行, 开始选择.文档纵座标)
+        赋值 (开始选择位, 结束选择.文档横座标)
+        赋值 (结束选择位, 开始选择.文档横座标)
+        
+    .否则
+        赋值 (开始选择行, 开始选择.文档纵座标)
+        赋值 (结束选择行, 结束选择.文档纵座标)
+        赋值 (开始选择位, 开始选择.文档横座标)
+        赋值 (结束选择位, 结束选择.文档横座标)
+    .如果结束
+    
+    .如果真 (等于 (开始选择行, 结束选择行)) ' 同行选中
+        .如果真 (大于 (开始选择.文档横座标, 结束选择.文档横座标))
+            赋值 (开始选择位, 结束选择.文档横座标)
+            赋值 (结束选择位, 开始选择.文档横座标)
+        .如果真结束
+        赋值 (选中文本, 取文本中间 (行文本 [相加 (开始选择行, 1)], 相加 (开始选择位, 1), 相减 (结束选择位, 开始选择位)))
+        返回 (选中文本)
+    .如果真结束
+    
+.如果真结束
+返回 (“”)
+
+.子程序 复制, 空白型, 公开, 复制选中的文本
+.局部变量 开始选择行, 整数型, , , 
+.局部变量 结束选择行, 整数型, , , 
+.局部变量 开始选择位, 整数型, , , 
+.局部变量 结束选择位, 整数型, , , 
+.局部变量 选中文本, 文本型, , , 
+.局部变量 N, 整数型, , , 
+
+.如果真 (可否复制 ())
+    .如果 (大于 (开始选择.文档纵座标, 结束选择.文档纵座标)) ' 分检出头尾位置
+        赋值 (开始选择行, 结束选择.文档纵座标)
+        赋值 (结束选择行, 开始选择.文档纵座标)
+        赋值 (开始选择位, 结束选择.文档横座标)
+        赋值 (结束选择位, 开始选择.文档横座标)
+        
+    .否则
+        赋值 (开始选择行, 开始选择.文档纵座标)
+        赋值 (结束选择行, 结束选择.文档纵座标)
+        赋值 (开始选择位, 开始选择.文档横座标)
+        赋值 (结束选择位, 结束选择.文档横座标)
+    .如果结束
+    
+    .如果 (等于 (开始选择行, 结束选择行)) ' 同行选中
+        .如果真 (大于 (开始选择.文档横座标, 结束选择.文档横座标))
+            赋值 (开始选择位, 结束选择.文档横座标)
+            赋值 (结束选择位, 开始选择.文档横座标)
+        .如果真结束
+        赋值 (选中文本, 取文本中间 (行文本 [相加 (开始选择行, 1)], 相加 (开始选择位, 1), 相减 (结束选择位, 开始选择位)))
+        
+    .否则
+         ' 多行选择
+        .变量循环首 (开始选择行, 结束选择行, 1, N)
+            .判断开始 (等于 (N, 开始选择行)) ' 首行可能选不全
+                赋值 (选中文本, 相加 (取文本右边 (行文本 [相加 (N, 1)], 相减 (取文本长度 (行文本 [相加 (N, 1)]), 开始选择位)), #换行符))
+            .判断 (等于 (N, 结束选择行)) ' 尾行可能选不全
+                赋值 (选中文本, 相加 (选中文本, 取文本左边 (行文本 [相加 (N, 1)], 结束选择位)))
+                
+            .默认
+                赋值 (选中文本, 相加 (选中文本, 行文本 [相加 (N, 1)], #换行符)) ' 如果行数太多,累加拼合文本的方法会很慢
+                
+            .判断结束
+            
+        .变量循环尾 ()
+        
+    .如果结束
+    置剪辑板文本 (选中文本)
+    
+.如果真结束
+
+
+.子程序 删除文本, 空白型, 公开, 
+.局部变量 操作, 撤消重做数据, 静态, , 
+
+.如果 (有文本选择)
+    赋值 (操作.操作类型, #块删除)
+    保存编辑器环境 (操作)
+    删除块 (操作)
+    加入撤销堆栈 (操作)
+    
+    赋值 (已修改, 真)
+    取最长文本行 ()
+    追随光标 ()
+    重画 ()
+    
+.否则
+    删除字符 ()
+.如果结束
+
+
+.子程序 剪切, 空白型, 公开, 
+.局部变量 操作, 撤消重做数据, 静态, , 
+
+.如果真 (可否剪切 ())
+    复制 ()
+    赋值 (操作.操作类型, #块删除)
+    保存编辑器环境 (操作)
+    删除块 (操作)
+    加入撤销堆栈 (操作)
+    
+    赋值 (已修改, 真)
+    取最长文本行 ()
+    追随光标 ()
+    重画 ()
+    删除块 (操作)
+.如果真结束
+
+
+.子程序 删除块, 空白型, , 
+.参数 操作, 撤消重做数据, 参考, 
+
+.局部变量 开始选择行, 整数型, , , 
+.局部变量 结束选择行, 整数型, , , 
+.局部变量 开始选择位, 整数型, , , 
+.局部变量 结束选择位, 整数型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 删除行数, 整数型, , , 
+.局部变量 删除后文本行, 文本型, , , 
+
+.如果真 (等于 (有文本选择, 假))
+    返回 ()
+.如果真结束
+赋值 (操作.删除前光标.文档横座标, 光标位置.文档横座标)
+赋值 (操作.删除前光标.文档纵座标, 光标位置.文档纵座标)
+.如果 (大于 (开始选择.文档纵座标, 结束选择.文档纵座标)) ' 分检出头尾位置
+    赋值 (开始选择行, 结束选择.文档纵座标)
+    赋值 (结束选择行, 开始选择.文档纵座标)
+    赋值 (开始选择位, 结束选择.文档横座标)
+    赋值 (结束选择位, 开始选择.文档横座标)
+    
+.否则
+    赋值 (开始选择行, 开始选择.文档纵座标)
+    赋值 (结束选择行, 结束选择.文档纵座标)
+    赋值 (开始选择位, 开始选择.文档横座标)
+    赋值 (结束选择位, 结束选择.文档横座标)
+.如果结束
+赋值 (操作.有块删除, 真)
+.变量循环首 (开始选择行, 结束选择行, 1, N)
+    赋值 (操作.删除前文本行, 相加 (操作.删除前文本行, 行文本 [相加 (N, 1)], #换行符))
+.变量循环尾 ()
+.如果 (等于 (开始选择行, 结束选择行)) ' 同行选中
+    .如果真 (大于 (开始选择.文档横座标, 结束选择.文档横座标))
+        赋值 (开始选择位, 结束选择.文档横座标)
+        赋值 (结束选择位, 开始选择.文档横座标)
+    .如果真结束
+    赋值 (删除后文本行, 文本替换 (行文本 [相加 (开始选择行, 1)], 相加 (开始选择位, 1), 相减 (结束选择位, 开始选择位), ))
+    
+.否则
+     ' 多行选择
+    赋值 (删除后文本行, 相加 (取文本左边 (行文本 [相加 (开始选择行, 1)], 开始选择位), 取文本右边 (行文本 [相加 (结束选择行, 1)], 相减 (取文本长度 (行文本 [相加 (结束选择行, 1)]), 结束选择位))))
+     ' 删除中间行
+    赋值 (删除行数, 相减 (结束选择行, 开始选择行))
+    删除成员 (行文本, 相加 (开始选择行, 2), 删除行数)
+    赋值 (光标位置.文档纵座标, 开始选择行)
+    赋值 (操作.光标位置.文档纵座标, 开始选择行)
+.如果结束
+赋值 (行文本 [相加 (开始选择行, 1)], 删除后文本行)
+赋值 (光标位置.文档横座标, 开始选择位)
+赋值 (操作.光标位置.文档横座标, 开始选择位)
+赋值 (有文本选择, 假)
+
+.子程序 粘贴入, 空白型, 公开, 
+.参数 数据, 文本型, 参考, 
+
+.局部变量 操作, 撤消重做数据, , , 
+.局部变量 剪切板文本, 文本型, , , 
+.局部变量 文本数据, 文本型, , "0", 
+.局部变量 N, 整数型, , , 
+.局部变量 贴入行数, 整数型, , , 
+.局部变量 最后行长, 整数型, , , 
+
+赋值 (操作.操作类型, #粘贴)
+保存编辑器环境 (操作)
+删除块 (操作)
+赋值 (文本数据, 分割文本 (数据, #换行符, ))
+赋值 (操作.粘贴前文本行, 行文本 [相加 (光标位置.文档纵座标, 1)])
+赋值 (贴入行数, 取数组成员数 (文本数据))
+赋值 (操作.粘贴行数, 贴入行数)
+删除成员 (行文本, 相加 (光标位置.文档纵座标, 1), )
+赋值 (文本数据 [1], 相加 (取文本左边 (操作.粘贴前文本行, 光标位置.文档横座标), 文本数据 [1]))
+赋值 (最后行长, 取文本长度 (文本数据 [贴入行数]))
+赋值 (文本数据 [贴入行数], 相加 (文本数据 [贴入行数], 取文本右边 (操作.粘贴前文本行, 相减 (取文本长度 (操作.粘贴前文本行), 光标位置.文档横座标))))
+
+.计次循环首 (贴入行数, N)
+    赋值 (操作.粘贴后文本行, 相加 (操作.粘贴后文本行, 文本数据 [N], #换行符))
+    插入成员 (行文本, 相加 (光标位置.文档纵座标, 1), 文本数据 [相加 (相减 (贴入行数, N), 1)])
+.计次循环尾 ()
+
+ ' 重置光标
+赋值 (光标位置.文档横座标, 最后行长)
+赋值 (光标位置.文档纵座标, 相减 (相加 (光标位置.文档纵座标, 贴入行数), 1))
+
+赋值 (已修改, 真)
+取最长文本行 ()
+追随光标 ()
+重画 ()
+加入撤销堆栈 (操作)
+
+
+.子程序 粘贴, 空白型, 公开, 
+.局部变量 剪切板文本, 文本型, , , 
+
+.如果真 (等于 (可否粘贴 (), 假))
+    返回 ()
+.如果真结束
+赋值 (剪切板文本, 取剪辑板文本 ())
+粘贴入 (剪切板文本)
+
+.子程序 可否撤消, 逻辑型, 公开, 
+.如果真 (等于 (堆栈指针, 0))
+    返回 (假)
+.如果真结束
+返回 (真)
+
+.子程序 可否重做, 逻辑型, 公开, 
+.如果真 (等于 (堆栈指针, 取数组成员数 (撤消重做堆栈))) ' 栈顶,不可重做
+    返回 (假)
+.如果真结束
+返回 (真)
+
+.子程序 撤消, 空白型, 公开, 
+.局部变量 操作类型, 整数型, , , 
+.局部变量 X, 整数型, , , 
+.局部变量 文本行, 文本型, , , 
+.局部变量 文字长, 整数型, , , 
+
+.如果真 (等于 (可否撤消 (), 假))
+    返回 ()
+.如果真结束
+
+赋值 (操作类型, 撤消重做堆栈 [堆栈指针], 操作类型)
+.判断开始 (等于 (操作类型, #回车换行))
+     ' 把断开的两行再合并,并判断原来有没有自动加上TAB
+    .如果真 (大于 (撤消重做堆栈 [堆栈指针], TAB数, 0))
+        .如果真 (等于 (取重复文本 (撤消重做堆栈 [堆栈指针], TAB数, 字符 (9)), 取文本左边 (行文本 [相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 2)], 撤消重做堆栈 [堆栈指针], TAB数)))
+            赋值 (行文本 [相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 2)], 取文本右边 (行文本 [相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 2)], 相减 (取文本长度 (行文本 [相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 2)]), 撤消重做堆栈 [堆栈指针], TAB数)))
+        .如果真结束
+        
+    .如果真结束
+    赋值 (行文本 [相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 1)], 相加 (行文本 [相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 1)], 行文本 [相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 2)]))
+    删除成员 (行文本, 相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 2), )
+.判断 (等于 (操作类型, #退格删除))
+     ' 把删除的再补上
+    .如果 (等于 (撤消重做堆栈 [堆栈指针], 操作文本, #换行符))
+        赋值 (文本行, 行文本 [撤消重做堆栈] [堆栈指针], 光标位置.文档纵座标)
+        赋值 (X, 撤消重做堆栈 [堆栈指针], 结束选择.文档横座标)
+        赋值 (行文本 [撤消重做堆栈] [堆栈指针], 光标位置.文档纵座标, 取文本左边 (文本行, X))
+        赋值 (文本行, 取文本右边 (文本行, 相减 (取文本长度 (文本行), X)))
+        插入成员 (行文本, 撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 文本行)
+        
+    .否则
+        赋值 (X, 相减 (撤消重做堆栈 [堆栈指针], 光标位置.文档横座标, 取文本长度 (撤消重做堆栈 [堆栈指针], 操作文本)))
+        赋值 (文本行, 行文本 [相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 1)])
+        赋值 (文本行, 相加 (取文本左边 (文本行, X), 撤消重做堆栈 [堆栈指针], 操作文本, 取文本右边 (文本行, 相减 (取文本长度 (文本行), X))))
+        赋值 (行文本 [相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 1)], 文本行)
+        
+    .如果结束
+    
+.判断 (等于 (操作类型, #输入字符))
+     ' 把输入的再删除去
+    赋值 (文字长, 取文本长度 (撤消重做堆栈 [堆栈指针], 操作文本))
+    赋值 (X, 相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档横座标, 1))
+    赋值 (文本行, 行文本 [相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 1)])
+    赋值 (行文本 [相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 1)], 文本替换 (文本行, X, 文字长, ))
+    
+.判断 (等于 (操作类型, #删除字符))
+     ' 把删除的再补上
+    .如果 (等于 (撤消重做堆栈 [堆栈指针], 操作文本, #换行符))
+        赋值 (文本行, 行文本 [相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 1)])
+        赋值 (X, 撤消重做堆栈 [堆栈指针], 光标位置.文档横座标)
+        赋值 (行文本 [相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 1)], 取文本左边 (文本行, X))
+        赋值 (文本行, 取文本右边 (文本行, 相减 (取文本长度 (文本行), X)))
+        插入成员 (行文本, 相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 2), 文本行)
+        
+    .否则
+        赋值 (X, 撤消重做堆栈 [堆栈指针], 光标位置.文档横座标)
+        赋值 (文本行, 行文本 [相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 1)])
+        赋值 (文本行, 相加 (取文本左边 (文本行, X), 撤消重做堆栈 [堆栈指针], 操作文本, 取文本右边 (文本行, 相减 (取文本长度 (文本行), X))))
+        赋值 (行文本 [相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 1)], 文本行)
+        
+    .如果结束
+    
+.判断 (等于 (操作类型, #粘贴))
+     ' 把贴上的再删除去
+    删除成员 (行文本, 相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 1), 撤消重做堆栈 [堆栈指针], 粘贴行数)
+    插入成员 (行文本, 相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 1), 撤消重做堆栈 [堆栈指针], 粘贴前文本行)
+.判断 (等于 (操作类型, #全部替换))
+     ' 反替换,不入堆栈
+    全部替换 (撤消重做堆栈 [堆栈指针], 替换为的词条, 撤消重做堆栈 [堆栈指针], 被替换的词条, 撤消重做堆栈 [堆栈指针], 区分大小写, 真)
+.默认
+    
+.判断结束
+
+恢复编辑器环境 (撤消重做堆栈 [堆栈指针])
+取最长文本行 ()
+追随光标 ()
+重画 ()
+赋值 (堆栈指针, 相减 (堆栈指针, 1))
+
+.子程序 重做, 空白型, 公开, 
+.局部变量 操作类型, 整数型, , , 
+.局部变量 操作, 撤消重做数据, , , 
+.局部变量 文本数据, 文本型, , "0", 
+.局部变量 贴入行数, 整数型, , , 
+.局部变量 N, 整数型, , , 
+
+.如果真 (等于 (可否重做 (), 假))
+    返回 ()
+.如果真结束
+赋值 (堆栈指针, 相加 (堆栈指针, 1))
+恢复编辑器环境 (撤消重做堆栈 [堆栈指针], 真)
+赋值 (操作类型, 撤消重做堆栈 [堆栈指针], 操作类型)
+.判断开始 (等于 (操作类型, #回车换行))
+    输入回车键 (真)
+.判断 (等于 (操作类型, #退格删除))
+    输入退格键 (真)
+.判断 (等于 (操作类型, #输入字符))
+    输入文字 (撤消重做堆栈 [堆栈指针], 操作文本, 真)
+.判断 (等于 (操作类型, #删除字符))
+    删除字符 (真)
+.判断 (等于 (操作类型, #粘贴))
+    赋值 (文本数据, 分割文本 (撤消重做堆栈 [堆栈指针], 粘贴后文本行, #换行符, ))
+    赋值 (贴入行数, 取数组成员数 (文本数据))
+    删除成员 (行文本, 相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 1), )
+    .计次循环首 (贴入行数, N)
+        插入成员 (行文本, 相加 (撤消重做堆栈 [堆栈指针], 光标位置.文档纵座标, 1), 文本数据 [相加 (相减 (贴入行数, N), 1)])
+    .计次循环尾 ()
+    取最长文本行 ()
+    追随光标 ()
+    重画 ()
+.判断 (等于 (操作类型, #全部替换))
+    全部替换 (撤消重做堆栈 [堆栈指针], 被替换的词条, 撤消重做堆栈 [堆栈指针], 替换为的词条, 撤消重做堆栈 [堆栈指针], 区分大小写, 真)
+.默认
+    
+.判断结束
+
+
+.子程序 跳到行, 逻辑型, 公开, 
+.参数 行号, 整数型, , 从1开始
+
+.如果真 (或者 (小于 (行号, 1), 大于 (行号, 行数)))
+    返回 (假)
+.如果真结束
+赋值 (光标位置.文档纵座标, 相减 (行号, 1))
+赋值 (光标位置.文档横座标, 0)
+赋值 (有文本选择, 假)
+追随光标 ()
+重画 ()
+返回 (真)
+
+.子程序 查找, 逻辑型, 公开, 
+.参数 关键词, 文本型, , 
+.参数 方向, 整数型, , 0.所有方向;1.向下查找;2.向上查找
+.参数 查找时区分大小写, 逻辑型, , 
+
+.局部变量 查找位置, 文档座标, , , 
+.局部变量 开始位置, 整数型, , , 
+.局部变量 序号, 整数型, , , 
+.局部变量 找到, 逻辑型, , , 
+
+.如果真 (等于 (关键词, “”))
+    返回 (假)
+.如果真结束
+.判断开始 (等于 (方向, 1)) ' 1.向下查找
+    赋值 (开始位置, 光标位置.文档横座标) ' 从光标处开始查找
+    .变量循环首 (相加 (光标位置.文档纵座标, 1), 行数, 1, 序号)
+        赋值 (查找位置.文档横座标, 寻找文本 (行文本 [序号], 关键词, 相加 (开始位置, 1), 取反 (查找时区分大小写)))
+        .如果真 (大于 (查找位置.文档横座标, 0)) ' 找到了
+            赋值 (查找位置.文档纵座标, 相减 (序号, 1))
+            赋值 (查找位置.文档横座标, 相减 (查找位置.文档横座标, 1))
+            赋值 (找到, 真)
+            跳出循环 ()
+        .如果真结束
+        赋值 (开始位置, 1)
+    .变量循环尾 ()
+    
+.判断 (等于 (方向, 2)) ' 2.向上查找
+    赋值 (开始位置, 光标位置.文档横座标) ' 从光标处开始查找
+    .变量循环首 (相加 (光标位置.文档纵座标, 1), 1, -1, 序号)
+        .如果 (大于 (开始位置, -1))
+            赋值 (查找位置.文档横座标, 倒找文本 (行文本 [序号], 关键词, 开始位置, 取反 (查找时区分大小写)))
+        .否则
+            赋值 (查找位置.文档横座标, 倒找文本 (行文本 [序号], 关键词, , 取反 (查找时区分大小写)))
+        .如果结束
+        .如果真 (大于 (查找位置.文档横座标, 0)) ' 找到了
+            赋值 (查找位置.文档纵座标, 相减 (序号, 1))
+            赋值 (查找位置.文档横座标, 相减 (查找位置.文档横座标, 1))
+            赋值 (找到, 真)
+            跳出循环 ()
+        .如果真结束
+        赋值 (开始位置, -1)
+    .变量循环尾 ()
+    
+.默认
+    
+     ' 0.所有方向
+    .计次循环首 (行数, 序号)
+        赋值 (查找位置.文档横座标, 寻找文本 (行文本 [序号], 关键词, , 取反 (查找时区分大小写)))
+        .如果真 (大于 (查找位置.文档横座标, 0)) ' 找到了
+            赋值 (查找位置.文档纵座标, 相减 (序号, 1))
+            赋值 (查找位置.文档横座标, 相减 (查找位置.文档横座标, 1))
+            赋值 (找到, 真)
+            跳出循环 ()
+        .如果真结束
+        
+    .计次循环尾 ()
+    
+.判断结束
+.如果真 (找到)
+    赋值 (查找关键字, 关键词)
+    赋值 (区分大小写, 查找时区分大小写)
+    
+    赋值 (开始选择, 查找位置)
+    赋值 (结束选择.文档纵座标, 查找位置.文档纵座标)
+    赋值 (结束选择.文档横座标, 相加 (查找位置.文档横座标, 取文本长度 (关键词)))
+    .如果 (等于 (方向, 2))
+        赋值 (光标位置, 开始选择)
+    .否则
+        赋值 (光标位置, 结束选择)
+    .如果结束
+    
+    赋值 (有文本选择, 真)
+    追随光标 ()
+    重画 ()
+    返回 (真)
+.如果真结束
+信息框 (相加 (“找不到”, #引号, 关键词, #引号), #信息图标, )
+返回 (假)
+
+.子程序 查找上一个, 空白型, 公开, 
+.如果真 (不等于 (查找关键字, “”))
+    查找 (查找关键字, 2, 区分大小写)
+.如果真结束
+
+
+.子程序 查找下一个, 空白型, 公开, 
+.如果真 (不等于 (查找关键字, “”))
+    查找 (查找关键字, 1, 区分大小写)
+.如果真结束
+
+
+.子程序 全部替换, 整数型, 公开, 返回替换的次数
+.参数 被替换的词条, 文本型, 参考, 
+.参数 替换为的词条, 文本型, 参考, 
+.参数 是否区分大小写, 逻辑型, , 
+.参数 是否重做, 逻辑型, 可空, 重做操作不入堆栈
+
+.局部变量 N, 整数型, , , 
+.局部变量 操作, 撤消重做数据, , , 
+.局部变量 位置, 整数型, , , 
+.局部变量 替换次数, 整数型, , , 
+
+.计次循环首 (行数, N)
+     ' 因为要统计替换次数,所以不用"子文本替换"
+    赋值 (位置, 1)
+    .循环判断首 ()
+        赋值 (位置, 寻找文本 (行文本 [N], 被替换的词条, 位置, 取反 (是否区分大小写)))
+        .如果真 (大于 (位置, 0))
+            赋值 (行文本 [N], 文本替换 (行文本 [N], 位置, 取文本长度 (被替换的词条), 替换为的词条))
+            赋值 (位置, 相加 (位置, 取文本长度 (替换为的词条)))
+            赋值 (替换次数, 相加 (替换次数, 1))
+        .如果真结束
+        
+    .循环判断尾 (大于 (位置, 0))
+    
+.计次循环尾 ()
+
+.如果真 (并且 (等于 (是否重做, 假), 大于 (替换次数, 0)))
+    赋值 (操作.操作类型, #全部替换)
+    保存编辑器环境 (操作)
+    赋值 (操作.被替换的词条, 被替换的词条)
+    赋值 (操作.替换为的词条, 替换为的词条)
+    赋值 (操作.区分大小写, 是否区分大小写)
+    
+    加入撤销堆栈 (操作)
+.如果真结束
+赋值 (已修改, 真)
+光标到文档尾 ()
+返回 (替换次数)
+
+
+.子程序 补全命令, 空白型, 公开, 
+.参数 命令, 文本型, 参考, 
+.参数 补全框, 树型框, , 
+
+.局部变量 索引号, 整数型, , , 
+.局部变量 后半部分, 文本型, , , 
+.局部变量 完整命令, 文本型, , , 
+.局部变量 Capslock状态, 整数型, , , 
+
+赋值 (索引号, 补全框.最大化按钮)
+.如果真 (等于 (索引号, -1))
+    返回 ()
+.如果真结束
+赋值 (完整命令, 补全框.取项目文本 (索引号))
+赋值 (后半部分, 相加 (取文本右边 (完整命令, 相减 (取文本长度 (完整命令), 取文本长度 (命令))), “ ”))
+赋值 (Capslock状态, 位与 (取按键状态_API (#CapsLock键), 1))
+.如果真 (等于 (Capslock状态, 0))
+    赋值 (后半部分, 到小写 (后半部分))
+.如果真结束
+输入文字 (后半部分)
+
+.子程序 填充程序列表框, 空白型, 公开, 
+.局部变量 N, 整数型, , , 
+.局部变量 命令函数名, 文本型, , , 
+
+_启动窗口.清空 (.)
+_启动窗口.加入项目 (., , 标题, 1, , )
+.计次循环首 (行数, N)
+    .如果真 (检测命令函数行 (行文本 [N], 命令函数名))
+        _启动窗口.加入项目 (., 0, 命令函数名, 0, , )
+    .如果真结束
+    
+.计次循环尾 ()
+_启动窗口.扩展 (., 0)
+
+.子程序 检测命令函数行, 逻辑型, , 如果为命令函数行,则返回真,参数写入命令函数名
+.参数 行, 文本型, , 
+.参数 命令函数名, 文本型, 参考, 
+
+.局部变量 开始位置, 整数型, , , 
+.局部变量 结束位置, 整数型, , , 
+.局部变量 长度, 整数型, , , 
+.局部变量 代码, 整数型, , , 
+.局部变量 检测行, 文本型, , , 
+
+赋值 (检测行, 子文本替换 (行, 字符 (#Tab键), “ ”, , , 真))
+赋值 (检测行, 删首尾空 (检测行))
+赋值 (长度, 取文本长度 (检测行))
+.如果真 (小于 (长度, 5))
+    返回 (假)
+.如果真结束
+.判断开始 (等于 (到大写 (取文本左边 (检测行, 9)), “FUNCTION ”)) ' 函数
+    赋值 (开始位置, 10)
+.判断 (等于 (到大写 (取文本左边 (检测行, 4)), “SUB ”)) ' 子程序
+    赋值 (开始位置, 5)
+.默认
+    返回 (假)
+.判断结束
+
+赋值 (结束位置, 寻找文本 (检测行, “(”, 开始位置, 假))
+.如果真 (小于或等于 (结束位置, -1))
+    赋值 (结束位置, 相加 (长度, 1))
+.如果真结束
+赋值 (命令函数名, 取文本中间 (检测行, 开始位置, 相减 (结束位置, 开始位置)))
+赋值 (命令函数名, 删首尾空 (命令函数名))
+赋值 (开始位置, 寻找文本 (命令函数名, “ ”, , 假)) ' 函数名与（之间还会有其它参数的，比如alias
+.如果真 (大于 (开始位置, 0))
+    赋值 (命令函数名, 取文本左边 (命令函数名, 相减 (开始位置, 1)))
+.如果真结束
+
+赋值 (长度, 取文本长度 (命令函数名))
+.如果真 (等于 (长度, 0)) ' 命令函数名为空
+    返回 (假)
+.如果真结束
+ ' 检测命令函数名是否合法,1,首字符为英文,后面为英文加数字和下划线_
+赋值 (代码, 取代码 (命令函数名, 1))
+.如果 (或者 (并且 (小于或等于 (65, 代码), 小于或等于 (代码, 90)), 并且 (小于或等于 (97, 代码), 小于或等于 (代码, 122)))) ' 为英文开始
+    赋值 (开始位置, 2)
+    .判断循环首 (小于或等于 (开始位置, 长度))
+        赋值 (代码, 取代码 (命令函数名, 开始位置))
+        .如果 (或者 (并且 (小于或等于 (65, 代码), 小于或等于 (代码, 90)), 并且 (小于或等于 (97, 代码), 小于或等于 (代码, 122)), 并且 (小于或等于 (48, 代码), 小于或等于 (代码, 57)), 等于 (代码, 95))) ' 如果是英文或数字或下划线,就一直取代码
+            赋值 (开始位置, 相加 (开始位置, 1))
+        .否则
+            返回 (假)
+        .如果结束
+        
+    .判断循环尾 ()
+.否则
+    返回 (假)
+.如果结束
+返回 (真)
+
+.子程序 寻找命令函数, 逻辑型, 公开, 找到返回真
+.参数 命令函数名, 文本型, , 
+
+.局部变量 N, 整数型, , , 
+.局部变量 开始位置, 整数型, , , 
+.局部变量 找到, 逻辑型, , , 
+.局部变量 检测行, 文本型, , , 
+.局部变量 长度, 整数型, , , 
+
+.计次循环首 (行数, N)
+    赋值 (开始位置, 寻找文本 (行文本 [N], 命令函数名, , 真))
+    .如果真 (大于 (开始位置, 0))
+        赋值 (检测行, 子文本替换 (行文本 [N], 字符 (#Tab键), “ ”, , , 真))
+        赋值 (检测行, 删首尾空 (检测行))
+        .如果真 (或者 (等于 (到大写 (取文本左边 (检测行, 9)), “FUNCTION ”), 等于 (到大写 (取文本左边 (检测行, 4)), “SUB ”)))
+            赋值 (找到, 真)
+            跳出循环 ()
+        .如果真结束
+        
+    .如果真结束
+    
+.计次循环尾 ()
+.如果真 (等于 (找到, 假))
+    返回 (假)
+.如果真结束
+全选 ()
+跳到行 (N)
+返回 (真)
+
+
+.子程序 取指定文件路径, 文本型, 公开, 
+.参数 类型, 整数型, , 0 - log文件 1 - EXE文件
+
+.局部变量 位置1, 整数型, , , 
+.局部变量 位置2, 整数型, , , 
+.局部变量 文件路径, 文本型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 开始位置, 整数型, , , 
+.局部变量 检测行, 文本型, , , 
+.局部变量 找到, 逻辑型, , , 
+.局部变量 文件名, 文本型, , , 
+.局部变量 扩展名, 文本型, , , 
+.局部变量 指定文件名, 逻辑型, , , 
+.局部变量 有路径, 逻辑型, , , 
+
+.如果真 (等于 (路径, “”))
+    返回 (“”)
+.如果真结束
+.如果真 (等于 (类型, 0))
+    赋值 (位置1, 倒找文本 (路径, “.”, , 假))
+    赋值 (位置2, 倒找文本 (路径, “\”, , 假))
+    .如果 (小于 (位置2, 位置1)) ' 有扩展名
+        赋值 (文件路径, 相加 (取文本左边 (路径, 位置1), “log”))
+    .否则
+        赋值 (文件路径, 相加 (路径, “.log”))
+    .如果结束
+    返回 (文件路径)
+.如果真结束
+.如果真 (等于 (文件类型, 2)) ' 纯文本文件没有EXE
+    返回 (“”)
+.如果真结束
+ ' 寻找PB源码的编译项命令
+赋值 (文件名, 标题)
+.计次循环首 (行数, N)
+    赋值 (检测行, 子文本替换 (行文本 [N], 字符 (#Tab键), “ ”, , , 真))
+    赋值 (检测行, 删首尾空 (检测行))
+    .如果真 (等于 (到大写 (取文本左边 (检测行, 9)), “#COMPILE ”))
+        赋值 (开始位置, 寻找文本 (检测行, “EXE”, 9, 真))
+        .如果 (大于或等于 (开始位置, 0))
+            赋值 (找到, 真)
+            赋值 (开始位置, 寻找文本 (检测行, #引号, 开始位置, 真))
+            .如果真 (大于或等于 (开始位置, 0))
+                赋值 (文件名, 取文本右边 (检测行, 相减 (取文本长度 (检测行), 开始位置)))
+                赋值 (文件名, 子文本替换 (文件名, #引号, , , , 真))
+                赋值 (文件名, 子文本替换 (文件名, “/”, “\”, , , 真)) ' 修改错误的地址写法
+                赋值 (指定文件名, 真)
+                赋值 (开始位置, 寻找文本 (文件名, “:\”, , 真))
+                .如果真 (大于或等于 (开始位置, 0)) ' 是全路径
+                    赋值 (文件名, 子文本替换 (文件名, “\\”, “\”, , , 真)) ' 修改错误的地址写法
+                    赋值 (有路径, 真)
+                .如果真结束
+                
+                
+            .如果真结束
+            
+        .否则
+            返回 (“”) ' 不是EXE源码
+        .如果结束
+        
+        
+        跳出循环 ()
+    .如果真结束
+    
+    
+.计次循环尾 ()
+.如果真 (等于 (找到, 假))
+    返回 (“”)
+.如果真结束
+赋值 (开始位置, 倒找文本 (文件名, “.”, , 真))
+.如果 (大于或等于 (开始位置, 0)) ' 有扩展名
+    .如果 (指定文件名)
+        赋值 (扩展名, 到大写 (取文本右边 (文件名, 相减 (取文本长度 (文件名), 开始位置))))
+        .判断开始 (等于 (扩展名, “EXE”))
+            
+        .判断 (等于 (扩展名, “DLL”))
+            赋值 (文件名, 文本替换 (文件名, 开始位置, 4, “.exe”))
+        .默认
+            赋值 (文件名, 相加 (文件名, “.exe”))
+        .判断结束
+        
+    .否则
+        赋值 (文件名, 相加 (取文本左边 (文件名, 开始位置), “exe”))
+    .如果结束
+    
+.否则
+    赋值 (文件名, 相加 (文件名, “.exe”))
+.如果结束
+.如果 (有路径)
+    赋值 (文件路径, 文件名)
+.否则
+    赋值 (文件路径, 相加 (取文档目录 (), 文件名))
+.如果结束
+返回 (文件路径)
+
+.子程序 取编译运行命令, 文本型, 公开, 
+.局部变量 运行命令, 文本型, , , 
+.局部变量 头文件目录, 文本型, , , 
+
+.如果真 (等于 (路径, “”))
+    返回 (“”)
+.如果真结束
+赋值 (头文件目录, 相加 (取PB安装目录 (), “WinAPI”))
+
+赋值 (运行命令, 相加 (编译器路径, “ ”, #引号, 长文件名到短文件名 (路径), #引号, “ /Q /L /I”, #引号, 头文件目录, #引号)) ' 把错误信息输出到log文件,后面为PB编译器的专用参数
+返回 (运行命令)
+
+
+.子程序 取PB安装目录, 文本型, , 
+.局部变量 开始位, 整数型, , , 
+.局部变量 编译器目录, 文本型, , , 
+
+赋值 (开始位, 倒找文本 (编译器路径, “\”, , 假))
+赋值 (编译器目录, 取文本左边 (编译器路径, 相减 (开始位, 1)))
+赋值 (开始位, 倒找文本 (编译器目录, “\”, , 假))
+.如果真 (大于 (开始位, 0))
+    赋值 (编译器目录, 取文本左边 (编译器目录, 开始位))
+    返回 (编译器目录)
+.如果真结束
+返回 (“”)
+
+.子程序 取文档目录, 文本型, 公开, 
+.局部变量 开始位, 整数型, , , 
+.局部变量 目录, 文本型, , , 
+
+.如果真 (等于 (路径, “”))
+    返回 (“”)
+.如果真结束
+赋值 (开始位, 倒找文本 (路径, “\”, , 假))
+赋值 (目录, 取文本左边 (路径, 开始位))
+返回 (目录)
+
+.窗口程序集 窗口程序集2, , , 
+
+.程序集变量 选择值, 空白型, , , 
+.程序集变量 内容, 文本型, , , 
+.子程序 _是否保存对话框_创建完毕, 空白型, , 
+赋值 (.标题, 内容)
+赋值 (选择值, 5)
+鸣叫 ()
+
+.子程序 _按钮1_被单击, 空白型, , 
+赋值 (选择值, 1)
+销毁 ()
+
+.子程序 _按钮2_被单击, 空白型, , 
+赋值 (选择值, 2)
+销毁 ()
+
+.子程序 _按钮3_被单击, 空白型, , 
+赋值 (选择值, 3)
+销毁 ()
+
+.子程序 _按钮4_被单击, 空白型, , 
+赋值 (选择值, 4)
+销毁 ()
+
+.子程序 _按钮5_被单击, 空白型, , 
+赋值 (选择值, 5)
+销毁 ()
+
+.窗口程序集 窗口程序集3, , , 
+
+.程序集变量 历史查找记录, 文本型, , "0", 
+.子程序 _查找窗口_创建完毕, 空白型, , 
+.局部变量 N, 整数型, , , 
+
+.计次循环首 (取数组成员数 (历史查找记录), N)
+    历史查找记录.加入项目 ( [N], )
+.计次循环尾 ()
+获取焦点 ()
+赋值 (N, _启动窗口..)
+赋值 (.内容, 文档列表.取选中文本 ( [N])) ' 如果有选中的关键字，做为查找的目标
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 N, 整数型, , , 
+.局部变量 区分大小写, 逻辑型, , , 
+.局部变量 查找词条, 文本型, , , 
+.局部变量 查找方向, 整数型, , , 
+
+赋值 (N, _启动窗口..)
+赋值 (区分大小写, .选中)
+赋值 (查找词条, .内容)
+赋值 (查找方向, .现行选中项)
+.如果真 (等于 (查找词条, “”))
+    返回 ()
+.如果真结束
+.如果真 (文档列表.查找 ( [N], 查找词条, 查找方向, 区分大小写))
+    .如果真 (等于 (查找方向, 0))
+        赋值 (.现行选中项, 1) ' 原来方向为"全部的",找到后,变为向下查找
+    .如果真结束
+    
+.如果真结束
+
+.计次循环首 (取数组成员数 (历史查找记录), N)
+    .如果 (区分大小写)
+        .如果真 (等于 (历史查找记录 [N], 查找词条))
+            返回 () ' 已经在记录里
+        .如果真结束
+        
+    .否则
+        .如果真 (等于 (到小写 (历史查找记录 [N]), 到小写 (查找词条)))
+            返回 () ' 已经在记录里
+        .如果真结束
+        
+    .如果结束
+    
+.计次循环尾 ()
+0.插入项目 (查找词条, )
+插入成员 (历史查找记录, 1, 查找词条)
+
+.子程序 _按钮2_被单击, 空白型, , 
+销毁 ()
+
+.窗口程序集 窗口程序集4, , , 
+
+.子程序 _替换窗口_创建完毕, 空白型, , 
+.局部变量 N, 整数型, , , 
+
+赋值 (N, _启动窗口..)
+赋值 (.内容, 文档列表.取选中文本 ( [N])) ' 如果有选中的关键字，做为查找的目标
+
+
+.子程序 _按钮4_被单击, 空白型, , 
+销毁 ()
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 N, 整数型, , , 
+.局部变量 区分大小写, 逻辑型, , , 
+.局部变量 查找词条, 文本型, , , 
+
+赋值 (N, _启动窗口..)
+赋值 (区分大小写, .选中)
+赋值 (查找词条, .内容)
+.如果真 (等于 (查找词条, “”))
+    信息框 (“请输入要查找的词条”, #信息图标, )
+    获取焦点 ()
+    返回 ()
+.如果真结束
+.如果 (文档列表.查找 ( [N], 查找词条, 1, 区分大小写))
+    赋值 (.禁止, 假)
+.否则
+    赋值 (.禁止, 真)
+.如果结束
+
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+.局部变量 替换词条, 文本型, , , 
+.局部变量 N, 整数型, , , 
+
+赋值 (替换词条, .内容)
+.如果真 (等于 (替换词条, “”))
+    信息框 (“请输入要替换的词条”, #信息图标, )
+    获取焦点 ()
+    返回 ()
+.如果真结束
+赋值 (N, _启动窗口..)
+文档列表.输入文字 ( [N], 替换词条) ' 替换选中的处文本,就是刚才找到并选黑的部分
+_按钮1_被单击 ()
+
+.子程序 _按钮3_被单击, 空白型, , 
+.局部变量 N, 整数型, , , 
+.局部变量 区分大小写, 逻辑型, , , 
+.局部变量 查找词条, 文本型, , , 
+.局部变量 替换词条, 文本型, , , 
+
+赋值 (N, _启动窗口..)
+赋值 (区分大小写, .选中)
+赋值 (查找词条, .内容)
+.如果真 (等于 (查找词条, “”))
+    信息框 (“请输入要查找的词条”, #信息图标, )
+    获取焦点 ()
+    返回 ()
+.如果真结束
+赋值 (替换词条, .内容)
+.如果真 (等于 (替换词条, “”))
+    信息框 (“请输入要替换的词条”, #信息图标, )
+    获取焦点 ()
+    返回 ()
+.如果真结束
+赋值 (N, 文档列表.全部替换 ( [N], 查找词条, 替换词条, 区分大小写))
+信息框 (相加 (“一共有”, 到文本 (N), “处被替换”), #信息图标, )
+
+.窗口程序集 窗口程序集5, , , 
+
+.程序集变量 配色文件路径, 文本型, , , 
+.程序集变量 配色方案改变, 逻辑型, , , 
+.程序集变量 配色组, 整数型, , "12", 
+.程序集变量 当前方案编号, 整数型, , , 
+.程序集变量 TAB空格数改变, 逻辑型, , , 
+.程序集变量 使用语言改变, 逻辑型, , , 
+.程序集变量 使用命令补全改变, 逻辑型, , , 
+.程序集变量 使用缩进改变, 逻辑型, , , 
+.程序集变量 选择字体, 选择字体_, , , 
+.程序集变量 字体改变, 逻辑型, , , 
+.子程序 _设置窗口_创建完毕, 空白型, , 
+.局部变量 当前配色名称, 文本型, , , 
+.局部变量 配色方案, 文本型, , "0", 
+.局部变量 N, 整数型, , , 
+.局部变量 颜色选择器, 颜色选择器, , , 
+
+ ' 1默认文本颜色
+ ' 2汇编代码颜色
+ ' 3背景颜色
+ ' 4光标行条颜色
+ ' 5成员方法颜色
+ ' 6系统关键字颜色
+ ' 7保留字颜色
+ ' 8运算符颜色
+ ' 9注释颜色
+ ' 10引号文本颜色
+ ' 11文本常量颜色
+ ' 12数值常量颜色
+读取配色方案 (配色组)
+赋值 (.颜色, 配色组 [1])
+赋值 (.颜色, 配色组 [2])
+赋值 (.颜色, 配色组 [3])
+赋值 (.颜色, 配色组 [4])
+赋值 (.颜色, 配色组 [5])
+赋值 (.颜色, 配色组 [6])
+赋值 (.颜色, 配色组 [7])
+赋值 (.颜色, 配色组 [8])
+赋值 (.颜色, 配色组 [9])
+赋值 (.颜色, 配色组 [10])
+赋值 (.颜色, 配色组 [11])
+赋值 (.颜色, 配色组 [12])
+
+赋值 (当前配色名称, 取文本注册项 (#现行用户, 相加 (_启动窗口., “编辑器配置\配色方案名”), “默认配色”))
+赋值 (配色文件路径, 相加 (取运行目录 (), “\配色方案.ini”))
+赋值 (配色方案, 取配置节名 (配色文件路径))
+.计次循环首 (取数组成员数 (配色方案), N)
+    配色方案.加入项目 ( [N], )
+    .如果真 (等于 (配色方案 [N], 当前配色名称))
+        赋值 (.现行选中项, N)
+        赋值 (当前方案编号, N)
+    .如果真结束
+    
+.计次循环尾 ()
+
+.计次循环首 (11, N)
+    赋值 (颜色选择器, 多项选择 (N, , , , , , , , , , , ))
+    事件转移 (颜色选择器, )
+.计次循环尾 ()
+
+赋值 (.内容, 到文本 (TAB空格数))
+
+赋值 (.标题, 相加 (到文本 (编辑框字体.字体名称), “,”, 到文本 (取字号 (编辑框字体))))
+
+赋值 (.选中, 命令补全提示)
+赋值 (.选中, 源码自动缩进)
+赋值 (选择字体.字体结构指针, 编辑框字体)
+
+赋值 (.内容, 编译器路径)
+
+
+.子程序 取字号, 整数型, , 
+.参数 字体, 逻辑字体_, , 
+
+.局部变量 场景句柄, 整数型, , , 
+.局部变量 字号, 整数型, , , 
+
+赋值 (场景句柄, 取设备场景_API (0))
+赋值 (字号, 相除 (相乘 (负 (字体.高度), 72), 取设备场景信息_API (场景句柄, 90)))
+释放设备场景_API (0, 场景句柄)
+返回 (字号)
+
+.子程序 _按钮3_被单击, 空白型, , 
+赋值 (选择字体.结构大小, 60)
+赋值 (选择字体.窗口句柄, 取窗口句柄 ())
+赋值 (选择字体.标志, 位或 (#CF_BOTH, #CF_EFFECTS, #CF_FORCEFONTEXIST, #CF_INITTOLOGFONTSTRUCT))
+.如果真 (选择字体对话框_API (选择字体))
+    赋值 (字体改变, 真)
+    赋值 (.标题, 相加 (到文本 (选择字体.字体结构指针.字体名称), “,”, 到文本 (取字号 (选择字体.字体结构指针))))
+.如果真结束
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+销毁 ()
+
+.子程序 _颜色选择器1_颜色被改变, 空白型, , 
+赋值 (.禁止, 假)
+ ' 用户可能要产生新的配色方案
+
+.子程序 _组合框2_列表项被选择, 空白型, , 
+.如果 (不等于 (当前方案编号, .现行选中项))
+    赋值 (配色方案改变, 真)
+.否则
+    赋值 (配色方案改变, 假)
+.如果结束
+读取颜色方案 (.取项目文本 (.现行选中项))
+
+.子程序 _按钮4_被单击, 空白型, , 
+.局部变量 方案名称, 文本型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 方案已存在, 逻辑型, , , 
+
+.判断循环首 (输入框 (“请输入配色方案的名称(不要与已有的重复):”, , , 方案名称, #输入文本))
+    .如果真 (等于 (方案名称, “”))
+        信息框 (“配色方案的名称不能为空”, #信息图标, )
+        到循环尾 ()
+    .如果真结束
+    赋值 (方案已存在, 假)
+    .计次循环首 (取项目数 (), N)
+        .如果真 (等于 (相减 (N, 1).取项目文本 (), 方案名称))
+            赋值 (方案已存在, 真)
+            跳出循环 ()
+        .如果真结束
+        
+    .计次循环尾 ()
+    .如果真 (方案已存在)
+        信息框 (“这个配色方案的名称已经存在，请重新命名”, #信息图标, )
+        到循环尾 ()
+    .如果真结束
+    保存颜色方案 (方案名称)
+    信息框 (“配色方案已经保存，如要设为当前配色，请在方案列表里选择”, #信息图标, )
+    方案名称.加入项目 ()
+    跳出循环 ()
+.判断循环尾 ()
+
+
+.子程序 保存颜色方案, 空白型, , 
+.参数 方案名, 文本型, , 
+
+.局部变量 N, 整数型, , , 
+.局部变量 配置项, 文本型, , , 
+
+ ' 1默认文本颜色
+ ' 2汇编代码颜色
+ ' 3背景颜色
+ ' 4光标行条颜色
+ ' 5成员方法颜色
+ ' 6系统关键字颜色
+ ' 7保留字颜色
+ ' 8运算符颜色
+ ' 9注释颜色
+ ' 10引号文本颜色
+ ' 11文本常量颜色
+ ' 12数值常量颜色
+赋值 (配色组 [1], .颜色)
+赋值 (配色组 [2], .颜色)
+赋值 (配色组 [3], .颜色)
+赋值 (配色组 [4], .颜色)
+赋值 (配色组 [5], .颜色)
+赋值 (配色组 [6], .颜色)
+赋值 (配色组 [7], .颜色)
+赋值 (配色组 [8], .颜色)
+赋值 (配色组 [9], .颜色)
+赋值 (配色组 [10], .颜色)
+赋值 (配色组 [11], .颜色)
+赋值 (配色组 [12], .颜色)
+
+.计次循环首 (12, N)
+    赋值 (配置项, 多项选择 (N, “默认文本颜色”, “汇编代码颜色”, “背景颜色”, “光标行条颜色”, “成员方法颜色”, “系统关键字颜色”, “保留字颜色”, “运算符颜色”, “注释颜色”, “引号文本颜色”, “文本常量颜色”, “数值常量颜色”))
+    写配置项 (配色文件路径, 方案名, 配置项, 到文本 (配色组 [N]))
+.计次循环尾 ()
+
+.子程序 读取颜色方案, 空白型, , 
+.参数 方案名, 文本型, , 
+
+.局部变量 N, 整数型, , , 
+.局部变量 配置项, 文本型, , , 
+
+.如果 (等于 (.现行选中项, 0))
+     ' 默认项
+    .计次循环首 (12, N)
+        赋值 (配色组 [N], 多项选择 (N, #黑色, #紫红, #白色, #黄色, #红褐, #红色, #蓝色, #藏青, #墨绿, #深青, #紫色, #黄褐))
+    .计次循环尾 ()
+    
+.否则
+    .计次循环首 (12, N)
+        赋值 (配置项, 多项选择 (N, “默认文本颜色”, “汇编代码颜色”, “背景颜色”, “光标行条颜色”, “成员方法颜色”, “系统关键字颜色”, “保留字颜色”, “运算符颜色”, “注释颜色”, “引号文本颜色”, “文本常量颜色”, “数值常量颜色”))
+        赋值 (配色组 [N], 到数值 (读配置项 (配色文件路径, 方案名, 配置项, )))
+    .计次循环尾 ()
+.如果结束
+
+
+ ' 1默认文本颜色
+ ' 2汇编代码颜色
+ ' 3背景颜色
+ ' 4光标行条颜色
+ ' 5成员方法颜色
+ ' 6系统关键字颜色
+ ' 7保留字颜色
+ ' 8运算符颜色
+ ' 9注释颜色
+ ' 10引号文本颜色
+ ' 11文本常量颜色
+ ' 12数值常量颜色
+赋值 (.颜色, 配色组 [1])
+赋值 (.颜色, 配色组 [2])
+赋值 (.颜色, 配色组 [3])
+赋值 (.颜色, 配色组 [4])
+赋值 (.颜色, 配色组 [5])
+赋值 (.颜色, 配色组 [6])
+赋值 (.颜色, 配色组 [7])
+赋值 (.颜色, 配色组 [8])
+赋值 (.颜色, 配色组 [9])
+赋值 (.颜色, 配色组 [10])
+赋值 (.颜色, 配色组 [11])
+赋值 (.颜色, 配色组 [12])
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 N, 整数型, , , 
+.局部变量 配置数据, 字节集, , , 
+.局部变量 当前配色名称, 文本型, , , 
+.局部变量 编译器路径改变, 逻辑型, , , 
+
+.如果真 (配色方案改变)
+    赋值 (默认文本颜色, 配色组 [1])
+    赋值 (汇编代码颜色, 配色组 [2])
+    赋值 (背景颜色, 配色组 [3])
+    赋值 (光标行条颜色, 配色组 [4])
+    赋值 (成员方法颜色, 配色组 [5])
+    赋值 (系统关键字颜色, 配色组 [6])
+    赋值 (保留字颜色, 配色组 [7])
+    赋值 (运算符颜色, 配色组 [8])
+    赋值 (注释颜色, 配色组 [9])
+    赋值 (引号文本颜色, 配色组 [10])
+    赋值 (文本常量颜色, 配色组 [11])
+    赋值 (数值常量颜色, 配色组 [12])
+    
+    .计次循环首 (12, N)
+        赋值 (配置数据, 相加 (配置数据, 到字节集 (配色组 [N])))
+    .计次循环尾 ()
+    赋值 (当前配色名称, .取项目文本 (.现行选中项))
+    写注册项 (#现行用户, 相加 (_启动窗口., “编辑器配置\配色方案名”), 当前配色名称)
+    写注册项 (#现行用户, 相加 (_启动窗口., “编辑器配置\配色数据”), 配置数据)
+    删除对象_API (高亮条刷子)
+    删除对象_API (背景刷子句柄)
+    
+    赋值 (高亮条刷子, 创建纯色刷子_API (光标行条颜色))
+    赋值 (背景刷子句柄, 创建纯色刷子_API (背景颜色))
+.如果真结束
+.如果真 (TAB空格数改变)
+    赋值 (TAB空格数, 到数值 (.内容))
+.如果真结束
+.如果真 (使用命令补全改变)
+    赋值 (命令补全提示, .选中)
+.如果真结束
+.如果真 (使用缩进改变)
+    赋值 (源码自动缩进, .选中)
+.如果真结束
+.如果真 (字体改变)
+    赋值 (编辑框字体, 选择字体.字体结构指针)
+    赋值 (配置数据, 取空白字节集 (60))
+    取回字体数据_API (配置数据, 编辑框字体, 60)
+    写注册项 (#现行用户, 相加 (_启动窗口., “编辑器配置\字体”), 配置数据)
+    删除对象_API (字体句柄)
+    赋值 (字体句柄, 使用指定属性创建逻辑字体_API (编辑框字体))
+    
+.如果真结束
+.如果真 (编译器路径改变)
+    写注册项 (#现行用户, 相加 (_启动窗口., “编辑器配置\编译器路径”), 编译器路径)
+.如果真结束
+销毁 ()
+.如果真 (或者 (配色方案改变, TAB空格数改变, 字体改变))
+    赋值 (N, _启动窗口..)
+    文档列表.重画 ( [N])
+.如果真结束
+
+
+.子程序 _编辑框1_内容被改变, 空白型, , 
+赋值 (TAB空格数改变, 不等于 (到数值 (.内容), TAB空格数))
+
+.子程序 _选择框2_被单击, 空白型, , 
+赋值 (使用命令补全改变, 不等于 (.选中, 命令补全提示))
+
+.子程序 _选择框3_被单击, 空白型, , 
+赋值 (使用缩进改变, 不等于 (.选中, 源码自动缩进))
+
+
+.子程序 _按钮5_被单击, 空白型, , 
+.局部变量 编译器路径改变, 逻辑型, , , 
+.局部变量 开始位, 整数型, , , 
+
+.如果真 (不等于 (编译器路径, “”))
+    赋值 (开始位, 倒找文本 (编译器路径, “\”, , 假))
+    .如果真 (大于 (开始位, 0))
+        赋值 (.初始目录, 取文本左边 (编译器路径, 开始位))
+    .如果真结束
+    
+.如果真结束
+.如果 (打开 ())
+    赋值 (编译器路径, .文件名)
+    赋值 (.内容, 编译器路径)
+    赋值 (编译器路径改变, 真)
+.否则
+    赋值 (编译器路径改变, 假)
+.如果结束
+
+
+
+
+.类模块 关键字类, , , 
+
+.程序集变量 关键字, 关键字类型, , "0", 
+.程序集变量 关键字总数, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 添加关键字, 空白型, 公开, 
+.参数 关键字信息, 关键字类型, 参考, 
+
+加入成员 (关键字, 关键字信息)
+赋值 (关键字总数, 取数组成员数 (关键字))
+
+
+.子程序 比较关键字, 整数型, 公开, 返回-1为不在列表中
+.参数 目标关键字, 文本型, 参考, 
+
+.局部变量 N, 整数型, , , 
+
+.计次循环首 (关键字总数, N)
+    .如果真 (等于 (目标关键字, 关键字 [N], 关键字))
+        返回 (关键字 [N], 关键字分类)
+    .如果真结束
+    
+.计次循环尾 ()
+返回 (-1)
+
+
+.子程序 填充补全框, 空白型, 公开, 
+.参数 命令, 文本型, 参考, 
+.参数 长度, 整数型, , 
+.参数 补全框, 树型框, , 
+
+.局部变量 N, 整数型, , , 
+.局部变量 类型, 整数型, , , 
+
+.计次循环首 (关键字总数, N)
+    .如果真 (等于 (命令文本比较_API (命令, 关键字 [N], 关键字, 长度), 0))
+        .如果 (等于 (关键字 [N], 关键字分类, 0))
+            赋值 (类型, 0)
+        .否则
+            赋值 (类型, 3)
+        .如果结束
+        补全框.加入项目 (关键字 [N], 关键字, 类型, , )
+    .如果真结束
+    
+.计次循环尾 ()
+
+.类模块 关键字管理类, , , 
+
+.程序集变量 关键字列表, 关键字类, , "0", 按字符的长度存放
+.程序集变量 最大字符长度, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+.局部变量 关键字数组, 文本型, , "0", 
+.局部变量 关键字类型, 关键字类型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 序号, 整数型, , , 
+
+赋值 (关键字数组, 分割文本 (#系统关键字列表, , ))
+.计次循环首 (取数组成员数 (关键字数组), N)
+    赋值 (序号, 取文本长度 (关键字数组 [N]))
+    .如果真 (大于 (序号, 最大字符长度))
+        重定义数组 (关键字列表, 真, 序号)
+        赋值 (最大字符长度, 序号)
+    .如果真结束
+    赋值 (关键字类型.关键字, 关键字数组 [N])
+    关键字列表.添加关键字 ( [序号], 关键字类型)
+.计次循环尾 ()
+赋值 (关键字类型.关键字分类, 1)
+赋值 (关键字数组, 分割文本 (#命令关键字列表, , ))
+.计次循环首 (取数组成员数 (关键字数组), N)
+    赋值 (序号, 取文本长度 (关键字数组 [N]))
+    .如果真 (大于 (序号, 最大字符长度))
+        重定义数组 (关键字列表, 真, 序号)
+        赋值 (最大字符长度, 序号)
+    .如果真结束
+    赋值 (关键字类型.关键字, 关键字数组 [N])
+    关键字列表.添加关键字 ( [序号], 关键字类型)
+.计次循环尾 ()
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 取关键字类型, 整数型, 公开, 
+.参数 关键字, 文本型, 参考, 
+
+.局部变量 关键字长度, 整数型, , , 
+
+赋值 (关键字长度, 取文本长度 (关键字))
+.如果真 (或者 (小于 (关键字长度, 2), 大于 (关键字长度, 最大字符长度)))
+    返回 (-1)
+.如果真结束
+返回 (关键字列表.比较关键字 ( [关键字长度], 关键字))
+
+
+.子程序 填充补全框, 空白型, 公开, 
+.参数 命令, 文本型, 参考, 
+.参数 补全框, 树型框, , 
+
+.局部变量 长度, 整数型, , , 
+.局部变量 N, 整数型, , , 
+
+赋值 (长度, 取文本长度 (命令))
+.如果真 (或者 (小于 (长度, 1), 大于 (长度, 最大字符长度)))
+    返回 ()
+.如果真结束
+.变量循环首 (长度, 最大字符长度, 1, N)
+    关键字列表.填充补全框 ( [N], 命令, 长度, 补全框)
+.变量循环尾 ()
+
+.窗口程序集 窗口程序集6, , , 
+
+.子程序 _关于窗口_创建完毕, 空白型, , 
+赋值 (.标题, _启动窗口.)
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+销毁 ()
+
+
+ ' 不属于任何一个程序集、类模块的函数：

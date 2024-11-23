@@ -1,0 +1,257 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 260
+    高度 = 210
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 已保存到：D:\易语言学习\Data\IeyXshod.e\_启动窗口_图标.ico
+    背景音乐 =  ' 空
+    标题 = “创建VPN连接”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 GUID, , 
+    .成员 data1, 整数型, , , 
+    .成员 data2, 短整数型, , , 
+    .成员 data3, 短整数型, , , 
+    .成员 data4, 字节型, , "8", 
+
+数据类型 RASIPADDR, , 
+    .成员 a, 字节型, , , 
+    .成员 b, 字节型, , , 
+    .成员 c, 字节型, , , 
+    .成员 d, 字节型, , , 
+
+数据类型 RASENTRY, , 
+    .成员 dwSize, 整数型, , , 
+    .成员 dwfOptions, 整数型, , , 
+    .成员 dwCountryID, 整数型, , , 
+    .成员 dwCountryCode, 整数型, , , 
+    .成员 szAreaCode, 字节型, , "8", 
+    .成员 szLocalPhoneNumber, 字节型, , "132", 
+    .成员 dwAlternateOffset, 整数型, , , 
+    .成员 ipaddr, RASIPADDR, , , 
+    .成员 ipaddrDns, RASIPADDR, , , 
+    .成员 ipaddrDnsAlt, RASIPADDR, , , 
+    .成员 ipaddrWins, RASIPADDR, , , 
+    .成员 ipaddrWinsAlt, RASIPADDR, , , 
+    .成员 dwFrameSize, 整数型, , , 
+    .成员 dwfNetProtocols, 整数型, , , 
+    .成员 dwFramingProtocol, 整数型, , , 
+    .成员 szScript, 字节型, , "260", 
+    .成员 szAutodialDll, 字节型, , "260", 
+    .成员 szAutodialFunc, 字节型, , "260", 
+    .成员 szDeviceType, 字节型, , "16", 
+    .成员 szDeviceName, 字节型, , "132", 
+    .成员 szX25PadType, 字节型, , "32", 
+    .成员 szX25Address, 字节型, , "200", 
+    .成员 szX25Facilities, 字节型, , "200", 
+    .成员 szX25UserData, 字节型, , "204", 
+    .成员 dwChannels, 整数型, , , 
+    .成员 dwReserved1, 整数型, , , 
+    .成员 dwReserved2, 整数型, , , 
+    .成员 dwSubEntries, 整数型, , , 
+    .成员 dwDialMode, 整数型, , , 
+    .成员 dwDialExtraPercent, 整数型, , , 
+    .成员 dwDialExtraSampleSeconds, 整数型, , , 
+    .成员 dwHangUpExtraPercent, 整数型, , , 
+    .成员 dwHangUpExtraSampleSeconds, 整数型, , , 
+    .成员 dwIdleDisconnectSeconds, 整数型, , , 
+    .成员 dwType, 整数型, , , 
+    .成员 dwEncryptionType, 整数型, , , 
+    .成员 dwCustomAuthKey, 整数型, , , 
+    .成员 guidId, GUID, , , 
+    .成员 szCustomDialDll, 字节型, , "260", 
+    .成员 dwVpnStrategy, 整数型, , , 
+    .成员 dwfOptions2, 整数型, , , 
+    .成员 dwfOptions3, 整数型, , , 
+    .成员 szDnsSuffix, 字节型, , "256", 
+    .成员 dwTcpWindowSize, 整数型, , , 
+    .成员 szPrerequisitePbk, 字节型, , "260", 
+    .成员 szPrerequisiteEntry, 字节型, , "260", 
+    .成员 dwRedialCount, 整数型, , , 
+    .成员 dwRedialPause, 整数型, , , 
+
+数据类型 RASCREDENTIALS, , 
+    .成员 dwSize, 整数型, , , 
+    .成员 dwMask, 整数型, , , 
+    .成员 szUserName, 字节型, , "257", 
+    .成员 szPassword, 字节型, , "257", 
+    .成员 szDomain, 字节型, , "16", 
+
+
+.DLL命令 创建连接, 整数型, "rasapi32.dll", "RasSetEntryPropertiesA", , 
+    .参数 lpszPhonebook, 空白型, , 
+    .参数 lpszEntry, 文本型, , 
+    .参数 lpRasEntry, 未知类型0x4101008D, , 
+    .参数 dwEntryInfoSize, 整数型, , 
+    .参数 lpbDeviceInfo, 空白型, , 
+    .参数 wDeviceInfoSize, 空白型, , 
+
+.DLL命令 设置连接, 整数型, "rasapi32.dll", "RasSetCredentialsA", , 
+    .参数 lpszPhonebook, 空白型, , 
+    .参数 lpszEntry, 文本型, , 
+    .参数 lpCredentials, 未知类型0x4101008E, , 
+    .参数 fClearCredentials, 整数型, , 
+
+.DLL命令 复制内存数据, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节型, 数组, 
+    .参数 Source, 文本型, , 
+    .参数 Length, 整数型, , 
+
+.窗口程序集 启动窗口程序集, , , 
+
+.子程序 _按钮2_被单击, 空白型, , 
+结束 ()
+
+
+.子程序 创建VPN, 逻辑型, , 
+.参数 连接名称, 文本型, , 
+.参数 用户名, 文本型, , 
+.参数 密码, 文本型, , 
+.参数 目的地址, 文本型, , 
+
+.局部变量 re, 未知类型0x4101009C, , , 
+.局部变量 rc, 未知类型0x4101009D, , , 
+.局部变量 n, 整数型, , , 
+.局部变量 sDeviceName, 文本型, , , 
+.局部变量 sDeviceType, 文本型, , , 
+
+.如果真 (等于 (连接名称, “”))
+    赋值 (连接名称, “虚拟专用网络连接”)
+.如果真结束
+.如果 (或者 (等于 (用户名, “”), 等于 (密码, “”)))
+    赋值 (1)
+.否则
+    赋值 (0)
+.如果结束
+赋值 (目的地址, 相加 (“   ”, 目的地址)) ' 不加三个空格建立后的地址少了前三位，不知是何原因
+赋值 (sDeviceName, “WAN 微型端口 (L2TP)”)
+赋值 (sDeviceType, “vpn”)
+赋值 (re., 2884)
+赋值 (re., 86)
+赋值 (re., 86)
+赋值 (re., 75)
+赋值 (re., 120)
+赋值 (re., 1)
+赋值 (re., 3)
+赋值 (re., 4)
+赋值 (re., 1024262928)
+赋值 (re., 367)
+赋值 (re., 1)
+赋值 (re., 10)
+赋值 (re., 120)
+赋值 (re., 3)
+赋值 (re., 60)
+赋值 (re., 2)
+未知函数_167837854 (re., sDeviceType, 取文本长度 (sDeviceType))
+未知函数_167837854 (re., sDeviceName, 取文本长度 (sDeviceName))
+复制内存数据 (re.szLocalPhoneNumber, 目的地址, 取文本长度 (目的地址))
+
+赋值 (rc., 540)
+赋值 (rc., 11)
+未知函数_167837854 (rc., 用户名, 取文本长度 (用户名))
+未知函数_167837854 (rc., 密码, 取文本长度 (密码))
+输出调试文本 (连接名称, 用户名, 密码, n)
+.如果真 (等于 (未知函数_167837855 (0, 连接名称, re, re., 0, 0), 0))
+    .如果真 (等于 (n, 1))
+        返回 (真)
+    .如果真结束
+    .如果真 (等于 (未知函数_167837856 (0, 连接名称, rc, 0), 0))
+        返回 (真)
+    .如果真结束
+    
+.如果真结束
+返回 (假)
+
+.子程序 _按钮1_被单击, 空白型, , 
+.如果 (创建VPN (., ., ., .))
+    信息框 (“创建成功!”, 0, )
+    发送快捷方式到桌面 ()
+    
+.否则
+    信息框 (“创建失败”, 0, )
+    
+.如果结束
+
+
+.子程序 发送快捷方式到桌面, 空白型, , 
+.局部变量 网络连接集, 对象, , , 
+.局部变量 网络连接, 对象, , , 
+.局部变量 z, 整数型, , , 
+.局部变量 x, 整数型, , , 
+
+
+网络连接集.创建 (“Shell”, 相加 (读环境变量 (“windir”), “\system32\shell32.dll”))
+赋值 (z, 网络连接集.对象型方法 (“NameSpace”, 49).对象型方法 (“Items”, ).读数值属性 (“Count”, ))
+.计次循环首 (z, x)
+     ' 输出调试文本 (网络连接集.对象型方法 (“NameSpace”, 49).对象型方法 (“Items”, ).对象型方法 (“Item”, 到短整数 (x － 1)).读文本属性 (“Name”, ))
+    .如果真 (等于 (网络连接集.对象型方法 (“NameSpace”, 49).对象型方法 (“Items”, ).对象型方法 (“Item”, 到短整数 (相减 (x, 1))).读文本属性 (“Name”, ), 选择 (等于 (., “”), “虚拟专用网络连接”, .)))
+        赋值 (网络连接, 网络连接集.对象型方法 (“NameSpace”, 49).对象型方法 (“Items”, ).对象型方法 (“Item”, 到短整数 (相减 (x, 1))))
+        跳出循环 ()
+    .如果真结束
+    
+.计次循环尾 ()
+ ' 输出调试文本 (z)
+ ' 网络连接.查看 ()
+赋值 (z, 网络连接.对象型方法 (“Verbs”, ).读数值属性 (“Count”, ))
+.计次循环首 (z, x)
+     ' 输出调试文本 (网络连接.对象型方法 (“Verbs”, ).对象型方法 (“Item”, 到短整数 (x － 1)).读文本属性 (“Name”, ))
+    .如果真 (等于 (网络连接.对象型方法 (“Verbs”, ).对象型方法 (“Item”, 到短整数 (相减 (x, 1))).读文本属性 (“Name”, ), “创建快捷方式(&S)”))
+        网络连接.对象型方法 (“Verbs”, ).对象型方法 (“Item”, 到短整数 (相减 (x, 1))).对象型方法 (“DoIt”, )
+        跳出循环 ()
+    .如果真结束
+    
+.计次循环尾 ()
+网络连接.清除 ()
+网络连接集.清除 ()
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

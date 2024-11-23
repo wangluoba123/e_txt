@@ -1,0 +1,3321 @@
+ ' 文件类型：Windows控制台程序
+
+ ' 程序名称：通用DLL注入器
+ ' 程序描述：各种DLL注入方法汇总注入器
+ ' 程序作者：yucos
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 479
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\_启动窗口_图标.ico
+    背景音乐 =  ' 空
+    标题 = “通用DLL注入器”
+    帮助文件名 = “”
+
+窗口 窗口1
+    左边 = 50
+    顶边 = 50
+    宽度 = 377
+    高度 = 479
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+窗口 窗口2
+    左边 = 50
+    顶边 = 50
+    宽度 = 379
+    高度 = 479
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “调用函数”
+    帮助文件名 = “”
+
+窗口 窗口3
+    左边 = 50
+    顶边 = 50
+    宽度 = 377
+    高度 = 73
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “接口函数”
+    帮助文件名 = “”
+
+
+
+.图片 输入法文件SouGou, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\输入法文件SouGou", , 输入法文件(SouGou)搜狗拼音
+.图片 PE文件, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\PE文件", , 不知道是撒- - 
+.图片 load_code, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\load_code", , 内存中加载DLL,加载？
+.图片 getaddr_code, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\getaddr_code", , 内存中加载DLL,调用函数？
+.图片 free_code, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\free_code", , 内存中加载DLL,卸载DLL？
+.图片 Load, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\Load", , 
+.常量 PROCESS_ALL_ACCESS, "2035711", , 给予进程所有可能允许的权限
+.常量 MEM_COMMIT, "4096", , 为特定的页面区域分配内存中或磁盘的页面文件中的物理存储
+.常量 MEM_RELEASE, "32768", , 完全回收
+.常量 PAGE_READWRITE, "4", , 区域不可执行代码，应用程序可以读写该区域。
+.常量 PAGE_EXECUTE_READWRITE, "64", , 区域可以执行代码，应用程序可以读写该区域。
+.常量 DMUS_SEG_REPEAT_INFINITE, "4294967295", , <0xFFFFFFFF>
+.常量 WH_KEYBOARD, "2", , 用来监视WM_KEYDOWN and WM_KEYUP消息，这些消息通过GetMessage or PeekMessage function返回
+.常量 WM_INPUTLANGCHANGEREQUEST, "80", , 改变输入法
+.常量 IMAGE_DOS_SIGNATURE, "23117", , 5A4D
+.常量 IMAGE_NT_SIGNATURE, "17744", , 4550
+.常量 CREATE_SUSPENDED, "4", , 新进程的主线程会以暂停的状态被创建，直到调用ResumeThread函数被调用时才运行。
+.常量 TH32CS_SNAPTHREAD, "4", , 在快照中包含系统中所有的线程。
+.常量 THREAD_ALL_ACCESS, "2032639", , 给予线程所有可能允许的权限
+.常量 INVALID_HANDLE_VALUE, "-1", , 创建一个进程间共享的对象
+.常量 FILE_MAP_WRITE, "2", , 可以读取和写入文件
+.常量 DUPLICATE_SAME_ACCESS, "2", , 新句柄拥有与原始句柄相同的安全访问特征
+.常量 CONTEXT_FULL, "65543", , 线程环境信息全部内容，CONTEXT_CONTROL | CONTEXT_INTEGER | CONTEXT_SEGMENTS
+.常量 IMAGE_SCN_MEM_EXECUTE, "536870912", , 内存可执行节
+.常量 IMAGE_SCN_MEM_WRITE, "2147483648", , 内存可写节
+.声音 注入, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\注入", , 
+.声音 卸载, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\卸载", , 
+.声音 错误, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\错误", , 
+.声音 待用, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\待用", , 
+.图片 皮肤_compact, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_compact", 隐藏, 可直接使用 皮肤_导出() 命令把自己想要的皮肤导出
+.图片 皮肤_REAL, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_REAL", 隐藏, 
+.图片 皮肤_xmp, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_xmp", 隐藏, 
+.图片 皮肤_QQTalkSHE, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_QQTalkSHE", 隐藏, 
+.图片 皮肤_Mancity窄版, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_Mancity窄版", 隐藏, 
+.图片 皮肤_QQ2011, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_QQ2011", 隐藏, 
+.图片 皮肤_QQ金属雅灰, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_QQ金属雅灰", 隐藏, 
+.图片 皮肤_ShanMeng窄版, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_ShanMeng窄版", 隐藏, 
+.图片 皮肤_Areo, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_Areo", 隐藏, 
+.图片 皮肤_QQ2009, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_QQ2009", 隐藏, 
+.图片 皮肤_QQ2008, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_QQ2008", 隐藏, 
+.图片 皮肤_QQGame, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_QQGame", 隐藏, 
+.图片 皮肤_QQ2009黑色, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_QQ2009黑色", 隐藏, 
+.图片 皮肤_Black, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_Black", 隐藏, 
+.图片 皮肤_中国风, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_中国风", 隐藏, 
+.图片 皮肤_Office_2007, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_Office_2007", 隐藏, 
+.图片 皮肤_WhiteFire, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_WhiteFire", 隐藏, 
+.图片 皮肤_纯净皮肤, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_纯净皮肤", 隐藏, 
+.图片 皮肤_MSN, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_MSN", 隐藏, 
+.图片 皮肤_炫绿, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_炫绿", 隐藏, 
+.图片 皮肤_积木, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_积木", 隐藏, 
+.图片 皮肤_QQ影音, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_QQ影音", 隐藏, 
+.图片 皮肤_Itunes, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_Itunes", 隐藏, 
+.图片 皮肤_悬浮镂空, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_悬浮镂空", 隐藏, 
+.图片 皮肤_Adamant, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_Adamant", 隐藏, 
+.图片 皮肤_Longhorn, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_Longhorn", 隐藏, 
+.图片 皮肤_Storm, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_Storm", 隐藏, 
+.图片 皮肤_Asus, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_Asus", 隐藏, 
+.图片 皮肤_QQ2009_宽底边, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_QQ2009_宽底边", 隐藏, 
+.图片 皮肤_QQ2009_窄底边, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_QQ2009_窄底边", 隐藏, 
+.图片 皮肤_Dogmax, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_Dogmax", 隐藏, 
+.图片 皮肤_彗星小助手深蓝色, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_彗星小助手深蓝色", 隐藏, 
+.图片 皮肤_精易编程助手, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_精易编程助手", 隐藏, 
+.图片 皮肤_Black简约, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_Black简约", 隐藏, 易友【小系】
+.图片 皮肤_Black04, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_Black04", 隐藏, 易友【小系】
+.图片 皮肤_FlatUI, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_FlatUI", 隐藏, 易友【梦生】
+.图片 皮肤_Win8SHE, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_Win8SHE", 隐藏, 易友【1185384801】
+.图片 皮肤_QQ2015, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_QQ2015", 隐藏, 易友【1185384801】
+.图片 皮肤_QQ浏览器, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_QQ浏览器", 隐藏, 易友【1185384801】
+.图片 皮肤_Vista绿, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_Vista绿", 隐藏, 易友【1185384801】
+.图片 皮肤_WIN10修复, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_WIN10修复", 隐藏, 易友【1185384801】
+.图片 皮肤_Xenes, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_Xenes", 隐藏, 易友【1185384801】
+.图片 皮肤_彩虹, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_彩虹", 隐藏, 易友【1185384801】
+.图片 皮肤_蓝色电脑管家, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_蓝色电脑管家", 隐藏, 易友【1185384801】
+.图片 皮肤_简约蓝紫, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_简约蓝紫", 隐藏, 易友【1185384801】
+.图片 皮肤_黑色皮肤, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_黑色皮肤", 隐藏, 易友【loveslkm】
+.图片 皮肤_黑色, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_黑色", 隐藏, 易友【金帛】
+.图片 皮肤_MAC, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_MAC", 隐藏, 易友【金帛】
+.图片 皮肤_黑绿, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_黑绿", 隐藏, 易友【金帛】
+.图片 皮肤_简约白x, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_简约白x", 隐藏, 易友【2017浮影】
+.图片 皮肤_极黑立体, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_极黑立体", 隐藏, 以下均收集于网络
+.图片 皮肤_简洁黑红, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_简洁黑红", 隐藏, 
+.图片 皮肤_简约白, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_简约白", 隐藏, 
+.图片 皮肤_简约天蓝, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_简约天蓝", 隐藏, 
+.图片 皮肤_简约灰白, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_简约灰白", 隐藏, 
+.图片 皮肤_简约黑, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_简约黑", 隐藏, 
+.图片 皮肤_简约蓝白, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_简约蓝白", 隐藏, 
+.图片 皮肤_简约青, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_简约青", 隐藏, 
+.图片 皮肤_清新, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_清新", 隐藏, 
+.图片 皮肤_显眼蓝, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_显眼蓝", 隐藏, 
+.图片 皮肤_邮戳, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_邮戳", 隐藏, 
+.图片 皮肤_立体米白, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_立体米白", 隐藏, 
+.图片 皮肤_黑粉, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_黑粉", 隐藏, 
+.图片 皮肤_忧郁灰, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_忧郁灰", 隐藏, 
+.图片 皮肤_可爱蓝, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_可爱蓝", 隐藏, 
+.图片 皮肤_清新蓝, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_清新蓝", 隐藏, 
+.图片 皮肤_蓝调主义, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_蓝调主义", 隐藏, 
+.图片 皮肤_高标栏, " ' 已保存到：D:\易语言学习\Data\通用DLL注入器 .e\皮肤_高标栏", 隐藏, 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 3 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 2 0 扩展界面支持库一
+ ' eAPI F7FC1AE45C5C4758AF03EF19F18A395D 3 1 应用接口支持库
+ ' edroptarget {9DA96BF9CEBD45c5BFCF94CBE61671F5} 2 0 拖放支持库
+ ' spec A512548E76954B6E92C21055517615B0 3 1 特殊功能支持库
+ ' shell 52F260023059454187AF826A3C07AF2A 3 0 操作系统界面功能支持库
+
+
+
+ ' 所需要的模块
+ ' 精易皮肤模块 C:\Users\Administrator\Desktop\常用模块\精易皮肤模块2.0.ec
+
+
+数据类型 窗口信息, 公开, 
+    .成员 窗口句柄, 整数型, , , 
+    .成员 进程ID, 整数型, , , 
+    .成员 线程ID, 整数型, , , 
+    .成员 窗口标题, 文本型, , , 
+    .成员 窗口类名, 文本型, , , 
+
+数据类型 MODULEENTRY32, 公开, 模块信息结构体
+    .成员 dwSize, 整数型, , , 结构大小
+    .成员 th32ModuleID, 整数型, , , 模块ID
+    .成员 th32ProcessID, 整数型, , , 进程ID
+    .成员 GlblcntUsage, 整数型, , , 没意义，模块使用计数1
+    .成员 ProccntUsage, 整数型, , , 没意义，模块使用计数2
+    .成员 modBaseAddr, 整数型, , , 模块基址
+    .成员 modBaseSize, 整数型, , , 模块大小
+    .成员 hModule, 整数型, , , 模块句柄
+    .成员 szModule, 字节型, , "256", 模块名
+    .成员 szExePath, 字节型, , "256", 模块路径
+
+数据类型 IMAGE_DOS_HEADER, , DOS头结构
+    .成员 e_magic, 短整数型, , , 魔数 一直都是MZ(0x5A4D)
+    .成员 e_cblp, 短整数型, , , 文件最后一页的字节数
+    .成员 e_cp, 短整数型, , , 文件的页数
+    .成员 e_crlc, 短整数型, , , 重定位信息
+    .成员 e_cparhdr, 短整数型, , , 段落中头部信息的大小
+    .成员 e_minalloc, 短整数型, , , 需要的最少额外段
+    .成员 e_maxalloc, 短整数型, , , 需要的最多额外段
+    .成员 e_ss, 短整数型, , , 初始的(相对的)SS寄存器值
+    .成员 e_sp, 短整数型, , , 初始的SP寄存器值
+    .成员 e_csum, 短整数型, , , 校验和
+    .成员 e_ip, 短整数型, , , 初始的IP寄存器值
+    .成员 e_cs, 短整数型, , , 初始的(相对的)CS寄存器值
+    .成员 e_lfarlc, 短整数型, , , 重定位表在文件中的地址
+    .成员 e_ovno, 短整数型, , , 覆盖数
+    .成员 e_res, 短整数型, , "4", 保留字 占用8个字节
+    .成员 e_oemid, 短整数型, , , OEM识别符（为e_oeminfo准备）
+    .成员 e_oeminfo, 短整数型, , , OEM信息; e_oemid详细说明
+    .成员 e_res2, 短整数型, , "10", 保留字 占用20个字节
+    .成员 e_lfanew, 整数型, , , 新exe头在文件中的地址。 Pe文件头真正开始处
+
+数据类型 IMAGE_NT_HEADERS, , NT头结果（PE头）
+    .成员 Signature, 整数型, , , 魔数 PE文件开始标志，一直都是0x00004550
+    .成员 FileHeader, IMAGE_FILE_HEADER, , , 文件头结构
+    .成员 OptionalHeader, IMAGE_OPTIONAL_HEADER, , , 可选文件头结构
+
+数据类型 IMAGE_FILE_HEADER, , 文件头结构
+    .成员 Machine, 短整数型, , , 处理器型号
+    .成员 NumberOfSections, 短整数型, , , 节数目
+    .成员 TimeDateStamp, 整数型, , , Pe文件创建日期
+    .成员 PointerToSymbolTable, 整数型, , , 符号表指针，用于调试信息，一般为0
+    .成员 NumberOfSymbols, 整数型, , , 符号数 ，用于调试信息，一般为0
+    .成员 SizeOfOptionalHeader, 短整数型, , , 可选头大小
+    .成员 Characteristics, 短整数型, , , 文件特性
+
+数据类型 IMAGE_OPTIONAL_HEADER, , 可选文件头结构
+    .成员 Magic, 短整数型, , , 魔数
+    .成员 MajorLinkerVersion, 字节型, , , 链接器主版本号
+    .成员 MinorLinkerVersion, 字节型, , , 链接器次版本号
+    .成员 SizeOfCode, 整数型, , , 代码段大小
+    .成员 SizeOfInitializedData, 整数型, , , 已初始化的数据大小
+    .成员 SizeOfUninitializedData, 整数型, , , 未初始化的数据大小
+    .成员 AddressOfEntryPoint, 整数型, , , 程序入口点地址
+    .成员 BaseOfCode, 整数型, , , 代码地址
+    .成员 BaseOfData, 整数型, , , 数据地址
+    .成员 ImageBase, 整数型, , , 映像基址。加载到内存时优先加载的地址。
+    .成员 SectionAlignment, 整数型, , , 内存中单元块大小
+    .成员 FileAlignment, 整数型, , , 文件中单元块大小
+    .成员 MajorOperatingSystemVersion, 短整数型, , , 操作系统主版本号
+    .成员 MinorOperatingSystemVersion, 短整数型, , , 操作系统次版本号
+    .成员 MajorImageVersion, 短整数型, , , 映像文件主版本号
+    .成员 MinorImageVersion, 短整数型, , , 映像文件次版本号
+    .成员 MajorSubsystemVersion, 短整数型, , , 子系统主版本号
+    .成员 MinorSubsystemVersion, 短整数型, , , 子系统次版本号
+    .成员 Win32VersionValue, 整数型, , , 保留项，Win32版本值，一般为0
+    .成员 SizeOfImage, 整数型, , , 映像文件大小
+    .成员 SizeOfHeaders, 整数型, , , 所有头的大小  所有头的总和，包括数据目录和节头
+    .成员 CheckSum, 整数型, , , 校验和，对当前版本的NT，只校验映像是否是NT驱动程序。
+    .成员 Subsystem, 短整数型, , , 子系统
+    .成员 DllCharacteristics, 短整数型, , , DLL特性，貌似废弃了
+    .成员 SizeOfStackReserve, 整数型, , , 保留的栈大小
+    .成员 SizeOfStackCommit, 整数型, , , 交付使用的栈大小
+    .成员 SizeOfHeapReserve, 整数型, , , 保留的堆大小
+    .成员 SizeOfHeapCommit, 整数型, , , 交付使用的堆大小
+    .成员 LoaderFlags, 整数型, , , 加载器标志，貌似废弃了
+    .成员 NumberOfRvaAndSizes, 整数型, , , 数据目录个数
+    .成员 DataDirectory, IMAGE_DATA_DIRECTORY, , "16", 数据目录数组
+
+数据类型 IMAGE_DATA_DIRECTORY, , 数据目录结构
+    .成员 VirtualAddress, 整数型, , , 虚拟地址
+    .成员 Size, 整数型, , , 大小
+
+数据类型 IMAGE_IMPORT_DESCRIPTOR, , 输入表结构
+    .成员 OriginalFirstThunk, 整数型, , , INT(导入函数名称表)数组的32位RVA ，指向一个以0结尾的IMAGE_THUNK_DATAs数组。每个成员描述一个输入函数。
+    .成员 TimeDateStamp, 整数型, , , 创建时间
+    .成员 ForwarderChain, 整数型, , , 导入函数第一个转发链的32位索引
+    .成员 Name, 整数型, , , 导入DLL名字地址
+    .成员 FirstThunk, 整数型, , , IAT(导入函数地址表)数组的32位RVA。指向一个以0结尾的IMAGE_THUNK_DATAs数组。包含输入函数的地址，在加载时可能会被修改。Thunk的意思就是查找，虚实变换的意思。
+
+数据类型 IMAGE_SECTION_HEADER, , 节描述结构
+    .成员 Name, 长整数型, , , 节名
+    .成员 Misc, 整数型, , , “PhysicalAddress（物理地址）”和“VirtualSize（虚拟大小）”组成的共用体
+    .成员 VirtualAddress, 整数型, , , 在内存中的地址
+    .成员 SizeOfRawData, 整数型, , , 在文件中的大小
+    .成员 PointerToRawData, 整数型, , , 在文件中的地址。如果是0,节数据不包含在文件内，在加载时被确定。
+    .成员 PointerToRelocations, 整数型, , , 重定位指针
+    .成员 PointerToLinenumbers, 整数型, , , 行数指针
+    .成员 NumberOfRelocations, 短整数型, , , 重定位数目
+    .成员 NumberOfLinenumbers, 短整数型, , , 行数数目
+    .成员 Characteristics, 整数型, , , 特征
+
+数据类型 STARTUPINFO, 公开, 窗口特性结构
+    .成员 cbSize, 整数型, , , 包含StartupInfo结构中的字节数
+    .成员 lpReserved, 整数型, , , 保留
+    .成员 lpDesktop, 整数型, , , 用于标识启动应用程序所在的桌面的名字，如果lpDesktop是0,那么该进程将与当前桌面相关联
+    .成员 lpTitle, 整数型, , , 用于设定控制台窗口的名称，如果lpTitle是0 ，则可执行文件的名字将用作窗口名
+    .成员 dwX, 整数型, , , 用于设定应用程序窗口在屏幕上应该放置的位置x坐标
+    .成员 dwY, 整数型, , , 用于设定应用程序窗口在屏幕上应该放置的位置y坐标
+    .成员 dwXSize, 整数型, , , 用于设定应用程序窗口的宽度和长度（以像素为单位）
+    .成员 dwYSize, 整数型, , , 用于设定应用程序窗口的宽度和长度（以像素为单位）
+    .成员 dwXCountChars, 整数型, , , 用于设定子应用程序的控制台窗口的宽度和高度（以字符为单位）
+    .成员 dwYCountChars, 整数型, , , 用于设定子应用程序的控制台窗口的宽度和高度（以字符为单位）
+    .成员 dwFillAttribute, 整数型, , , 用于设定子应用程序的控制台窗口使用的文本和背景颜色
+    .成员 dwFlags, 整数型, , , 标志
+    .成员 wShowWindow, 长整数型, , , 用于设定程序的第一个重叠窗口应该如何出现
+    .成员 cbReserved2, 长整数型, , , 保留
+    .成员 lpReserved2, 整数型, , , 保留
+    .成员 hStdInput, 整数型, , , 用于设定供控制台输入用的缓存的句柄，按照默认设置，hStdInput用于标识键盘缓存
+    .成员 hStdOutput, 整数型, , , 用于设定供控制台输出用的缓存的句柄
+    .成员 hStdError, 整数型, , , 用于标识控制台窗口的缓存，存疑
+
+数据类型 PROCESS_INFORMATION, 公开, 进程相关的数据结构
+    .成员 hProcess, 整数型, , , 进程句柄
+    .成员 hThread, 整数型, , , 线程句柄
+    .成员 dwProcessId, 整数型, , , 进程标识符
+    .成员 dwThreadId, 整数型, , , 线程标识符
+
+数据类型 THREADENTRY32, 公开, 线程信息结构体
+    .成员 dwSize, 整数型, , , 结构大小，注意需要先初始化 28
+    .成员 cntUsage, 整数型, , , 引用线程数，不在使用，一般为0
+    .成员 th32ThreadID, 整数型, , , 线程ID
+    .成员 th32OwnerProcessID, 整数型, , , 父进程ID
+    .成员 tpBasePri, 整数型, , , 优先级
+    .成员 tpDeltaPri, 整数型, , , 更改的优先级，不在使用，一般为0
+    .成员 dwFlags, 整数型, , , 保留，不在使用，一般为0
+
+数据类型 CONTEXT, 公开, CONTEXT结构，204 716字节
+    .成员 ContextFlags, 整数型, , , 环境标志
+    .成员 Dr0, 整数型, , , 调试寄存器
+    .成员 Dr1, 整数型, , , 调试寄存器
+    .成员 Dr2, 整数型, , , 调试寄存器
+    .成员 Dr3, 整数型, , , 调试寄存器
+    .成员 Dr6, 整数型, , , 调试寄存器
+    .成员 Dr7, 整数型, , , 调试寄存器
+    .成员 FloatSave, FLOATING_SAVE_AREA, , , 1C 28  CONTEXT_FLOATING_POINT=65544
+    .成员 GS, 整数型, , , 8C 140  SegGs    CONTEXT_SEGMENTS=65540 GS,FS,ES,DS
+    .成员 FS, 整数型, , , 90 144  SegFs
+    .成员 ES, 整数型, , , 94 148  SegEs
+    .成员 DS, 整数型, , , 98 152  SegDs
+    .成员 EDI, 整数型, , , 9C 156  CONTEXT_INTEGER=65538  EDI,ESI,EBX,EDX,ECX,EAX
+    .成员 ESI, 整数型, , , A0 160
+    .成员 EBX, 整数型, , , A4 164
+    .成员 EDX, 整数型, , , A8 168
+    .成员 ECX, 整数型, , , AC 172
+    .成员 EAX, 整数型, , , B0 176
+    .成员 EBP, 整数型, , , B4 180  CONTEXT_CONTROL=65537  EBP,EIP,CS,标志位,ESP,SS
+    .成员 EIP, 整数型, , , B8 184
+    .成员 CS, 整数型, , , BC 188  SegCs=0 标志位=0
+    .成员 EFlags, 整数型, , , C0 192 EFlags CF=1,PF=3,AF=5,ZF=7,SF=8,TF=9,IF=10,DF=11,OF=12, 取位 BT_(标志,位数), 反位 BTC_(标志,位数), 置0 BTR_(), 置1 BTS_(标志,位数)
+    .成员 ESP, 整数型, , , C4 196
+    .成员 SS, 整数型, , , C8 200  SegSs
+    .成员 保留, 整数型, , , CC 208  禁止使用 扩展寄存器 整数型[128] CONTEXT_EXTENDED_REGISTERS=65568
+
+数据类型 FLOATING_SAVE_AREA, , 浮点寄存器结构
+    .成员 ControlWord, 整数型, , , 1C 28 控制代码
+    .成员 StatusWord, 整数型, , , 20 32 状态代码
+    .成员 TagWord, 整数型, , , 24 36 标记代码
+    .成员 ErrorOffset, 整数型, , , 28 40 错误偏移
+    .成员 ErrorSelector, 整数型, , , 2C 44 错误选择器
+    .成员 DataOffset, 整数型, , , 30 48 数据偏移
+    .成员 DataSelector, 整数型, , , 34 52 数据选择器
+    .成员 RegisterArea, 字节型, , "80", 
+    .成员 Cr0NpxState, 整数型, , , 属于浮点数寄存器里的同步状态
+
+.全局变量 选中DLL, 文本型, , , 
+.全局变量 注入方式, 文本型, , , 
+.全局变量 接口函数, 文本型, , , 
+
+.DLL命令 OpenProcess, 整数型, "kernel32.dll", "OpenProcess", , 打开进程，成功返回进程句柄，失败返回0
+    .参数 dwDesiredAccess, 整数型, , 访问权限标志
+    .参数 bInheritHandle, 逻辑型, , 是否继承句柄
+    .参数 dwProcessId, 整数型, , 进程标识
+
+.DLL命令 CloseHandle, 整数型, "kernel32.dll", "CloseHandle", , 关闭一个打开的对象句柄，失败返回0
+    .参数 hObject, 整数型, , 欲关闭的一个对象的句柄
+
+.DLL命令 VirtualAllocEx, 整数型, "kernel32.dll", "VirtualAllocEx", 公开, 申请内存
+    .参数 hProcess, 整数型, , 进程句柄
+    .参数 lpAddress, 整数型, , 保留页面的内存地址
+    .参数 dwSize, 整数型, , 欲分配的内存大小
+    .参数 flAllocationType, 整数型, , 申请属性
+    .参数 flProtect, 整数型, , 内存属性
+
+.DLL命令 VirtualFreeEx, 整数型, "kernel32.dll", "VirtualFreeEx", 公开, 释放申请的内存
+    .参数 hProcess, 整数型, , 进程句柄
+    .参数 lpAddress, 整数型, , 内存地址
+    .参数 dwSize, 整数型, , 内存大小
+    .参数 dwFreeType, 整数型, , 释放类型
+
+.DLL命令 WriteProcessMemory, 逻辑型, "kernel32.dll", "WriteProcessMemory", , 字节集，在指定进程内存中写入数据，成功返回真，失败返回假
+    .参数 hProcess, 整数型, , 进程句柄，需要写入权限
+    .参数 lpBaseAddress, 整数型, , 内存地址
+    .参数 lpBuffer, 字节集, 传址, 数据指针，有传址
+    .参数 nSize, 整数型, , 要传送的数据长度
+    .参数 lpNumberOfBytesWritten, 整数型, 传址, 实际传送的数据长度，有传址
+
+.DLL命令 GetModuleHandleA, 整数型, "kernel32.dll", "GetModuleHandleA", 公开, 获取一个应用程序或动态链接库的模块句柄
+    .参数 lpModuleName, 文本型, , 模块名称
+
+.DLL命令 GetProcAddress, 整数型, "kernel32.dll", "GetProcAddress", 公开, 取动态链接库函数入口地址
+    .参数 hModule, 整数型, , 模块句柄
+    .参数 lpProcName, 文本型, , 函数名
+
+.DLL命令 CreateRemoteThread, 整数型, "kernel32", "CreateRemoteThread", 公开, 在另一进程中建立线程　
+    .参数 hProcess, 整数型, , 进程句柄
+    .参数 lpThreadAttributes, 整数型, , 安全属性
+    .参数 dwStackSize, 整数型, , 线程初始大小
+    .参数 lpStartAddress, 整数型, , 线程回调函数地址
+    .参数 lpParameter, 整数型, , 线程参数
+    .参数 dwCreationFlags, 整数型, , 创建标志
+    .参数 lpThreadId, 整数型, 传址, 线程ID，有传址
+
+.DLL命令 WaitForSingleObject, 整数型, "kernel32.dll", "WaitForSingleObject", 公开, 线程等待
+    .参数 hHandle, 整数型, , 线程句柄
+    .参数 dwMilliseconds, 整数型, , 一直等待，值为:4294967295
+
+.DLL命令 GetExitCodeThread, 整数型, "kernel32", "GetExitCodeThread", 公开, _取中止线程退出代码
+    .参数 线程句柄, 整数型, , 
+    .参数 退出代码, 整数型, 传址, 
+
+.DLL命令 TerminateThread, 逻辑型, "Kernel32.dll", "TerminateThread", , 
+    .参数 hThread, 整数型, , 线程句柄
+    .参数 dwExitCode, 整数型, , 填0
+
+.DLL命令 CreateToolhelp32Snapshot, 整数型, "Kernel32.dll", "CreateToolhelp32Snapshot", , 获取特定进程的快照，以及这些进程所使用的堆、模块和线程，成功返回快照句柄，失败返回0
+    .参数 dwFlags, 整数型, , 枚举对象，8表示模块，1表示堆，2标识进程，4表示线程
+    .参数 th32ProcessID, 整数型, , 进程ID
+
+.DLL命令 Module32First, 逻辑型, "Kernel32.dll", "Module32First", , 检索与进程相关的第一个模块的信息，成功返回真，失败返回假
+    .参数 hSnapshot, 整数型, , 快照句柄
+    .参数 lpme, MODULEENTRY32, , ModuleEntry32结构的指针，用来返回数据
+
+.DLL命令 Module32Next, 逻辑型, "Kernel32.dll", "Module32Next", , 获取与进程或线程相关联的下一个模块的信息，成功返回真，失败返回假
+    .参数 hSnapshot, 整数型, , 快照句柄
+    .参数 lpme, MODULEENTRY32, , ModuleEntry32结构的指针，用来返回数据
+
+.DLL命令 LoadLibraryA, 整数型, "kernel32.dll", "LoadLibraryA", 公开, 载入指定的动态链接库，并将它映射到当前进程使用的地址空间。成功则返回库模块的句柄，零表示失败。
+    .参数 lpFileName, 文本型, , 指定要载入的动态链接库的名称(全路径)
+
+.DLL命令 EnumWindows, 逻辑型, "", "EnumWindows", 公开, 枚举所有屏幕上的顶层窗口，并将窗口句柄传送给应用程序定义的回调函数
+    .参数 lpEnumFunc, 子程序指针, , 指向一个应用程序定义的回调函数指针
+    .参数 lPararm, 整数型, , 指定一个传递给回调函数的应用程序定义值
+
+.DLL命令 GetWindowThreadProcessId, 整数型, "user32.dll", "GetWindowThreadProcessId", 公开, 获取窗口的线程ID，并且可以选择获取窗口的进程ID
+    .参数 hwnd, 整数型, , 指定窗口句柄
+    .参数 IpdwProcessId, 整数型, 传址, 用于装载进程ID的变量，有传址
+
+.DLL命令 GetWindowTextLength, 整数型, "user32.dll", "GetWindowTextLengthA", 公开, 获取指定窗口的标题文本（如果存在）的字符长度
+    .参数 hwnd, 整数型, , 窗口句柄
+
+.DLL命令 GetWindowTextA, 整数型, "", "GetWindowTextA", 公开, 获取指定窗口的标题栏的文字（窗口标题）拷贝到缓冲区内
+    .参数 hwnd, 整数型, , 窗口句柄
+    .参数 lpString, 文本型, 传址, 窗口标题，一个用来接受文本的缓冲区，有传址
+    .参数 nMaxCount, 整数型, , 缓冲区中的字符的最大个数，至少lpString长度+1
+
+.DLL命令 GetClassNameA, 整数型, "user32.dll", "GetClassNameA", 公开, 获得指定窗口所属的类的类名拷贝到缓冲区内
+    .参数 hWnd, 整数型, , 窗口句柄
+    .参数 IpClassName, 文本型, 传址, 窗口类名，一个用来接受文本的缓冲区，有传址
+    .参数 nMaxCount, 整数型, , 缓冲区中的字符的最大个数，至少IpClassName长度+1
+
+.DLL命令 SetWindowsHookExA, 整数型, "user32.dll", "SetWindowsHookExA", 公开, 安装钩子
+    .参数 idhook, 整数型, , 钩子类型
+    .参数 lpfn, 子程序指针, , 回调函数地址
+    .参数 hMod, 整数型, , 实例句柄
+    .参数 dwThreadId, 整数型, , 线程ID
+
+.DLL命令 FreeLibrary, 逻辑型, "kernel32", "FreeLibrary", 公开, 释放动态链接库
+    .参数 hModule, 整数型, , 动态链接库句柄，使用LoadLibraryA命令返回的
+
+.DLL命令 UnhookWindowsHookEx, 逻辑型, "user32.dll", "UnhookWindowsHookEx", 公开, 卸载钩子
+    .参数 hHook, 整数型, , 钩子句柄
+
+.DLL命令 ImmInstallIMEA, 整数型, "imm32.dll", "ImmInstallIMEA", 公开, 安装输入法，成功返回输入法句柄
+    .参数 lpszIMEFileName, 文本型, , 输入法的安装文件名称
+    .参数 lpszLayoutText, 文本型, , 输入法名称
+
+.DLL命令 IMESetPubString, 整数型, "imedllhost09.ime", "IMESetPubString", 公开, 向输入法传递要注入的DLL等参数
+    .参数 RunDLLStr, 文本型, , 要注入的DLL命令和完整路径
+    .参数 UnloadDll, 整数型, , 输入法退出时是否同时卸载注入的DLL（0-是，1-否）
+    .参数 loadNextIme, 整数型, , 当切换到目标输入法时自动切换到下一个输入法（0-否，1-是）
+    .参数 DllData1, 整数型, , 0，传递给目标DLL的回调函数（函数名称必须为RunDllHostCallBack）的参数
+    .参数 DllData2, 整数型, , 0，传递给目标DLL的回调函数（函数名称必须为RunDllHostCallBack）的参数
+    .参数 DllData3, 整数型, , 0，传递给目标DLL的回调函数（函数名称必须为RunDllHostCallBack）的参数
+
+.DLL命令 IMEClearPubString, 逻辑型, "imedllhost09.ime", "IMEClearPubString", 公开, 清除输入法的配置,清除后,输入法将停止在新的程序中注入目标DLL,但已注入的DLL不会卸载
+
+.DLL命令 SendMessageA, 整数型, "user32.dll", "SendMessageA", , 将指定的消息发送到窗口，直到窗口处理消息后才返回
+    .参数 hWnd, 整数型, , 要发送消息的窗口句柄
+    .参数 Msg, 整数型, , 要发送的消息
+    .参数 wParam, 整数型, , 附加的消息信息，消息类型
+    .参数 IParam, 整数型, , 附加的消息信息，传递参数
+
+.DLL命令 PostMessageA, 逻辑型, "user32.dll", "PostMessageA", , 将指定的消息投递给窗口创建的线程，不等窗口线程处理完就返回，成功返回真，失败返回假
+    .参数 hWnd, 整数型, , 要发送消息的窗口句柄
+    .参数 Msg, 整数型, , 要发送的消息
+    .参数 wParam, 整数型, , 附加的消息信息，消息类型
+    .参数 IParam, 整数型, , 附加的消息信息，传递参数
+
+.DLL命令 GetKeyboardLayoutList, 整数型, "user32.dll", "GetKeyboardLayoutList", 公开, 获得系统适用的所有键盘布局的一个列表，成功则返回键盘布局数量，失败返回0。
+    .参数 nBuff, 整数型, , 如设为0，表示获取可用键盘布局的最大数量
+    .参数 lpList, 整数型, 数组, 缓存数组指针，这个数组会随同句柄载入可用的键盘布局。
+
+.DLL命令 LoadKeyboardLayoutA, 整数型, "user32.dll", "LoadKeyboardLayoutA", 公开, 载入一个键盘布局，并返回键盘布局句柄。0表示出错。
+    .参数 pwszKLID, 文本型, , 一个8字符字串，用于描述键盘布局的名称。
+    .参数 flags, 整数型, , 参考“KLF”常量。
+
+.DLL命令 UnloadKeyboardLayout, 整数型, "user32.dll", "UnloadKeyboardLayout", 公开, 缷载已有的键盘布局，成功则返回键盘布局句柄，失败返回0。
+    .参数 HKL, 整数型, , 键盘布局句柄
+
+.DLL命令 lstrcpyn_字节集, 整数型, "kernel32.dll", "lstrcpyn", 公开, 字节集形式，将一个指定的字符字符串从一个源字符串复制到一个缓冲区中。如果函数成功，则返回值是指向缓冲区的指针
+    .参数 lpString1, 字节集, 传址, 目的指针，有传址
+    .参数 lpString2, 字节集, 传址, 源指针，有传址
+    .参数 iMaxLength, 整数型, , 复制长度，保留，0
+
+.DLL命令 RtlMoveMemory_IMAGE_DOS_HEADER, 空白型, "kernel32", "RtlMoveMemory", 公开, 整数型，从指定内存中复制内存至另一内存里
+    .参数 Destination, IMAGE_DOS_HEADER, , 指向移动目的地址的指针
+    .参数 Source, 整数型, , 指向要复制的内存地址的指针。
+    .参数 Length, 整数型, , 指定要复制的长度。 
+
+.DLL命令 RtlMoveMemory_IMAGE_NT_HEADERS_1, 空白型, "kernel32", "RtlMoveMemory", 公开, 整数型，从指定内存中复制内存至另一内存里
+    .参数 Destination, IMAGE_NT_HEADERS, , 指向移动目的地址的指针
+    .参数 Source, 整数型, , 指向要复制的内存地址的指针。
+    .参数 Length, 整数型, , 指定要复制的长度。 
+
+.DLL命令 RtlMoveMemory_IMAGE_NT_HEADERS_2, 空白型, "kernel32", "RtlMoveMemory", 公开, 整数型，从指定内存中复制内存至另一内存里
+    .参数 Destination, 整数型, , 指向移动目的地址的指针
+    .参数 Source, IMAGE_NT_HEADERS, , 指向要复制的内存地址的指针。
+    .参数 Length, 整数型, , 指定要复制的长度。 
+
+.DLL命令 RtlMoveMemory_IMAGE_SECTION_HEADER_1, 空白型, "kernel32", "RtlMoveMemory", 公开, 整数型，从指定内存中复制内存至另一内存里
+    .参数 Destination, IMAGE_SECTION_HEADER, 数组, 指向移动目的地址的指针
+    .参数 Source, 整数型, , 指向要复制的内存地址的指针。
+    .参数 Length, 整数型, , 指定要复制的长度。 
+
+.DLL命令 RtlMoveMemory_IMAGE_SECTION_HEADER_2, 空白型, "kernel32", "RtlMoveMemory", 公开, 整数型，从指定内存中复制内存至另一内存里
+    .参数 Destination, 整数型, , 指向移动目的地址的指针
+    .参数 Source, IMAGE_SECTION_HEADER, 数组, 指向要复制的内存地址的指针。
+    .参数 Length, 整数型, , 指定要复制的长度。 
+
+.DLL命令 RtlMoveMemory_IMAGE_SECTION_HEADER_3, 空白型, "kernel32", "RtlMoveMemory", 公开, 整数型，从指定内存中复制内存至另一内存里
+    .参数 Destination, IMAGE_SECTION_HEADER, , 指向移动目的地址的指针
+    .参数 Source, 整数型, , 指向要复制的内存地址的指针。
+    .参数 Length, 整数型, , 指定要复制的长度。 
+
+.DLL命令 PathFindExtensionA, 文本型, "shlwapi.dll", "PathFindExtensionA", 公开, 获取绝对路径或文件名中的文件扩展名
+    .参数 pszPath, 文本型, , 文件路径
+
+.DLL命令 CreateProcessA, 整数型, "kernel32.dll", "CreateProcessA", 公开, 创建一个新的进程和它的主线程
+    .参数 lpApplicationName, 文本型, , 指定可执行模块的字符串
+    .参数 lpCommandLine, 文本型, , 该字符串指定要执行的命令行,这个参数可以为空，那么函数将使用lpApplicationName参数指定的字符串当做要运行的程序的命令行。
+    .参数 lpProcessAttributes, 整数型, , 指向一个SECURITY_ATTRIBUTES结构体，这个结构体决定是否返回的句柄可以被子进程继承。如果lpProcessAttributes参数为空，那么句柄不能被继承
+    .参数 lpThreadAttributes, 整数型, , 决定线程是否被继承
+    .参数 bInheritHandles, 整数型, , 指示新进程是否从调用进程处继承了句柄
+    .参数 dwCreationFlags, 整数型, , 指定附加的、用来控制优先类和进程的创建的标志
+    .参数 lpEnvironment, 整数型, , 指向一个新进程的境块。如果此参数为空，新进程使用调用进程的环境
+    .参数 lpCurrentDriectory, 文本型, , 这个字符串用来指定子进程的工作路径
+    .参数 lpStartupInfo, STARTUPINFO, , 指向一个用于决定新进程的主窗体如何显示的STARTUPINFO结构体
+    .参数 lpProcessInformation, PROCESS_INFORMATION, , 指向一个用来接收新进程的识别信息的PROCESS_INFORMATION结构体
+
+.DLL命令 ResumeThread, 整数型, "kernel32.dll", "ResumeThread", 公开, 使线程的挂起时间计数减一。创建一个挂起的线程或者手动挂起一个线程后调用。调用该函数后线程不一定会立刻执行，而是由操作系统继续调度，直到计数为0，系统为其分配资源时才开始执行。
+    .参数 hThread, 整数型, , 线程句柄
+
+.DLL命令 Thread32First, 逻辑型, "KERNEL32.DLL", "Thread32First", 公开, 检索与线程相关的第一个线程的信息，成功返回真，失败返回假
+    .参数 hSnapshot, 整数型, , 快照句柄
+    .参数 lpte, THREADENTRY32, , THREADENTRY32结构的指针，用来返回数据
+
+.DLL命令 Thread32Next, 逻辑型, "Kernel32.dll", "Thread32Next", 公开, 获取与线程相关联的下一个线程的信息，成功返回真，失败返回假
+    .参数 hSnapshot, 整数型, , 快照句柄
+    .参数 lpte, THREADENTRY32, , THREADENTRY32结构的指针，用来返回数据
+
+.DLL命令 OpenThread, 整数型, "kernel32.dll", "OpenThread", 公开, 打开线程
+    .参数 dwDesiredAccess, 整数型, , 访问权限，2032639
+    .参数 bInheritHandle, 整数型, , 是否继承句柄
+    .参数 dwThreadId, 整数型, , 线程ID
+
+.DLL命令 QueueUserAPC, 整数型, "kernel32.dll", "QueueUserAPC", , 一个APC对象加入到指定线程的APC队列中。
+    .参数 pfnAPC, 整数型, , 指向一个用户提供的APC函数的指针
+    .参数 hThread, 整数型, , 线程句柄
+    .参数 dwData, 整数型, , 指定一个被传到pfnAPC参数指向的APC函数的值。
+
+.DLL命令 CreateFileMappingA, 整数型, "kernel32", "CreateFileMappingA", , 创建一个新的文件映射对象  新建文件映射对象的句柄；零意味着出错。会设置GetLastError。即使函数成功，但倘若返回的句柄属于一个现成的文件映射对象，那么GetLastError也会设置成ERROR_ALREADY_EXISTS。在这种情况下，文件映射的长度就是现有对象的长度，而不是这个函数指定的尺寸
+    .参数 文件映射句柄, 整数型, , 指定欲在其中创建映射的一个文件句柄。&HFFFFFFFF&表示在内存中创建一个文件映射
+    .参数 安全对象, 整数型, , SECURITY_ATTRIBUTES，指定一个安全对象，在创建文件映射时使用。如果为NULL（用ByVal As Long传递零），表示使用默认安全对象
+    .参数 打开映射方式, 整数型, , 下述常数之一：;PAGE_READONLY：以只读方式打开映射;PAGE_READWRITE：以可读、可写方式打开映射;PAGE_WRITECOPY：为写操作留下备份可组合使用下述一个或多个常数;SEC_COMMIT：为文件映射一个小节中的所有页分配内存;SEC_IMAGE：文件是个可执行文件;SEC_RESERVE：为没有分配实际内存的一个小节保留虚拟内存空间
+    .参数 文件映射最大长度, 整数型, , 文件映射的最大长度（高32位）
+    .参数 文件映射的最小长度, 整数型, , 文件映射的最小长度（低32位）。如这个参数和dwMaximumSizeHigh都是零，就用磁盘文件的实际长度
+    .参数 映射对象名, 文本型, , 指定文件映射对象的名字。如存在这个名字的一个映射，函数就会打开它。用vbNull创建一个无名的文件映射;
+
+.DLL命令 MapViewOfFile, 整数型, "kernel32", "MapViewOfFile", , 将一个文件映射对象映射到当前应用程序的地址空间。MapViewOfFileEx允许我们指定一个基本地址来进行映射  文件映射在内存中的起始地址。零表示出错。会设置GetLastError
+    .参数 hFileMappingObject, 整数型, , 文件映像对象句柄
+    .参数 dwDesiredAccess, 整数型, , 映射对象的文件数据的访问方式
+    .参数 dwFileOffsetHigh, 整数型, , 文件映射起始偏移的高32位
+    .参数 dwFileOffsetLow, 整数型, , 文件映射起始偏移的低32位.(64KB对齐不是必须的)
+    .参数 dwNumberOfBytesToMap, 整数型, , 映射文件的字节数
+
+.DLL命令 RtlMoveMemory_字节集, 空白型, "kernel32.dll", "RtlMoveMemory", 公开, 从指定内存中复制内存至另一内存里
+    .参数 Destination, 整数型, , 指向移动目的地址的指针，有传址
+    .参数 Source, 字节集, , 指向要复制的内存地址的指针。
+    .参数 Length, 整数型, , 指定要复制的长度。 
+
+.DLL命令 UnmapViewOfFile, 整数型, "kernel32.dll", "UnmapViewOfFile", 公开, _取消文件映射对象 在当前应用程序的内存地址空间对一个文件映射对象的映射
+    .参数 lpBaseAddress, 整数型, , 
+
+.DLL命令 ZwMapViewOfSection, 整数型, "ntdll.dll", "ZwMapViewOfSection", , 创建内存映射文件 内核
+    .参数 SectionHandle, 整数型, , 对象句柄
+    .参数 ProcessHandle, 整数型, , 进程对象句柄
+    .参数 BaseAddress, 整数型, 传址, 指向一个接收基址的变量的指针
+    .参数 ZeroBits, 整数型, , 
+    .参数 CommitSize, 整数型, , 提交区域大小
+    .参数 SectionOffset, 整数型, , 指向一个接收偏移量的变量
+    .参数 ViewSize, 整数型, 传址, 一个指向sizet变量的指针。
+    .参数 InheritDisposition, 整数型, , 指定如何与子进程共享
+    .参数 AllocationType, 整数型, , 指定一组标记，用于描述为指定的页面区域执行的分配的类型。
+    .参数 Win32Protect, 整数型, , 指定最初提交的页面区域的保护类型。
+
+.DLL命令 DuplicateHandle, 整数型, "kernel32.dll", "DuplicateHandle", 公开, 在指出一个现有系统对象当前句柄的情况下，为那个对象创建一个新句柄
+    .参数 hSourceProcessHandle, 整数型, , 源进程句柄
+    .参数 hSourceHandle, 整数型, , 指定对象的现有句柄
+    .参数 hTargetProcessHandle, 整数型, , 新进程句柄
+    .参数 lpTargetHandle, 整数型, 传址, 指定用于装载新句柄的长整型变量
+    .参数 dwDesiredAccess, 整数型, , 新句柄要求的安全访问级别
+    .参数 bInheritHandle, 整数型, , 继承句柄
+    .参数 dwOptions, 整数型, , 复选项
+
+.DLL命令 lstrcpyn_整数型, 整数型, "kernel32.dll", "lstrcpyn", 公开, 整数型，将一个指定的字符字符串从一个源字符串复制到一个缓冲区中。如果函数成功，则返回值是指向缓冲区的指针
+    .参数 lpString1, 整数型, 传址, 目的指针，有传址
+    .参数 lpString2, 整数型, 传址, 源指针，有传址
+    .参数 iMaxLength, 整数型, , 复制长度，保留，0
+
+.DLL命令 SuspendThread, 整数型, "kernel32.dll", "SuspendThread", 公开,  将指定线程的执行挂起，调用这个函数前的挂起计数。&HFFFFFFFF表示出错。会设置GetLastError
+    .参数 hThread, 整数型, , 线程句柄
+
+.DLL命令 GetThreadContext, 整数型, "Kernel32.dll", "GetThreadContext", , 获取线程寄存器信息
+    .参数 hThread, 整数型, , 目标进程的线程句柄
+    .参数 lpContext, CONTEXT, 传址, 线程环境，一个用于接收信息的CONTEXT结构指针
+
+.DLL命令 SetThreadContext, 逻辑型, "Kernel32.dll", "SetThreadContext", , 改变线程寄存器信息
+    .参数 hThread, 整数型, , 目标进程的线程句柄
+    .参数 pContext, CONTEXT, , 线程环境，一个用于接收信息的CONTEXT结构指针
+
+.DLL命令 DLL命令1, 空白型, "", "", , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 进程组, 未知类型0x30009, , "0", 
+.程序集变量 进程ID, 整数型, , , 
+.程序集变量 是否卸载成功, 逻辑型, , , 
+.程序集变量 文件名, 文本型, , , 
+.子程序 _按钮_手动注入_被单击, 空白型, , 
+.局部变量 bool, 逻辑型, , , 
+
+.如果真 (等于 (.内容, “”))
+    播放音乐 (#错误, )
+    信息框 (“请先选择需要注入的DLL文件！”, 0, , )
+    返回 ()
+.如果真结束
+.如果真 (等于 (注入方式, “”))
+    播放音乐 (#错误, )
+    信息框 (“请先选择注入方式！”, 0, , )
+    返回 ()
+.如果真结束
+.判断开始 (等于 (注入方式, “远程线程注入”))
+    .如果真 (等于 (进程ID, 0))
+        播放音乐 (#错误, )
+        信息框 (“请先选择需要注入的目标进程！”, 0, , )
+        返回 ()
+    .如果真结束
+    赋值 (bool, 远程线程注入DLL (进程ID, 选中DLL))
+    .如果真 (bool)
+        赋值 (.禁止, 假)
+        赋值 (.禁止, 假)
+    .如果真结束
+    
+.判断 (等于 (注入方式, “消息钩子注入”))
+    .如果真 (等于 (进程ID, 0))
+        播放音乐 (#错误, )
+        信息框 (“请先选择需要注入的目标进程！”, 0, , )
+        返回 ()
+    .如果真结束
+    载入 (窗口3, , 真)
+    赋值 (bool, 消息钩子注入 (进程ID, 选中DLL, 接口函数))
+    .如果真 (bool)
+        赋值 (.禁止, 假)
+        赋值 (.禁止, 真)
+    .如果真结束
+    
+.判断 (等于 (注入方式, “输入法注入”))
+    .如果真 (等于 (进程ID, 0))
+        播放音乐 (#错误, )
+        信息框 (“请先选择需要注入的目标进程！”, 0, , )
+        返回 ()
+    .如果真结束
+    赋值 (bool, 输入法注入 (进程ID, 选中DLL))
+    .如果真 (bool)
+        赋值 (.禁止, 假)
+        赋值 (.禁止, 真)
+    .如果真结束
+    
+.判断 (等于 (注入方式, “注册表注入”))
+    赋值 (bool, 注册表注入 ())
+    .如果真 (bool)
+        赋值 (.禁止, 假)
+        赋值 (.禁止, 真)
+    .如果真结束
+    
+.判断 (等于 (注入方式, “EIP注入”))
+    .如果真 (等于 (进程ID, 0))
+        播放音乐 (#错误, )
+        信息框 (“请先选择需要注入的目标进程！”, 0, , )
+        返回 ()
+    .如果真结束
+    赋值 (bool, EIP注入 (进程ID, 选中DLL))
+    .如果真 (bool)
+        赋值 (.禁止, 真)
+        赋值 (.禁止, 假)
+    .如果真结束
+    
+.判断 (等于 (注入方式, “APC注入（应用层）”))
+    .如果真 (等于 (进程ID, 0))
+        播放音乐 (#错误, )
+        信息框 (“请先选择需要注入的目标进程！”, 0, , )
+        返回 ()
+    .如果真结束
+    赋值 (bool, APC注入_应用层 (进程ID, 选中DLL))
+    .如果真 (bool)
+        赋值 (.禁止, 真)
+        赋值 (.禁止, 真)
+    .如果真结束
+    
+.判断 (等于 (注入方式, “内存注入”))
+    .如果真 (等于 (进程ID, 0))
+        播放音乐 (#错误, )
+        信息框 (“请先选择需要注入的目标进程！”, 0, , )
+        返回 ()
+    .如果真结束
+    赋值 (bool, 内存注入 (进程ID, 选中DLL))
+    .如果真 (bool)
+        赋值 (.禁止, 假)
+        赋值 (.禁止, 假)
+    .如果真结束
+    
+.判断 (等于 (注入方式, “IAT永久注入”))
+    赋值 (bool, IAT注入 (文件名, 接口函数))
+    .如果真 (bool)
+        赋值 (.禁止, 真)
+        赋值 (.禁止, 真)
+    .如果真结束
+    
+.判断 (等于 (注入方式, “内存永久注入”))
+    赋值 (bool, 内存永久注入 (文件名, 选中DLL))
+    .如果真 (bool)
+        赋值 (.禁止, 真)
+        赋值 (.禁止, 真)
+    .如果真结束
+    
+.默认
+    
+.判断结束
+
+.如果 (bool)
+    播放音乐 (#注入, )
+    赋值 (.内容, “>>>注入成功<<<”)
+.否则
+    播放音乐 (#错误, )
+    赋值 (.内容, “>>>注入失败<<<”)
+    信息框 (“抱歉，注入失败，请自行检查！”, 0, , )
+.如果结束
+
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+.如果真 (等于 (注入方式, “输入法注入”))
+    卸载输入法注入 ()
+.如果真结束
+.如果真 (等于 (注入方式, “注册表注入”))
+    卸载注册表注入 ()
+.如果真结束
+
+皮肤_卸载 ()
+结束 ()
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+皮肤_加载 (#皮肤_简约蓝白, , )
+赋值 (.内容, “>>>等待注入<<<”)
+取窗口句柄 ().未知支持库函数_0 ()
+加入日志 (“软件开始运行”)
+
+.子程序 _组合框1_将弹出列表, 空白型, , 
+.局部变量 i, 整数型, , , 
+
+赋值 (进程组, 未知支持库函数_10 ())
+.计次循环首 (取数组成员数 (进程组), i)
+    进程组.加入项目 ( [i], , 进程组 [i], )
+    赋值 (i, 相加 (i, 1))
+.计次循环尾 ()
+
+.子程序 _组合框1_列表项被选择, 空白型, , 
+赋值 (进程ID, .取项目数值 (.现行选中项))
+加入日志 (相加 (“选择进程为：”, .取项目文本 (.现行选中项), “ 进程ID：”, 到文本 (进程ID)))
+
+.子程序 _按钮_手动卸载_被单击, 空白型, , 
+.局部变量 bool, 逻辑型, , , 
+
+
+.判断开始 (等于 (注入方式, “远程线程注入”))
+    赋值 (bool, 卸载远程线程DLL (进程ID, 选中DLL))
+.判断 (等于 (注入方式, “消息钩子注入”))
+    赋值 (bool, 卸载消息钩子 ())
+.判断 (等于 (注入方式, “输入法注入”))
+    赋值 (bool, 卸载输入法注入 ())
+.判断 (等于 (注入方式, “注册表注入”))
+    赋值 (bool, 卸载注册表注入 ())
+.判断 (等于 (注入方式, “内存注入”))
+    赋值 (bool, 卸载内存注入 (进程ID))
+.默认
+    
+.判断结束
+
+.如果 (bool)
+    播放音乐 (#卸载, )
+    赋值 (.内容, “>>>卸载成功<<<”)
+.否则
+    播放音乐 (#错误, )
+    赋值 (.内容, “>>>卸载失败<<<”)
+.如果结束
+
+
+
+.子程序 _按钮_选择DLL_被单击, 空白型, , 
+赋值 (.标题, “选择需要注入的DLL”)
+赋值 (.初始目录, 取运行目录 ())
+赋值 (.过滤器, “DLL文件|*.dll|”)
+.如果 (打开 ())
+    赋值 (选中DLL, .文件名)
+    赋值 (.内容, 取文本右边 (选中DLL, 相减 (取文本长度 (选中DLL), 倒找文本 (选中DLL, “\”, , 假))))
+    .如果真 (不等于 (取文本右边 (.内容, 3), “dll”))
+        赋值 (.内容, “”)
+        信息框 (“你选择的不是DLL文件，请重新选择！”, 0, , )
+    .如果真结束
+    
+.否则
+    信息框 (“选择DLL文件失败！”, 0, , )
+    返回 ()
+.如果结束
+加入日志 (相加 (“选择DLL文件为：”, 选中DLL))
+
+.子程序 _拖放对象1_得到文件, 空白型, , 
+.参数 接收到的文件路径, 文本型, , 
+
+赋值 (选中DLL, 接收到的文件路径)
+赋值 (.内容, 取文本右边 (选中DLL, 相减 (取文本长度 (选中DLL), 倒找文本 (选中DLL, “\”, , 假))))
+.如果真 (不等于 (取文本右边 (.内容, 3), “dll”))
+    赋值 (.内容, “”)
+    信息框 (“你选择的不是DLL文件，请重新选择！”, 0, , )
+    返回 ()
+.如果真结束
+加入日志 (相加 (“选择DLL文件为：”, 选中DLL))
+
+.子程序 _选择列表框1_选中状态被改变, 空白型, , 
+赋值 (注入方式, .取项目文本 (.现行选中项))
+加入日志 (相加 (“注入方式选择为：”, 注入方式))
+.如果真 (等于 (注入方式, “IAT永久注入”))
+    赋值 (.标题, “选择被注入可执行文件”)
+    赋值 (.过滤器, “exe文件(*.exe)|*.exe|ocx文件(*.ocx)|*.ocx|dll文本(*.dll)|*.dll”)
+    .如果 (打开 ())
+        赋值 (文件名, .文件名)
+        加入日志 (相加 (“选择的被注入文件为：”, 文件名))
+    .否则
+        信息框 (“选择被注入文件失败！”, 0, , )
+    .如果结束
+    载入 (窗口3, , 真)
+.如果真结束
+.如果真 (等于 (注入方式, “进程暂停注入”))
+    赋值 (.标题, “选择被注入可执行文件”)
+    赋值 (.过滤器, “exe文件(*.exe)|*.exe|ocx文件(*.ocx)|*.ocx|dll文本(*.dll)|*.dll”)
+    .如果 (打开 ())
+        赋值 (文件名, .文件名)
+        加入日志 (相加 (“选择的被注入文件为：”, 文件名))
+    .否则
+        信息框 (“选择被注入文件失败！”, 0, , )
+    .如果结束
+    
+.如果真结束
+.如果真 (等于 (注入方式, “内存永久注入”))
+    赋值 (.标题, “选择被注入可执行文件”)
+    赋值 (.过滤器, “exe文件(*.exe)|*.exe|ocx文件(*.ocx)|*.ocx|dll文本(*.dll)|*.dll”)
+    .如果 (打开 ())
+        赋值 (文件名, .文件名)
+        加入日志 (相加 (“选择的被注入文件为：”, 文件名))
+    .否则
+        信息框 (“选择被注入文件失败！”, 0, , )
+    .如果结束
+    
+.如果真结束
+
+
+.子程序 _透明标签6_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+载入 (窗口1, , 真)
+
+
+.子程序 _按钮_调用函数_被单击, 空白型, , 
+载入 (窗口2, , 假)
+
+
+.子程序 __启动窗口_位置被改变, 空白型, , 
+赋值 (窗口2., _启动窗口.)
+赋值 (窗口2., 相加 (_启动窗口., _启动窗口., 3))
+
+
+.程序集 远程线程注入, , , 
+
+.程序集变量 进程句柄, 整数型, , , 
+.程序集变量 DLL内存大小, 整数型, , , 
+.程序集变量 DLL内存地址, 整数型, , , 
+.程序集变量 线程句柄, 整数型, , , 
+.程序集变量 bool, 逻辑型, , , 
+.程序集变量 DLL句柄, 整数型, , , 
+.子程序 远程线程注入DLL, 逻辑型, 公开, 采用CreateRemoteThread调用LoadLibrary函数将DLL注入目标进程中
+.参数 进程ID, 整数型, , 
+.参数 DLL文件, 文本型, , DLL文件全路径
+
+.局部变量 LoadLibraryA地址, 整数型, , , 
+
+ ' 打开进程
+赋值 (进程句柄, OpenProcess (#PROCESS_ALL_ACCESS, 假, 进程ID))
+.如果真 (等于 (进程句柄, 0))
+    信息框 (“打开进程失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (“打开进程成功！”)
+
+ ' 申请内存
+赋值 (DLL内存大小, 相加 (取文本长度 (DLL文件), 1))
+赋值 (DLL内存地址, VirtualAllocEx (进程句柄, 0, DLL内存大小, #MEM_COMMIT, #PAGE_READWRITE))
+.如果真 (等于 (DLL内存地址, 0))
+    信息框 (“申请内存地址失败！”, 0, , )
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“申请内存地址成功，地址：”, 取十六进制文本 (DLL内存地址)))
+
+ ' 将DLL路径写入申请的内存
+赋值 (bool, WriteProcessMemory (进程句柄, DLL内存地址, 到字节集 (DLL文件), DLL内存大小, 0))
+.如果真 (等于 (bool, 假))
+    信息框 (“写入内存失败！”, 0, , )
+    VirtualFreeEx (进程句柄, DLL内存地址, 0, #MEM_RELEASE)
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (“写入内存成功”)
+
+ ' 获取LoadLibraryA在Kernel32.dll中的地址
+赋值 (LoadLibraryA地址, GetProcAddress (GetModuleHandleA (“Kernel32.dll”), “LoadLibraryA”))
+
+ ' 创建远程线程执行LoadLibraryA
+赋值 (线程句柄, CreateRemoteThread (进程句柄, 0, 0, LoadLibraryA地址, DLL内存地址, 0, 0))
+.如果真 (等于 (线程句柄, 0))
+    信息框 (“创建线程注入失败！”, 0, , )
+    VirtualFreeEx (进程句柄, DLL内存地址, 0, #MEM_RELEASE)
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (“创建线程注入成功！”)
+WaitForSingleObject (线程句柄, #DMUS_SEG_REPEAT_INFINITE)
+GetExitCodeThread (线程句柄, DLL句柄)
+加入日志 (相加 (“注入的DLL句柄为：”, 取十六进制文本 (DLL句柄)))
+
+ ' VirtualFreeEx (进程句柄, DLL内存地址, 0, #MEM_RELEASE)
+CloseHandle (线程句柄)
+CloseHandle (进程句柄)
+返回 (真)
+
+.子程序 卸载远程线程DLL, 逻辑型, 公开, 
+.参数 进程ID, 整数型, , 
+.参数 DLL文件, 文本型, , DLL文件全路径
+
+.局部变量 DLL句柄1, 整数型, , , 
+.局部变量 GetModuleHandleA地址, 整数型, , , 
+.局部变量 FreeLibrary地址, 整数型, , , 
+.局部变量 返回值, 整数型, , , 
+
+ ' 打开进程
+赋值 (进程句柄, OpenProcess (#PROCESS_ALL_ACCESS, 假, 进程ID))
+
+ ' ' 申请内存
+ ' DLL内存大小 ＝ 取文本长度 (DLL文件) ＋ 1
+ ' DLL内存地址 ＝ VirtualAllocEx (进程句柄, 0, DLL内存大小, #MEM_COMMIT, #PAGE_READWRITE)
+ ' .如果真 (等于 (DLL内存地址, 0))
+     ' 信息框 (“申请内存地址失败！”, 0, , )
+     ' CloseHandle (进程句柄)
+     ' 返回 ()
+.如果真结束
+ ' 加入日志 (“申请内存地址成功，地址：” ＋ 十到十六 (DLL内存地址))
+
+ ' ' 将DLL路径写入申请的内存
+ ' bool ＝ WriteProcessMemory (进程句柄, DLL内存地址, 到字节集 (DLL文件), DLL内存大小, 0)
+ ' .如果真 (等于 (bool, 假))
+     ' 信息框 (“写入内存失败！”, 0, , )
+     ' VirtualFreeEx (进程句柄, DLL内存地址, 0, #MEM_RELEASE)
+     ' CloseHandle (进程句柄)
+     ' 返回 ()
+.如果真结束
+ ' 加入日志 (“写入内存成功”)
+ ' WriteProcessMemory (进程句柄, DLL内存地址, 到字节集 (DLL文件), DLL内存大小, 0)
+
+ ' 调试输出 (取模块句柄EX (进程ID, _启动窗口.编辑框2.内容))
+
+ ' 获取GetModuleHandleA在Kernel32.dll中的地址
+赋值 (GetModuleHandleA地址, GetProcAddress (GetModuleHandleA (“Kernel32.dll”), “GetModuleHandleA”))
+
+ ' 创建远程线程执行GetModuleHandleA
+赋值 (线程句柄, CreateRemoteThread (进程句柄, 0, 0, GetModuleHandleA地址, DLL内存地址, 0, 0))
+WaitForSingleObject (线程句柄, #DMUS_SEG_REPEAT_INFINITE)
+
+ ' 获取注入的DLL句柄
+GetExitCodeThread (线程句柄, DLL句柄1)
+
+CloseHandle (线程句柄)
+
+.如果真 (等于 (DLL句柄1, 0))
+    信息框 (“获取注入的DLL句柄失败！”, 0, , )
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“获取注入的DLL句柄成功，DLL句柄为：”, 取十六进制文本 (DLL句柄1)))
+
+ ' 获取FreeLibrary在Kernel32.dll中的地址
+赋值 (FreeLibrary地址, GetProcAddress (GetModuleHandleA (“Kernel32.dll”), “FreeLibrary”))
+
+ ' 创建远程线程执行FreeLibrary，不知道为什么远程调用FreeLibrary卸载目标程序会崩溃
+赋值 (线程句柄, CreateRemoteThread (进程句柄, 0, 0, FreeLibrary地址, DLL句柄1, 0, 0))
+WaitForSingleObject (线程句柄, #DMUS_SEG_REPEAT_INFINITE)
+GetExitCodeThread (线程句柄, 返回值)
+
+VirtualFreeEx (进程句柄, DLL内存地址, 0, #MEM_RELEASE)
+CloseHandle (线程句柄)
+CloseHandle (进程句柄)
+
+ ' 释放申请的内存，关闭线程句柄及进程句柄
+.如果 (不等于 (返回值, 0))
+    加入日志 (“卸载成功”)
+    返回 (真)
+.否则
+    加入日志 (“卸载失败”)
+    返回 (假)
+.如果结束
+
+
+.子程序 远程注入_调用函数, 逻辑型, 公开, 
+.参数 进程ID, 整数型, , 
+.参数 函数名, 文本型, , DLL命令所在动态链接库中的名称
+.参数 参数一, 字节集, 可空, DLL命令参数,使用命令"到字节集()"转换,非整数参数则不能为4字节!
+.参数 参数二, 字节集, 可空, 
+.参数 参数三, 字节集, 可空, 
+.参数 参数四, 字节集, 可空, 
+.参数 参数五, 字节集, 可空, 
+.参数 参数六, 字节集, 可空, 
+
+.局部变量 临时内存地址1, 整数型, , , 
+.局部变量 临时内存地址2, 整数型, , , 
+.局部变量 GetProcAddress地址, 整数型, , , 
+.局部变量 汇编代码1, 字节集, , , 
+.局部变量 汇编代码2, 字节集, , , 
+.局部变量 函数地址, 整数型, , , 
+.局部变量 长度, 整数型, , , 
+.局部变量 指针地址, 整数型, , , 
+.局部变量 参数, 整数型, , "0", 
+.局部变量 i, 整数型, , , 
+.局部变量 返回值, 整数型, , , 
+
+ ' 打开进程
+赋值 (进程句柄, OpenProcess (#PROCESS_ALL_ACCESS, 假, 进程ID))
+
+ ' 申请内存
+赋值 (临时内存地址1, VirtualAllocEx (进程句柄, 0, 取文本长度 (函数名), #MEM_COMMIT, #PAGE_READWRITE))
+.如果真 (等于 (临时内存地址1, 0))
+    信息框 (“申请内存地址失败！”, 0, , )
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“申请内存地址成功，临时内存地址1：”, 取十六进制文本 (临时内存地址1)))
+
+ ' 将函数名写入申请的内存
+WriteProcessMemory (进程句柄, 临时内存地址1, 到字节集 (函数名), 取文本长度 (函数名), 0)
+
+ ' 获取GetProcAddress在Kernel32.dll中的地址
+赋值 (GetProcAddress地址, GetProcAddress (GetModuleHandleA (“Kernel32.dll”), “GetProcAddress”))
+
+调试输出 (DLL句柄)
+ ' 代码含义：执行GetProcAddress函数，参数一是DLL句柄，参数二是临时内存地址（函数名）
+赋值 (汇编代码1, 相加 ({ 184 }, 到字节集 (GetProcAddress地址), { 104 }, 到字节集 (临时内存地址1), { 104 }, 到字节集 (DLL句柄), { 255, 208, 195, 144 }))
+ ' mov eax,GetModuleHandleA地址
+ ' push 临时内存地址
+ ' push DLL句柄
+ ' call eax
+ ' ret
+ ' nop
+
+ ' 申请内存
+赋值 (临时内存地址2, VirtualAllocEx (进程句柄, 0, 取字节集长度 (汇编代码1), #MEM_COMMIT, #PAGE_READWRITE))
+.如果真 (等于 (临时内存地址1, 0))
+    信息框 (“申请内存地址失败！”, 0, , )
+    VirtualFreeEx (进程句柄, 临时内存地址1, 0, #MEM_RELEASE)
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“申请内存地址成功，临时内存地址2：”, 取十六进制文本 (临时内存地址2)))
+
+ ' 将汇编代码1写入申请的内存
+WriteProcessMemory (进程句柄, 临时内存地址2, 汇编代码1, 取字节集长度 (汇编代码1), 0)
+
+ ' 创建远程线程执行汇编代码
+赋值 (线程句柄, CreateRemoteThread (进程句柄, 0, 0, 临时内存地址2, 0, 0, 0))
+.如果真 (等于 (线程句柄, 0))
+    信息框 (“创建远程线程失败！”, 0, , )
+    VirtualFreeEx (进程句柄, 临时内存地址1, 0, #MEM_RELEASE)
+    VirtualFreeEx (进程句柄, 临时内存地址2, 0, #MEM_RELEASE)
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (“创建执行汇编代码1的远程线程成功！”)
+
+WaitForSingleObject (线程句柄, #DMUS_SEG_REPEAT_INFINITE)
+ ' 获取函数地址
+GetExitCodeThread (线程句柄, 函数地址)
+
+ ' 释放申请的内存，关闭线程句柄
+VirtualFreeEx (进程句柄, 临时内存地址1, 0, #MEM_RELEASE)
+VirtualFreeEx (进程句柄, 临时内存地址2, 0, #MEM_RELEASE)
+CloseHandle (线程句柄)
+
+.如果真 (等于 (函数地址, 0))
+    信息框 (“获取函数地址失败！”, 0, , )
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“获取函数地址成功，地址：”, 取十六进制文本 (函数地址)))
+
+ ' 将参数写入内存中
+.如果真 (不等于 (参数一, {  }))
+    赋值 (长度, 取字节集长度 (参数一))
+    .如果 (等于 (长度, 4))
+        赋值 (指针地址, 取字节集数据 (参数一, #整数型, ))
+    .否则
+        赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 长度, #MEM_COMMIT, #PAGE_READWRITE))
+        WriteProcessMemory (进程句柄, 指针地址, 参数一, 长度, 0)
+    .如果结束
+    加入成员 (参数, 指针地址)
+    .如果真 (不等于 (参数二, {  }))
+        赋值 (长度, 取字节集长度 (参数二))
+        .如果 (等于 (长度, 4))
+            赋值 (指针地址, 取字节集数据 (参数二, #整数型, ))
+        .否则
+            赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 长度, #MEM_COMMIT, #PAGE_READWRITE))
+            WriteProcessMemory (进程句柄, 指针地址, 参数二, 长度, 0)
+        .如果结束
+        加入成员 (参数, 指针地址)
+        .如果真 (不等于 (参数三, {  }))
+            赋值 (长度, 取字节集长度 (参数三))
+            .如果 (等于 (长度, 4))
+                赋值 (指针地址, 取字节集数据 (参数三, #整数型, ))
+            .否则
+                赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 长度, #MEM_COMMIT, #PAGE_READWRITE))
+                WriteProcessMemory (进程句柄, 指针地址, 参数三, 长度, 0)
+            .如果结束
+            加入成员 (参数, 指针地址)
+            .如果真 (不等于 (参数四, {  }))
+                赋值 (长度, 取字节集长度 (参数四))
+                .如果 (等于 (长度, 4))
+                    赋值 (指针地址, 取字节集数据 (参数四, #整数型, ))
+                .否则
+                    赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 长度, #MEM_COMMIT, #PAGE_READWRITE))
+                    WriteProcessMemory (进程句柄, 指针地址, 参数四, 长度, 0)
+                .如果结束
+                加入成员 (参数, 指针地址)
+                .如果真 (不等于 (参数五, {  }))
+                    赋值 (长度, 取字节集长度 (参数五))
+                    .如果 (等于 (长度, 4))
+                        赋值 (指针地址, 取字节集数据 (参数五, #整数型, ))
+                    .否则
+                        赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 长度, #MEM_COMMIT, #PAGE_READWRITE))
+                        WriteProcessMemory (进程句柄, 指针地址, 参数五, 长度, 0)
+                    .如果结束
+                    加入成员 (参数, 指针地址)
+                    .如果真 (不等于 (参数六, {  }))
+                        赋值 (长度, 取字节集长度 (参数六))
+                        .如果 (等于 (长度, 4))
+                            赋值 (指针地址, 取字节集数据 (参数六, #整数型, ))
+                        .否则
+                            赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 长度, #MEM_COMMIT, #PAGE_READWRITE))
+                            WriteProcessMemory (进程句柄, 指针地址, 参数六, 长度, 0)
+                        .如果结束
+                        加入成员 (参数, 指针地址)
+                    .如果真结束
+                    
+                .如果真结束
+                
+            .如果真结束
+            
+        .如果真结束
+        
+    .如果真结束
+    
+.如果真结束
+
+ ' 代码含义：执行函数，参数。。。。
+赋值 (汇编代码2, 相加 ({ 184 }, 到字节集 (函数地址)))
+.变量循环首 (取数组成员数 (参数), 1, -1, i) ' 参数是倒着排的
+    赋值 (汇编代码2, 相加 (汇编代码2, { 104 }, 到字节集 (参数 [i])))
+.变量循环尾 ()
+赋值 (汇编代码2, 相加 (汇编代码2, { 255, 208, 195, 144 }))
+ ' mov eax,函数地址
+ ' push 参数XXX
+ ' push 参数XXX
+ ' push 参数XXX
+ ' ......
+ ' call eax
+ ' ret
+ ' nop
+
+ ' 申请内存
+赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 取字节集长度 (汇编代码2), #MEM_COMMIT, #PAGE_READWRITE))
+
+ ' 将汇编代码2写入申请的内存
+WriteProcessMemory (进程句柄, 指针地址, 汇编代码2, 取字节集长度 (汇编代码2), 0)
+
+ ' 方便释放内存
+加入成员 (参数, 指针地址)
+
+ ' 创建远程线程执行汇编代码
+赋值 (线程句柄, CreateRemoteThread (进程句柄, 0, 0, 指针地址, 0, 0, 0))
+.如果真 (等于 (线程句柄, 0))
+    信息框 (“创建远程线程失败！”, 0, , )
+    .计次循环首 (取数组成员数 (参数), i)
+        .如果真 (不等于 (参数 [i], 0))
+            VirtualFreeEx (进程句柄, 参数 [i], 0, #MEM_RELEASE)
+        .如果真结束
+        
+    .计次循环尾 ()
+    清除数组 (参数)
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (“创建执行汇编代码1的远程线程成功！”)
+
+WaitForSingleObject (线程句柄, #DMUS_SEG_REPEAT_INFINITE)
+
+ ' 获取调用函数执行后的返回值
+GetExitCodeThread (线程句柄, 返回值)
+
+ ' 批量释放申请的内存，关闭线程句柄及进程句柄
+.计次循环首 (取数组成员数 (参数), i)
+    .如果真 (不等于 (参数 [i], 0))
+        VirtualFreeEx (进程句柄, 参数 [i], 0, #MEM_RELEASE)
+    .如果真结束
+    
+.计次循环尾 ()
+清除数组 (参数)
+CloseHandle (线程句柄)
+CloseHandle (进程句柄)
+返回 (真)
+
+.窗口程序集 窗口程序集_窗口2, , , 
+
+.子程序 _按钮_提交函数_被单击, 空白型, , 
+.局部变量 bool, 逻辑型, , , 
+
+赋值 (bool, 调用函数 ())
+
+.如果 (bool)
+    播放音乐 (#注入, )
+    赋值 (_启动窗口..内容, “>>>调用函数成功<<<”)
+.否则
+    播放音乐 (#错误, )
+    赋值 (_启动窗口..内容, “>>>调用函数失败<<<”)
+.如果结束
+
+
+.子程序 调用函数, 逻辑型, , 
+.局部变量 参数类型, 文本型, , , 
+.局部变量 参数一, 字节集, , , 
+.局部变量 参数二, 字节集, , , 
+.局部变量 参数三, 字节集, , , 
+.局部变量 参数四, 字节集, , , 
+.局部变量 参数五, 字节集, , , 
+.局部变量 参数六, 字节集, , , 
+.局部变量 bool, 逻辑型, , , 
+
+
+.如果真 (等于 (.内容, “”))
+    信息框 (“请输入函数名！”, 0, , )
+    返回 (假)
+.如果真结束
+
+.如果 (等于 (.内容, “”))
+    赋值 (参数一, {  })
+.否则
+    .如果真 (等于 (.现行选中项, -1))
+        信息框 (“请选择参数一数据类型！”, 0, , )
+        返回 (假)
+    .如果真结束
+    赋值 (参数类型, .取项目文本 (.现行选中项))
+    赋值 (参数一, 参数类型转换 (.内容, 参数类型))
+.如果结束
+
+.如果 (等于 (.内容, “”))
+    赋值 (参数二, {  })
+.否则
+    .如果真 (等于 (.现行选中项, -1))
+        信息框 (“请选择参数二数据类型！”, 0, , )
+        返回 (假)
+    .如果真结束
+    赋值 (参数类型, .取项目文本 (.现行选中项))
+    赋值 (参数二, 参数类型转换 (.内容, 参数类型))
+.如果结束
+
+.如果 (等于 (.内容, “”))
+    赋值 (参数三, {  })
+.否则
+    .如果真 (等于 (.现行选中项, -1))
+        信息框 (“请选择参数三数据类型！”, 0, , )
+        返回 (假)
+    .如果真结束
+    赋值 (参数类型, .取项目文本 (.现行选中项))
+    赋值 (参数三, 参数类型转换 (.内容, 参数类型))
+.如果结束
+
+.如果 (等于 (.内容, “”))
+    赋值 (参数四, {  })
+.否则
+    .如果真 (等于 (.现行选中项, -1))
+        信息框 (“请选择参数四数据类型！”, 0, , )
+        返回 (假)
+    .如果真结束
+    赋值 (参数类型, .取项目文本 (.现行选中项))
+    赋值 (参数四, 参数类型转换 (.内容, 参数类型))
+.如果结束
+
+.如果 (等于 (.内容, “”))
+    赋值 (参数五, {  })
+.否则
+    .如果真 (等于 (.现行选中项, -1))
+        信息框 (“请选择参数五数据类型！”, 0, , )
+        返回 (假)
+    .如果真结束
+    赋值 (参数类型, .取项目文本 (.现行选中项))
+    赋值 (参数五, 参数类型转换 (.内容, 参数类型))
+.如果结束
+
+.如果 (等于 (.内容, “”))
+    赋值 (参数六, {  })
+.否则
+    .如果真 (等于 (.现行选中项, -1))
+        信息框 (“请选择参数四数据类型！”, 0, , )
+        返回 (假)
+    .如果真结束
+    赋值 (参数类型, .取项目文本 (.现行选中项))
+    赋值 (参数六, 参数类型转换 (.内容, 参数类型))
+.如果结束
+
+.判断开始 (等于 (注入方式, “远程线程注入”))
+    赋值 (bool, 远程注入_调用函数 (_启动窗口., .内容, 参数一, 参数二, 参数三, 参数四, 参数五, 参数六))
+.判断 (等于 (注入方式, “EIP注入”))
+    赋值 (bool, EIP注入_调用函数 (_启动窗口., .内容, 参数一, 参数二, 参数三, 参数四, 参数五, 参数六))
+.判断 (等于 (注入方式, “内存注入”))
+    赋值 (bool, 内存注入_调用函数 (_启动窗口., .内容, 参数一, 参数二, 参数三, 参数四, 参数五, 参数六))
+.默认
+    信息框 (相加 (“不好意思，调用函数不支持”, 注入方式), 0, , )
+.判断结束
+
+.如果 (bool)
+    返回 (真)
+.否则
+    返回 (假)
+.如果结束
+
+
+.子程序 参数类型转换, 字节集, , 
+.参数 原始参数文本, 文本型, , 
+.参数 参数类型, 文本型, , 
+
+.局部变量 转换后的参数, 字节集, , , 
+
+.判断开始 (等于 (参数类型, “文本型”))
+    赋值 (转换后的参数, 到字节集 (原始参数文本))
+.判断 (等于 (参数类型, “整数型”))
+    赋值 (转换后的参数, 到字节集 (到整数 (原始参数文本)))
+.判断 (等于 (参数类型, “短整数型”))
+    赋值 (转换后的参数, 到字节集 (到短整数 (原始参数文本)))
+.判断 (等于 (参数类型, “长整数型”))
+    赋值 (转换后的参数, 到字节集 (到长整数 (原始参数文本)))
+.判断 (等于 (参数类型, “长整数型”))
+    赋值 (转换后的参数, 到字节集 (到长整数 (原始参数文本)))
+.判断 (等于 (参数类型, “双精度小数型”))
+    赋值 (转换后的参数, 到字节集 (到数值 (原始参数文本)))
+.判断 (等于 (参数类型, “小数型”))
+    赋值 (转换后的参数, 到字节集 (到小数 (原始参数文本)))
+.判断 (等于 (参数类型, “逻辑型”))
+    赋值 (转换后的参数, 到字节集 (到逻辑型 (原始参数文本)))
+.判断 (等于 (参数类型, “日期时间型”))
+    赋值 (转换后的参数, 到字节集 (到时间 (原始参数文本)))
+.默认
+    赋值 (转换后的参数, 字节集还原 (原始参数文本))
+.判断结束
+返回 (转换后的参数)
+
+
+.子程序 _窗口2_创建完毕, 空白型, , 
+赋值 (窗口2., _启动窗口.)
+赋值 (窗口2., 相加 (_启动窗口., _启动窗口., 3))
+
+.程序集 其他, , , 
+
+.程序集变量 窗口列表, 窗口信息, , "0", 
+.子程序 到逻辑型, 逻辑型, , 为了方便将文本型的真假二字转换成逻辑型数据或整数型转换为逻辑型编写的子程序，如果输入空值会默认返回假.源码由雪山凌狐提供
+.参数 欲转换的文本型数据, 文本型, 可空, 正常的文本型数据为“真”字或者“假”字，其他情况一律返回假，为空时默认返回假，跟整数型数据二选其一
+.参数 欲转换的整数型数据, 整数型, 可空, 传入0返回假，其他整数都返回真，若为空，默认传入0，返回假，跟文本型数据二选其一
+.参数 转换模式, 整数型, 可空, 模式1为文本型，模式2为整数型，传入其他或为空则默认为模式1
+
+.如果真 (是否为空 (转换模式))
+    赋值 (转换模式, 1)
+.如果真结束
+.如果真 (或者 (小于 (转换模式, 1), 大于 (转换模式, 2)))
+    赋值 (转换模式, 1)
+.如果真结束
+
+.判断开始 (等于 (转换模式, 1))
+     ' 转换的是文本
+    .如果真 (是否为空 (欲转换的文本型数据))
+        返回 (假)
+    .如果真结束
+    
+    .如果 (等于 (欲转换的文本型数据, “真”))
+        返回 (真)
+    .否则
+        返回 (假)
+    .如果结束
+    
+    
+.判断 (等于 (转换模式, 2))
+     ' 转换的是整数
+    .如果真 (是否为空 (欲转换的整数型数据))
+        赋值 (欲转换的整数型数据, 0)
+    .如果真结束
+    
+    .如果 (等于 (欲转换的整数型数据, 0))
+        返回 (假)
+    .否则
+        返回 (真)
+    .如果结束
+    
+.默认
+     ' 不会运行这一句的，但是为了让程序具有返回值定义，添加的
+    返回 (假)
+.判断结束
+
+
+.子程序 字节集还原, 字节集, , 
+.参数 字节集文本, 文本型, , 185,254,185,254
+
+.局部变量 i, 文本型, , "0", 
+.局部变量 字节集, 字节集, , , 
+.局部变量 t, 整数型, , , 
+
+赋值 (i, 分割文本 (字节集文本, “,”, ))
+赋值 (字节集, 取空白字节集 (取数组成员数 (i)))
+.计次循环首 (取数组成员数 (i), t)
+    赋值 (字节集 [t], 到数值 (i [t]))
+.计次循环尾 ()
+返回 (字节集)
+
+.子程序 加入日志, 空白型, , 
+.参数 内容, 文本型, , 
+
+_启动窗口.加入文本 (., 相加 (时间到文本 (取现行时间 (), 3), “ >> ”, 内容, #换行符))
+
+
+.子程序 取模块句柄EX, 整数型, , 用过进程ID和模块名称获取模块句柄，成功返回模块句柄，失败返回0
+.参数 进程ID, 整数型, , 
+.参数 模块名称, 文本型, , 
+
+.局部变量 快照句柄, 整数型, , , 
+.局部变量 模块信息, MODULEENTRY32, , , 
+
+赋值 (快照句柄, CreateToolhelp32Snapshot (8, 进程ID))
+赋值 (模块信息.dwSize, 1024)
+Module32First (快照句柄, 模块信息)
+.判断循环首 (不等于 (到小写 (到文本 (模块信息.szModule)), 到小写 (模块名称)))
+    .如果真 (等于 (Module32Next (快照句柄, 模块信息), 假))
+        赋值 (模块信息.hModule, 0)
+        跳出循环 ()
+    .如果真结束
+    
+.判断循环尾 ()
+CloseHandle (快照句柄)
+返回 (模块信息.hModule)
+
+.子程序 进程ID取窗口句柄, 整数型, , 通过枚举窗口信息对比进程ID返回窗口句柄，失败返回0
+.参数 进程ID, 整数型, , 
+
+.局部变量 窗口信息, 窗口信息, , "0", 
+.局部变量 i, 整数型, , , 
+
+清除数组 (窗口信息)
+EnumWindows (&枚举窗口过程, 0)
+赋值 (窗口信息, 窗口列表)
+清除数组 (窗口列表)
+.计次循环首 (取数组成员数 (窗口信息), i)
+    .如果真 (等于 (窗口信息 [i], 进程ID, 进程ID))
+        返回 (窗口信息 [i], 窗口句柄)
+    .如果真结束
+    
+.计次循环尾 ()
+返回 (0)
+
+
+.子程序 枚举窗口过程, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+
+.局部变量 局_窗口标题, 文本型, , , 
+.局部变量 局_窗口类名, 文本型, , , 
+.局部变量 局_进程ID, 整数型, , , 
+.局部变量 局_线程ID, 整数型, , , 
+.局部变量 局_窗口信息, 窗口信息, , , 
+
+赋值 (局_窗口信息.窗口句柄, 窗口句柄)
+赋值 (局_窗口信息.进程ID, 窗口句柄取进程ID (窗口句柄))
+赋值 (局_窗口信息.线程ID, 窗口句柄取进程ID (窗口句柄))
+赋值 (局_窗口信息.窗口标题, 窗口取标题 (窗口句柄))
+赋值 (局_窗口信息.窗口类名, 窗口取类名 (窗口句柄))
+加入成员 (窗口列表, 局_窗口信息)
+
+
+.子程序 窗口句柄取进程ID, 整数型, , 返回进程ID
+.参数 窗口句柄, 整数型, , 
+
+.局部变量 进程ID, 整数型, 静态, , 用于装载进程ID的变量
+
+GetWindowThreadProcessId (窗口句柄, 进程ID)
+返回 (进程ID)
+
+.子程序 窗口取标题, 文本型, , 取指定窗口句柄的窗口标题(返回窗口标题,失败返回空文本)
+.参数 窗口句柄, 整数型, , 
+
+.局部变量 局_缓冲区, 文本型, , , 
+.局部变量 局_缓冲大小, 整数型, , , 
+
+赋值 (局_缓冲大小, 相加 (GetWindowTextLength (窗口句柄), 1))
+赋值 (局_缓冲区, 取空白文本 (局_缓冲大小))
+GetWindowTextA (窗口句柄, 局_缓冲区, 局_缓冲大小)
+返回 (局_缓冲区)
+
+.子程序 窗口取类名, 文本型, , 取指定窗口句柄的窗口类名(返回窗口类名,失败返回空文本)
+.参数 窗口句柄, 整数型, , 欲取类名的窗口句柄
+
+.局部变量 类名, 文本型, , , 
+
+赋值 (类名, 取空白文本 (50))
+GetClassNameA (窗口句柄, 类名, 50)
+返回 (类名)
+
+.子程序 到子程序指针, 子程序指针, , 
+.参数 val, 整数型, , 
+
+.局部变量 ret, 子程序指针, , , 
+
+置入代码 ({ 139, 69, 8, 137, 69, 252 })
+ ' 置入代码 (“mov eax,[ebp+8] | mov [ebp-4],eax”)
+返回 (ret)
+
+.子程序 文本到字节, 空白型, , 
+.参数 文本, 文本型, , 
+.参数 字节, 字节型, 参考 数组, 
+
+.局部变量 tmp, 字节集, , , 
+.局部变量 len, 整数型, , , 
+.局部变量 i, 整数型, , , 
+
+赋值 (tmp, 到字节集 (文本))
+赋值 (len, 取字节集长度 (tmp))
+.计次循环首 (取数组成员数 (字节), i)
+    .如果真 (大于 (i, len))
+        跳出循环 ()
+    .如果真结束
+    赋值 (字节 [i], tmp [i])
+.计次循环尾 ()
+
+.子程序 文件取扩展名, 文本型, , 返回一个文件的后缀名,如：.jpg  如果没有后缀,返回空
+.参数 文件名, 文本型, , 需要处理的原始文件名
+
+返回 (PathFindExtensionA (文件名))
+
+.子程序 文件取目录, 文本型, , 取得文件所在目录的路径,如：C:\012\3600.exe 成功将返回 C:\012\
+.参数 路径文件名, 文本型, , 文件的完整地址
+
+返回 (取文本左边 (路径文件名, 倒找文本 (路径文件名, “\”, , 假)))
+
+.子程序 取内存对齐值, 整数型, , 
+.参数 参_实际尺寸, 整数型, , 
+.参数 参_对齐尺寸, 整数型, , 
+
+.局部变量 局_Tmp, 双精度小数型, , , 
+
+赋值 (局_Tmp, 相除 (参_实际尺寸, 参_对齐尺寸))
+.如果 (等于 (到整数 (局_Tmp), 局_Tmp))
+    赋值 (局_Tmp, 参_实际尺寸)
+.否则
+    赋值 (局_Tmp, 相乘 (相加 (到整数 (局_Tmp), 1), 参_对齐尺寸))
+.如果结束
+返回 (局_Tmp)
+
+.子程序 区段块结构转换, 字节集, , 构造区段块
+.参数 参_IMAGE_SECTION_HEADER, IMAGE_SECTION_HEADER, , 
+
+.局部变量 局_PE, 字节集, , , 
+
+赋值 (局_PE, 相加 (局_PE, 到字节集 (参_IMAGE_SECTION_HEADER.Name)))
+赋值 (局_PE, 相加 (局_PE, 到字节集 (参_IMAGE_SECTION_HEADER.Misc)))
+赋值 (局_PE, 相加 (局_PE, 到字节集 (参_IMAGE_SECTION_HEADER.VirtualAddress)))
+赋值 (局_PE, 相加 (局_PE, 到字节集 (参_IMAGE_SECTION_HEADER.SizeOfRawData)))
+赋值 (局_PE, 相加 (局_PE, 到字节集 (参_IMAGE_SECTION_HEADER.PointerToRawData)))
+赋值 (局_PE, 相加 (局_PE, 到字节集 (参_IMAGE_SECTION_HEADER.PointerToRelocations)))
+赋值 (局_PE, 相加 (局_PE, 到字节集 (参_IMAGE_SECTION_HEADER.PointerToLinenumbers)))
+赋值 (局_PE, 相加 (局_PE, 到字节集 (参_IMAGE_SECTION_HEADER.NumberOfRelocations)))
+赋值 (局_PE, 相加 (局_PE, 到字节集 (参_IMAGE_SECTION_HEADER.NumberOfLinenumbers)))
+赋值 (局_PE, 相加 (局_PE, 到字节集 (参_IMAGE_SECTION_HEADER.Characteristics)))
+返回 (局_PE)
+
+.程序集 消息钩子注入, , , 
+
+.程序集变量 钩子句柄, 整数型, , , 
+.程序集变量 DLL句柄, 整数型, , , 
+.子程序 消息钩子注入, 逻辑型, , 
+.参数 进程ID, 整数型, , 
+.参数 DLL文件, 文本型, , DLL文件全路径
+.参数 接口函数, 文本型, , 
+
+.局部变量 接口函数地址, 整数型, , , 
+.局部变量 窗口句柄, 整数型, , , 
+.局部变量 线程ID, 整数型, , , 
+
+ ' 载入DLL
+赋值 (DLL句柄, LoadLibraryA (DLL文件))
+.如果真 (等于 (DLL句柄, 0))
+    信息框 (“自身进程载入DLL失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (“自身进程载入DLL成功！”)
+
+ ' 获取接口函数入口地址
+赋值 (接口函数地址, GetProcAddress (GetModuleHandleA (_启动窗口..内容), 接口函数))
+
+ ' 获取目标进程窗口句柄
+赋值 (窗口句柄, 进程ID取窗口句柄 (进程ID))
+.如果真 (等于 (窗口句柄, 0))
+    信息框 (“不是一个有效的拥有窗口的进程！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“获取窗口句柄成功，句柄：”, 到文本 (窗口句柄)))
+
+ ' 获取目标进程线程ID
+赋值 (线程ID, GetWindowThreadProcessId (窗口句柄, 进程ID))
+.如果真 (等于 (线程ID, 0))
+    信息框 (“获取目标进程线程ID失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“获取目标进程线程ID成功，线程ID：”, 到文本 (线程ID)))
+
+ ' 安装钩子
+赋值 (钩子句柄, SetWindowsHookExA (#WH_KEYBOARD, 到子程序指针 (接口函数地址), DLL句柄, 线程ID))
+.如果真 (等于 (线程ID, 0))
+    信息框 (“安装钩子失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“安装钩子成功，钩子句柄：”, 到文本 (钩子句柄)))
+
+返回 (真)
+
+.子程序 卸载消息钩子, 逻辑型, , 
+.局部变量 bool, 逻辑型, , , 
+
+ ' 卸载自身进程载入的DLL
+赋值 (bool, FreeLibrary (DLL句柄))
+.如果真 (等于 (bool, 假))
+    信息框 (“卸载自身DLL失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (“卸载自身DLL成功！”)
+
+ ' 卸载消息钩子
+赋值 (bool, UnhookWindowsHookEx (钩子句柄))
+.如果真 (等于 (bool, 假))
+    信息框 (“卸载消息钩子失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (“卸载消息钩子成功！”)
+返回 (真)
+
+
+.窗口程序集 窗口程序集_窗口3, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+赋值 (接口函数, .内容)
+窗口3.销毁 ()
+
+
+.子程序 _窗口3_将被销毁, 空白型, , 
+加入日志 (相加 (“接口函数为：”, 接口函数))
+
+.程序集 输入法注入, , , 
+
+.程序集变量 SystemPath, 文本型, , , 
+.程序集变量 输入法句柄, 整数型, , , 
+.程序集变量 输入法文件, 文本型, , , 
+.程序集变量 缓存_输入法标识, 文本型, , "0", 
+.程序集变量 缓存_输入法名称, 文本型, , "0", 
+.程序集变量 缓存_输入法路径, 文本型, , "0", 
+.程序集变量 缓存_输入法句柄, 整数型, , "0", 
+.子程序 输入法注入, 逻辑型, 公开, 
+.参数 进程ID, 整数型, , 
+.参数 DLL文件, 文本型, , DLL文件全路径
+
+.局部变量 输入法名称, 文本型, , , 
+.局部变量 窗口句柄, 整数型, , , 
+
+清除数组 (缓存_输入法标识)
+清除数组 (缓存_输入法名称)
+清除数组 (缓存_输入法路径)
+清除数组 (缓存_输入法句柄)
+
+ ' 将输入法文件写到系统目录下，一般为C:\Windows\
+写到文件 (相加 (未知支持库函数_7 (9), “YUCOS.IME”), #输入法文件SouGou)
+ ' 将输入法文件复制到C:\Windows\System32\目录下
+赋值 (SystemPath, 相加 (读环境变量 (“systemroot”), “\System32\”))
+
+.如果真 (等于 (文件是否存在 (相加 (SystemPath, “imedllhost09.ime”)), 假))
+    .如果真 (等于 (文件是否存在 (相加 (读环境变量 (“systemroot”), “\SysWOW64\”, “imedllhost09.ime”)), 假))
+        .如果真 (等于 (复制文件 (相加 (未知支持库函数_7 (9), “YUCOS.IME”), 相加 (SystemPath, “imedllhost09.ime”)), 假))
+            信息框 (“输入法文件被占用，请重起后再试！”, 0, , )
+            删除文件 (相加 (未知支持库函数_7 (9), “YUCOS.IME”))
+            返回 (假)
+        .如果真结束
+        加入日志 (相加 (“输入法复制到系统文件夹成功，文件地址：”, SystemPath, “imedllhost09.ime”))
+        
+    .如果真结束
+    
+.如果真结束
+
+ ' 安装输入法
+赋值 (输入法句柄, ImmInstallIMEA (相加 (SystemPath, “imedllhost09.ime”), “YUCOS输入法”))
+.如果真 (等于 (输入法句柄, 0))
+    信息框 (“输入法安装失败！”, 0, , )
+    删除文件 (输入法文件)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“输入法安装成功，输入法句柄：”, 到文本 (输入法句柄)))
+
+
+ ' 向输入法注入DLL
+.如果真 (等于 (IMESetPubString (DLL文件, 0, 0, 0, 0, 0), 0))
+    信息框 (“向输入法注入DLL失败！”, 0, , )
+    删除文件 (输入法文件)
+    返回 (假)
+.如果真结束
+加入日志 (“向输入法注入DLL成功！”)
+
+ ' 获取目标进程窗口句柄
+赋值 (窗口句柄, 进程ID取窗口句柄 (进程ID))
+.如果真 (等于 (窗口句柄, 0))
+    卸载输入法注入 ()
+    信息框 (“不是一个有效的拥有窗口的进程！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“获取窗口句柄成功，句柄：”, 到文本 (窗口句柄)))
+
+ ' 激活目标进程输入法
+PostMessageA (窗口句柄, #WM_INPUTLANGCHANGEREQUEST, 1, 输入法句柄)
+
+返回 (真)
+
+.子程序 卸载输入法注入, 逻辑型, 公开, 
+.局部变量 注册表路径, 文本型, , "3", 
+.局部变量 输入法序号, 整数型, , , 
+
+ ' 停止输入法注入文件到其它进程中
+.如果真 (等于 (IMEClearPubString (), 假))
+    信息框 (“停止输入法注入其他进程失败！”, 0, , )
+    返回 (假)
+.如果真结束
+
+赋值 (输入法序号, 取输入法序号 ())
+.如果真 (等于 (输入法序号, -1))
+    删除文件 (相加 (SystemPath, “imedllhost09.ime”))
+    删除文件 (相加 (未知支持库函数_7 (9), “YUCOS.IME”))
+    信息框 (“获取输入法序号失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“获取输入法序号成功，输入法序号：”, 到文本 (输入法序号)))
+
+ ' 删除注册表关键项
+赋值 (注册表路径 [1], “Keyboard Layout\Preload\”)
+赋值 (注册表路径 [2], “SYSTEM\CurrentControlSet\Control\Keyboard Layouts\”)
+赋值 (注册表路径 [3], “S-1-5-21-1060284298-606747145-682003330-500\Keyboard Layout\Preload”)
+删除注册项 (#现行用户, 相加 (注册表路径 [1], 到文本 (输入法序号)))
+删除注册项 (#本地机器, 相加 (注册表路径 [2], 缓存_输入法标识 [输入法序号]))
+删除注册项 (#所有用户, 相加 (注册表路径 [3], 到文本 (输入法序号)))
+
+ ' 卸载输入法
+.如果真 (等于 (UnloadKeyboardLayout (输入法句柄), 0))
+    删除文件 (相加 (SystemPath, 缓存_输入法路径 [输入法序号]))
+    删除文件 (相加 (未知支持库函数_7 (9), “YUCOS.IME”))
+    信息框 (“卸载输入法失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (“卸载输入法成功！”)
+
+ ' 删除输入法文件
+删除文件 (相加 (SystemPath, 缓存_输入法路径 [输入法序号]))
+删除文件 (相加 (读环境变量 (“systemroot”), “\SysWOW64\”, 缓存_输入法路径 [输入法序号]))
+删除文件 (相加 (未知支持库函数_7 (9), “YUCOS.IME”))
+返回 (真)
+
+.子程序 取输入法序号, 整数型, , 取输入法序号
+.局部变量 i, 整数型, , , 
+.局部变量 是否取得, 逻辑型, , , 
+.局部变量 输入法总数, 整数型, , , 
+
+赋值 (输入法总数, 取输入法个数及相关 ())
+.变量循环首 (1, 输入法总数, 1, i)
+    .如果 (等于 (输入法句柄, 缓存_输入法句柄 [i]))
+        赋值 (是否取得, 真)
+        跳出循环 ()
+    .否则
+        
+    .如果结束
+    
+.变量循环尾 ()
+.如果 (等于 (是否取得, 假))
+    赋值 (i, -1)
+.否则
+    
+.如果结束
+返回 (i)
+
+
+.子程序 取输入法个数及相关, 整数型, , 取全部输入法及相关标识、名称、路径、句柄，成功则返回结果数量，失败返回0。
+.局部变量 注册表路径, 文本型, , "2", 
+.局部变量 输入法总数, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 标识, 文本型, , , 
+.局部变量 名称, 文本型, , , 
+.局部变量 路径, 文本型, , , 
+.局部变量 句柄, 整数型, , , 
+.局部变量 pList, 整数型, , "20", 
+
+赋值 (注册表路径 [1], “Keyboard Layout\Preload\”)
+赋值 (注册表路径 [2], “SYSTEM\CurrentControlSet\Control\Keyboard Layouts\”)
+赋值 (输入法总数, GetKeyboardLayoutList (20, pList))
+.变量循环首 (1, 输入法总数, 1, i)
+    赋值 (标识, 取文本注册项 (#现行用户, 相加 (注册表路径 [1], 到文本 (i)), ))
+    赋值 (名称, 取文本注册项 (#本地机器, 相加 (注册表路径 [2], 标识, “\Layout Text”), ))
+    赋值 (路径, 取文本注册项 (#本地机器, 相加 (注册表路径 [2], 标识, “\Ime File”), ))
+    加入成员 (缓存_输入法标识, 标识)
+    加入成员 (缓存_输入法名称, 名称)
+    加入成员 (缓存_输入法路径, 路径)
+.变量循环尾 ()
+.变量循环首 (1, 输入法总数, 1, i)
+    赋值 (句柄, LoadKeyboardLayoutA (缓存_输入法标识 [i], 0))
+    加入成员 (缓存_输入法句柄, 句柄)
+.变量循环尾 ()
+返回 (输入法总数)
+
+.程序集 注册表注入, , , 
+
+.子程序 注册表注入, 逻辑型, , 
+.局部变量 AppInit_DLLs值, 文本型, , , 
+
+ ' 检测AppInit_DLLs是否存在DLL
+赋值 (AppInit_DLLs值, 取文本注册项 (#本地机器, “SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows\AppInit_DLLs”, ))
+.如果真 (不等于 (AppInit_DLLs值, “”))
+    信息框 (“已经有DLL存在注册项中！”, 0, , )
+    返回 (假)
+.如果真结束
+
+ ' 注册表中写入DLL
+写注册项 (#本地机器, “SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows\AppInit_DLLs”, 选中DLL)
+赋值 (AppInit_DLLs值, 取文本注册项 (#本地机器, “SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows\AppInit_DLLs”, ))
+.如果真 (不等于 (AppInit_DLLs值, 选中DLL))
+    写注册项 (#本地机器, “SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows\AppInit_DLLs”, “”)
+    信息框 (“注册表写入DLL失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“注册表写入DLL成功，值为：”, AppInit_DLLs值))
+
+写注册项 (#本地机器, “SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows\LoadAppInit_DLLs”, 1)
+返回 (真)
+
+
+.子程序 卸载注册表注入, 逻辑型, , 
+写注册项 (#本地机器, “SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows\AppInit_DLLs”, “”)
+写注册项 (#本地机器, “SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows\LoadAppInit_DLLs”, 0)
+.如果真 (不等于 (取文本注册项 (#本地机器, “SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows\AppInit_DLLs”, ), “”))
+    信息框 (“卸载注册表注入失败！请手动检查注册表！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (“卸载注册表注入成功！”)
+返回 (真)
+
+
+.程序集 IAT永久注入, , , 
+
+.子程序 IAT注入, 逻辑型, , 
+.参数 文件名, 文本型, , 
+.参数 函数名, 文本型, , 
+
+.局部变量 文件数据, 字节集, , , 
+.局部变量 文件数据长度, 整数型, , , 
+.局部变量 文件数据地址, 整数型, , , 
+.局部变量 DOS头, IMAGE_DOS_HEADER, , , 
+.局部变量 PE头, IMAGE_NT_HEADERS, , , 
+.局部变量 输入表地址, 整数型, , , 
+.局部变量 输入表, 字节集, , , 
+.局部变量 节表数组, IMAGE_SECTION_HEADER, , "0", 
+.局部变量 自定义新节, IMAGE_SECTION_HEADER, , , 
+.局部变量 i, 整数型, , , 
+
+赋值 (文件数据, 读入文件 (文件名))
+赋值 (文件数据长度, 取字节集长度 (文件数据))
+赋值 (文件数据地址, lstrcpyn_字节集 (文件数据, 文件数据, 0))
+
+ ' 获取DOS头，DOS头长度40
+RtlMoveMemory_IMAGE_DOS_HEADER (DOS头, 文件数据地址, 64)
+
+ ' 判断是否是PE文件，DOS头的开始两个字节一直都是MZ（5A4D）
+.如果真 (不等于 (DOS头.e_magic, #IMAGE_DOS_SIGNATURE))
+    信息框 (“不是一个有效的PE文件1”, 0, , )
+    返回 (假)
+.如果真结束
+
+ ' 获取NT头（PE头），NT头长度F8
+RtlMoveMemory_IMAGE_NT_HEADERS_1 (PE头, 相加 (文件数据地址, DOS头.e_lfanew), 248)
+
+ ' 判断是否是PE文件，NT头的开始两个字节一直都是PE（4550）
+.如果真 (不等于 (PE头.Signature, #IMAGE_NT_SIGNATURE))
+    信息框 (“不是一个有效的PE文件2”, 0, , )
+    返回 (假)
+.如果真结束
+
+ ' 获取输入表地址头，输入表地址在PE可选文件头数据目录数组中第二个
+赋值 (输入表地址, PE头.OptionalHeader.DataDirectory [2].VirtualAddress)
+.如果真 (等于 (输入表地址, 0))
+    信息框 (“没有输入表！”, 0, , )
+    返回 (假)
+.如果真结束
+
+ ' 获取输入表数据，忽略最后保留的14个00字节
+赋值 (输入表, 指针到字节集 (相加 (文件数据地址, 输入表地址), 相减 (PE头.OptionalHeader.DataDirectory [2].Size, 20)))
+
+ ' 重定义节表数组，节表数目来至PE文件头NumberOfSections
+重定义数组 (节表数组, 假, PE头.FileHeader.NumberOfSections)
+
+ ' 获取节表数组，每个节长度是28个字节
+RtlMoveMemory_IMAGE_SECTION_HEADER_1 (节表数组, 相加 (文件数据地址, DOS头.e_lfanew, 248), 相乘 (PE头.FileHeader.NumberOfSections, 40))
+
+ ' 改变.rdata区段特征？
+.计次循环首 (取数组成员数 (节表数组), i)
+    
+    .如果真 (并且 (大于或等于 (输入表地址, 节表数组 [i], VirtualAddress), 小于或等于 (输入表地址, 相加 (节表数组 [i], VirtualAddress, 节表数组 [i], Misc))))
+         ' 2147483648代表IMAGE_SCN_MEM_WRITE（内存可写节）
+        赋值 (节表数组 [i], Characteristics, 2147483648)
+        跳出循环 ()
+    .如果真结束
+    
+.计次循环尾 ()
+
+ ' 自定义新节，新节是加在文件的最后
+ ' 文本到字节 (“.gdata”, 自定义新节.Name)  ' 自定义新节名
+赋值 (自定义新节.Name, 取字节集数据 (到字节集 (“.gdata”), #长整数型, ))
+赋值 (自定义新节.Misc, 相加 (PE头.OptionalHeader.DataDirectory [2].Size, 20, 8, 取文本长度 (_启动窗口..内容), 1, 2, 取文本长度 (函数名), 1)) ' 自定义新节在内存中的大小
+赋值 (自定义新节.VirtualAddress, PE头.OptionalHeader.SizeOfImage) ' 自定义新节在内存中的地址
+赋值 (自定义新节.SizeOfRawData, 自定义新节.Misc) ' 自定义新节在文件中的大小
+赋值 (自定义新节.PointerToRawData, 文件数据长度) ' 自定义新节在文件中的地址
+赋值 (自定义新节.Characteristics, #IMAGE_SCN_MEM_WRITE) ' 自定义新节特征
+加入成员 (节表数组, 自定义新节)
+
+ ' 修改PE文件头和PE可选文件头
+赋值 (PE头.FileHeader.NumberOfSections, 相加 (PE头.FileHeader.NumberOfSections, 1)) ' 修改节数目
+赋值 (PE头.OptionalHeader.DataDirectory [2].Size, 相加 (PE头.OptionalHeader.DataDirectory [2].Size, 20)) ' 修改输入表大小
+赋值 (PE头.OptionalHeader.DataDirectory [2].VirtualAddress, 自定义新节.VirtualAddress) ' 修改输入表地址
+赋值 (PE头.OptionalHeader.SizeOfImage, 相加 (PE头.OptionalHeader.SizeOfImage, 自定义新节.Misc)) ' 修改映射文件大小
+
+ ' 修改节表数据
+RtlMoveMemory_IMAGE_SECTION_HEADER_2 (相加 (文件数据地址, DOS头.e_lfanew, 248), 节表数组, 相乘 (PE头.FileHeader.NumberOfSections, 40))
+
+ ' 修改PE头数据
+RtlMoveMemory_IMAGE_NT_HEADERS_2 (相加 (文件数据地址, DOS头.e_lfanew), PE头, 248)
+
+ ' 生成新的输入表
+赋值 (输入表, 相加 (输入表, 取空白字节集 (12), 到字节集 (到整数 (相加 (自定义新节.VirtualAddress, PE头.OptionalHeader.DataDirectory [2].Size, 8))), 到字节集 (到整数 (相加 (自定义新节.VirtualAddress, PE头.OptionalHeader.DataDirectory [2].Size))), 取空白字节集 (20), 到字节集 (到整数 (相加 (自定义新节.VirtualAddress, PE头.OptionalHeader.DataDirectory [2].Size, 8, 取文本长度 (_启动窗口..内容), 1))), { 0, 0, 0, 0 }, 到字节集 (_启动窗口..内容), { 0, 0, 0 }, 到字节集 (函数名), { 0 }))
+
+ ' 生成新的文件数据
+赋值 (文件数据, 相加 (文件数据, 输入表))
+
+ ' 生成新的文件名
+赋值 (文件名, 子文本替换 (文件名, 文件取扩展名 (文件名), 相加 (“_注入后”, 文件取扩展名 (文件名)), , , 真))
+
+复制文件 (选中DLL, 相加 (文件取目录 (文件名), _启动窗口..内容))
+
+.如果真 (等于 (写到文件 (文件名, 文件数据), 假))
+    信息框 (“生成新的文件失败，请稍后再试！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“注入并生成新的文件成功！新文件地址：”, 文件名))
+加入日志 (“DLL文件已经复制到新文件目录中！”)
+返回 (真)
+
+
+.程序集 进程暂停注入, , , 
+
+.子程序 进程暂停注入, 空白型, 公开, 废弃。。。
+.参数 文件名, 文本型, , 
+
+.局部变量 运行目录, 文本型, , , 
+.局部变量 窗口结构, STARTUPINFO, , , 
+.局部变量 进程结构, PROCESS_INFORMATION, , , 
+.局部变量 申请内存地址, 整数型, , , 
+.局部变量 DLL文件大小, 整数型, , , 
+.局部变量 LoadLibraryA地址, 整数型, , , 
+.局部变量 远程线程句柄, 整数型, , , 
+
+赋值 (运行目录, 取文本左边 (文件名, 倒找文本 (文件名, “\”, , 假)))
+
+ ' 创建进程并暂停主线程
+.如果真 (等于 (CreateProcessA (文件名, “”, 0, 0, 0, #CREATE_SUSPENDED, 0, 运行目录, 窗口结构, 进程结构), 0))
+    信息框 (“创建进程并暂停主线程失败！”, 0, , )
+    返回 ()
+.如果真结束
+加入日志 (相加 (“创建进程并暂停主线程成功，进程ID：”, 到文本 (进程结构.dwProcessId)))
+
+ ' 申请内存空间
+赋值 (DLL文件大小, 相加 (取文本长度 (选中DLL), 1))
+赋值 (申请内存地址, VirtualAllocEx (进程结构.hProcess, 0, DLL文件大小, #MEM_COMMIT, #PAGE_READWRITE))
+.如果真 (等于 (申请内存地址, 0))
+    信息框 (“申请内存空间失败！”, 0, , )
+    返回 ()
+.如果真结束
+加入日志 (相加 (“申请内存空间成功，内存地址：”, 取十六进制文本 (申请内存地址)))
+
+ ' 将DLL路径写入内存
+WriteProcessMemory (进程结构.hProcess, 申请内存地址, 到字节集 (选中DLL), DLL文件大小, 0)
+
+ ' 获取LoadLibraryA函数地址
+赋值 (LoadLibraryA地址, GetProcAddress (GetModuleHandleA (“Kernel32.dll”), “LoadLibraryA”))
+
+ ' 创建远程线程调用LoadLibraryA函数
+赋值 (远程线程句柄, CreateRemoteThread (进程结构.hProcess, 0, 0, LoadLibraryA地址, 申请内存地址, 0, 0))
+.如果真 (等于 (远程线程句柄, 0))
+    信息框 (“注入失败！”, 0, , )
+    返回 ()
+.如果真结束
+加入日志 (“注入成功成功！”)
+
+ ' 唤醒主线程
+ResumeThread (进程结构.hThread)
+CloseHandle (远程线程句柄)
+
+.程序集 APC注入, , , 
+
+.程序集变量 进程句柄, 整数型, , , 
+.程序集变量 线程句柄, 整数型, , , 
+.子程序 APC注入_应用层, 逻辑型, , 
+.参数 进程ID, 整数型, , 
+.参数 DLL文件, 文本型, , DLL文件全路径
+
+.局部变量 申请内存地址, 整数型, , , 
+.局部变量 DLL文件大小, 整数型, , , 
+.局部变量 快照句柄, 整数型, , , 
+.局部变量 线程信息, THREADENTRY32, , , 
+.局部变量 LoadLibraryA地址, 整数型, , , 
+
+ ' 打开进程
+赋值 (进程句柄, OpenProcess (#PROCESS_ALL_ACCESS, 假, 进程ID))
+.如果真 (等于 (进程句柄, 0))
+    信息框 (“打开进程失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (“打开进程成功！”)
+
+ ' 申请内存
+赋值 (DLL文件大小, 相加 (取文本长度 (DLL文件), 1))
+赋值 (申请内存地址, VirtualAllocEx (进程句柄, 0, DLL文件大小, #MEM_COMMIT, #PAGE_EXECUTE_READWRITE))
+.如果真 (等于 (申请内存地址, 0))
+    信息框 (“申请内存地址失败！”, 0, , )
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“申请内存地址成功，地址：”, 取十六进制文本 (申请内存地址)))
+
+ ' 将DLL路径写入申请的内存
+WriteProcessMemory (进程句柄, 申请内存地址, 到字节集 (DLL文件), DLL文件大小, 0)
+
+ ' 获取LoadLibraryA在Kernel32.dll中的地址
+赋值 (LoadLibraryA地址, GetProcAddress (GetModuleHandleA (“Kernel32.dll”), “LoadLibraryA”))
+.如果真 (等于 (LoadLibraryA地址, 0))
+    信息框 (“获取LoadLibraryA地址失败！”, 0, , )
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“获取LoadLibraryA地址成功，地址：”, 取十六进制文本 (LoadLibraryA地址)))
+
+ ' 获取系统线程快照句柄
+赋值 (快照句柄, CreateToolhelp32Snapshot (#TH32CS_SNAPTHREAD, 0))
+.如果真 (等于 (快照句柄, 0))
+    信息框 (“获系统线程快照句柄失败！”, 0, , )
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (“获取系统线程快照句柄成功！”)
+
+ ' 初始化线程结构大小
+赋值 (线程信息.dwSize, 28)
+
+.如果真 (Thread32First (快照句柄, 线程信息))
+    .循环判断首 ()
+        .如果真 (等于 (线程信息.th32OwnerProcessID, 进程ID))
+            赋值 (线程句柄, OpenThread (#THREAD_ALL_ACCESS, 0, 线程信息.th32ThreadID))
+            .如果真 (不等于 (线程句柄, 0))
+                .如果真 (等于 (QueueUserAPC (LoadLibraryA地址, 线程句柄, 申请内存地址), 0))
+                    信息框 (“QueueUserAPC函数使用失败！”, 0, , )
+                    返回 (假)
+                .如果真结束
+                
+            .如果真结束
+            CloseHandle (线程句柄)
+        .如果真结束
+        
+    .循环判断尾 (Thread32Next (快照句柄, 线程信息))
+    
+.如果真结束
+
+
+加入日志 (“注入成功！”)
+CloseHandle (快照句柄)
+CloseHandle (进程句柄)
+
+返回 (真)
+
+.子程序 APC注入_内存, 逻辑型, , 废弃，感觉最后和内存注入一样，但是没内存注入好用
+.参数 进程ID, 整数型, , 
+.参数 DLL路径, 文本型, , 
+
+.局部变量 进程句柄, 整数型, , , 
+.局部变量 DLL文件, 字节集, , , 
+.局部变量 DLL文件长度, 整数型, , , 
+.局部变量 主要汇编指令, 字节集, , , 
+.局部变量 主要汇编指令长度, 整数型, , , 
+.局部变量 映射对象句柄, 整数型, , , 
+.局部变量 映射对象开始地址, 整数型, , , 
+.局部变量 内核映射对象基址, 整数型, , , 
+.局部变量 内核映射对象大小, 整数型, , , 
+.局部变量 GetModuleHandleA地址, 整数型, , , 
+.局部变量 回调函数地址, 整数型, , , 
+.局部变量 线程句柄, 整数型, , , 
+
+ ' 打开进程
+赋值 (进程句柄, OpenProcess (#PROCESS_ALL_ACCESS, 假, 进程ID))
+.如果真 (等于 (进程句柄, 0))
+    信息框 (“打开进程失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (“打开进程成功！”)
+
+ ' 读入DLL文件及获取主要汇编指令
+赋值 (DLL文件, 读入文件 (DLL路径))
+赋值 (DLL文件长度, 取字节集长度 (DLL文件))
+赋值 (主要汇编指令长度, 取字节集长度 (#PE文件))
+
+ ' 创建文件映射对象
+赋值 (映射对象句柄, CreateFileMappingA (#INVALID_HANDLE_VALUE, 0, #PAGE_EXECUTE_READWRITE, 0, 相加 (DLL文件长度, 主要汇编指令长度), “Yous”))
+.如果真 (等于 (映射对象句柄, -1))
+    信息框 (“创建映射对象失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (“创建映射对象成功！”)
+
+ ' 将文件映射对象映射到当前程序内存空间
+赋值 (映射对象开始地址, MapViewOfFile (映射对象句柄, #FILE_MAP_WRITE, 0, 0, 相加 (DLL文件长度, 主要汇编指令长度)))
+.如果真 (等于 (映射对象开始地址, 0))
+    信息框 (“映射对象映射失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (“映射对象映射成功！”)
+
+ ' 写入内存
+RtlMoveMemory_字节集 (映射对象开始地址, #PE文件, 主要汇编指令长度)
+RtlMoveMemory_字节集 (相加 (映射对象开始地址, 主要汇编指令长度), DLL文件, DLL文件长度)
+
+ ' 关闭文件映射对象
+UnmapViewOfFile (映射对象开始地址)
+
+ ' 创建内存映射对象 内核
+ZwMapViewOfSection (映射对象句柄, 进程句柄, 内核映射对象基址, 0, 0, 0, 内核映射对象大小, 1, 0, 64)
+.如果真 (小于或等于 (内核映射对象基址, 0))
+    信息框 (“映射对象内核映射失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (“映射对象内核映射成功！”)
+
+ ' 获取GetModuleHandleA地址
+赋值 (GetModuleHandleA地址, GetProcAddress (GetModuleHandleA (“kernel32.dll”), “GetModuleHandleA”))
+赋值 (线程句柄, CreateRemoteThread (进程句柄, 0, 0, GetModuleHandleA地址, 0, #CREATE_SUSPENDED, 0))
+.如果真 (等于 (线程句柄, 0))
+    信息框 (“创建远程线程失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (“创建远程线程成功！”)
+
+.如果真 (等于 (QueueUserAPC (内核映射对象基址, 线程句柄, 相加 (内核映射对象基址, 主要汇编指令长度)), 0))
+    信息框 (“QueueUserAPC函数使用失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (“QueueUserAPC函数使用成功！”)
+
+ResumeThread (线程句柄)
+CloseHandle (映射对象句柄)
+CloseHandle (进程句柄)
+
+返回 (真)
+
+.程序集 内存注入, , , 
+
+.程序集变量 进程句柄, 整数型, , , 
+.程序集变量 getaddr_code地址, 整数型, , , 
+.程序集变量 free_code地址, 整数型, , , 
+.程序集变量 DLL句柄, 整数型, , , 
+.程序集变量 申请DLL内存地址, 整数型, , , 
+.程序集变量 申请装载地址, 整数型, , , 
+.子程序 内存注入, 逻辑型, , 
+.参数 进程ID, 整数型, , 
+.参数 DLL文件, 文本型, , DLL文件全路径
+
+.局部变量 主要汇编指令, 字节集, , , 
+.局部变量 线程句柄, 整数型, , , 
+.局部变量 新句柄, 整数型, , , 
+.局部变量 DLL数据, 字节集, , , 
+.局部变量 DLL数据大小, 整数型, , , 
+
+ ' 打开进程
+赋值 (进程句柄, OpenProcess (#PROCESS_ALL_ACCESS, 假, 进程ID))
+.如果真 (等于 (进程句柄, 0))
+    信息框 (“打开进程失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (“打开进程成功！”)
+
+ ' 申请内存
+赋值 (DLL数据, 读入文件 (DLL文件))
+赋值 (DLL数据大小, 取字节集长度 (DLL数据))
+赋值 (申请DLL内存地址, VirtualAllocEx (进程句柄, 0, DLL数据大小, #MEM_COMMIT, #PAGE_EXECUTE_READWRITE))
+.如果真 (等于 (申请DLL内存地址, 0))
+    信息框 (“申请DLL内存地址失败！”, 0, , )
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“申请DLL内存地址成功，地址：”, 取十六进制文本 (申请DLL内存地址)))
+
+ ' 将DLL路径写入申请的内存
+WriteProcessMemory (进程句柄, 申请DLL内存地址, DLL数据, DLL数据大小, 0)
+
+ ' 申请内存及写入主要的内存加载DLL的汇编指令
+赋值 (主要汇编指令, 相加 (#load_code, #getaddr_code, #free_code))
+赋值 (申请装载地址, VirtualAllocEx (进程句柄, 0, 取字节集长度 (主要汇编指令), #MEM_COMMIT, #PAGE_EXECUTE_READWRITE))
+.如果真 (等于 (申请装载地址, 0))
+    信息框 (“申请装载地址失败！”, 0, , )
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“申请装载地址成功，地址：”, 取十六进制文本 (申请装载地址)))
+WriteProcessMemory (进程句柄, 申请装载地址, 主要汇编指令, 取字节集长度 (主要汇编指令), 0)
+
+ ' 保存获取DLL函数地址功能和卸载DLL功能的地址
+赋值 (getaddr_code地址, 相加 (申请装载地址, 取字节集长度 (#load_code)))
+赋值 (free_code地址, 相加 (getaddr_code地址, 取字节集长度 (#getaddr_code)))
+
+ ' 创建远程线程执行装载DLL函数
+赋值 (线程句柄, CreateRemoteThread (进程句柄, 0, 0, 申请装载地址, 申请DLL内存地址, 0, 0))
+WaitForSingleObject (线程句柄, #DMUS_SEG_REPEAT_INFINITE)
+GetExitCodeThread (线程句柄, DLL句柄)
+.如果真 (等于 (线程句柄, 0))
+    信息框 (“内存注入失败！”, 0, , )
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“内存注入成功，DLL句柄：”, 取十六进制文本 (DLL句柄)))
+
+CloseHandle (线程句柄)
+CloseHandle (进程句柄)
+返回 (真)
+
+.子程序 卸载内存注入, 逻辑型, , 
+.参数 进程ID, 整数型, , 
+
+.局部变量 线程句柄, 整数型, , , 
+
+ ' 打开进程
+赋值 (进程句柄, OpenProcess (#PROCESS_ALL_ACCESS, 假, 进程ID))
+.如果真 (等于 (进程句柄, 0))
+    信息框 (“打开进程失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (“打开进程成功！”)
+
+ ' 创建远程线程执行卸载DLL函数
+赋值 (线程句柄, CreateRemoteThread (进程句柄, 0, 0, free_code地址, DLL句柄, 0, 0))
+.如果真 (等于 (线程句柄, 0))
+    信息框 (“创建远程线程失败！”, 0, , )
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (“卸载成功！”)
+
+WaitForSingleObject (线程句柄, -1)
+GetExitCodeThread (线程句柄, 0)
+
+ ' 释放内存
+VirtualFreeEx (进程句柄, 申请装载地址, 0, #MEM_RELEASE)
+VirtualFreeEx (进程句柄, 申请DLL内存地址, 0, #MEM_RELEASE)
+
+CloseHandle (线程句柄)
+CloseHandle (进程句柄)
+返回 (真)
+
+.子程序 内存注入_调用函数, 逻辑型, , 
+.参数 进程ID, 整数型, , 
+.参数 函数名, 文本型, , DLL命令所在动态链接库中的名称
+.参数 参数一, 字节集, 可空, DLL命令参数,使用命令"到字节集()"转换,非整数参数则不能为4字节!
+.参数 参数二, 字节集, 可空, 
+.参数 参数三, 字节集, 可空, 
+.参数 参数四, 字节集, 可空, 
+.参数 参数五, 字节集, 可空, 
+.参数 参数六, 字节集, 可空, 
+
+.局部变量 函数名地址, 整数型, , , 
+.局部变量 汇编代码, 字节集, , , 
+.局部变量 参数, 整数型, , "0", 
+.局部变量 i, 整数型, , , 
+.局部变量 汇编代码地址, 整数型, , , 
+.局部变量 线程句柄, 整数型, , , 
+.局部变量 DLL函数地址, 整数型, , , 
+.局部变量 函数返回值, 整数型, , , 
+.局部变量 长度, 整数型, , , 
+.局部变量 指针地址, 整数型, , , 
+.局部变量 汇编代码2, 字节集, , , 
+
+ ' 打开进程
+赋值 (进程句柄, OpenProcess (#PROCESS_ALL_ACCESS, 假, 进程ID))
+.如果真 (等于 (进程句柄, 0))
+    信息框 (“打开进程失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (“打开进程成功！”)
+
+ ' 申请内存
+赋值 (函数名地址, VirtualAllocEx (进程句柄, 0, 取字节集长度 (到字节集 (函数名)), #MEM_COMMIT, #PAGE_EXECUTE_READWRITE))
+.如果真 (等于 (函数名地址, 0))
+    信息框 (“申请函数名地址失败！”, 0, , )
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“申请函数名地址成功，地址：”, 取十六进制文本 (函数名地址)))
+
+ ' 将函数名写入内存
+WriteProcessMemory (进程句柄, 函数名地址, 到字节集 (函数名), 取字节集长度 (到字节集 (函数名)), 0)
+
+
+赋值 (汇编代码, 相加 ({ 85, 139, 236, 184 }, 到字节集 (getaddr_code地址), { 104 }, 到字节集 (函数名地址), { 104 }, 到字节集 (DLL句柄), { 255, 208, 201, 195 }))
+调试输出 (汇编代码)
+ ' push ebp
+ ' mov ebp,esp
+ ' mov eax,getaddr_code地址
+ ' push 函数名地址
+ ' push DLL句柄
+ ' call eax
+ ' leave
+ ' ret
+
+ ' 申请内存
+赋值 (汇编代码地址, VirtualAllocEx (进程句柄, 0, 取字节集长度 (汇编代码), #MEM_COMMIT, #PAGE_EXECUTE_READWRITE))
+.如果真 (等于 (汇编代码地址, 0))
+    信息框 (“申请汇编代码地址失败！”, 0, , )
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“申请汇编代码地址成功，地址：”, 取十六进制文本 (汇编代码地址)))
+
+ ' 将汇编代码写入内存
+WriteProcessMemory (进程句柄, 汇编代码地址, 汇编代码, 取字节集长度 (汇编代码), 0)
+
+ ' 创建远程线程执行汇编代码，返回DLL函数地址
+赋值 (线程句柄, CreateRemoteThread (进程句柄, 0, 0, 汇编代码地址, 0, 0, 0))
+WaitForSingleObject (线程句柄, #DMUS_SEG_REPEAT_INFINITE)
+GetExitCodeThread (线程句柄, DLL函数地址)
+.如果真 (等于 (线程句柄, 0))
+    信息框 (“远程执行汇编代码失败！”, 0, , )
+    VirtualFreeEx (进程句柄, 函数名地址, 0, #MEM_RELEASE)
+    VirtualFreeEx (进程句柄, 汇编代码地址, 0, #MEM_RELEASE)
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“远程执行汇编代码失败成功，DLL函数地址：”, 取十六进制文本 (DLL函数地址)))
+
+ ' 释放内存，关闭线程句柄
+VirtualFreeEx (进程句柄, 函数名地址, 0, #MEM_RELEASE)
+VirtualFreeEx (进程句柄, 汇编代码地址, 0, #MEM_RELEASE)
+CloseHandle (线程句柄)
+
+ ' 将参数写入内存中
+.如果真 (不等于 (参数一, {  }))
+    赋值 (长度, 取字节集长度 (参数一))
+    .如果 (等于 (长度, 4))
+        赋值 (指针地址, 取字节集数据 (参数一, #整数型, ))
+    .否则
+        赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 长度, #MEM_COMMIT, #PAGE_READWRITE))
+        WriteProcessMemory (进程句柄, 指针地址, 参数一, 长度, 0)
+    .如果结束
+    加入成员 (参数, 指针地址)
+    .如果真 (不等于 (参数二, {  }))
+        赋值 (长度, 取字节集长度 (参数二))
+        .如果 (等于 (长度, 4))
+            赋值 (指针地址, 取字节集数据 (参数二, #整数型, ))
+        .否则
+            赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 长度, #MEM_COMMIT, #PAGE_READWRITE))
+            WriteProcessMemory (进程句柄, 指针地址, 参数二, 长度, 0)
+        .如果结束
+        加入成员 (参数, 指针地址)
+        .如果真 (不等于 (参数三, {  }))
+            赋值 (长度, 取字节集长度 (参数三))
+            .如果 (等于 (长度, 4))
+                赋值 (指针地址, 取字节集数据 (参数三, #整数型, ))
+            .否则
+                赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 长度, #MEM_COMMIT, #PAGE_READWRITE))
+                WriteProcessMemory (进程句柄, 指针地址, 参数三, 长度, 0)
+            .如果结束
+            加入成员 (参数, 指针地址)
+            .如果真 (不等于 (参数四, {  }))
+                赋值 (长度, 取字节集长度 (参数四))
+                .如果 (等于 (长度, 4))
+                    赋值 (指针地址, 取字节集数据 (参数四, #整数型, ))
+                .否则
+                    赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 长度, #MEM_COMMIT, #PAGE_READWRITE))
+                    WriteProcessMemory (进程句柄, 指针地址, 参数四, 长度, 0)
+                .如果结束
+                加入成员 (参数, 指针地址)
+                .如果真 (不等于 (参数五, {  }))
+                    赋值 (长度, 取字节集长度 (参数五))
+                    .如果 (等于 (长度, 4))
+                        赋值 (指针地址, 取字节集数据 (参数五, #整数型, ))
+                    .否则
+                        赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 长度, #MEM_COMMIT, #PAGE_READWRITE))
+                        WriteProcessMemory (进程句柄, 指针地址, 参数五, 长度, 0)
+                    .如果结束
+                    加入成员 (参数, 指针地址)
+                    .如果真 (不等于 (参数六, {  }))
+                        赋值 (长度, 取字节集长度 (参数六))
+                        .如果 (等于 (长度, 4))
+                            赋值 (指针地址, 取字节集数据 (参数六, #整数型, ))
+                        .否则
+                            赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 长度, #MEM_COMMIT, #PAGE_READWRITE))
+                            WriteProcessMemory (进程句柄, 指针地址, 参数六, 长度, 0)
+                        .如果结束
+                        加入成员 (参数, 指针地址)
+                    .如果真结束
+                    
+                .如果真结束
+                
+            .如果真结束
+            
+        .如果真结束
+        
+    .如果真结束
+    
+.如果真结束
+
+ ' 代码含义：执行函数，参数。。。。
+赋值 (汇编代码2, 相加 ({ 184 }, 到字节集 (DLL函数地址)))
+.变量循环首 (取数组成员数 (参数), 1, -1, i) ' 参数是倒着排的
+    赋值 (汇编代码2, 相加 (汇编代码2, { 104 }, 到字节集 (参数 [i])))
+.变量循环尾 ()
+赋值 (汇编代码2, 相加 (汇编代码2, { 255, 208, 195, 144 }))
+ ' mov eax,函数地址
+ ' push 参数XXX
+ ' push 参数XXX
+ ' push 参数XXX
+ ' ......
+ ' call eax
+ ' ret
+ ' nop
+
+ ' 申请内存
+赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 取字节集长度 (汇编代码2), #MEM_COMMIT, #PAGE_READWRITE))
+
+ ' 将汇编代码2写入申请的内存
+WriteProcessMemory (进程句柄, 指针地址, 汇编代码2, 取字节集长度 (汇编代码2), 0)
+
+ ' 方便释放内存
+加入成员 (参数, 指针地址)
+
+ ' 创建远程线程执行汇编代码2
+赋值 (线程句柄, CreateRemoteThread (进程句柄, 0, 0, 指针地址, 0, 0, 0))
+.如果真 (等于 (线程句柄, 0))
+    信息框 (“创建远程线程失败！”, 0, , )
+    .计次循环首 (取数组成员数 (参数), i)
+        .如果真 (不等于 (参数 [i], 0))
+            VirtualFreeEx (进程句柄, 参数 [i], 0, #MEM_RELEASE)
+        .如果真结束
+        
+    .计次循环尾 ()
+    清除数组 (参数)
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (“创建执行汇编代码2的远程线程成功！”)
+
+WaitForSingleObject (线程句柄, 100)
+GetExitCodeThread (线程句柄, 函数返回值)
+
+.计次循环首 (取数组成员数 (参数), i)
+    .如果真 (不等于 (参数 [i], 0))
+        VirtualFreeEx (进程句柄, 参数 [i], 0, #MEM_RELEASE)
+    .如果真结束
+    
+.计次循环尾 ()
+清除数组 (参数)
+
+CloseHandle (线程句柄)
+CloseHandle (进程句柄)
+返回 (真)
+
+.程序集 EIP注入, , , 
+
+.程序集变量 进程句柄, 整数型, , , 
+.程序集变量 线程句柄, 整数型, , , 
+.子程序 EIP注入, 逻辑型, , 
+.参数 进程ID, 整数型, , 
+.参数 DLL文件, 文本型, , DLL文件全路径
+
+.局部变量 线程ID, 整数型, , , 
+.局部变量 快照句柄, 整数型, , , 
+.局部变量 线程信息, THREADENTRY32, , , 
+.局部变量 bool, 逻辑型, , , 
+.局部变量 申请内存地址, 整数型, , , 
+.局部变量 LoadLibraryA地址, 整数型, , , 
+.局部变量 线程环境, CONTEXT, , , 
+.局部变量 EIP, 整数型, , , 
+.局部变量 汇编代码, 字节集, , , 
+.局部变量 VirtualFree地址, 整数型, , , 
+.局部变量 DLL路径大小, 整数型, , , 
+.局部变量 DLL路径地址, 整数型, , , 
+
+ ' 打开进程
+赋值 (进程句柄, OpenProcess (#PROCESS_ALL_ACCESS, 假, 进程ID))
+.如果真 (等于 (进程句柄, 0))
+    信息框 (“打开进程失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (“打开进程成功！”)
+
+ ' 获取系统线程快照句柄
+赋值 (快照句柄, CreateToolhelp32Snapshot (#TH32CS_SNAPTHREAD, 0))
+.如果真 (等于 (快照句柄, 0))
+    信息框 (“获系统线程快照句柄失败！”, 0, , )
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (“获取系统线程快照句柄成功！”)
+
+ ' 通过对比获取线程ID
+赋值 (线程信息.dwSize, 28)
+赋值 (bool, Thread32First (快照句柄, 线程信息))
+.判断循环首 (bool)
+    .如果真 (等于 (线程信息.th32OwnerProcessID, 进程ID))
+        赋值 (线程ID, 线程信息.th32ThreadID)
+        跳出循环 ()
+    .如果真结束
+    赋值 (bool, Thread32Next (快照句柄, 线程信息))
+.判断循环尾 ()
+.如果真 (等于 (线程ID, 0))
+    信息框 (“获线程ID失败！”, 0, , )
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“获取线程ID成功，线程ID：”, 到文本 (线程ID)))
+
+ ' 打开线程
+赋值 (线程句柄, OpenThread (#THREAD_ALL_ACCESS, 0, 线程ID))
+.如果真 (等于 (线程句柄, 0))
+    信息框 (“打开线程失败！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (“打开线程成功！”)
+
+ ' 挂起线程
+SuspendThread (线程句柄)
+
+ ' 保存线程寄存器相关信息，获取EIP值
+赋值 (线程环境.ContextFlags, #CONTEXT_FULL)
+GetThreadContext (线程句柄, 线程环境)
+赋值 (EIP, 线程环境.EIP)
+调试输出 (EIP)
+
+ ' 申请内存
+赋值 (申请内存地址, VirtualAllocEx (进程句柄, 0, 2048, #MEM_COMMIT, #PAGE_EXECUTE_READWRITE))
+.如果真 (等于 (申请内存地址, 0))
+    信息框 (“申请内存地址失败！”, 0, , )
+    ResumeThread (线程句柄)
+    CloseHandle (线程句柄)
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“申请内存地址成功，地址：”, 取十六进制文本 (申请内存地址)))
+
+ ' 先将DLL路径写入内存中 0x100的位置
+赋值 (DLL路径大小, 相加 (取文本长度 (DLL文件), 1))
+赋值 (DLL路径地址, 相加 (申请内存地址, 256))
+WriteProcessMemory (进程句柄, DLL路径地址, 到字节集 (DLL文件), DLL路径大小, 0)
+调试输出 (取十六进制文本 (DLL路径地址))
+
+ ' 获取LoadLibraryA函数地址
+赋值 (LoadLibraryA地址, GetProcAddress (GetModuleHandleA (“Kernel32.dll”), “LoadLibraryA”))
+.如果真 (等于 (LoadLibraryA地址, 0))
+    信息框 (“获取LoadLibraryA地址失败！”, 0, , )
+    ResumeThread (线程句柄)
+    CloseHandle (线程句柄)
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“获取LoadLibraryA地址成功，地址：”, 取十六进制文本 (LoadLibraryA地址)))
+
+ ' 主要汇编代码
+赋值 (汇编代码, 相加 ({ 96, 156, 104 }, 到字节集 (到整数 (相加 (申请内存地址, 256)))))
+赋值 (汇编代码, 相加 (汇编代码, { 232 }, 到字节集 (到整数 (相减 (LoadLibraryA地址, 相加 (申请内存地址, 取字节集长度 (汇编代码)), 5))), { 157, 97 }))
+赋值 (汇编代码, 相加 (汇编代码, { 233 }, 到字节集 (到整数 (相减 (EIP, 相加 (申请内存地址, 取字节集长度 (汇编代码)), 5)))))
+调试输出 (汇编代码)
+ ' pushad
+ ' pushfd
+ ' push DLL路径地址
+ ' call LoadLibraryA地址
+ ' popfd
+ ' popad
+ ' jmp EIP保存的地址
+
+ ' 将汇编代码写入内存
+WriteProcessMemory (进程句柄, 申请内存地址, 汇编代码, 取字节集长度 (汇编代码), 0)
+
+ ' 设置新的EIP寄存器值
+赋值 (线程环境.EIP, 申请内存地址)
+SetThreadContext (线程句柄, 线程环境)
+
+ ' 恢复线程
+ResumeThread (线程句柄)
+
+ ' 关闭线程句柄，进程句柄
+CloseHandle (线程句柄)
+CloseHandle (进程句柄)
+加入日志 (“注入成功，正在恢复线程，请稍等！”)
+返回 (真)
+
+
+.子程序 EIP注入_调用函数, 逻辑型, , 和远程线程调用的一模一样只是多了一个获取DLL句柄
+.参数 进程ID, 整数型, , 
+.参数 函数名, 文本型, , DLL命令所在动态链接库中的名称
+.参数 参数一, 字节集, 可空, DLL命令参数,使用命令"到字节集()"转换,非整数参数则不能为4字节!
+.参数 参数二, 字节集, 可空, 
+.参数 参数三, 字节集, 可空, 
+.参数 参数四, 字节集, 可空, 
+.参数 参数五, 字节集, 可空, 
+.参数 参数六, 字节集, 可空, 
+
+.局部变量 临时内存地址1, 整数型, , , 
+.局部变量 临时内存地址2, 整数型, , , 
+.局部变量 GetProcAddress地址, 整数型, , , 
+.局部变量 汇编代码1, 字节集, , , 
+.局部变量 汇编代码2, 字节集, , , 
+.局部变量 函数地址, 整数型, , , 
+.局部变量 长度, 整数型, , , 
+.局部变量 指针地址, 整数型, , , 
+.局部变量 参数, 整数型, , "0", 
+.局部变量 i, 整数型, , , 
+.局部变量 返回值, 整数型, , , 
+.局部变量 DLL句柄, 整数型, , , 
+
+ ' 打开进程
+赋值 (进程句柄, OpenProcess (#PROCESS_ALL_ACCESS, 假, 进程ID))
+
+赋值 (DLL句柄, 取模块句柄EX (进程ID, _启动窗口..内容))
+.如果真 (等于 (DLL句柄, 0))
+    信息框 (“获取DLL句柄失败！”, 0, , )
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“获取DLL句柄成功，DLL句柄：”, 取十六进制文本 (DLL句柄)))
+
+ ' 申请内存
+赋值 (临时内存地址1, VirtualAllocEx (进程句柄, 0, 取文本长度 (函数名), #MEM_COMMIT, #PAGE_READWRITE))
+.如果真 (等于 (临时内存地址1, 0))
+    信息框 (“申请内存地址失败！”, 0, , )
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“申请内存地址成功，临时内存地址1：”, 取十六进制文本 (临时内存地址1)))
+
+ ' 将函数名写入申请的内存
+WriteProcessMemory (进程句柄, 临时内存地址1, 到字节集 (函数名), 取文本长度 (函数名), 0)
+
+ ' 获取GetProcAddress在Kernel32.dll中的地址
+赋值 (GetProcAddress地址, GetProcAddress (GetModuleHandleA (“Kernel32.dll”), “GetProcAddress”))
+
+调试输出 (DLL句柄)
+ ' 代码含义：执行GetProcAddress函数，参数一是DLL句柄，参数二是临时内存地址（函数名）
+赋值 (汇编代码1, 相加 ({ 184 }, 到字节集 (GetProcAddress地址), { 104 }, 到字节集 (临时内存地址1), { 104 }, 到字节集 (DLL句柄), { 255, 208, 195, 144 }))
+ ' mov eax,GetModuleHandleA地址
+ ' push 临时内存地址
+ ' push DLL句柄
+ ' call eax
+ ' ret
+ ' nop
+
+ ' 申请内存
+赋值 (临时内存地址2, VirtualAllocEx (进程句柄, 0, 取字节集长度 (汇编代码1), #MEM_COMMIT, #PAGE_READWRITE))
+.如果真 (等于 (临时内存地址1, 0))
+    信息框 (“申请内存地址失败！”, 0, , )
+    VirtualFreeEx (进程句柄, 临时内存地址1, 0, #MEM_RELEASE)
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“申请内存地址成功，临时内存地址2：”, 取十六进制文本 (临时内存地址2)))
+
+ ' 将汇编代码1写入申请的内存
+WriteProcessMemory (进程句柄, 临时内存地址2, 汇编代码1, 取字节集长度 (汇编代码1), 0)
+
+ ' 创建远程线程执行汇编代码
+赋值 (线程句柄, CreateRemoteThread (进程句柄, 0, 0, 临时内存地址2, 0, 0, 0))
+.如果真 (等于 (线程句柄, 0))
+    信息框 (“创建远程线程失败！”, 0, , )
+    VirtualFreeEx (进程句柄, 临时内存地址1, 0, #MEM_RELEASE)
+    VirtualFreeEx (进程句柄, 临时内存地址2, 0, #MEM_RELEASE)
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (“创建执行汇编代码1的远程线程成功！”)
+
+WaitForSingleObject (线程句柄, #DMUS_SEG_REPEAT_INFINITE)
+ ' 获取函数地址
+GetExitCodeThread (线程句柄, 函数地址)
+
+ ' 释放申请的内存，关闭线程句柄
+VirtualFreeEx (进程句柄, 临时内存地址1, 0, #MEM_RELEASE)
+VirtualFreeEx (进程句柄, 临时内存地址2, 0, #MEM_RELEASE)
+CloseHandle (线程句柄)
+
+.如果真 (等于 (函数地址, 0))
+    信息框 (“获取函数地址失败！”, 0, , )
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“获取函数地址成功，地址：”, 取十六进制文本 (函数地址)))
+
+ ' 将参数写入内存中
+.如果真 (不等于 (参数一, {  }))
+    赋值 (长度, 取字节集长度 (参数一))
+    .如果 (等于 (长度, 4))
+        赋值 (指针地址, 取字节集数据 (参数一, #整数型, ))
+    .否则
+        赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 长度, #MEM_COMMIT, #PAGE_READWRITE))
+        WriteProcessMemory (进程句柄, 指针地址, 参数一, 长度, 0)
+    .如果结束
+    加入成员 (参数, 指针地址)
+    .如果真 (不等于 (参数二, {  }))
+        赋值 (长度, 取字节集长度 (参数二))
+        .如果 (等于 (长度, 4))
+            赋值 (指针地址, 取字节集数据 (参数二, #整数型, ))
+        .否则
+            赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 长度, #MEM_COMMIT, #PAGE_READWRITE))
+            WriteProcessMemory (进程句柄, 指针地址, 参数二, 长度, 0)
+        .如果结束
+        加入成员 (参数, 指针地址)
+        .如果真 (不等于 (参数三, {  }))
+            赋值 (长度, 取字节集长度 (参数三))
+            .如果 (等于 (长度, 4))
+                赋值 (指针地址, 取字节集数据 (参数三, #整数型, ))
+            .否则
+                赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 长度, #MEM_COMMIT, #PAGE_READWRITE))
+                WriteProcessMemory (进程句柄, 指针地址, 参数三, 长度, 0)
+            .如果结束
+            加入成员 (参数, 指针地址)
+            .如果真 (不等于 (参数四, {  }))
+                赋值 (长度, 取字节集长度 (参数四))
+                .如果 (等于 (长度, 4))
+                    赋值 (指针地址, 取字节集数据 (参数四, #整数型, ))
+                .否则
+                    赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 长度, #MEM_COMMIT, #PAGE_READWRITE))
+                    WriteProcessMemory (进程句柄, 指针地址, 参数四, 长度, 0)
+                .如果结束
+                加入成员 (参数, 指针地址)
+                .如果真 (不等于 (参数五, {  }))
+                    赋值 (长度, 取字节集长度 (参数五))
+                    .如果 (等于 (长度, 4))
+                        赋值 (指针地址, 取字节集数据 (参数五, #整数型, ))
+                    .否则
+                        赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 长度, #MEM_COMMIT, #PAGE_READWRITE))
+                        WriteProcessMemory (进程句柄, 指针地址, 参数五, 长度, 0)
+                    .如果结束
+                    加入成员 (参数, 指针地址)
+                    .如果真 (不等于 (参数六, {  }))
+                        赋值 (长度, 取字节集长度 (参数六))
+                        .如果 (等于 (长度, 4))
+                            赋值 (指针地址, 取字节集数据 (参数六, #整数型, ))
+                        .否则
+                            赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 长度, #MEM_COMMIT, #PAGE_READWRITE))
+                            WriteProcessMemory (进程句柄, 指针地址, 参数六, 长度, 0)
+                        .如果结束
+                        加入成员 (参数, 指针地址)
+                    .如果真结束
+                    
+                .如果真结束
+                
+            .如果真结束
+            
+        .如果真结束
+        
+    .如果真结束
+    
+.如果真结束
+
+ ' 代码含义：执行函数，参数。。。。
+赋值 (汇编代码2, 相加 ({ 184 }, 到字节集 (函数地址)))
+.变量循环首 (取数组成员数 (参数), 1, -1, i) ' 参数是倒着排的
+    赋值 (汇编代码2, 相加 (汇编代码2, { 104 }, 到字节集 (参数 [i])))
+.变量循环尾 ()
+赋值 (汇编代码2, 相加 (汇编代码2, { 255, 208, 195, 144 }))
+ ' mov eax,函数地址
+ ' push 参数XXX
+ ' push 参数XXX
+ ' push 参数XXX
+ ' ......
+ ' call eax
+ ' ret
+ ' nop
+
+ ' 申请内存
+赋值 (指针地址, VirtualAllocEx (进程句柄, 0, 取字节集长度 (汇编代码2), #MEM_COMMIT, #PAGE_READWRITE))
+
+ ' 将汇编代码2写入申请的内存
+WriteProcessMemory (进程句柄, 指针地址, 汇编代码2, 取字节集长度 (汇编代码2), 0)
+
+ ' 方便释放内存
+加入成员 (参数, 指针地址)
+
+ ' 创建远程线程执行汇编代码
+赋值 (线程句柄, CreateRemoteThread (进程句柄, 0, 0, 指针地址, 0, 0, 0))
+.如果真 (等于 (线程句柄, 0))
+    信息框 (“创建远程线程失败！”, 0, , )
+    .计次循环首 (取数组成员数 (参数), i)
+        .如果真 (不等于 (参数 [i], 0))
+            VirtualFreeEx (进程句柄, 参数 [i], 0, #MEM_RELEASE)
+        .如果真结束
+        
+    .计次循环尾 ()
+    清除数组 (参数)
+    CloseHandle (进程句柄)
+    返回 (假)
+.如果真结束
+加入日志 (“创建执行汇编代码1的远程线程成功！”)
+
+WaitForSingleObject (线程句柄, #DMUS_SEG_REPEAT_INFINITE)
+
+ ' 获取调用函数执行后的返回值
+GetExitCodeThread (线程句柄, 返回值)
+
+ ' 批量释放申请的内存，关闭线程句柄及进程句柄
+.计次循环首 (取数组成员数 (参数), i)
+    .如果真 (不等于 (参数 [i], 0))
+        VirtualFreeEx (进程句柄, 参数 [i], 0, #MEM_RELEASE)
+    .如果真结束
+    
+.计次循环尾 ()
+清除数组 (参数)
+CloseHandle (线程句柄)
+CloseHandle (进程句柄)
+返回 (真)
+
+.子程序 EIP注入卸载, 空白型, , 卸载和远程调用差不多，释放内存，调用FreeLibrary，就不写了
+
+
+.程序集 内存永久注入, , , 
+
+.子程序 内存永久注入, 逻辑型, , 
+.参数 文件名, 文本型, , 
+.参数 DLL文件, 文本型, , 
+
+.局部变量 文件数据, 字节集, , , 
+.局部变量 文件数据地址, 整数型, , , 
+.局部变量 DLL数据, 字节集, , , 
+.局部变量 载入的DLL数据, 字节集, , , 
+.局部变量 DOS头, IMAGE_DOS_HEADER, , , 
+.局部变量 PE头, IMAGE_NT_HEADERS, , , 
+.局部变量 PE区段表, IMAGE_SECTION_HEADER, , "0", 
+.局部变量 映像基址, 整数型, , , 
+.局部变量 映像大小, 整数型, , , 
+.局部变量 区段数目, 整数型, , , 
+.局部变量 文件号, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 写入数据, 字节集, , , 
+.局部变量 新区段文件地址, 整数型, , , 
+.局部变量 文件入口地址, 整数型, , , 
+
+ ' 读入文件和DLL数据
+赋值 (文件数据, 读入文件 (文件名))
+赋值 (DLL数据, 读入文件 (DLL文件))
+赋值 (载入的DLL数据, 相加 (#Load, DLL数据))
+赋值 (文件数据地址, lstrcpyn_字节集 (文件数据, 文件数据, 0))
+
+ ' 获取DOS头，DOS头长度40
+RtlMoveMemory_IMAGE_DOS_HEADER (DOS头, 文件数据地址, 64)
+
+ ' 判断是否是PE文件，DOS头的开始两个字节一直都是MZ（5A4D）
+.如果真 (不等于 (DOS头.e_magic, #IMAGE_DOS_SIGNATURE))
+    信息框 (“不是一个有效的PE文件1”, 0, , )
+    返回 (假)
+.如果真结束
+
+ ' 获取NT头（PE头），NT头长度F8
+RtlMoveMemory_IMAGE_NT_HEADERS_1 (PE头, 相加 (文件数据地址, DOS头.e_lfanew), 248)
+
+ ' 判断是否是PE文件，NT头的开始两个字节一直都是PE（4550）
+.如果真 (不等于 (PE头.Signature, #IMAGE_NT_SIGNATURE))
+    信息框 (“不是一个有效的PE文件2”, 0, , )
+    返回 (假)
+.如果真结束
+
+ ' 保存一些必要数据
+赋值 (映像基址, PE头.OptionalHeader.ImageBase)
+赋值 (映像大小, PE头.OptionalHeader.SizeOfImage)
+赋值 (区段数目, PE头.FileHeader.NumberOfSections)
+赋值 (文件入口地址, PE头.OptionalHeader.AddressOfEntryPoint)
+
+ ' 建立一个内存文件并将文件数据写入
+赋值 (文件号, 打开内存文件 ())
+写出字节集 (文件号, 文件数据)
+
+ ' 移动到PE头.OptionalHeader.SizeOfImage的位置
+移动读写位置 (文件号, #文件首, 相加 (DOS头.e_lfanew, 80))
+
+ ' 改变映像文件大小
+写出字节集 (文件号, 到字节集 (到整数 (相加 (PE头.OptionalHeader.SizeOfImage, 取内存对齐值 (取字节集长度 (载入的DLL数据), PE头.OptionalHeader.SectionAlignment)))))
+
+ ' 移动到PE头.FileHeader.NumberOfSections的位置
+移动读写位置 (文件号, #文件首, 相加 (DOS头.e_lfanew, 6))
+
+ ' 改区段数目 +1
+写出字节集 (文件号, 到字节集 (到整数 (相加 (区段数目, 1))))
+重定义数组 (PE区段表, 假, 相加 (区段数目, 1))
+
+ ' 获取原有区段表
+.计次循环首 (PE头.FileHeader.NumberOfSections, i)
+    RtlMoveMemory_IMAGE_SECTION_HEADER_3 (PE区段表 [i], 相加 (文件数据地址, DOS头.e_lfanew, 208, 相乘 (i, 40)), 40)
+.计次循环尾 ()
+
+ ' 移动到区段表最后
+移动读写位置 (文件号, #文件首, 相加 (DOS头.e_lfanew, 208, 相乘 (相加 (区段数目, 1), 40)))
+
+赋值 (PE区段表 [相加 (区段数目, 1)].Name, 取字节集数据 (到字节集 (“.gdata”), #长整数型, )) ' 自定义新区段名
+赋值 (PE区段表 [相加 (区段数目, 1)].Misc, 取字节集长度 (载入的DLL数据)) ' 自定义新区段在内存中的大小
+赋值 (PE区段表 [相加 (区段数目, 1)].VirtualAddress, 取内存对齐值 (相加 (PE区段表 [区段数目], VirtualAddress, PE区段表 [区段数目], Misc), PE头.OptionalHeader.SectionAlignment)) ' 自定义新区段在内存中的地址
+赋值 (PE区段表 [相加 (区段数目, 1)].SizeOfRawData, 取字节集长度 (载入的DLL数据)) ' 自定义新区段在文件中的大小
+赋值 (PE区段表 [相加 (区段数目, 1)].PointerToRawData, 取内存对齐值 (相加 (PE区段表 [区段数目], PointerToRawData, PE区段表 [区段数目], SizeOfRawData), PE头.OptionalHeader.FileAlignment)) ' 自定义新区段在文件中的地址
+赋值 (PE区段表 [相加 (区段数目, 1)].PointerToRelocations, 0) ' 自定义新区段重定位指针
+赋值 (PE区段表 [相加 (区段数目, 1)].PointerToLinenumbers, 0) ' 自定义新区段行数指针
+赋值 (PE区段表 [相加 (区段数目, 1)].NumberOfRelocations, 0) ' 自定义新区段重定位数目
+赋值 (PE区段表 [相加 (区段数目, 1)].NumberOfLinenumbers, 0) ' 自定义新区段行数数目
+赋值 (PE区段表 [相加 (区段数目, 1)].Characteristics, #IMAGE_SCN_MEM_EXECUTE) ' 自定义新区段特性
+
+ ' 保存新区段在文件中的地址
+赋值 (新区段文件地址, PE区段表 [相加 (区段数目, 1)].PointerToRawData)
+
+ ' 写入新区段
+写出字节集 (文件号, 区段块结构转换 (PE区段表 [相加 (区段数目, 1)]))
+
+ ' 在文件最后写入长度为载入的DLL数据空白数据
+移到文件尾 (文件号)
+插入字节集 (文件号, 取空白字节集 (取字节集长度 (载入的DLL数据)))
+
+ ' 读出新的文件数据
+移到文件首 (文件号)
+赋值 (文件数据, 读入字节集 (文件号, 取文件长度 (文件号)))
+关闭文件 (文件号)
+
+ ' 获取新的文件数据1开始地址
+赋值 (文件数据地址, lstrcpyn_字节集 (文件数据, 文件数据, 0))
+
+ ' 建立一个内存文件并将新的文件数据1写入
+赋值 (文件号, 打开内存文件 ())
+写出字节集 (文件号, 文件数据)
+
+ ' 移动到新区段地址
+移动读写位置 (文件号, #文件首, 新区段文件地址)
+ ' push dll数据地址
+赋值 (写入数据, 相加 ({ 104 }, 到字节集 (到整数 (相加 (映像基址, PE区段表 [相加 (区段数目, 1)].VirtualAddress, 15, 取字节集长度 (#Load))))))
+写出字节集 (文件号, 写入数据)
+
+ ' 移动到新区段地址+5
+移动读写位置 (文件号, #文件首, 相加 (新区段文件地址, 5))
+ ' call load地址
+赋值 (写入数据, 相加 ({ 232 }, 到字节集 (到整数 (相加 (负 (相加 (映像基址, 映像大小, 15)), 映像基址, PE区段表 [相加 (区段数目, 1)].VirtualAddress, 20)))))
+写出字节集 (文件号, 写入数据)
+
+ ' 移动到新区段地址+10
+移动读写位置 (文件号, #文件首, 相加 (新区段文件地址, 10))
+ ' jmp 文件入口地址
+赋值 (写入数据, 相加 ({ 233 }, 到字节集 (到整数 (相加 (负 (相加 (映像基址, 映像大小, 15)), 映像基址, 文件入口地址)))))
+写出字节集 (文件号, 写入数据)
+
+ ' 移动到新区段地址+15
+移动读写位置 (文件号, #文件首, 相加 (新区段文件地址, 15))
+ ' 写入load数据
+赋值 (写入数据, #Load)
+写出字节集 (文件号, 写入数据)
+
+ ' 移动到新区段地址+15+取字节集长度 (#Load)
+移动读写位置 (文件号, #文件首, 相加 (新区段文件地址, 15, 取字节集长度 (#Load)))
+ ' 写入DLL数据
+赋值 (写入数据, DLL数据)
+写出字节集 (文件号, 写入数据)
+
+ ' 读出新的文件数据
+移到文件首 (文件号)
+赋值 (文件数据, 读入字节集 (文件号, 取文件长度 (文件号)))
+关闭文件 (文件号)
+
+ ' 获取新的文件数据2开始地址
+赋值 (文件数据地址, lstrcpyn_字节集 (文件数据, 文件数据, 0))
+
+RtlMoveMemory_IMAGE_DOS_HEADER (DOS头, 文件数据地址, 64)
+RtlMoveMemory_IMAGE_NT_HEADERS_1 (PE头, 相加 (文件数据地址, DOS头.e_lfanew), 248)
+
+ ' 建立一个内存文件并将新的文件数据2写入
+赋值 (文件号, 打开内存文件 ())
+写出字节集 (文件号, 文件数据)
+
+ ' 移动到PE头.OptionalHeader.AddressOfEntryPoint
+移动读写位置 (文件号, #文件首, 相加 (DOS头.e_lfanew, 40))
+ ' 改变程序入口点地址
+写出字节集 (文件号, 到字节集 (PE区段表 [相加 (区段数目, 1)].VirtualAddress))
+加入日志 (相加 (“新文件入口地址RVA：”, 取十六进制文本 (PE区段表 [相加 (区段数目, 1)].VirtualAddress)))
+
+ ' 读出新的文件数据
+移到文件首 (文件号)
+赋值 (文件数据, 读入字节集 (文件号, 取文件长度 (文件号)))
+关闭文件 (文件号)
+
+ ' 生成新的文件名
+赋值 (文件名, 子文本替换 (文件名, 文件取扩展名 (文件名), 相加 (“_注入后”, 文件取扩展名 (文件名)), , , 真))
+
+ ' 生成新的文件
+.如果真 (等于 (写到文件 (文件名, 文件数据), 假))
+    信息框 (“生成新的文件失败，请稍后再试！”, 0, , )
+    返回 (假)
+.如果真结束
+加入日志 (相加 (“注入并生成新的文件成功！新文件地址：”, 文件名))
+返回 (真)
+
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 Skin_加载, 逻辑型, , 加载程序当前目录下的skinh.she皮肤,成功返回真
+
+
+.子程序 Skin_加载_从文件1, 逻辑型, , 加载指定的皮肤，成功返回真
+.参数 皮肤路径, 文本型, , 皮肤文件路径
+.参数 皮肤口令, 文本型, 可空, 皮肤密钥
+
+
+
+.子程序 Skin_加载_从文件2, 逻辑型, , 加载指定皮肤，并指定皮肤的色调，饱和度，亮度，  成功返回真
+.参数 皮肤路径, 文本型, , 皮肤文件路径
+.参数 皮肤密码, 文本型, 可空, 皮肤密钥
+.参数 色调, 整数型, 可空, 取值范围 -180-180
+.参数 饱和度, 整数型, 可空, 取值范围 -100-100
+.参数 亮度, 整数型, 可空, 取值范围 -100-100
+
+
+
+.子程序 Skin_加载_从资源, 逻辑型, , 从资源添加皮肤，并指定皮肤的色调，饱和度，亮度，成功返回真
+.参数 资源皮肤, 字节集, , 皮肤数据
+.参数 皮肤密码, 文本型, 可空, 皮肤密钥
+.参数 色调, 整数型, 可空, 取值范围 -180-180
+.参数 饱和度, 整数型, 可空, 取值范围 -100-100
+.参数 亮度, 整数型, 可空, 取值范围 -100-100
+
+
+
+.子程序 Skin_卸载, 逻辑型, , 卸载换肤 (注意:在换肤或者程序退出时换肤库会自动卸载当前皮肤,无需再调用此接口进行卸载)
+
+
+.子程序 Skin_卸载指定控件, 逻辑型, , 卸载指定句柄的窗体或者控件的皮肤，成功返回真
+.参数 句柄, 整数型, , 指定窗体或控件的句柄
+
+
+
+.子程序 Skin_设置窗体透明, 逻辑型, , 设置窗体透明，成功返回真
+.参数 透明度, 整数型, , 1－255 默认值0
+.参数 亮度, 整数型, , 1－255 默认值0
+.参数 锐度, 整数型, , 1－255 默认值0
+.参数 阴影大小, 整数型, , 2－19 默认值0
+.参数 水平偏移, 整数型, , 默认值0
+.参数 垂直偏移, 整数型, , 默认值0
+.参数 红色分量, 整数型, , 0－255 默认值 -1
+.参数 绿色分量, 整数型, , 0－255 默认值 -1
+.参数 蓝色分量, 整数型, , 0－255 默认值 -1
+
+
+
+.子程序 Skin_调整色调, 逻辑型, , 调整窗口色调,成功返回真
+.参数 色调, 整数型, , 取值范围 -180-180
+.参数 饱和度, 整数型, , 取值范围 -100-100
+.参数 亮度, 整数型, , 取值范围 -100-100
+
+
+
+.子程序 Skin_取控件坐标颜色, 整数型, , 获取指定窗口或控件在nX,nY处的颜色值，无符号整型 返回颜色值(RGB)
+.参数 句柄, 整数型, , 指定窗口或控件的句柄
+.参数 横坐标, 整数型, , 指定横坐标点
+.参数 纵坐标, 整数型, , 指定纵坐标点
+
+
+
+.子程序 Skin_是否重画, 逻辑型, , 用于填充表格或者列表控件数据时，重复绘制滚动条影响执行效率问题。成功返回真
+.参数 句柄, 整数型, , 窗口或控件的句柄
+.参数 是否锁定, 整数型, , 是否锁定。1为锁定，0为解锁
+
+
+
+.子程序 Skin_换肤类型, 逻辑型, , 指定窗体和控件的换肤类型,成功返回真，失败返回假 如果控件无法加到上皮肤,请用此命令
+.参数 句柄, 整数型, , 
+.参数 换肤类型, 整数型, , 5001=文本框   5002=窗体   5003=颜色选择器
+
+
+
+.子程序 Skin_绘制元素, 逻辑型, , 绘制指定设备上下文的元素,成功返回真
+.参数 窗口或控件句柄, 整数型, , 目标窗口或控件的句柄
+.参数 左上角水平坐标, 整数型, , 
+.参数 左上角垂直坐标, 整数型, , 
+.参数 右下角水平坐标, 整数型, , 
+.参数 右下角垂直坐标, 整数型, , 
+.参数 控件id, 整数型, , 
+
+
+
+.子程序 Skin_设置窗口阴影, 逻辑型, , 开启Vista特效,设置阴影
+.参数 句柄, 整数型, , 0=取消阴影 1=设置阴影
+
+
+
+.子程序 Skin_置控件背景色, 逻辑型, , 设置控件的背景色(目前仅对单选框,复选框,分组框有效)
+.参数 控件句柄, 整数型, , 
+.参数 红色分量, 整数型, , 
+.参数 绿色分量, 整数型, , 
+.参数 蓝色分量, 整数型, , 
+
+
+
+.子程序 Skin_置控件文本色, 逻辑型, , 设置控件的文本颜色色(目前仅对单选框,复选框,分组框有效)
+.参数 控件句柄, 整数型, , 
+.参数 红色分量, 整数型, , 
+.参数 绿色分量, 整数型, , 
+.参数 蓝色分量, 整数型, , 
+
+
+
+.子程序 Skin_置菜单透明度, 逻辑型, , 设置菜单透明度
+.参数 透明度, 整数型, , 取值范围 0-255
+
+
+
+.子程序 Skin_置菜单到标题栏, 逻辑型, , 把窗口菜单设置到窗口的标题栏上去
+.参数 窗口句柄, 整数型, , 
+.参数 是否设置, 逻辑型, , 是否设置到把菜单设置到标题栏上去
+.参数 菜单栏高度, 整数型, 可空, 
+.参数 上部偏移, 整数型, 可空, 
+.参数 右部偏移, 整数型, 可空, 
+
+
+
+.子程序 Skin_置窗口透明度, 逻辑型, , 设置指定句柄的窗体的透明度，成功返回0
+.参数 句柄, 整数型, , 指定窗体句柄
+.参数 透明度, 整数型, , 取值范围 0-255
+
+
+
+.子程序 Skin_置窗口可否移动, 逻辑型, , 设置窗体是否可以移动
+.参数 窗口句柄, 整数型, , 
+.参数 是否可移动, 整数型, , 0为不可移动,1为可移动
+
+
+
+.子程序 Skin_是否已签名, 逻辑型, , 返回签名结果  已签名返回真，未签名返回假
+
+
+.子程序 Skin_初始化, 空白型, , 如果SkinH_EL.dll放在程序根目录下,或者系统的system32下,可不用初始化
+.参数 SkinH_EL文件路径, 文本型, , SkinH_EL.dll文件路径,下载地址: http://www.skinsharp.com/htdocs/products.htm
+
+
+
+.子程序 皮肤_加载, 空白型, , 
+.参数 皮肤, 字节集, , 可直接用 读入文件("皮肤文件")或者放在图片资源表里
+.参数 色调, 整数型, 可空, 取值范围-180-180,默认值0
+.参数 亮度, 整数型, 可空, 取值范围-100-100,默认值0
+
+
+
+.子程序 皮肤_颜色调整, 空白型, , 
+.参数 色调, 整数型, 可空, 取值范围-180-180,默认值0
+.参数 亮度, 整数型, 可空, 取值范围-100-100,默认值0
+
+
+
+.子程序 皮肤_卸载, 空白型, , 结束前执行,释放内存
+
+
+.子程序 皮肤_释放, 空白型, , 在程序结束前前用上这一句，把皮肤内存释放掉；
+
+
+.子程序 皮肤_锁定, 空白型, , 有助表格或列表效率问题
+.参数 句柄, 整数型, , 控件句柄
+.参数 锁定, 逻辑型, 可空, 
+
+
+
+.子程序 皮肤_阴影特效, 空白型, , 
+.参数 有效性, 逻辑型, 可空, 
+
+
+
+.子程序 皮肤_置菜单到标题栏, 空白型, , 一旦设置上,将无法取消
+.参数 窗口句柄, 整数型, , 
+.参数 向左部偏移, 整数型, 可空, 单位为像素,数值越大,超往标题这边靠
+
+
+
+.子程序 皮肤_导出, 逻辑型, , 导出自己喜欢的皮肤,在外部用dll(Skin_加载)调用方式加载皮肤
+.参数 皮肤, 字节集, , 要导入的皮肤,以  #皮肤_ 开头 如 #皮肤_QQ2011
+.参数 导入文件路径, 文本型, , 要保存皮肤的路径,如: C:\皮肤_QQ2011.she
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

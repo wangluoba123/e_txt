@@ -1,0 +1,186 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+
+.DLL命令 WHX_初始化, 整数型, "whxapi.dll", "WHX_Init", , 
+    .参数 APIVersion, 整数型, , 
+
+.DLL命令 WHX_打开, 整数型, "whxapi.dll", "WHX_Open", , 
+    .参数 路径, 文本型, , 
+
+.DLL命令 WHX_读取, 整数型, "whxapi.dll", "WHX_Read", , 
+    .参数 字节集, 字节集, , 
+    .参数 长度, 整数型, , 
+
+.DLL命令 WHX_释放, 空白型, "whxapi.dll", "WHX_Done", , 
+
+.DLL命令 WHX_创建, 空白型, "whxapi.dll", "WHX_Create", , 
+    .参数 文件名, 文本型, , 
+    .参数 大小, 整数型, , 
+
+.DLL命令 WHX_关闭当前文件, 空白型, "whxapi.dll", "WHX_Close", , 
+
+.DLL命令 WHX_关闭所有文件, 空白型, "whxapi.dll", "WHX_CloseAll", , 
+
+.DLL命令 WHX_切换到下一个文件, 空白型, "whxapi.dll", "WHX_NextObj", , 
+
+.DLL命令 WHX_保存当前文件, 空白型, "whxapi.dll", "WHX_Save", , 
+
+.DLL命令 WHX_保存所有文件, 空白型, "whxapi.dll", "WHX_SaveAll", , 
+
+.DLL命令 WHX_另存为当前文件, 空白型, "whxapi.dll", "WHX_SaveAs", , 
+    .参数 文件名, 文本型, , 
+
+.DLL命令 WHX_打开Ex, 空白型, "whxapi.dll", "WHX_OpenEx", , 
+    .参数 文件名, 文本型, , 
+    .参数 打开方式, 整数型, , 124
+
+.DLL命令 WHX_写入, 空白型, "whxapi.dll", "WHX_Write", , 
+    .参数 字节集, 字节集, , 
+    .参数 长度, 整数型, , 
+
+.DLL命令 WHX_取文件长度, 整数型, "whxapi.dll", "WHX_GetSize", , 
+    .参数 字节集64位, 字节集, , 
+
+.DLL命令 WHX_到偏移, 整数型, "whxapi.dll", "WHX_Goto", , 
+    .参数 偏移, 字节集, , 
+
+.DLL命令 WHX_移动位置, 空白型, "whxapi.dll", "WHX_Move", , 
+    .参数 距离, 字节集, , 
+
+.DLL命令 WHX_取当前位置偏移, 整数型, "whxapi.dll", "WHX_CurrentPos", , 
+    .参数 偏移, 字节集, , 
+
+.DLL命令 WHX_设置选块, 整数型, "whxapi.dll", "WHX_SetBlock", , 
+    .参数 偏移1, 字节集, , 
+    .参数 偏移2, 字节集, , 
+
+.DLL命令 WHX_复制, 空白型, "whxapi.dll", "WHX_Copy", , 
+
+.DLL命令 WHX_复制选块到新文件, 空白型, "whxapi.dll", "WHX_CopyIntoNewFile", , 
+    .参数 文件名, 文本型, , 
+
+.DLL命令 WHX_剪切, 空白型, "whxapi.dll", "WHX_Cut", , 
+
+.DLL命令 WHX_删除选块, 空白型, "whxapi.dll", "WHX_Remove", , 
+
+.DLL命令 WHX_粘贴, 空白型, "whxapi.dll", "WHX_Paste", , 
+
+.DLL命令 WHX_写入选块, 空白型, "whxapi.dll", "WHX_WriteClipboard", , 
+
+.DLL命令 WHX_查找, 空白型, "whxapi.dll", "WHX_Find", , 
+    .参数 Data, 文本型, , 
+    .参数 参数, 文本型, , MatchCase、MatchWord、Down、Up、BlockOnly、SaveAllPos、Wildcards、Unicode
+
+.DLL命令 WHX_替换, 空白型, "whxapi.dll", "WHX_Replace", , 
+    .参数 Data1, 文本型, , 
+    .参数 Data2, 文本型, , 
+    .参数 参数, 文本型, , MatchCase、MatchWord、Down、Up、BlockOnly、SaveAllPos、Wildcards、Unicode
+
+.DLL命令 WHX_是否找到, 整数型, "whxapi.dll", "WHX_WasFound", , 
+
+.DLL命令 WHX_找到的数量, 整数型, "whxapi.dll", "WHX_WasFoundEx", , 
+
+.DLL命令 WHX_转换数据类型, 空白型, "whxapi.dll", "WHX_Convert", , 
+    .参数 数据类型1, 文本型, , ANSI、IBM、EBCDIC、Binary、HexASCII、IntelHex、Motorola、Base64、UUCode
+    .参数 数据类型2, 文本型, , 
+
+.DLL命令 WHX_加密, 空白型, "whxapi.dll", "WHX_Encrypt", , 
+    .参数 密钥, 文本型, , 
+    .参数 算法, 整数型, , http://membres.multimania.fr/pc1/
+
+.DLL命令 WHX_解密, 空白型, "whxapi.dll", "WHX_Decrypt", , 
+    .参数 密钥, 文本型, , 
+    .参数 算法, 整数型, , http://membres.multimania.fr/pc1/
+
+.DLL命令 WHX_取当前文件名, 整数型, "whxapi.dll", "WHX_GetCurObjName", , 
+    .参数 文件名, 文本型, , 
+
+.DLL命令 WHX_设置错误信息, 空白型, "whxapi.dll", "WHX_SetFeedbackLevel", , 
+    .参数 参数, 整数型, , 0显示信息框和进度、1禁止信息框、3显示进度、4禁止
+
+.DLL命令 WHX_取错误文本, 空白型, "whxapi.dll", "WHX_GetLastError", , 
+    .参数 错误文本, 文本型, , 
+
+.DLL命令 WHX_取指定错误文本, 空白型, "whxapi.dll", "WHX_SetLastError", , 
+    .参数 错误文本, 文本型, , 
+
+.DLL命令 WHX_取软件信息, 空白型, "whxapi.dll", "WHX_GetStatus", , 
+    .参数 WinHex路径, 文本型, , 
+    .参数 版本号, 整数型, , 
+    .参数 服务号, 整数型, , 
+    .参数 保留, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 a, 字节集, , , 
+.局部变量 b, 字节集, , , 
+.局部变量 c, 文本型, , , 
+
+.如果 (等于 (取文本注册项 (#现行用户, “Software\X-Ways AG\WinHex\Path”, ), “”))
+    写注册项 (#现行用户, “Software\X-Ways AG\WinHex\Path”, 相加 (取运行目录 (), “\WinHex”))
+.否则
+    
+.如果结束
+WHX_初始化 (1)
+WHX_打开 (“C:\2.ICO”)
+ ' C:\My File.txt file
+ ' D: logical drive
+ ' E: logical drive
+ ' 00h floppy disk
+ ' 80h hard disk 0*
+ ' 81h hard disk 1*
+ ' 82h removable medium 2*
+ ' 83h hard disk 3*
+ ' 9Eh 1st optical disc
+ ' 9Fh 2nd optical disc
+ ' *80h = BIOS disk 80h under Windows 9x/Me, physical disk no. 0 under Windows NT/2000/XP, 81h = BIOS disk 81h under Windows 9x/Me, physical disk no. 1 under Windows NT/2000/XP, etc. Physical removable media are accessed and enumerated just like physical hard disks.
+
+赋值 (a, 取空白字节集 (256))
+WHX_读取 (a, 256)
+
+赋值 (b, 取空白字节集 (64))
+输出调试文本 (WHX_取文件长度 (b))
+输出调试文本 (取字节集数据 (b, #整数型, ))
+赋值 (c, 取空白文本 (256))
+WHX_取当前文件名 (c)
+输出调试文本 (c)
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+WHX_释放 ()
+
+
+ ' 不属于任何一个程序集、类模块的函数：

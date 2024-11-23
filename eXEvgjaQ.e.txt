@@ -1,0 +1,188 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.wodesoft.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.wodesoft.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.wodesoft.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 489
+    高度 = 349
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 IP_ADAPTER_INFO, , 
+    .成员 Next, 整数型, , , 
+    .成员 ComboIndex, 整数型, , , 
+    .成员 AdapterName, 字节型, , "260", 名称
+    .成员 Description, 字节型, , "132", 描述
+    .成员 AddressLength, 整数型, , , 
+    .成员 Address, 字节型, , "8", 
+    .成员 Index, 整数型, , , 
+    .成员 Type, 整数型, , , 类型
+    .成员 DhcpEnabled, 整数型, , , 
+    .成员 CurrentIpAddress, 整数型, , , 
+    .成员 IpAddressList, IP_ADDR_STRING, , , 
+    .成员 GatewayList, IP_ADDR_STRING, , , 
+    .成员 DhcpServer, IP_ADDR_STRING, , , 
+    .成员 HaveWins, 逻辑型, , , 
+    .成员 PrimaryWinsServer, IP_ADDR_STRING, , , 
+    .成员 SecondaryWinsServer, IP_ADDR_STRING, , , 
+    .成员 LeaseObtained, 整数型, , , 
+    .成员 LeaseExpires, 整数型, , , 
+
+数据类型 IP_ADDR_STRING, , 
+    .成员 Next, 整数型, , , 
+    .成员 IpAddress, 字节型, , "16", IP_ADDRESS_STRING
+    .成员 IpMask, 字节型, , "16", IP_MASK_STRING=IP_ADDRESS_STRING
+    .成员 Context, 整数型, , , 
+
+数据类型 IP_PER_ADAPTER_INFO, , 
+    .成员 tmp, 整数型, , "3", 
+    .成员 CurrentDnsServer, IP_ADDR_STRING, , , 
+    .成员 DnsServerList, IP_ADDR_STRING, , , 
+
+
+.DLL命令 GetAdaptersInfo, 整数型, "IPHlpApi", "", , 
+    .参数 IpAdapterInfo, 字节集, , 
+    .参数 pOutBufLen, 整数型, 传址, 
+
+.DLL命令 GetPerAdapterInfo, 整数型, "IPHlpApi", "", , 
+    .参数 IfIndex, 整数型, , 
+    .参数 pPerAdapterInfo, 字节集, , 
+    .参数 pOutBufLen, 整数型, 传址, 
+
+.DLL命令 Len_iai, 整数型, "kernel32", "LocalSize", , 
+    .参数 hMem, IP_ADAPTER_INFO, 传址, 
+
+.DLL命令 len_ipai, 整数型, "", "LocalSize", , 
+    .参数 hMem, IP_PER_ADAPTER_INFO, 传址, 
+
+.DLL命令 Len_ias, 整数型, "kernel32", "LocalSize", , 
+    .参数 hMem, IP_ADDR_STRING, 传址, 
+
+.DLL命令 取变量地址_字节集, 整数型, "", "lstrcpynA", , 
+    .参数 变量, 字节集, 传址, 
+    .参数 变量, 字节集, 传址, 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 CopyMemory_iai, 空白型, "kernel32", "RtlMoveMemory", , 
+    .参数 Destination, IP_ADAPTER_INFO, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 CopyMemory_ipai, 空白型, "kernel32", "RtlMoveMemory", , 
+    .参数 Destination, IP_PER_ADAPTER_INFO, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 CopyMemory_ias, 空白型, "kernel32", "RtlMoveMemory", , 
+    .参数 Destination, IP_ADDR_STRING, 传址, 
+    .参数 Source, IP_ADDR_STRING, , 
+    .参数 Length, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+子程序1 ()
+
+.子程序 子程序1, 空白型, , 
+.局部变量 size, 整数型, , , 
+.局部变量 AdapterInfo, IP_ADAPTER_INFO, , , 
+.局部变量 buf, 字节集, , , 
+.局部变量 addr, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 mac, 文本型, , , 
+.局部变量 tmp, 文本型, , , 
+.局部变量 Addr_ip, 整数型, , , 
+.局部变量 buf_ip, IP_ADDR_STRING, , , 
+.局部变量 size_dns, 整数型, , , 
+.局部变量 buf_dns, 字节集, , , 
+.局部变量 dns, IP_PER_ADAPTER_INFO, , , 
+.局部变量 addr_dns, 整数型, , , 
+
+GetAdaptersInfo ({ 0 }, size)
+赋值 (buf, 取空白字节集 (size))
+赋值 (addr, 取变量地址_字节集 (buf, buf, 0))
+.如果真 (等于 (GetAdaptersInfo (buf, size), 0))
+    .循环判断首 ()
+        CopyMemory_iai (AdapterInfo, addr, 640)
+         ' 本源码来自易语言资源网(www.wodesoft.com)
+        相加 (取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Control\Network\{4D36E972-E325-11CE-BFC1-08002BE10318}\”, 到文本 (AdapterInfo.AdapterName), “\Connection\Name”), ), #换行符).加入文本 ()
+        
+        相加 (“名称:”, 到文本 (AdapterInfo.AdapterName), #换行符).加入文本 ()
+        相加 (“描述:”, 到文本 (AdapterInfo.Description), #换行符).加入文本 ()
+        
+        赋值 (mac, “”)
+        .计次循环首 (相减 (AdapterInfo.AddressLength, 1), i)
+            赋值 (tmp, 取十六进制文本 (AdapterInfo.Address [i]))
+            赋值 (mac, 相加 (mac, 选择 (等于 (tmp, “0”), “00”, tmp), “-”))
+        .计次循环尾 ()
+        赋值 (mac, 取文本左边 (mac, 相减 (取文本长度 (mac), 1)))
+        相加 (“MAC:”, mac, #换行符).加入文本 ()
+        
+        CopyMemory_ias (buf_ip, AdapterInfo.IpAddressList, 40)
+        相加 (“地址:”, 到文本 (buf_ip.IpAddress), #换行符).加入文本 ()
+        相加 (“子网:”, 到文本 (buf_ip.IpMask), #换行符).加入文本 ()
+        
+        CopyMemory_ias (buf_ip, AdapterInfo.GatewayList, 40)
+        相加 (“网关:”, 到文本 (buf_ip.IpAddress), #换行符).加入文本 ()
+         ' 本源码来自易语言资源网(www.wodesoft.com)
+        赋值 (size_dns, GetPerAdapterInfo (AdapterInfo.Index, buf_dns, size_dns))
+        赋值 (buf_dns, 取空白字节集 (size_dns))
+        赋值 (addr_dns, 取变量地址_字节集 (buf_dns, buf_dns, 0))
+        
+        .如果真 (等于 (GetPerAdapterInfo (AdapterInfo.Index, buf_dns, size_dns), 0))
+            CopyMemory_ipai (dns, addr_dns, 92)
+            相加 (“DNS1:”, 到文本 (dns.CurrentDnsServer.IpAddress), #换行符).加入文本 ()
+            相加 (“DNS2:”, 到文本 (dns.DnsServerList.IpAddress), #换行符, #换行符).加入文本 ()
+        .如果真结束
+        
+        赋值 (addr, AdapterInfo.Next)
+    .循环判断尾 (不等于 (addr, 0))
+.如果真结束
+' 本源码来自易语言资源网(www.wodesoft.com)
+ ' code by 泆寒
+
+
+ ' 不属于任何一个程序集、类模块的函数：

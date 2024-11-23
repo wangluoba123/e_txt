@@ -1,0 +1,111 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 161
+    高度 = 49
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 NO_ERROR, "0", , 0
+.常量 CONNECT_UPDATE_PROFILE, "1", , &H1
+.常量 RESOURCETYPE_DISK, "1", , &H1
+.常量 RESOURCETYPE_PRINT, "2", , &H2
+.常量 RESOURCETYPE_AN, "0", , &H0
+.常量 RESOURCE_CONNECTED, "1", , &H1
+.常量 RESOURCE_REMEMBERED, "3", , &H3
+.常量 RESOURCE_GLOBALNET, "2", , &H2
+.常量 RESOURCEDISPLAYTYPE_DOMAIN, "1", , &H1
+.常量 RESOURCEDISPLAYTYPE_GENERIC, "0", , &H0
+.常量 RESOURCEDISPLAYTYPE_SERVER, "2", , &H2
+.常量 RESOURCEDISPLAYTYPE_SHARE, "3", , &H3
+.常量 RESOURCEUSAGE_CONNECTABLE, "1", , &H1
+.常量 RESOURCEUSAGE_CONTAINER, "2", , &H2
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 NETRESOURCE, , 
+    .成员 dwScope, 整数型, , , 
+    .成员 dwType, 整数型, , , 
+    .成员 dwDisplayType, 整数型, , , 
+    .成员 dwUsage, 整数型, , , 
+    .成员 lpLocalName, 文本型, , , 
+    .成员 lpRemoteName, 文本型, , , 
+    .成员 lpComment, 文本型, , , 
+    .成员 lpProvider, 文本型, , , 
+
+
+.DLL命令 创建网络连接, 整数型, "mpr.dll", "WNetAddConnection2A", , 创建同一个网络资源的连接。返回值Long，零表示成功。会设置GetLastError。如GetLastError是ERROR_EXTENDED_ERROR，则可用WNetGetLastError取得额外的错误信息。
+    .参数 lpNetResource, NETRESOURCE, , =75%NETRESOURCE，在这个结构中设置了下述字段，对要连接的网络资源进行了定义：dwType，lpLocalName（可为vbNullString），lpRemoteName，lpProvider（设为vbNullString表示用默认提供者）。该结构的其他所有变量都会被忽略
+    .参数 lpPassword, 文本型, , String，可选的一个密码。如为vbNullString，表示采用当前用户的默认密码。如为一个空字串，则不用任何密码
+    .参数 lpUserName, 文本型, , String，用于连接的用户名。如为vbNullString，表示使用当前用户
+    .参数 dwFlags, 整数型, , Long，设为零；或指定常数CONNECT_UPDATE_PROFILE，表示创建永久性连接
+
+.DLL命令 断开网络连接, 整数型, "mpr.dll", "WNetCancelConnection2A", , 结束一个网络连接。返回值Long，零表示成功。会设置GetLastError。如GetLastError是ERROR_EXTENDED_ERROR，则可用WNetGetLastError取得额外的错误信息。
+    .参数 lpName, 文本型, , 备注1无法读取，请您提供该API名报易BBS中ID号klasp完善。
+    .参数 dwFlags, 整数型, , 备注2无法读取，请您提供该API名报易BBS中ID号klasp完善。
+    .参数 fForce, 整数型, , 备注3无法读取，请您提供该API名报易BBS中ID号klasp完善。
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 NetR, NETRESOURCE, , , 
+.局部变量 ErrInfo, 整数型, , , 
+.局部变量 strLocalName, 文本型, , , 
+
+赋值 (NetR.dwScope, #RESOURCE_GLOBALNET)
+赋值 (NetR.dwType, #RESOURCETYPE_DISK)
+赋值 (NetR.dwDisplayType, #RESOURCEDISPLAYTYPE_SHARE)
+赋值 (NetR.dwUsage, #RESOURCEUSAGE_CONNECTABLE)
+赋值 (NetR.lpLocalName, “X:”)
+赋值 (NetR.lpRemoteName, “\\10.70.25.139\共享”)
+ErrInfo ＝ 创建网络连接 (NetR, “7530431”, “ld”, 0)  ' 7530431是进入服务器的用户密码，ld是进入服务器的用户名
+ ' 上有内容是通过API函数建立一个远程共享文件夹的映射
+.如果 (小于 (读配置项 (相加 (取运行目录 (), “\软件当前版本.ini”), “软件当前版本”, “版本号”, ), 读配置项 (相加 (“\\10.70.25.139\共享\000”, “\软件最新版本.ini”), “软件最新版本”, “版本号”, )))
+    
+    .如果 (等于 (信息框 (“发现新版本，是否进行更新？”, 相加 (#是否钮, #询问图标), “询问窗口”), #是钮))
+        
+        写配置项 (相加 (取运行目录 (), “\软件当前版本.ini”), “软件当前版本”, “版本号”, 到文本 (读配置项 (相加 (“\\10.70.25.139\共享\000”, “\软件最新版本.ini”), “软件最新版本”, “版本号”, )))
+        
+        复制文件 (“X:\000\采一.exe”, 相加 (取运行目录 (), “\采一.exe”)) ' 从映射文件夹中复制新版程序，将原有程序覆盖
+        
+        信息框 (“更新新完毕！请点击确定以运行新程序！”, 0, )
+        运行 (相加 (取运行目录 (), “\采一.exe”), 假, ) ' 运行更新后的程序
+        
+    .否则
+        运行 (相加 (取运行目录 (), “\采一.exe”), 假, ) ' 如果不进行更新，继续运行现有版本
+    .如果结束
+    
+.否则
+    运行 (相加 (取运行目录 (), “\采一.exe”), 假, ) ' 没发现有新版本，继续运行现有版本
+.如果结束
+赋值 (strLocalName, “X:”)
+赋值 (ErrInfo, 断开网络连接 (strLocalName, 0, 0)) ' 断开映射的驱动器
+结束 ()
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

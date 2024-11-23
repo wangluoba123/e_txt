@@ -1,0 +1,804 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 HGE_VERSION, "338", , 
+.常量 , , , 
+.常量 , , , 
+.常量 HGE_FRAMEFUNC, "1", , bool*() frame function  (default: NULL) (you MUST set this)
+.常量 HGE_FOCUSLOSTFUNC, "2", , bool*() focus lost function (default: NULL)
+.常量 HGE_FOCUSGAINFUNC, "3", , bool*() focus gain function (default: NULL)
+.常量 HGE_EXITFUNC, "4", , bool*() exit function  (default: NULL)
+.常量 HGE_ICON, "6", , char* icon resource  (default: NULL)
+.常量 HGE_TITLE, "7", , char* window title  (default: ".常量 HGE")
+.常量 HGE_SCREENWIDTH, "8", , int  screen width  (default: 800)
+.常量 HGE_SCREENHEIGHT, "9", , int  screen height  (default: 600)
+.常量 HGE_SCREENBPP, "10", , int  screen bitdepth  (default: 32) (desktop bpp in windowed mode)
+.常量 HGE_WINDOWED, "11", , bool  run in window?  (default: false)
+.常量 HGE_ZBUFFER, "12", , bool  use z-buffer?  (default: false)
+.常量 HGE_TEXTUREFILTER, "13", , bool  texture filtering? (default: true)
+.常量 HGE_INIFILE, "15", , char* ini file   (default: NULL) (meaning no file)
+.常量 HGE_LOGFILE, "16", , char* log file   (default: NULL) (meaning no file)
+.常量 HGE_USESOUND, "18", , bool  use BASS for sound? (default: true)
+.常量 HGE_SAMPLERATE, "19", , int  sample rate   (default: 44100)
+.常量 HGE_FXVOLUME, "20", , int  global fx volume (default: 100)
+.常量 HGE_MUSVOLUME, "21", , int  global music volume (default: 100)
+.常量 HGE_FPS, "23", , // int  fixed fps   (default: .常量 HGEFPS_UNLIMITED)
+.常量 HGE_DONTSUSPEND, "24", , // bool  focus lost:suspend? (default: false)
+.常量 HGE_HIDEMOUSE, "25", , // bool  hide system cursor? (default: true)
+.常量 HGE_HWND, "26", , // int  window handle: read only
+.常量 HGE_HWNDPARENT, "27", , // int  parent win handle (default: 0)
+.常量 , , , 
+.常量 HGE_YISH_ture, "", , 
+.常量 , , , 
+.常量 HGE_Math_PI, "3.14159265359", , 
+.常量 HGE_Math_PI_2, "1.570796326795", , 
+.常量 HGE_Math_PI_4, "0.7853981633974", , 
+.常量 HGE_Math_1_PI, "0.3183098861838", , 
+.常量 HGE_Math_2_PI, "0.6366197723676", , 
+.常量 , , , 
+.常量 BLEND_COLORADD, "1", , 
+.常量 BLEND_COLORMUL, "0", , 
+.常量 BLEND_ALPHABLEND, "2", , 
+.常量 BLEND_ALPHAADD, "0", , 
+.常量 BLEND_ZWRITE, "4", , 
+.常量 BLEND_NOZWRITE, "0", , 
+.常量 , , , 
+.常量 HGEK_ESCAPE, "27", , 
+.常量 HGEK_LEFT, "37", , 
+.常量 HGEK_RIGHT, "39", , 
+.常量 HGEK_UP, "38", , 
+.常量 HGEK_DOWN, "40", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' spec A512548E76954B6E92C21055517615B0 2 1 特殊功能支持库
+
+
+
+
+数据类型 hgeVertex, , 
+    .成员 x, 小数型, , , 
+    .成员 y, 小数型, , , 
+    .成员 z, 小数型, , , 
+    .成员 col, 整数型, , , 
+    .成员 tx, 小数型, , , 
+    .成员 ty, 小数型, , , 
+
+数据类型 hgeQuad2, , 
+    .成员 v, hgeVertex, , "4", 
+    .成员 tex, 整数型, , , 
+    .成员 blend, 整数型, , , 
+
+数据类型 hgeParticleSystemInfo, , 
+    .成员 sprite, 空白型, , , 未知类型：HGESPRITE。需传址。
+    .成员 nEmission, 整数型, , , 
+    .成员 fLifetime, 小数型, , , 
+    .成员 fParticleLifeMin, 小数型, , , 
+    .成员 fParticleLifeMax, 小数型, , , 
+    .成员 fDirection, 小数型, , , 
+    .成员 fSpread, 小数型, , , 
+    .成员 bRelative, 逻辑型, , , 
+    .成员 fSpeedMin, 小数型, , , 
+    .成员 fSpeedMax, 小数型, , , 
+    .成员 fGravityMin, 小数型, , , 
+    .成员 fGravityMax, 小数型, , , 
+    .成员 fRadialAccelMin, 小数型, , , 
+    .成员 fRadialAccelMax, 小数型, , , 
+    .成员 fTangentialAccelMin, 小数型, , , 
+    .成员 fTangentialAccelMax, 小数型, , , 
+    .成员 fSizeStart, 小数型, , , 
+    .成员 fSizeEnd, 小数型, , , 
+    .成员 fSizeVar, 小数型, , , 
+    .成员 fSpinStart, 小数型, , , 
+    .成员 fSpinEnd, 小数型, , , 
+    .成员 fSpinVar, 小数型, , , 
+    .成员 colColorStart, 空白型, , , 未知类型：HGECOLOR。
+    .成员 colColorEnd, 空白型, , , 未知类型：HGECOLOR。
+    .成员 fColorVar, 小数型, , , 
+    .成员 fAlphaVar, 小数型, , , 
+
+.全局变量 qx, 小数型, , , 
+.全局变量 qy, 小数型, , , 
+.全局变量 dx, 小数型, , , 
+.全局变量 dy, 小数型, , , 
+
+.DLL命令 E_Release, 整数型, "E_HGE.dll", "E_Release", , 
+
+.DLL命令 E_HGE_Creat, 空白型, "E_HGE.dll", "E_Hge_Creat", , 
+    .参数 ver, 整数型, , 
+
+.DLL命令 E_System_Initiate, 逻辑型, "E_HGE.dll", "E_System_Initiate", , 
+
+.DLL命令 E_System_Shutdown, 整数型, "E_HGE.dll", "E_System_Shutdown", , 
+
+.DLL命令 E_System_Start, 逻辑型, "E_HGE.dll", "E_System_Start", , 
+
+.DLL命令 E_System_SetState, 整数型, "E_HGE.dll", "E_System_SetState", , 
+    .参数 state, 空白型, , 未知类型：HGESTATE。
+    .参数 value, 空白型, , 未知类型：HGEVALUE。
+
+.DLL命令 E_System_SetState_str, 整数型, "E_HGE.dll", "E_System_SetState", , 
+    .参数 state, 空白型, , 未知类型：HGESTATE。
+    .参数 value, 文本型, , 未知类型：HGEVALUE。
+
+.DLL命令 E_System_GetErrorMessage, 文本型, "E_HGE.dll", "E_System_GetErrorMessage", 公开, 
+
+.DLL命令 E_System_Log, 整数型, "E_HGE.dll", "E_System_Log", , 
+    .参数 format, 字节型, 传址, 
+
+.DLL命令 E_System_Launch, 逻辑型, "E_HGE.dll", "E_System_Launch", , 
+    .参数 url, 字节型, 传址, 
+
+.DLL命令 E_System_Snapshot, 整数型, "E_HGE.dll", "E_System_Snapshot", , 
+
+.DLL命令 E_Resource_Load, 空白型, "E_HGE.dll", "E_Resource_Load", , 
+    .参数 filename, 字节型, 传址, 
+
+.DLL命令 E_Resource_Free, 整数型, "E_HGE.dll", "E_Resource_Free", , 
+    .参数 res, 整数型, 传址, 
+
+.DLL命令 E_Resource_AttachPack, 逻辑型, "E_HGE.dll", "E_Resource_AttachPack", , 
+    .参数 filename, 字节型, 传址, 
+
+.DLL命令 E_Resource_RemovePack, 整数型, "E_HGE.dll", "E_Resource_RemovePack", , 
+    .参数 filename, 字节型, 传址, 
+
+.DLL命令 E_Resource_RemoveAllPacks, 整数型, "E_HGE.dll", "E_Resource_RemoveAllPacks", , 
+
+.DLL命令 E_Resource_MakePath, 空白型, "E_HGE.dll", "E_Resource_MakePath", , 
+    .参数 filename, 字节型, 传址, 
+
+.DLL命令 E_Resource_EnumFiles, 空白型, "E_HGE.dll", "E_Resource_EnumFiles", , 
+
+.DLL命令 E_Resource_EnumFolders, 空白型, "E_HGE.dll", "E_Resource_EnumFolders", , 
+
+.DLL命令 E_Timer_GetTime, 小数型, "E_HGE.dll", "E_Timer_GetTime", , 
+
+.DLL命令 E_Timer_GetDelta, 小数型, "E_HGE.dll", "E_Timer_GetDelta", , 
+
+.DLL命令 E_Timer_GetFPS, 整数型, "E_HGE.dll", "E_Timer_GetFPS", , 
+
+.DLL命令 E_Gfx_BeginScene, 逻辑型, "E_HGE.dll", "E_Gfx_BeginScene", , 
+    .参数 target, 空白型, , Htarget
+
+.DLL命令 E_Gfx_EndScene, 整数型, "E_HGE.dll", "E_Gfx_EndScene", , 
+
+.DLL命令 E_Gfx_Clear, 整数型, "E_HGE.dll", "E_Gfx_Clear", , 
+    .参数 color, 整数型, , 
+
+.DLL命令 E_Gfx_RenderLine, 整数型, "E_HGE.dll", "E_Gfx_RenderLine", , 
+    .参数 x1, 小数型, , 
+    .参数 y1, 小数型, , 
+    .参数 x2, 小数型, , 
+    .参数 y2, 小数型, , 
+    .参数 color, 整数型, , ffffff
+    .参数 z, 小数型, , 0.5f
+
+.DLL命令 E_Gfx_RenderTriple, 整数型, "E_HGE.dll", "E_Gfx_RenderTriple", , 
+    .参数 triple, 空白型, 传址, 未知类型：HGETRIPLE。
+
+.DLL命令 E_Gfx_RenderQuad, 整数型, "E_HGE.dll", "E_Gfx_RenderQuad", , 
+    .参数 quad, hgeQuad2, 传址, 未知类型：HGEQUAD。
+
+.DLL命令 E_Gfx_StartBatch, 空白型, "E_HGE.dll", "E_Gfx_StartBatch", , 
+    .参数 prim_type, 整数型, , 
+    .参数 tex, 空白型, , 未知类型：HTEXTURE。
+    .参数 blend, 整数型, , 
+    .参数 max_prim, 整数型, 传址, 
+
+.DLL命令 E_Gfx_FinishBatch, 整数型, "E_HGE.dll", "E_Gfx_FinishBatch", , 
+    .参数 nprim, 整数型, , 
+
+.DLL命令 E_Gfx_SetClipping, 整数型, "E_HGE.dll", "E_Gfx_SetClipping", , 
+
+.DLL命令 E_Gfx_SetTransform, 整数型, "E_HGE.dll", "E_Gfx_SetTransform", , 
+
+.DLL命令 E_Target_Create, 空白型, "E_HGE.dll", "E_Target_Create", , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+    .参数 zbuffer, 逻辑型, , 
+
+.DLL命令 E_Target_Free, 整数型, "E_HGE.dll", "E_Target_Free", , 
+    .参数 target, 空白型, , 未知类型：HTARGET。
+
+.DLL命令 E_Target_GetTexture, 空白型, "E_HGE.dll", "E_Target_GetTexture", , 
+    .参数 target, 空白型, , 未知类型：HTARGET。
+
+.DLL命令 E_Texture_Create, 空白型, "E_HGE.dll", "E_Texture_Create", , 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+
+.DLL命令 E_Texture_Load, 整数型, "E_HGE.dll", "E_Texture_Load", , 
+    .参数 filename, 文本型, 传址, 
+    .参数 size, 整数型, , 不为0时，表示内存读取，为0则读取资源
+
+.DLL命令 E_Texture_Free, 整数型, "E_HGE.dll", "E_Texture_Free", , 
+    .参数 tex, 空白型, , 未知类型：HTEXTURE。
+
+.DLL命令 E_Texture_GetWidth, 整数型, "E_HGE.dll", "E_Texture_GetWidth", , 
+    .参数 tex, 空白型, , 未知类型：HTEXTURE。
+
+.DLL命令 E_Texture_GetHeight, 整数型, "E_HGE.dll", "E_Texture_GetHeight", , 
+    .参数 tex, 空白型, , 未知类型：HTEXTURE。
+
+.DLL命令 E_Texture_Lock, 空白型, "E_HGE.dll", "E_Texture_Lock", , 
+    .参数 tex, 空白型, , 未知类型：HTEXTURE。
+
+.DLL命令 E_Texture_Unlock, 整数型, "E_HGE.dll", "E_Texture_Unlock", , 
+    .参数 tex, 空白型, , 未知类型：HTEXTURE。
+
+.DLL命令 Hspr_hgeSpriteCreat, 整数型, "E_HGE.dll", "Hspr_hgeSpriteCreat", 公开, 
+    .参数 tex, 整数型, , 未知类型：HTEXTURE。
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 w, 小数型, , 
+    .参数 h, 小数型, , 
+
+.DLL命令 Hspr_delete, 空白型, "E_HGE.dll", "Hspr_delete", 公开, 
+    .参数 _spr, 空白型, , 未知类型：HGESPRITE。
+
+.DLL命令 Hspr_Render, 空白型, "E_HGE.dll", "Hspr_Render", , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+
+.DLL命令 Hspr_SetHotSpot, 空白型, "E_HGE.dll", "Hspr_SetHotSpot", , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+
+.DLL命令 Hspr_SetColor, 空白型, "E_HGE.dll", "Hspr_SetColor", , 
+    .参数 col, 整数型, , 
+    .参数 i, 整数型, , 
+
+.DLL命令 Hspr_SetSpr, 空白型, "E_HGE.dll", "Hspr_SetSpr", , 
+    .参数 _spr, 整数型, , 未知类型：HGESPRITE。
+
+.DLL命令 Hspr_GetSpr, 整数型, "E_HGE.dll", "Hspr_GetSpr", , 返回精灵指针
+
+.DLL命令 E_Input_GetMousePos, 空白型, "E_HGE.dll", "E_Input_GetMousePos", , 
+    .参数 x, 小数型, 传址, 
+    .参数 y, 小数型, 传址, 
+
+.DLL命令 E_Input_SetMousePos, 空白型, "E_HGE.dll", "E_Input_SetMousePos", , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+
+.DLL命令 E_Input_GetMouseWheel, 整数型, "E_HGE.dll", "E_Input_GetMouseWheel", , 
+
+.DLL命令 E_Input_GetKeyState, 逻辑型, "E_HGE.dll", "E_Input_GetKeyState", , 
+    .参数 key, 整数型, , 
+
+.DLL命令 E_Input_GetKeyName, 文本型, "E_HGE.dll", "E_Input_GetKeyName", , 
+    .参数 key, 整数型, , 
+
+.DLL命令 E_Input_GetKey, 整数型, "E_HGE.dll", "E_Input_GetKey", , 
+
+.DLL命令 E_Input_GetChar, 整数型, "E_HGE.dll", "E_Input_GetChar", , 
+
+.DLL命令 E_Input_GetEvent, 逻辑型, "E_HGE.dll", "E_Input_GetEvent", , 
+    .参数 event, 空白型, 传址, 未知类型：HGEINPUTEVENT。
+
+.DLL命令 Hspr_RenderEx, 空白型, "E_HGE.dll", "Hspr_RenderEx", 公开, 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 rot, 小数型, , 
+    .参数 hscale, 小数型, , =1.0f
+    .参数 vscale, 小数型, , =0.0f
+
+.DLL命令 Hpar_hgeParticleSystemCreat, 整数型, "E_HGE.dll", "Hpar_hgeParticleSystemCreat", 公开, 
+    .参数 filename, 文本型, , 
+    .参数 sprite, 空白型, , 未知类型：HGESPRITE。
+    .参数 fps=0.0f, 小数型, , 
+
+.DLL命令 Hpar_hgeParticleSystemDelete, 空白型, "E_HGE.dll", "Hpar_hgeParticleSystemDelete", 公开, 
+    .参数 _par, 空白型, , 未知类型：HGEPARTICLESYSTEM。
+
+.DLL命令 Hpar_setPar, 空白型, "E_HGE.dll", "Hpar_setPar", , 
+    .参数 _par, 空白型, , 未知类型：HGEPARTICLESYSTEM。
+
+.DLL命令 Hpar_getPar, 整数型, "E_HGE.dll", "Hpar_getPar", , 
+
+.DLL命令 Hpar_Render, 空白型, "E_HGE.dll", "Hpar_Render", 公开, 
+
+.DLL命令 Hpar_FireAt, 整数型, "E_HGE.dll", "Hpar_FireAt", 公开, 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+
+.DLL命令 Hpar_Fire, 空白型, "E_HGE.dll", "Hpar_Fire", 公开, 
+
+.DLL命令 Hpar_Stop, 空白型, "E_HGE.dll", "Hpar_Stop", 公开, 
+    .参数 bKillParticles=false, 逻辑型, , 
+
+.DLL命令 Hpar_Update, 空白型, "E_HGE.dll", "Hpar_Update", , 
+    .参数 fDeltaTime, 小数型, , 
+
+.DLL命令 Hpar_MoveTo, 空白型, "E_HGE.dll", "Hpar_MoveTo", , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 bMoveParticles=false, 逻辑型, , 
+
+.DLL命令 Hpar_Transpose, 空白型, "E_HGE.dll", "Hpar_Transpose", , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+
+.DLL命令 Hpar_TrackBoundingBox, 空白型, "E_HGE.dll", "Hpar_TrackBoundingBox", , 
+    .参数 bTrack, 逻辑型, , 
+
+.DLL命令 Hpar_GetParticlesAlive, 整数型, "E_HGE.dll", "Hpar_GetParticlesAlive", , 
+
+.DLL命令 Hpar_GetAge, 小数型, "E_HGE.dll", "Hpar_GetAge", , 
+
+.DLL命令 Hpar_GetPosition, 空白型, "E_HGE.dll", "Hpar_GetPosition", , 
+    .参数 x, 小数型, 传址, 
+    .参数 y, 小数型, 传址, 
+
+.DLL命令 Hpar_GetTransposition, 空白型, "E_HGE.dll", "Hpar_GetTransposition", , 
+    .参数 x, 小数型, 传址, 
+    .参数 y, 小数型, 传址, 
+
+.DLL命令 Hpar_GetBoundingBox, 整数型, "E_HGE.dll", "Hpar_GetBoundingBox", 公开, 
+    .参数 rect, 空白型, 传址, 未知类型：HGERECT。
+
+.DLL命令 Hpar_ParticleSystemInfo_get, 空白型, "E_HGE.dll", "Hpar_ParticleSystemInfo_get", 公开, 
+    .参数 _info, hgeParticleSystemInfo, , hgeParticleSystemInfo* _info
+
+.DLL命令 Hpar_ParticleSystemInfo_set, 空白型, "E_HGE.dll", "Hpar_ParticleSystemInfo_set", 公开, 
+    .参数 _info, hgeParticleSystemInfo, , hgeParticleSystemInfo* _info
+
+.DLL命令 Hspr_SetBlendMode, 空白型, "E_hge.dll", "Hspr_SetBlendMode", 公开, 
+    .参数 blend, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 spr, Hge_sprite, , , 
+.程序集变量 spt, Hge_sprite, , , 
+.程序集变量 par, HGE_Particle, , , 
+.程序集变量 par_info, hgeParticleSystemInfo, , , 
+.程序集变量 tex, 空白型, , , 
+.程序集变量 friction, 小数型, , , 
+.程序集变量 speed, 小数型, , , 
+.程序集变量 _text, 文本型, , , 
+.程序集变量 当前目录, 文本型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+ ' //////////////  变量初始化 //////////////
+赋值 (qx, 100)
+赋值 (qy, 100)
+赋值 (speed, 90)
+赋值 (friction, 0.98)
+ ' //////////////////////////////////////////
+
+
+
+赋值 (当前目录, 相加 (取当前目录 (), “\”))
+E_HGE_Creat (#HGE_VERSION)
+
+
+E_System_SetState_str (#HGE_LOGFILE, 相加 (当前目录, “hge_tut03.log”))
+E_System_SetState_str (#HGE_TITLE, “HGE 示例 03 - 使用帮助类”)
+E_System_SetState (#HGE_FPS, 100)
+E_System_SetState (#HGE_SCREENBPP, 16)
+E_System_SetState (#HGE_SCREENWIDTH, 640)
+E_System_SetState (#HGE_SCREENHEIGHT, 480)
+E_System_SetState (#HGE_WINDOWED, 1)
+E_System_SetState (#HGE_HIDEMOUSE, 0)
+E_System_SetState (#HGE_FRAMEFUNC, 取子程序地址 (&FrameFunc))
+
+
+
+
+
+
+.如果真 (E_System_Initiate ())
+    赋值 (tex, E_Texture_Load (相加 (当前目录, “p2.png”), 0))
+    .如果 (不等于 (tex, 0))
+        输出调试文本 (“载入图片成功”) ' 载入成功
+    .否则
+        信息框 (“载入资源失改”, 0, )
+        输出调试文本 (E_System_GetErrorMessage ()) ' 载入失败，打印信息
+        返回 ()
+    .如果结束
+    
+    spr.creat (tex, 96, 64, 32, 32)
+    spr.setcolor (ARGB (255, 244, 90, 0), -1)
+    spr.setHotspot (16, 16)
+    
+    
+    spt.creat (tex, 相加 (64, 32), 32, 32, 32)
+    spt.SetBlendMode (位或 (#BLEND_COLORMUL, #BLEND_ALPHAADD, #BLEND_NOZWRITE))
+    spt.setHotspot (16, 16)
+    par.creat (相加 (当前目录, “particle6.psi”), spt, 0)
+    par.Fire ()
+    
+    
+    
+    E_System_Start ()
+    
+.如果真结束
+__启动窗口_将被销毁 ()
+
+
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+spt.delete ()
+par.delete ()
+spr.delete () ' !!!!!!!!!!!!!!!!!!!!!!!!!!   释放资源,
+E_Texture_Free (tex) ' !!!!!!!!!!!!!!!!!!!!!!!!!!
+
+E_System_Shutdown ()
+E_Release ()
+输出调试文本 (“ system_shutdown OK”)
+结束 ()
+
+.子程序 boom, 空白型, , 
+.局部变量 pan, 空白型, , , 
+.局部变量 pitch, 小数型, , , 
+
+赋值 (pan, 相除 (相减 (qx, 400), 4))
+赋值 (pitch, 相加 (相乘 (相加 (相乘 (dx, dx), 相乘 (dy, dy)), 0.0005), 0.2))
+
+
+
+.子程序 FrameFunc, 逻辑型, 公开, 
+.局部变量 dt, 小数型, , , 
+.局部变量 j, 整数型, , , 
+
+赋值 (dt, E_Timer_GetDelta ())
+
+ ' // Process keys
+.如果真 (E_Input_GetKeyState (#HGEK_ESCAPE))
+    返回 (真)
+.如果真结束
+.如果真 (E_Input_GetKeyState (#HGEK_LEFT))
+    赋值 (dx, 相减 (dx, 相乘 (speed, dt)))
+.如果真结束
+.如果真 (E_Input_GetKeyState (#HGEK_RIGHT))
+    赋值 (dx, 相加 (dx, 相乘 (speed, dt)))
+.如果真结束
+.如果真 (E_Input_GetKeyState (#HGEK_UP))
+    赋值 (dy, 相减 (dy, 相乘 (speed, dt)))
+.如果真结束
+.如果真 (E_Input_GetKeyState (#HGEK_DOWN))
+    赋值 (dy, 相加 (dy, 相乘 (speed, dt)))
+.如果真结束
+
+ ' // Do some movement calculations and collision detection
+赋值 (dx, 相乘 (dx, friction))
+赋值 (dy, 相乘 (dy, friction))
+赋值 (qx, 相加 (qx, dx))
+赋值 (qy, 相加 (qy, dy))
+
+.如果真 (大于 (qx, 624))
+    赋值 (qx, 相减 (624, 相减 (qx, 624)))
+    赋值 (dx, 负 (dx))
+    boom ()
+.如果真结束
+.如果真 (小于 (qx, 16))
+    赋值 (qx, 相减 (相加 (16, 16), qx))
+    赋值 (dx, 负 (dx))
+    boom ()
+.如果真结束
+.如果真 (大于 (qy, 464))
+    赋值 (qy, 相减 (464, 相减 (qy, 464)))
+    赋值 (dy, 负 (dy))
+    boom ()
+.如果真结束
+.如果真 (小于 (qy, 16))
+    赋值 (qy, 相减 (相加 (16, 16), qy))
+    赋值 (dy, 负 (dy))
+    boom ()
+.如果真结束
+
+ ' // Update particle system
+ ' par.getInfo (par_info)
+ ' par_info.nEmission ＝ (dx × dx ＋ dy × dy) × 2
+ ' par.setInfo (par_info)
+ ' par.info.nEmission=(int)(dx*dx+dy*dy)*2
+par.MoveTo (qx, qy, 假)
+par.Update (dt)
+
+
+ ' // Render graphics
+E_Gfx_BeginScene (0)
+E_Gfx_Clear (0)
+spr.render (qx, qy)
+par.render ()
+ ' fnt->printf(5,5,"dt:%.3f\nFPS:%d (constant)", dt, hge->Timer_GetFPS());
+E_Gfx_EndScene ()
+
+返回 (假)
+
+
+.程序集 程序集1, , , 
+
+.子程序 HGE_quad_2, 空白型, , 
+.参数 方块, hgeQuad2, 参考, 
+.参数 z, 小数型, , 
+.参数 col, 整数型, , 
+
+赋值 (方块.v [1].z, z)
+赋值 (方块.v [2].z, z)
+赋值 (方块.v [3].z, z)
+赋值 (方块.v [4].z, z)
+
+赋值 (方块.v [1].col, col)
+赋值 (方块.v [2].col, col)
+赋值 (方块.v [3].col, col)
+赋值 (方块.v [4].col, col)
+
+.子程序 hge_help_2, 空白型, , 
+.参数 quad, hgeQuad2, 参考, 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+
+赋值 (quad.v [1].x, 相减 (x, 16))
+赋值 (quad.v [1].y, 相减 (y, 16))
+赋值 (quad.v [2].x, 相加 (x, 16))
+赋值 (quad.v [2].y, 相减 (y, 16))
+赋值 (quad.v [3].x, 相加 (x, 16))
+赋值 (quad.v [3].y, 相加 (y, 16))
+赋值 (quad.v [4].x, 相减 (x, 16))
+赋值 (quad.v [4].y, 相加 (y, 16))
+
+.子程序 HGE_quad_tex_xy_2, 空白型, , 
+.参数 quad, hgeQuad2, 参考, 
+
+赋值 (quad.v [1].tx, 相除 (96, 128))
+赋值 (quad.v [1].ty, 相除 (64, 128))
+赋值 (quad.v [2].tx, 相除 (128, 128))
+赋值 (quad.v [2].ty, 相除 (64, 128))
+赋值 (quad.v [3].tx, 相除 (128, 128))
+赋值 (quad.v [3].ty, 相除 (96, 128))
+赋值 (quad.v [4].tx, 相除 (96, 128))
+赋值 (quad.v [4].ty, 相除 (96, 128))
+
+
+.子程序 ARGB, 整数型, , 
+.参数 a, 空白型, , 
+.参数 r, 空白型, , 
+.参数 g, 空白型, , 
+.参数 b, 空白型, , 
+
+返回 (相加 (左移 (a, 24), 左移 (r, 16), 左移 (g, 8), b))
+
+.类模块 Hge_sprite, , , 
+
+.程序集变量 现行精灵, 空白型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+delete ()
+
+.子程序 creat, 空白型, , 
+.参数 tex, 整数型, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 w, 小数型, , 
+.参数 h, 小数型, , 
+
+赋值 (现行精灵, Hspr_hgeSpriteCreat (tex, x, y, w, h))
+
+.子程序 delete, 空白型, , 
+.如果真 (不等于 (现行精灵, 0))
+    输出调试文本 (相加 (“HGE_sprite类 :   delete   ;  ”, 到文本 (现行精灵)))
+    Hspr_delete (现行精灵)
+    赋值 (现行精灵, 0)
+.如果真结束
+
+
+.子程序 setSpr, 空白型, , 
+.参数 spr, 空白型, , 
+
+.如果真 (等于 (spr, 0))
+    返回 ()
+.如果真结束
+Hspr_SetSpr (spr)
+
+
+.子程序 getSpr, 整数型, , 
+.如果真 (等于 (现行精灵, 0))
+    返回 (0)
+.如果真结束
+
+返回 (Hspr_GetSpr ())
+
+.子程序 render, 空白型, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+
+.如果真 (等于 (现行精灵, 0))
+    返回 ()
+.如果真结束
+setSpr (现行精灵)
+Hspr_Render (x, y)
+
+.子程序 renderex, 空白型, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 rot, 小数型, , 
+.参数 Hscale, 小数型, , 
+.参数 Vscale, 小数型, , 
+
+setSpr (现行精灵)
+Hspr_RenderEx (x, y, rot, Hscale, Vscale)
+
+.子程序 setcolor, 空白型, , 
+.参数 col, 空白型, , 
+.参数 i, 空白型, , (i=0~3),当为-1时，表示四个点共用一种色；否则， v[i].col 被着色。
+
+.如果真 (等于 (现行精灵, 0))
+    返回 ()
+.如果真结束
+setSpr (现行精灵)
+Hspr_SetColor (col, i)
+
+.子程序 setHotspot, 空白型, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+
+.如果真 (等于 (现行精灵, 0))
+    返回 ()
+.如果真结束
+setSpr (现行精灵)
+Hspr_SetHotSpot (x, y)
+
+.子程序 SetBlendMode, 空白型, 公开, 
+.参数 blend, 整数型, , 
+
+Hspr_SetBlendMode (blend)
+
+.类模块 HGE_Particle, , , 
+
+.程序集变量 现行精灵, 空白型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+delete ()
+
+.子程序 creat, 空白型, , 
+.参数 filename, 文本型, , 
+.参数 spr, Hge_sprite, 参考, 
+.参数 fps, 小数型, , def=0.0f
+
+赋值 (现行精灵, Hpar_hgeParticleSystemCreat (filename, spr.getSpr (), fps))
+
+.子程序 delete, 空白型, , 
+.如果真 (不等于 (现行精灵, 0))
+    输出调试文本 (相加 (“HGE_particle类 :   delete   ;  ”, 到文本 (现行精灵)))
+    Hpar_hgeParticleSystemDelete (现行精灵)
+    赋值 (现行精灵, 0)
+.如果真结束
+
+
+.子程序 setPar, 空白型, , 
+.参数 par, 空白型, , 
+
+.如果真 (等于 (现行精灵, 0))
+    返回 ()
+.如果真结束
+Hpar_setPar (par)
+
+
+.子程序 getSpr, 整数型, , 
+.如果真 (等于 (现行精灵, 0))
+    返回 (0)
+.如果真结束
+返回 (Hpar_getPar ())
+
+.子程序 render, 空白型, , 
+.如果真 (等于 (现行精灵, 0))
+    返回 ()
+.如果真结束
+Hpar_setPar (现行精灵)
+Hpar_Render ()
+
+
+.子程序 FireAt, 空白型, , 
+.参数 x_, 小数型, , 
+.参数 y_, 小数型, , 
+
+Hpar_setPar (现行精灵)
+Hpar_FireAt (x_, y_)
+
+.子程序 Fire, 空白型, 公开, 
+Hpar_setPar (现行精灵)
+Hpar_Fire ()
+
+.子程序 Stop, 空白型, , 
+.参数 bKillParticles, 逻辑型, , def=flase
+
+Hpar_setPar (现行精灵)
+Hpar_Stop (bKillParticles)
+
+.子程序 Update, 空白型, , 
+.参数 fDeltaTime, 小数型, , 
+
+Hpar_setPar (现行精灵)
+Hpar_Update (fDeltaTime)
+
+.子程序 MoveTo, 空白型, , 
+.参数 _x, 小数型, , 
+.参数 _y, 小数型, , 
+.参数 bMoveParticles, 逻辑型, , def=false
+
+Hpar_setPar (现行精灵)
+Hpar_MoveTo (_x, _y, bMoveParticles)
+
+.子程序 Transpose, 空白型, , 
+.参数 _x, 小数型, , 
+.参数 _y, 小数型, , 
+
+Hpar_setPar (现行精灵)
+Hpar_Transpose (_x, _y)
+
+.子程序 TrackBoundingBox, 空白型, 公开, 
+.参数 bTrack, 逻辑型, , 
+
+Hpar_setPar (现行精灵)
+Hpar_TrackBoundingBox (bTrack)
+
+.子程序 GetParticlesAlive, 整数型, , 
+Hpar_setPar (现行精灵)
+返回 (Hpar_GetParticlesAlive ())
+
+.子程序 GetAge, 小数型, , 
+Hpar_setPar (现行精灵)
+返回 (Hpar_GetAge ())
+
+.子程序 GetPosition, 空白型, , 
+.参数 _x, 小数型, , 
+.参数 _y, 小数型, , 
+
+Hpar_setPar (现行精灵)
+Hpar_GetPosition (_x, _y)
+
+.子程序 GetTransposition, 空白型, , 
+.参数 _x, 小数型, , 
+.参数 _y, 小数型, , 
+
+Hpar_setPar (现行精灵)
+Hpar_GetTransposition (_x, _y)
+
+.子程序 GetBoundingBox, 整数型, , hgeRect*
+.参数 rect, 空白型, , hgeRect *rect
+
+Hpar_setPar (现行精灵)
+返回 (Hpar_GetBoundingBox (rect))
+
+.子程序 getInfo, 空白型, , 
+.参数 _info, hgeParticleSystemInfo, 参考, 
+
+Hpar_ParticleSystemInfo_get (_info)
+
+.子程序 setInfo, 空白型, , 
+.参数 _info, hgeParticleSystemInfo, 参考, 
+
+Hpar_ParticleSystemInfo_get (_info)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

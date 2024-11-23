@@ -1,0 +1,77 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：程序自杀
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+
+.DLL命令 CreateFile, 整数型, "kernel32.dll", "CreateFileA", , CreateFile (“a”, -2147483648, 2, 0, 1, 128, 0)
+    .参数 lpFileName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwShareMode, 整数型, , 
+    .参数 lpSecurityAttributes, 整数型, , SECURITY_ATTRIBUTES，指向一个SECURITY_ATTRIBUTES结构的指针，定义了文件的安全特性（如果操作系统支持的话）
+    .参数 dwCreationDisposition, 整数型, , 
+    .参数 dwFlagsAndAttributes, 整数型, , 
+    .参数 hTemplateFile, 整数型, , 
+
+.DLL命令 lwrite, 整数型, "kernel32.dll", "_lwrite", , 
+    .参数 hFile, 整数型, , 文件句柄
+    .参数 lpBuffer, 文本型, , 指定一个内存块的指针，把这个内存块的数据写入文件
+    .参数 wBytes, 整数型, , 要写入的字节数
+
+.DLL命令 LZClose, 整数型, "lz32.dll", "LZClose", , 
+    .参数 hfFile, 整数型, , 欲关闭的句柄。这是由LZOpenFile 或 LZInit函数返回的一个句柄，不是普通的系统文件句柄
+
+.DLL命令 WinExec, 整数型, "kernel32.dll", "WinExec", , 运行程序
+    .参数 lpCmdLine, 文本型, , 
+    .参数 nCmdShow, 整数型, , 定义了以怎样的形式启动程序的常数值。参考ShowWindow函数的nCmdShow参数
+
+.DLL命令 lopen, 整数型, "kernel32.dll", "_lopen", , 
+    .参数 lpPathName, 文本型, , 欲打开文件的名字
+    .参数 iReadWrite, 整数型, , 访问模式和共享模式常数的一个组合，如下所示：   1、访问模式   READ 打开文件，读取其中的内容   READ_WRITE 打开文件，对其进行读写   WRITE 打开文件，在其中写入内容   2、共享模式（参考OpenFile函数的标志常数表）   OF_SHARE_COMPAT， OF_SHARE_DENY_NONE， OF_SHARE_DENY_READ， OF_SHARE_DENY_WRITE， OF_SHARE_EXCLUSIVE
+
+.程序集 程序自杀程序集, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.子程序 KillMe, 空白型, 公开, 无返回值
+.参数 FileName, 文本型, , 
+
+.局部变量 文件句柄, 整数型, , , 由CreateFile返回
+.局部变量 数据, 文本型, , , 欲写入的数据
+
+赋值 (文件句柄, CreateFile (相加 (取执行文件名 (), “_And DeleteMe.bat”), -2147483648, 2, 0, 1, 128, 0))
+LZClose (文件句柄)
+赋值 (数据, 相加 (“:try”, #换行符, “del ”, #引号, 取运行目录 (), “\”, FileName, #引号, #换行符, “if exist ”, #引号, 取运行目录 (), “\”, FileName, #引号, “ goto try”, #换行符, “del %0”))
+lwrite (lopen (相加 (取执行文件名 (), “_And DeleteMe.bat”), 2), 数据, 取文本长度 (数据))
+LZClose (文件句柄)
+WinExec (相加 (取执行文件名 (), “_And DeleteMe.bat”), 0)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,390 @@
+ ' 文件类型：未知类型
+
+ ' 程序名称：VPN连接模块
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 常量2, "“”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 3 系统核心支持库
+ ' internet 707ca37322474f6ca841f0e224f4b620 2 0 互联网支持库
+
+
+
+
+数据类型 GUID, , 
+    .成员 data1, 整数型, , , 
+    .成员 data2, 短整数型, , , 
+    .成员 data3, 短整数型, , , 
+    .成员 data4, 字节型, , "8", 
+
+数据类型 RASIPADDR, , 
+    .成员 a, 字节型, , , 
+    .成员 b, 字节型, , , 
+    .成员 c, 字节型, , , 
+    .成员 d, 字节型, , , 
+
+数据类型 RASENTRY, , 
+    .成员 dwSize, 整数型, , , 
+    .成员 dwfOptions, 整数型, , , 
+    .成员 dwCountryID, 整数型, , , 
+    .成员 dwCountryCode, 整数型, , , 
+    .成员 szAreaCode, 字节型, , "8", 
+    .成员 szLocalPhoneNumber, 字节型, , "132", 
+    .成员 dwAlternateOffset, 整数型, , , 
+    .成员 ipaddr, RASIPADDR, , , 
+    .成员 ipaddrDns, RASIPADDR, , , 
+    .成员 ipaddrDnsAlt, RASIPADDR, , , 
+    .成员 ipaddrWins, RASIPADDR, , , 
+    .成员 ipaddrWinsAlt, RASIPADDR, , , 
+    .成员 dwFrameSize, 整数型, , , 
+    .成员 dwfNetProtocols, 整数型, , , 
+    .成员 dwFramingProtocol, 整数型, , , 
+    .成员 szScript, 字节型, , "260", 
+    .成员 szAutodialDll, 字节型, , "260", 
+    .成员 szAutodialFunc, 字节型, , "260", 
+    .成员 szDeviceType, 字节型, , "16", 
+    .成员 szDeviceName, 字节型, , "132", 
+    .成员 szX25PadType, 字节型, , "32", 
+    .成员 szX25Address, 字节型, , "200", 
+    .成员 szX25Facilities, 字节型, , "200", 
+    .成员 szX25UserData, 字节型, , "204", 
+    .成员 dwChannels, 整数型, , , 
+    .成员 dwReserved1, 整数型, , , 
+    .成员 dwReserved2, 整数型, , , 
+    .成员 dwSubEntries, 整数型, , , 
+    .成员 dwDialMode, 整数型, , , 
+    .成员 dwDialExtraPercent, 整数型, , , 
+    .成员 dwDialExtraSampleSeconds, 整数型, , , 
+    .成员 dwHangUpExtraPercent, 整数型, , , 
+    .成员 dwHangUpExtraSampleSeconds, 整数型, , , 
+    .成员 dwIdleDisconnectSeconds, 整数型, , , 
+    .成员 dwType, 整数型, , , 
+    .成员 dwEncryptionType, 整数型, , , 
+    .成员 dwCustomAuthKey, 整数型, , , 
+    .成员 guidId, GUID, , , 
+    .成员 szCustomDialDll, 字节型, , "260", 
+    .成员 dwVpnStrategy, 整数型, , , 
+    .成员 dwfOptions2, 整数型, , , 
+    .成员 dwfOptions3, 整数型, , , 
+    .成员 szDnsSuffix, 字节型, , "256", 
+    .成员 dwTcpWindowSize, 整数型, , , 
+    .成员 szPrerequisitePbk, 字节型, , "260", 
+    .成员 szPrerequisiteEntry, 字节型, , "260", 
+    .成员 dwRedialCount, 整数型, , , 
+    .成员 dwRedialPause, 整数型, , , 
+
+数据类型 RASDIALPARAMS95, , 
+    .成员 dwSize, 整数型, , , 
+    .成员 szEntryName, 字节型, , "257", 
+    .成员 szPhoneNumber, 字节型, , "129", 
+    .成员 szCallbackNumber, 字节型, , "129", 
+    .成员 szUserName, 字节型, , "257", 
+    .成员 szPassword, 字节型, , "259", 
+    .成员 szDomain, 字节型, , "16", 
+
+数据类型 RASCREDENTIALS, , 
+    .成员 dwSize, 整数型, , , 
+    .成员 dwMask, 整数型, , , 
+    .成员 szUserName, 字节型, , "257", 
+    .成员 szPassword, 字节型, , "257", 
+    .成员 szDomain, 字节型, , "16", 
+
+.全局变量 连接方式发, 空白型, , , 
+
+.DLL命令 创建连接, 整数型, "rasapi32.dll", "RasSetEntryPropertiesA", , 
+    .参数 lpszPhonebook, 空白型, , 
+    .参数 lpszEntry, 文本型, , 
+    .参数 lpRasEntry, RASENTRY, , 
+    .参数 dwEntryInfoSize, 整数型, , 
+    .参数 lpbDeviceInfo, 空白型, , 
+    .参数 wDeviceInfoSize, 空白型, , 
+
+.DLL命令 设置连接, 整数型, "rasapi32.dll", "RasSetCredentialsA", , 
+    .参数 lpszPhonebook, 空白型, , 
+    .参数 lpszEntry, 文本型, , 
+    .参数 lpCredentials, RASCREDENTIALS, , 
+    .参数 fClearCredentials, 整数型, , 
+
+.DLL命令 lstrcpy, 整数型, "kernel32.dll", "lstrcpyA", , lstrcpyA
+    .参数 文本1, 字节型, 数组, RetVal
+    .参数 文本2, 文本型, , Ptr
+
+.DLL命令 RasDial, 整数型, "RasApi32.dll", "RasDialA", ,  RasDialA
+    .参数 lpRasDialExtensions, 整数型, , RetVal
+    .参数 lpszPhonebook, 整数型, , RetVal
+    .参数 lprasdialparams, RASDIALPARAMS95, , RetVal
+    .参数 dwNotifierType, 整数型, , RetVal
+    .参数 lpvNotifier, 整数型, , RetVal
+    .参数 lphRasConn, 整数型, 传址, RetVal
+
+.DLL命令 RasHangUp, 整数型, "RasApi32.dll", "RasHangUpA", ,  RasHangUpA
+    .参数 hRasConn, 整数型, , RetVal
+
+.DLL命令 RasGetErrorString, 整数型, "RasApi32.dll", "RasGetErrorStringA", ,  RasHangUpA
+    .参数 ErrorValue, 整数型, , RetVal
+    .参数 ErrorString, 文本型, 传址, 
+    .参数 cBufSize, 整数型, , 
+
+.DLL命令 复制内存数据, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节型, 数组, 
+    .参数 Source, 文本型, , 
+    .参数 Length, 整数型, , 
+
+.程序集 VPN连接, , , 
+
+.程序集变量 hRasConn, 整数型, , , 
+.程序集变量 标签_, 标签, , , 
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+.如果真 (是否为调试版 ())
+    输出调试文本 (#常量2)
+    
+.如果真结束
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+
+
+.子程序 VPN_连接, 文本型, 公开, 成功返回空白文本,失败返回出错信息
+.参数 VPN连接名称, 文本型, , 拨号连接的名称
+.参数 IP地址域名, 文本型, , 可以填写IP地址或者域名
+.参数 用户名, 文本型, , 用于拨号的用户名
+.参数 密码, 文本型, , 用于拨号的密码
+.参数 返回状态文本, 标签, 可空, 返回拨号状态
+
+.局部变量 temp, 空白型, , , 
+
+赋值 (标签_, 返回状态文本)
+赋值 (temp, AddConnection (VPN连接名称, “”, “”, 用户名, 密码, “”))
+返回 (获取连接信息 (temp))
+
+.子程序 VPN_挂断拨号, 整数型, , 挂断VPN
+返回 (RasHangUp (hRasConn))
+
+.子程序 AddConnection, 整数型, , 
+.参数 strNewEntryName, 文本型, , 
+.参数 strNewPhoneNumber, 文本型, , 
+.参数 strNewCallbackNumber, 文本型, , 
+.参数 strNewUsername, 文本型, , 
+.参数 strNewPassword, 文本型, , 
+.参数 strNewDomain, 文本型, , 
+
+.局部变量 lngRetCode, 整数型, , , 
+.局部变量 lngRetLstrcpy, 整数型, , , 
+.局部变量 lngRetHangUp, 整数型, , , 
+.局部变量 lprasdialparams, RASDIALPARAMS95, , , 
+
+赋值 (lprasdialparams.dwSize, 1052)
+赋值 (lngRetLstrcpy, lstrcpy (lprasdialparams.szEntryName, strNewEntryName))
+赋值 (lngRetLstrcpy, lstrcpy (lprasdialparams.szPhoneNumber, strNewPhoneNumber))
+赋值 (lngRetLstrcpy, lstrcpy (lprasdialparams.szCallbackNumber, strNewCallbackNumber))
+赋值 (lngRetLstrcpy, lstrcpy (lprasdialparams.szUserName, strNewUsername))
+赋值 (lngRetLstrcpy, lstrcpy (lprasdialparams.szPassword, strNewPassword))
+赋值 (lngRetLstrcpy, lstrcpy (lprasdialparams.szDomain, strNewDomain))
+赋值 (hRasConn, 0)
+赋值 (lngRetCode, 0)
+赋值 (lngRetCode, RasDial (0, 0, lprasdialparams, 0, 到整数 (&backMsg), hRasConn))
+.如果真 (大于 (lngRetCode, 0))
+    赋值 (lngRetHangUp, RasHangUp (hRasConn))
+.如果真结束
+返回 (lngRetCode)
+
+.子程序 backMsg, 空白型, , 
+.参数 Msg, 整数型, , 
+.参数 State, 整数型, , 
+.参数 Error, 整数型, , 
+
+赋值 (标签_.标题, 获取连接过程信息 (State, Error))
+.如果真 (不等于 (寻找文本 (标签_.标题, “不”, , 假), -1))
+    信息框 (相加 (“发生错误：  错误号 ”, 到文本 (State)), 0, , )
+.如果真结束
+
+
+.子程序 获取连接过程信息, 文本型, , 
+.参数 State, 整数型, , 
+.参数 Error, 整数型, , 
+
+.局部变量 ErrorString, 文本型, , , 
+.局部变量 返回值, 文本型, , , 
+
+.如果真 (不等于 (Error, 0))
+    赋值 (ErrorString, 取空白文本 (100))
+    RasGetErrorString (Error, ErrorString, 100)
+    返回 (ErrorString)
+.如果真结束
+.判断开始 (等于 (State, 0))
+    赋值 (返回值, “正在打开端口”)
+.判断 (等于 (State, 1))
+    赋值 (返回值, “端口打开”)
+.判断 (等于 (State, 2))
+    赋值 (返回值, “正在连接设备”)
+.判断 (等于 (State, 3))
+    赋值 (返回值, “DeviceConnected”)
+.判断 (等于 (State, 4))
+    赋值 (返回值, “所有设备已连接上”)
+.判断 (等于 (State, 5))
+    赋值 (返回值, “开始认证”)
+.判断 (等于 (State, 6))
+    赋值 (返回值, “AuthenticationNotify”)
+.判断 (等于 (State, 7))
+    赋值 (返回值, “认证测试”)
+.判断 (等于 (State, 8))
+    赋值 (返回值, “CallbackRequested”)
+.判断 (等于 (State, 9))
+    赋值 (返回值, “ChangePasswordRequested”)
+.判断 (等于 (State, 10))
+    赋值 (返回值, “ProjectionPhaseStarted”)
+.判断 (等于 (State, 11))
+    赋值 (返回值, “LinkSpeedCalculation”)
+.判断 (等于 (State, 12))
+    赋值 (返回值, “认证通过”)
+.判断 (等于 (State, 13))
+    赋值 (返回值, “ReauthenticationStarted”)
+.判断 (等于 (State, 14))
+    赋值 (返回值, “Authenticated”)
+.判断 (等于 (State, 15))
+    赋值 (返回值, “PreparationForCallback”)
+.判断 (等于 (State, 16))
+    赋值 (返回值, “WaitingForModemReset”)
+.判断 (等于 (State, 17))
+    赋值 (返回值, “WaitingForCallback”)
+.判断 (等于 (State, 18))
+    赋值 (返回值, “Projected”)
+.判断 (等于 (State, 19))
+    赋值 (返回值, “StartAuthentication”)
+.判断 (等于 (State, 20))
+    赋值 (返回值, “CallbackComplete”)
+.判断 (等于 (State, 21))
+    赋值 (返回值, “正在登录网络”)
+.判断 (等于 (State, 4096))
+    赋值 (返回值, “Interactive”)
+.判断 (等于 (State, 4097))
+    赋值 (返回值, “RetryAuthentication”)
+.判断 (等于 (State, 4098))
+    赋值 (返回值, “CallbackSetByCaller”)
+.判断 (等于 (State, 4099))
+    赋值 (返回值, “PasswordExpired”)
+.判断 (等于 (State, 8192))
+    赋值 (返回值, “连接成功”)
+.判断 (等于 (State, 8193))
+    赋值 (返回值, “断开连接”)
+.默认
+    赋值 (返回值, 到文本 (State))
+.判断结束
+返回 (返回值)
+
+.子程序 获取连接信息, 文本型, , 
+.参数 State, 整数型, , 
+
+.局部变量 返回值, 文本型, , , 
+
+.判断开始 (等于 (State, 756))
+    赋值 (返回值, “正在连接中！稍后再拨”)
+.判断 (等于 (State, 602))
+    赋值 (返回值, “端口已经打开！”)
+.判断 (等于 (State, 650))
+    赋值 (返回值, “拨入的远程计算机没有响应！”)
+.判断 (等于 (State, 666))
+    赋值 (返回值, “设备没有准备好！”)
+.判断 (等于 (State, 690))
+    赋值 (返回值, “用户名或密码出错！”)
+.判断 (等于 (State, 718))
+    赋值 (返回值, “接入超时！”)
+.判断 (等于 (State, 0))
+    赋值 (返回值, “”)
+.默认
+    赋值 (返回值, 相加 (“错误代码：”, 到文本 (State)))
+.判断结束
+返回 (返回值)
+
+.子程序 VPN_连接是否存在, 逻辑型, , 
+.参数 连接名称, 文本型, , 
+
+.局部变量 次, 整数型, , , 
+.局部变量 计次, 整数型, , , 
+
+赋值 (次, 未知支持库函数_19 ())
+.计次循环首 (次, 计次)
+    .如果真 (等于 (连接名称, 未知支持库函数_20 (计次)))
+        返回 (真)
+    .如果真结束
+    
+.计次循环尾 ()
+返回 (假)
+
+.子程序 VPN_创建, 逻辑型, ,  创建一个VPN连接。
+.参数 连接名称, 文本型, , 拨号连接的名称
+.参数 用户名, 文本型, , 用于拨号的用户名
+.参数 密码, 文本型, , 用于拨号的密码
+.参数 目的地址, 文本型, , 可以填写IP地址或者域名
+.参数 连接方式, 整数型, , 0为L2TP方式连接，1为PPTV方式连接。
+
+.局部变量 re, RASENTRY, , , 
+.局部变量 rc, RASCREDENTIALS, , , 
+.局部变量 n, 整数型, , , 
+.局部变量 sDeviceName, 文本型, , , 
+.局部变量 sDeviceType, 文本型, , , 
+
+.如果真 (等于 (连接名称, “”))
+    赋值 (连接名称, “虚拟专用网络连接”)
+.如果真结束
+.如果 (或者 (等于 (用户名, “”), 等于 (密码, “”)))
+    赋值 (n, 1)
+.否则
+    赋值 (n, 0)
+.如果结束
+赋值 (目的地址, 相加 (“   ”, 目的地址)) ' 不加三个空格建立后的地址少了前三位，不知是何原因
+赋值 (sDeviceName, “WAN 微型端口 (L2TP)”)
+赋值 (sDeviceType, “vpn”)
+赋值 (re.dwSize, 2884)
+赋值 (re.dwCountryCode, 86)
+赋值 (re.dwCountryID, 86)
+赋值 (re.dwDialExtraPercent, 75)
+赋值 (re.dwDialExtraSampleSeconds, 120)
+赋值 (re.dwDialMode, 1)
+赋值 (re.dwEncryptionType, 3)
+赋值 (re.dwfNetProtocols, 4)
+赋值 (re.dwfOptions, 相减 (1024262928, 256))
+赋值 (re.dwfOptions2, 相减 (367, 256))
+赋值 (re.dwFramingProtocol, 1)
+赋值 (re.dwHangUpExtraPercent, 10)
+赋值 (re.dwHangUpExtraSampleSeconds, 120)
+赋值 (re.dwRedialCount, 0)
+赋值 (re.dwRedialPause, 1)
+赋值 (re.dwType, 2)
+赋值 (re.dwVpnStrategy, 连接方式)
+复制内存数据 (re.szDeviceType, sDeviceType, 取文本长度 (sDeviceType))
+复制内存数据 (re.szDeviceName, sDeviceName, 取文本长度 (sDeviceName))
+复制内存数据 (re.szLocalPhoneNumber, 目的地址, 取文本长度 (目的地址))
+赋值 (rc.dwSize, 540)
+赋值 (rc.dwMask, 11)
+复制内存数据 (rc.szUserName, 用户名, 取文本长度 (用户名))
+复制内存数据 (rc.szPassword, 密码, 取文本长度 (密码))
+ ' 输出调试文本 (连接名称, 用户名, 密码, n)
+.如果真 (等于 (创建连接 (0, 连接名称, re, re.dwSize, 0, 0), 0))
+    .如果真 (等于 (n, 1))
+        返回 (真)
+    .如果真结束
+    .如果真 (等于 (设置连接 (0, 连接名称, rc, 0), 0))
+        返回 (真)
+    .如果真结束
+    
+.如果真结束
+返回 (假)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

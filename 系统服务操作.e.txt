@@ -1,0 +1,617 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 597
+    高度 = 448
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+窗口 窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 499
+    高度 = 359
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 8 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 1 1 扩展界面支持库一
+
+
+
+
+数据类型 ENUM_SERVICE_STATUS, , 
+    .成员 lpServiceName, 文本型, , , 
+    .成员 lpDisplayName, 文本型, , , 
+    .成员 dwServiceType, 整数型, , , SERVICE_STATUS
+    .成员 dwCurrentState, 整数型, , , 
+    .成员 dwControlsAccepted, 整数型, , , 
+    .成员 dwWin32ExitCode, 整数型, , , 
+    .成员 dwServiceSpecificExitCode, 整数型, , , 
+    .成员 dwCheckPoint, 整数型, , , 
+    .成员 dwWaitHint, 整数型, , , 
+
+数据类型 SERVICE_STATUS, , 
+    .成员 dwServiceType, 整数型, , , 
+    .成员 dwCurrentState, 整数型, , , 
+    .成员 dwControlsAccepted, 整数型, , , 
+    .成员 dwWin32ExitCode, 整数型, , , 
+    .成员 dwServiceSpecificExitCode, 整数型, , , 
+    .成员 dwCheckPoint, 整数型, , , 
+    .成员 dwWaitHint, 整数型, , , 
+
+数据类型 ENUM_SERVICE_STATUS_PROCESS, , 
+    .成员 lpServiceName, 文本型, , , 
+    .成员 lpDisplayName, 文本型, , , 
+    .成员 dwServiceType, 整数型, , , SERVICE_STATUS_PROCESS
+    .成员 dwCurrentState, 整数型, , , 
+    .成员 dwControlsAccepted, 整数型, , , 
+    .成员 dwWin32ExitCode, 整数型, , , 
+    .成员 dwServiceSpecificExitCode, 整数型, , , 
+    .成员 dwCheckPoint, 整数型, , , 
+    .成员 dwWaitHint, 整数型, , , 
+    .成员 dwProcessId, 整数型, , , 
+    .成员 dwServiceFlags, 整数型, , , 
+
+数据类型 OSVERSIONINFO, , 
+    .成员 dwOSVersionInfoSize, 整数型, , , 
+    .成员 dwMajorVersion, 整数型, , , 
+    .成员 dwMinorVersion, 整数型, , , 
+    .成员 dwBuildNumber, 整数型, , , 
+    .成员 dwPlatformId, 整数型, , , 
+    .成员 szCSDVersion, 字节型, , "128", 
+
+
+.DLL命令 OpenSCManager, 整数型, "Advapi32.dll", "OpenSCManagerA", , 
+    .参数 lpMachineName, 整数型, , 
+    .参数 lpDatabaseName, 整数型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+
+.DLL命令 OpenService, 整数型, "Advapi32.dll", "OpenServiceA", , 
+    .参数 hSCManager, 整数型, , 
+    .参数 lpServiceName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+
+.DLL命令 EnumServicesStatus, 整数型, "Advapi32.dll", "EnumServicesStatusA", , 
+    .参数 hSCManager, 整数型, , 
+    .参数 dwServiceType, 整数型, , 
+    .参数 dwServiceState, 整数型, , 
+    .参数 lpServices, 字节集, 传址, 
+    .参数 cbBufSize, 整数型, , 
+    .参数 pcbBytesNeeded, 整数型, 传址, 
+    .参数 lpServicesReturned, 整数型, 传址, 
+    .参数 lpResumeHandle, 整数型, , 
+
+.DLL命令 RtlMoveMemory1, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, ENUM_SERVICE_STATUS_PROCESS, , 
+    .参数 Source, 字节集, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, ENUM_SERVICE_STATUS, , 
+    .参数 Source, 字节集, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 EnumServicesStatusEx, 整数型, "Advapi32.dll", "EnumServicesStatusExA", , 
+    .参数 hSCManager, 整数型, , 
+    .参数 InfoLevel, 整数型, , 
+    .参数 dwServiceType, 整数型, , 
+    .参数 dwServiceState, 整数型, , 
+    .参数 lpServices, 字节集, 传址, 
+    .参数 cbBufSize, 整数型, , 
+    .参数 pcbBytesNeeded, 整数型, 传址, 
+    .参数 lpServicesReturned, 整数型, 传址, 
+    .参数 lpResumeHandle, 整数型, , 
+    .参数 pszGroupName, 整数型, , 
+
+.DLL命令 GetVersionEx, 整数型, "", "GetVersionExA", , 
+    .参数 lpVersionInfo, OSVERSIONINFO, , 
+
+.DLL命令 CloseServiceHandle, 整数型, "", "", , 
+    .参数 hSCObject, 整数型, , 
+
+.DLL命令 EnumDependentServices, 整数型, "", "EnumDependentServicesA", , 
+    .参数 hService, 整数型, , 
+    .参数 dwServiceState, 整数型, , 
+    .参数 lpServices, 字节集, 传址, 
+    .参数 cbBufSize, 整数型, , 
+    .参数 pcbBytesNeeded, 整数型, 传址, 
+    .参数 lpServicesReturned, 整数型, 传址, 
+
+.DLL命令 GetWindowsDirectory, 整数型, "", "GetWindowsDirectoryA", , 
+    .参数 lpBuffer, 文本型, , 
+    .参数 uSize, 整数型, , 
+
+.DLL命令 ControlService, 整数型, "", "ControlService", , 
+    .参数 hService, 整数型, , 
+    .参数 dwControl, 整数型, , 
+    .参数 lpServiceStatus, SERVICE_STATUS, , 
+
+.DLL命令 StartService, 逻辑型, "", "StartServiceA", , 
+    .参数 hService, 整数型, , 
+    .参数 dwNumServiceArgs, 整数型, , 
+    .参数 lpServiceArgVectors, 整数型, , 
+
+.DLL命令 QueryServiceStatus, 逻辑型, "", "", , 
+    .参数 hService, 整数型, , 
+    .参数 lpServiceStatus, SERVICE_STATUS, 传址, 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+Init ()
+
+.子程序 WinNT, 空白型, , 
+.局部变量 Type, 整数型, , , 
+.局部变量 hSC, 整数型, , , 
+.局部变量 Service, ENUM_SERVICE_STATUS, , , 
+.局部变量 ServiceBin, 字节集, , , 
+.局部变量 ServicesReturned, 整数型, , , 
+.局部变量 BytesNeeded, 整数型, , , 
+.局部变量 Handle, 整数型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 Item, 整数型, , , 
+
+Init ()
+赋值 (Type, 选择 (.选中, 11, 48))
+赋值 (hSC, OpenSCManager (0, 0, 131101))
+.如果真 (等于 (hSC, 0))
+    信息框 (“无法获取足够的权限”, 16, )
+    返回 ()
+.如果真结束
+EnumServicesStatus (hSC, Type, 3, ServiceBin, 0, BytesNeeded, ServicesReturned, Handle)
+赋值 (ServiceBin, 取空白字节集 (BytesNeeded))
+EnumServicesStatus (hSC, Type, 3, ServiceBin, BytesNeeded, BytesNeeded, ServicesReturned, Handle)
+.计次循环首 (ServicesReturned, N)
+    RtlMoveMemory (Service, 取字节集中间 (ServiceBin, 相减 (相乘 (N, 36), 35), 36), 36)
+    赋值 (Item, .插入表项 ())
+    Item.置标题 (0, Service.lpServiceName)
+    Item.置图片 (0, 4)
+    Item.置标题 (1, Service.lpDisplayName)
+    Item.置图片 (1, 4)
+    Item.置标题 (2, 取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\Description”), ))
+    Item.置图片 (2, 3)
+    Item.置标题 (3, Type (Service.dwServiceType))
+    Item.置标题 (4, State (Service.dwCurrentState))
+    Item.置标题 (5, StartState (取数值注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\Start”), )))
+    Item.置标题 (6, Login (到大写 (取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\ObjectName”), ))))
+.计次循环尾 ()
+CloseServiceHandle (hSC)
+
+.子程序 Type, 文本型, , 
+.参数 N, 整数型, , 
+
+.局部变量 L, 文本型, , , 
+
+.如果真 (不等于 (位与 (N, 256), 0))
+    赋值 (L, “/允许与桌面交互”)
+    赋值 (N, 位异或 (N, 256))
+.如果真结束
+.判断开始 (等于 (N, 1))
+    返回 (相加 (“系统内核驱动”, L))
+.判断 (等于 (N, 2))
+    返回 (相加 (“文件系统驱动”, L))
+.判断 (等于 (N, 16))
+    返回 (相加 (“独立进程”, L))
+.判断 (等于 (N, 32))
+    返回 (相加 (“共享进程”, L))
+.默认
+    返回 (相加 (“未知类型：”, 到文本 (N)))
+.判断结束
+
+
+.子程序 State, 文本型, , 
+.参数 N, 整数型, , 
+
+.如果真 (并且 (大于或等于 (N, 1), 小于或等于 (N, 7)))
+    返回 (多项选择 (N, “已停止”, “准备开始”, “准备停止”, “正在运行”, “准备继续”, “准备暂停”, “已暂停”))
+.如果真结束
+返回 (相加 (“未知状态：”, 到文本 (N)))
+
+.子程序 WIN2KXP, 空白型, , 
+.局部变量 Type, 整数型, , , 
+.局部变量 hSC, 整数型, , , 
+.局部变量 Service, ENUM_SERVICE_STATUS_PROCESS, , , 
+.局部变量 ServiceBin, 字节集, , , 
+.局部变量 ServicesReturned, 整数型, , , 
+.局部变量 BytesNeeded, 整数型, , , 
+.局部变量 Handle, 整数型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 Item, 整数型, , , 
+
+Init ()
+赋值 (Type, 选择 (.选中, 11, 48))
+赋值 (hSC, OpenSCManager (0, 0, 131101))
+.如果真 (等于 (hSC, 0))
+    信息框 (“无法获取足够的权限”, 16, )
+    返回 ()
+.如果真结束
+EnumServicesStatusEx (hSC, 0, Type, 3, ServiceBin, 0, BytesNeeded, ServicesReturned, Handle, 0)
+赋值 (ServiceBin, 取空白字节集 (BytesNeeded))
+EnumServicesStatusEx (hSC, 0, Type, 3, ServiceBin, BytesNeeded, BytesNeeded, ServicesReturned, Handle, 0)
+.计次循环首 (ServicesReturned, N)
+    RtlMoveMemory1 (Service, 取字节集中间 (ServiceBin, 相减 (相乘 (N, 44), 43), 44), 44)
+    赋值 (Item, .插入表项 ())
+    Item.置标题 (0, Service.lpServiceName)
+    Item.置图片 (0, 4)
+    Item.置标题 (1, Service.lpDisplayName)
+    Item.置图片 (1, 4)
+    Item.置标题 (2, 取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\Description”), ))
+    Item.置图片 (2, 3)
+    Item.置标题 (3, Type (Service.dwServiceType))
+    Item.置标题 (4, State (Service.dwCurrentState))
+    Item.置标题 (5, StartState (取数值注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\Start”), )))
+    Item.置标题 (6, Login (到大写 (取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\ObjectName”), ))))
+    Item.置标题 (7, 到文本 (Service.dwProcessId))
+.计次循环尾 ()
+CloseServiceHandle (hSC)
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 Info, OSVERSIONINFO, , , 
+
+赋值 (Info.dwOSVersionInfoSize, 148)
+GetVersionEx (Info)
+.如果真 (不等于 (Info.dwPlatformId, 2)) ' 非WinNT
+    返回 ()
+.如果真结束
+.如果 (小于或等于 (Info.dwMajorVersion, 4)) ' WinNT4/3
+    WinNT ()
+.否则
+    WIN2KXP ()
+.如果结束
+
+
+.子程序 Init, 空白型, , 
+.局部变量 N, 整数型, , , 
+
+全部删除 ()
+.计次循环首 (取列数 (), N)
+    相减 (N, 1).置列图片 (-1)
+.计次循环尾 ()
+
+
+.子程序 _超级列表框1_被双击, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+载入 (窗口, , 真)
+
+.子程序 CompletePath, 文本型, , 
+.参数 Path, 文本型, , 
+
+.局部变量 TempPath, 文本型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 Temp, 文本型, , , 
+
+赋值 (TempPath, 子文本替换 (Path, #引号, , , , 真))
+.判断开始 (等于 (取代码 (TempPath, 1), 38)) ' &
+    赋值 (N, 寻找文本 (TempPath, “&”, 2, 假))
+    .如果真 (不等于 (N, -1))
+        赋值 (Temp, 读环境变量 (取文本中间 (TempPath, 2, 相减 (N, 2))))
+        .如果真 (不等于 (取文本右边 (Temp, 1), “\”))
+            赋值 (Temp, 相加 (Temp, “\”))
+        .如果真结束
+        返回 (相加 (Temp, 取文本右边 (TempPath, 相减 (取文本长度 (TempPath), N))))
+    .如果真结束
+    
+.判断 (等于 (取代码 (TempPath, 1), 92)) ' \
+    赋值 (N, 寻找文本 (TempPath, “\”, 2, 假))
+    .如果真 (不等于 (N, -1))
+        赋值 (Temp, 读环境变量 (取文本中间 (TempPath, 2, 相减 (N, 2))))
+        .如果真 (不等于 (取文本右边 (Temp, 1), “\”))
+            赋值 (Temp, 相加 (Temp, “\”))
+        .如果真结束
+        返回 (相加 (Temp, 取文本右边 (TempPath, 相减 (取文本长度 (TempPath), N))))
+    .如果真结束
+    
+.判断 (等于 (到大写 (取文本左边 (TempPath, 9)), “SYSTEM32\”))
+    赋值 (Temp, 取空白文本 (260))
+    GetWindowsDirectory (Temp, 260)
+    .如果真 (不等于 (取文本右边 (Temp, 1), “\”))
+        赋值 (Temp, 相加 (Temp, “\”))
+    .如果真结束
+    返回 (相加 (Temp, TempPath))
+.默认
+    
+.判断结束
+返回 (Path)
+
+.子程序 _暂停_被选择, 空白型, , 
+.局部变量 hSC, 整数型, , , 
+.局部变量 hService, 整数型, , , 
+.局部变量 Service, SERVICE_STATUS, , , 
+
+hSC ＝ OpenSCManager (0, 0, 983103)
+hService ＝ OpenService (hSC, 超级列表框1.取标题 (超级列表框1.现行选中项, 0), 983551)
+信息框 (ControlService (hService, 2, Service), 0, )
+CloseServiceHandle (hService)
+CloseServiceHandle (hSC)
+_按钮1_被单击 ()
+
+.子程序 _继续_被选择, 空白型, , 
+.局部变量 hSC, 整数型, , , 
+.局部变量 hService, 整数型, , , 
+.局部变量 Service, SERVICE_STATUS, , , 
+
+hSC ＝ OpenSCManager (0, 0, 983167)
+hService ＝ OpenService (hSC, 超级列表框1.取标题 (超级列表框1.现行选中项, 0), 983551)
+ControlService (hService, 3, Service)
+CloseServiceHandle (hService)
+CloseServiceHandle (hSC)
+
+
+.子程序 StartState, 文本型, , 
+.参数 N, 整数型, , 
+
+.判断开始 (等于 (N, -1))
+    返回 (“”)
+.判断 (等于 (N, 0))
+    返回 (“启动”)
+.判断 (等于 (N, 1))
+    返回 (“系统”)
+.判断 (等于 (N, 2))
+    返回 (“自动”)
+.判断 (等于 (N, 3))
+    返回 (“手动”)
+.判断 (等于 (N, 4))
+    返回 (“已禁用”)
+.默认
+    
+.判断结束
+返回 (相加 (“未知：”, 到文本 (N)))
+
+.子程序 Login, 文本型, , 
+.参数 N, 文本型, , 
+
+.判断开始 (等于 (N, “NT AUTHORITY\LOCALSERVICE”))
+    返回 (“本地服务”)
+.判断 (等于 (N, “NT AUTHORITY\NETWORKSERVICE”))
+    返回 (“网络服务”)
+.判断 (等于 (N, “LOCALSYSTEM”))
+    返回 (“本地系统”)
+.默认
+    
+.判断结束
+返回 (N)
+
+.子程序 超级列表框排序, 空白型, , 
+.参数 对象, 超级列表框, , 
+.参数 列索引, 整数型, , 
+.参数 区分大小写, 逻辑型, 可空, 
+.参数 排序方式, 逻辑型, 可空, 
+
+.局部变量 文本排序变量, 文本型, , "0", 
+.局部变量 数值排序变量, 整数型, , "0", 
+.局部变量 图片索引排序变量, 整数型, , "0", 
+.局部变量 序号数组, 整数型, , "0", 
+.局部变量 表项序号, 整数型, , , 
+.局部变量 列序号, 整数型, , , 
+.局部变量 变量, 整数型, , , 
+.局部变量 数据, 文本型, , , 
+.局部变量 列数, 整数型, , , 
+.局部变量 行数, 整数型, , , 
+.局部变量 单元数, 整数型, , , 
+
+赋值 (区分大小写, 选择 (是否为空 (区分大小写), 真, 区分大小写))
+赋值 (排序方式, 选择 (是否为空 (排序方式), 真, 排序方式))
+.计次循环首 (对象.取表项数 (), 变量)
+    赋值 (数据, 对象.取标题 (相减 (变量, 1), 列索引))
+    赋值 (单元数, 二分查找 (文本排序变量, 数据, 区分大小写))
+    插入成员 (文本排序变量, 单元数, 数据)
+    插入成员 (序号数组, 单元数, 相减 (变量, 1))
+.计次循环尾 ()
+赋值 (列数, 对象.取列数 ())
+赋值 (行数, 取数组成员数 (序号数组))
+赋值 (单元数, 相乘 (行数, 列数))
+重定义数组 (文本排序变量, 假, 单元数)
+重定义数组 (数值排序变量, 假, 单元数)
+重定义数组 (图片索引排序变量, 假, 单元数)
+.计次循环首 (单元数, 变量)
+    赋值 (表项序号, 序号数组 [取绝对值 (相减 (选择 (排序方式, -1, 行数), 整除 (相减 (变量, 1), 列数)))])
+    赋值 (列序号, 求余数 (相减 (变量, 1), 列数))
+    赋值 (文本排序变量 [变量], 对象.取标题 (表项序号, 列序号))
+    赋值 (数值排序变量 [变量], 对象.取表项数值 (表项序号))
+    赋值 (图片索引排序变量 [变量], 对象.取图片 (表项序号, 列序号))
+.计次循环尾 ()
+.计次循环首 (单元数, 变量)
+    赋值 (表项序号, 整除 (相减 (变量, 1), 列数))
+    赋值 (列序号, 求余数 (相减 (变量, 1), 列数))
+    对象.置标题 (表项序号, 列序号, 文本排序变量 [变量])
+    对象.置表项数值 (表项序号, 数值排序变量 [变量])
+    对象.置图片 (表项序号, 列序号, 图片索引排序变量 [变量])
+.计次循环尾 ()
+
+.子程序 二分查找, 整数型, , 
+.参数 数组, 文本型, 数组, 
+.参数 待查, 文本型, , 
+.参数 区分大小写, 逻辑型, , 
+
+.局部变量 K, 整数型, , , 
+.局部变量 M, 整数型, , , 
+.局部变量 J, 整数型, , , 
+.局部变量 数值A, 双精度小数型, , , 
+.局部变量 数值B, 双精度小数型, , , 
+.局部变量 文本, 文本型, , , 
+
+赋值 (K, 1)
+赋值 (M, 取数组成员数 (数组))
+.如果真 (等于 (M, 0))
+    返回 (1)
+.如果真结束
+.如果真 (大于或等于 (文本比较 (待查, 数组 [M], 区分大小写), 0))
+    返回 (相加 (M, 1))
+.如果真结束
+.如果真 (小于或等于 (文本比较 (待查, 数组 [1], 区分大小写), 0))
+    返回 (1)
+.如果真结束
+.判断循环首 (小于 (K, 相减 (M, 1)))
+    赋值 (J, 整除 (相加 (K, M), 2))
+    .如果真 (等于 (文本比较 (待查, 数组 [J], 区分大小写), 0))
+        赋值 (K, J)
+        跳出循环 ()
+    .如果真结束
+    .如果 (小于 (文本比较 (待查, 数组 [J], 区分大小写), 0))
+        赋值 (M, J)
+    .否则
+        赋值 (K, J)
+    .如果结束
+    
+.判断循环尾 ()
+返回 (相加 (K, 1))
+
+.子程序 _超级列表框1_表头被单击, 空白型, , 
+.参数 被单击列索引, 整数型, , 
+
+.局部变量 N, 整数型, , , 
+.局部变量 Sort, 逻辑型, , , 
+
+赋值 (Sort, 等于 (被单击列索引.取列图片 (), 1))
+超级列表框排序 (被单击列索引, 假, 取反 (Sort))
+.变量循环首 (0, 相减 (取列数 (), 1), 1, N)
+    .如果 (不等于 (N, 被单击列索引))
+        N.置列图片 (-1)
+    .否则
+        .如果 (Sort)
+            N.置列图片 (0)
+        .否则
+            N.置列图片 (1)
+        .如果结束
+        
+    .如果结束
+    
+.变量循环尾 ()
+
+.子程序 _停止_被选择, 空白型, , 
+.局部变量 hSC, 整数型, , , 
+.局部变量 hService, 整数型, , , 
+.局部变量 Service, SERVICE_STATUS, , , 
+
+赋值 (hSC, OpenSCManager (0, 0, 983103))
+.如果真 (等于 (hSC, 0))
+    信息框 (“无法获取足够的权限”, 16, )
+    返回 ()
+.如果真结束
+赋值 (hService, OpenService (hSC, .取标题 (., 0), 983551))
+ControlService (hService, 1, Service)
+CloseServiceHandle (hService)
+CloseServiceHandle (hSC)
+延时 (500)
+_按钮1_被单击 ()
+
+.子程序 _超级列表框1_鼠标右键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+弹出菜单 ()
+
+.子程序 _超级列表框1_当前表项被改变, 空白型, , 
+.局部变量 hSC, 整数型, , , 
+.局部变量 hService, 整数型, , , 
+.局部变量 Service, SERVICE_STATUS, , , 
+.局部变量 Bool, 逻辑型, , , 
+
+赋值 (hSC, OpenSCManager (0, 0, 983103))
+赋值 (hService, OpenService (hSC, .取标题 (., 0), 983551))
+赋值 (Bool, QueryServiceStatus (hService, Service))
+.如果 (Bool)
+    .判断开始 (不等于 (位与 (Service.dwCurrentState, 4), 0))
+        赋值 (.可视, 真)
+        赋值 (.可视, 假)
+    .判断 (不等于 (位与 (Service.dwCurrentState, 1), 0))
+        赋值 (.可视, 假)
+        赋值 (.可视, 真)
+    .默认
+        赋值 (.可视, 假)
+        赋值 (.可视, 假)
+    .判断结束
+    
+.否则
+    赋值 (.可视, 假)
+    赋值 (.可视, 假)
+.如果结束
+CloseServiceHandle (hService)
+CloseServiceHandle (hSC)
+
+.子程序 _运行_被选择, 空白型, , 
+.局部变量 hSC, 整数型, , , 
+.局部变量 hService, 整数型, , , 
+.局部变量 Service, SERVICE_STATUS, , , 
+
+赋值 (hSC, OpenSCManager (0, 0, 983103))
+.如果真 (等于 (hSC, 0))
+    信息框 (“无法获取足够的权限”, 16, )
+    返回 ()
+.如果真结束
+赋值 (hService, OpenService (hSC, .取标题 (., 0), 983551))
+StartService (hService, 0, 0)
+CloseServiceHandle (hService)
+CloseServiceHandle (hSC)
+延时 (500)
+_按钮1_被单击 ()
+
+.窗口程序集 窗口程序集2, , , 
+
+.子程序 _窗口_创建完毕, 空白型, , 
+.局部变量 hSC, 整数型, , , 
+.局部变量 hService, 整数型, , , 
+.局部变量 Service, ENUM_SERVICE_STATUS, , , 
+.局部变量 ServiceBin, 字节集, , , 
+.局部变量 ServicesReturned, 整数型, , , 
+.局部变量 BytesNeeded, 整数型, , , 
+.局部变量 N, 整数型, , , 
+.局部变量 Item, 整数型, , , 
+.局部变量 Name, 文本型, , , 
+
+赋值 (Name, _启动窗口.取标题 (., _启动窗口.., 0))
+赋值 (.标题, CompletePath (取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, Name, “\ImagePath”), )))
+赋值 (hSC, OpenSCManager (0, 0, 131101))
+赋值 (hService, OpenService (hSC, Name, 131101))
+EnumDependentServices (hService, 3, ServiceBin, 0, BytesNeeded, ServicesReturned)
+.如果真 (等于 (BytesNeeded, 0))
+    返回 ()
+.如果真结束
+赋值 (ServiceBin, 取空白字节集 (BytesNeeded))
+EnumDependentServices (hService, 3, ServiceBin, BytesNeeded, BytesNeeded, ServicesReturned)
+.计次循环首 (ServicesReturned, N)
+    RtlMoveMemory (Service, 取字节集中间 (ServiceBin, 相减 (相乘 (N, 36), 35), 36), 44)
+    赋值 (Item, 0.加入项目 (Service.lpDisplayName, , , ))
+    Item.加入项目 (Service.lpServiceName, , , )
+    Item.加入项目 (Service.lpDisplayName, , , )
+    Item.加入项目 (取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\Description”), “无”), , , )
+    Item.加入项目 (Type (Service.dwServiceType), , , )
+    Item.加入项目 (State (Service.dwCurrentState), , , )
+    Item.加入项目 (StartState (取数值注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\Start”), )), , , )
+    Item.加入项目 (Login (到大写 (取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\ObjectName”), ))), , , )
+.计次循环尾 ()
+CloseServiceHandle (hService)
+CloseServiceHandle (hSC)
+0.扩展 ()
+
+
+ ' 不属于任何一个程序集、类模块的函数：

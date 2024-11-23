@@ -1,0 +1,147 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 483
+    高度 = 356
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 2 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 1 1 扩展界面支持库一
+
+
+
+
+数据类型 INTERNET_CACHE_ENTRY_INFO, , 80
+    .成员 dwStructSize, 整数型, , , 
+    .成员 lpszSourceUrlName, 文本型, , , 
+    .成员 lpszLocalFileName, 文本型, , , 
+    .成员 CacheEntryType, 整数型, , , 
+    .成员 dwUseCount, 整数型, , , 
+    .成员 dwHitRate, 整数型, , , 
+    .成员 dwSizeLow, 整数型, , , 
+    .成员 dwSizeHigh, 整数型, , , 
+    .成员 LastModifiedTimel, 整数型, , , 
+    .成员 LastModifiedTimeh, 整数型, , , 
+    .成员 ExpireTimel, 整数型, , , 
+    .成员 ExpireTimeh, 整数型, , , 
+    .成员 LastAccessTimel, 整数型, , , 
+    .成员 LastAccessTimeh, 整数型, , , 
+    .成员 LastSyncTimel, 整数型, , , 
+    .成员 LastSyncTimeh, 整数型, , , 
+    .成员 lpHeaderInfo, 整数型, , , 
+    .成员 dwHeaderInfoSize, 整数型, , , 
+    .成员 lpszFileExtension, 文本型, , , 
+    .成员 dwReserved, 整数型, , , 
+    .成员 dwExemptDelta, 整数型, , , 
+
+数据类型 FILETIME, , 
+    .成员 dwLowDateTime, 整数型, , , 
+    .成员 dwHighDateTime, 整数型, , , 
+
+
+.DLL命令 FindFirstUrlCacheEntry, 整数型, "Wininet.dll", "FindFirstUrlCacheEntryA", , 
+    .参数 lpszUrlSearchPattern, 文本型, , "cookie:" or "visited:" or ""
+    .参数 lpFirstCacheEntryInfo, 整数型, , 
+    .参数 lpdwFirstCacheEntryInfoBufferSize, 整数型, 传址, 
+
+.DLL命令 FindNextUrlCacheEntry, 整数型, "Wininet.dll", "FindNextUrlCacheEntryA", , 
+    .参数 hEnumHandle, 整数型, , 
+    .参数 lpNextCacheEntryInfo, 整数型, , 
+    .参数 lpdwNextCacheEntryInfoBufferSize, 整数型, 传址, 
+
+.DLL命令 LocalAlloc, 整数型, "", "", , 
+    .参数 uFlags, 整数型, , 
+    .参数 uBytes, 整数型, , 
+
+.DLL命令 CopyMemory2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Dest, INTERNET_CACHE_ENTRY_INFO, , 
+    .参数 Source, 整数型, , 
+    .参数 Val, 整数型, , 
+
+.DLL命令 CopyMemory1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Dest, 整数型, , 
+    .参数 Source, 整数型, 传址, 
+    .参数 Val, 整数型, , 
+
+.DLL命令 LocalFree, 整数型, "", "", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 DeleteUrlCacheEntry, 整数型, "Wininet.dll", "DeleteUrlCacheEntryA", , 
+    .参数 lpszUrlName, 文本型, , 
+
+.DLL命令 FindCloseUrlCache, 整数型, "Wininet.dll", "", , 
+    .参数 hEnumHandle, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 DD, INTERNET_CACHE_ENTRY_INFO, , , 
+.局部变量 handle, 整数型, , , 
+.局部变量 dwbuffer, 整数型, , , 
+.局部变量 pntrICE, 整数型, , , 
+
+全部删除 ()
+赋值 (dwbuffer, 0)
+赋值 (handle, FindFirstUrlCacheEntry (“”, 0, dwbuffer))
+.如果真 (等于 (handle, 0))
+    赋值 (pntrICE, LocalAlloc (0, dwbuffer))
+    .如果真 (不等于 (pntrICE, 0))
+        CopyMemory1 (pntrICE, dwbuffer, 4)
+        赋值 (handle, FindFirstUrlCacheEntry (“”, pntrICE, dwbuffer))
+        .如果真 (不等于 (handle, 0))
+            .循环判断首 ()
+                CopyMemory2 (DD, pntrICE, 80)
+                .如果真 (等于 (位与 (DD.CacheEntryType, 1), 1))
+                    .插入表项 (DD.lpszSourceUrlName, , , , )
+                    相减 (取表项数 (), 1).置标题 (1, DD.lpszLocalFileName)
+                    LocalFree (pntrICE)
+                    赋值 (dwbuffer, 0)
+                    FindNextUrlCacheEntry (handle, pntrICE, dwbuffer)
+                    赋值 (pntrICE, LocalAlloc (0, dwbuffer))
+                    CopyMemory1 (pntrICE, dwbuffer, 4)
+                .如果真结束
+                
+            .循环判断尾 (不等于 (FindNextUrlCacheEntry (handle, pntrICE, dwbuffer), 0))
+            LocalFree (pntrICE)
+        .如果真结束
+        
+    .如果真结束
+    
+.如果真结束
+FindCloseUrlCache (handle)
+
+.子程序 _按钮2_被单击, 空白型, , 
+.如果真 (不等于 (., -1))
+    DeleteUrlCacheEntry (.取标题 (., ))
+    _按钮1_被单击 ()
+.如果真结束
+
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

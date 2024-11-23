@@ -1,0 +1,144 @@
+ ' 文件类型：Windows控制台程序
+
+ ' 程序名称：剪切板类
+ ' 程序描述：易中自带的只有对剪切板中文本的操作。极不方便啊
+特封装此类以方便大家使用
+ ' 程序作者：笨笨啊
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 CF_BITMAP, "2", , 
+.常量 CF_MAX, "17", , 
+.常量 CF_LOCALE, "16", , 
+.常量 CF_ENHMETAFILE, "14", , 
+.常量 CF_OEMTEXT, "7", , 
+.常量 CF_TEXT, "1", , 
+.常量 CF_METAFILEPICT, "3", , 
+.常量 CF_SYLK, "4", , 
+.常量 CF_DIF, "5", , 
+.常量 CF_TIFF, "6", , 
+.常量 CF_DIB, "8", , 
+.常量 CF_PALETTE, "9", , 
+.常量 CF_PENDATA, "10", , 
+.常量 CF_RIFF, "11", , 
+.常量 CF_WAVE, "12", , 
+.常量 CF_UNICODETEXT, "13", , 
+.常量 CF_HDROP, "15", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 1 系统核心支持库
+
+
+
+
+
+.DLL命令 EmptyClipboard, 整数型, "user32", "EmptyClipboard", , 
+
+.DLL命令 OpenClipboard, 整数型, "user32", "OpenClipboard", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 CloseClipboard, 整数型, "user32", "CloseClipboard", , 
+
+.DLL命令 SetClipboardData, 整数型, "user32", "SetClipboardData", , 
+    .参数 wFormat, 整数型, , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 GetClipboardData, 整数型, "user32", "GetClipboardData", , 
+    .参数 wFormat, 整数型, , 
+
+.DLL命令 IsClipboardFormatAvailable, 整数型, "user32", "IsClipboardFormatAvailable", , 
+    .参数 wFormat, 整数型, , 
+
+.DLL命令 GlobalAlloc, 整数型, "kernel32", "GlobalAlloc", , 
+    .参数 wFlags, 整数型, , 
+    .参数 dwBytes, 整数型, , 
+
+.DLL命令 GlobalFree, 整数型, "kernel32", "GlobalFree", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 GlobalUnlock, 整数型, "kernel32", "GlobalUnlock", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 copymem, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 空白型, , 
+    .参数 Source, 空白型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 EnumClipboardFormats, 整数型, "user32", "EnumClipboardFormats", , 
+    .参数 wFormat, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 本子程序在程序启动后最先执行
+.局部变量 剪切板, 剪切板操作, , , 
+
+ ' 输出调试文本 (到文本 (剪切板.清空 ()))  ' 清空剪切板内容
+ ' 剪切板.格式是否有效 (1)  ' 检查文本
+剪切板.取内容 (1) ' 取文本
+返回 (0) ' 可以根据您的需要返回任意数值
+
+
+.类模块 剪切板操作, , , 
+
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 清空, 逻辑型, , 清空剪切板
+.局部变量 i, 整数型, , , 
+
+赋值 (i, OpenClipboard (0))
+.如果 (等于 (i, 1))
+    赋值 (i, EmptyClipboard ())
+    返回 (等于 (i, 1))
+.否则
+    
+.如果结束
+CloseClipboard ()
+返回 (假)
+
+
+.子程序 格式是否有效, 逻辑型, 公开, 检查剪切板内指定格式是否有效
+.参数 内容格式, 整数型, , 内容格式，指文本型、html、二进制数据等
+
+.局部变量 i, 整数型, , , 
+
+赋值 (i, IsClipboardFormatAvailable (内容格式))
+返回 (等于 (i, 1))
+
+
+.子程序 置内容, 逻辑型, 公开, 将字节集内容置入剪切板
+.参数 内容格式, 整数型, , 
+.参数 内容, 字节集, , 
+
+返回 (真)
+
+.子程序 取内容, 字节集, , 
+.参数 内容格式, 整数型, , 
+
+.局部变量 地址, 整数型, , , 
+.局部变量 最终字节集, 字节集, , , 
+.局部变量 临时文本, 文本型, , , 
+
+.如果真 (格式是否有效 (内容格式))
+    OpenClipboard (0) ' 打开内存
+    赋值 (地址, GetClipboardData (内容格式))
+.如果真结束
+
+返回 (最终字节集)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,2504 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：程序多开专业模块V1.0（树上的鱼儿 QQ:346429）
+ ' 程序描述：程序多开专业模块V1.0（树上的鱼儿 QQ:346429）
+@备注:
+程序多开专业模块V1.0（树上的鱼儿 QQ:346429）
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：QQ：346429
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.图片 load_code, " ' 已保存到：D:\易语言学习\Data\程序多开专业模块V1[1].2(修复进程挂起 恢复).e\load_code", , 这三个代码的主要加载部分原作者为 凌晨孤星
+.图片 getaddr_code, " ' 已保存到：D:\易语言学习\Data\程序多开专业模块V1[1].2(修复进程挂起 恢复).e\getaddr_code", , 我反汇编后稍微修改了下代码的前前后后 让这三个可以脱离 置入代码()运行
+.图片 free_code, " ' 已保存到：D:\易语言学习\Data\程序多开专业模块V1[1].2(修复进程挂起 恢复).e\free_code", , 这样就可以在其他进程中执行 并返回数据~做这模块让我终于学会了最基本的汇编 挖哈哈~~庆祝下..
+.图片 图片1, " ' 已保存到：D:\易语言学习\Data\程序多开专业模块V1[1].2(修复进程挂起 恢复).e\图片1", , 
+.常量 分配内存失败, "“-2|DistributeMem|Error in distributing memory.”", 公开, 
+.常量 写内存失败, "“-4|WriteMem|Error in writing memory.”", 公开, 
+.常量 取函数地址失败, "“-8|GetProcAddr|Error in getting proc address.”", 公开, 
+.常量 卸载DLL失败, "“0|UnHookFail|Error in unhook Dll.”+#换行符+"Abort?”", 公开, 
+.常量 打开进程失败, "“-1|OpenProcess|Error in opening process.”", 公开, 
+.常量 TH32CS_SNAPTHREAD, "4", , 
+.常量 ThreadBasicInformation, "0", , 
+.常量 ThreadQuerySetWin32StartAddress, "9", , 
+.常量 INVALID_HANDLE_VALUE, "-1", , 
+.常量 TH32CS_SNAPPROCESS, "2", , 
+.常量 DONT_RESOLVE_DLL_REFERENCES, "1", , 
+.常量 MEM_COMMIT, "4096", , 
+.常量 PAGE_EXECUTE_READWRITE, "64", , 
+.常量 MEM_RELEASE, "32768", , 
+.常量 DUPLICATE_CLOSE_SOURCE, "1", , 
+.常量 DUPLICATE_SAME_ACCESS, "2", , 
+.常量 ObjectNameInformation, "1", , 
+.常量 INFINITE, "-1", , 
+.常量 err_1, "“拒绝访问.”", , 
+.常量 PROCESS_ALL_ACCESS, "2035711", , 进程完全权限
+.常量 THREAD_ALL_ACCESS, "2032639", , 线程完全权限
+.常量 TOKEN_ALL_ACCESS, "983551", , 令牌完全访问权限
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' OPenGL F05D3E4CE9E84d0f82332D62BAF6447F 2 0 OPenGL支持库
+ ' spec A512548E76954B6E92C21055517615B0 3 1 特殊功能支持库
+
+
+
+
+数据类型 MODULEINFO, , 
+    .成员 lpBaseOfDll, 整数型, , , 
+    .成员 SizeOfImage, 整数型, , , 
+    .成员 EntryPoint, 整数型, , , 
+
+数据类型 模块信息, 公开, 
+    .成员 模块名, 文本型, , , 
+    .成员 入口点, 整数型, , , 
+    .成员 映像大小, 整数型, , , 
+
+数据类型 LPTHREADENTRY32, , 
+    .成员 dwSize, 整数型, , , 
+    .成员 cntUsage, 整数型, , , 
+    .成员 th32ThreadID, 整数型, , , 
+    .成员 th32OwnerProcessID, 整数型, , , 
+    .成员 tpBasePri, 整数型, , , 
+    .成员 tpDeltaPri, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+
+数据类型 THREAD_BASIC_INFORMATION, , 
+    .成员 ExitStatus, 整数型, , , 
+    .成员 TebBaseAddress, 整数型, , , 
+    .成员 ClientId, CLIENT_ID, , , 
+    .成员 AffinityMask, 整数型, , , 
+    .成员 Priority, 整数型, , , 
+    .成员 BasePriority, 整数型, , , 
+
+数据类型 CLIENT_ID, , 
+    .成员 UniqueProcess, 整数型, , , 
+    .成员 UniqueThread, 整数型, , , 
+
+数据类型 线程信息, 公开, 
+    .成员 线程标识, 整数型, , , 线程ID
+    .成员 所在进程, 整数型, , , 进程Pid
+    .成员 所在模块, 文本型, , , 模块路径
+    .成员 起始地址, 整数型, , , 模块入口
+
+数据类型 LUID, , 
+    .成员 lowpart, 整数型, , , 
+    .成员 highpart, 整数型, , , 
+
+数据类型 TOKEN_PRIVILEGES, , 
+    .成员 PrivilegeCount, 整数型, , , 
+    .成员 lowpart, 整数型, , , 
+    .成员 highpart, 整数型, , , 
+    .成员 Attributes, 整数型, , , 
+
+数据类型 LPPROCESSENTRY32, , 
+    .成员 dwSize, 整数型, , , 
+    .成员 cntUsage, 整数型, , , 
+    .成员 th32ProcessID, 整数型, , , 
+    .成员 th32DefaultHeapID, 整数型, , , 
+    .成员 th32ModuleID, 整数型, , , 
+    .成员 cntThreads, 整数型, , , 
+    .成员 th32ParentProcessID, 整数型, , , 
+    .成员 pcPriClassBase, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+    .成员 szExeFile, 字节型, , "260", 
+
+数据类型 STARTUPINFO, , 
+    .成员 cb, 整数型, , , 
+    .成员 lpReserved, 整数型, , , 
+    .成员 lpDesktop, 整数型, , , 
+    .成员 lpTitle, 整数型, , , 
+    .成员 dwX, 整数型, , , 
+    .成员 dwY, 整数型, , , 
+    .成员 dwXSize, 整数型, , , 
+    .成员 dwYSize, 整数型, , , 
+    .成员 dwXCountChars, 整数型, , , 
+    .成员 dwYCountChars, 整数型, , , 
+    .成员 dwFillAttribute, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+    .成员 wShowWindow, 短整数型, , , 
+    .成员 cbReserved2, 短整数型, , , 
+    .成员 lpReserved2, 字节型, , , 
+    .成员 hStdInput, 整数型, , , 
+    .成员 hStdOutput, 整数型, , , 
+    .成员 hStdError, 整数型, , , 
+
+数据类型 进程结构, 公开, 
+    .成员 进程句柄, 整数型, , , hProcess
+    .成员 线程句柄, 整数型, , , hThread
+    .成员 进程标识符, 整数型, , , dwProcessId
+    .成员 线程标识符, 整数型, , , dwThreadId
+
+数据类型 进程信息, 公开, 
+    .成员 进程标识, 整数型, , , 
+    .成员 父进程标识, 整数型, , , 
+    .成员 进程名, 文本型, , , 
+    .成员 映像名, 文本型, , , 
+    .成员 线程数, 整数型, , , 
+
+数据类型 句柄信息, 公开, 
+    .成员 句柄, 整数型, , , 
+    .成员 对象名, 文本型, , , 
+
+数据类型 SECURITY_ATTRIBUTES, , 安全性结构;
+    .成员 nLength, 整数型, , , 
+    .成员 lpSecurityDescriptor, 整数型, , , 
+    .成员 bInheritHandle, 整数型, , , 
+
+数据类型 消息, 公开, 长度28字节
+    .成员 窗口句柄, 整数型, , , 
+    .成员 消息标识, 整数型, , , 
+    .成员 消息值1, 整数型, , , 
+    .成员 消息值2, 整数型, , , 
+    .成员 消息时间, 整数型, , , 
+    .成员 坐标横, 整数型, , , 
+    .成员 坐标纵, 整数型, , , 
+
+数据类型 虚拟保护信息, , MEMORY_BASIC_INFORMATION
+    .成员 区域地址, 整数型, , , BaseAddress
+    .成员 分配地址, 整数型, , , AllocationBase
+    .成员 初始保护, 整数型, , , AllocationProtect
+    .成员 区域长度, 整数型, , , RegionSize
+    .成员 保留值, 整数型, , , 已提交值,保留值,自由值State
+    .成员 当前保护, 整数型, , , Protect
+    .成员 页类型, 整数型, , , lType
+
+数据类型 APIHOOK, , 
+    .成员 函数入口, 整数型, , , 被HOOK的函数入口
+    .成员 原函数头, 字节集, , , 保存原先函数头
+    .成员 新函数头, 字节集, , , 新的跳转函数头
+
+.全局变量 DLL加注次数, 空白型, , , 
+
+.DLL命令 GetModuleFileNameEx, 整数型, "Psapi.dll", "GetModuleFileNameExA", , 获得可执行文件的模块路径  失败返回0
+    .参数 hProcess, 整数型, , 进程句柄
+    .参数 hModule, 整数型, , 模块句柄
+    .参数 lpFilename, 文本型, , 缓冲区文本变量
+    .参数 nSize, 整数型, , 缓冲区文本大小
+
+.DLL命令 EnumProcessModules, 逻辑型, "psapi.dll", "", , 枚举进程模块  执行成功返回真,否则返回假
+    .参数 hProcess, 整数型, , 进程句柄
+    .参数 lphModule, 整数型, 传址 数组, 指针指向存放模块句柄的数组
+    .参数 cb, 整数型, , 数组大小
+    .参数 lpcbNeeded, 整数型, 传址, 返回的实际大小
+
+.DLL命令 GetModuleInformation, 逻辑型, "psapi.dll", "", , 获取模块信息并储存在 MODULEINFO 结构
+    .参数 hProcess, 整数型, , 进程句柄
+    .参数 hModule, 整数型, , 模块句柄
+    .参数 lpmodinfo, MODULEINFO, , 获取模块信息并储存在 MODULEINFO 结构
+    .参数 cb, 整数型, , 结构 MODULEINFO 的大小（以字节计算）。
+
+.DLL命令 CreateToolhelp32Snapshot, 整数型, "", "", , _创建进程快照,返回快照句柄
+    .参数 dwFlags, 整数型, , 用来指定“快照”中需要返回的对象，可以是TH32CS_SNAPPROCESS等
+    .参数 th32ProcessID, 整数型, , 一个进程ID号，用来指定要获取哪一个进程的快照，当获取系统进程列表或获取当前进程快照时可以设为0
+
+.DLL命令 Thread32First, 逻辑型, "", "", , 第一个线程
+    .参数 hSnapshot, 整数型, , CreateToolhelp32Snapshot()返回的快照句柄
+    .参数 lpte, LPTHREADENTRY32, , 指针,指向THREADENTRY32结构。
+
+.DLL命令 Thread32Next, 逻辑型, "", "", , 下一个线程
+    .参数 hSnapshot, 整数型, , 
+    .参数 lpte, LPTHREADENTRY32, , 
+
+.DLL命令 ResumeThread, 整数型, "kernel32.dll", "ResumeThread", , _恢复线程 恢复执行用SuspendThread挂起的一个线程,Long，调用这个函数前的挂起计数。&HFFFFFFFF表示出错。会设置GetLastError
+    .参数 hThread, 整数型, , 
+
+.DLL命令 SuspendThread, 整数型, "kernel32.dll", "SuspendThread", , 将指定线程的执行挂起 Long，调用这个函数前的挂起计数。&HFFFFFFFF表示出错。会设置GetLastError
+    .参数 hThread, 整数型, , 
+
+.DLL命令 CreateProcess, 整数型, "", "CreateProcessA", , 创建一个新进程（比如执行一个程序） 非零表示成功，零表示失败。
+    .参数 lpApplicationName, 文本型, , 要执行的应用程序的名字。
+    .参数 lpCommandLine, 文本型, , 要执行的命令行。
+    .参数 lpProcessAttributes, 整数型, , SECURITY_ATTRIBUTES，指定一个SECURITY_ATTRIBUTES结构，或传递零值（将参数声明为ByVal As Long，并传递零值）——表示采用不允许继承的默认描述符。该参数定义了进程的安全特性
+    .参数 lpThreadAttributes, 整数型, , SECURITY_ATTRIBUTES，指定一个SECURITY_ATTRIBUTES结构，或传递零值（将参数声明为ByVal As Long，并传递零值）——表示采用不允许继承的默认描述符。该参数定义了进程之主线程的安全特性
+    .参数 bInheritHandles, 整数型, , Long，TRUE表示允许当前进程中的所有句柄都由新建的子进程继承
+    .参数 dwCreationFlags, 整数型, , CREATE_SUSPENDED=4(立即挂起新进程。除非调用了ResumeThread函数函数，否则它不会恢复运行),为0不挂起
+    .参数 lpEnvironment, 整数型, , Any，指向一个环境块的指针（环境缓冲区的头一个字符，或者环境块的地址）
+    .参数 lpCurrentDriectory, 文本型, , String，新进程的当前目录路径。调用函数的时候，可用vbNullString指定当前目录
+    .参数 lpStartupInfo, STARTUPINFO, 传址, STARTUPINFO，指定一个STARTUPINFO结构，其中包含了创建进程时使用的附加信息
+    .参数 lpProcessInformation, 进程结构, 传址, PROCESS_INFORMATION，该结构用于容纳新进程的进程和线程标识符。大多数情况下，一旦这个函数返回，父应用程序都会关闭两个句柄。
+
+.DLL命令 GetCurrentProcess, 整数型, "", "", , 获取当前进程的一个伪句柄 返回自身进程句柄  注:只要当前进程需要一个进程句柄，就可以使用这个伪句柄。该句柄可以复制，但不可继承。不必调用CloseHandle函数来关闭这个句柄
+
+.DLL命令 ZwQueryInformationThread_1, 整数型, "ntdll.dll", "ZwQueryInformationThread", , 查询线程信息
+    .参数 ThreadHandle, 整数型, , 线程句柄
+    .参数 ThreadInformationClass, 整数型, , 线程信息类别
+    .参数 ThreadInformation, 整数型, 传址, 
+    .参数 ThreadInformationLength, 整数型, , 线程信息长度
+    .参数 ReturnLength, 整数型, 传址, 返回字符串长度
+
+.DLL命令 ZwQueryInformationThread_2, 空白型, "ntdll.dll", "ZwQueryInformationThread", , 查询线程信息
+    .参数 ThreadHandle, 整数型, , 线程句柄
+    .参数 ThreadInformationClass, 整数型, , 线程信息类别
+    .参数 ThreadInformation, THREAD_BASIC_INFORMATION, , 线程基本信息
+    .参数 ThreadInformationLength, 整数型, , 线程信息长度
+    .参数 ReturnLength, 整数型, 传址, 返回字符串长度
+
+.DLL命令 拷贝内存2, 整数型, "kernel32", "RtlMoveMemory", , RtlMoveMemory
+    .参数 目标数据, 整数型, , lpvDest
+    .参数 源数据, 字节集, 传址, lpvSource
+    .参数 尺寸, 整数型, , cbCopy
+
+.DLL命令 GetModuleHandle, 整数型, "kernel32", "GetModuleHandleA", , 获取一个应用程序或动态链接库的模块句柄
+    .参数 lpModuleName, 文本型, , 指定模块名，这通常是与模块的文件名相同的一个名字。
+
+.DLL命令 OpenThread, 整数型, "", "", , 打开线程
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 逻辑型, , 
+    .参数 dwThreadId, 整数型, , 
+
+.DLL命令 WaitForSingleObject, 整数型, "", "", , 
+    .参数 hHandle, 整数型, , 
+    .参数 dwMilliseconds, 整数型, , 
+
+.DLL命令 CreateRemoteThread, 整数型, "kernel32", "", , 在另一进程中建立线索
+    .参数 hProcess, 整数型, , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 整数型, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, 传址, 
+
+.DLL命令 OpenProcess, 整数型, "kernel32", "", , 将句柄返回给过程对象
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 整数型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 CallNextHookEx, 整数型, "user32.dll", "CallNextHookEx", , 传递钩子
+    .参数 钩子句柄, 整数型, , 
+    .参数 钩子类型, 整数型, , 
+    .参数 消息一, 整数型, , 
+    .参数 消息二, 整数型, , 
+
+.DLL命令 子程序NT, 整数型, "user32.dll", "CallWindowProcA", , 
+    .参数 函数入口, 子程序指针, , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 消息标识, 整数型, , 
+    .参数 消息一, 整数型, , 
+    .参数 消息二, 整数型, , 
+
+.DLL命令 子程序9X, 整数型, "user32.dll", "CallWindowProcA", , 
+    .参数 函数入口, 子程序指针, , 
+
+.DLL命令 UnhookWindowsHookEx, 逻辑型, "user32.dll", "UnhookWindowsHookEx", , 卸载钩子
+    .参数 钩子标识, 整数型, , 
+
+.DLL命令 SetTimer, 整数型, "user32", "SetTimer", , 创建定时器  定时器与易里的时钟组件一样.返回=定时器ID,供　销毁定时器()　使用
+    .参数 hWnd, 整数型, , 类型为“整数型”。注明：0=不与窗口关联,建议不要关联,定时器与当前线程关联。
+    .参数 nIDEvent, 整数型, , 类型为“整数型”。注明：0=创建定时器.返回值是ID,可供后期销毁或修改定时器时钟周期用.若传入定时器ID值则修改该时钟周期。
+    .参数 uElapse, 整数型, , 类型为“整数型”。1000=1秒，单位：毫秒
+    .参数 lpTimerFunc, 子程序指针, , 类型为“子程序指针”。注明：设定某个无参数无返回值的易子程序为时钟事件接口。
+
+.DLL命令 KillTimer, 整数型, "user32", "KillTimer", , 销毁定时器 销毁一个之前创建的定时器功能
+    .参数 hwnd, 整数型, , 类型为“整数型”。注明：若创建时用了窗口句柄,这里也得提供那个窗口句柄。
+    .参数 nIDEvent, 整数型, , 类型为“整数型”。注明：创建定时器时的返回值。
+
+.DLL命令 GetMappedFileName, 整数型, "Psapi.dll", "GetMappedFileNameA", , 取线程信息
+    .参数 hProcess, 整数型, , 进程句柄
+    .参数 lpv, 整数型, , 模块地址
+    .参数 lpFilename, 文本型, , 模块名
+    .参数 nSize, 整数型, , 大小
+
+.DLL命令 ZwSuspendProcess, 空白型, "NTDLL.DLL", "", , 暂停
+    .参数 进程句柄, 空白型, , 
+
+.DLL命令 ZwResumeProcess, 空白型, "NTDLL.DLL", "", , 恢复
+    .参数 进程句柄, 空白型, , 
+
+.DLL命令 OpenProcessToken, 整数型, "", "", , _打开令牌对象 advapi32.dll打开过程令牌对象
+    .参数 ProcessHandle, 整数型, , 进程句柄
+    .参数 DesiredAccess, 整数型, , 权限
+    .参数 TokenHandle, 整数型, 传址, 令牌句柄
+
+.DLL命令 LookupPrivilegeValue, 逻辑型, "", "LookupPrivilegeValueA", , _取权限令牌 advapi32.dll返回特权名LUID
+    .参数 lpSystemName, 文本型, , 系统服务名
+    .参数 lpName, 文本型, , 权限名
+    .参数 lpLuid, LUID, , 权限结构
+
+.DLL命令 AdjustTokenPrivileges, 逻辑型, "", "", , _获取令牌特权
+    .参数 TokenHandle, 整数型, , 
+    .参数 DisableAllPrivileges, 整数型, , 
+    .参数 NewState, TOKEN_PRIVILEGES, , 
+    .参数 BufferLength, 整数型, , 
+    .参数 PreviousState, 整数型, , 
+    .参数 ReturnLength, 整数型, 传址, 
+
+.DLL命令 写内存字节集, 逻辑型, "kernel32.dll", "WriteProcessMemory", , 
+    .参数 进程操作句柄, 整数型, , 
+    .参数 开始写入进址, 整数型, , 内存地址
+    .参数 写入数值数据, 字节集, 传址, 数据指针
+    .参数 写入长度, 整数型, , 长度
+    .参数 实际写入长度, 整数型, , 实际写出长度0
+
+.DLL命令 读整数内存_, 整数型, "kernel32", "ReadProcessMemory", , 在进程中读内存
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 内存地址
+    .参数 lpBuffer, 整数型, 传址, 数据指针
+    .参数 nSize, 整数型, , 长度
+    .参数 lpNumberOfBytesWritten, 整数型, , 实际写出长度
+
+.DLL命令 读字节集内存_, 整数型, "kernel32", "ReadProcessMemory", , 在进程中读内存
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 内存地址
+    .参数 lpBuffer, 字节集, 传址, 数据指针
+    .参数 nSize, 整数型, , 长度
+    .参数 lpNumberOfBytesWritten, 整数型, , 实际写出长度
+
+.DLL命令 ReadProcessMemory, 逻辑型, "kernel32", "ReadProcessMemory", , 
+    .参数 hProcess, 整数型, , 被读内存的进程句柄
+    .参数 lpBaseAddress, 整数型, , 开始读的地址
+    .参数 lpBuffer, 字节集, 传址, 用于放数据的缓存地址
+    .参数 nSize, 整数型, , 读取的字节数
+    .参数 lpNumberOfBytesWritten, 整数型, 传址, 从文件中实际读入的字符数0
+
+.DLL命令 GetCurrentProcessId, 整数型, "kernel32.dll", "GetCurrentProcessId", 公开, 取自进程ID
+
+.DLL命令 Process32First, 逻辑型, "", "", , 第一个进程
+    .参数 hSnapshot, 整数型, , 
+    .参数 lppe, LPPROCESSENTRY32, , 
+
+.DLL命令 Process32Next, 逻辑型, "", "", , 下一个进程
+    .参数 hSnapshot, 整数型, , 
+    .参数 lppe, LPPROCESSENTRY32, , 
+
+.DLL命令 LoadLibraryEx, 整数型, "", "LoadLibraryExA", , 装载指定的动态链接库，并为当前进程把它映射到地址空间。一旦载入，就可以访问库内保存的资源 ,成功则返回库模块的句柄，零表示失败 ;一旦不需要，用FreeLibrary函数释放DLL
+    .参数 lpLibFileName, 文本型, , 指定要载入的动态链接库的名称。采用与CreateProcess函数的lpCommandLine参数指定的同样的搜索顺序 
+    .参数 hFile, 整数型, , 未用，设为零
+    .参数 dwFlags, 整数型, , DONT_RESOLVE_DLL_REFERENCES：不对DLL进行初始化，仅用于NT ;LOAD_LIBRARY_AS_DATAFILE：不准备DLL执行。如装载一个DLL只是为了访问它的资源，就可以改善一部分性能 ; LOAD_WITH_ALTERED_SEARCH_PATH：指定搜索的路径
+
+.DLL命令 FreeLibrary, 逻辑型, "", "", , 释放指定的动态链接库，它们早先是用LoadLibrary API函数装载的 非零表示成功，零表示失败。会设置GetLastError 
+    .参数 hModule, 整数型, , 要释放的一个库句柄  只能用这个函数释放那些由应用程序明确装载的DLL。对LoadLibrary的每一次调用都应该有一个对应的FreeLibrary调用
+
+.DLL命令 GetProcAddress, 整数型, "", "", , 检索指定的动态链接库(DLL)中的输出库函数地址;如果函数调用成功，返回值是DLL中的输出函数地址;如果函数调用失败，返回值是NULL。
+    .参数 hModule, 整数型, , 包含此函数的DLL模块的句柄。LoadLibrary、AfxLoadLibrary 或者GetModuleHandle函数可以返回此句柄。 
+    .参数 lpProcName, 文本型, , 包含函数名的以NULL结尾的字符串，或者指定函数的序数值。如果此参数是一个序数值，它必须在一个字的底字节，高字节必须为0。
+
+.DLL命令 VirtualAllocEx, 整数型, "", "", , 在指定进程的虚拟空间保留或提交内存区域，除非指定MEM_RESET参数，否则将该内存区域置0。 执行成功就返回分配内存的首地址，不成功就是NULL
+    .参数 hProcess, 整数型, , 申请内存所在的进程句柄。
+    .参数 lpAddress, 整数型, , 保留页面的内存地址；一般用NULL自动分配 。
+    .参数 dwSize, 整数型, , 欲分配的内存大小，字节单位；注意实际分 配的内存大小是页内存大小的整数倍
+    .参数 flAllocationType, 整数型, , MEM_COMMIT：为特定的页面区域分配内存中或磁盘的页面文件中的物理存储;MEM_PHYSICAL ：分配物理内存（仅用于地址窗口扩展内存）;保留进程的虚拟地址空间，而不分配任何物理存储。保留页面可通过继续调用VirtualAlloc（）而被占用 ;MEM_RESET ：指明在内存中由参数lpAddress和dwSize指定的数据无效;MEM_TOP_DOWN：在尽可能高的地址上分配内存（Windows 98忽略此标志）;MEM_WRITE_WATCH：必须与MEM_RESERVE一起指定，使系统跟踪那些被写入分配区域的页面（仅针对Windows 98）;
+    .参数 flProtect, 整数型, , PAGE_READONLY： 该区域为只读。如果应用程序试图访问区域中的页的时候，将会被拒绝访问PAGE_READWRITE 区域可被应用程序读写;PAGE_EXECUTE： 区域包含可被系统执行的代码。试图读写该区域的操作将被拒绝。PAGE_EXECUTE_READ ：区域包含可执行代码，应用程序可以读该区域。PAGE_EXECUTE_READWRITE： 区域包含可执行代码，应用程序可以读写该区域。PAGE_GUARD： 区域第一次被访问时进入一个STATUS_GUARD_PAGE异常，这个标志要和其他保护标志合并使用，表明区域被第一次访问的权限PAGE_NOACCESS： 任何访问该区域的操作将被拒绝PAGE_NOCACHE： RAM中的页映射到该区域时将不会被微处理器缓存（cached)
+
+.DLL命令 VirtualFreeEx, 逻辑型, "", "", , 在其它进程中释放申请的虚拟内存空间。
+    .参数 hProcess, 整数型, , 目标进程的句柄。该句柄必须拥有 PROCESS_VM_OPERATION 权限。
+    .参数 lpAddress, 整数型, , 指向要释放的虚拟内存空间首地址的指针。
+    .参数 dwSize, 整数型, , 虚拟内存空间的字节数。 
+    .参数 dwFreeType, 整数型, , MEM_DECOMMIT 这种试 仅标示 内存空间不可用，内存页还将存在;MEM_RELEASE这种方式 很彻底，完全回收。
+
+.DLL命令 WriteProcessMemory, 整数型, "", "", , 此函数能写入某一进程的内存区域。入口区必须可以访问，否则操作将失败;非零值代表成功。
+    .参数 hProcess, 整数型, , 由OpenProcess返回的进程句柄
+    .参数 lpBaseAddress, 整数型, , 要写的内存首地址 再写入之前，此函数将线检查目标地址是否可用，并能容纳待写入的数据。 
+    .参数 lpBuffer, 字节集, , 指向要写的数据的指针
+    .参数 nSize, 整数型, , 要写入的数据的长度 
+    .参数 lpNumberOfBytesWritten, 整数型, 传址, 实际数据的长度 
+
+.DLL命令 lstrcpyn, 整数型, "", "", , 该函数把第二个参数指定的字符串复制到第一个参数指定的字符串，第三个参数指定复制的长度。
+    .参数 lpString1, 整数型, 传址, 指向一个缓冲区，以存储第二参数的内容。需足够长以容纳第三参数设定的TCHAR值，以及NULL结束符“\0”；
+    .参数 lpString2, 整数型, 传址, 指向以NULL结尾"\0"的字符串；
+    .参数 iMaxLength, 整数型, , 指定从第二参数复制至第一参数内容的大小，包括NULL结束符"\0"（谨记bytes字节数对应ANSI 版本以及WCHAR值对应Unicode版本）。
+
+.DLL命令 DuplicateHandle, 逻辑型, "", "", , 在指出一个现有系统对象当前句柄的情况下，为那个对象创建一个新句柄。当前句柄可能位于一个不同的进程 
+    .参数 hSourceProcessHandle, 整数型, , 拥有源句柄的那个进程的句柄。如源句柄从属于当前进程，则使用GetCurrentProcess 
+    .参数 hSourceHandle, 整数型, , 指定对象的现有句柄。
+    .参数 hTargetProcessHandle, 整数型, , 即将拥有新对象句柄的一个进程的句柄。如源句柄从属于当前进程，则使用GetCurrentProcess 
+    .参数 lpTargetHandle, 整数型, 传址, 指定用于装载新句柄的一个长整型变量
+    .参数 dwDesiredAccess, 整数型, , 新句柄要求的安全访问级别。如dwOptions已指定了DUPLICATE_SAME_ACCESS，那么忽略这里的设置。可以进行的访问由对象的类型决定，它们在不同系统对象的访问常数表里进行了总结
+    .参数 bInheritHandle, 逻辑型, , 如新句柄可由hSourceProcessHandle的子进程继承，则为TRUE 
+    .参数 dwOptions, 整数型, , DUPLICATE_SAME_ACCESS 新句柄拥有与原始句柄相同的安全访问特征; DUPLICATE_CLOSE_SOURCE 原始句柄已经关闭。即使发生错误。它也要关闭
+
+.DLL命令 ZwQueryObject, 整数型, "ntdll.dll", "", , 查询对象句柄的名称信息
+    .参数 ObjectHandle, 整数型, , 对象句柄
+    .参数 ObjectInformationClass, 整数型, , 对象信息类别
+    .参数 ObjectInformation, 字节集, 传址, 对象信息
+    .参数 Length, 整数型, , 对象长度
+    .参数 ResultLength, 整数型, 传址, 结果长度
+
+.DLL命令 WideCharToMultiByte, 整数型, "", "", , 该函数映射一个unicode字符串到一个多字节字符串。
+    .参数 CodePage, 整数型, , 指定执行转换的代码页，这个参数可以为系统已安装或有效的任何代码页所给定的值。
+    .参数 dwFlags, 整数型, , 标志
+    .参数 lpWideCharStr, 字节集, , 指向将被转换的unicode字符串。
+    .参数 cchWideChar, 整数型, , 指定由参数lpWideCharStr指向的缓冲区的字符个数。如果这个值为-1，字符串将被设定为以NULL为结束符的字符串，并且自动计算长度。
+    .参数 lpMultiByteStr, 文本型, , 指向接收被转换字符串的缓冲区。
+    .参数 cchMultiByte, 整数型, , 指定由参数lpMultiByteStr指向的缓冲区最大值（用字节来计量）。若此值为零，函数返回lpMultiByteStr指向的目标缓冲区所必需的字节数，在这种情况下，lpMultiByteStr参数通常为NULL。
+    .参数 lpDefaultChar, 文本型, , 详情:http://baike.baidu.com/view/2083430.htm#sub2083430
+    .参数 lpUsedDefaultChar, 整数型, , 
+
+.DLL命令 CreateThread, 整数型, "", "", , _创建线程
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 子程序指针, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, 传址, 
+
+.DLL命令 TerminateThread, 逻辑型, "", "", , 在线程外终止一个线程，用于强制终止线程。
+    .参数 hThread, 整数型, , 被终止的线程的句柄，为CWinThread指针。
+    .参数 dwExitCode, 整数型, , 退出码
+
+.DLL命令 写整型内存_, 逻辑型, "kernel32.dll", "WriteProcessMemory", , 
+    .参数 进程操作句柄, 整数型, , 
+    .参数 开始写入进址, 整数型, , 内存地址
+    .参数 写入数值数据, 整数型, 传址, 数据指针
+    .参数 写入长度, 整数型, , 长度4
+    .参数 实际写入长度, 整数型, 传址, 实际写出长度0
+
+.DLL命令 VirtualQueryEx, 整数型, "kernel32.dll", "", , 取虚拟保护扩展
+    .参数 进程操作句柄, 整数型, , 
+    .参数 起始地址, 整数型, , 
+    .参数 虚拟保护信息, 虚拟保护信息, 传址, 
+    .参数 缓冲长度, 整数型, , 28字节
+
+.DLL命令 VirtualProtect, 整数型, "kernel32.dll", "", , 置虚拟保护 成功返回非0，失败返回0
+    .参数 起始地址, 整数型, , lpAddress
+    .参数 长度, 整数型, , dwSize
+    .参数 新保护权限, 整数型, , 可读写权限(PAGE_READWRITE)=4
+    .参数 旧保护权限, 整数型, 传址, 保存旧属性的结构变量地址
+
+.DLL命令 复制内存文本, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目标地址, 文本型, 传址, 
+    .参数 源地址, 整数型, , 
+    .参数 复制长度, 整数型, , 
+
+.DLL命令 复制内存消息, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目标地址, 消息, , 
+    .参数 源地址, 整数型, , 
+    .参数 复制长度, 整数型, , 
+
+.DLL命令 ImageDirectoryEntryToData, 整数型, "imagehlp.dll", "ImageDirectoryEntryToData", , 取IAT基址
+    .参数 模块句柄, 整数型, , GetModuleHandle获得
+    .参数 传入1值, 整数型, , 传入1值
+    .参数 传入1值, 整数型, , IMAGE_DIRECTORY_ENTRY_IMPORT=1
+    .参数 IAT结构长度, 整数型, 传址, 长度除以20再减1得到DLL名称数
+
+.DLL命令 PathFileExists, 逻辑型, "shlwapi.dll", "PathFileExistsA", , 检测文件是否存在，0不存在, 1存在
+    .参数 pszPath, 文本型, , 文件名（含路径）
+
+.DLL命令 RtlAdjustPrivilege, 整数型, "ntdll.dll", "", , 提升进程\线程权限
+    .参数 Privilege, 整数型, , 20:调试 19:关机 18:启动 17:备份
+    .参数 Enable, 整数型, , 1
+    .参数 CurrentThread, 整数型, , 线程句柄或0（0表示整个进程） 
+    .参数 Enabled, 整数型, 传址, 0
+
+.DLL命令 CopyMemory, 整数型, "", "RtlMoveMemory", , 复制内存整数
+    .参数 lpvDest, 整数型, 传址, 目标地址
+    .参数 lpvSource, 整数型, , 源地址
+    .参数 cbCopy, 整数型, , 复制长度
+
+.DLL命令 CloseHandle, 整数型, "kernel32", "", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 GetExitCodeThread, 整数型, "", "", , 取线程返回值
+    .参数 hThread, 整数型, , 
+    .参数 lpExitCode, 整数型, 传址, 
+
+.DLL命令 LoadLibrary, 整数型, "kernel32", "LoadLibraryA", , 
+    .参数 lpLibFileName, 文本型, , 
+
+.DLL命令 GetProcessHandleCount, 逻辑型, "", "", , 返回指定的进程已经打开的句柄数。 该计数与我们在性能监视器数据或任务管理器中看到的是同一个值。
+    .参数 hProcess, 整数型, , 进程句柄
+    .参数 pdwHandleCount, 整数型, 传址, 返回指定的进程已经打开的句柄数
+
+.DLL命令 ZwDuplicateObject, 整数型, "ntdll.dll", "", , 
+    .参数 SourceProcessHandle, 整数型, , 
+    .参数 SourceHandle, 整数型, , 
+    .参数 TargetProcessHandle, 整数型, , 
+    .参数 TargetHandle, 整数型, 传址, 
+    .参数 DesiredAccess, 整数型, , 
+    .参数 HandleAttributes, 整数型, , 
+    .参数 Options, 整数型, , 
+
+.DLL命令 GetWindowsDirectory, 整数型, "kernel32.dll", "GetWindowsDirectoryA", , 
+    .参数 缓冲区, 文本型, , 
+    .参数 尺寸, 整数型, , ;
+
+.DLL命令 GetModuleBaseNameA, 整数型, "Psapi.dll", "GetModuleBaseNameA", , 取进程模块路径
+    .参数 进程句柄, 整数型, , 
+    .参数 模块句柄, 整数型, , 
+    .参数 文件名缓冲区, 文本型, 传址, 
+    .参数 缓冲区大小, 整数型, , 
+
+.DLL命令 写文本内存_, 整数型, "kernel32", "WriteProcessMemory", , 在进程中读内存
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 内存地址
+    .参数 lpBuffer, 文本型, 传址, 数据指针
+    .参数 nSize, 整数型, , 长度
+    .参数 lpNumberOfBytesWritten, 整数型, , 实际写出长度
+
+.DLL命令 写字节集内存_, 整数型, "kernel32", "WriteProcessMemory", , 在进程中读内存
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 内存地址
+    .参数 lpBuffer, 字节集, 传址, 数据指针
+    .参数 nSize, 整数型, , 长度
+    .参数 lpNumberOfBytesWritten, 整数型, , 实际写出长度
+
+.DLL命令 写整数内存_, 整数型, "kernel32.dll", "WriteProcessMemory", , 在指定进程中写内存
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 内存地址
+    .参数 lpBuffer, 整数型, 传址, 数据指针
+    .参数 nSize, 整数型, , 长度
+    .参数 lpNumberOfBytesWritten, 整数型, , 实际写出长度
+
+.DLL命令 VirtualProtectEx, 整数型, "kernel32", "VirtualProtectEx", , 修改虚拟保护
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flNewProtect, 整数型, , 
+    .参数 lpflOldProtect, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.程序集变量 程序集_DLL数据, 字节集, , , 
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+.局部变量 Process, 整数型, , , 
+.局部变量 参数, 整数型, , "0", 
+.局部变量 进程ID, 整数型, , , 
+.局部变量 匿名局部变量_8082, 空白型, , , 
+.局部变量 内存注入, 类_内存DLL注入, , , 
+.局部变量 ReturnValue, 整数型, , , 
+
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+ ' ------------------------------------DLL源码------------------------------
+ ' .版本 2
+
+ ' .程序集 程序集1
+ ' .程序集变量 程序集_计次, 整数型
+
+ ' .子程序 _启动子程序, 整数型, , 请在本子程序中放置动态链接库初始化代码
+
+ ' _临时子程序 ()  ' 在初始化代码执行完毕后调用测试代码
+ ' 返回 (0)  ' 返回值被忽略。
+
+ ' .子程序 _临时子程序
+
+ ' ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+ ' .子程序 _初始化, , 公开, 把程序集_计次初始化为100
+
+ ' 程序集_计次 ＝ 100
+ ' 信息框 (“计次值已初始化为100”, 0, )
+
+ ' .子程序 _取计次, 整数型, 公开
+
+ ' 信息框 (“当前的计次值为:” ＋ 到文本 (程序集_计次), 0, )
+ ' 返回 (程序集_计次)
+
+ ' .子程序 _加, , 公开
+ ' .参数 欲加的数, 整数型
+
+ ' 信息框 (到文本 (程序集_计次) ＋ “+” ＋ 到文本 (欲加的数) ＋ “=” ＋ 到文本 (程序集_计次 ＋ 欲加的数), 0, )
+ ' 程序集_计次 ＝ 程序集_计次 ＋ 欲加的数
+
+ ' .子程序 _先乘后加, , 公开
+ ' .参数 因数, 整数型
+ ' .参数 加数, 整数型
+
+ ' 信息框 (到文本 (程序集_计次) ＋ “×” ＋ 到文本 (因数) ＋ “+” ＋ 到文本 (加数) ＋ “=” ＋ 到文本 (程序集_计次 × 因数 ＋ 加数), 0, )
+ ' 程序集_计次 ＝ 程序集_计次 × 因数 ＋ 加数
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+
+ ' ' -------------------------------------------创建进程时注入DLL-----------------------------------------------------------------------
+ ' Process ＝ 进程_创建进程注入DLL (读环境变量 (“SystemRoot”) ＋ “\system32\calc.exe”, , , “D:\桌面\测试DLL.dll”, “_初始化”, 进程ID)
+ ' .如果真 (不等于 (Process, 0))
+     ' ' ----------------------------------------------------------------------------------------------------------
+     ' 调试输出 (“初始化后的值:”, 注入_远程call (Process, 进程_取函数入口 (Process, “D:\桌面\测试DLL.dll”, “_取计次”)))
+     ' ' ----------------------------------------------------------------------------------------------------------
+     ' 加入成员 (参数, 200)
+     ' 注入_远程call (Process, 进程_取函数入口 (Process, “D:\桌面\测试DLL.dll”, “_加”), 参数)
+     ' ' ----------------------------------------------------------------------------------------------------------
+     ' 调试输出 (“加上200后的值:”, 注入_远程call (Process, 进程_取函数入口 (Process, “D:\桌面\测试DLL.dll”, “_取计次”)))
+     ' ' ----------------------------------------------------------------------------------------------------------
+     ' 加入成员 (参数, 50)  ' 第一个参数是200,第二个参数是50
+     ' 注入_远程call (Process, 进程_取函数入口 (Process, “D:\桌面\测试DLL.dll”, “_先乘后加”), 参数)
+     ' ' ----------------------------------------------------------------------------------------------------------
+     ' 调试输出 (“乘以200再加50的值:”, 注入_远程call (Process, 进程_取函数入口 (Process, “D:\桌面\测试DLL.dll”, “_取计次”)))
+     ' ' ----------------------------------------------------------------------------------------------------------
+     ' .如果真 (等于 (卸载DLL (进程ID, “测试DLL.dll”, “D:\桌面\”), 0))
+         ' 调试输出 (“DLL已卸掉!”)
+    .如果真结束
+     ' 本源码来自易语言资源网(www.5A5X.com)
+.如果真结束
+ ' 暂停 ()
+ ' ' -----------------------------------------从已创建进程中注入DLl----------------------------------------------------------------------
+ ' .如果 (大于 (注入_安装线程DLL (Process, “D:\桌面\测试DLL.dll”, “_初始化”), 0))
+     ' ' ----------------------------------------------------------------------------------------------------------
+     ' 调试输出 (“初始化后的值:”, 注入_远程call (Process, 进程_取函数入口 (Process, “D:\桌面\测试DLL.dll”, “_取计次”)))
+     ' ' ----------------------------------------------------------------------------------------------------------
+     ' 加入成员 (参数, 200)
+     ' 注入_远程call (Process, 进程_取函数入口 (Process, “D:\桌面\测试DLL.dll”, “_加”), 参数)
+     ' ' ----------------------------------------------------------------------------------------------------------
+     ' 调试输出 (“加上200后的值:”, 注入_远程call (Process, 进程_取函数入口 (Process, “D:\桌面\测试DLL.dll”, “_取计次”)))
+     ' ' ----------------------------------------------------------------------------------------------------------
+     ' 加入成员 (参数, 50)  ' 第一个参数是200,第二个参数是50
+     ' 注入_远程call (Process, 进程_取函数入口 (Process, “D:\桌面\测试DLL.dll”, “_先乘后加”), 参数)
+     ' ' ----------------------------------------------------------------------------------------------------------
+     ' 调试输出 (“乘以200再加50的值:”, 注入_远程call (Process, 进程_取函数入口 (Process, “D:\桌面\测试DLL.dll”, “_取计次”)))
+     ' ' ----------------------------------------------------------------------------------------------------------
+.否则
+     ' 信息框 (“注入失败”, 16, )
+.如果结束
+ ' 暂停 ()
+ ' -------------------------------------------内存注入法---------------------------------------------------------
+调试输出 (取字节集长度 (#load_code))
+
+赋值 (Process, 进程_OpenProcess (2848))
+赋值 (程序集_DLL数据, 读入文件 (“D:\桌面\测试DLL.dll”))
+内存注入.注入DLL (Process, #图片1)
+内存注入.执行DLL函数 (“_初始化”, , )
+内存注入.执行DLL函数 (“_取计次”, 真, ReturnValue)
+调试输出 (“初始化后的值:”, ReturnValue)
+内存注入.执行DLL函数 (“_加”, 真, ReturnValue, , 200)
+调试输出 (“加上200后的值:”, ReturnValue)
+内存注入.执行DLL函数 (“_先乘后加”, 真, ReturnValue, , 200, 50)
+调试输出 (“乘以200再加50的值:”, ReturnValue)
+' 本源码来自易语言资源网(www.5A5X.com)
+.如果真 (进程_结束进程 (Process))
+    信息框 (相加 (到文本 (Process), “进程已结束”), 0, )
+.如果真结束
+
+
+.程序集 API核心, , , 
+
+.子程序 Call, 整数型, , 
+.参数 地址, 整数型, , 
+.参数 参数一, 整数型, , 
+.参数 参数二, 整数型, , 
+.参数 参数三, 整数型, , 
+.参数 参数四, 整数型, , 
+.参数 参数五, 整数型, , 
+
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+置入代码 ({ 201, 88, 135, 4, 36, 255, 224 })
+返回 (0)
+
+.子程序 UnicodeToAnsi, 文本型, , Unicode转Ansi
+.参数 Unicode, 字节集, , 
+
+.局部变量 ansi_len, 整数型, , , 
+.局部变量 unicode_len, 整数型, , , 
+.局部变量 ansi, 文本型, , , 
+
+赋值 (unicode_len, 相除 (取字节集长度 (Unicode), 2))
+赋值 (ansi_len, WideCharToMultiByte (936, 0, Unicode, unicode_len, ansi, 0, “”, 0))
+赋值 (ansi, 取空白文本 (ansi_len))
+WideCharToMultiByte (936, 0, Unicode, unicode_len, ansi, ansi_len, “”, 0)
+返回 (ansi)
+
+.子程序 错误, 空白型, , 
+.参数 id, 整数型, , 
+
+.如果真 (等于 (id, 1))
+    信息框 (#err_1, #错误图标, “错误”)
+.如果真结束
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 进程_提升权限, 空白型, 公开, 
+.局部变量 TokenHandle, 整数型, , , 
+.局部变量 luid, LUID, , , 
+.局部变量 NewState, TOKEN_PRIVILEGES, , , 
+.局部变量 i, 整数型, , , 
+
+.计次循环首 (30, i)
+    RtlAdjustPrivilege (i, 1, 0, 0)
+.计次循环尾 ()
+OpenProcessToken (GetCurrentProcess (), #TOKEN_ALL_ACCESS, TokenHandle) ' 打开当前进程令牌对象
+LookupPrivilegeValue (“”, “SeDebugPrivilege”, luid) ' 取当前进程权限令牌
+赋值 (NewState.PrivilegeCount, 1)
+赋值 (NewState.highpart, luid.highpart)
+赋值 (NewState.lowpart, luid.lowpart)
+赋值 (NewState.Attributes, 2)
+AdjustTokenPrivileges (TokenHandle, 0, NewState, 0, 0, 0) ' _获取令牌特权
+CloseHandle (TokenHandle)
+
+.子程序 进程_ZwOpenProcess, 整数型, 公开, 
+.参数 进程标识, 整数型, , 
+
+.局部变量 hModule, 整数型, , , 
+.局部变量 ZwOpenProcess, 整数型, , , 
+.局部变量 hProcess, 整数型, , , 
+.局部变量 OBJECT_ATTRIBUTES, 整数型, , , 
+.局部变量 CLIENT_ID, 整数型, , , 
+.局部变量 lpNumberOfBytesWritten, 整数型, , , 
+
+赋值 (hModule, LoadLibraryEx (“ntdll.dll”, 0, #DONT_RESOLVE_DLL_REFERENCES)) ' 装载"ntdll"动态链接库,不对DLL进行初始化
+.如果真 (不等于 (hModule, 0))
+    赋值 (ZwOpenProcess, GetProcAddress (hModule, “ZwOpenProcess”)) ' 检索指定的动态链接库(DLL)中的输出库函数地址
+    .如果真 (不等于 (ZwOpenProcess, 0))
+        赋值 (OBJECT_ATTRIBUTES, VirtualAllocEx (GetCurrentProcess (), 0, 24, #MEM_COMMIT, #PAGE_EXECUTE_READWRITE))
+        .如果真 (不等于 (OBJECT_ATTRIBUTES, 0))
+            WriteProcessMemory (GetCurrentProcess (), OBJECT_ATTRIBUTES, 到字节集 (到整数 (24)), 4, lpNumberOfBytesWritten)
+            .如果真 (等于 (lpNumberOfBytesWritten, 4))
+                赋值 (CLIENT_ID, VirtualAllocEx (GetCurrentProcess (), 0, 8, #MEM_COMMIT, #PAGE_EXECUTE_READWRITE))
+                .如果真 (不等于 (CLIENT_ID, 0))
+                    WriteProcessMemory (GetCurrentProcess (), CLIENT_ID, 到字节集 (进程标识), 4, lpNumberOfBytesWritten)
+                    .如果真 (等于 (lpNumberOfBytesWritten, 4))
+                        Call (ZwOpenProcess, lstrcpyn (hProcess, 0, 0), #PROCESS_ALL_ACCESS, OBJECT_ATTRIBUTES, CLIENT_ID, 0)
+                    .如果真结束
+                    VirtualFreeEx (GetCurrentProcess (), CLIENT_ID, 0, #MEM_RELEASE) ' 释放当前进程申请的虚拟内存空间。
+                .如果真结束
+                
+            .如果真结束
+            VirtualFreeEx (GetCurrentProcess (), OBJECT_ATTRIBUTES, 0, #MEM_RELEASE) ' 释放当前进程申请的虚拟内存空间。
+        .如果真结束
+        
+    .如果真结束
+    FreeLibrary (hModule) ' 释放指定的动态链接库
+.如果真结束
+返回 (hProcess)
+
+
+.子程序 进程_OpenProcess, 整数型, 公开, 打开进程 返回进程句柄。 若打不开尝试一下先执行 进程_提升权限()
+.参数 dwDesiredAccess, 整数型, 可空, 默认为Process_All_Access:2035711 完全权限
+.参数 bInheritHandle, 整数型, 可空, 默认为假..不继承
+.参数 dwProcessId, 整数型, , 进程Id
+
+.局部变量 hProcess, 整数型, , , 
+.局部变量 Index, 整数型, , , 计次
+
+.判断循环首 (并且 (等于 (hProcess, 0), 小于 (Index, 4)))
+    赋值 (hProcess, OpenProcess (选择 (是否为空 (dwDesiredAccess), #PROCESS_ALL_ACCESS, dwDesiredAccess), bInheritHandle, 相加 (dwProcessId, Index)))
+    赋值 (Index, 相加 (Index, 1))
+.判断循环尾 ()
+返回 (hProcess)
+
+.子程序 进程_取模块名, 文本型, 公开, 返回模块名.
+.参数 进程句柄, 整数型, , 
+.参数 模块句柄, 整数型, , 
+
+.局部变量 ModuleFileName, 文本型, , , 
+.局部变量 str, 文本型, , , 
+
+赋值 (ModuleFileName, 取空白文本 (1024))
+.如果真 (等于 (GetModuleFileNameEx (进程句柄, 模块句柄, ModuleFileName, 1024), 0)) ' 获得可执行文件的模块路径
+    赋值 (ModuleFileName, “”)
+.如果真结束
+.如果真 (等于 (取文本左边 (ModuleFileName, 4), “\??\”))
+    赋值 (ModuleFileName, 取文本右边 (ModuleFileName, 相减 (取文本长度 (ModuleFileName), 4)))
+.如果真结束
+.如果真 (等于 (取文本左边 (ModuleFileName, 12), “\SystemRoot\”))
+    赋值 (str, 取空白文本 (256))
+    GetWindowsDirectory (str, 255)
+    赋值 (ModuleFileName, 相加 (str, “\”, 取文本右边 (ModuleFileName, 相减 (取文本长度 (ModuleFileName), 12))))
+.如果真结束
+
+
+返回 (ModuleFileName)
+
+.子程序 进程_枚举模块, 整数型, 公开, 返回模块总数.
+.参数 进程句柄, 整数型, , 
+.参数 模块列表, 整数型, 数组, 
+
+.局部变量 cb, 整数型, , , 
+.局部变量 模块数, 整数型, , , 
+
+EnumProcessModules (进程句柄, 模块列表, 0, cb) ' 枚举进程模块
+.如果真 (大于或等于 (cb, 4))
+    赋值 (模块数, 相除 (cb, 4))
+    重定义数组 (模块列表, 假, 模块数)
+    .如果真 (取反 (EnumProcessModules (进程句柄, 模块列表, cb, 0))) ' 枚举进程模块
+        清除数组 (模块列表)
+        赋值 (模块数, 0)
+    .如果真结束
+    
+.如果真结束
+
+返回 (模块数)
+
+.子程序 进程_取模块信息, 模块信息, 公开, 返回模块信息.
+.参数 进程句柄, 整数型, , 
+.参数 模块句柄, 整数型, , 
+
+.局部变量 模块信息, 模块信息, , , 
+.局部变量 ModInfo, MODULEINFO, , , 
+
+.如果真 (GetModuleInformation (进程句柄, 模块句柄, ModInfo, 12))
+    赋值 (模块信息.模块名, 进程_取模块名 (进程句柄, 模块句柄))
+    赋值 (模块信息.入口点, ModInfo.EntryPoint)
+    赋值 (模块信息.映像大小, ModInfo.SizeOfImage)
+.如果真结束
+
+返回 (模块信息)
+
+.子程序 进程_取进程名, 文本型, 公开, 取进程名
+.参数 进程句柄, 整数型, , 
+
+.局部变量 文件名, 文本型, , , 
+
+赋值 (文件名, 取空白文本 (255))
+GetModuleBaseNameA (进程句柄, 0, 文件名, 255)
+返回 (文件名)
+
+.子程序 线程_枚举线程, 整数型, 公开, 返回线程总数.
+.参数 进程标识, 整数型, 可空, 
+.参数 线程列表, 线程信息, 参考 数组, 
+
+.局部变量 线程信息, 线程信息, , , 
+.局部变量 hSnapshot, 整数型, , , 
+.局部变量 lpte, LPTHREADENTRY32, , , 
+
+赋值 (hSnapshot, CreateToolhelp32Snapshot (#TH32CS_SNAPTHREAD, 0))
+.如果真 (不等于 (hSnapshot, #INVALID_HANDLE_VALUE))
+    赋值 (lpte.dwSize, 28)
+    .如果真 (Thread32First (hSnapshot, lpte)) ' 第一个线程
+        清除数组 (线程列表)
+        .循环判断首 ()
+            .如果 (等于 (进程标识, 0))
+                加入成员 (线程列表, 线程_取线程信息 (lpte.th32ThreadID))
+            .否则
+                .如果真 (等于 (lpte.th32OwnerProcessID, 进程标识))
+                    加入成员 (线程列表, 线程_取线程信息 (lpte.th32ThreadID))
+                .如果真结束
+                 ' 本源码来自易语言资源网(www.5A5X.com)
+            .如果结束
+            
+        .循环判断尾 (Thread32Next (hSnapshot, lpte)) ' 下一个线程
+    .如果真结束
+    CloseHandle (hSnapshot) ' 关闭句柄
+.如果真结束
+返回 (取数组成员数 (线程列表))
+
+.子程序 线程_取线程信息, 线程信息, 公开, 返回线程信息.
+.参数 线程标识, 整数型, , 
+
+.局部变量 线程句柄, 整数型, , , 
+.局部变量 线程信息, 线程信息, , , 
+.局部变量 tbi, THREAD_BASIC_INFORMATION, , , 
+.局部变量 进程句柄, 整数型, , , 
+
+赋值 (线程信息.线程标识, 线程标识)
+赋值 (线程句柄, OpenThread (#THREAD_ALL_ACCESS, 假, 线程标识)) ' 打开线程
+.如果真 (不等于 (线程句柄, 0))
+    ZwQueryInformationThread_1 (线程句柄, #ThreadQuerySetWin32StartAddress, 线程信息.起始地址, 4, 0)
+    ZwQueryInformationThread_2 (线程句柄, #ThreadBasicInformation, tbi, 28, 0)
+    赋值 (线程信息.所在进程, tbi.ClientId.UniqueProcess)
+    .如果真 (不等于 (线程信息.起始地址, 0))
+        赋值 (进程句柄, 进程_ZwOpenProcess (线程信息.所在进程))
+        .如果真 (等于 (进程句柄, 0))
+            赋值 (进程句柄, 进程_OpenProcess (线程信息.所在进程))
+        .如果真结束
+        .如果真 (不等于 (进程句柄, 0))
+            赋值 (线程信息.所在模块, 取空白文本 (512))
+            .如果真 (等于 (GetMappedFileName (进程句柄, 线程信息.起始地址, 线程信息.所在模块, 512), 0))
+                赋值 (线程信息.所在模块, “”)
+            .如果真结束
+            CloseHandle (进程句柄)
+        .如果真结束
+        
+    .如果真结束
+    CloseHandle (线程句柄)
+.如果真结束
+返回 (线程信息)
+
+.子程序 线程_结束线程, 逻辑型, 公开, 结束指定线程.
+.参数 线程句柄, 整数型, , 
+
+返回 (TerminateThread (线程句柄, 0))
+
+.子程序 线程_挂起线程, 整数型, 公开, 
+.参数 线程句柄, 整数型, , 
+
+返回 (SuspendThread (线程句柄))
+
+.子程序 线程_恢复线程, 整数型, 公开, 
+.参数 线程句柄, 整数型, , 
+
+返回 (ResumeThread (线程句柄))
+
+.子程序 进程_枚举进程, 整数型, 公开, 返回进程总数.
+.参数 进程列表, 进程信息, 参考 数组, 
+
+.局部变量 LPPROCESSENTRY32, LPPROCESSENTRY32, , , 
+.局部变量 hSnapshot, 整数型, , , 
+.局部变量 进程, 进程信息, , , 
+.局部变量 hProcess, 整数型, , , 
+
+清除数组 (进程列表)
+赋值 (hSnapshot, CreateToolhelp32Snapshot (#TH32CS_SNAPPROCESS, 0)) ' 创建进程快照句柄
+.如果真 (不等于 (hSnapshot, #INVALID_HANDLE_VALUE))
+    赋值 (LPPROCESSENTRY32.dwSize, 296)
+    .如果真 (Process32First (hSnapshot, LPPROCESSENTRY32)) ' 第一个进程
+        清除数组 (进程列表)
+        
+        .循环判断首 ()
+            赋值 (进程.进程名, 到文本 (LPPROCESSENTRY32.szExeFile))
+            赋值 (进程.进程标识, LPPROCESSENTRY32.th32ProcessID)
+            赋值 (进程.父进程标识, LPPROCESSENTRY32.th32ParentProcessID)
+            赋值 (进程.线程数, LPPROCESSENTRY32.cntThreads)
+            赋值 (进程.映像名, “”)
+            
+            .如果真 (或者 (不等于 (进程.进程名, “”), 不等于 (进程.进程标识, 0)))
+                赋值 (hProcess, 进程_ZwOpenProcess (LPPROCESSENTRY32.th32ProcessID))
+                .如果真 (不等于 (hProcess, 0))
+                    赋值 (进程.映像名, 进程_取模块名 (hProcess, 0))
+                    CloseHandle (hProcess) ' 关闭句柄
+                .如果真结束
+                加入成员 (进程列表, 进程)
+            .如果真结束
+            
+        .循环判断尾 (Process32Next (hSnapshot, LPPROCESSENTRY32)) ' 下一个进程
+        
+    .如果真结束
+    
+    CloseHandle (hSnapshot) ' 关闭句柄
+.如果真结束
+
+返回 (取数组成员数 (进程列表))
+
+.子程序 进程_结束进程, 逻辑型, 公开, 结束指定进程.
+.参数 进程句柄, 整数型, 可空, 留空为 自身进程
+
+.局部变量 hModule, 整数型, , , 
+.局部变量 ZwTerminateProcess, 整数型, , , 
+.局部变量 ret, 逻辑型, , , 
+
+.如果真 (等于 (进程句柄, 0))
+    赋值 (进程句柄, GetCurrentProcess ()) ' 获得自身进程句柄
+.如果真结束
+
+赋值 (hModule, LoadLibraryEx (“ntdll.dll”, 0, #DONT_RESOLVE_DLL_REFERENCES))
+.如果真 (不等于 (hModule, 0))
+    赋值 (ZwTerminateProcess, GetProcAddress (hModule, “ZwTerminateProcess”))
+    .如果真 (不等于 (ZwTerminateProcess, 0))
+        赋值 (ret, 等于 (Call (ZwTerminateProcess, 进程句柄, 0, 0, 0, 0), 0))
+    .如果真结束
+    FreeLibrary (hModule)
+.如果真结束
+返回 (ret)
+
+.子程序 进程_挂起进程, 空白型, 公开, 挂起指定进程.
+.参数 进程句柄, 整数型, , 
+
+ZwSuspendProcess (进程句柄)
+
+.子程序 进程_恢复进程, 空白型, 公开, 恢复已挂起的进程.
+.参数 进程句柄, 整数型, , 
+
+ZwResumeProcess (进程句柄)
+
+.子程序 对象_枚举句柄, 整数型, 公开, 返回句柄总数.
+.参数 进程句柄, 整数型, , 
+.参数 句柄列表, 句柄信息, 数组, 
+
+.局部变量 句柄信息, 句柄信息, , , 
+.局部变量 HandleCount, 整数型, , , 
+.局部变量 sHandle, 整数型, , , 
+.局部变量 tHandle, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 Buf, 字节集, , , 
+.局部变量 len, 整数型, , , 
+
+.如果真 (GetProcessHandleCount (进程句柄, HandleCount)) ' 获取已打开的句柄数量
+    .判断循环首 (并且 (大于 (HandleCount, i), 小于 (sHandle, 65536)))
+        赋值 (sHandle, 相加 (sHandle, 4))
+        .如果真 (DuplicateHandle (进程句柄, sHandle, GetCurrentProcess (), tHandle, 0, 假, #DUPLICATE_SAME_ACCESS))
+             ' 在一个进程中，这个函数可根据位于不同进程内的现有句柄创建一个新句柄。可以从这两个进程中发出对这个函数的调用。进程必须提供PROCESS_DUP_HANDLE访问权限，否则函数执行不能成功 　　句柄可以重复的对象包括控制台、文件（包括通信设备）、文件映射、事件、可等待计时器、互斥体、管道、进程、注册表项、信号机以及线程
+             ' 注意：不要试图在源进程中利用CloseHandle()关闭TargetHandle，因为这个TargetHandle句柄值并不属于源进程的句柄表中的，若错误关闭了，会产生不可预料的结果
+            赋值 (i, 相加 (i, 1))
+            赋值 (句柄信息.句柄, sHandle)
+            赋值 (句柄信息.对象名, “”)
+            赋值 (Buf, 取空白字节集 (8192))
+            .如果真 (等于 (ZwQueryObject (tHandle, #ObjectNameInformation, Buf, 8192, 0), 0)) ' 查询对象句柄的名称信息
+                赋值 (len, 取字节集数据 (Buf, #短整数型, ))
+                赋值 (Buf, 取字节集中间 (Buf, 9, len))
+                赋值 (句柄信息.对象名, UnicodeToAnsi (Buf))
+            .如果真结束
+            CloseHandle (tHandle) ' 关闭句柄
+            加入成员 (句柄列表, 句柄信息)
+        .如果真结束
+        
+    .判断循环尾 ()
+.如果真结束
+返回 (i)
+
+.子程序 对象_关闭句柄, 逻辑型, 公开, 关闭指定句柄.复制一个远程句柄已供CloseHandle关闭远程句柄，用于远程关闭句柄
+.参数 hProcess, 整数型, , 进程句柄
+.参数 oHandle, 整数型, , 对象句柄
+
+.局部变量 Handle, 整数型, , , 
+
+.如果真 (DuplicateHandle (hProcess, oHandle, GetCurrentProcess (), Handle, 0, 假, #DUPLICATE_CLOSE_SOURCE))
+    CloseHandle (Handle)
+    返回 (真)
+.如果真结束
+.如果真 (大于或等于 (ZwDuplicateObject (hProcess, oHandle, 0, 0, 0, 0, 1), 0))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+.子程序 关闭句柄, 空白型, 公开, 关闭指定句柄.直接调用CloseHandle.用于本进程内的句柄关闭，类似执行打开句柄后可用该命令执行关闭
+.参数 句柄, 整数型, , 
+
+CloseHandle (句柄)
+
+
+
+.子程序 进程_创建进程, 整数型, 公开, 创建一个程序进程(成功返回进程ID,失败返回0)
+.参数 程序路径, 文本型, , 欲创建进程的执行路径
+.参数 命令行, 文本型, 可空, 附加上程序路径后的命令行参数
+.参数 运行目录, 文本型, 可空, 通常留空,特殊情况下使用
+.参数 自动挂起, 逻辑型, 可空, 默认为：假   真=创建后立刻挂起  假=不挂起  挂起后必须恢复线程来恢复运行
+.参数 进程结构, 进程结构, 参考 可空, 接收进程结构信息的变量
+
+.局部变量 窗口结构, STARTUPINFO, , , 
+.局部变量 _自动挂起, 整数型, , , 
+
+.如果 (等于 (自动挂起, 真))
+    赋值 (_自动挂起, 4)
+.否则
+    赋值 (_自动挂起, 0)
+.如果结束
+.如果真 (等于 (运行目录, “”))
+    赋值 (运行目录, 取文本左边 (程序路径, 倒找文本 (程序路径, “\”, , 假)))
+.如果真结束
+CreateProcess (程序路径, 命令行, 0, 0, 0, _自动挂起, 0, 运行目录, 窗口结构, 进程结构)
+返回 (进程结构.进程标识符)
+
+.子程序 进程_创建进程注入DLL, 整数型, 公开, 返回进程句柄
+.参数 程序路径, 文本型, , 文件名绝对路径,如:c:\1.exe
+.参数 命令行, 文本型, 可空, 
+.参数 自动挂起, 逻辑型, 可空, 默认为：假   真=创建后立刻挂起  假=不挂起  挂起后必须恢复线程来恢复运行
+.参数 注入DLL, 文本型, , DLL名绝对路径,如C:\a.dll
+.参数 接口名, 文本型, , DLL对外开放函数名,比如初始化
+.参数 进程ID, 整数型, 参考 可空, 返回进程ID
+
+.局部变量 目录, 文本型, , , 
+.局部变量 进程启动信息, STARTUPINFO, , , 
+.局部变量 安全结构, 进程结构, , , 
+.局部变量 线程ID, 整数型, , , 
+.局部变量 _自动挂起, 整数型, , , 
+
+赋值 (目录, 取文本左边 (程序路径, 倒找文本 (程序路径, “\”, , 假)))
+.如果 (等于 (自动挂起, 真))
+    赋值 (_自动挂起, 4)
+.否则
+    赋值 (_自动挂起, 0)
+.如果结束
+CreateProcess (程序路径, 命令行, 0, 0, 0, _自动挂起, 0, 目录, 进程启动信息, 安全结构)
+.如果真 (小于或等于 (注入_安装线程DLL (安全结构.进程句柄, 注入DLL, 接口名, 线程ID), 0))
+    返回 (0)
+.如果真结束
+赋值 (进程ID, 安全结构.进程标识符)
+返回 (安全结构.进程句柄)
+
+.子程序 _取函数入口, 整数型, 公开, 取函数地址
+.参数 动态链接库路径, 文本型, , 库名  例:user32.dll
+.参数 欲截获的函数名, 文本型, , 函数名 例:GetWindow
+
+.局部变量 地址, 整数型, , , 
+.局部变量 hLibModule, 整数型, , , 
+
+赋值 (hLibModule, LoadLibraryEx (动态链接库路径, 0, 1))
+赋值 (地址, GetProcAddress (hLibModule, 欲截获的函数名)) ' 获取API函数地址
+.如果真 (等于 (地址, 0))
+    FreeLibrary (hLibModule)
+    返回 (0) ' 本源码来自易语言资源网(www.5A5X.com)
+.如果真结束
+FreeLibrary (hLibModule)
+返回 (地址)
+
+.子程序 随机修改MAC, 文本型, 公开, 返回新网卡地址
+.参数 制定网卡地址, 文本型, 可空, 10位字符 "112233445566"
+
+.局部变量 i, 整数型, , , 
+.局部变量 网卡id, 整数型, , , 
+.局部变量 ComponentId, 文本型, , , 
+.局部变量 DriverDesc, 文本型, , , 
+.局部变量 NetworkAddress, 文本型, , , 
+.局部变量 临时文本, 文本型, , , 
+.局部变量 硬件表示, 文本型, , , 
+.局部变量 临时数组, 文本型, , "0", 
+
+置随机数种子 ()
+.计次循环首 (10, i)
+    赋值 (ComponentId, 取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Control\Class\{4D36E972-E325-11CE-BFC1-08002bE10318}\000”, 到文本 (i), “\ComponentId”), ))
+    赋值 (DriverDesc, 取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Control\Class\{4D36E972-E325-11CE-BFC1-08002bE10318}\000”, 到文本 (i), “\DriverDesc”), ))
+    赋值 (NetworkAddress, 取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Control\Class\{4D36E972-E325-11CE-BFC1-08002bE10318}\000”, 到文本 (i), “\NetworkAddress”), ))
+    .如果真 (不等于 (NetworkAddress, “”))
+        赋值 (NetworkAddress, 相加 (取文本中间 (NetworkAddress, 1, 2), “-”, 取文本中间 (NetworkAddress, 3, 2), “-”, 取文本中间 (NetworkAddress, 5, 2), “-”, 取文本中间 (NetworkAddress, 7, 2), “-”, 取文本中间 (NetworkAddress, 9, 2), 取文本中间 (NetworkAddress, 11, 2)))
+        输出调试文本 (相加 (“>原网卡地址为：”, NetworkAddress, #换行符))
+    .如果真结束
+    .如果真 (等于 (到小写 (取文本左边 (ComponentId, 7)), 到小写 (“PCI\VEN”)))
+        赋值 (临时数组, 分割文本 (ComponentId, “&”, ))
+        赋值 (硬件表示, 临时数组 [1])
+        输出调试文本 (硬件表示)
+        赋值 (网卡id, i)
+    .如果真结束
+    
+.计次循环尾 ()
+.如果真 (等于 (制定网卡地址, “”))
+    赋值 (制定网卡地址, 相加 (“00”, 到文本 (取随机数 (11, 99)), 到文本 (取随机数 (11, 99)), 到文本 (取随机数 (11, 99)), 到文本 (取随机数 (11, 99)), 到文本 (取随机数 (11, 99))))
+.如果真结束
+输出调试文本 (相加 (“>正在写入新 MAC地址<”, 制定网卡地址, “>....”))
+.如果 (等于 (写注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Control\Class\{4D36E972-E325-11CE-BFC1-08002bE10318}\000”, 到文本 (网卡id), “\networkaddress”), 制定网卡地址), 真))
+    输出调试文本 (相加 (“写入成功”, #换行符))
+    未知支持库函数_48 (0, 0, 0, 1)
+.否则
+    输出调试文本 (相加 (“写入失败”, #换行符))
+    
+.如果结束
+
+输出调试文本 (“>正在重启设备网卡....”)
+ ' 运行 (“cmd.exe /c devcon.exe disable = net PCI\VEN_10EC”, 真, #隐藏窗口)
+ ' 运行 (“cmd.exe /c devcon.exe enable = net PCI\VEN_10EC”, 真, #隐藏窗口)
+赋值 (临时文本, 取临时文件名 ())
+ ' 运行 (“cmd.exe /c  DevCon restart =net PCI\VEN_10EC>” ＋ 临时文本, 真, #隐藏窗口) ＝ 真
+
+.如果 (等于 (运行 (相加 (“cmd.exe /c  DevCon restart =net ”, 硬件表示, “ >”, 临时文本), 真, #隐藏窗口), 真))
+    
+    .如果 (不等于 (寻找文本 (到文本 (读入文件 (临时文本)), “1 device(s) restarted”, , 假), -1))
+        输出调试文本 (相加 (“重启完毕”, #换行符))
+        未知支持库函数_48 (0, 0, 0, 1)
+    .否则
+        
+        输出调试文本 (相加 (“重启失败”, #换行符))
+    .如果结束
+    删除文件 (临时文本)
+.否则
+    输出调试文本 (“执行错误”)
+.如果结束
+
+.计次循环首 (10, i)
+    
+    赋值 (ComponentId, 取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Control\Class\{4D36E972-E325-11CE-BFC1-08002bE10318}\000”, 到文本 (i), “\ComponentId”), ))
+    赋值 (DriverDesc, 取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Control\Class\{4D36E972-E325-11CE-BFC1-08002bE10318}\000”, 到文本 (i), “\DriverDesc”), ))
+    赋值 (NetworkAddress, 取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Control\Class\{4D36E972-E325-11CE-BFC1-08002bE10318}\000”, 到文本 (i), “\NetworkAddress”), ))
+    .如果真 (不等于 (NetworkAddress, “”))
+        赋值 (NetworkAddress, 相加 (取文本中间 (NetworkAddress, 1, 2), “-”, 取文本中间 (NetworkAddress, 3, 2), “-”, 取文本中间 (NetworkAddress, 5, 2), “-”, 取文本中间 (NetworkAddress, 7, 2), “-”, 取文本中间 (NetworkAddress, 9, 2), 取文本中间 (NetworkAddress, 11, 2)))
+        输出调试文本 (相加 (“>新网卡地址为：”, NetworkAddress, #换行符))
+    .如果真结束
+    
+.计次循环尾 ()
+返回 (NetworkAddress)
+
+.子程序 定时器_创建, 整数型, 公开, 定时器与易里的时钟组件一样.返回=定时器ID,供　销毁定时器()　使用
+.参数 窗口句柄, 整数型, , 类型为“整数型”。注明：0=不与窗口关联,建议不要关联,定时器与当前线程关联。
+.参数 定时器ID, 整数型, , 类型为“整数型”。注明：0=创建定时器.返回值是ID,可供后期销毁或修改定时器时钟周期用.若传入定时器ID值则修改该时钟周期。
+.参数 时钟周期, 整数型, , 类型为“整数型”。1000=1秒，单位：毫秒
+.参数 定时器接口, 子程序指针, , 类型为“子程序指针”。注明：设定某个无参数无返回值的易子程序为时钟事件接口。
+
+返回 (SetTimer (窗口句柄, 定时器ID, 时钟周期, 定时器接口))
+
+
+.子程序 定时器_销毁, 空白型, 公开,  销毁一个之前创建的定时器功能
+.参数 窗口句柄, 整数型, , 类型为“整数型”。注明：若创建时用了窗口句柄,这里也得提供那个窗口句柄。反之为：0
+.参数 定时器ID, 整数型, , 类型为“整数型”。注明：创建定时器时的返回值。
+
+KillTimer (窗口句柄, 定时器ID)
+
+.子程序 DLL初始化, 整数型, 公开, 
+.参数 一, 整数型, , 
+.参数 二, 整数型, , 
+.参数 三, 整数型, , 
+.参数 初始处理, 子程序指针, , 无参数无返回值的一个子程序,用来初始化DLL中
+.参数 退出处理, 子程序指针, , 无参数无返回值的一个子程序,用来DLL退出时卸载各类HOOK用
+
+.局部变量 初始化, 逻辑型, 静态, , 
+.局部变量 钩子句柄, 整数型, 静态, , 
+.局部变量 消息, 消息, , , 
+.局部变量 临时, 字节集, , , 
+.局部变量 返回, 整数型, , , 
+.局部变量 对象名, 文本型, , , 
+
+复制内存消息 (消息, 三, 28)
+.如果真 (等于 (消息.消息标识, 42724))
+    .判断开始 (等于 (消息.消息值2, 0))
+        .如果真 (不等于 (0, 钩子句柄))
+            UnhookWindowsHookEx (消息.消息值1)
+            返回 (1)
+        .如果真结束
+        赋值 (钩子句柄, 消息.消息值1)
+    .判断 (等于 (消息.消息值2, 1))
+        .如果 (大于或等于 (取操作系统类别 (), 3))
+            子程序NT (退出处理, 0, 0, 0, 0)
+        .否则
+            子程序9X (退出处理)
+        .如果结束
+        UnhookWindowsHookEx (钩子句柄)
+        返回 (0)
+    .默认
+        
+    .判断结束
+    
+.如果真结束
+.如果真 (初始化)
+    .如果真 (小于 (一, 0))
+        返回 (CallNextHookEx (0, 一, 二, 三))
+    .如果真结束
+    .如果真 (等于 (消息.消息标识, 18))
+        .如果 (大于或等于 (取操作系统类别 (), 3))
+            子程序NT (退出处理, 0, 0, 0, 0)
+        .否则
+            子程序9X (退出处理)
+        .如果结束
+        .如果真 (不等于 (0, 钩子句柄))
+            UnhookWindowsHookEx (钩子句柄)
+        .如果真结束
+         ' 处理事件 ()
+        .如果真 (不等于 (到小写 (取执行文件名 ()), “explorer.exe”))
+            进程_结束进程 (进程_ZwOpenProcess (GetCurrentProcessId ()))
+        .如果真结束
+        
+    .如果真结束
+    返回 (CallNextHookEx (0, 一, 二, 三))
+.如果真结束
+赋值 (初始化, 真)
+赋值 (返回, CallNextHookEx (0, 一, 二, 三))
+.如果真 (等于 (消息.窗口句柄, 0))
+    .如果 (大于或等于 (取操作系统类别 (), 3))
+        子程序NT (初始处理, 0, 0, 0, 0)
+    .否则
+        子程序9X (初始处理)
+    .如果结束
+    
+.如果真结束
+返回 (返回)
+
+
+
+.子程序 注入DLL, 整数型, 公开, 成功返回0,失败返回负值.
+.参数 目标进程ID, 整数型, , 即PID
+.参数 DLL文件全名, 文本型, , 不含路径,含扩展名,如:MyDLL.dll
+.参数 DLL装载路径, 文本型, , 不含名称,如:C:\WINDOWS\SYSTEM32\
+.参数 DLL函数名, 文本型, , 子程序的实际名称即可,文本型,区分大小写
+.参数 隐藏错误信息, 逻辑型, 可空, 是否在出错时自动调用错误信息框
+
+.局部变量 TrueAddress, 整数型, , , 
+.局部变量 Code, 字节集, , , 
+.局部变量 pHandle, 整数型, , , 
+.局部变量 dwSize, 整数型, , , 
+.局部变量 DLLName, 文本型, , , 
+.局部变量 lpbuf, 整数型, , , 
+.局部变量 Ret, 整数型, , , 
+.局部变量 Handle, 整数型, , , 
+.局部变量 hThread, 整数型, , , 
+.局部变量 SECURITY, 整数型, , , 
+.局部变量 dwRet, 整数型, , , 
+.局部变量 RemotBaseadDr, 整数型, , , 
+.局部变量 LocalbaseadDr, 整数型, , , 
+.局部变量 Path, 文本型, , , 
+
+赋值 (pHandle, 进程_OpenProcess (#PROCESS_ALL_ACCESS, 0, 目标进程ID))
+.如果真 (等于 (pHandle, 0))
+    .如果真 (取反 (隐藏错误信息))
+        信息框 (提取错误信息 (#打开进程失败), #错误图标, 提取错误标题 (#打开进程失败))
+    .如果真结束
+    返回 (提取错误代码 (#打开进程失败))
+.如果真结束
+赋值 (DLLName, DLL文件全名)
+赋值 (Path, 相加 (选择 (等于 (取文本右边 (DLL装载路径, 1), “\”), DLL装载路径, 相加 (DLL装载路径, “\”)), DLLName))
+赋值 (dwSize, 相加 (取文本长度 (Path), 1))
+赋值 (lpbuf, VirtualAllocEx (pHandle, 0, dwSize, #MEM_COMMIT, #PAGE_EXECUTE_READWRITE))
+.如果真 (等于 (lpbuf, 0))
+    .如果真 (取反 (隐藏错误信息))
+        信息框 (提取错误信息 (#分配内存失败), #错误图标, 提取错误标题 (#分配内存失败))
+    .如果真结束
+    CloseHandle (pHandle)
+    返回 (提取错误代码 (#分配内存失败))
+.如果真结束
+赋值 (Ret, WriteProcessMemory (pHandle, lpbuf, 相加 (到字节集 (Path), { 0 }), dwSize, 0))
+.如果真 (等于 (Ret, 0))
+    .如果真 (取反 (隐藏错误信息))
+        信息框 (提取错误信息 (#写内存失败), #错误图标, 提取错误标题 (#写内存失败))
+    .如果真结束
+    VirtualFreeEx (pHandle, lpbuf, dwSize, 16384)
+    返回 (提取错误代码 (#写内存失败))
+.如果真结束
+赋值 (Handle, GetModuleHandle (“kernel32.dll”))
+赋值 (Handle, GetProcAddress (Handle, “LoadLibraryA”))
+赋值 (hThread, CreateRemoteThread (pHandle, SECURITY, 0, Handle, lpbuf, 0, 0))
+WaitForSingleObject (hThread, #INFINITE)
+GetExitCodeThread (hThread, dwRet)
+赋值 (RemotBaseadDr, dwRet)
+VirtualFreeEx (pHandle, lpbuf, dwSize, 16384)
+CloseHandle (hThread)
+赋值 (LocalbaseadDr, LoadLibraryEx (Path, 0, 0))
+赋值 (Handle, GetProcAddress (LocalbaseadDr, DLL函数名))
+.如果真 (等于 (Handle, 0))
+    .如果真 (取反 (隐藏错误信息))
+        信息框 (提取错误信息 (#取函数地址失败), #错误图标, 提取错误标题 (#取函数地址失败))
+    .如果真结束
+    FreeLibrary (LocalbaseadDr)
+    CloseHandle (pHandle)
+    返回 (提取错误代码 (#取函数地址失败))
+.如果真结束
+赋值 (TrueAddress, 相减 (相加 (RemotBaseadDr, Handle), LocalbaseadDr))
+FreeLibrary (LocalbaseadDr)
+赋值 (lpbuf, VirtualAllocEx (pHandle, 0, 5, #MEM_COMMIT, #PAGE_EXECUTE_READWRITE))
+.如果真 (等于 (lpbuf, 0))
+    .如果真 (取反 (隐藏错误信息))
+        信息框 (提取错误信息 (#分配内存失败), #错误图标, 提取错误标题 (#分配内存失败))
+    .如果真结束
+    CloseHandle (pHandle)
+    返回 (提取错误代码 (#分配内存失败))
+.如果真结束
+赋值 (Code, 相加 ({ 233 }, 到字节集 (到整数 (相减 (TrueAddress, lpbuf, 5)))))
+赋值 (Ret, WriteProcessMemory (pHandle, lpbuf, Code, 5, 0))
+.如果真 (等于 (Ret, 0))
+    .如果真 (取反 (隐藏错误信息))
+        信息框 (提取错误信息 (#写内存失败), #错误图标, 提取错误标题 (#写内存失败))
+    .如果真结束
+    VirtualFreeEx (pHandle, lpbuf, 5, 16384)
+    返回 (提取错误代码 (#写内存失败))
+.如果真结束
+赋值 (hThread, CreateRemoteThread (pHandle, SECURITY, 0, lpbuf, 0, 0, 0))
+WaitForSingleObject (hThread, #INFINITE)
+VirtualFreeEx (pHandle, lpbuf, 5, 16384)
+CloseHandle (hThread)
+CloseHandle (pHandle)
+赋值 (DLL加注次数, 相加 (DLL加注次数, 1))
+返回 (0)
+
+.子程序 卸载DLL, 整数型, 公开, Uninst-DLL,成功返回0,失败返回负值
+.参数 目标进程ID, 整数型, , 即PID
+.参数 DLL文件全名, 文本型, , 不含路径,含扩展名,如:MyDLL.dll
+.参数 DLL装载路径, 文本型, , 不含名称,如:C:\WINDOWS\SYSTEM32\
+.参数 隐藏错误信息, 逻辑型, 可空, 是否在出错时自动调用错误信息框,若为真则不调用
+
+.局部变量 执行结果, 空白型, , , 
+
+.计次循环首 (DLL加注次数, )
+    赋值 (执行结果, UnHookDLL (目标进程ID, DLL文件全名, DLL装载路径, 假))
+    .如果真 (并且 (不等于 (执行结果, 0), 取反 (隐藏错误信息)))
+        .如果真 (等于 (信息框 (提取错误信息 (#卸载DLL失败), 相加 (#取消是否钮, #默认按钮二), 提取错误标题 (#卸载DLL失败)), #是钮))
+            跳出循环 ()
+        .如果真结束
+        
+    .如果真结束
+    
+.计次循环尾 ()
+返回 (执行结果)
+
+
+
+.子程序 UnHookDLL, 整数型, , Uninst-DLL,成功返回0,失败返回负值
+.参数 目标进程ID, 整数型, , 即PID
+.参数 DLL文件全名, 文本型, , 不含路径,含扩展名,如:MyDLL.dll
+.参数 DLL装载路径, 文本型, , 不含名称,如:C:\WINDOWS\SYSTEM32\
+.参数 隐藏错误信息, 逻辑型, 可空, 是否在出错时自动调用错误信息框
+
+.局部变量 pHandle, 整数型, , , 
+.局部变量 dwSize, 整数型, , , 
+.局部变量 DLLName, 文本型, , , 
+.局部变量 lpbuf, 整数型, , , 
+.局部变量 Ret, 整数型, , , 
+.局部变量 Handle, 整数型, , , 
+.局部变量 hThread, 整数型, , , 
+.局部变量 SECURITY, 整数型, , , 
+.局部变量 dwRet, 整数型, , , 
+.局部变量 hModel, 空白型, , , 
+
+赋值 (pHandle, 进程_OpenProcess (#PROCESS_ALL_ACCESS, 0, 目标进程ID))
+.如果真 (等于 (pHandle, 0))
+    .如果真 (取反 (隐藏错误信息))
+        信息框 (提取错误信息 (#打开进程失败), #错误图标, 提取错误标题 (#打开进程失败))
+    .如果真结束
+    返回 (提取错误代码 (#打开进程失败))
+.如果真结束
+赋值 (DLLName, 相加 (选择 (等于 (取文本右边 (DLL装载路径, 1), “\”), DLL装载路径, 相加 (DLL装载路径, “\”)), DLL文件全名))
+赋值 (dwSize, 相加 (取文本长度 (DLLName), 1))
+赋值 (lpbuf, VirtualAllocEx (pHandle, 0, dwSize, #MEM_COMMIT, #PAGE_EXECUTE_READWRITE))
+.如果真 (等于 (lpbuf, 0))
+    .如果真 (取反 (隐藏错误信息))
+        信息框 (提取错误信息 (#分配内存失败), #错误图标, 提取错误标题 (#分配内存失败))
+    .如果真结束
+    CloseHandle (pHandle)
+    返回 (提取错误代码 (#分配内存失败))
+.如果真结束
+赋值 (Ret, WriteProcessMemory (pHandle, lpbuf, 相加 (到字节集 (DLLName), { 0 }), dwSize, 0))
+.如果真 (等于 (Ret, 0))
+    .如果真 (取反 (隐藏错误信息))
+        信息框 (提取错误信息 (#写内存失败), #错误图标, 提取错误标题 (#写内存失败))
+    .如果真结束
+    VirtualFreeEx (pHandle, lpbuf, dwSize, 16384)
+    返回 (提取错误代码 (#写内存失败))
+.如果真结束
+赋值 (Handle, GetModuleHandle (“kernel32.dll”))
+赋值 (Handle, GetProcAddress (Handle, “GetModuleHandleA”))
+赋值 (hThread, CreateRemoteThread (pHandle, SECURITY, 0, Handle, lpbuf, 0, 0))
+WaitForSingleObject (hThread, #INFINITE)
+GetExitCodeThread (hThread, dwRet)
+赋值 (hModel, dwRet)
+VirtualFreeEx (pHandle, lpbuf, dwSize, 16384)
+CloseHandle (hThread)
+赋值 (Handle, GetModuleHandle (“kernel32.dll”))
+赋值 (Handle, GetProcAddress (Handle, “FreeLibrary”))
+赋值 (hThread, CreateRemoteThread (pHandle, SECURITY, 0, Handle, hModel, 0, 0))
+WaitForSingleObject (hThread, #INFINITE)
+CloseHandle (hThread)
+CloseHandle (pHandle)
+返回 (0)
+
+.子程序 提取错误标题, 文本型, , 
+.参数 错误内容, 文本型, , 
+
+.局部变量 结果数组, 文本型, , "0", 
+
+赋值 (结果数组, 分割文本 (错误内容, “|”, ))
+返回 (结果数组 [2])
+
+.子程序 提取错误信息, 文本型, , 
+.参数 错误内容, 文本型, , 
+
+.局部变量 结果数组, 文本型, , "0", 
+
+赋值 (结果数组, 分割文本 (错误内容, “|”, ))
+返回 (结果数组 [3])
+
+.子程序 提取错误代码, 整数型, , 
+.参数 错误内容, 文本型, , 
+
+.局部变量 结果数组, 文本型, , "0", 
+
+赋值 (结果数组, 分割文本 (错误内容, “|”, ))
+返回 (到整数 (结果数组 [1]))
+
+.类模块 类_APIHOOK, , , 
+
+.程序集变量 HOOK信息, APIHOOK, , "0", 
+.子程序 安装APIHOOK, 整数型, 公开, 安装HOOK失败返回0，成功返回HOOK序号
+.参数 DLL名, 文本型, , 要HOOK的函数所在的DLL文件名
+.参数 原函数, 文本型, , 要HOOK的函数名
+.参数 现函数, 子程序指针, , 处理HOOK的新子程序,参数与返回值要和被HOOK的函数一致
+
+.局部变量 DLL句柄, 整数型, , , 
+.局部变量 APIHOOK, APIHOOK, , , 
+.局部变量 现函数指针, 字节集, , , 
+.局部变量 虚拟保护, 虚拟保护信息, , , 
+.局部变量 返回, 整数型, , , 
+
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+赋值 (DLL句柄, GetModuleHandle (DLL名))
+赋值 (APIHOOK.函数入口, GetProcAddress (DLL句柄, 原函数))
+.如果真 (等于 (0, APIHOOK.函数入口))
+    返回 (0)
+.如果真结束
+赋值 (APIHOOK.新函数头, 取空白字节集 (8))
+赋值 (APIHOOK.原函数头, 取空白字节集 (8))
+赋值 (APIHOOK.新函数头 [1], 184)
+赋值 (APIHOOK.新函数头 [6], 255)
+赋值 (APIHOOK.新函数头 [7], 224)
+赋值 (APIHOOK.新函数头 [8], 0)
+赋值 (现函数指针, 到字节集 (现函数))
+赋值 (APIHOOK.新函数头, 字节集替换 (APIHOOK.新函数头, 2, 4, 现函数指针))
+读字节集内存 (APIHOOK.函数入口, APIHOOK.原函数头, 8)
+.如果 (写字节集内存 (APIHOOK.函数入口, APIHOOK.新函数头))
+    加入成员 (HOOK信息, APIHOOK)
+    返回 (取数组成员数 (HOOK信息))
+.否则
+    返回 (0)
+.如果结束
+返回 (0)
+
+.子程序 加载APIHOOK, 空白型, 公开,     重新生效APIHOOK拦截功能
+.参数 HOOK序号, 整数型, , 安装APIHOOK时所返回的非0序号
+
+.局部变量 返回, 整数型, , , 
+
+.如果真 (等于 (0, HOOK序号))
+    返回 ()
+.如果真结束
+写字节集内存 (HOOK信息 [HOOK序号], 函数入口, HOOK信息 [HOOK序号], 新函数头)
+
+.子程序 恢复APIHOOK, 空白型, 公开,  取消APIHOOK拦截功能,使其API可以正常使用
+.参数 HOOK序号, 整数型, , 安装APIHOOK时所返回的非0序号
+
+.局部变量 返回, 整数型, , , 
+
+.如果真 (等于 (0, HOOK序号))
+    返回 () ' 本源码来自易语言资源网(www.5A5X.com)
+.如果真结束
+写字节集内存 (HOOK信息 [HOOK序号], 函数入口, HOOK信息 [HOOK序号], 原函数头)
+
+.子程序 读字节集内存, 逻辑型, , 成功返回真，失败返回假
+.参数 进程ID, 整数型, 可空, 对其它进程操作时使用，指定的进程ID
+.参数 读取地址, 整数型, , 内存处的一个地址
+.参数 保存变量, 字节集, 参考, 用来保存读出的数据
+.参数 读取长度, 整数型, , 要读取的内存字节集长度
+
+.局部变量 进程句柄, 整数型, , , 
+
+赋值 (保存变量, 取空白字节集 (读取长度))
+.如果真 (等于 (0, 进程ID))
+    赋值 (进程ID, GetCurrentProcessId ())
+.如果真结束
+赋值 (进程句柄, 进程_ZwOpenProcess (进程ID))
+.如果真 (等于 (0, 进程句柄))
+    返回 (假)
+.如果真结束
+.如果 (ReadProcessMemory (进程句柄, 读取地址, 保存变量, 读取长度, 0))
+    关闭句柄 (进程句柄)
+    返回 (真)
+.否则
+    关闭句柄 (进程句柄)
+    返回 (假)
+.如果结束
+返回 (假)
+' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 写字节集内存, 逻辑型, , 成功返回真，失败返回假
+.参数 进程ID, 整数型, 可空, 指定的进程ID
+.参数 写入地址, 整数型, , 内存处的一个地址
+.参数 写入字节集, 字节集, 参考, 将被写入的一组字节集数据
+
+.局部变量 进程句柄, 整数型, , , 
+
+.如果真 (等于 (0, 进程ID))
+    赋值 (进程ID, GetCurrentProcessId ())
+.如果真结束
+赋值 (进程句柄, 进程_ZwOpenProcess (进程ID))
+.如果真 (等于 (0, 进程句柄))
+    返回 (假)
+.如果真结束
+.如果 (写内存字节集 (进程句柄, 写入地址, 写入字节集, 取字节集长度 (写入字节集), 0))
+    关闭句柄 (进程句柄)
+    返回 (真)
+.否则
+    关闭句柄 (进程句柄)
+    返回 (假)
+.如果结束
+返回 (假)
+
+.类模块 类_内存DLL注入, , , 
+
+.程序集变量 DataAddr, 整数型, , , 
+.程序集变量 LoadAddr, 整数型, , , 
+.程序集变量 GetAddr, 整数型, , , 
+.程序集变量 FreeAddr, 整数型, , , 
+.程序集变量 hModule, 整数型, , , 
+.程序集变量 hProcess, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+.如果真 (是否已注入 ())
+    释放内存_ (hProcess, LoadAddr)
+    CloseHandle (hProcess)
+.如果真结束
+
+
+.子程序 注入DLL, 整数型, 公开, 成功返回DLL的模块句柄，失败或已注入返回0。
+.参数 进程句柄, 整数型, , 句柄必须拥有对被注入进程的完全操作权限。注入后如果没有其他用处可以关闭该句柄。
+.参数 DLL数据, 字节集, , DLL 字节集 数据 
+
+.如果真 (或者 (是否已注入 (), 等于 (DLL数据, {  }), 等于 (进程句柄, 0)))
+    返回 (0)
+.如果真结束
+ ' 将内存中的DLL写到目标进程
+赋值 (DataAddr, 写入内存数据_ (进程句柄, DLL数据))
+.如果真 (等于 (DataAddr, 0))
+    返回 (0)
+.如果真结束
+ ' 把加载函数写到目标进程
+赋值 (LoadAddr, 写入内存数据_ (进程句柄, 相加 (#load_code, #getaddr_code, #free_code)))
+.如果真 (等于 (LoadAddr, 0))
+    释放内存_ (进程句柄, DataAddr)
+    重载变量 ()
+    返回 (0)
+.如果真结束
+赋值 (GetAddr, 相加 (LoadAddr, 2143)) ' 2143 = 取字节集长度(#load_code)
+赋值 (FreeAddr, 相加 (GetAddr, 277)) ' 277 = 取字节集长度(#getaddr_code)
+赋值 (hModule, 启动线程_Ret (进程句柄, LoadAddr, DataAddr))
+.如果真 (等于 (hModule, 0))
+    释放内存_ (进程句柄, LoadAddr)
+    释放内存_ (进程句柄, DataAddr)
+    重载变量 ()
+    返回 (0)
+.如果真结束
+DuplicateHandle (-1, 进程句柄, -1, hProcess, 0, 假, 2) ' 复制句柄
+返回 (hModule)
+
+.子程序 取DLL函数地址, 整数型, 公开, 返回已经注入到指定进程内的DLL的函数地址。失败返回0。
+.参数 DLL函数名, 文本型, , 区分大小写。
+
+.局部变量 地址, 整数型, , , 
+.局部变量 指针, 整数型, , , 
+
+.如果真 (或者 (等于 (是否已注入 (), 假), 等于 (DLL函数名, “”)))
+    返回 (0) ' 本源码来自易语言资源网(www.5A5X.com)
+.如果真结束
+赋值 (地址, 写入内存数据_ (hProcess, 到字节集 (DLL函数名)))
+.如果真 (等于 (地址, 0))
+    返回 (0)
+.如果真结束
+赋值 (指针, 启动线程_多参_Ret (hProcess, , GetAddr, hModule, 地址))
+释放内存_ (hProcess, 地址)
+返回 (指针)
+
+.子程序 执行DLL函数, 整数型, 公开, 执行已经注入到指定进程内的DLL的函数，成功返回所执行的函数的地址，失败返回0。
+.参数 DLL函数名, 文本型, , 区分大小写。
+.参数 等待函数执行完毕, 逻辑型, 可空, 默认为假，为真则函数执行完毕后本函数才返回。
+.参数 返回值, 空白型, 参考 可空, 如果上一个参数为真，则可提供一个变量保存被执行的DLL函数的返回值。
+.参数 线程句柄, 空白型, 参考 可空, 可提供变量保存函数执行线程的句柄,不需要请留空.接收了句柄记得不用时要关闭.
+.参数 参数1, 空白型, 可空, 可提供给被执行函数最多10个参数(理论上支持无限个,自己看着改吧)不需要的请留空。
+.参数 参数2, 空白型, 可空, 非整数型参数需传递变量的内存数据指针，该指针必须是在目标进程内的。
+.参数 参数3, 空白型, 可空, 提供的参数请与所执行的函数的参数个数一致，否则被注入的进程绝对会崩溃！
+.参数 参数4, 空白型, 可空, 
+.参数 参数5, 空白型, 可空, 
+.参数 参数6, 空白型, 可空, 
+.参数 参数7, 空白型, 可空, 
+.参数 参数8, 空白型, 可空, 
+.参数 参数9, 空白型, 可空, 
+.参数 参数10, 空白型, 可空, 
+
+.局部变量 计次, 整数型, , , 
+.局部变量 数值, 字节集, , , 
+.局部变量 参数, 整数型, , "0", 
+.局部变量 指针, 整数型, , , 
+.局部变量 地址, 整数型, , , 
+
+连续赋值 (0, 返回值, 线程句柄)
+赋值 (指针, 取DLL函数地址 (DLL函数名))
+.如果真 (等于 (指针, 0))
+    返回 (0)
+.如果真结束
+赋值 (数值, 指针到字节集 (_取整数型指针 (参数1), 80))
+.变量循环首 (1, 73, 8, 计次)
+    .如果真 (等于 (数值 [相加 (计次, 4)], 1))
+        加入成员 (参数, 字节集_到整数 (数值, 计次))
+        到循环尾 ()
+    .如果真结束
+    跳出循环 ()
+.变量循环尾 ()
+赋值 (地址, 写入内存数据_ (hProcess, MakeCallCode (指针, 参数)))
+.如果真 (等于 (地址, 0))
+    返回 (0)
+.如果真结束
+赋值 (线程句柄, CreateRemoteThread (hProcess, 0, 0, 地址, 0, 0, 0))
+.如果 (或者 (等待函数执行完毕, 等于 (线程句柄, 0)))
+    .如果真 (不等于 (线程句柄, 0))
+        WaitForSingleObject (线程句柄, #INFINITE)
+        GetExitCodeThread (线程句柄, 返回值)
+    .如果真结束
+    .如果真 (并且 (是否为空 (线程句柄), 不等于 (线程句柄, 0)))
+        CloseHandle (线程句柄)
+    .如果真结束
+    释放内存_ (hProcess, 地址)
+.否则
+     ' 启动专门关句柄和释放目标进程内存的子程序：
+    CloseHandle (启动线程_hThread (-1, _取子程序地址 (&释放进程内存), 写入内存数据_ (-1, 相加 (到字节集 (hProcess), 到字节集 (线程句柄), 到字节集 (地址), 选择 (是否为空 (线程句柄), { 1, 0, 0, 0 }, { 0, 0, 0, 0 })))))
+.如果结束
+返回 (指针)
+
+.子程序 卸载DLL, 逻辑型, 公开, 卸载已经注入的内存中的DLL,成功返回真,失败返回假.(最好不要卸载，卸载的话被注入的进程很容易崩溃)
+.如果真 (等于 (hModule, 0))
+    返回 (假)
+.如果真结束
+启动线程_Ret (hProcess, FreeAddr, hModule)
+释放内存_ (hProcess, LoadAddr)
+释放内存_ (hProcess, DataAddr)
+CloseHandle (hProcess)
+重载变量 ()
+返回 (真) ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 是否已注入, 逻辑型, 公开, 已注入返回真，未注入返回假。
+.局部变量 句柄, 整数型, , , 
+
+.如果真 (等于 (hProcess, 0))
+    返回 (假)
+.如果真结束
+赋值 (句柄, CreateRemoteThread (hProcess, 0, 0, GetProcAddress (LoadLibrary (“kernel32.dll”), “GetCurrentProcessId”), 0, 0, 0))
+.如果真 (等于 (句柄, 0))
+    卸载DLL ()
+    返回 (假)
+.如果真结束
+CloseHandle (句柄)
+返回 (真)
+
+.子程序 重载变量, 空白型, , 
+连续赋值 (0, hProcess, DataAddr, hModule, LoadAddr, GetAddr, FreeAddr)
+
+.程序集 辅助程序集, , , 
+
+.子程序 申请内存_, 整数型, , 返回内存地址，不用时记得一定要释放。
+.参数 进程句柄, 整数型, , -1为自进程
+.参数 申请长度, 整数型, , 
+.参数 lpAddress, 整数型, 可空, 
+.参数 flAllocationType, 整数型, 可空, 
+.参数 flProtect, 整数型, 可空, 
+
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+返回 (VirtualAllocEx (进程句柄, lpAddress, 申请长度, 选择 (是否为空 (flAllocationType), #MEM_COMMIT, flAllocationType), 选择 (是否为空 (flAllocationType), #PAGE_EXECUTE_READWRITE, flAllocationType)))
+
+.子程序 释放进程内存, 空白型, , 内部子程序 防止内存泄漏
+.参数 参数指针, 整数型, , 
+
+.局部变量 数据, 字节集, , , 
+.局部变量 参数, 整数型, , "0", 
+.局部变量 计次, 整数型, , , 
+
+赋值 (数据, 指针到字节集 (参数指针, 16))
+.变量循环首 (1, 13, 4, 计次)
+    加入成员 (参数, 字节集_到整数 (指针到字节集 (参数指针, 16), 计次))
+.变量循环尾 ()
+WaitForSingleObject (参数 [2], #INFINITE)
+释放内存_ (参数 [1], 参数 [3])
+.如果真 (等于 (参数 [4], 1))
+    CloseHandle (参数 [2])
+.如果真结束
+释放内存_ (-1, 参数指针)
+
+.子程序 释放内存_, 逻辑型, , 
+.参数 进程句柄, 整数型, , -1为自进程
+.参数 内存地址, 整数型, , 
+.参数 dwSize, 整数型, 可空, 
+.参数 flAllocationType, 整数型, 可空, 
+
+返回 (不等于 (VirtualFreeEx (进程句柄, 内存地址, dwSize, 选择 (是否为空 (flAllocationType), 32768, flAllocationType)), 假))
+
+.子程序 写到内存_, 逻辑型, , 
+.参数 进程句柄, 整数型, , -1为自进程
+.参数 内存地址, 整数型, , 
+.参数 数据, 字节集, , 
+.参数 写入长度, 整数型, 可空, 默认将数据全部写入
+
+返回 (不等于 (WriteProcessMemory (进程句柄, 内存地址, 数据, 选择 (是否为空 (写入长度), 取字节集长度 (数据), 写入长度), 0), 0))
+
+.子程序 读取内存_, 字节集, , 
+.参数 进程句柄, 整数型, , -1为自进程
+.参数 地址, 整数型, , 
+.参数 读入长度, 整数型, , 
+
+.局部变量 数据, 字节集, , , 
+
+赋值 (数据, 取空白字节集 (读入长度))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+ReadProcessMemory (进程句柄, 地址, 数据, 读入长度, 0)
+返回 (数据)
+
+.子程序 写入内存数据_, 整数型, , 返回内存地址，不用时记得一定要释放。
+.参数 进程句柄, 整数型, , -1为自进程
+.参数 数据, 字节集, , 
+.参数 写入长度, 整数型, 可空, 默认将数据全部写入
+
+.局部变量 地址, 整数型, , , 
+
+.如果真 (是否为空 (写入长度))
+    赋值 (写入长度, 取字节集长度 (数据))
+.如果真结束
+赋值 (地址, VirtualAllocEx (进程句柄, 0, 写入长度, #MEM_COMMIT, #PAGE_EXECUTE_READWRITE))
+.如果真 (等于 (地址, 0))
+    返回 (0)
+.如果真结束
+WriteProcessMemory (进程句柄, 地址, 数据, 写入长度, 0)
+返回 (地址)
+
+.子程序 调用子程序_, 逻辑型, , By:叮咚茶
+.参数 子程序地址, 空白型, , 
+.参数 是否为C调用, 逻辑型, 可空, 
+.参数 返回值, 空白型, 参考 可空, 
+.参数 参数1, 空白型, 可空, 
+.参数 参数2, 空白型, 可空, 
+.参数 参数3, 空白型, 可空, 
+.参数 参数4, 空白型, 可空, 
+.参数 参数5, 空白型, 可空, 
+.参数 参数6, 空白型, 可空, 
+.参数 参数7, 空白型, 可空, 
+.参数 参数8, 空白型, 可空, 
+.参数 参数9, 空白型, 可空, 
+.参数 参数10, 空白型, 可空, 
+
+置入代码 ({ 86, 81, 51, 201, 81, 177, 15, 139, 245, 129, 198, 152, 0, 0, 0, 131, 238, 8, 139, 198, 139, 0, 133, 192, 116, 8, 139, 70, 252, 80, 131, 69, 244, 4, 226, 235, 255, 85, 8, 139, 77, 20, 137, 1, 51, 192, 57, 69, 12, 116, 3, 3, 101, 244, 89, 89, 94 })
+返回 (真)
+
+.子程序 提升进程权限_, 逻辑型, , 
+.参数 进程句柄, 整数型, 可空, 留空或为-1为提升本进程权限。
+.参数 权限类别, 整数型, 可空, 17、备份；18、启动；19、关机；20、调试。留空默认为20，即提升到调试级。
+
+.局部变量 地址, 整数型, , , 
+.局部变量 返回值, 整数型, , , 
+
+赋值 (返回值, -1)
+.如果真 (是否为空 (进程句柄))
+    赋值 (进程句柄, -1)
+.如果真结束
+赋值 (地址, 申请内存_ (进程句柄, 4))
+.如果真 (等于 (地址, 0))
+    返回 (假)
+.如果真结束
+赋值 (返回值, 启动线程_多参_Ret (进程句柄, , GetProcAddress (LoadLibrary (“ntdll.dll”), “RtlAdjustPrivilege”), 选择 (是否为空 (权限类别), 20, 权限类别), 1, 0, 地址))
+释放内存_ (进程句柄, 地址)
+返回 (等于 (返回值, 0))
+
+.子程序 _取子程序地址, 整数型, , 
+.参数 子程序, 子程序指针, , 
+
+置入代码 ({ 139, 69, 8, 201, 194, 4, 0 })
+返回 (0)
+
+.子程序 _取字节集指针, 整数型, , 
+.参数 字节集变量, 字节集, , 
+
+置入代码 ({ 139, 69, 8, 139, 0, 131, 192, 8, 201, 194, 4, 0 })
+返回 (0)
+
+.子程序 _取文本指针, 整数型, , 
+.参数 文本变量, 文本型, , 
+
+置入代码 ({ 139, 69, 8, 139, 0, 201, 194, 4, 0 })
+返回 (0)
+
+.子程序 _取整数型指针, 整数型, , 
+.参数 整数变量, 整数型, 参考, 
+
+置入代码 ({ 139, 69, 8, 201, 194, 4, 0 })
+返回 (0)
+
+.子程序 字节集_到整数, 整数型, , 
+.参数 字节集, 字节集, , 
+.参数 起始位置, 整数型, 可空, 
+
+.局部变量 数值, 整数型, , , 
+.局部变量 地址, 整数型, , , 
+.局部变量 长度, 整数型, , , 
+
+赋值 (地址, _取字节集指针 (字节集))
+赋值 (长度, 取字节集长度 (字节集))
+.如果真 (是否为空 (起始位置))
+    赋值 (起始位置, 1)
+.如果真结束
+.如果真 (或者 (大于 (起始位置, 长度), 小于 (起始位置, 1)))
+    返回 (0) ' 本源码来自易语言资源网(www.5A5X.com)
+.如果真结束
+.如果 (小于 (相减 (长度, 起始位置), 4))
+    CopyMemory (数值, 相减 (相加 (地址, 起始位置), 1), 相加 (相减 (长度, 起始位置), 1))
+.否则
+    CopyMemory (数值, 相减 (相加 (地址, 起始位置), 1), 4)
+.如果结束
+返回 (数值)
+
+.子程序 取线程返回值_, 整数型, , 如果线程尚未中断将返回#STILL_ACTIVE(值为259)。
+.参数 线程句柄, 整数型, , 
+
+.局部变量 返回值, 整数型, , , 
+
+GetExitCodeThread (线程句柄, 返回值)
+返回 (返回值)
+
+.子程序 启动线程_Ret, 整数型, , 普通单参数方式启动线程，线程执行完毕后才返回，返回所执行函数的返回值。
+.参数 进程句柄, 空白型, , -1为自进程
+.参数 子程序地址, 空白型, , 
+.参数 参数, 空白型, 可空, 
+.参数 线程句柄, 空白型, 参考 可空, 可提供变量保存新建线程的句柄，不需要请留空。如果接收了句柄记得要关闭。
+.参数 线程ID, 空白型, 参考 可空, 可提供变量保存新建线程的ID，不需要请留空。
+
+.局部变量 返回值, 整数型, , , 
+
+赋值 (线程句柄, CreateRemoteThread (进程句柄, 0, 0, 子程序地址, 参数, 0, 线程ID))
+WaitForSingleObject (线程句柄, #INFINITE)
+GetExitCodeThread (线程句柄, 返回值)
+.如果真 (并且 (是否为空 (线程句柄), 不等于 (线程句柄, 0)))
+    CloseHandle (线程句柄)
+.如果真结束
+返回 (返回值)
+
+.子程序 启动线程_hThread, 整数型, , 普通单参数方式启动线程，返回线程句柄。
+.参数 进程句柄, 整数型, , 
+.参数 子程序地址, 整数型, , 
+.参数 参数, 整数型, 可空, 
+.参数 线程ID, 整数型, 参考 可空, 可提供变量保存新建线程的ID，不需要请留空。
+
+返回 (CreateRemoteThread (进程句柄, 0, 0, 子程序地址, 参数, 0, 线程ID))
+
+.子程序 MakeCallCode, 字节集, , 构造调用代码,这函数的用处一两句话解释不清.自己领会吧..总之很有用..呃..
+.参数 函数地址, 整数型, , 
+.参数 参数, 整数型, 可空 数组, 
+.参数 不为函数头, 逻辑型, 可空, 默认为假。
+.参数 不返回, 逻辑型, 可空, 默认为假。
+
+.局部变量 计次, 整数型, , , 
+.局部变量 代码, 字节集, , , 
+
+.变量循环首 (取数组成员数 (参数), 1, -1, 计次)
+    赋值 (代码, 相加 (代码, { 104 }, 到字节集 (参数 [计次])))
+.变量循环尾 ()
+返回 (相加 (选择 (不为函数头, {  }, { 85, 139, 236 }), { 184 }, 到字节集 (函数地址), 代码, { 255, 208 }, 选择 (不返回, {  }, { 201, 195 })))
+
+.子程序 启动线程_多参_Ret, 整数型, , 返回所执行的线程的返回值。
+.参数 进程句柄, 空白型, , -1为自进程
+.参数 线程句柄, 空白型, 参考 可空, 可提供变量保存新建线程的句柄，不需要请留空。如果接收了句柄记得要关闭。
+.参数 子程序指针, 空白型, , 
+.参数 参数1, 空白型, 可空, 实际上支持无限个参数，自己看着改。
+.参数 参数2, 空白型, 可空, 
+.参数 参数3, 空白型, 可空, 
+.参数 参数4, 空白型, 可空, 
+.参数 参数5, 空白型, 可空, 
+.参数 参数6, 空白型, 可空, 
+.参数 参数7, 空白型, 可空, 
+.参数 参数8, 空白型, 可空, 
+.参数 参数9, 空白型, 可空, 
+.参数 参数10, 空白型, 可空, 
+.参数 参数11, 空白型, 可空, 
+.参数 参数12, 空白型, 可空, 
+.参数 参数13, 空白型, 可空, 
+.参数 参数14, 空白型, 可空, 
+.参数 参数15, 空白型, 可空, 
+
+.局部变量 计次, 整数型, , , 
+.局部变量 数值, 字节集, , , 
+.局部变量 参数, 整数型, , "0", 
+.局部变量 地址, 整数型, , , 
+.局部变量 返回值, 整数型, , , 
+
+赋值 (数值, 指针到字节集 (_取整数型指针 (参数1), 120))
+.变量循环首 (1, 113, 8, 计次)
+    .如果真 (等于 (数值 [相加 (计次, 4)], 1))
+        加入成员 (参数, 字节集_到整数 (数值, 计次))
+        到循环尾 ()
+    .如果真结束
+    跳出循环 ()
+.变量循环尾 ()
+赋值 (地址, 写入内存数据_ (进程句柄, MakeCallCode (子程序指针, 参数)))
+.如果真 (等于 (地址, 0))
+    返回 (0)
+.如果真结束
+赋值 (线程句柄, CreateRemoteThread (进程句柄, 0, 0, 地址, 0, 0, 0))
+WaitForSingleObject (线程句柄, #INFINITE)
+GetExitCodeThread (线程句柄, 返回值)
+释放内存_ (进程句柄, 地址)
+.如果真 (并且 (是否为空 (线程句柄), 不等于 (线程句柄, 0)))
+    CloseHandle (线程句柄)
+.如果真结束
+返回 (返回值)
+
+.子程序 启动线程_多参_hThread, 整数型, , 返回新创建的线程的句柄，不用时记得关闭句柄。
+.参数 进程句柄, 空白型, , 
+.参数 参数保存地址, 空白型, 参考, 记得要用 释放内存_() 释放该处地址的内存及使用CloseHandle关闭线程句柄。
+.参数 子程序地址, 空白型, , 
+.参数 参数1, 空白型, 可空, 
+.参数 参数2, 空白型, 可空, 
+.参数 参数3, 空白型, 可空, 
+.参数 参数4, 空白型, 可空, 
+.参数 参数5, 空白型, 可空, 
+.参数 参数6, 空白型, 可空, 
+.参数 参数7, 空白型, 可空, 
+.参数 参数8, 空白型, 可空, 
+.参数 参数9, 空白型, 可空, 
+.参数 参数10, 空白型, 可空, 
+.参数 参数11, 空白型, 可空, 
+.参数 参数12, 空白型, 可空, 
+.参数 参数13, 空白型, 可空, 
+.参数 参数14, 空白型, 可空, 
+.参数 参数15, 空白型, 可空, 
+
+.局部变量 计次, 整数型, , , 
+.局部变量 数值, 字节集, , , 
+.局部变量 参数, 整数型, , "0", 
+
+赋值 (数值, 指针到字节集 (_取整数型指针 (参数1), 120))
+.变量循环首 (1, 113, 8, 计次)
+    .如果真 (等于 (数值 [相加 (计次, 4)], 1))
+        加入成员 (参数, 字节集_到整数 (数值, 计次))
+        到循环尾 ()
+    .如果真结束
+    跳出循环 ()
+.变量循环尾 ()
+赋值 (参数保存地址, 写入内存数据_ (进程句柄, MakeCallCode (子程序地址, 参数)))
+.如果真 (等于 (参数保存地址, 0))
+    返回 (0)
+.如果真结束
+返回 (CreateRemoteThread (进程句柄, 0, 0, 参数保存地址, 0, 0, 0))
+
+
+.程序集 内存操作, , , 
+
+.子程序 内存_读整数内存, 整数型, , 读取整数型数据(返回整数内容 失败返回0)
+.参数 进程句柄, 整数型, , 
+.参数 内存地址, 整数型, , 
+.参数 长度, 整数型, 可空, 默认四字节  1=字节  2=二字节 4=四字节
+.参数 偏移量, 整数型, 可空 数组, 
+.参数 是否读取成功, 整数型, 参考 可空, 
+
+.局部变量 临时整数, 整数型, , , 
+.局部变量 操作句柄, 整数型, , , 
+.局部变量 偏移个数, 整数型, , , 
+.局部变量 xx, 整数型, , , 
+.局部变量 临时地址, 整数型, , , 
+
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+.如果真 (等于 (长度, 0))
+    赋值 (长度, 4)
+.如果真结束
+.计次循环首 (取数组成员数 (偏移量), xx)
+     ' 内存_修改进程虚拟保护 (进程句柄, 内存地址, 4, 64)
+    赋值 (是否读取成功, 读整数内存_ (进程句柄, 内存地址, 临时整数, 4, 0))
+    赋值 (内存地址, 相加 (临时整数, 偏移量 [xx]))
+.计次循环尾 ()
+赋值 (临时整数, 0)
+ ' 内存_修改进程虚拟保护 (进程句柄, 内存地址, 长度, 64)
+赋值 (是否读取成功, 读整数内存_ (进程句柄, 内存地址, 临时整数, 长度, 0))
+返回 (临时整数)
+
+.子程序 内存_读短整数内存, 短整数型, , 
+.参数 进程句柄, 整数型, , 
+.参数 内存地址, 整数型, , 
+.参数 偏移量, 整数型, 可空 数组, 
+.参数 是否读取成功, 整数型, 参考 可空, 
+
+返回 (到短整数 (内存_读整数内存 (进程句柄, 内存地址, 2, 偏移量, 是否读取成功)))
+
+
+.子程序 内存_读字节内存, 字节型, , 
+.参数 进程句柄, 整数型, , 
+.参数 内存地址, 整数型, , 
+.参数 偏移量, 整数型, 可空 数组, 
+.参数 是否读取成功, 整数型, 参考 可空, 
+
+返回 (到字节 (内存_读整数内存 (进程句柄, 内存地址, 1, 偏移量, 是否读取成功)))
+
+.子程序 内存_读小数内存, 小数型, , 读取小数型数据(返回整数内容 失败返回0)
+.参数 进程句柄, 整数型, , 
+.参数 内存地址, 整数型, , 
+.参数 偏移量, 整数型, 可空 数组, 
+.参数 是否读取成功, 整数型, 参考 可空, 
+
+.局部变量 返回的小数, 小数型, , , 
+.局部变量 临时字节集, 字节集, , , 
+
+赋值 (临时字节集, 内存_读字节集内存 (进程句柄, 内存地址, 4, 偏移量, 是否读取成功))
+赋值 (返回的小数, 取字节集数据 (临时字节集, #小数型, ))
+返回 (返回的小数)
+
+.子程序 内存_读文本内存, 文本型, , 读取文本型数据(返回文本 失败返回空文本)
+.参数 进程句柄, 整数型, , 
+.参数 内存地址, 整数型, , 
+.参数 长度, 整数型, 可空, 默认为20 欲读取的长度字节
+.参数 偏移量, 整数型, 可空 数组, 
+.参数 是否读取成功, 整数型, 参考 可空, 
+
+.局部变量 临时字节集, 字节集, , , 
+.局部变量 操作句柄, 整数型, , , 
+.局部变量 xx, 整数型, , , 
+.局部变量 临时整数, 整数型, , , 
+
+.如果真 (等于 (长度, 0))
+    赋值 (长度, 20)
+.如果真结束
+赋值 (临时字节集, 内存_读字节集内存 (进程句柄, 内存地址, 长度, 偏移量, 是否读取成功))
+返回 (到文本 (临时字节集))
+
+
+
+.子程序 内存_读字节集内存, 字节集, , 读取字节集数据(返回整数内容 失败返回0)
+.参数 进程句柄, 整数型, , 
+.参数 内存地址, 整数型, , 
+.参数 长度, 整数型, , 
+.参数 偏移量, 整数型, 可空 数组, 
+.参数 是否读取成功, 整数型, 参考 可空, 
+
+.局部变量 临时字节集, 字节集, , , 
+.局部变量 操作句柄, 整数型, , , 
+.局部变量 临时整数, 整数型, , , 
+.局部变量 xx, 整数型, , , 
+
+.计次循环首 (取数组成员数 (偏移量), xx)
+    内存_修改虚拟保护 (内存地址, 4, 64)
+    赋值 (是否读取成功, 读整数内存_ (进程句柄, 内存地址, 临时整数, 4, 0))
+    赋值 (内存地址, 相加 (临时整数, 偏移量 [xx]))
+.计次循环尾 ()
+内存_修改虚拟保护 (内存地址, 长度, 64)
+赋值 (临时字节集, 取空白字节集 (长度))
+赋值 (是否读取成功, 读字节集内存_ (进程句柄, 内存地址, 临时字节集, 长度, 0))
+返回 (临时字节集)
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 内存_写整数内存, 整数型, , 写入整数数据
+.参数 进程句柄, 整数型, , 进程ID
+.参数 内存地址, 整数型, , 内存地址
+.参数 写入数据, 整数型, , 写入数据
+.参数 写入长度, 整数型, 可空, 默认四字节  1=字节  2=二字节 4=四字节
+.参数 偏移量, 整数型, 可空 数组, 
+
+.局部变量 操作句柄, 整数型, , , 
+.局部变量 a, 整数型, , , 
+.局部变量 临时整数, 整数型, , , 
+.局部变量 xx, 整数型, , , 
+.局部变量 返回值, 整数型, , , 
+
+.如果真 (等于 (写入长度, 0))
+    赋值 (写入长度, 4)
+.如果真结束
+.计次循环首 (取数组成员数 (偏移量), xx)
+    内存_修改虚拟保护 (内存地址, 4, 64)
+    读整数内存_ (进程句柄, 内存地址, 临时整数, 4, 0)
+    赋值 (内存地址, 相加 (临时整数, 偏移量 [xx]))
+.计次循环尾 () ' 本源码来自易语言资源网(www.5A5X.com)
+内存_修改虚拟保护 (内存地址, 写入长度, 64)
+赋值 (返回值, 写整数内存_ (进程句柄, 内存地址, 写入数据, 写入长度, 0))
+返回 (返回值)
+
+.子程序 内存_写字节集内存, 整数型, , 写入字节集数据
+.参数 进程句柄, 整数型, , 进程ID
+.参数 内存地址, 整数型, , 内存地址
+.参数 写入数据, 字节集, , 写入数据
+.参数 偏移量, 整数型, 可空 数组, 
+
+.局部变量 操作句柄, 整数型, , , 
+.局部变量 a, 整数型, , , 
+.局部变量 临时整数, 整数型, , , 
+.局部变量 xx, 整数型, , , 
+.局部变量 返回值, 整数型, , , 
+
+.计次循环首 (取数组成员数 (偏移量), xx)
+    内存_修改虚拟保护 (内存地址, 4, 64)
+    读整数内存_ (进程句柄, 内存地址, 临时整数, 4, 0)
+    赋值 (内存地址, 相加 (临时整数, 偏移量 [xx]))
+.计次循环尾 ()
+内存_修改虚拟保护 (内存地址, 取字节集长度 (写入数据), 64)
+赋值 (返回值, 写字节集内存_ (进程句柄, 内存地址, 写入数据, 取字节集长度 (写入数据), 0))
+返回 (返回值)
+
+.子程序 内存_写文本内存, 整数型, , 写入文本型数据
+.参数 进程句柄, 整数型, , 进程ID
+.参数 内存地址, 整数型, , 内存地址
+.参数 写入数据, 文本型, , 写入数据
+.参数 偏移量, 整数型, 可空 数组, 
+
+返回 (内存_写字节集内存 (进程句柄, 内存地址, 到字节集 (写入数据), 偏移量))
+
+.子程序 内存_写小数内存, 整数型, , 写入小数型数据
+.参数 进程句柄, 整数型, , 进程ID
+.参数 内存地址, 整数型, , 内存地址
+.参数 写入数据, 小数型, , 写入数据
+.参数 偏移量, 整数型, 可空 数组, 
+
+返回 (内存_写字节集内存 (进程句柄, 内存地址, 到字节集 (写入数据), 偏移量))
+
+.子程序 内存_申请内存, 整数型, , 指定进程申请一段为00的内存
+.参数 进程句柄, 整数型, , 指定进程句柄
+.参数 长度, 字节型, 可空, 长度
+
+.局部变量 临时长度, 字节型, , , 
+.局部变量 地址, 整数型, , , 
+
+.如果真 (等于 (长度, 0))
+    赋值 (长度, 32)
+.如果真结束
+赋值 (临时长度, 长度)
+赋值 (地址, VirtualAllocEx (进程句柄, 0, 长度, 4096, 64))
+返回 (地址)
+
+
+.子程序 内存_申请文本内存, 整数型, , 申请内存并写入文本内容
+.参数 进程句柄, 整数型, , 
+.参数 内容, 文本型, , 
+
+.局部变量 地址, 整数型, , , 
+
+赋值 (地址, 内存_申请内存 (进程句柄, 32))
+内存_写文本内存 (进程句柄, 地址, 内容)
+返回 (地址)
+
+.子程序 内存_申请字节集内存, 整数型, , 申请内存并写入字节集内容
+.参数 进程句柄, 整数型, , 
+.参数 数据, 字节集, , 
+
+.局部变量 地址, 整数型, , , 
+
+赋值 (地址, 内存_申请内存 (进程句柄, 32))
+内存_写字节集内存 (进程句柄, 地址, 数据)
+返回 (地址)
+
+
+.子程序 内存_释放内存, 逻辑型, , 释放指定进程内存
+.参数 进程句柄, 整数型, , 进程句柄
+.参数 内存地址, 整数型, , 地址
+
+.局部变量 返回值, 空白型, , , 
+
+返回 (VirtualFreeEx (进程句柄, 内存地址, 0, 32768))
+
+.子程序 内存_修改虚拟保护, 整数型, , 修改成功返回原保护类型
+.参数 内存地址, 整数型, , 内存地址
+.参数 保护长度, 整数型, 可空, 修改长度 默认为 5
+.参数 保护类型, 整数型, 可空, PAGE_等  默认 PAGE_EXECUTE_WRITECOPY(允许任何操作)
+
+.局部变量 原始保护类型, 整数型, , , 
+.局部变量 句柄, 整数型, , , 
+
+.如果真 (等于 (是否为空 (保护长度), 真))
+    赋值 (保护长度, 5)
+.如果真结束
+.如果真 (等于 (是否为空 (保护类型), 真))
+    赋值 (保护类型, #PAGE_EXECUTE_READWRITE)
+.如果真结束
+VirtualProtect (内存地址, 保护长度, 保护类型, 原始保护类型)
+返回 (原始保护类型)
+' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 内存_修改进程虚拟保护, 整数型, , 修改成功返回原保护类型
+.参数 进程句柄, 整数型, , 
+.参数 内存地址, 整数型, , 内存地址
+.参数 保护长度, 整数型, 可空, 修改长度 默认为 5
+.参数 保护类型, 整数型, 可空, PAGE_等  默认 PAGE_EXECUTE_WRITECOPY(允许任何操作)
+
+.局部变量 原始保护类型, 整数型, , , 
+
+.如果真 (等于 (是否为空 (保护长度), 真))
+    赋值 (保护长度, 5)
+.如果真结束
+.如果真 (等于 (是否为空 (保护类型), 真))
+    赋值 (保护类型, #PAGE_EXECUTE_READWRITE)
+.如果真结束
+VirtualProtectEx (进程句柄, 内存地址, 保护长度, 保护类型, 原始保护类型)
+返回 (原始保护类型)
+
+.程序集 线程_注入DLL, , , 
+
+.子程序 注入_安装线程DLL, 整数型, 公开, 线程DLL注入 失败返回0 成功返回DLL句柄
+.参数 进程句柄, 整数型, , 欲创建线程的进程
+.参数 DLL全名, 文本型, , 要注入的DLL 绝对路径,如C:\a.dll
+.参数 DLL接口, 文本型, 可空, DLL对外开放函数名,比如初始化
+.参数 线程ID, 整数型, 可空, 返回的线程ID
+
+.局部变量 创建线程入口, 整数型, , , 
+.局部变量 模块名地址, 整数型, , , 
+.局部变量 接口名地址, 整数型, , , 
+.局部变量 主线程, 整数型, , , 
+.局部变量 线程句柄, 整数型, , , 
+.局部变量 接口地址, 整数型, , , 
+.局部变量 GetProcAddress参数, 整数型, , "2", 
+.局部变量 调用地址, 整数型, , , 
+.局部变量 _LoadLibraryExA, 整数型, , , 
+.局部变量 _LoadLibraryExW, 整数型, , , 
+.局部变量 参数, 整数型, , "1", 
+.局部变量 模块句柄, 整数型, , , 
+
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+ ' 用游戏来载入DLL
+.如果真 (等于 (寻找文本 (DLL全名, “:\”, , 假), -1))
+    赋值 (DLL全名, 相加 (取运行目录 (), “\”, DLL全名))
+.如果真结束
+赋值 (模块名地址, 内存_申请文本内存 (进程句柄, DLL全名))
+赋值 (调用地址, 操作_取API地址 (“LoadLibraryA”))
+ ' 修复载入DLLHOOK
+ ' 内存_写字节集内存 (进程句柄, 调用地址, 内存_读字节集内存 (-1, 调用地址, 10))
+ ' _LoadLibraryExA ＝ 操作_取API地址 (“LoadLibraryExA”)
+ ' 内存_写字节集内存 (进程句柄, _LoadLibraryExA, 内存_读字节集内存 (-1, _LoadLibraryExA, 10))
+ ' _LoadLibraryExW ＝ 操作_取API地址 (“LoadLibraryExW”)
+ ' 内存_写字节集内存 (进程句柄, _LoadLibraryExW, 内存_读字节集内存 (-1, _LoadLibraryExW, 10))
+
+内存_写字节集内存 (进程句柄, 操作_取API地址 (“SetCurrentDirectoryA”), { 194, 4, 0 }) ' 防止设置当前目录使得目标进程资源载入异常
+赋值 (参数 [1], 模块名地址)
+赋值 (模块句柄, 注入_远程call (进程句柄, 调用地址, 参数))
+内存_释放内存 (进程句柄, 模块名地址)
+.如果真 (等于 (模块句柄, 0))
+    返回 (0)
+.如果真结束
+赋值 (接口名地址, 内存_申请内存 (进程句柄, 32))
+内存_写文本内存 (进程句柄, 接口名地址, DLL接口)
+赋值 (GetProcAddress参数 [1], 模块句柄)
+赋值 (GetProcAddress参数 [2], 接口名地址)
+赋值 (接口地址, 注入_远程call (进程句柄, _取函数入口 (“kernel32.dll”, “GetProcAddress”), GetProcAddress参数))
+内存_释放内存 (进程句柄, 接口名地址)
+ ' 创建远线程
+赋值 (线程句柄, CreateRemoteThread (进程句柄, 0, 0, 接口地址, 0, 0, 线程ID))
+.如果真 (大于 (线程句柄, 0))
+    CloseHandle (线程句柄)
+    返回 (模块句柄)
+.如果真结束
+返回 (0)
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 注入_远程call, 整数型, 公开, 远程调用函数
+.参数 进程句柄, 整数型, , 
+.参数 调用地址, 整数型, , 可用进程_取函数入口()取到地址
+.参数 调用参数, 整数型, 可空 数组, DLL的参数
+.参数 ecx, 整数型, 可空, 
+
+.局部变量 参数个数, 整数型, , , ebp-4
+.局部变量 计次, 整数型, , , 
+.局部变量 调用字节集, 字节集, , , 
+.局部变量 指针地址, 整数型, , , 
+.局部变量 线程ID, 整数型, , , 
+.局部变量 线程句柄, 整数型, , , 
+.局部变量 返回数值, 整数型, , , 
+
+赋值 (指针地址, 内存_申请内存 (进程句柄, 64))
+赋值 (调用字节集, 相加 (调用字节集, { 85, 139, 236 }))
+.如果真 (等于 (是否为空 (调用参数), 假))
+    赋值 (参数个数, 取数组成员数 (调用参数))
+    .计次循环首 (参数个数, 计次)
+        赋值 (调用字节集, 相加 (调用字节集, { 104 }, 到字节集 (调用参数 [相加 (相减 (参数个数, 计次), 1)]))) ' push xxxxxxxx
+    .计次循环尾 ()
+.如果真结束
+.如果真 (等于 (是否为空 (ecx), 假))
+    赋值 (调用字节集, 相加 (调用字节集, { 199, 193 }, 到字节集 (ecx))) ' mov ecx,xxxxxxxx
+.如果真结束
+赋值 (调用字节集, 相加 (调用字节集, 操作_call地址取机器码 (调用地址, 相加 (指针地址, 取字节集长度 (调用字节集)))))
+赋值 (调用字节集, 相加 (调用字节集, { 139, 229, 93, 195 }))
+内存_写字节集内存 (进程句柄, 指针地址, 调用字节集)
+赋值 (线程句柄, CreateRemoteThread (进程句柄, 0, 0, 指针地址, 0, 0, 4592)) ' 创建远线程
+WaitForSingleObject (线程句柄, #INFINITE) ' 等待线程结束
+GetExitCodeThread (线程句柄, 返回数值) ' 获取线程返回值
+内存_释放内存 (进程句柄, 指针地址)
+CloseHandle (线程句柄)
+返回 (返回数值)
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 进程_取函数入口, 整数型, 公开, 获取函数入口
+.参数 进程句柄, 整数型, , 
+.参数 模块名, 文本型, , 
+.参数 函数名, 文本型, , 
+
+.局部变量 参数, 整数型, , "1", 
+.局部变量 模块句柄, 整数型, , , 
+.局部变量 参数1, 整数型, , "2", 
+.局部变量 函数地址, 整数型, , , 
+
+赋值 (参数 [1], 内存_申请文本内存 (进程句柄, 模块名))
+赋值 (模块句柄, 注入_远程call (进程句柄, _取函数入口 (“kernel32.dll”, “GetModuleHandleA”), 参数))
+内存_释放内存 (进程句柄, 参数 [1])
+赋值 (参数1 [1], 模块句柄)
+赋值 (参数1 [2], 内存_申请文本内存 (进程句柄, 函数名))
+赋值 (函数地址, 注入_远程call (进程句柄, _取函数入口 (“kernel32.dll”, “GetProcAddress”), 参数1))
+内存_释放内存 (进程句柄, 参数1 [2])
+返回 (函数地址)
+
+.子程序 操作_jmp地址取机器码, 字节集, , JMP xxxxxxx
+.参数 被跳转地址, 整数型, , 被JMP的地址
+.参数 入口地址, 整数型, 可空, JMP入口地址
+
+.局部变量 字节集, 字节集, , , 
+
+赋值 (字节集, 相加 ({ 233 }, 到字节集 (到整数 (相减 (被跳转地址, 相加 (入口地址, 5))))))
+返回 (字节集)
+
+.子程序 操作_call地址取机器码, 字节集, , call xxxxxxx
+.参数 被CALL地址, 整数型, , 被CALL的地址
+.参数 入口地址, 整数型, 可空, CALL入口地址
+
+.局部变量 字节集, 字节集, , , 
+
+赋值 (字节集, 相加 ({ 232 }, 到字节集 (到整数 (相减 (被CALL地址, 相加 (入口地址, 5))))))
+返回 (字节集)
+
+.子程序 操作_取API地址, 整数型, , 
+.参数 API名, 文本型, , 
+
+.局部变量 API组, 文本型, , "0", 
+.局部变量 计次, 整数型, , , 
+.局部变量 地址, 整数型, , , 
+
+赋值 (API组, { “kernel32.dll”, “user32.dll”, “winmm.dll”, “ws2_32.dll”, “WinINet.dll”, “gdi32.dll”, “GLU32.DLL”, “aclui.dll”, “acsmib.dll”, “activeds.dll”, “AcXtrnal.dll”, “adimage.dll”, “adptif.dll”, “ADVAPI32.DLL”, “advpack.dll”, “atl.dll”, “authz.dll”, “avicap32.dll”, “avifil32.dll”, “browseui.dll”, “CABINET.DLL”, “clusapi.dll”, “comctl32.dll”, “comdlg32.dll”, “comsvcs.dll”, “crtdll.dll”, “crypt32.dll”, “cryptnet.dll”, “D3DRM.DLL”, “dbghelp.dll”, “ddraw.dll”, “DHCPCSVC.DLL”, “digest.dll”, “DINPUT.DLL”, “dplay.dll”, “dplayx.dll”, “dsound.dll”, “dsprop.dll”, “dsuiext.dll”, “ftsrch.dll”, “gpedit.dll”, “hhctrl.ocx”, “hlink.dll”, “iasperf.dll”, “icm32.dll”, “ICMP.DLL”, “icmui.dll”, “idq.dll”, “iedkcs32.dll”, “iissuba.dll”, “IMAGEHLP.DLL”, “imm32.dll”, “inetcpl.cpl”, “IPHLPAPI.DLL”, “iprop.dll”, “KSUSER.DLL”, “loadperf.dll”, “lz32.dll”, “mapi32.dll”, “mgmtapi.dll”, “MOBSYNC.DLL”, “mpg4dmod.dll”, “mpr.dll”, “mprapi.dll”, “mqrt.dll”, “msacm32.dll”, “msafd.dll”, “mscms.dll”, “mscpxl32.dLL”, “msgina.dll”, “MSHTML.DLL”, “MSI.DLL”, “msimg32.dll”, “msorcl32.dll”, “MSPATCHA.DLL”, “msrating.dll”, “mstlsapi.dll”, “msvbvm50.dll”, “msvfw32.dll”, “MSWSOCK.DLL”, “MTXDM.DLL”, “MTXOCI.DLL”, “NDDEAPI.DLL”, “ndisnpp.dll”, “netapi32.dll”, “npptools.dll”, “ntdll.dll”, “ntdsapi.dll”, “ntdsbcli.dll”, “ntmsapi.dll”, “nwprovau.dll”, “odbc32.dll”, “ODBCBCP.DLL”, “odbccp32.dll”, “ODBCTRAC.DLL”, “ole32.dll”, “OLEACC.DLL”, “oleaut32.dll”, “olecli32.dll”, “oledlg.dll”, “olesvr32.dll”, “opengl32.dll”, “password.cpl”, “pdh.dll”, “Powrprof.dll”, “psapi.dll”, “qosname.dll”, “query.dll”, “rasapi32.dll”, “raschap.dll”, “rasdlg.dll”, “rasman.dll”, “rassapi.dll”, “rastls.dll”, “resutils.dll”, “RICHED20.DLL”, “rpcns4.dll”, “rpcrt4.dll”, “RSRC32.dll”, “rtm.dll”, “rtutils.dll”, “scarddlg.dll”, “secur32.dll”, “SENSAPI.DLL”, “setupapi.dll”, “SFC.DLL”, “shdocvw.dll”, “shell32.dll”, “shlwapi.dll”, “snmpapi.dll”, “softpub.dll”, “spoolss.dll”, “SVRAPI.DLL”, “tapi32.dll”, “TLBINF32.dll”, “traffic.dll”, “url.dll”, “URLMON.DLL”, “userenv.dll”, “USP10.DLL”, “uxtheme.dll”, “VB5STKIT.DLL”, “vba6.dll”, “VDMDBG.DLL”, “version.dll”, “winfax.dll”, “wininet.dll”, “winscard.dll”, “winspool.dll”, “winspool.drv”, “wintrust.dll”, “wldap32.dll”, “WOW32.DLL”, “wsnmp32.dll”, “wtsapi32.dll”, “xolehlp.dll” })
+
+.计次循环首 (取数组成员数 (API组), 计次)
+    赋值 (地址, _取函数入口 (API组 [计次], API名))
+    .如果真 (大于 (地址, 0))
+        跳出循环 ()
+    .如果真结束
+    ' 本源码来自易语言资源网(www.5A5X.com)
+.计次循环尾 ()
+返回 (地址)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

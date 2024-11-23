@@ -1,0 +1,5179 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：网页编辑器
+ ' 程序描述：可视化网页编辑器，让网页制作更容易！
+ ' 程序作者：小刀
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：http://xdsoft.u.hgsem.com/
+ ' 版权声明：欢迎加入我们，与我们一起研究易语言！
+ ' 版本号：2.0
+ ' 创建号：1.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 822
+    高度 = 620
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 1
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 3
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “易视网页编辑器V2.0 BY小刀”
+    帮助文件名 = “”
+
+窗口 超级链接窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 373
+    高度 = 202
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “超级链接”
+    帮助文件名 = “”
+
+窗口 视频窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 355
+    高度 = 190
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “多媒体视频”
+    帮助文件名 = “”
+
+窗口 按钮窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 374
+    高度 = 247
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “插入按钮”
+    帮助文件名 = “”
+
+窗口 Java脚本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 372
+    高度 = 286
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “JavaScript”
+    帮助文件名 = “”
+
+窗口 表格窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 381
+    高度 = 288
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “插入表格”
+    帮助文件名 = “”
+
+窗口 图片窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 325
+    高度 = 223
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “插入图片”
+    帮助文件名 = “”
+
+窗口 取色窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 452
+    高度 = 302
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = 16777215 '  0xFFFFFF
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “取色窗口”
+    帮助文件名 = “”
+
+窗口 艺术字窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 709
+    高度 = 425
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “插入艺术字”
+    帮助文件名 = “”
+
+窗口 字幕窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 546
+    高度 = 298
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = 15984346 '  0xF3E6DA
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “插入滚动字幕”
+    帮助文件名 = “”
+
+窗口 分组框窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 190
+    高度 = 254
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “插入分组框”
+    帮助文件名 = “”
+
+窗口 欢迎窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 576
+    高度 = 319
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 0
+    底图方式 = 1
+    底色 = 57472 '  0xE080
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 真
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 已保存到：D:\易语言学习\Data\小刀网页编辑器V2.0.e\欢迎窗口_底图
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “初始化窗口”
+    帮助文件名 = “”
+
+窗口 网页框架窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 310
+    高度 = 191
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “插入网页框架”
+    帮助文件名 = “”
+
+窗口 发光字窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 343
+    高度 = 181
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “插入发光字”
+    帮助文件名 = “”
+
+窗口 页面属性窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 301
+    高度 = 224
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “页面属性”
+    帮助文件名 = “”
+
+窗口 相册窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 613
+    高度 = 267
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “制作相册”
+    帮助文件名 = “”
+
+窗口 导入提示窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 240
+    高度 = 56
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 0
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 真
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “”
+    帮助文件名 = “”
+
+
+
+.图片 blank, " ' 已保存到：D:\易语言学习\Data\小刀网页编辑器V2.0.e\blank", , 空白网页
+.图片 钢笔光标, " ' 已保存到：D:\易语言学习\Data\小刀网页编辑器V2.0.e\钢笔光标", , 钢笔
+.图片 手型光标, " ' 已保存到：D:\易语言学习\Data\小刀网页编辑器V2.0.e\手型光标", , 手型
+.图片 langs, " ' 已保存到：D:\易语言学习\Data\小刀网页编辑器V2.0.e\langs", , 关键字XML
+.图片 stylers, " ' 已保存到：D:\易语言学习\Data\小刀网页编辑器V2.0.e\stylers", , 风格XML
+.常量 初始化代码, "“<HTML><HEAD><TITLE>无标题网页</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<META content="MSHTML 6.00.2900.6058" name=GENERATOR></HEAD>
+<BODY></BODY></HTML>”", , 
+.常量 行号旁注, "0", , 
+.常量 折叠旁注, "2", , 
+.常量 , , , 
+.常量 GW_CHILD, "5", , 查找子窗口
+.常量 , , , 
+.常量 艺术字尾, "“"></v:textpath></v:shape></span>”", , 
+.常量 艺术字1, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t136 coordsize = "21600,21600" o:spt = "136" path = " m@7,0 l@8,0 m@5,21600 l@6,21600 e" adj = "10800"><v:formulas><v:f eqn = "sum #0 0 10800 "></v:f><v:f eqn = "prod #0 2 1 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f><v:f eqn = "sum 0 0 @2 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "if @0 @3 0 "></v:f><v:f eqn = "if @0 21600 @1 "></v:f><v:f eqn = "if @0 0 @2 "></v:f><v:f eqn = "if @0 @4 21600 "></v:f><v:f eqn = "mid @5 @6 "></v:f><v:f eqn = "mid @8 @5 "></v:f><v:f eqn = "mid @7 @8 "></v:f><v:f eqn = "mid @6 @7 "></v:f><v:f eqn = "sum @6 0 @5 "></v:f></v:formulas><v:path o:connectlocs="@9,0;@10,10800;@11,21600;@12,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="#0,bottomRight" xrange="6629,14971"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0001" type = "#_x0000_t136" coordsize = "21600,21600"><v:shadow color = "#868686"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字2, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t172 coordsize = "21600,21600" o:spt = "172" path = " m0@0 l21600,0 m0,21600 l21600@1 e" adj = "12000"><v:formulas><v:f eqn = "sum #0 0 0 "></v:f><v:f eqn = "sum 21600 0 @0 "></v:f><v:f eqn = "prod #0 1 2 "></v:f><v:f eqn = "sum @2 10800 0 "></v:f><v:f eqn = "prod @1 1 2 "></v:f><v:f eqn = "sum @4 10800 0 "></v:f></v:formulas><v:path o:connectlocs="10800,@2;0,@3;10800,@5;21600,@4" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="topLeft,#0" yrange="0,15429"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0002" type = "#_x0000_t172" coordsize = "21600,21600" fillcolor = "black"><v:shadow color = "#868686"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字3, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t144 coordsize = "21600,21600" o:spt = "144" path = " al10800,10800,10800,10800@2@14 e" adj = "11796480"><v:formulas><v:f eqn = "sum #1 0 0 "></v:f><v:f eqn = "sum #0 0 0 "></v:f><v:f eqn = "sum 0 0 #0 "></v:f><v:f eqn = "sumangle #0 0 180 "></v:f><v:f eqn = "sumangle #0 0 90 "></v:f><v:f eqn = "prod @4 2 1 "></v:f><v:f eqn = "sumangle #0 90 0 "></v:f><v:f eqn = "prod @6 2 1 "></v:f><v:f eqn = "abs #0 "></v:f><v:f eqn = "sumangle @8 0 90 "></v:f><v:f eqn = "if @9 @7 @5 "></v:f><v:f eqn = "sumangle @10 0 360 "></v:f><v:f eqn = "if @10 @11 @10 "></v:f><v:f eqn = "sumangle @12 0 360 "></v:f><v:f eqn = "if @12 @13 @12 "></v:f><v:f eqn = "sum 0 0 @14 "></v:f><v:f eqn = "sum 10800 0 0 "></v:f><v:f eqn = "cos 10800 #0 "></v:f><v:f eqn = "sin 10800 #0 "></v:f><v:f eqn = "sum @17 10800 0 "></v:f><v:f eqn = "sum @18 10800 0 "></v:f><v:f eqn = "sum 10800 0 @17 "></v:f><v:f eqn = "if @9 0 21600 "></v:f><v:f eqn = "sum 10800 0 @18 "></v:f></v:formulas><v:path o:connectlocs="10800,@22;@19,@20;@21,@20" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath style="v-text-kern: t" on = "t" fitpath = "t"></v:textpath><v:handles><v:h position="@16,#0" polar="10800,10800"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0003" type = "#_x0000_t144" coordsize = "21600,21600" fillcolor = "black"><v:shadow color = "#868686"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; fitshape: " t? trim = "t" string = "”", , 
+.常量 艺术字4, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t161 coordsize = "21600,21600" o:spt = "161" path = " m0,0 c7200@0,14400@0,21600,0 m0,21600 c7200@1,14400@1,21600,21600 e" adj = "4050"><v:formulas><v:f eqn = "prod #0 4 3 "></v:f><v:f eqn = "sum 21600 0 @0 "></v:f><v:f eqn = "sum #0 0 0 "></v:f><v:f eqn = "sum 21600 0 #0 "></v:f></v:formulas><v:path o:connectlocs="10800,@2;0,10800;10800,@3;21600,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t" xscale = "t"></v:textpath><v:handles><v:h position="center,#0" yrange="0,8100"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0004" type = "#_x0000_t161" coordsize = "21600,21600" fillcolor = "black" adj = "5665"><v:shadow color = "#868686"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" xscale = "f" string = "”", , 
+.常量 艺术字5, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t175 coordsize = "21600,21600" o:spt = "175" path = " m0,0 qy10800@0,21600,0 m0@1 qy10800,21600,21600@1 e" adj = "3086"><v:formulas><v:f eqn = "sum #0 0 0 "></v:f><v:f eqn = "sum 21600 0 #0 "></v:f><v:f eqn = "prod @1 1 2 "></v:f><v:f eqn = "sum @2 10800 0 "></v:f></v:formulas><v:path o:connectlocs="10800,@0;0,@2;10800,21600;21600,@2" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="center,#0" yrange="0,7200"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0005" type = "#_x0000_t175" coordsize = "21600,21600" fillcolor = "black" adj = "7200"><v:shadow color = "#868686"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字6, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t136 coordsize = "21600,21600" o:spt = "136" path = " m@7,0 l@8,0 m@5,21600 l@6,21600 e" adj = "10800"><v:formulas><v:f eqn = "sum #0 0 10800 "></v:f><v:f eqn = "prod #0 2 1 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f><v:f eqn = "sum 0 0 @2 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "if @0 @3 0 "></v:f><v:f eqn = "if @0 21600 @1 "></v:f><v:f eqn = "if @0 0 @2 "></v:f><v:f eqn = "if @0 @4 21600 "></v:f><v:f eqn = "mid @5 @6 "></v:f><v:f eqn = "mid @8 @5 "></v:f><v:f eqn = "mid @7 @8 "></v:f><v:f eqn = "mid @6 @7 "></v:f><v:f eqn = "sum @6 0 @5 "></v:f></v:formulas><v:path o:connectlocs="@9,0;@10,10800;@11,21600;@12,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="#0,bottomRight" xrange="6629,14971"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt; rotation: 90" myid="_x0000_i0006" type = "#_x0000_t136" coordsize = "21600,21600" fillcolor = "black"><v:shadow color = "#868686"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t; v-rotate-letters: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字7, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t136 coordsize = "21600,21600" o:spt = "136" path = " m@7,0 l@8,0 m@5,21600 l@6,21600 e" adj = "10800"><v:formulas><v:f eqn = "sum #0 0 10800 "></v:f><v:f eqn = "prod #0 2 1 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f><v:f eqn = "sum 0 0 @2 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "if @0 @3 0 "></v:f><v:f eqn = "if @0 21600 @1 "></v:f><v:f eqn = "if @0 0 @2 "></v:f><v:f eqn = "if @0 @4 21600 "></v:f><v:f eqn = "mid @5 @6 "></v:f><v:f eqn = "mid @8 @5 "></v:f><v:f eqn = "mid @7 @8 "></v:f><v:f eqn = "mid @6 @7 "></v:f><v:f eqn = "sum @6 0 @5 "></v:f></v:formulas><v:path o:connectlocs="@9,0;@10,10800;@11,21600;@12,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="#0,bottomRight" xrange="6629,14971"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0007" type = "#_x0000_t136" coordsize = "21600,21600"><v:shadow on = "t" opacity = "52429f"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字8, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t136 coordsize = "21600,21600" o:spt = "136" path = " m@7,0 l@8,0 m@5,21600 l@6,21600 e" adj = "10800"><v:formulas><v:f eqn = "sum #0 0 10800 "></v:f><v:f eqn = "prod #0 2 1 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f><v:f eqn = "sum 0 0 @2 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "if @0 @3 0 "></v:f><v:f eqn = "if @0 21600 @1 "></v:f><v:f eqn = "if @0 0 @2 "></v:f><v:f eqn = "if @0 @4 21600 "></v:f><v:f eqn = "mid @5 @6 "></v:f><v:f eqn = "mid @8 @5 "></v:f><v:f eqn = "mid @7 @8 "></v:f><v:f eqn = "mid @6 @7 "></v:f><v:f eqn = "sum @6 0 @5 "></v:f></v:formulas><v:path o:connectlocs="@9,0;@10,10800;@11,21600;@12,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="#0,bottomRight" xrange="6629,14971"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0008" type = "#_x0000_t136" coordsize = "21600,21600" fillcolor = "#369" stroked = "f"><v:shadow on = "t" color = "#b2b2b2" opacity = "52429f" offset = "3pt"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字9, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t136 coordsize = "21600,21600" o:spt = "136" path = " m@7,0 l@8,0 m@5,21600 l@6,21600 e" adj = "10800"><v:formulas><v:f eqn = "sum #0 0 10800 "></v:f><v:f eqn = "prod #0 2 1 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f><v:f eqn = "sum 0 0 @2 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "if @0 @3 0 "></v:f><v:f eqn = "if @0 21600 @1 "></v:f><v:f eqn = "if @0 0 @2 "></v:f><v:f eqn = "if @0 @4 21600 "></v:f><v:f eqn = "mid @5 @6 "></v:f><v:f eqn = "mid @8 @5 "></v:f><v:f eqn = "mid @7 @8 "></v:f><v:f eqn = "mid @6 @7 "></v:f><v:f eqn = "sum @6 0 @5 "></v:f></v:formulas><v:path o:connectlocs="@9,0;@10,10800;@11,21600;@12,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="#0,bottomRight" xrange="6629,14971"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0009" type = "#_x0000_t136" coordsize = "21600,21600" fillcolor = "#b2b2b2" strokecolor = "#33c" strokeweight = "1pt"><v:fill opacity = ".5"></v:fill><v:shadow on = "t" color = "#99f" offset = "3pt"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字10, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t136 coordsize = "21600,21600" o:spt = "136" path = " m@7,0 l@8,0 m@5,21600 l@6,21600 e" adj = "10800"><v:formulas><v:f eqn = "sum #0 0 10800 "></v:f><v:f eqn = "prod #0 2 1 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f><v:f eqn = "sum 0 0 @2 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "if @0 @3 0 "></v:f><v:f eqn = "if @0 21600 @1 "></v:f><v:f eqn = "if @0 0 @2 "></v:f><v:f eqn = "if @0 @4 21600 "></v:f><v:f eqn = "mid @5 @6 "></v:f><v:f eqn = "mid @8 @5 "></v:f><v:f eqn = "mid @7 @8 "></v:f><v:f eqn = "mid @6 @7 "></v:f><v:f eqn = "sum @6 0 @5 "></v:f></v:formulas><v:path o:connectlocs="@9,0;@10,10800;@11,21600;@12,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="#0,bottomRight" xrange="6629,14971"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0010" type = "#_x0000_t136" coordsize = "21600,21600" stroked = "f"><v:fill type = "gradient" color2 = "#aaa"></v:fill><v:shadow on = "t" color = "#4d4d4d" opacity = "52429f" offset = ",3pt"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t; v-text-spacing: 78650f" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字11, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t136 coordsize = "21600,21600" o:spt = "136" path = " m@7,0 l@8,0 m@5,21600 l@6,21600 e" adj = "10800"><v:formulas><v:f eqn = "sum #0 0 10800 "></v:f><v:f eqn = "prod #0 2 1 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f><v:f eqn = "sum 0 0 @2 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "if @0 @3 0 "></v:f><v:f eqn = "if @0 21600 @1 "></v:f><v:f eqn = "if @0 0 @2 "></v:f><v:f eqn = "if @0 @4 21600 "></v:f><v:f eqn = "mid @5 @6 "></v:f><v:f eqn = "mid @8 @5 "></v:f><v:f eqn = "mid @7 @8 "></v:f><v:f eqn = "mid @6 @7 "></v:f><v:f eqn = "sum @6 0 @5 "></v:f></v:formulas><v:path o:connectlocs="@9,0;@10,10800;@11,21600;@12,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="#0,bottomRight" xrange="6629,14971"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0011" type = "#_x0000_t136" coordsize = "21600,21600" fillcolor = "#06c" strokecolor = "#9cf" strokeweight = "1.5pt"><v:shadow on = "t" color = "#900"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字12, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t136 coordsize = "21600,21600" o:spt = "136" path = " m@7,0 l@8,0 m@5,21600 l@6,21600 e" adj = "10800"><v:formulas><v:f eqn = "sum #0 0 10800 "></v:f><v:f eqn = "prod #0 2 1 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f><v:f eqn = "sum 0 0 @2 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "if @0 @3 0 "></v:f><v:f eqn = "if @0 21600 @1 "></v:f><v:f eqn = "if @0 0 @2 "></v:f><v:f eqn = "if @0 @4 21600 "></v:f><v:f eqn = "mid @5 @6 "></v:f><v:f eqn = "mid @8 @5 "></v:f><v:f eqn = "mid @7 @8 "></v:f><v:f eqn = "mid @6 @7 "></v:f><v:f eqn = "sum @6 0 @5 "></v:f></v:formulas><v:path o:connectlocs="@9,0;@10,10800;@11,21600;@12,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="#0,bottomRight" xrange="6629,14971"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt; rotation: 90" myid="_x0000_i0012" type = "#_x0000_t136" coordsize = "21600,21600" fillcolor = "maroon" strokecolor = "maroon"><v:shadow on = "t" color = "#b2b2b2" opacity = "52429f"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t; v-rotate-letters: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字13, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t136 coordsize = "21600,21600" o:spt = "136" path = " m@7,0 l@8,0 m@5,21600 l@6,21600 e" adj = "10800"><v:formulas><v:f eqn = "sum #0 0 10800 "></v:f><v:f eqn = "prod #0 2 1 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f><v:f eqn = "sum 0 0 @2 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "if @0 @3 0 "></v:f><v:f eqn = "if @0 21600 @1 "></v:f><v:f eqn = "if @0 0 @2 "></v:f><v:f eqn = "if @0 @4 21600 "></v:f><v:f eqn = "mid @5 @6 "></v:f><v:f eqn = "mid @8 @5 "></v:f><v:f eqn = "mid @7 @8 "></v:f><v:f eqn = "mid @6 @7 "></v:f><v:f eqn = "sum @6 0 @5 "></v:f></v:formulas><v:path o:connectlocs="@9,0;@10,10800;@11,21600;@12,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="#0,bottomRight" xrange="6629,14971"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0013" type = "#_x0000_t136" coordsize = "21600,21600" fillcolor = "yellow" stroked = "f"><v:fill type = "gradientCenter" color2 = "#f93" angle = "-135" focus = "100%" focusposition = ".5,.5" focussize = "0,0"><o:fill v:ext="view"></o:fill></v:fill><v:shadow on = "t" color = "silver" opacity = "52429f"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字14, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t172 coordsize = "21600,21600" o:spt = "172" path = " m0@0 l21600,0 m0,21600 l21600@1 e" adj = "12000"><v:formulas><v:f eqn = "sum #0 0 0 "></v:f><v:f eqn = "sum 21600 0 @0 "></v:f><v:f eqn = "prod #0 1 2 "></v:f><v:f eqn = "sum @2 10800 0 "></v:f><v:f eqn = "prod @1 1 2 "></v:f><v:f eqn = "sum @4 10800 0 "></v:f></v:formulas><v:path o:connectlocs="10800,@2;0,@3;10800,@5;21600,@4" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="topLeft,#0" yrange="0,15429"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0014" type = "#_x0000_t172" coordsize = "21600,21600" fillcolor = "#60c" strokecolor = "#c9f" adj = "6924"><v:fill type = "gradient" color2 = "#c0c" focus = "100%"></v:fill><v:shadow on = "t" color = "#99f" opacity = "52429f" offset = "3pt,3pt"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字15, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t136 coordsize = "21600,21600" o:spt = "136" path = " m@7,0 l@8,0 m@5,21600 l@6,21600 e" adj = "10800"><v:formulas><v:f eqn = "sum #0 0 10800 "></v:f><v:f eqn = "prod #0 2 1 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f><v:f eqn = "sum 0 0 @2 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "if @0 @3 0 "></v:f><v:f eqn = "if @0 21600 @1 "></v:f><v:f eqn = "if @0 0 @2 "></v:f><v:f eqn = "if @0 @4 21600 "></v:f><v:f eqn = "mid @5 @6 "></v:f><v:f eqn = "mid @8 @5 "></v:f><v:f eqn = "mid @7 @8 "></v:f><v:f eqn = "mid @6 @7 "></v:f><v:f eqn = "sum @6 0 @5 "></v:f></v:formulas><v:path o:connectlocs="@9,0;@10,10800;@11,21600;@12,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="#0,bottomRight" xrange="6629,14971"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0015" type = "#_x0000_t136" coordsize = "21600,21600" fillcolor = "#063" strokecolor = "green"><v:fill src = "../Images/clip_image001.jpg" type = "tile"></v:fill><v:shadow on = "t" type = "perspective" color = "#c7dfd3" opacity = "52429f" matrix = "1.25,,,1.25" origin = "-.5,-.5" offset = "-8pt,-12pt"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字16, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t136 coordsize = "21600,21600" o:spt = "136" path = " m@7,0 l@8,0 m@5,21600 l@6,21600 e" adj = "10800"><v:formulas><v:f eqn = "sum #0 0 10800 "></v:f><v:f eqn = "prod #0 2 1 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f><v:f eqn = "sum 0 0 @2 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "if @0 @3 0 "></v:f><v:f eqn = "if @0 21600 @1 "></v:f><v:f eqn = "if @0 0 @2 "></v:f><v:f eqn = "if @0 @4 21600 "></v:f><v:f eqn = "mid @5 @6 "></v:f><v:f eqn = "mid @8 @5 "></v:f><v:f eqn = "mid @7 @8 "></v:f><v:f eqn = "mid @6 @7 "></v:f><v:f eqn = "sum @6 0 @5 "></v:f></v:formulas><v:path o:connectlocs="@9,0;@10,10800;@11,21600;@12,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="#0,bottomRight" xrange="6629,14971"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0016" type = "#_x0000_t136" coordsize = "21600,21600" fillcolor = "#9400ed" strokecolor = "#eaeaea" strokeweight = "1pt"><v:fill type = "gradient" color2 = "blue" angle = "-90" method = "none" colors = "0 #a603ab;13763f #0819fb;22938f #1a8d48;34079f yellow;47841f #ee3f17;57672f #e81766;1 #a603ab"></v:fill><v:shadow on = "t" type = "perspective" color = "silver" opacity = "52429f" matrix = ",46340f,,.5,0,-476837158203125e-21" origin = "-.5,.5"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字17, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t156 coordsize = "21600,21600" o:spt = "156" path = " m@25@0 c@26@3@27@1@28@0 m@21@4 c@22@5@23@6@24@4 e" adj = "2809,10800"><v:formulas><v:f eqn = "sum #0 0 0 "></v:f><v:f eqn = "prod @0 41 9 "></v:f><v:f eqn = "prod @0 23 9 "></v:f><v:f eqn = "sum 0 0 @2 "></v:f><v:f eqn = "sum 21600 0 #0 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "sum #1 0 10800 "></v:f><v:f eqn = "sum 21600 0 #1 "></v:f><v:f eqn = "prod @8 2 3 "></v:f><v:f eqn = "prod @8 4 3 "></v:f><v:f eqn = "prod @8 2 1 "></v:f><v:f eqn = "sum 21600 0 @9 "></v:f><v:f eqn = "sum 21600 0 @10 "></v:f><v:f eqn = "sum 21600 0 @11 "></v:f><v:f eqn = "prod #1 2 3 "></v:f><v:f eqn = "prod #1 4 3 "></v:f><v:f eqn = "prod #1 2 1 "></v:f><v:f eqn = "sum 21600 0 @15 "></v:f><v:f eqn = "sum 21600 0 @16 "></v:f><v:f eqn = "sum 21600 0 @17 "></v:f><v:f eqn = "if @7 @14 0 "></v:f><v:f eqn = "if @7 @13 @15 "></v:f><v:f eqn = "if @7 @12 @16 "></v:f><v:f eqn = "if @7 21600 @17 "></v:f><v:f eqn = "if @7 0 @20 "></v:f><v:f eqn = "if @7 @9 @19 "></v:f><v:f eqn = "if @7 @10 @18 "></v:f><v:f eqn = "if @7 @11 21600 "></v:f><v:f eqn = "sum @24 0 @21 "></v:f><v:f eqn = "sum @4 0 @0 "></v:f><v:f eqn = "max @21 @25 "></v:f><v:f eqn = "min @24 @28 "></v:f><v:f eqn = "prod @0 2 1 "></v:f><v:f eqn = "sum 21600 0 @33 "></v:f><v:f eqn = "mid @26 @27 "></v:f><v:f eqn = "mid @24 @28 "></v:f><v:f eqn = "mid @22 @23 "></v:f><v:f eqn = "mid @21 @25 "></v:f></v:formulas><v:path o:connectlocs="@35,@0;@38,10800;@37,@4;@36,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t" xscale = "t"></v:textpath><v:handles><v:h position="topLeft,#0" yrange="0,4459"></v:h><v:h position="#1,bottomRight" xrange="8640,12960"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0017" type = "#_x0000_t156" coordsize = "21600,21600" fillcolor = "#99f" stroked = "f"><v:fill type = "gradient" color2 = "#099" focus = "100%"></v:fill><v:shadow on = "t" color = "silver" opacity = "52429f" offset = "3pt,3pt"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" xscale = "f" string = "”", , 
+.常量 艺术字18, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t136 coordsize = "21600,21600" o:spt = "136" path = " m@7,0 l@8,0 m@5,21600 l@6,21600 e" adj = "10800"><v:formulas><v:f eqn = "sum #0 0 10800 "></v:f><v:f eqn = "prod #0 2 1 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f><v:f eqn = "sum 0 0 @2 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "if @0 @3 0 "></v:f><v:f eqn = "if @0 21600 @1 "></v:f><v:f eqn = "if @0 0 @2 "></v:f><v:f eqn = "if @0 @4 21600 "></v:f><v:f eqn = "mid @5 @6 "></v:f><v:f eqn = "mid @8 @5 "></v:f><v:f eqn = "mid @7 @8 "></v:f><v:f eqn = "mid @6 @7 "></v:f><v:f eqn = "sum @6 0 @5 "></v:f></v:formulas><v:path o:connectlocs="@9,0;@10,10800;@11,21600;@12,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="#0,bottomRight" xrange="6629,14971"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt; rotation: 90" myid="_x0000_i0018" type = "#_x0000_t136" coordsize = "21600,21600" fillcolor = "#c4b596" strokecolor = "#c4b596" strokeweight = "1pt"><v:fill src = "../Images/clip_image001.jpg" type = "tile"></v:fill><v:shadow on = "t" color = "#cbcbcb" opacity = "52429f" offset = "3pt,3pt"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t; v-rotate-letters: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字19, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t136 coordsize = "21600,21600" o:spt = "136" path = " m@7,0 l@8,0 m@5,21600 l@6,21600 e" adj = "10800"><v:formulas><v:f eqn = "sum #0 0 10800 "></v:f><v:f eqn = "prod #0 2 1 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f><v:f eqn = "sum 0 0 @2 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "if @0 @3 0 "></v:f><v:f eqn = "if @0 21600 @1 "></v:f><v:f eqn = "if @0 0 @2 "></v:f><v:f eqn = "if @0 @4 21600 "></v:f><v:f eqn = "mid @5 @6 "></v:f><v:f eqn = "mid @8 @5 "></v:f><v:f eqn = "mid @7 @8 "></v:f><v:f eqn = "mid @6 @7 "></v:f><v:f eqn = "sum @6 0 @5 "></v:f></v:formulas><v:path o:connectlocs="@9,0;@10,10800;@11,21600;@12,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="#0,bottomRight" xrange="6629,14971"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0019" type = "#_x0000_t136" coordsize = "21600,21600" fillcolor = "#fc9"><v:fill src = "../Images/clip_image001.jpg" type = "tile"></v:fill><v:shadow color = "#868686"></v:shadow><o:extrusion v:ext="view" on = "t" skewangle = "180" backdepth = "10pt" color = "#630" brightness = "4000f" lightlevel = "52000f" lightlevel2 = "14000f" lightharsh2 = "t" viewpointorigin = ",0" viewpoint = ",0" lightposition = "-50000" lightposition2 = "50000"></o:extrusion><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字20, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t138 coordsize = "21600,21600" o:spt = "138" path = " m0@0 l10800,0,21600@0 m0,21600 l10800,21600,21600,21600 e" adj = "10800"><v:formulas><v:f eqn = "sum #0 0 0 "></v:f><v:f eqn = "prod #0 1 2 "></v:f><v:f eqn = "sum @1 10800 0 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f></v:formulas><v:path o:connectlocs="10800,0;5400,@1;10800,21600;16200,@1" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="topLeft,#0" yrange="0,21600"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0020" type = "#_x0000_t138" coordsize = "21600,21600" fillcolor = "#ffc"><v:fill type = "gradient" color2 = "#f99" focus = "100%"></v:fill><v:shadow color = "#868686"></v:shadow><o:extrusion v:ext="view" on = "t" skewangle = "-45" backdepth = "18pt" color = "#06c" brightness = "10000f" lightlevel = "44000f" lightlevel2 = "24000f" viewpointorigin = "-.5" viewpoint = "-1249999emu" lightposition = "0,-50000" lightposition2 = "0,50000"></o:extrusion><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字21, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t170 coordsize = "21600,21600" o:spt = "170" path = " m@0,0 l@1,0 m0,21600 l21600,21600 e" adj = "7200"><v:formulas><v:f eqn = "sum #0 0 0 "></v:f><v:f eqn = "sum 21600 0 @0 "></v:f><v:f eqn = "prod #0 1 2 "></v:f><v:f eqn = "sum 21600 0 @2 "></v:f><v:f eqn = "sum @1 21600 @0 "></v:f></v:formulas><v:path o:connectlocs="10800,0;@2,10800;10800,21600;@3,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="#0,topLeft" xrange="0,10792"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0021" type = "#_x0000_t170" coordsize = "21600,21600" fillcolor = "#520402" strokecolor = "#b2b2b2" strokeweight = "1pt" adj = "2158"><v:fill type = "gradient" color2 = "#fc0" focus = "100%"></v:fill><v:shadow on = "t" type = "perspective" color = "#875b0d" opacity = "45875f" matrix = ",,,.5,0,-476837158203125e-21" origin = ",.5"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字22, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t152 coordsize = "21600,21600" o:spt = "152" path = " m0@0 c7200@2,14400@1,21600,0 m0@5 c7200@6,14400@6,21600@5 e" adj = "9931"><v:formulas><v:f eqn = "sum #0 0 0 "></v:f><v:f eqn = "prod #0 3 4 "></v:f><v:f eqn = "prod #0 5 4 "></v:f><v:f eqn = "prod #0 3 8 "></v:f><v:f eqn = "prod #0 1 8 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "sum @4 21600 0 "></v:f><v:f eqn = "prod #0 1 2 "></v:f><v:f eqn = "prod @5 1 2 "></v:f><v:f eqn = "sum @7 @8 0 "></v:f><v:f eqn = "prod #0 7 8 "></v:f><v:f eqn = "prod @5 1 3 "></v:f><v:f eqn = "sum @1 @2 0 "></v:f><v:f eqn = "sum @12 @0 0 "></v:f><v:f eqn = "prod @13 1 4 "></v:f><v:f eqn = "sum @11 14400 @14 "></v:f></v:formulas><v:path o:connectlocs="10800,@10;0,@9;10800,21600;21600,@8" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t" xscale = "t"></v:textpath><v:handles><v:h position="topLeft,#0" yrange="0,12169"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0022" type = "#_x0000_t152" coordsize = "21600,21600" fillcolor = "gray" strokeweight = "1pt" adj = "8717"><v:fill src = "../Images/clip_image001.gif" type = "pattern" color2 = "yellow"></v:fill><v:shadow on = "t" opacity = "52429f" offset = "3pt"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" xscale = "f" string = "”", , 
+.常量 艺术字23, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t152 coordsize = "21600,21600" o:spt = "152" path = " m0@0 c7200@2,14400@1,21600,0 m0@5 c7200@6,14400@6,21600@5 e" adj = "9931">&nbsp;<v:formulas><v:f eqn = "sum #0 0 0 "></v:f><v:f eqn = "prod #0 3 4 "></v:f><v:f eqn = "prod #0 5 4 "></v:f><v:f eqn = "prod #0 3 8 "></v:f><v:f eqn = "prod #0 1 8 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "sum @4 21600 0 "></v:f><v:f eqn = "prod #0 1 2 "></v:f><v:f eqn = "prod @5 1 2 "></v:f><v:f eqn = "sum @7 @8 0 "></v:f><v:f eqn = "prod #0 7 8 "></v:f><v:f eqn = "prod @5 1 3 "></v:f><v:f eqn = "sum @1 @2 0 "></v:f><v:f eqn = "sum @12 @0 0 "></v:f><v:f eqn = "prod @13 1 4 "></v:f><v:f eqn = "sum @11 14400 @14 "></v:f></v:formulas><v:path o:connectlocs="10800,@10;0,@9;10800,21600;21600,@8" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t" xscale = "t"></v:textpath><v:handles><v:h position="topLeft,#0" yrange="0,12169"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0023" type = "#_x0000_t152" coordsize = "21600,21600" fillcolor = "gray" strokeweight = "1pt" adj = "8717"><v:fill src = "../Images/clip_image001.gif" type = "pattern" color2 = "yellow"></v:fill><v:shadow on = "t" opacity = "52429f" offset = "3pt"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" xscale = "f" string = "”", , 
+.常量 艺术字24, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t159 coordsize = "21600,21600" o:spt = "159" path = " m@37@0 c@38@1@39@3@40@0@41@1@42@3@43@0 m@30@4 c@31@6@32@5@33@4@34@6@35@5@36@4 e" adj = "1404,10800"><v:formulas><v:f eqn = "sum #0 0 0 "></v:f><v:f eqn = "prod @0 41 9 "></v:f><v:f eqn = "prod @0 23 9 "></v:f><v:f eqn = "sum 0 0 @2 "></v:f><v:f eqn = "sum 21600 0 #0 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "sum #1 0 10800 "></v:f><v:f eqn = "sum 21600 0 #1 "></v:f><v:f eqn = "prod @8 1 3 "></v:f><v:f eqn = "prod @8 2 3 "></v:f><v:f eqn = "prod @8 4 3 "></v:f><v:f eqn = "prod @8 5 3 "></v:f><v:f eqn = "prod @8 2 1 "></v:f><v:f eqn = "sum 21600 0 @9 "></v:f><v:f eqn = "sum 21600 0 @10 "></v:f><v:f eqn = "sum 21600 0 @8 "></v:f><v:f eqn = "sum 21600 0 @11 "></v:f><v:f eqn = "sum 21600 0 @12 "></v:f><v:f eqn = "sum 21600 0 @13 "></v:f><v:f eqn = "prod #1 1 3 "></v:f><v:f eqn = "prod #1 2 3 "></v:f><v:f eqn = "prod #1 4 3 "></v:f><v:f eqn = "prod #1 5 3 "></v:f><v:f eqn = "prod #1 2 1 "></v:f><v:f eqn = "sum 21600 0 @20 "></v:f><v:f eqn = "sum 21600 0 @21 "></v:f><v:f eqn = "sum 21600 0 @22 "></v:f><v:f eqn = "sum 21600 0 @23 "></v:f><v:f eqn = "sum 21600 0 @24 "></v:f><v:f eqn = "if @7 @19 0 "></v:f><v:f eqn = "if @7 @18 @20 "></v:f><v:f eqn = "if @7 @17 @21 "></v:f><v:f eqn = "if @7 @16 #1 "></v:f><v:f eqn = "if @7 @15 @22 "></v:f><v:f eqn = "if @7 @14 @23 "></v:f><v:f eqn = "if @7 21600 @24 "></v:f><v:f eqn = "if @7 0 @29 "></v:f><v:f eqn = "if @7 @9 @28 "></v:f><v:f eqn = "if @7 @10 @27 "></v:f><v:f eqn = "if @7 @8 @8 "></v:f><v:f eqn = "if @7 @11 @26 "></v:f><v:f eqn = "if @7 @12 @25 "></v:f><v:f eqn = "if @7 @13 21600 "></v:f><v:f eqn = "sum @36 0 @30 "></v:f><v:f eqn = "sum @4 0 @0 "></v:f><v:f eqn = "max @30 @37 "></v:f><v:f eqn = "min @36 @43 "></v:f><v:f eqn = "prod @0 2 1 "></v:f><v:f eqn = "sum 21600 0 @48 "></v:f><v:f eqn = "mid @36 @43 "></v:f><v:f eqn = "mid @30 @37 "></v:f></v:formulas><v:path o:connectlocs="@40,@0;@51,10800;@33,@4;@50,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t" xscale = "t"></v:textpath><v:handles><v:h position="topLeft,#0" yrange="0,2229"></v:h><v:h position="#1,bottomRight" xrange="8640,12960"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt; rotation: 90" myid="_x0000_i0024" type = "#_x0000_t159" coordsize = "21600,21600" fillcolor = "lime" stroked = "f" adj = "2809"><v:fill type = "gradient" color2 = "#0cf" focus = "100%"></v:fill><v:shadow on = "t" color = "navy" opacity = "52429f" offset = "-5pt,6pt"></v:shadow><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t; v-rotate-letters: t" fitpath = "t" trim = "t" xscale = "f" string = "”", , 
+.常量 艺术字25, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t136 coordsize = "21600,21600" o:spt = "136" path = " m@7,0 l@8,0 m@5,21600 l@6,21600 e" adj = "10800"><v:formulas><v:f eqn = "sum #0 0 10800 "></v:f><v:f eqn = "prod #0 2 1 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f><v:f eqn = "sum 0 0 @2 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "if @0 @3 0 "></v:f><v:f eqn = "if @0 21600 @1 "></v:f><v:f eqn = "if @0 0 @2 "></v:f><v:f eqn = "if @0 @4 21600 "></v:f><v:f eqn = "mid @5 @6 "></v:f><v:f eqn = "mid @8 @5 "></v:f><v:f eqn = "mid @7 @8 "></v:f><v:f eqn = "mid @6 @7 "></v:f><v:f eqn = "sum @6 0 @5 "></v:f></v:formulas><v:path o:connectlocs="@9,0;@10,10800;@11,21600;@12,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="#0,bottomRight" xrange="6629,14971"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0025" type = "#_x0000_t136" coordsize = "21600,21600"><v:fill type = "gradient" focus = "100%" method = "none" colors = "0 #cbcbcb;8520f #5f5f5f;13763f #5f5f5f;41288f white;43909f #b2b2b2;45220f #292929;53740f #777;1 #eaeaea"></v:fill><v:shadow color = "#868686"></v:shadow><o:extrusion v:ext="view" on = "t" type = "perspective" skewangle = "-45" backdepth = "18pt" color = "white" specularity = "80000f" diffusity = "43712f" metal = "t" brightness = "10000f" lightlevel = "44000f" lightlevel2 = "24000f" viewpointorigin = "-.5" viewpoint = "-1249999emu" lightposition = "0,-50000" lightposition2 = "0,50000"></o:extrusion><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字26, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t154 coordsize = "21600,21600" o:spt = "154" path = " m0@2 l21600,0 m0,21600 l21600@0 e" adj = "9600"><v:formulas><v:f eqn = "sum #0 0 0 "></v:f><v:f eqn = "sum 21600 0 #0 "></v:f><v:f eqn = "prod @1 1 4 "></v:f><v:f eqn = "prod #0 1 2 "></v:f><v:f eqn = "prod @2 1 2 "></v:f><v:f eqn = "sum @3 10800 0 "></v:f><v:f eqn = "sum @4 10800 0 "></v:f><v:f eqn = "sum @0 21600 @2 "></v:f><v:f eqn = "prod @7 1 2 "></v:f></v:formulas><v:path o:connectlocs="10800,@4;0,@6;10800,@5;21600,@3" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="bottomRight,#0" yrange="6171,21600"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0026" type = "#_x0000_t154" coordsize = "21600,21600" fillcolor = "#060"><v:fill o:title="?" src = "../Images/clip_image001.jpg" type = "tile"></v:fill><v:shadow color = "#868686"></v:shadow><o:extrusion v:ext="view" on = "t" type = "perspective" skewangle = "-45" color = "#060" brightness = "4000f" lightlevel = "52000f" lightlevel2 = "14000f" lightharsh2 = "t" viewpointorigin = "-.5" viewpoint = "-1249999emu" rotationangle = ",-18" lightposition = "0,-50000" lightposition2 = "0,50000"></o:extrusion><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字27, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t163 coordsize = "21600,21600" o:spt = "163" path = " m0,0 l21600,0 m0,21600 c7200@1,14400@1,21600,21600 e" adj = "11475"><v:formulas><v:f eqn = "prod #0 4 3 "></v:f><v:f eqn = "sum @0 0 7200 "></v:f><v:f eqn = "sum #0 0 0 "></v:f><v:f eqn = "prod #0 2 3 "></v:f><v:f eqn = "sum @3 7200 0 "></v:f></v:formulas><v:path o:connectlocs="10800,0;0,10800;10800,@2;21600,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t" xscale = "t"></v:textpath><v:handles><v:h position="center,#0" yrange="1350,21600"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0027" type = "#_x0000_t163" coordsize = "21600,21600" adj = "16518"><v:fill type = "gradient" color2 = "#707070" angle = "-135" focus = "50%"></v:fill><v:shadow color = "#868686"></v:shadow><o:extrusion v:ext="view" on = "t" type = "perspective" skewangle = "0" skewamt = "0%" backdepth = "30pt" color = "#939676" brightness = "10000f" lightlevel = "44000f" lightlevel2 = "24000f" viewpointorigin = "0,0" viewpoint = "0,0" rotationangle = "30,-36" lightposition = "-50000,-50000" lightposition2 = "50000"></o:extrusion><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" xscale = "f" string = "”", , 
+.常量 艺术字28, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t154 coordsize = "21600,21600" o:spt = "154" path = " m0@2 l21600,0 m0,21600 l21600@0 e" adj = "9600"><v:formulas><v:f eqn = "sum #0 0 0 "></v:f><v:f eqn = "sum 21600 0 #0 "></v:f><v:f eqn = "prod @1 1 4 "></v:f><v:f eqn = "prod #0 1 2 "></v:f><v:f eqn = "prod @2 1 2 "></v:f><v:f eqn = "sum @3 10800 0 "></v:f><v:f eqn = "sum @4 10800 0 "></v:f><v:f eqn = "sum @0 21600 @2 "></v:f><v:f eqn = "prod @7 1 2 "></v:f></v:formulas><v:path o:connectlocs="10800,@4;0,@6;10800,@5;21600,@3" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="bottomRight,#0" yrange="6171,21600"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0028" type = "#_x0000_t154" coordsize = "21600,21600" fillcolor = "#ffe701"><v:fill type = "gradient" color2 = "#fe3e02" focus = "100%" focusposition = "1,1" focussize = "0,0"></v:fill><v:shadow color = "#868686"></v:shadow><o:extrusion v:ext="view" on = "t" type = "perspective" skewangle = "0" skewamt = "0%" color = "#f60" brightness = "4000f" lightlevel = "52000f" lightlevel2 = "14000f" lightharsh2 = "t" viewpointorigin = "0,0" viewpoint = "0,0" rotationangle = "18,18" lightposition = ",50000"></o:extrusion><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字29, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t136 coordsize = "21600,21600" o:spt = "136" path = " m@7,0 l@8,0 m@5,21600 l@6,21600 e" adj = "10800"><v:formulas><v:f eqn = "sum #0 0 10800 "></v:f><v:f eqn = "prod #0 2 1 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f><v:f eqn = "sum 0 0 @2 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "if @0 @3 0 "></v:f><v:f eqn = "if @0 21600 @1 "></v:f><v:f eqn = "if @0 0 @2 "></v:f><v:f eqn = "if @0 @4 21600 "></v:f><v:f eqn = "mid @5 @6 "></v:f><v:f eqn = "mid @8 @5 "></v:f><v:f eqn = "mid @7 @8 "></v:f><v:f eqn = "mid @6 @7 "></v:f><v:f eqn = "sum @6 0 @5 "></v:f></v:formulas><v:path o:connectlocs="@9,0;@10,10800;@11,21600;@12,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="#0,bottomRight" xrange="6629,14971"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt" myid="_x0000_i0029" type = "#_x0000_t136" coordsize = "21600,21600" fillcolor = "#dcebf5"><v:fill type = "gradient" color2 = "#55261c" focus = "100%" method = "none" colors = "0 #dcebf5;5243f #83a7c3;8520f #768fb9;13763f #83a7c3;34079f white;36700f #9c6563;38011f #80302d;46531f #c0524e;61604f #ebdad4;1 #55261c"></v:fill><v:shadow color = "#868686"></v:shadow><o:extrusion v:ext="view" on = "t" type = "perspective" skewangle = "135" color = "silver" brightness = "4000f" lightlevel = "52000f" lightlevel2 = "14000f" lightharsh2 = "t" viewpointorigin = ",.5" viewpoint = ",1249999emu" rotationangle = ",-6" lightposition = "0,50000" lightposition2 = "0,-50000"></o:extrusion><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 艺术字30, "“<p>&nbsp;</p>
+<style id=EshiEditor_Style_VML>
+v\:* {behavior: url(#default#VML);}
+o\:* {behavior: url(#default#VML);}
+w\:* {behavior: url(#default#VML);}
+x\:* {behavior: url(#default#VML);}
+.shape{behavior: url(#default#VML);}
+</style>
+<span><?xml:namespace prefix = v /><v:shapetype id=_x0000_t136 coordsize = "21600,21600" o:spt = "136" path = " m@7,0 l@8,0 m@5,21600 l@6,21600 e" adj = "10800"><v:formulas><v:f eqn = "sum #0 0 10800 "></v:f><v:f eqn = "prod #0 2 1 "></v:f><v:f eqn = "sum 21600 0 @1 "></v:f><v:f eqn = "sum 0 0 @2 "></v:f><v:f eqn = "sum 21600 0 @3 "></v:f><v:f eqn = "if @0 @3 0 "></v:f><v:f eqn = "if @0 21600 @1 "></v:f><v:f eqn = "if @0 0 @2 "></v:f><v:f eqn = "if @0 @4 21600 "></v:f><v:f eqn = "mid @5 @6 "></v:f><v:f eqn = "mid @8 @5 "></v:f><v:f eqn = "mid @7 @8 "></v:f><v:f eqn = "mid @6 @7 "></v:f><v:f eqn = "sum @6 0 @5 "></v:f></v:formulas><v:path o:connectlocs="@9,0;@10,10800;@11,21600;@12,10800" o:connectangles="270,180,90,0" textpathok = "t" o:connecttype = "custom"></v:path><v:textpath on = "t" fitshape = "t"></v:textpath><v:handles><v:h position="#0,bottomRight" xrange="6629,14971"></v:h></v:handles><?xml:namespace prefix = o /><o:lock v:ext="edit" text="t" shapetype="t"></o:lock></v:shapetype><v:shape style="WIDTH: 396pt; HEIGHT: 36pt; rotation: 90" myid="_x0000_i0030" type = "#_x0000_t136" coordsize = "21600,21600" fillcolor = "#c00"><v:shadow color = "#868686"></v:shadow><o:extrusion v:ext="view" on = "t" type = "perspective" skewangle = "0" skewamt = "0%" backdepth = "18pt" color = "#f96" specularity = "80000f" brightness = "10000f" lightlevel = "44000f" lightlevel2 = "24000f" viewpointorigin = "0,0" viewpoint = "0,0" rotationangle = "16,-15" lightposition = "0,50000" lightposition2 = "0,-50000"></o:extrusion><v:textpath style="FONT-WEIGHT: normal; FONT-SIZE: 36pt; FONT-STYLE: normal; FONT-FAMILY: 宋体; v-text-kern: t; v-rotate-letters: t" fitpath = "t" trim = "t" string = "”", , 
+.常量 , , , 
+.常量 鼠标经过图片特效, "“<HTML><HEAD><TITLE>鼠标经过图片特效</TITLE>
+<SCRIPT type=text/JavaScript>
+<!--
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+//-->
+</SCRIPT>
+
+<META content="MSHTML 6.00.2900.6058" name=GENERATOR></HEAD>
+<BODY onload="MM_preloadImages('http://bbs.eyuyan.com/attachment/thumb/diary/Mon_1103/222930__b2d1ee94e9bed87.gif')"><A onmouseover="MM_swapImage('Image1','','http://bbs.eyuyan.com/attachment/thumb/diary/Mon_1103/222930__b2d1ee94e9bed87.gif',1)" onmouseout=MM_swapImgRestore() href="http://xdsoft.u.hgsem.com/"><IMG id=Image1 height=93 alt=鼠标经过图片特效 src="http://bbs.eyuyan.com/attachment/thumb/diary/Mon_1103/222930__f35b19713e9c457.gif" width=198 border=0 name=Image1></A>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <FONT color=#00ff00><STRONG>请在浏览器中预览效果：鼠标滑过图片后，现有图片会变成另一张图片！</STRONG></FONT></BODY></HTML>”", , 
+.常量 星空特效, "“<HTML><HEAD><TITLE>星空背景特效</TITLE>
+<STYLE type=text/css>
+<!--
+body {  font-family: "宋体"; font-size: 9pt; margin-top: 0px; margin-left: 4px; margin-right: 0px}
+A { COLOR: black; FONT-SIZE: 13px; FONT-WEIGHT: 400; TEXT-DECORATION: none }
+ A:hover { COLOR: red; FONT-SIZE: 13px; FONT-WEIGHT: 400; TEXT-DECORATION: underline }
+a:active     { font: 9pt "宋体"; cursor: hand; color: #FF0033 }
+--></STYLE>
+
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<STYLE type=text/css>
+.star {
+position:absolute;
+layer-background-color:white;
+visibility:visible;
+top:-50px;
+width:50px;
+height:50px;
+font-size:1px;
+background-color:white;
+}
+</STYLE>
+
+<SCRIPT language=JavaScript>
+<!-- Begin
+var starnum = 75; // Number of stars
+var isNS = (document.layers);
+var _all = (isNS)? '' : 'all.';
+var _style = (isNS) ? '' : '.style';
+var xoffset, yoffset, w_x, w_y, tmpx, tmpy, scrlx, scrly;
+function getstartpos(obj) {
+obj.deltay = Math.floor(Math.random() * 12);
+obj.deltax = Math.floor(Math.random() * 12);
+obj.xdir = (Math.floor(Math.random() * 2) == 1) ? '+' : '-';
+obj.ydir = (Math.floor(Math.random() * 2) == 1) ? '+' : '-';
+obj.counter = 1;
+if (isNS) {
+obj.clip.width = 1;
+obj.clip.height = 1;
+obj.moveTo(xoffset+pageXOffset, yoffset+pageYOffset);
+} else {
+obj.width = 1;
+obj.height = 1; 
+obj.pixelTop = yoffset+document.body.scrollTop;
+obj.pixelLeft = xoffset+document.body.scrollLeft;
+   }
+}
+function movestar(starN) {
+tmpx = starN.deltax*starN.counter+starN.counter;
+tmpy = starN.deltay*starN.counter+starN.counter;
+if (isNS) {
+starN.clip.width = starN.counter / 3;
+starN.clip.height = starN.counter / 3;
+scrlx = pageXOffset;
+scrly = pageYOffset;
+if ((starN.left+tmpx >= w_x+scrlx) || (starN.top+tmpy >= w_y+scrly) || (starN.left-tmpx <= scrlx) || (starN.top-tmpy <= scrly)) {
+getstartpos(starN);
+} else {
+eval('starN.moveBy('+starN.xdir+tmpx+', '+starN.ydir+tmpy+')');
+   }
+} else {
+starN.width = starN.counter/3;
+starN.height = starN.counter/3;
+scrlx = document.body.scrollLeft;
+scrly = document.body.scrollTop;
+if ((starN.pixelLeft+tmpx >= w_x+scrlx)||(starN.pixelTop+tmpy >= w_y+scrly) || (starN.pixelLeft-tmpx <= scrlx)||(starN.pixelTop-tmpy <= scrly)) {
+getstartpos(starN);
+} else {
+eval('starN.pixelTop'+starN.ydir+'=tmpy');
+eval('starN.pixelLeft'+starN.xdir+'=tmpx');
+   }
+}
+starN.counter++;
+}
+function animate() {
+for(i=1; i <= starnum; i++) {
+movestar(eval('star'+i));
+}
+setTimeout('animate()', 100);
+}
+function findwindowparams() {
+w_x = (isNS) ? window.innerWidth : document.body.clientWidth;
+w_y = (isNS) ? window.innerHeight : document.body.clientHeight;
+xoffset = w_x / 2;
+yoffset = w_y / 2;
+for (i = 1; i <= starnum; i++) {
+getstartpos(eval('star'+i));
+   }
+}
+function resizeNS() {
+setTimeout('document.location.reload()', 400);
+}
+(isNS) ? window.onresize = resizeNS : window.onresize = findwindowparams;
+window.onload = new Function("findwindowparams(); animate();");
+//  End -->
+</SCRIPT>
+
+<META content="MSHTML 6.00.2900.6058" name=GENERATOR></HEAD>
+<BODY bgColor=black>
+<SCRIPT language=JavaScript>
+<!-- Begin
+for (i = 1; i <= starnum; i++) {
+document.writeln('<div id="star'+i+'" class="star"></div>');
+eval('var star'+i+'=document.'+_all+'star'+i+_style);
+}
+// End -->
+</SCRIPT>
+
+<CENTER>
+<SCRIPT language=JavaScript>
+
+<!-- hide
+function goHist(a)
+{
+   history.go(a);
+}
+//-->
+</SCRIPT>
+</CENTER>
+<CENTER><FONT color=#00ff00 size=4><STRONG><BR><BR><BR><BR><BR>请在浏览器中预览效果：动态星空背景！<BR><BR><BR><BR></STRONG></FONT></CENTER></BODY></HTML>”", , 
+.常量 相册, "“<HTML><HEAD>
+<META http-equiv=Content-Type content="text/html; charset=GB2312">
+<META content="MSHTML 6.00.2900.6058" name=GENERATOR></HEAD>
+<BODY>
+<SCRIPT>
+var PImgPlayer = {   
+        _timer : null,   
+        _items : [],   
+        _container : null,   
+        _index : 0,   
+        _imgs : [],   
+        intervalTime : 2000,        //轮播间隔时间   
+        init : function( objID, w, h, time ){   
+                this.intervalTime = time || this.intervalTime;   
+                this._container = document.getElementById( objID );   
+                this._container.style.display = "block";   
+                this._container.style.width = w + "px";   
+                this._container.style.height = h + "px";   
+                this._container.style.position = "relative";   
+                this._container.style.overflow = "hidden";   
+                //this._container.style.border = "1px solid #000";   
+                var linkStyle = "display: block; TEXT-DECORATION: none;";   
+                if( document.all ){   
+                        linkStyle += "FILTER:";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.Barn(duration=0.5, motion='out', orientation='vertical') ";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.Barn ( duration=0.5,motion='out',orientation='horizontal') ";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.Blinds ( duration=0.5,bands=10,Direction='down' )";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.CheckerBoard()";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.Fade(duration=0.5,overlap=0)";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.GradientWipe ( duration=1,gradientSize=1.0,motion='reverse' )";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.Inset ()";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.Iris ( duration=1,irisStyle=PLUS,motion=out )";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.Iris ( duration=1,irisStyle=PLUS,motion=in )";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.Iris ( duration=1,irisStyle=DIAMOND,motion=in )";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.Iris ( duration=1,irisStyle=SQUARE,motion=in )";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.Iris ( duration=0.5,irisStyle=STAR,motion=in )";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.RadialWipe ( duration=0.5,wipeStyle=CLOCK )";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.RadialWipe ( duration=0.5,wipeStyle=WEDGE )";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.RandomBars ( duration=0.5,orientation=horizontal )";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.RandomBars ( duration=0.5,orientation=vertical )";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.RandomDissolve ()";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.Spiral ( duration=0.5,gridSizeX=16,gridSizeY=16 )";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.Stretch ( duration=0.5,stretchStyle=PUSH )";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.Strips ( duration=0.5,motion=rightdown )";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.Wheel ( duration=0.5,spokes=8 )";   
+                        linkStyle += "progid:DXImageTransform.Microsoft.Zigzag ( duration=0.5,gridSizeX=4,gridSizeY=40 ); width: 100%; height: 100%";   
+                }   
+                //   
+                var ulStyle = "margin:0 0 29px 0;width:"+w+"px;position:absolute;z-index:999;right:0px;FILTER:Alpha(Opacity=30,FinishOpacity=90, Style=1);overflow: hidden;bottom:-1px;height:16px; border-right:1px solid #fff;";  
+                var ulStyle2 = "margin:0;padding:5px 5px 0 5px;width:"+w+"px;position:absolute;;overflow: hidden;bottom:-1px;height:24px; border-right:1px solid #fff;font-size:14px;font-weight:bold;text-align:center;background:#fff;"; 
+                //   
+                var liStyle = "margin:0;list-style-type: none; margin:0;padding:0; float:right;";   
+                //   
+                var baseSpacStyle = "clear:both; display:block; width:23px;line-height:18px; font-size:12px; FONT-FAMILY:'宋体';opacity: 0.6;";   
+                baseSpacStyle += "border:1px solid #fff;border-right:0;border-bottom:0;";   
+                baseSpacStyle += "color:#fff;text-align:center; cursor:pointer; ";   
+                //   
+                var ulHTML = "";   
+                for(var i = this._items.length -1; i >= 0; i--){   
+                        var spanStyle = "";   
+                        if( i==this._index ){   
+                                spanStyle = baseSpacStyle + "background:#00ff00;";   
+                        } else {                                   
+                                spanStyle = baseSpacStyle + "background:#333333;";   
+                        }   
+                        ulHTML += "<li style=\""+liStyle+"\">";   
+                        ulHTML += "<span onmouseover=\"PImgPlayer.mouseOver(this);\" onmouseout=\"PImgPlayer.mouseOut(this);\" style=\""+spanStyle+"\" onclick=\"PImgPlayer.play("+i+");return false;\" herf=\"javascript:;\">" + (i+1) + "</span>";   
+                        ulHTML += "</li>";   
+                }   
+                //   
+                var html = "<a href=\""+this._items[this._index].link+"\" target=\"_blank\" style=\""+linkStyle+"\"></a><ul style=\""+ulStyle+"\">"+ulHTML+"</ul><h1 style=\""+ulStyle2+"\" id=\"tit\">"+this._items[0].title+"</h1>";   
+                this._container.innerHTML = html;   
+                var link = this._container.getElementsByTagName("A")[0];           
+                link.style.width = w + "px";   
+                link.style.height = h + "px";   
+                link.style.background = 'url(' + this._items[0].img + ') no-repeat center top';   
+                //   
+                this._timer = setInterval( "PImgPlayer.play()", this.intervalTime );   
+        },   
+        addItem : function( _title, _link, _imgURL ){   
+                this._items.push ( {title:_title, link:_link, img:_imgURL } );   
+                var img = new Image();   
+                img.src = _imgURL;   
+                this._imgs.push( img );   
+        },   
+        play : function( index ){   
+                if( index!=null ){   
+                        this._index = index;   
+                        clearInterval( this._timer );   
+                        this._timer = setInterval( "PImgPlayer.play()", this.intervalTime );   
+                } else {   
+                        this._index = this._index<this._items.length-1 ? this._index+1 : 0;   
+                }   
+                var link = this._container.getElementsByTagName("A")[0];           
+                if(link.filters){   
+                        var ren = Math.floor(Math.random()*(link.filters.length));   
+                        link.filters[ren].Apply();   
+                        link.filters[ren].play();   
+                }   
+                link.href = this._items[this._index].link;   
+               // link.title = this._items[this._index].title;   
+                link.style.background = 'url(' + this._items[this._index].img + ') no-repeat center top'; 
+                
+                //// title
+                //var title = this._container.getElementsByTagName("h1")[0];     
+                document.getElementById('tit').innerHTML = this._items[this._index].title; 
+                  
+                //   
+                var liStyle = "margin:0;list-style-type: none; margin:0;padding:0; float:right;";   
+                var baseSpacStyle = "clear:both; display:block; width:23px;line-height:18px; font-size:12px; FONT-FAMILY:'宋体'; opacity: 0.6;";   
+                baseSpacStyle += "border:1px solid #fff;border-right:0;border-bottom:0;";   
+                baseSpacStyle += "color:#fff;text-align:center; cursor:pointer; ";   
+                var ulHTML = "";   
+                for(var i = this._items.length -1; i >= 0; i--){   
+                        var spanStyle = "";   
+                        if( i==this._index ){   
+                                spanStyle = baseSpacStyle + "background:#00ff00;";   
+                        } else {                                   
+                                spanStyle = baseSpacStyle + "background:#333333;";   
+                        }   
+                        ulHTML += "<li style=\""+liStyle+"\">";   
+                        ulHTML += "<span onmouseover=\"PImgPlayer.mouseOver(this);\" onmouseout=\"PImgPlayer.mouseOut(this);\" style=\""+spanStyle+"\" onclick=\"PImgPlayer.play("+i+");return false;\" herf=\"javascript:;\">" + (i+1) + "</span>";   
+                        ulHTML += "</li>";   
+                }   
+                this._container.getElementsByTagName("UL")[0].innerHTML = ulHTML;           
+        },   
+        mouseOver : function(obj){   
+                var i = parseInt( obj.innerHTML );   
+                if( this._index!=i-1){   
+                        obj.style.color = "#ff0000";   
+                }   
+        },   
+        mouseOut : function(obj){   
+                obj.style.color = "#fff";   
+        }   
+} 
+
+</SCRIPT>
+
+<DIV id=focusViwer>
+<DIV id=imgADPlayer></DIV>
+<SCRIPT> 
+PImgPlayer.addItem( "<a href=http://www.xuekaifa.com/index1.html target=_blank style=color:#000;text-decoration:none;>范冰冰最新写真 华美逼人</a>", "http://www.xuekaifa.com/index1.html", "http://bbs.eyuyan.com/attachment/thumb/diary/Mon_1103/222930__92c3d9d3f9b7914.jpg"); 		
+PImgPlayer.addItem( "<a href=http://www.xuekaifa.com/index2.html target=_blank style=color:#000;text-decoration:none;>盛 宴</a>", "http://www.xuekaifa.com/index2.html", "http://bbs.eyuyan.com/attachment/thumb/diary/Mon_1103/222930__4d27b2642ba89c8.jpg"); 		
+PImgPlayer.addItem( "<a href=http://www.xuekaifa.com/index3.html target=_blank style=color:#000;text-decoration:none;>安 静</a>", "http://www.xuekaifa.com/index3.html", "http://bbs.eyuyan.com/attachment/thumb/diary/Mon_1103/222930__b3c2492ea9ebb8b.jpg"); 		
+PImgPlayer.addItem( "<a href=http://www.xuekaifa.com/index4.html target=_blank style=color:#000;text-decoration:none;>高圆圆登韩国芭莎 奢华贵气十足</a>", "http://www.xuekaifa.com/index4.html", "http://bbs.eyuyan.com/attachment/thumb/diary/Mon_1103/222930_87_17e5fbc5689d944.jpg"); 
+PImgPlayer.addItem( "<a href=http://www.xuekaifa.com/index5.html target=_blank style=color:#000;text-decoration:none;>性感主播柳岩 男人装写真回顾</a>", "http://www.xuekaifa.com/index5.html", "http://bbs.eyuyan.com/attachment/thumb/diary/Mon_1103/222930_87_6a866e3b214cbdc.jpg"); 	
+PImgPlayer.init( "imgADPlayer", 300, 356+24 );   
+</SCRIPT>
+</DIV><IMG src="http://bbs.eyuyan.com/attachment/thumb/diary/Mon_1103/222930_87_cc200cd3f4845e5.jpg"><FONT color=#00ff00><STRONG>请在浏览器中预览效果：图片轮播相册！</STRONG></FONT> </BODY></HTML>”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' WebBrowser2 F600363078DE49c5B10AF62C7A13B37E 2 0 WEB浏览器
+ ' spec A512548E76954B6E92C21055517615B0 3 0 特殊功能支持库
+ ' shellEx DA19AC3ADD2F4121AAD84AC5FBCAFC71 3 0 扩展功能支持库一
+ ' eAPI F7FC1AE45C5C4758AF03EF19F18A395D 3 0 应用接口支持库
+ ' iext3 {B6F7542F-B8FE-46a8-9605-98856A687097} 3 0 扩展界面支持库三
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 2 0 扩展界面支持库一
+ ' eExcel2000 F86EC5989E044d42BC98C692C0B54727 2 0 EXCEL2000支持库
+ ' CodeStyleEdit {E5E6A8E356A843bd94609DDD678BD6D8} 2 0 代码编辑框支持库
+ ' shell 52F260023059454187AF826A3C07AF2A 3 0 操作系统界面功能支持库
+ ' EXMLParser BE2297B7415349c8A55BC9DFEB6DD11A 2 0 XML解析支持库
+
+
+
+
+数据类型 Point, , 点坐标
+    .成员 x, 整数型, , , X轴坐标
+    .成员 y, 整数型, , , Y轴坐标
+
+数据类型 RECT, 公开, 区域范围
+    .成员 左边, 整数型, , , 左
+    .成员 顶边, 整数型, , , 上
+    .成员 右边, 整数型, , , 右
+    .成员 底边, 整数型, , , 下
+
+数据类型 属性结构, 公开, 
+    .成员 状态, 整数型, , , 
+    .成员 节点序号, 整数型, , , 
+    .成员 风格名称, 文本型, , , 
+    .成员 风格ID, 整数型, , , 
+    .成员 前景颜色, 整数型, , , 
+    .成员 背景颜色, 整数型, , , 
+    .成员 字体名称, 文本型, , , 
+    .成员 字体风格, 整数型, , , 
+    .成员 字体大小, 整数型, , , 
+
+数据类型 语言风格结构, 公开, 
+    .成员 状态, 整数型, , , 
+    .成员 语言名称, 文本型, , , 
+    .成员 节点序号, 整数型, , , 
+    .成员 描述, 文本型, , , 
+    .成员 扩展名, 文本型, , , 
+    .成员 属性数组, 属性结构, , "1", 
+    .成员 关键字数组, 文本型, , "1", 
+    .成员 关键字, 文本型, , , 排序后的关键字列表，供自动完成使用
+    .成员 分界符, 文本型, , , 自动完成时使用
+
+数据类型 RGB颜色, 公开, 
+    .成员 r, 空白型, , , 0~255
+    .成员 g, 空白型, , , 0~255
+    .成员 b, 空白型, , , 0~255
+
+数据类型 HSL颜色, 公开, 
+    .成员 h, 空白型, , , 0~360
+    .成员 s, 空白型, , , 0~100
+    .成员 l, 空白型, , , 0~100
+
+数据类型 Win_HSL颜色, 公开, Widnows的特殊HSL格式
+    .成员 h, 空白型, , , 0~240
+    .成员 s, 空白型, , , 0~240
+    .成员 l, 空白型, , , 0~240
+
+.全局变量 启动窗口插入图片, 逻辑型, , , 
+.全局变量 新文档路径, 文本型, , , 
+
+.DLL命令 API_播放系统声音, 整数型, "user32.dll", "MessageBeep", , 
+    .参数 声音常量, 整数型, , wType,参见相关帮助
+
+.DLL命令 keybd_event, 空白型, "", "keybd_event", , 这个函数模拟了键盘行动
+    .参数 键代码, 字节型, , 欲模拟的虚拟键码
+    .参数 键扫描码, 字节型, , 键的OEM扫描码
+    .参数 标志值, 整数型, , 零；或设为下述两个标志之一;KEYEVENTF_EXTENDEDKEY：指出是一个扩展键，而且在前面冠以0xE0代码;KEYEVENTF_KEYUP：模拟松开一个键
+    .参数 特定值, 整数型, , 通常不用的一个值。api函数GetMessageExtraInfo可取得这个值。允许使用的值取决于特定的驱动程序;
+
+.DLL命令 SetWindowLong, 整数型, "user32.dll", "SetWindowLongA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 nlndex, 整数型, , 
+    .参数 dwNewLong, 整数型, , 
+
+.DLL命令 GetWindow, 整数型, "", "GetWindow", , 获得一个窗口的句柄，该窗口与某源窗口有特定的关系
+    .参数 源窗口, 整数型, , 
+    .参数 关系, 整数型, , 
+
+.DLL命令 GetClassName, 整数型, "user32.dll", "GetClassNameA", , 
+    .参数 句柄, 整数型, , 
+    .参数 类名, 文本型, , 
+    .参数 文本长度, 整数型, , 
+
+.DLL命令 CallWindowProcA, 整数型, "user32", "", , 
+    .参数 lpPrevWndFunc, 整数型, , 
+    .参数 hwnd, 整数型, , 
+    .参数 msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 取设备句柄, 整数型, "user32.dll", "GetDC", , 
+    .参数 句柄, 整数型, , 
+
+.DLL命令 取鼠标位置, 逻辑型, "user32.dll", "GetCursorPos", , 
+    .参数 光标位置, Point, 传址, 
+
+.DLL命令 取颜色, 整数型, "gdi32.dll", "GetPixel", , 
+    .参数 设备场景的句柄, 整数型, , 
+    .参数 坐标, 整数型, , 
+    .参数 坐标1, 整数型, , 
+
+.DLL命令 ObjectFromLresult, 整数型, "OLEACC.DLL", "", , 　
+    .参数 lResult, 整数型, , 
+    .参数 riid, 字节集, , 
+    .参数 wParam, 整数型, , 
+    .参数 ppvObject, 对象, , 
+
+.DLL命令 RegisterWindowMessageA, 整数型, "", "", , 获取分配给一个字串标识符的消息编号　&C000 到 &FFFF之间的一个消息编号。零意味着出错
+    .参数 lpString, 文本型, , 注册消息的名字;  
+
+.DLL命令 SendMessageTimeoutA, 整数型, "", "", , 
+    .参数 MSG, 整数型, , 
+    .参数 hwnd, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+    .参数 fuFlags, 整数型, , 
+    .参数 uTimeout, 整数型, , 
+    .参数 lpdwResult, 整数型, 传址, 
+
+.DLL命令 FindWindowExA, 整数型, "", "", , 
+    .参数 hWnd1, 整数型, , 
+    .参数 hWnd2, 整数型, , 
+    .参数 lpsz1, 文本型, , 
+    .参数 lpsz2, 文本型, , 
+
+.DLL命令 WindowFromPoint, 整数型, "", "WindowFromPoint", , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+
+.DLL命令 取窗口矩形, 整数型, "", "GetWindowRect", 公开, 
+    .参数 hwnd, 整数型, , 
+    .参数 lpRect, RECT, , 
+
+.窗口程序集 启动窗口程序集, , , 
+
+.程序集变量 文档对象, 对象, , , 
+.程序集变量 当前源文件, 文本型, , , 
+.程序集变量 初始源文件, 文本型, , , 
+.程序集变量 PrevProc, 整数型, , , 
+.程序集变量 代码编辑框操作, 代码编辑框操作类, , , 
+.程序集变量 第一次跳转, 逻辑型, , , 
+.程序集变量 代码框内容, 文本型, , , 
+.程序集变量 匿名程序集变量_4678, 空白型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 字体, 文本型, , "0", 
+.局部变量 计次, 整数型, , , 
+.局部变量 n, 整数型, , , 
+
+载入 (欢迎窗口, _启动窗口, 假)
+“about:blank”.未知支持库函数_0 ()
+赋值 (., 真)
+延迟 (500)
+改写互联网浏览器 (#初始化代码)
+
+赋值 (新文档路径, “”)
+赋值 (初始源文件, #初始化代码)
+赋值 (第一次跳转, 假)
+
+未知支持库函数_0 (取窗口句柄 (), “字体选择”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “字号选择”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “文字背景颜色”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “文字颜色”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “粘贴”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “剪切”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “复制”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “撤销”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “重做”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “加粗”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “斜体”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “下划线”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “上标”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “下标”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “插入横线”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “删除线”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “左对齐”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “居中对齐”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “右对齐”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “两端对齐”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “数字列表”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “项目列表”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “减少缩进”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “增加缩进”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “插入图片”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “插入超级链接”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “插入表格”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “插入文本框”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “插入文本域”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “插入分组框”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “切换至代码窗口”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “切换至设计窗口”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “效果预览”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “插入按钮”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “插入单选框”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “插入选择框”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “插入多媒体视频”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “修改页面属性”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “取色”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “插入滚动字幕”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “插入网页框架”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “插入标签”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “插入艺术字”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “插入发光字”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “导入WORD”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “导入EXCEL”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “插入网页特效”, 假, 假)
+
+赋值 (字体, 未知支持库函数_28 ())
+赋值 (n, 取数组成员数 (字体))
+.计次循环首 (n, 计次)
+    字体.加入项目 ( [计次], )
+    .判断开始 (等于 (字体 [计次], “宋体”))
+        赋值 (.现行选中项, 计次) ' 默认字体为“宋体”
+    .默认
+        
+    .判断结束
+    
+.计次循环尾 ()
+
+.判断开始 (等于 (文件是否存在 (相加 (未知支持库函数_7 (#), “\langs.xml”)), 假))
+    写到文件 (相加 (未知支持库函数_7 (#), “\langs.xml”), #langs)
+.默认
+    
+.判断结束
+
+.判断开始 (等于 (文件是否存在 (相加 (未知支持库函数_7 (#), “\stylers.xml”)), 假))
+    写到文件 (相加 (未知支持库函数_7 (#), “\stylers.xml”), #stylers)
+.默认
+    
+.判断结束
+
+代码编辑框初始化 ()
+
+.子程序 代码编辑框初始化, 空白型, , 
+代码编辑框操作.加载XML树 (相加 (未知支持库函数_7 (#), “\stylers.xml”), 相加 (未知支持库函数_7 (#), “\langs.xml”))
+代码编辑框操作.使用Html词法分析器 ()
+
+#..未知支持库函数_68 (“宋体”)
+#..未知支持库函数_70 (真)
+#..未知支持库函数_69 (8)
+#..未知支持库函数_73 (#绿色)
+#..未知支持库函数_74 (#天蓝)
+8.未知支持库函数_90 ()
+
+#行号旁注.未知支持库函数_52 (1)
+#行号旁注.未知支持库函数_54 (25)
+#折叠旁注.未知支持库函数_54 (13)
+
+“fold”.未知支持库函数_176 (“1”)
+“fold.compact”.未知支持库函数_176 (“0”)
+“fold.html”.未知支持库函数_176 (“1”)
+“fold.comment”.未知支持库函数_176 (“1”)
+“fold.preprocessor”.未知支持库函数_176 (“1”)
+16.未知支持库函数_169 ()
+
+#折叠旁注.未知支持库函数_56 (#.)
+真.未知支持库函数_64 (#白色)
+真.未知支持库函数_65 (#白色)
+#折叠旁注.未知支持库函数_58 (真)
+
+定义标志 (#., #., #白色, #灰色)
+定义标志 (#., #., #白色, #灰色)
+定义标志 (#., #., #白色, #灰色)
+定义标志 (#., #., #白色, #灰色)
+定义标志 (#., #., #白色, #灰色)
+定义标志 (#., #., #白色, #灰色)
+定义标志 (#., #., #白色, #灰色)
+
+
+.子程序 定义标志, 空白型, , 
+.参数 标志号, 整数型, , 
+.参数 标志类型, 整数型, , 
+.参数 前景颜色, 整数型, , 
+.参数 背景颜色, 整数型, , 
+
+标志号.未知支持库函数_108 (标志类型)
+标志号.未知支持库函数_110 (前景颜色)
+标志号.未知支持库函数_111 (背景颜色)
+
+.子程序 _代码编辑框_处理新字符, 空白型, , 
+.参数 接收到的字符, 文本型, , 
+
+代码编辑框操作.自动补全 (接收到的字符)
+
+
+.子程序 _代码编辑框_旁注栏被单击, 空白型, , 
+.参数 功能键状态, 整数型, , 
+.参数 单击位置, 整数型, , 
+.参数 旁注号, 整数型, , 
+
+.局部变量 单击行, 整数型, , , 
+.局部变量 单击行层次, 整数型, , , 
+
+赋值 (单击行, 单击位置.未知支持库函数_46 ())
+赋值 (单击行层次, 单击行.未知支持库函数_168 ())
+.如果真 (大于 (位与 (单击行层次, #.), 0))
+    单击行.未知支持库函数_178 ()
+.如果真结束
+
+
+.子程序 _颜色选择器_字体背景色_颜色被改变, 空白型, , 
+赋值 (., .颜色)
+
+
+.子程序 _代码_被选择, 空白型, , 
+.判断开始 (等于 (.现行子夹, 0))
+    文档对象.未知支持库函数_2 ()
+    赋值 (当前源文件, 文档对象.读对象型属性 (“documentelement”, ).读文本属性 (“outerhtml”, ))
+    文档对象.清除 ()
+    赋值 (代码框内容, 未知支持库函数_35 ().未知支持库函数_0 ())
+    .判断开始 (不等于 (当前源文件, 代码框内容))
+        置剪辑板文本 (当前源文件)
+        未知支持库函数_11 ()
+        未知支持库函数_23 ()
+        清除剪辑板 ()
+    .默认
+        
+    .判断结束
+    
+    赋值 (.现行子夹, 1)
+.默认
+    
+.判断结束
+
+
+
+.子程序 _设计_被选择, 空白型, , 
+.判断开始 (等于 (.现行子夹, 1))
+    文档对象.未知支持库函数_2 ()
+    赋值 (当前源文件, 文档对象.读对象型属性 (“documentelement”, ).读文本属性 (“outerhtml”, ))
+    文档对象.清除 ()
+    赋值 (代码框内容, 未知支持库函数_35 ().未知支持库函数_0 ())
+    .判断开始 (不等于 (当前源文件, 代码框内容))
+        改写互联网浏览器 (代码框内容)
+        刷新显示 ()
+        延迟 (100)
+        文档对象.未知支持库函数_2 ()
+        赋值 (当前源文件, 文档对象.读对象型属性 (“documentelement”, ).读文本属性 (“outerhtml”, ))
+        文档对象.清除 ()
+        输出调试文本 (当前源文件)
+    .默认
+        
+    .判断结束
+    赋值 (.现行子夹, 0)
+.默认
+    
+.判断结束
+
+
+.子程序 _左对齐_被选择, 空白型, , 
+1.未知支持库函数_14 ()
+
+
+.子程序 _居中_被选择, 空白型, , 
+2.未知支持库函数_14 ()
+
+
+.子程序 _右对齐_被选择, 空白型, , 
+3.未知支持库函数_14 ()
+
+
+.子程序 _项目列表_被选择, 空白型, , 
+4.未知支持库函数_14 ()
+
+
+.子程序 _数字列表_被选择, 空白型, , 
+5.未知支持库函数_14 ()
+
+
+.子程序 _撤销_被选择, 空白型, , 
+15.未知支持库函数_10 ()
+ ' "UNDO"
+
+.子程序 _全选_被选择, 空白型, , 
+ ' 互联网浏览器1.执行命令 (17, , , )
+获取焦点 ()
+文档对象.未知支持库函数_2 ()
+文档对象.读对象型属性 (“selection”, ).对象型方法 (“createRange”, ).方法 (“execcommand”, “SELECTALL”)
+
+
+.子程序 _重做_被选择, 空白型, , 
+16.未知支持库函数_10 ()
+ ' "REDO"
+
+
+.子程序 _复制_被选择, 空白型, , 
+ ' 互联网浏览器1.执行命令 (12, , , )
+获取焦点 ()
+文档对象.未知支持库函数_2 ()
+文档对象.读对象型属性 (“selection”, ).对象型方法 (“createRange”, ).方法 (“execcommand”, “Copy”)
+
+
+.子程序 _剪切_被选择, 空白型, , 
+ ' 互联网浏览器1.执行命令 (11, , , )
+获取焦点 ()
+文档对象.未知支持库函数_2 ()
+文档对象.读对象型属性 (“selection”, ).对象型方法 (“createRange”, ).方法 (“execcommand”, “CUT”)
+
+
+.子程序 _粘贴_被选择, 空白型, , 
+ ' 互联网浏览器1.执行命令 (13, , , )
+获取焦点 ()
+文档对象.未知支持库函数_2 ()
+文档对象.读对象型属性 (“selection”, ).对象型方法 (“createRange”, ).方法 (“execcommand”, “PASTE”)
+
+
+.子程序 __启动窗口_可否被关闭, 逻辑型, , 
+.局部变量 信息框, 整数型, , , 
+
+文档对象.未知支持库函数_2 ()
+赋值 (当前源文件, 文档对象.读对象型属性 (“documentelement”, ).读文本属性 (“outerhtml”, ))
+文档对象.清除 ()
+输出调试文本 (相加 (“当前源文件：”, 当前源文件))
+输出调试文本 (“========================================================================================”)
+输出调试文本 (相加 (“初始源文件：”, 初始源文件))
+
+.判断开始 (不等于 (当前源文件, 初始源文件))
+     ' API_播放系统声音 (64)
+    赋值 (信息框, 信息框 (“当前文件已改变，是否保存修改？”, 相加 (#取消是否钮, #询问图标), “是否保存”))
+    .判断开始 (等于 (信息框, #是钮))
+        .判断开始 (等于 (文件是否存在 (相加 (取运行目录 (), “\temp.htm”)), 真))
+            删除文件 (相加 (取运行目录 (), “\temp.htm”))
+        .默认
+            
+        .判断结束
+        
+        .判断开始 (不等于 (新文档路径, “”))
+            .如果真 (写到文件 (新文档路径, 到字节集 (当前源文件)))
+                结束 ()
+            .如果真结束
+            
+        .默认
+            
+            .如果真 (未知支持库函数_16 ())
+                结束 ()
+            .如果真结束
+            
+        .判断结束
+        
+    .判断 (等于 (信息框, #否钮))
+        .判断开始 (等于 (文件是否存在 (相加 (取运行目录 (), “\temp.htm”)), 真))
+            删除文件 (相加 (取运行目录 (), “\temp.htm”))
+        .默认
+            
+        .判断结束
+        
+        结束 ()
+        
+    .默认
+        返回 (假)
+        
+    .判断结束
+    
+.默认
+    结束 ()
+.判断结束
+
+
+.子程序 _互联网浏览器1_弹出右键菜单, 逻辑型, , 
+.参数 事件对象, 对象, 参考, 
+
+弹出菜单 ()
+返回 (假)
+
+
+.子程序 _打开_被选择, 空白型, , 
+.局部变量 信息框, 整数型, , , 
+
+文档对象.未知支持库函数_2 ()
+赋值 (当前源文件, 文档对象.读对象型属性 (“documentelement”, ).读文本属性 (“outerhtml”, ))
+文档对象.清除 ()
+.判断开始 (不等于 (当前源文件, 初始源文件))
+    赋值 (信息框, 信息框 (“当前文件已改变，是否保存修改？”, 相加 (#取消是否钮, #询问图标), “是否保存”))
+    .判断开始 (等于 (信息框, #是钮))
+        _保存_被选择 ()
+    .判断 (等于 (信息框, #否钮))
+        打开新文档 ()
+    .默认
+        返回 ()
+    .判断结束
+    
+.默认
+    打开新文档 ()
+.判断结束
+
+
+.子程序 打开新文档, 空白型, , 
+.局部变量 新代码, 文本型, , , 
+
+赋值 (.类型, 0)
+赋值 (.过滤器, “HTML文件(*.htm);(*.html)|*.htm;*.html”)
+赋值 (.文件名, “”)
+打开 ()
+.判断开始 (不等于 (.文件名, “”))
+    赋值 (新文档路径, .文件名)
+    赋值 (新代码, 到文本 (读入文件 (新文档路径)))
+    
+    改写互联网浏览器 (新代码)
+    未知支持库函数_11 ()
+    0.未知支持库函数_10 (新代码)
+    
+    文档对象.未知支持库函数_2 ()
+    赋值 (初始源文件, 文档对象.读对象型属性 (“documentelement”, ).读文本属性 (“outerhtml”, ))
+    文档对象.清除 ()
+    
+    输出调试文本 (相加 (“打开文档：”, 新文档路径))
+    输出调试文本 (相加 (“新代码：”, 新代码))
+.默认
+    
+.判断结束
+
+
+.子程序 _新建_被选择, 空白型, , 
+.局部变量 信息框, 整数型, , , 
+
+文档对象.未知支持库函数_2 ()
+赋值 (当前源文件, 文档对象.读对象型属性 (“documentelement”, ).读文本属性 (“outerhtml”, ))
+文档对象.清除 ()
+.判断开始 (不等于 (当前源文件, 初始源文件))
+    赋值 (信息框, 信息框 (“当前文件已改变，是否保存修改？”, 相加 (#取消是否钮, #询问图标), “是否保存”))
+    .判断开始 (等于 (信息框, #是钮))
+        _保存_被选择 ()
+    .判断 (等于 (信息框, #否钮))
+        新建文档 ()
+    .默认
+        返回 ()
+    .判断结束
+    
+.默认
+    新建文档 ()
+.判断结束
+
+
+.子程序 新建文档, 空白型, , 
+赋值 (.类型, 1)
+赋值 (.过滤器, “HTML文件（*.htm）|*.htm”)
+赋值 (.默认文件后缀, “*.htm”)
+赋值 (.文件名, “新建网页”)
+打开 ()
+.判断开始 (不等于 (.文件名, “”))
+    写到文件 (.文件名, #blank)
+    赋值 (新文档路径, .文件名)
+    改写互联网浏览器 (#初始化代码)
+    未知支持库函数_11 ()
+    0.未知支持库函数_10 (#初始化代码)
+    赋值 (初始源文件, #初始化代码)
+    输出调试文本 (相加 (“新建文档：”, .文件名))
+.默认
+    
+.判断结束
+
+
+.子程序 _保存_被选择, 空白型, , 
+文档对象.未知支持库函数_2 ()
+赋值 (当前源文件, 文档对象.读对象型属性 (“documentelement”, ).读文本属性 (“outerhtml”, ))
+文档对象.清除 ()
+.判断开始 (不等于 (新文档路径, “”))
+    .如果真 (写到文件 (新文档路径, 到字节集 (当前源文件)))
+        信息框 (“保存文档成功！”, 0, )
+    .如果真结束
+    
+.默认
+    _另存为_被选择 ()
+.判断结束
+
+赋值 (初始源文件, 当前源文件)
+
+.子程序 __启动窗口_尺寸被改变, 空白型, , 
+赋值 (.宽度, 取用户区宽度 ())
+0.移动 (72, 取用户区宽度 (), 相减 (取用户区高度 (), 92))
+0.移动 (0, .宽度, .高度)
+0.移动 (0, .宽度, .高度)
+
+
+.子程序 _颜色选择器_字体颜色_颜色被改变, 空白型, , 
+赋值 (., .颜色)
+
+
+.子程序 _一_被选择, 空白型, , 
+赋值 (., 1)
+
+.子程序 _二_被选择, 空白型, , 
+赋值 (., 2)
+
+.子程序 _三_被选择, 空白型, , 
+赋值 (., 3)
+
+.子程序 _四_被选择, 空白型, , 
+赋值 (., 4)
+
+.子程序 _五_被选择, 空白型, , 
+赋值 (., 5)
+
+.子程序 _六_被选择, 空白型, , 
+赋值 (., 6)
+
+.子程序 _七_被选择, 空白型, , 
+赋值 (., 7)
+
+.子程序 _预览_被选择, 空白型, , 
+.局部变量 源文件, 文本型, , , 
+
+.判断开始 (等于 (.现行子夹, 0))
+    文档对象.未知支持库函数_2 ()
+    赋值 (源文件, 文档对象.读对象型属性 (“documentelement”, ).读文本属性 (“outerhtml”, ))
+    文档对象.清除 ()
+    写到文件 (相加 (取运行目录 (), “\temp.htm”), 到字节集 (源文件))
+    未知支持库函数_56 (相加 (取运行目录 (), “\temp.htm”))
+.默认
+    赋值 (源文件, 未知支持库函数_35 ().未知支持库函数_0 ())
+    写到文件 (相加 (取运行目录 (), “\temp.htm”), 到字节集 (源文件))
+    未知支持库函数_56 (相加 (取运行目录 (), “\temp.htm”))
+.判断结束
+
+
+.子程序 _组合框_字体名称_列表项被选择, 空白型, , 
+赋值 (., .取项目文本 (.现行选中项))
+
+
+.子程序 _图片_被选择, 空白型, , 
+载入 (图片窗口, _启动窗口, 假)
+
+
+.子程序 _表格_被选择, 空白型, , 
+_按钮_表格_被单击 ()
+
+
+.子程序 _横线_被选择, 空白型, , 
+_按钮_横线_被单击 ()
+
+
+.子程序 _Flash视频_被选择, 空白型, , 
+载入 (视频窗口, _启动窗口, 假)
+赋值 (视频窗口..现行子夹, 0)
+
+
+.子程序 _Wmv视频_被选择, 空白型, , 
+载入 (视频窗口, _启动窗口, 假)
+赋值 (视频窗口..现行子夹, 1)
+
+
+.子程序 _超级链接_被选择, 空白型, , 
+载入 (超级链接窗口, _启动窗口, 假)
+
+.子程序 _按钮_被选择, 空白型, , 
+载入 (按钮窗口, _启动窗口, 假)
+
+
+.子程序 _Java脚本_被选择, 空白型, , 
+载入 (Java脚本窗口, _启动窗口, 假)
+
+
+.子程序 _单选框_被选择, 空白型, , 
+_按钮_单选框_被单击 ()
+
+
+.子程序 _复选框_被选择, 空白型, , 
+_按钮_复选框_被单击 ()
+
+
+.子程序 _另存为_被选择, 空白型, , 
+文档对象.未知支持库函数_2 ()
+赋值 (当前源文件, 文档对象.读对象型属性 (“documentelement”, ).读文本属性 (“outerhtml”, ))
+文档对象.清除 ()
+赋值 (.类型, 1)
+赋值 (.过滤器, “HTML文件（*.htm）|*.htm”)
+赋值 (.默认文件后缀, “*.htm”)
+赋值 (.文件名, “blank”)
+打开 ()
+.判断开始 (不等于 (.文件名, “”))
+    .如果真 (写到文件 (.文件名, 到字节集 (当前源文件)))
+        信息框 (“保存文档成功！”, 0, )
+    .如果真结束
+    
+.默认
+    
+.判断结束
+
+赋值 (初始源文件, 当前源文件)
+
+
+.子程序 _退出_被选择, 空白型, , 
+__启动窗口_可否被关闭 ()
+
+
+.子程序 _日期标签_被选择, 空白型, , 
+相加 (到文本 (取年份 (取现行时间 ())), “年”, 到文本 (取月份 (取现行时间 ())), “月”, 到文本 (取日 (取现行时间 ())), “日”).未知支持库函数_21 ()
+
+
+.子程序 _时间标签_被选择, 空白型, , 
+相加 (到文本 (取小时 (取现行时间 ())), “时”, 到文本 (取分钟 (取现行时间 ())), “分”, 到文本 (取秒 (取现行时间 ())), “秒”).未知支持库函数_21 ()
+
+
+.子程序 _按钮_粘贴_被单击, 空白型, , 
+ ' 互联网浏览器1.执行命令 (13, , , )
+_粘贴_被选择 ()
+
+
+.子程序 _按钮_剪切_被单击, 空白型, , 
+ ' 互联网浏览器1.执行命令 (11, , , )
+_剪切_被选择 ()
+
+
+.子程序 _按钮_复制_被单击, 空白型, , 
+ ' 互联网浏览器1.执行命令 (12, , , )
+_复制_被选择 ()
+
+
+.子程序 _按钮_撤销_被单击, 空白型, , 
+15.未知支持库函数_10 ()
+
+
+.子程序 _按钮_重做_被单击, 空白型, , 
+16.未知支持库函数_10 ()
+
+
+.子程序 _按钮_加粗_被单击, 空白型, , 
+.局部变量 内容, 文本型, , , 
+
+ ' 互联网浏览器1.执行命令 (11, , , )
+ ' 内容 ＝ 取剪辑板文本 ()
+ ' 输出调试文本 (内容)
+ ' 互联网浏览器1.贴入代码 (“<STRONG>” ＋ 内容 ＋ “</STRONG>”)
+0.未知支持库函数_18 ()
+
+
+.子程序 _按钮_倾斜_被单击, 空白型, , 
+.局部变量 内容, 文本型, , , 
+
+ ' 互联网浏览器1.执行命令 (11, , , )
+ ' 内容 ＝ 取剪辑板文本 ()
+ ' 输出调试文本 (内容)
+ ' 互联网浏览器1.贴入代码 (“<EM>” ＋ 内容 ＋ “</EM>”)
+1.未知支持库函数_18 ()
+
+
+.子程序 _按钮_下划线_被单击, 空白型, , 
+.局部变量 内容, 文本型, , , 
+
+ ' 互联网浏览器1.执行命令 (11, , , )
+ ' 内容 ＝ 取剪辑板文本 ()
+ ' 输出调试文本 (内容)
+ ' 互联网浏览器1.贴入代码 (“<U>” ＋ 内容 ＋ “</U>”)
+2.未知支持库函数_18 ()
+
+
+
+.子程序 _按钮_上标_被单击, 空白型, , 
+4.未知支持库函数_18 ()
+
+
+.子程序 _按钮_下标_被单击, 空白型, , 
+5.未知支持库函数_18 ()
+
+
+.子程序 _按钮_删除线_被单击, 空白型, , 
+3.未知支持库函数_18 ()
+
+
+.子程序 _按钮_预览_被单击, 空白型, , 
+_预览_被选择 ()
+
+
+.子程序 _按钮_图片_被单击, 空白型, , 插入图片
+赋值 (启动窗口插入图片, 真)
+载入 (图片窗口, _启动窗口, 假)
+
+
+.子程序 _按钮_超级链接_被单击, 空白型, , 
+载入 (超级链接窗口, _启动窗口, 假)
+
+
+.子程序 _按钮_表格_被单击, 空白型, , 
+载入 (表格窗口, _启动窗口, 假)
+
+
+.子程序 _按钮_横线_被单击, 空白型, , 
+“<HR>”.未知支持库函数_21 ()
+
+
+.子程序 _组合框_字体大小_列表项被选择, 空白型, , 
+.判断开始 (等于 (.现行选中项, 0))
+    _一_被选择 ()
+.判断 (等于 (.现行选中项, 1))
+    _二_被选择 ()
+.判断 (等于 (.现行选中项, 2))
+    _三_被选择 ()
+.判断 (等于 (.现行选中项, 3))
+    _四_被选择 ()
+.判断 (等于 (.现行选中项, 4))
+    _五_被选择 ()
+.判断 (等于 (.现行选中项, 5))
+    _六_被选择 ()
+.默认
+    _七_被选择 ()
+.判断结束
+
+
+.子程序 _按钮_两端对齐_被单击, 空白型, , 
+0.未知支持库函数_14 ()
+
+.子程序 _按钮_左对齐_被单击, 空白型, , 
+1.未知支持库函数_14 ()
+
+
+.子程序 _按钮_居中对齐_被单击, 空白型, , 
+2.未知支持库函数_14 ()
+
+.子程序 _按钮_右对齐_被单击, 空白型, , 
+3.未知支持库函数_14 ()
+
+
+.子程序 _按钮_项目列表_被单击, 空白型, , 
+4.未知支持库函数_14 ()
+
+.子程序 _按钮_数字列表_被单击, 空白型, , 
+5.未知支持库函数_14 ()
+
+
+.子程序 _按钮_增加缩进_被单击, 空白型, , 
+6.未知支持库函数_14 ()
+
+
+.子程序 _按钮_减少缩进_被单击, 空白型, , 
+7.未知支持库函数_14 ()
+
+.子程序 _按钮_按钮_被单击, 空白型, , 
+载入 (按钮窗口, _启动窗口, 假)
+
+
+.子程序 _按钮_视频_被单击, 空白型, , 
+载入 (视频窗口, _启动窗口, 假)
+
+
+.子程序 _按钮_单选框_被单击, 空白型, , 
+相加 (“<input type=”, #引号, “radio”, #引号, “ value=”, #引号, “V1”, #引号, “ checked name=”, #引号, “R1”, #引号, “>”).未知支持库函数_21 ()
+
+
+.子程序 _按钮_复选框_被单击, 空白型, , 
+相加 (“<input type=”, #引号, “checkbox”, #引号, “ value=”, #引号, “ON”, #引号, “ checked name=”, #引号, “C1”, #引号, “>”).未知支持库函数_21 ()
+
+
+.子程序 _按钮_代码_被单击, 空白型, , 
+_代码_被选择 ()
+
+
+.子程序 取网页句柄, 整数型, , 
+.参数 浏览框句柄, 整数型, , 
+
+.局部变量 hwnd, 整数型, , , 
+.局部变量 类名, 文本型, , , 
+.局部变量 次数, 整数型, , , 防止死循环
+
+赋值 (hwnd, 浏览框句柄)
+赋值 (类名, 取空白文本 (256))
+GetClassName (hwnd, 类名, 256)
+.判断循环首 (不等于 (类名, “Internet Explorer_Server”))
+    赋值 (hwnd, GetWindow (hwnd, #GW_CHILD))
+    赋值 (类名, 取空白文本 (256))
+    GetClassName (hwnd, 类名, 256)
+    赋值 (次数, 相加 (次数, 1))
+    .如果真 (大于 (次数, 10))
+        返回 (-1)
+    .如果真结束
+    
+.判断循环尾 ()
+返回 (hwnd)
+
+.子程序 _互联网浏览器1_跳转完毕, 空白型, , 
+.参数 地址, 文本型, 参考, 
+
+.判断开始 (等于 (第一次跳转, 假))
+    赋值 (PrevProc, SetWindowLong (取网页句柄 (取窗口句柄 ()), -4, 到整数 (&lpPrevWndFunc)))
+    赋值 (第一次跳转, 真)
+.默认
+    
+.判断结束
+
+
+
+.子程序 lpPrevWndFunc, 整数型, , 
+.参数 hwnd, 整数型, , 
+.参数 msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 文档, 对象, , , 
+
+.如果真 (等于 (msg, 258)) ' WM_KEYDOWN ＝ 256
+    .如果真 (等于 (wParam, #回车键))
+        文档.未知支持库函数_2 ()
+        文档.读对象型属性 (“selection”, ).对象型方法 (“createRange”, ).方法 (“pasteHTML”, “<br/>”)
+        keybd_event (#下光标键, 256, 0, 0)
+        返回 (1)
+    .如果真结束
+    
+.如果真结束
+返回 (CallWindowProcA (PrevProc, hwnd, msg, wParam, lParam))
+
+
+.子程序 _按钮_取色_被单击, 空白型, , 
+载入 (取色窗口, _启动窗口, 假)
+
+
+.子程序 _按钮_艺术字_被单击, 空白型, , 
+载入 (艺术字窗口, _启动窗口, 假)
+
+
+.子程序 _按钮_字幕_被单击, 空白型, , 
+载入 (字幕窗口, _启动窗口, 假)
+
+
+
+
+.子程序 _时钟1_周期事件, 空白型, , 
+取网页元素 ()
+
+
+.子程序 取网页元素, 空白型, , 
+.局部变量 Hwnd, 整数型, , , 
+.局部变量 Document, 对象, , , 
+.局部变量 Pt, Point, , , 
+.局部变量 Rect, RECT, , , 
+.局部变量 x, 整数型, , , 
+.局部变量 y, 整数型, , , 
+.局部变量 Tag, 对象, , , 
+.局部变量 元素, 文本型, , , 
+.局部变量 ID, 文本型, , , 
+.局部变量 内容, 文本型, , , 
+.局部变量 代码, 文本型, , , 
+
+赋值 (Hwnd, 取光标处句柄 ())
+.如果真 (等于 (取窗口类名 (Hwnd), “Internet Explorer_Server”))
+    取鼠标位置 (Pt)
+    取窗口矩形 (Hwnd, Rect)
+    赋值 (x, 相减 (Pt.x, Rect.左边))
+    赋值 (y, 相减 (Pt.y, Rect.顶边))
+    赋值 (Document, 取IES对象 (Hwnd))
+    赋值 (Tag, Document.对象型方法 (“elementFromPoint”, x, y))
+    赋值 (元素, Tag.读文本属性 (“tagName”, ))
+    赋值 (ID, Tag.读文本属性 (“ID”, ))
+    赋值 (内容, Tag.读文本属性 (“innerText”, ))
+    赋值 (代码, Tag.读文本属性 (“outerHTML”, ))
+    0.置文本 (相加 (“元素:”, 元素))
+    1.置文本 (相加 (“内容:”, 内容))
+    2.置文本 (相加 (“代码:”, 代码))
+.如果真结束
+
+
+.子程序 取IES对象, 对象, , 
+.参数 IES句柄, 整数型, , 
+
+.局部变量 资源编号, 整数型, , , 
+.局部变量 消息值, 整数型, , , 
+.局部变量 对象, 对象, , , 
+
+.如果真 (不等于 (未知支持库函数_77 (IES句柄), “Internet Explorer_Server”))
+    返回 (对象)
+.如果真结束
+赋值 (消息值, RegisterWindowMessageA (“WM_HTML_GETOBJECT”))
+SendMessageTimeoutA (IES句柄, 消息值, 0, 0, 2, 1000, 资源编号)
+ObjectFromLresult (资源编号, { 32, 197, 111, 98, 30, 164, 207, 17, 167, 49, 0, 160, 201, 8, 38, 55 }, 0, 对象)
+返回 (对象)
+
+.子程序 取IES句柄, 整数型, , 能取出主窗口下的所有IES句柄。如果父句柄设0，就是遍历所有句柄查找
+.参数 父句柄, 整数型, , 
+.参数 欲装载的数组, 整数型, 数组, 
+
+.局部变量 hWnd, 整数型, , , 
+.局部变量 Null, 文本型, , , 
+
+赋值 (hWnd, FindWindowExA (父句柄, 0, Null, Null))
+.判断循环首 (不等于 (hWnd, 0))
+    .如果真 (等于 (未知支持库函数_77 (hWnd), “Internet Explorer_Server”))
+        加入成员 (欲装载的数组, hWnd)
+    .如果真结束
+    取IES句柄 (hWnd, 欲装载的数组)
+    赋值 (hWnd, FindWindowExA (父句柄, hWnd, Null, Null))
+.判断循环尾 ()
+返回 (取数组成员数 (欲装载的数组))
+
+.子程序 取光标处句柄, 整数型, , 
+.局部变量 光标位置, Point, , , 
+
+取鼠标位置 (光标位置)
+返回 (WindowFromPoint (光标位置.x, 光标位置.y))
+
+.子程序 取窗口类名, 文本型, , 
+.参数 Hwnd, 整数型, , 句柄
+
+.局部变量 临时文本, 文本型, , , 
+
+赋值 (临时文本, 取空白文本 (256))
+GetClassName (Hwnd, 临时文本, 255)
+返回 (临时文本)
+
+.子程序 _按钮_分组框_被单击, 空白型, , 
+载入 (分组框窗口, _启动窗口, 假)
+
+
+.子程序 _按钮_网页框架_被单击, 空白型, , 
+载入 (网页框架窗口, _启动窗口, 假)
+
+
+.子程序 _按钮_发光字_被单击, 空白型, , 
+载入 (发光字窗口, _启动窗口, 假)
+
+
+.子程序 _按钮_WORD_被单击, 空白型, , 
+.局部变量 内容, 文本型, , , 
+.局部变量 源文件, 文本型, , , 
+
+赋值 (.类型, 0)
+赋值 (.文件名, “”)
+赋值 (.标题, “导入Word文档”)
+赋值 (.过滤器, “Word文件（*.doc）|*.doc”)
+打开 ()
+.判断开始 (不等于 (.文件名, “”))
+    载入 (导入提示窗口, _启动窗口, 假)
+    取Word内容 (.文件名, 内容)
+    清除剪辑板 ()
+    置剪辑板文本 (内容)
+    _粘贴_被选择 ()
+    刷新显示 ()
+    清除剪辑板 ()
+    导入提示窗口.销毁 ()
+.默认
+    
+.判断结束
+
+
+.子程序 _按钮_EXCEL_被单击, 空白型, , 
+.局部变量 行数, 整数型, , , 
+.局部变量 列数, 整数型, , , 
+.局部变量 内容, 文本型, , , 
+.局部变量 源文件, 文本型, , , 
+.局部变量 匿名局部变量_4863, 空白型, , , 
+
+赋值 (.类型, 0)
+赋值 (.文件名, “”)
+赋值 (.标题, “导入Excel文档”)
+赋值 (.过滤器, “Excel文件（*.xls）|*.xls”)
+打开 ()
+.判断开始 (不等于 (.文件名, “”))
+    载入 (导入提示窗口, _启动窗口, 假)
+    取Excel行列数及内容 (.文件名, 1, 行数, 列数, 真, 内容)
+    _粘贴_被选择 ()
+    刷新显示 ()
+    清除剪辑板 ()
+    导入提示窗口.销毁 ()
+.默认
+    
+.判断结束
+
+
+.子程序 添加文本, 空白型, , 
+.参数 互联网浏览器, 未知类型0x20001, , 
+.参数 文本内容, 文本型, , 
+
+互联网浏览器.未知支持库函数_2 (文档对象)
+文档对象.方法 (“write”, 相加 (文本内容, “</br>”))
+
+
+
+.子程序 _按钮_文本框_被单击, 空白型, , 
+ ' 互联网浏览器1.贴入代码 (“<input type=” ＋ #引号 ＋ “text” ＋ #引号＋ “ name=” ＋ #引号 ＋ “textfield” ＋ #引号 +“/>”)
+“<input>”.未知支持库函数_21 ()
+
+
+.子程序 _按钮_文本域_被单击, 空白型, , 
+ ' 互联网浏览器1.贴入代码 (“<textarea name=” ＋ #引号 ＋ “textarea” ＋ #引号 ＋ “></textarea>”)
+“<textarea>”.未知支持库函数_21 ()
+
+
+.子程序 _按钮_设计_被单击, 空白型, , 
+_设计_被选择 ()
+
+
+.子程序 _按钮_页面属性_被单击, 空白型, , 
+载入 (页面属性窗口, _启动窗口, 假)
+
+
+.子程序 _查看使用向导_被选择, 空白型, , 
+.判断开始 (等于 (文件是否存在 (相加 (取运行目录 (), “/视频向导.exe”)), 真))
+    运行 (相加 (取运行目录 (), “/视频向导.exe”), 假, )
+.默认
+    信息框 (“未找到使用向导！”, 0, )
+.判断结束
+
+
+.子程序 _按钮_标签_被单击, 空白型, , 
+“<div>新的标签</div>”.未知支持库函数_21 ()
+
+
+.子程序 _按钮_特效_被单击, 空白型, , 
+弹出菜单 ()
+
+
+.子程序 _标签_被选择, 空白型, , 
+_按钮_标签_被单击 ()
+
+
+.子程序 _文本框_被选择, 空白型, , 
+_按钮_文本框_被单击 ()
+
+
+.子程序 _文本域_被选择, 空白型, , 
+_按钮_文本域_被单击 ()
+
+
+.子程序 _Word文档_被选择, 空白型, , 
+_按钮_WORD_被单击 ()
+
+
+.子程序 _Excel文档_被选择, 空白型, , 
+_按钮_EXCEL_被单击 ()
+
+
+.子程序 _分组框_被选择, 空白型, , 
+_按钮_分组框_被单击 ()
+
+
+.子程序 _网页框架_被选择, 空白型, , 
+_按钮_网页框架_被单击 ()
+
+
+.子程序 _滚动字幕_被选择, 空白型, , 
+_按钮_字幕_被单击 ()
+
+
+.子程序 _艺术字_被选择, 空白型, , 
+_按钮_艺术字_被单击 ()
+
+
+.子程序 _发光字_被选择, 空白型, , 
+_按钮_发光字_被单击 ()
+
+
+.子程序 _滚动字幕2_被选择, 空白型, , 
+_按钮_字幕_被单击 ()
+
+.子程序 _艺术字字2_被选择, 空白型, , 
+_按钮_艺术字_被单击 ()
+
+
+.子程序 _发光字2_被选择, 空白型, , 
+_按钮_发光字_被单击 ()
+
+.子程序 _鼠标经过图片_被选择, 空白型, , 
+改写互联网浏览器 (#鼠标经过图片特效)
+
+
+.子程序 _星空特效_被选择, 空白型, , 
+改写互联网浏览器 (#星空特效)
+
+.子程序 _图片轮播_被选择, 空白型, , 
+改写互联网浏览器 (#相册)
+
+
+.窗口程序集 超级链接窗口程序集, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 打开方式, 文本型, , , 
+
+.判断开始 (等于 (.现行选中项, 0))
+    赋值 (打开方式, “_self”)
+.默认
+    赋值 (打开方式, “_blank”)
+.判断结束
+
+_启动窗口.未知支持库函数_21 (., 相加 (“<a href=”, #引号, .内容, #引号, “ target=”, #引号, 打开方式, #引号, “>”, .内容, “</a>”))
+销毁 ()
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+销毁 ()
+
+
+.子程序 _超级链接窗口_创建完毕, 空白型, , 
+赋值 (.现行选中项, 0)
+
+
+.窗口程序集 视频窗口程序集, , , 
+
+.子程序 _按钮3_被单击, 空白型, , 
+赋值 (.类型, 0)
+赋值 (.过滤器, “FLASH视频文件（*.swf）|*.swf”)
+赋值 (.文件名, “”)
+打开 ()
+.判断开始 (不等于 (.文件名, “”))
+    赋值 (.内容, .文件名)
+.默认
+    
+.判断结束
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+.判断开始 (不等于 (.内容, “”))
+    _启动窗口.未知支持库函数_21 (., 相加 (“<EMBED align=left src=”, #引号, .内容, #引号, “ width=237 height=200>”))
+.默认
+    信息框 (“请输入FLASH视频地址！”, 0, )
+.判断结束
+销毁 ()
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+销毁 ()
+
+
+.子程序 _视频窗口_创建完毕, 空白型, , 
+
+
+.子程序 _按钮4_被单击, 空白型, , 
+赋值 (.类型, 0)
+赋值 (.过滤器, “WMV视频文件（*.wmv）|*.wmv”)
+赋值 (.文件名, “”)
+打开 ()
+.判断开始 (不等于 (.文件名, “”))
+    赋值 (.内容, .文件名)
+.默认
+    
+.判断结束
+
+
+.子程序 _按钮5_被单击, 空白型, , 
+.判断开始 (不等于 (.内容, “”))
+    _启动窗口.未知支持库函数_21 (., 相加 (“<EMBED align=left src=”, #引号, .内容, #引号, “ width=237 height=200>”))
+.默认
+    信息框 (“请输入WMV视频地址！”, 0, )
+.判断结束
+销毁 ()
+
+
+
+.子程序 _按钮6_被单击, 空白型, , 
+销毁 ()
+
+.窗口程序集 按钮窗口程序集, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.判断开始 (等于 (.内容, “”))
+    信息框 (“请输入按钮ID！”, 0, )
+    返回 ()
+.判断 (等于 (.内容, “”))
+    信息框 (“请输入按钮标题！”, 0, )
+    返回 ()
+.默认
+    _启动窗口.未知支持库函数_21 (., 相加 (“<input type=”, #引号, “button”, #引号, “ name=”, #引号, .内容, #引号, “ value=”, #引号, .内容, #引号, “>”))
+    销毁 ()
+    
+.判断结束
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+销毁 ()
+
+
+.子程序 _按钮3_被单击, 空白型, , 
+赋值 (.类型, 0)
+赋值 (.过滤器, “JPG图片（*.jpg）|*.jpg|GIF图片（*.gif）|*.gif|BMP图片（*.bmp）|*.bmp|PNG图片（*.png）|*.png|所有文件（*.*）|*.*”)
+赋值 (.文件名, “”)
+打开 ()
+赋值 (.内容, .文件名)
+
+
+.子程序 _按钮4_被单击, 空白型, , 
+.局部变量 代码, 文本型, , , 
+.局部变量 打开方式, 文本型, , , 
+
+.判断开始 (等于 (.现行选中项, 0))
+    赋值 (打开方式, “_self”)
+.默认
+    赋值 (打开方式, “_blamk”)
+.判断结束
+
+.判断开始 (等于 (.内容, “”))
+    信息框 (“请输入按钮ID！”, 0, )
+    返回 ()
+.判断 (等于 (.内容, “”))
+    信息框 (“请输入按钮欲跳转的链接地址！”, 0, )
+    返回 ()
+.判断 (等于 (.内容, “”))
+    信息框 (“请输入按钮提示！”, 0, )
+    返回 ()
+.判断 (等于 (.内容, “”))
+    信息框 (“请输入正常图片地址！”, 0, )
+    返回 ()
+.默认
+    
+    赋值 (代码, 相加 (“<a target=”, #引号, 打开方式, #引号, “ href=”, #引号, .内容, #引号, “><img border=”, #引号, “0”, #引号, “ src=”, #引号, .内容, #引号, “ title=”, #引号, .内容, #引号, “></a>”))
+    _启动窗口.未知支持库函数_21 (., 代码)
+     ' <a target="_blank" href="链接地址"><img border="0" src="图片地址" title="按钮1"></a>
+    销毁 ()
+    
+.判断结束
+
+
+.子程序 _按钮5_被单击, 空白型, , 
+销毁 ()
+
+.子程序 _按钮窗口_创建完毕, 空白型, , 
+赋值 (.现行选中项, 0)
+
+
+.窗口程序集 Java窗口程序集, , , 
+
+.子程序 _Java脚本窗口_创建完毕, 空白型, , 
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+.判断开始 (不等于 (.内容, “”))
+    _启动窗口.未知支持库函数_21 (., .内容)
+    销毁 ()
+    
+.默认
+    信息框 (“请输入欲插入的Java脚本的内容！”, 0, )
+    返回 ()
+    
+.判断结束
+
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+销毁 ()
+
+.子程序 _按钮4_被单击, 空白型, , 
+.判断开始 (不等于 (.内容, “”))
+    _启动窗口.未知支持库函数_21 (., 相加 (“<script src=”, #引号, .内容, #引号, “ type=”, #引号, “text/javascript”, #引号, “></script>”))
+    销毁 ()
+    
+.默认
+    信息框 (“请输入欲调用的Java脚本的路径！”, 0, )
+    返回 ()
+    
+.判断结束
+
+
+.子程序 _按钮3_被单击, 空白型, , 
+赋值 (.类型, 0)
+赋值 (.文件名, “”)
+赋值 (.过滤器, “Java脚本(*.js)|*.js”)
+打开 ()
+.判断开始 (不等于 (.文件名, “”))
+    赋值 (.内容, .文件名)
+.默认
+    
+.判断结束
+
+
+.窗口程序集 表格窗口程序集, , , 
+
+.子程序 _按钮_浏览_被单击, 空白型, , 
+赋值 (.类型, 0)
+赋值 (.过滤器, “GIF图片（*.gif）|*.gif|JPG图片（*.jpg）|*.jpg|PNG图片（*.png）|*.png|BMP图片（*.bmp）|*.bmp|所有文件（*.*）|*.*”)
+赋值 (.文件名, “”)
+打开 ()
+.判断开始 (不等于 (.文件名, “”))
+    赋值 (.内容, .文件名)
+.默认
+    
+.判断结束
+
+
+.子程序 _表格窗口_创建完毕, 空白型, , 
+赋值 (.现行选中项, 0)
+赋值 (.现行选中项, 1)
+赋值 (.现行选中项, 1)
+
+
+.子程序 _按钮_确定_被单击, 空白型, , 
+.局部变量 代码1, 文本型, , , 
+.局部变量 代码2, 文本型, , , 
+.局部变量 代码21, 文本型, , , 
+.局部变量 计次, 整数型, , , 
+.局部变量 代码3, 文本型, , , 
+.局部变量 代码31, 文本型, , , 
+.局部变量 计次2, 整数型, , , 
+.局部变量 代码, 文本型, , , 
+.局部变量 边框效果, 文本型, , , 
+.局部变量 水平对齐, 文本型, , , 
+.局部变量 垂直对齐, 文本型, , , 
+
+.判断开始 (等于 (.现行选中项, 0))
+    赋值 (边框效果, “collapse”)
+.默认
+    赋值 (边框效果, “separate”)
+.判断结束
+
+.判断开始 (等于 (.现行选中项, 0))
+    赋值 (水平对齐, “left”)
+.判断 (等于 (.现行选中项, 1))
+    赋值 (水平对齐, “center”)
+.默认
+    赋值 (水平对齐, “right”)
+.判断结束
+
+.判断开始 (等于 (.现行选中项, 0))
+    赋值 (垂直对齐, “top”)
+.判断 (等于 (.现行选中项, 1))
+    赋值 (垂直对齐, “middle”)
+.默认
+    赋值 (垂直对齐, “bottom”)
+.判断结束
+
+ ' <table style="WIDTH: 400px; BORDER-COLLAPSE: collapse; HEIGHT: 400px; BACKGROUND-COLOR: #ffff00" borderColor=#00ff00 cellSpacing=2 cellPadding=3  border=1>
+
+赋值 (代码1, 相加 (“<table style=”, #引号, “WIDTH:”, .内容, “px;”, “ BORDER-COLLAPSE:”, 边框效果, “;”, “ HEIGHT:”, .内容, “px;”, “BACKGROUND-COLOR:”, 十到十六 (.颜色), “;”, “BACKGROUND-IMAGE: url(”, .内容, “)”, #引号, “ cellSpacing=”, .内容, “;”, “ cellPadding=”, .内容, “;”, “ border=”, .内容, “;”, “ bordercolor=”, 十到十六 (.颜色), “;”, “>”, #换行符, “<tbody>”))
+
+
+ ' <td style="VERTICAL-ALIGN: middle; TEXT-ALIGN: left">&nbsp;</td>
+赋值 (代码2, 相加 (“<td style=”, “TEXT-ALIGN:”, 水平对齐, “;”, “VERTICAL-ALIGN:”, 垂直对齐, “>&nbsp;</td>”))
+.计次循环首 (到数值 (.内容), 计次)
+    赋值 (代码21, 相加 (代码21, #换行符, 代码2))
+.计次循环尾 ()
+
+赋值 (代码3, 相加 (“<tr>”, #换行符, 代码21, “</tr>”))
+.计次循环首 (到数值 (.内容), 计次2)
+    赋值 (代码31, 相加 (代码31, #换行符, 代码3))
+.计次循环尾 ()
+
+赋值 (代码, 相加 (代码1, 代码31, “</tbody></table>”))
+_启动窗口.未知支持库函数_21 (., 代码)
+销毁 ()
+
+
+.子程序 _按钮_取消_被单击, 空白型, , 
+销毁 ()
+
+
+.程序集 功能程序集, , , 
+
+.子程序 十到十六, 文本型, , 把十进制的颜色值转换成十六进制的HTML颜色值
+.参数 颜色值, 整数型, , 
+
+.局部变量 b, 文本型, , , 
+.局部变量 r, 文本型, , , 
+.局部变量 g, 文本型, , , 
+
+赋值 (r, 取十六进制文本 (位与 (颜色值, 255)))
+赋值 (g, 取十六进制文本 (相除 (位与 (颜色值, 65280), 256)))
+赋值 (b, 取十六进制文本 (相除 (位与 (颜色值, 16711680), 65536)))
+.如果真 (等于 (r, “0”))
+    赋值 (r, “00”)
+.如果真结束
+.如果真 (等于 (g, “0”))
+    赋值 (g, “00”)
+.如果真结束
+.如果真 (等于 (b, “0”))
+    赋值 (b, “00”)
+.如果真结束
+
+返回 (相加 (“#”, r, g, b))
+
+
+.子程序 取Word内容, 空白型, , 
+.参数 文件名, 文本型, , 
+.参数 返回内容, 文本型, , 
+
+.局部变量 word对象, 对象, , , 
+.局部变量 file, 对象, , , 
+.局部变量 word, 对象, , , 
+.局部变量 文档对象, 对象, , , 
+
+word对象.创建 (“Word.Application”, )
+word对象.写属性 (“Visible”, 假)
+赋值 (file, word对象.读对象型属性 (“Documents”, ))
+赋值 (word, file.对象型方法 (“Open”, 文件名))
+赋值 (文档对象, word.读对象型属性 (“Content”, ))
+赋值 (返回内容, 文档对象.读文本属性 (“text”, ))
+file.方法 (“close”, )
+word对象.方法 (“quit”, )
+
+
+.子程序 取Excel行列数及内容, 空白型, , 
+.参数 Excel程序, 未知类型0x80001, , 
+.参数 Excel工作簿, 未知类型0x80002, , 
+.参数 文件名, 文本型, , 
+.参数 工作表序号, 整数型, , 
+.参数 行数, 整数型, 参考, 
+.参数 列数, 整数型, 参考, 
+.参数 是否粘贴数据, 逻辑型, , 
+.参数 剪辑板数据, 文本型, 参考, 
+
+.局部变量 表格对象, 对象, , , 
+.局部变量 行对象, 对象, , , 
+.局部变量 列对象, 对象, , , 
+.局部变量 范围对象, 对象, , , 
+.局部变量 Selection对象, 对象, , , 
+.局部变量 对象, 对象, , , 
+.局部变量 列标, 文本型, , , 
+.局部变量 列标题, 文本型, , "0", 
+.局部变量 变体型, 变体型, , , 
+
+赋值 (列标, “a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z|aa|ab|ac|ad|ae|af|ag|ah|ai|aj|ak|al|am|an|ao|ap|aq|ar|as|at|au|av|aw|ax|ay|az”)
+赋值 (列标题, 分割文本 (列标, “|”, ))
+Excel程序.未知支持库函数_0 ()
+Excel工作簿.未知支持库函数_6 (Excel程序)
+赋值 (对象, Excel工作簿.未知支持库函数_10 ())
+Excel工作簿.未知支持库函数_14 (文件名)
+赋值 (Excel工作簿., 工作表序号)
+赋值 (表格对象, Excel工作簿.未知支持库函数_12 ())
+.如果真 (取反 (表格对象.是否为空 ()))
+    赋值 (范围对象, 表格对象.读对象型属性 (“UsedRange”, ))
+    .如果真 (取反 (范围对象.是否为空 ()))
+        赋值 (行对象, 范围对象.读对象型属性 (“Rows”, ))
+        赋值 (列对象, 范围对象.读对象型属性 (“Columns”, ))
+        .如果真 (取反 (行对象.是否为空 ()))
+            赋值 (行数, 行对象.读数值属性 (“Count”, ))
+            
+        .如果真结束
+        .如果真 (取反 (列对象.是否为空 ()))
+            赋值 (列数, 列对象.读数值属性 (“Count”, ))
+            
+        .如果真结束
+        
+    .如果真结束
+    
+.如果真结束
+.如果真 (是否粘贴数据)
+    清除剪辑板 ()
+    赋值 (Excel工作簿., “a1”)
+    赋值 (Excel工作簿., 相加 (列标题 [列数], 到文本 (行数)))
+    Excel工作簿.未知支持库函数_28 ()
+    赋值 (Selection对象, 对象.读对象型属性 (“Selection”, ))
+    .如果真 (等于 (Selection对象.是否为空 (), 假))
+        赋值 (变体型, Selection对象.通用方法 (“Copy”, ))
+    .如果真结束
+    
+.如果真结束
+赋值 (剪辑板数据, 取剪辑板文本 ())
+Excel工作簿.未知支持库函数_15 ()
+Excel工作簿.未知支持库函数_7 ()
+Excel程序.未知支持库函数_3 ()
+Excel程序.未知支持库函数_1 ()
+
+
+.子程序 改写互联网浏览器, 空白型, , 
+.参数 互联网浏览器, 未知类型0x20001, , 
+.参数 写入代码, 文本型, , 
+
+.局部变量 文档对象, 对象, , , 
+.局部变量 style, 对象, , , 
+
+互联网浏览器.未知支持库函数_2 (文档对象)
+文档对象.方法 (“open”, )
+互联网浏览器.未知支持库函数_2 (文档对象)
+文档对象.方法 (“write”, 写入代码)
+互联网浏览器.未知支持库函数_2 (文档对象)
+文档对象.方法 (“Close”, )
+ ' 互联网浏览器.取网页文档对象 (文档对象)
+ ' style ＝ 文档对象.读对象型属性 (“body”, )
+ ' style.写属性 (“outerHTML”, )
+
+
+.子程序 取中间文本, 文本型, , 不区分大小写
+.参数 欲取其部分的文本, 文本型, , 
+.参数 开始关键字, 文本型, , 
+.参数 结束关键字, 文本型, , 
+.参数 起始取出位置, 整数型, 可空, 
+.参数 结束字符位置, 整数型, 参考 可空, 
+
+.局部变量 z1, 整数型, , , 
+.局部变量 z2, 整数型, , , 
+
+.如果真 (是否为空 (起始取出位置))
+    赋值 (起始取出位置, -1)
+.如果真结束
+赋值 (z1, 寻找文本 (欲取其部分的文本, 开始关键字, 起始取出位置, 真))
+.如果真 (大于 (z1, -1))
+    赋值 (z1, 相加 (z1, 取文本长度 (开始关键字)))
+    赋值 (z2, 寻找文本 (欲取其部分的文本, 结束关键字, z1, 真))
+    .如果真 (大于 (z2, z1))
+        赋值 (结束字符位置, 相加 (z2, 取文本长度 (结束关键字)))
+        返回 (取文本中间 (欲取其部分的文本, z1, 相减 (z2, z1)))
+    .如果真结束
+    
+.如果真结束
+赋值 (结束字符位置, -1)
+返回 (“”)
+
+
+
+.窗口程序集 图片窗口程序集, , , 
+
+.子程序 _按钮_浏览_被单击, 空白型, , 
+赋值 (.类型, 0)
+赋值 (.过滤器, “JPG图片（*.jpg）|*.jpg|GIF图片（*.gif）|*.gif|PNG图片（*.png）|*.png|BMP图片（*.bmp）|*.bmp|所有文件（*.*）|*.*”)
+赋值 (.文件名, “”)
+打开 ()
+.判断开始 (不等于 (.文件名, “”))
+    赋值 (.内容, .文件名)
+    赋值 (.内容, 到文本 (未知支持库函数_31 (.文件名)))
+    赋值 (.内容, 到文本 (未知支持库函数_32 (.文件名)))
+.默认
+    
+.判断结束
+
+
+.子程序 _按钮_确定_被单击, 空白型, , 
+.局部变量 文本环绕, 文本型, , , 
+.局部变量 边框粗细, 文本型, , , 
+.局部变量 边框颜色, 文本型, , , 
+.局部变量 特殊效果, 文本型, , , 
+.局部变量 代码, 文本型, , , 
+.局部变量 匿名局部变量_4136, 空白型, , , 
+
+.如果真 (等于 (.内容, “”))
+    信息框 (“请输入图片地址！”, 0, )
+    返回 ()
+.如果真结束
+.如果真 (等于 (.内容, “”))
+    信息框 (“请输入图片宽度！”, 0, )
+    返回 ()
+    
+.如果真结束
+.如果真 (等于 (.内容, “”))
+    信息框 (“请输入图片高度！”, 0, )
+    返回 ()
+.如果真结束
+
+.判断开始 (等于 (.现行选中项, 0))
+    赋值 (文本环绕, “left”)
+.判断 (等于 (.现行选中项, 1))
+    赋值 (文本环绕, “center”)
+.判断 (等于 (.现行选中项, 2))
+    赋值 (文本环绕, “right”)
+.判断 (等于 (.现行选中项, 3))
+    赋值 (文本环绕, “top”)
+.判断 (等于 (.现行选中项, 4))
+    赋值 (文本环绕, “middle”)
+.默认
+    赋值 (文本环绕, “bottom”)
+.判断结束
+
+.判断开始 (等于 (.现行选中项, 0))
+    赋值 (特殊效果, “ ”)
+.判断 (等于 (.现行选中项, 1))
+    赋值 (特殊效果, “Alpha(Opacity=50)”)
+.判断 (等于 (.现行选中项, 2))
+    赋值 (特殊效果, “Alpha(Opacity=0, FinishOpacity=100, Style=1, StartX=0, StartY=0, FinishX=100, FinishY=140)”)
+.判断 (等于 (.现行选中项, 3))
+    赋值 (特殊效果, “Alpha(Opacity=10, FinishOpacity=100, Style=2, StartX=30, StartY=30, FinishX=200, FinishY=200)”)
+.判断 (等于 (.现行选中项, 4))
+    赋值 (特殊效果, “blur(add=true,direction=45,strength=30)”)
+.判断 (等于 (.现行选中项, 5))
+    赋值 (特殊效果, “Wave(Add=0, Freq=60, LightStrength=1, Phase=0, Strength=3)”)
+.判断 (等于 (.现行选中项, 6))
+    赋值 (特殊效果, “gray”)
+.判断 (等于 (.现行选中项, 7))
+    赋值 (特殊效果, “flipv”)
+.判断 (等于 (.现行选中项, 8))
+    赋值 (特殊效果, “fliph”)
+.判断 (等于 (.现行选中项, 9))
+    赋值 (特殊效果, “xray”)
+.判断 (等于 (.现行选中项, 10))
+    赋值 (特殊效果, “invert”)
+.默认
+    
+.判断结束
+
+ ' 半透明= Alpha(Opacity=50)
+ ' 线性模糊=Alpha(Opacity=0, FinishOpacity=100, Style=1, StartX=0, StartY=0, FinishX=100, FinishY=140)
+ ' 放射透明=Alpha(Opacity=10, FinishOpacity=100, Style=2, StartX=30, StartY=30, FinishX=200, FinishY=200)
+ ' 风动效果= blur(add=true,direction=45,strength=30)
+ ' 正弦波纹=Wave(Add=0, Freq=60, LightStrength=1, Phase=0, Strength=3)
+ ' 黑白照片=gray
+ ' 垂直旋转= flipv
+ ' 左右旋转=fliph
+ ' X光照片=xray
+ ' 底片=invert
+ ' <IMG style="BORDER-COLOR: #00ff00; FILTER:invert;  WIDTH: 280px;  HEIGHT: 200px; " alt=这是一张图片 src="file:///D:/My%20Documents/My%20Pictures/贴图/3.jpg" align=left border=3>
+.判断开始 (大于 (到数值 (.内容), 0))
+    赋值 (边框粗细, .内容)
+    赋值 (边框颜色, 十到十六 (.颜色))
+    .判断开始 (不等于 (.内容, “”))
+        赋值 (代码, 相加 (“<IMG style=”, #引号, “BORDER-COLOR:”, 边框颜色, “;”, “FILTER:”, 特殊效果, “;”, “WIDTH:”, .内容, “px;”, “HEIGHT:”, .内容, “px;”, #引号, “ alt=”, .内容, “ src=”, #引号, .内容, #引号, “ align=”, 文本环绕, “ border=”, .内容, “>”))
+        
+    .默认
+        
+        赋值 (代码, 相加 (“<IMG style=”, #引号, “BORDER-COLOR:”, 边框颜色, “;”, “FILTER:”, 特殊效果, “;”, “WIDTH:”, .内容, “px;”, “HEIGHT:”, .内容, “px;”, #引号, “ src=”, #引号, .内容, #引号, “ align=”, 文本环绕, “ border=”, .内容, “>”))
+        
+    .判断结束
+    
+.默认
+    
+    .判断开始 (不等于 (.内容, “”))
+        赋值 (代码, 相加 (“<IMG style=”, #引号, “FILTER:”, 特殊效果, “;”, “WIDTH:”, .内容, “px;”, “HEIGHT:”, .内容, “px;”, #引号, “ alt=”, .内容, “ src=”, #引号, .内容, #引号, “ align=”, 文本环绕, “>”))
+        
+    .默认
+        
+        赋值 (代码, 相加 (“<IMG style=”, #引号, “FILTER:”, 特殊效果, “;”, “WIDTH:”, .内容, “px;”, “HEIGHT:”, .内容, “px;”, #引号, “ src=”, #引号, .内容, #引号, “ align=”, 文本环绕, “>”))
+        
+    .判断结束
+    
+.判断结束
+
+.判断开始 (等于 (启动窗口插入图片, 真))
+    _启动窗口.未知支持库函数_21 (., 代码)
+.默认
+    字幕窗口.未知支持库函数_21 (., 代码)
+.判断结束
+
+销毁 ()
+
+
+.子程序 _按钮_取消_被单击, 空白型, , 
+销毁 ()
+
+
+.子程序 _图片窗口_创建完毕, 空白型, , 
+赋值 (.现行选中项, 0)
+赋值 (.现行选中项, 0)
+
+
+.窗口程序集 取色窗口程序集, , , 
+
+.程序集变量 捕获鼠标, 逻辑型, , , 
+.子程序 _图片框5_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (捕获鼠标, 真)
+赋值 (.鼠标指针, #钢笔光标)
+赋值 (.图片, {  })
+处理事件 ()
+未知支持库函数_72 (取窗口句柄 ())
+
+
+.子程序 _图片框5_鼠标位置被移动, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.如果真 (捕获鼠标)
+    屏幕取色 ()
+.如果真结束
+
+
+.子程序 _图片框5_鼠标左键被放开, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.如果真 (捕获鼠标)
+    未知支持库函数_73 ()
+    赋值 (捕获鼠标, 假)
+    赋值 (.鼠标指针, #手型光标)
+    赋值 (.图片, #钢笔光标)
+.如果真结束
+
+
+.子程序 屏幕取色, 空白型, , 
+.局部变量 r, 文本型, , , 
+.局部变量 g, 文本型, , , 
+.局部变量 b, 文本型, , , 
+.局部变量 颜色值, 整数型, , , 
+.局部变量 a, Point, , , 
+.局部变量 蓝色, 整数型, , , 
+.局部变量 绿色, 整数型, , , 
+.局部变量 红色, 整数型, , , 
+.局部变量 RGB, RGB颜色, , , 
+.局部变量 HSL, HSL颜色, , , 
+.局部变量 Win_HSL, Win_HSL颜色, , , 
+
+取鼠标位置 (a)
+赋值 (颜色值, 取颜色 (取设备句柄 (0), a.x, a.y))
+.如果真 (不等于 (.背景颜色, 颜色值))
+    赋值 (.背景颜色, 颜色值)
+.如果真结束
+赋值 (r, 到文本 (取十六进制文本 (位与 (颜色值, 255))))
+赋值 (g, 取十六进制文本 (相除 (位与 (颜色值, 65280), 256)))
+赋值 (b, 取十六进制文本 (相除 (位与 (颜色值, 16711680), 65536)))
+
+赋值 (蓝色, 整除 (颜色值, 相加 (65280, 255, 1)))
+赋值 (绿色, 整除 (相减 (颜色值, 相乘 (蓝色, 相加 (65280, 255, 1))), 相加 (255, 1)))
+赋值 (红色, 相减 (颜色值, 相乘 (蓝色, 相加 (65280, 255, 1)), 相乘 (绿色, 相加 (255, 1))))
+
+赋值 (.内容, 到文本 (颜色值))
+赋值 (.内容, 相加 (“R:”, 到文本 (红色), “    ”, “G:”, 到文本 (绿色), “    ”, “B:”, 到文本 (蓝色)))
+赋值 (RGB.r, 红色)
+赋值 (RGB.g, 绿色)
+赋值 (RGB.b, 蓝色)
+赋值 (HSL, RGB转HSL (RGB))
+赋值 (Win_HSL, HSL转Win_HSL (HSL))
+赋值 (.内容, 相加 (“H:”, 到文本 (Win_HSL.h), “    ”, “S:”, 到文本 (Win_HSL.s), “    ”, “L:”, 到文本 (Win_HSL.l)))
+
+.如果真 (等于 (r, “0”))
+    赋值 (r, “00”)
+.如果真结束
+.如果真 (等于 (g, “0”))
+    赋值 (g, “00”)
+.如果真结束
+.如果真 (等于 (b, “0”))
+    赋值 (b, “00”)
+.如果真结束
+.如果真 (不等于 (.内容, 相加 (“#”, r, g, b)))
+    赋值 (.内容, 相加 (“#”, r, g, b))
+.如果真结束
+处理事件 ()
+
+
+.子程序 RGB转HSL, HSL颜色, 公开, 
+.参数 RGB, RGB颜色, , 
+
+.局部变量 返回值, HSL颜色, , , 
+.局部变量 r, 小数型, , , 
+.局部变量 g, 小数型, , , 
+.局部变量 b, 小数型, , , 
+.局部变量 最大, 小数型, , , 
+.局部变量 最小, 小数型, , , 
+.局部变量 s, 小数型, , , 
+.局部变量 h, 小数型, , , 
+.局部变量 l, 小数型, , , 
+
+
+赋值 (r, 相除 (RGB.r, 255))
+赋值 (g, 相除 (RGB.g, 255))
+赋值 (b, 相除 (RGB.b, 255))
+
+赋值 (最大, 取最大值_ (r, g, b))
+赋值 (最小, 取最小值_ (r, g, b))
+.判断开始 (等于 (最大, 最小))
+    赋值 (h, 0)
+.判断 (并且 (等于 (最大, r), 大于或等于 (g, b)))
+    赋值 (h, 相除 (相乘 (60, 相减 (g, b)), 相减 (最大, 最小)))
+.判断 (并且 (等于 (最大, r), 小于 (g, b)))
+    赋值 (h, 相加 (相除 (相乘 (60, 相减 (g, b)), 相减 (最大, 最小)), 360))
+.判断 (等于 (最大, g))
+    赋值 (h, 相加 (相除 (相乘 (60, 相减 (b, r)), 相减 (最大, 最小)), 120))
+.判断 (等于 (最大, b))
+    赋值 (h, 相加 (相除 (相乘 (60, 相减 (r, g)), 相减 (最大, 最小)), 240))
+.默认
+    
+.判断结束
+
+赋值 (l, 相除 (相加 (最大, 最小), 2))
+
+.判断开始 (或者 (等于 (l, 0), 等于 (最大, 最小)))
+    赋值 (s, 0)
+.判断 (并且 (小于 (0, l), 小于或等于 (l, 0.5)))
+    赋值 (s, 相除 (相减 (最大, 最小), 相加 (最大, 最小)))
+.判断 (大于 (l, 0.5))
+    赋值 (s, 相除 (相减 (最大, 最小), 相减 (2, 相加 (最大, 最小))))
+.默认
+    
+.判断结束
+
+.判断开始 (大于 (h, 360))
+    赋值 (h, 360)
+.判断 (小于 (h, 0))
+    赋值 (h, 0)
+.默认
+    
+.判断结束
+.判断开始 (大于 (s, 1))
+    赋值 (s, 1)
+.判断 (小于 (s, 0))
+    赋值 (s, 0)
+.默认
+    
+.判断结束
+赋值 (s, 相乘 (s, 100))
+.判断开始 (大于 (l, 1))
+    赋值 (l, 1)
+.判断 (小于 (l, 0))
+    赋值 (l, 0)
+.默认
+    
+.判断结束
+赋值 (l, 相乘 (l, 100))
+赋值 (返回值.h, h)
+赋值 (返回值.s, s)
+赋值 (返回值.l, l)
+返回 (返回值)
+
+
+.子程序 HSL转Win_HSL, Win_HSL颜色, 公开, 
+.参数 原_HSL, HSL颜色, , 
+
+.局部变量 返回值, Win_HSL颜色, , , 
+
+赋值 (返回值.h, 相除 (相乘 (240, 原_HSL.h), 360))
+赋值 (返回值.s, 相除 (相乘 (240, 原_HSL.s), 100))
+赋值 (返回值.l, 相除 (相乘 (240, 原_HSL.l), 100))
+返回 (返回值)
+
+.子程序 取最小值_, 小数型, , 
+.参数 参数1, 小数型, , 
+.参数 参数2, 小数型, , 
+.参数 参数3, 小数型, , 
+
+.如果 (大于 (参数1, 参数2))
+    .如果 (大于 (参数2, 参数3))
+        返回 (参数3)
+    .否则
+        返回 (参数2)
+    .如果结束
+    
+.否则
+    .如果 (大于 (参数1, 参数3))
+        返回 (参数3)
+    .否则
+        返回 (参数1)
+    .如果结束
+    
+.如果结束
+
+
+.子程序 取最大值_, 小数型, , 
+.参数 参数1, 小数型, , 
+.参数 参数2, 小数型, , 
+.参数 参数3, 小数型, , 
+
+.如果 (小于 (参数1, 参数2))
+    .如果 (小于 (参数2, 参数3))
+        返回 (参数3)
+    .否则
+        返回 (参数2)
+    .如果结束
+    
+.否则
+    .如果 (小于 (参数1, 参数3))
+        返回 (参数3)
+    .否则
+        返回 (参数1)
+    .如果结束
+    
+.如果结束
+
+
+.子程序 _取色窗口_创建完毕, 空白型, , 
+
+
+.窗口程序集 艺术字窗口程序集, , , 
+
+.程序集变量 艺术字, 整数型, , , 
+.子程序 _艺术字窗口_创建完毕, 空白型, , 
+获取焦点 ()
+“请在此处键入您自己的内容”.加入文本 ()
+赋值 (艺术字, 1)
+赋值 (.边框, 5)
+
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+销毁 ()
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+.如果真 (等于 (.内容, “”))
+    信息框 (“请输入艺术字内容！”, 0, )
+    返回 ()
+    
+.如果真结束
+
+
+.判断开始 (等于 (艺术字, 1))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字1, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 2))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字2, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 3))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字3, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 4))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字4, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 5))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字5, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 6))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字6, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 7))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字7, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 8))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字8, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 9))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字9, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 10))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字10, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 11))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字11, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 12))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字12, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 13))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字13, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 14))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字14, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 15))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字15, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 16))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字16, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 17))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字17, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 18))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字18, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 19))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字19, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 20))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字20, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 21))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字21, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 22))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字22, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 23))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字23, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 24))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字24, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 25))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字25, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 26))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字26, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 27))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字27, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 28))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字28, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 29))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字29, .内容, #艺术字尾))
+    销毁 ()
+    
+.判断 (等于 (艺术字, 30))
+    _启动窗口.未知支持库函数_21 (., 相加 (#艺术字30, .内容, #艺术字尾))
+    销毁 ()
+    
+.默认
+    
+.判断结束
+
+
+.子程序 _时钟1_周期事件, 空白型, , 
+.判断开始 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    赋值 (.边框, 0)
+    
+.判断 (等于 (未知支持库函数_78 (), 取窗口句柄 ()))
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 5)
+    
+.默认
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    赋值 (.边框, 0)
+    
+.判断结束
+
+.判断开始 (等于 (艺术字, 1))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 2))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 3))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 4))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 5))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 6))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 7))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 8))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 9))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 10))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 11))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 12))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 13))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 14))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 15))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 16))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 17))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 18))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 19))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 20))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 21))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 22))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 23))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 24))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 25))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 26))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 27))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 28))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 29))
+    赋值 (.边框, 5)
+.判断 (等于 (艺术字, 30))
+    赋值 (.边框, 5)
+.默认
+    
+.判断结束
+
+
+.子程序 _图片框1_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 1)
+
+
+.子程序 _图片框2_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 2)
+
+
+.子程序 _图片框3_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 3)
+
+
+.子程序 _图片框4_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 4)
+
+
+.子程序 _图片框5_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 5)
+
+
+
+.子程序 _图片框6_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 6)
+
+
+
+.子程序 _图片框7_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 7)
+
+
+
+.子程序 _图片框8_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 8)
+
+
+
+.子程序 _图片框9_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 9)
+
+
+
+.子程序 _图片框10_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 10)
+
+
+
+.子程序 _图片框11_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 11)
+
+
+.子程序 _图片框12_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 12)
+
+
+.子程序 _图片框13_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 13)
+
+
+.子程序 _图片框14_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 14)
+
+
+.子程序 _图片框15_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 15)
+
+
+.子程序 _图片框16_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 16)
+
+
+.子程序 _图片框17_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 17)
+
+
+.子程序 _图片框18_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 18)
+
+
+.子程序 _图片框19_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 19)
+
+
+.子程序 _图片框20_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 20)
+
+
+.子程序 _图片框21_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 21)
+
+
+.子程序 _图片框22_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 22)
+
+
+.子程序 _图片框23_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 23)
+
+.子程序 _图片框24_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 24)
+
+.子程序 _图片框25_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 25)
+
+.子程序 _图片框26_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 26)
+
+.子程序 _图片框27_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 27)
+
+.子程序 _图片框28_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 28)
+
+.子程序 _图片框29_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 29)
+
+.子程序 _图片框30_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (艺术字, 30)
+
+
+.窗口程序集 字幕窗口程序集, , , 
+
+.子程序 _字幕窗口_创建完毕, 空白型, , 
+.局部变量 字体, 文本型, , "0", 
+.局部变量 计次, 整数型, , , 
+.局部变量 n, 整数型, , , 
+
+“about:blank”.未知支持库函数_0 ()
+赋值 (., 真)
+未知支持库函数_0 (取窗口句柄 (), “加粗”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “斜体”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “下划线”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “字体选择”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “字号选择”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “文字背景颜色”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “文字颜色”, 假, 假)
+未知支持库函数_0 (取窗口句柄 (), “插入图片”, 假, 假)
+赋值 (字体, 未知支持库函数_28 ())
+赋值 (n, 取数组成员数 (字体))
+.计次循环首 (n, 计次)
+    字体.加入项目 ( [计次], )
+    .判断开始 (等于 (字体 [计次], “宋体”))
+        赋值 (.现行选中项, 计次) ' 默认字体为“宋体”
+    .默认
+        
+    .判断结束
+    输出调试文本 (字体 [计次])
+.计次循环尾 ()
+
+
+
+.子程序 _组合框1_列表项被选择, 空白型, , 
+赋值 (., .取项目文本 (.现行选中项))
+
+
+.子程序 _组合框2_列表项被选择, 空白型, , 
+赋值 (., 相加 (.现行选中项, 1))
+
+
+.子程序 _颜色选择器2_颜色被改变, 空白型, , 
+赋值 (., .颜色)
+
+.子程序 _颜色选择器1_颜色被改变, 空白型, , 
+赋值 (., .颜色)
+
+
+.子程序 _图形按钮6_被单击, 空白型, , 
+0.未知支持库函数_18 ()
+
+.子程序 _图形按钮7_被单击, 空白型, , 
+1.未知支持库函数_18 ()
+
+.子程序 _图形按钮8_被单击, 空白型, , 
+2.未知支持库函数_18 ()
+
+.子程序 _图形按钮21_被单击, 空白型, , 
+赋值 (启动窗口插入图片, 假)
+载入 (图片窗口, 字幕窗口, 真)
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 对象, 对象, , , 
+.局部变量 源文件, 文本型, , , 
+.局部变量 内容, 文本型, , , 
+
+对象.未知支持库函数_2 ()
+赋值 (源文件, 对象.读对象型属性 (“documentelement”, ).读文本属性 (“outerhtml”, ))
+赋值 (内容, 取中间文本 (源文件, “<BODY>”, “</BODY>”))
+.如果真 (等于 (内容, “”))
+    信息框 (“请输入滚动字幕的内容！”, 0, )
+    返回 ()
+.如果真结束
+
+.判断开始 (等于 (.选中, 真))
+    _启动窗口.未知支持库函数_21 (., 相加 (“<p><marquee>”, 内容, “</marquee></p>”))
+.默认
+    _启动窗口.未知支持库函数_21 (., 相加 (“<p><marquee behavior=alternate>”, 内容, “</marquee></p>”))
+.判断结束
+
+销毁 ()
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+销毁 ()
+
+
+.窗口程序集 分组框窗口程序集, , , 
+
+.子程序 _分组框窗口_创建完毕, 空白型, , 
+赋值 (.现行选中项, 0)
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 标题对齐, 文本型, , , 
+
+.判断开始 (等于 (.现行选中项, 0))
+    赋值 (标题对齐, “left”)
+.判断 (等于 (.现行选中项, 1))
+    赋值 (标题对齐, “center”)
+.默认
+    赋值 (标题对齐, “right”)
+.判断结束
+ ' <fieldset style="BORDER-COLOR: #0000ff;  WIDTH: 572px;  HEIGHT: 167px; BACKGROUND-COLOR: #00ff00"><legend align=center>标题</legend>内容</fieldset>
+_启动窗口.未知支持库函数_21 (., 相加 (“<fieldset style=”, #引号, “BORDER-COLOR:”, 十到十六 (.颜色), “;”, “ WIDTH:”, .内容, “px;”, “HEIGHT:”, .内容, “px;”, “BACKGROUND-COLOR:”, 十到十六 (.颜色), #引号, “><legend align=”, 标题对齐, “>”, .内容, “</legend>内容</fieldset>”))
+销毁 ()
+
+.子程序 _按钮2_被单击, 空白型, , 
+销毁 ()
+
+
+.窗口程序集 网页框架窗口程序集, , , 
+
+.子程序 _网页框架窗口_创建完毕, 空白型, , 
+赋值 (.现行选中项, 0)
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 代码, 文本型, , , 
+.局部变量 对齐, 文本型, , , 
+
+.判断开始 (等于 (.现行选中项, 0))
+    赋值 (对齐, “left”)
+.判断 (等于 (.现行选中项, 1))
+    赋值 (对齐, “center”)
+.默认
+    赋值 (对齐, “right”)
+.判断结束
+ ' <iframe align="left" height="300" scrolling="yes" src="http://www.baidu.com" width="400"></iframe>
+.判断开始 (等于 (.选中, 真))
+    赋值 (代码, 相加 (“<iframe align=”, #引号, 对齐, #引号, “ height=”, #引号, .内容, #引号, “scrolling=”, #引号, “yes”, #引号, “ src=”, #引号, .内容, #引号, “ width=”, #引号, .内容, #引号, “></iframe>”))
+    
+.默认
+    赋值 (代码, 相加 (“<iframe align=”, #引号, 对齐, #引号, “ height=”, #引号, .内容, #引号, “scrolling=”, #引号, “no”, #引号, “ src=”, #引号, .内容, #引号, “ width=”, #引号, .内容, #引号, “></iframe>”))
+.判断结束
+
+_启动窗口.未知支持库函数_21 (., 代码)
+
+销毁 ()
+
+.子程序 _按钮2_被单击, 空白型, , 
+销毁 ()
+
+
+.窗口程序集 发光字窗口程序集, , , 
+
+.子程序 _发光字窗口_创建完毕, 空白型, , 
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 代码, 文本型, , , 
+
+ ' <SPAN style="FILTER: glow(color=#ff0000,strength=3); WIDTH: 73pt; HEIGHT: 18px">测试文字效果</SPAN>
+赋值 (代码, 相加 (“<SPAN style=”, #引号, “FILTER: glow(color=”, 十到十六 (.颜色), “,strength=”, .内容, “); WIDTH:”, 到文本 (相乘 (取文本长度 (.内容), 7)), “pt; HEIGHT:18px”, #引号, “>”, .内容, “</SPAN>”))
+_启动窗口.未知支持库函数_21 (., 代码)
+销毁 ()
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+销毁 ()
+
+
+.类模块 代码编辑框操作类, , , 
+
+.程序集变量 风格XML树, 未知类型0xB0001, , , 
+.程序集变量 关键字XML树, 未知类型0xB0001, , , 
+.程序集变量 根节点名, 文本型, , , 
+.程序集变量 风格_语言节点位置, 文本型, , , 
+.程序集变量 风格XML文件路径, 文本型, , , 
+.程序集变量 关键字_语言节点位置, 文本型, , , 
+.程序集变量 关键字XML文件路径, 文本型, , , 
+.程序集变量 语言风格数组, 语言风格结构, , "0", 
+.程序集变量 匿名程序集变量_4409, 空白型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+赋值 (风格_语言节点位置, “EshiEditor/LexerStyles”)
+赋值 (关键字_语言节点位置, “EshiEditor/Languages”)
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 加载XML树, 空白型, 公开, 
+.参数 风格XML树名, 文本型, , 
+.参数 关键字XML树名, 文本型, , 
+
+风格XML树.未知支持库函数_1 (风格XML树名)
+赋值 (风格XML文件路径, 风格XML树名)
+关键字XML树.未知支持库函数_1 (关键字XML树名)
+赋值 (关键字XML文件路径, 关键字XML树名)
+初始化语言信息 ()
+
+
+.子程序 取语言信息, 逻辑型, 公开, 
+.参数 _语言风格数组, 语言风格结构, 参考 数组, 
+
+赋值 (_语言风格数组, 语言风格数组)
+返回 (真)
+
+
+.子程序 初始化语言信息, 逻辑型, 公开, 
+.局部变量 语言节点名称, 文本型, , "0", 
+.局部变量 语言节点数, 整数型, , , 
+.局部变量 语言节点下标, 整数型, , , 
+.局部变量 属性节点个数, 整数型, , , 
+.局部变量 属性节点下标, 整数型, , , 
+.局部变量 属性值, 文本型, , , 
+.局部变量 关键字节点个数, 整数型, , , 
+.局部变量 关键字, 文本型, , , 
+.局部变量 关键字节点下标, 整数型, , , 
+
+风格XML树.未知支持库函数_6 (风格_语言节点位置, 语言节点名称)
+赋值 (语言节点数, 5)
+重定义数组 (语言风格数组, 假, 语言节点数)
+
+.变量循环首 (1, 语言节点数, 1, 语言节点下标)
+     ' 设置常规信息
+    风格XML树.未知支持库函数_10 (相加 (风格_语言节点位置, “/@”, 到文本 (语言节点下标)), “name”, 属性值)
+    赋值 (语言风格数组 [语言节点下标], 语言名称, 属性值)
+    赋值 (语言风格数组 [语言节点下标], 节点序号, 语言节点下标)
+    .如果真 (等于 (风格XML树.未知支持库函数_5 (相加 (风格_语言节点位置, “/@”, 到文本 (语言节点下标)), 属性节点个数), 假))
+        返回 (假)
+    .如果真结束
+    
+    
+     ' 设置属性
+    .变量循环首 (1, 属性节点个数, 1, 属性节点下标)
+        .如果真 (等于 (取数组成员数 (语言风格数组 [语言节点下标], 属性数组), 1))
+            重定义数组 (语言风格数组 [语言节点下标], 属性数组, 假, 属性节点个数)
+        .如果真结束
+        
+        赋值 (语言风格数组 [语言节点下标], 属性数组 [属性节点下标], 节点序号, 属性节点下标)
+         ' Name
+        风格XML树.未知支持库函数_10 (相加 (风格_语言节点位置, “/@”, 到文本 (语言节点下标), “/@”, 到文本 (属性节点下标)), “name”, 属性值)
+        赋值 (语言风格数组 [语言节点下标], 属性数组 [属性节点下标], 风格名称, 属性值)
+        
+         ' StyleID
+        风格XML树.未知支持库函数_10 (相加 (风格_语言节点位置, “/@”, 到文本 (语言节点下标), “/@”, 到文本 (属性节点下标)), “styleID”, 属性值)
+        赋值 (语言风格数组 [语言节点下标], 属性数组 [属性节点下标], 风格ID, 到数值 (属性值))
+        
+         ' fgColor
+        风格XML树.未知支持库函数_10 (相加 (风格_语言节点位置, “/@”, 到文本 (语言节点下标), “/@”, 到文本 (属性节点下标)), “fgColor”, 属性值)
+        赋值 (语言风格数组 [语言节点下标], 属性数组 [属性节点下标], 前景颜色, 到数值 (属性值))
+        
+         ' bgColor
+        风格XML树.未知支持库函数_10 (相加 (风格_语言节点位置, “/@”, 到文本 (语言节点下标), “/@”, 到文本 (属性节点下标)), “bgColor”, 属性值)
+        赋值 (语言风格数组 [语言节点下标], 属性数组 [属性节点下标], 背景颜色, 到数值 (属性值))
+        
+         ' fontName
+        风格XML树.未知支持库函数_10 (相加 (风格_语言节点位置, “/@”, 到文本 (语言节点下标), “/@”, 到文本 (属性节点下标)), “fontName”, 属性值)
+        赋值 (语言风格数组 [语言节点下标], 属性数组 [属性节点下标], 字体名称, 属性值)
+        
+         ' fontStyle
+        风格XML树.未知支持库函数_10 (相加 (风格_语言节点位置, “/@”, 到文本 (语言节点下标), “/@”, 到文本 (属性节点下标)), “fontStyle”, 属性值)
+        赋值 (语言风格数组 [语言节点下标], 属性数组 [属性节点下标], 字体风格, 到数值 (属性值))
+        
+         ' fontSize
+        风格XML树.未知支持库函数_10 (相加 (风格_语言节点位置, “/@”, 到文本 (语言节点下标), “/@”, 到文本 (属性节点下标)), “fontSize”, 属性值)
+        赋值 (语言风格数组 [语言节点下标], 属性数组 [属性节点下标], 字体大小, 到数值 (属性值))
+        
+    .变量循环尾 ()
+    
+     ' 设置关键字
+    关键字XML树.未知支持库函数_5 (相加 (关键字_语言节点位置, “/@”, 到文本 (语言节点下标)), 关键字节点个数)
+    .如果真 (等于 (取数组成员数 (语言风格数组 [语言节点下标], 关键字数组), 1))
+        重定义数组 (语言风格数组 [语言节点下标], 关键字数组, 假, 关键字节点个数)
+    .如果真结束
+    
+    .变量循环首 (1, 关键字节点个数, 1, 关键字节点下标)
+        赋值 (语言风格数组 [语言节点下标], 关键字数组 [关键字节点下标], 关键字XML树.未知支持库函数_33 (相加 (关键字_语言节点位置, “/@”, 到文本 (语言节点下标), “/@”, 到文本 (关键字节点下标)), ))
+        赋值 (语言风格数组 [语言节点下标], 关键字, 相加 (语言风格数组 [语言节点下标], 关键字, 语言风格数组 [语言节点下标], 关键字数组 [关键字节点下标]))
+    .变量循环尾 ()
+    
+    关键字由小到大排序 (语言风格数组 [语言节点下标], 关键字)
+    .判断开始 (不等于 (语言风格数组 [语言节点下标], 语言名称, “html”))
+        
+        赋值 (语言风格数组 [语言节点下标], 分界符, “; ( ) [ ] { } = == > < !”)
+    .默认
+        
+        赋值 (语言风格数组 [语言节点下标], 分界符, 相加 (“< / ”, #引号))
+    .判断结束
+    
+.变量循环尾 ()
+
+返回 (真)
+
+
+.子程序 使用Html词法分析器, 空白型, 公开, 
+.参数 代码编辑框, 未知类型0x90001, , 
+
+.局部变量 Html语言结构, 语言风格结构, , , 
+.局部变量 JavaScript语言结构, 语言风格结构, , , 
+
+查找语言 (“html”, Html语言结构)
+代码编辑框.未知支持库函数_15 (7)
+代码编辑框.未知支持库函数_80 (#.)
+设置属性及关键字 (代码编辑框, Html语言结构)
+查找语言 (“javascript”, JavaScript语言结构)
+设置属性及关键字 (代码编辑框, JavaScript语言结构)
+
+
+.子程序 查找语言, 逻辑型, 公开, 
+.参数 语言名称, 文本型, , 
+.参数 语言风格, 语言风格结构, 参考, 
+
+.局部变量 语言个数, 整数型, , , 
+.局部变量 语言下标, 整数型, , , 
+
+赋值 (语言个数, 取数组成员数 (语言风格数组))
+.变量循环首 (1, 语言个数, 1, 语言下标)
+    .如果真 (等于 (语言名称, 语言风格数组 [语言下标], 语言名称))
+        赋值 (语言风格, 语言风格数组 [语言下标])
+        返回 (真)
+    .如果真结束
+    
+.变量循环尾 ()
+
+返回 (假)
+
+.子程序 设置属性及关键字, 空白型, 公开, 
+.参数 代码编辑框, 未知类型0x90001, , 
+.参数 语言结构, 语言风格结构, , 
+
+.局部变量 属性数, 整数型, , , 
+.局部变量 属性下标, 整数型, , , 
+.局部变量 关键字数, 整数型, , , 
+.局部变量 关键字下标, 整数型, , , 
+
+赋值 (属性数, 取数组成员数 (语言结构.属性数组))
+.变量循环首 (1, 属性数, 1, 属性下标)
+     ' 前景色
+    代码编辑框.未知支持库函数_73 (语言结构.属性数组 [属性下标], 风格ID, 语言结构.属性数组 [属性下标], 前景颜色)
+     ' 背景色
+    代码编辑框.未知支持库函数_74 (语言结构.属性数组 [属性下标], 风格ID, 语言结构.属性数组 [属性下标], 背景颜色)
+     ' 字体
+    代码编辑框.未知支持库函数_68 (语言结构.属性数组 [属性下标], 风格ID, 语言结构.属性数组 [属性下标], 字体名称)
+     ' 大小
+    代码编辑框.未知支持库函数_69 (语言结构.属性数组 [属性下标], 风格ID, 语言结构.属性数组 [属性下标], 字体大小)
+    
+     ' 粗体
+    .如果真 (等于 (位与 (语言结构.属性数组 [属性下标], 字体风格, 1), 1))
+        代码编辑框.未知支持库函数_70 (语言结构.属性数组 [属性下标], 风格ID, 真)
+        
+    .如果真结束
+    
+     ' 斜体
+    .如果真 (等于 (位与 (语言结构.属性数组 [属性下标], 字体风格, 2), 2))
+        代码编辑框.未知支持库函数_71 (语言结构.属性数组 [属性下标], 风格ID, 真)
+        
+    .如果真结束
+    
+     ' 下划线
+    .如果真 (等于 (位与 (语言结构.属性数组 [属性下标], 字体风格, 4), 4))
+        代码编辑框.未知支持库函数_72 (语言结构.属性数组 [属性下标], 风格ID, 真)
+        
+    .如果真结束
+    
+.变量循环尾 ()
+
+.判断开始 (等于 (语言结构.语言名称, “javascript”))
+    代码编辑框.未知支持库函数_82 (1, 语言结构.关键字数组 [1])
+.默认
+    
+    赋值 (关键字数, 取数组成员数 (语言结构.关键字数组))
+    .变量循环首 (1, 关键字数, 1, 关键字下标)
+        代码编辑框.未知支持库函数_82 (相减 (关键字下标, 1), 语言结构.关键字数组 [关键字下标])
+    .变量循环尾 ()
+    
+.判断结束
+
+
+.子程序 关键字由小到大排序, 空白型, , 
+.参数 关键字, 文本型, 参考, 
+
+.局部变量 关键字数组, 文本型, , "0", 
+.局部变量 关键字个数, 整数型, , , 
+.局部变量 关键字位置, 整数型, , , 
+.局部变量 查找位置, 整数型, , , 
+.局部变量 最小关键字, 文本型, , , 
+.局部变量 最小位置, 整数型, , , 
+.局部变量 中间文本, 文本型, , , 
+
+赋值 (关键字数组, 分割文本 (关键字, “ ”, ))
+赋值 (关键字个数, 取数组成员数 (关键字数组))
+.变量循环首 (1, 关键字个数, 1, 关键字位置)
+    赋值 (最小关键字, 关键字数组 [关键字位置])
+    赋值 (最小位置, 关键字位置)
+    .变量循环首 (相加 (关键字位置, 1), 关键字个数, 1, 查找位置)
+        .如果真 (大于 (最小关键字, 关键字数组 [查找位置]))
+            赋值 (最小关键字, 关键字数组 [查找位置])
+            赋值 (最小位置, 查找位置)
+        .如果真结束
+        
+    .变量循环尾 ()
+    .如果真 (不等于 (关键字位置, 最小位置))
+        赋值 (中间文本, 关键字数组 [关键字位置])
+        赋值 (关键字数组 [关键字位置], 最小关键字)
+        赋值 (关键字数组 [最小位置], 中间文本)
+    .如果真结束
+    
+.变量循环尾 ()
+赋值 (关键字, “”)
+.变量循环首 (1, 关键字个数, 1, 关键字位置)
+    赋值 (关键字, 相加 (关键字, 关键字数组 [关键字位置]))
+    .如果真 (不等于 (关键字位置, 关键字个数))
+        赋值 (关键字, 相加 (关键字, “ ”))
+    .如果真结束
+    
+.变量循环尾 ()
+
+
+.子程序 自动补全, 空白型, 公开, 
+.参数 待补文本, 文本型, , 
+
+.局部变量 文档类型, 文本型, , , 
+.局部变量 位置2, 整数型, , , 
+.局部变量 语言风格, 语言风格结构, , , 
+.局部变量 当前位置, 整数型, , , 
+.局部变量 字符, 文本型, , , 
+.局部变量 分界符, 文本型, , , 
+.局部变量 引号记数, 整数型, , , 
+
+赋值 (文档类型, “html”)
+查找语言 (文档类型, 语言风格)
+_启动窗口.未知支持库函数_136 (., “ ”)
+赋值 (当前位置, 相减 (_启动窗口.未知支持库函数_43 (.), 1))
+赋值 (引号记数, 0)
+.变量循环首 (当前位置, 0, -1, 位置2)
+    赋值 (字符, _启动窗口.未知支持库函数_13 (., 位置2))
+    .如果真 (等于 (字符, “>”))
+        返回 ()
+    .如果真结束
+    
+    .如果真 (等于 (字符, “<”))
+        跳出循环 ()
+    .如果真结束
+    
+    .如果真 (等于 (字符, #引号))
+        赋值 (引号记数, 相加 (引号记数, 1))
+    .如果真结束
+    
+.变量循环尾 ()
+
+.如果真 (大于 (求余数 (引号记数, 2), 0))
+    返回 ()
+.如果真结束
+
+
+.变量循环首 (当前位置, 0, -1, 位置2)
+    赋值 (字符, _启动窗口.未知支持库函数_13 (., 位置2))
+    .如果真 (或者 (等于 (是否为空格 (字符), 真), 等于 (查找包含关键字 (语言风格.分界符, 字符), 真)))
+        跳出循环 ()
+    .如果真结束
+    
+    
+.变量循环尾 ()
+赋值 (位置2, 相减 (当前位置, 位置2))
+
+.如果真 (等于 (位置2, 0))
+    返回 ()
+.如果真结束
+_启动窗口.未知支持库函数_130 (., 位置2, 语言风格.关键字)
+
+
+
+.子程序 是否为空格, 逻辑型, , 
+.参数 字符, 文本型, , 
+
+.如果真 (等于 (字符, “ ”))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+
+.子程序 查找包含关键字, 逻辑型, , 
+.参数 关键字集合, 文本型, , 关键字之间以“ ”分割
+.参数 关键字, 文本型, , 
+
+.局部变量 关键字数组, 文本型, , "0", 
+.局部变量 个数, 整数型, , , 
+.局部变量 位置, 整数型, , , 
+
+赋值 (关键字数组, 分割文本 (关键字集合, “ ”, ))
+赋值 (个数, 取数组成员数 (关键字数组))
+.变量循环首 (1, 个数, 1, 位置)
+    .如果真 (等于 (关键字数组 [位置], 关键字))
+        返回 (真)
+    .如果真结束
+    
+.变量循环尾 ()
+返回 (假)
+
+
+.窗口程序集 欢迎窗口程序集, , , 
+
+.子程序 _标签1_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+销毁 ()
+
+
+.子程序 _欢迎窗口_创建完毕, 空白型, , 
+
+
+.子程序 _图片框1_鼠标左键被放开, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+销毁 ()
+
+
+.子程序 _欢迎窗口_鼠标左键被放开, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+销毁 ()
+
+
+.子程序 _图形按钮1_被单击, 空白型, , 
+销毁 ()
+_启动窗口._新建_被选择 ()
+
+
+.子程序 _图形按钮2_被单击, 空白型, , 
+销毁 ()
+_启动窗口._打开_被选择 ()
+
+
+.子程序 _时钟1_周期事件, 空白型, , 
+赋值 (.标题, “欢迎使用易视网页编辑器正式版，易视，让网页制作更容易！”)
+赋值 (.时钟周期, 0)
+
+
+.子程序 _图形按钮3_被单击, 空白型, , 
+销毁 ()
+_启动窗口._查看使用向导_被选择 ()
+
+
+.窗口程序集 页面属性窗口程序集, , , 
+
+.程序集变量 文档对象, 对象, , , 
+.程序集变量 源文件, 文本型, , , 
+.程序集变量 网页标题, 文本型, , , 
+.程序集变量 背景乐, 文本型, , , 
+.程序集变量 背景图片, 文本型, , , 
+.程序集变量 背景颜色, 文本型, , , 
+.子程序 _页面属性窗口_创建完毕, 空白型, , 
+赋值 (.现行选中项, 0)
+
+_启动窗口.未知支持库函数_2 (., 文档对象)
+赋值 (源文件, 文档对象.读对象型属性 (“documentelement”, ).读文本属性 (“outerhtml”, ))
+文档对象.清除 ()
+
+赋值 (网页标题, 取中间文本 (源文件, “<TITLE>”, “</TITLE>”))
+赋值 (.内容, 网页标题)
+
+赋值 (背景乐, 取中间文本 (源文件, “<bgsound ”, “>”))
+赋值 (.内容, 背景乐)
+
+赋值 (背景图片, 取中间文本 (取中间文本 (源文件, “<BODY”, “>”), 相加 (“background=”, #引号), #引号))
+赋值 (.内容, 背景图片)
+
+赋值 (背景颜色, 取中间文本 (取中间文本 (源文件, “<BODY”, “>”), 相加 (“bgcolor=”, #引号), #引号))
+ ' 颜色选择器1.颜色 ＝十六到十（背景颜色）
+
+
+.子程序 _按钮_确定_被单击, 空白型, , 
+.局部变量 代码, 文本型, , , 
+
+赋值 (代码, 相加 (“<HTML><HEAD><TITLE>”, .内容, “</TITLE>”, #换行符, “<META http-equiv=Content-Type content=”, #引号, “text/html; charset=gb2312”, #引号, “>”, #换行符, “<META content=”, #引号, “MSHTML 6.00.2900.6058”, #引号, “name=GENERATOR></HEAD>”, #换行符, “<BODY bgcolor=”, #引号, 十到十六 (.颜色), #引号, “ background=”, #引号, .内容, #引号, “>”, “<bgsound”, “ balance=0”, “ src=”, #引号, .内容, #引号, “ volume=0 ></BODY></HTML>”))
+
+改写互联网浏览器 (_启动窗口., 代码)
+_启动窗口.未知支持库函数_11 (.)
+_启动窗口.未知支持库函数_10 (., 0, 代码)
+
+销毁 ()
+
+
+.子程序 _按钮_浏览1_被单击, 空白型, , 
+赋值 (.类型, 0)
+赋值 (.文件名, “”)
+赋值 (.过滤器, “MP3文件（*.mp3）|*.mp3”)
+打开 ()
+.判断开始 (不等于 (.文件名, “”))
+    赋值 (.内容, .文件名)
+.默认
+    
+.判断结束
+
+
+.子程序 _按钮_浏览2_被单击, 空白型, , 
+赋值 (.类型, 0)
+赋值 (.文件名, “”)
+赋值 (.过滤器, “JPG图片（*.jpg）|*.jpg|GIF图片（*.gif）|*.gif|PNG图片（*.png）|*.png|BMP图片（*.bmp）|*.bmp|所有文件（*.*）|*.*”)
+打开 ()
+.判断开始 (不等于 (.文件名, “”))
+    赋值 (.内容, .文件名)
+.默认
+    
+.判断结束
+
+
+.子程序 _按钮_取消_被单击, 空白型, , 
+销毁 ()
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

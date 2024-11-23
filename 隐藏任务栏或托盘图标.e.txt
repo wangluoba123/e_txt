@@ -1,0 +1,303 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：隐藏任务栏或托盘图标
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 TB_HIDEBUTTON, "1028", , 
+.常量 TB_GETBUTTONTEXTA, "1069", , 
+.常量 TB_BUTTONCOUNT, "1048", , 
+.常量 TB_GETBUTTONINFOA, "1089", , 
+.常量 STANDARD_RIGHTS_REQUIRED, "983040", , 
+.常量 SYNCHRONIZE, "1048576", , 
+.常量 PROCESS_ALL_ACCESS, "2035711", , STANDARD_RIGHTS_REQUIRED or SYNCHRONIZE or 4095
+.常量 PAGE_READWRITE, "4", , 
+.常量 TBIF_BYINDEX, "2147483648", , 
+.常量 TBIF_COMMAND, "32", , 
+.常量 TBIF_STATE, "4", , 
+.常量 TBIF_STYLE, "8", , 
+.常量 TBIF_IMAGE, "1", , 
+.常量 TBIF_LPARAM, "16", , 
+.常量 TBIF_SIZE, "64", , 
+.常量 TBIF_TEXT, "2", , 
+.常量 MEM_COMMIT, "4096", , 
+.常量 MEM_DECOMMIT, "16384", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 5 系统核心支持库
+
+
+
+
+数据类型 TBBUTTONINFO, , 
+    .成员 cbSize, 整数型, , , 32
+    .成员 dwMask, 整数型, , , 
+    .成员 idCommand, 整数型, , , 
+    .成员 iImage, 整数型, , , 
+    .成员 fsState, 字节型, , , 
+    .成员 fsStyle, 字节型, , , 
+    .成员 cx, 短整数型, , , 
+    .成员 lParam, 整数型, , , 
+    .成员 pszText, 整数型, , , 
+    .成员 cchText, 整数型, , , 
+
+
+.DLL命令 FindWindow, 整数型, "", "FindWindowA", , 
+    .参数 lpClassName, 文本型, , 
+    .参数 lpWindowName, 整数型, , 
+
+.DLL命令 FindWindowEx, 整数型, "", "FindWindowExA", , 
+    .参数 hWnd1, 整数型, , 
+    .参数 hWnd2, 整数型, , 
+    .参数 lpsz1, 文本型, , 
+    .参数 lpsz2, 空白型, , 
+
+.DLL命令 SendMessage, 整数型, "", "SendMessageA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 要隐藏的图标，从0开始
+    .参数 lParam, 整数型, , Any型,根据需要可以设置成不同的类型
+
+.DLL命令 GetWindowThreadProcessId, 整数型, "user32.dll", "GetWindowThreadProcessId", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpdwProcessId, 整数型, 传址, 
+
+.DLL命令 OpenProcess, 整数型, "kernel32.dll", "OpenProcess", , 
+    .参数 dwDesiredAccessas, 整数型, , 
+    .参数 bInheritHandle, 整数型, , 
+    .参数 dwProcId, 整数型, , 
+
+.DLL命令 DuplicateHandle, 整数型, "kernel32.dll", "DuplicateHandle", , 
+    .参数 hSourceProcessHandle, 空白型, , 
+    .参数 hSourceHandle, 空白型, , 
+    .参数 hTargetProcessHandle, 空白型, , 
+    .参数 lpTargetHandle, 空白型, 传址, 
+    .参数 dwDesiredAccess, 空白型, , 
+    .参数 bInheritHandle, 空白型, , 
+    .参数 dwOptions, 空白型, , 
+
+.DLL命令 GetCurrentProcess, 整数型, "kernel32.dll", "GetCurrentProcess", , 
+
+.DLL命令 CloseHandle, 整数型, "kernel32.dll", "CloseHandle", , 
+    .参数 hObject, 空白型, , 
+
+.DLL命令 VirtualAllocEx, 整数型, "kernel32.dll", "VirtualAllocEx", , 
+    .参数 hProcess, 空白型, , 
+    .参数 lpAddress, 空白型, , any
+    .参数 dwSize, 空白型, , 
+    .参数 flAllocationType, 空白型, , 
+    .参数 flProtect, 空白型, , 
+
+.DLL命令 WriteProcessMemory, 整数型, "kernel32.dll", "WriteProcessMemory", , 
+    .参数 hProcess, 空白型, , 
+    .参数 lpBaseAddress, 空白型, , any
+    .参数 lpBuffer, 空白型, , 
+    .参数 nSize, 空白型, , 
+    .参数 lpNumberOfBytesWritten, 空白型, , 
+
+.DLL命令 ReadProcessMemory, 整数型, "kernel32.dll", "ReadProcessMemory", , 
+    .参数 hProcess, 空白型, , 
+    .参数 lpBaseAddress, 空白型, , any
+    .参数 lpBuffer, 空白型, , any
+    .参数 nSize, 空白型, , 
+    .参数 lpNumberOfBytesWritten, 空白型, 传址, 
+
+.DLL命令 VirtualFreeEx2, 整数型, "kernel32.dll", "VirtualFreeEx", , 
+    .参数 hProcess, 空白型, , 
+    .参数 lpAddress, 空白型, , 
+    .参数 dwSize, 空白型, , 
+    .参数 dwFreeType, 空白型, , 
+
+.DLL命令 lstrcpyn, 整数型, "kernel32", "lstrcpynA", , 
+    .参数 lpString1, 整数型, 传址, 
+    .参数 lpString2, 整数型, 传址, 
+    .参数 iMaxLength, 整数型, , 
+
+.DLL命令 lstrcpynB, 整数型, "kernel32", "lstrcpynA", , 
+    .参数 lpString1, 字节型, 传址, 
+    .参数 lpString2, 字节型, 传址, 
+    .参数 iMaxLength, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.子程序 隐藏任务栏图标, 逻辑型, , 成功返回真，失败返回假。
+.参数 图标标题, 文本型, , 
+.参数 是否隐藏, 逻辑型, 可空, 为真隐藏，为假显示，默认为真。
+.参数 图标序号, 整数型, 可空, 不知道标题知道序号时用这个，请将标题参数置为空文本。
+
+.局部变量 tbi_z, TBBUTTONINFO, , , 
+.局部变量 隐藏, 整数型, , , 
+.局部变量 返回, 整数型, , , 
+
+.如果真 (是否为空 (是否隐藏))
+    赋值 (是否隐藏, 真)
+.如果真结束
+.如果 (是否隐藏)
+    赋值 (隐藏, 1)
+.否则
+    赋值 (隐藏, 0)
+.如果结束
+.如果真 (等于 (是否为空 (图标序号), 假))
+    赋值 (返回, SendMessage (取句柄 (假), #TB_HIDEBUTTON, 图标序号, 隐藏))
+    .如果真 (不等于 (返回, -1))
+        返回 (真)
+    .如果真结束
+    返回 (假)
+.如果真结束
+赋值 (返回, SendMessage (取句柄 (假), #TB_HIDEBUTTON, GetButtonInfo (tbi_z, 图标标题, 假), 隐藏))
+.如果真 (不等于 (返回, -1))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+.子程序 隐藏托盘图标, 逻辑型, , 成功返回真，失败返回假。
+.参数 图标标题, 文本型, , 
+.参数 是否隐藏, 逻辑型, 可空, 为真隐藏，为假显示，默认为真。
+.参数 图标序号, 整数型, 可空, 不知道标题知道序号时用这个，请将标题参数置为空文本。
+
+.局部变量 tbi_z, TBBUTTONINFO, , , 
+.局部变量 隐藏, 整数型, , , 
+.局部变量 返回, 整数型, , , 
+
+.如果真 (是否为空 (是否隐藏))
+    赋值 (是否隐藏, 真)
+.如果真结束
+.如果 (是否隐藏)
+    赋值 (隐藏, 1)
+.否则
+    赋值 (隐藏, 0)
+.如果结束
+.如果真 (等于 (是否为空 (图标序号), 假))
+    赋值 (返回, SendMessage (取句柄 (真), #TB_HIDEBUTTON, 图标序号, 隐藏))
+    .如果真 (不等于 (返回, -1))
+        返回 (真)
+    .如果真结束
+    返回 (假)
+.如果真结束
+赋值 (返回, SendMessage (取句柄 (真), #TB_HIDEBUTTON, GetButtonInfo (tbi_z, 图标标题, 真), 隐藏))
+.如果真 (不等于 (返回, -1))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+.子程序 取句柄, 整数型, , 
+.参数 是否托盘, 逻辑型, , 真为托盘，假为任务栏。
+
+.局部变量 系统句柄, 整数型, , , SysPager
+.局部变量 句柄, 整数型, , , 
+.局部变量 托盘句柄, 整数型, , , 
+
+.如果真 (等于 (是否托盘, 假))
+    赋值 (句柄, FindWindow (“Shell_TrayWnd”, 0))
+    赋值 (句柄, FindWindowEx (句柄, 0, “ReBarWindow32”, 0))
+    赋值 (句柄, FindWindowEx (句柄, 0, “MSTaskSwWClass”, 0))
+    赋值 (系统句柄, FindWindowEx (句柄, 0, “ToolbarWindow32”, 0))
+.如果真结束
+.如果真 (是否托盘)
+    赋值 (句柄, FindWindow (“Shell_TrayWnd”, 0))
+    赋值 (句柄, FindWindowEx (句柄, 0, “TrayNotifyWnd”, 0))
+    赋值 (系统句柄, FindWindowEx (句柄, 0, “SysPager”, 0))
+.如果真结束
+.如果真 (不等于 (系统句柄, 0))
+    赋值 (句柄, 系统句柄)
+.如果真结束
+赋值 (托盘句柄, FindWindowEx (句柄, 0, “ToolbarWindow32”, 0))
+.如果真 (等于 (托盘句柄, 0))
+    赋值 (托盘句柄, 句柄)
+.如果真结束
+返回 (托盘句柄)
+
+.子程序 GetButtonInfo, 整数型, , 如果是隐藏和显示图标，应该取.idCommand，删除图标取 iButton
+.参数 TBi, TBBUTTONINFO, , 
+.参数 pszText, 文本型, , 
+.参数 是否托盘, 逻辑型, , 真为托盘，假为任务栏。
+
+.局部变量 dwProcessID, 整数型, , , 
+.局部变量 hSourceHandle, 整数型, , , 
+.局部变量 hTargetHandle, 整数型, , , 
+.局部变量 pStart, 整数型, , , 
+.局部变量 Result, 整数型, , , 
+.局部变量 pBufStart, 整数型, , , 
+.局部变量 dwWrite, 整数型, , , 0
+.局部变量 dwRead, 整数型, , , 0
+.局部变量 txtLen, 整数型, , , 
+.局部变量 iButton, 整数型, , , 
+.局部变量 hTrayWnd, 整数型, , , 
+.局部变量 TextBufSize, 整数型, , , 
+.局部变量 dwAllocSize, 整数型, , , 
+.局部变量 TempBuf, 字节型, , "254", 
+.局部变量 图标数, 整数型, , , 
+.局部变量 托盘区句柄, 整数型, , , 
+.局部变量 结果, 整数型, , , 
+
+赋值 (结果, -1)
+赋值 (托盘区句柄, 取句柄 (是否托盘))
+赋值 (hTrayWnd, 托盘区句柄)
+赋值 (TextBufSize, 255)
+赋值 (dwAllocSize, 32)
+GetWindowThreadProcessId (hTrayWnd, dwProcessID)
+赋值 (hSourceHandle, OpenProcess (#PROCESS_ALL_ACCESS, 0, dwProcessID))
+.如果真 (等于 (hSourceHandle, 0)) ' 打开进程失败
+    返回 (-1) ' 0)
+.如果真结束
+赋值 (Result, DuplicateHandle (GetCurrentProcess (), hSourceHandle, GetCurrentProcess (), hTargetHandle, #PROCESS_ALL_ACCESS, 0, 0))
+.如果真 (等于 (Result, 0)) ' 复制句柄失败
+    CloseHandle (hSourceHandle)
+    返回 (-1) ' 0)
+.如果真结束
+赋值 (pStart, VirtualAllocEx (hTargetHandle, 0, dwAllocSize, #MEM_COMMIT, #PAGE_READWRITE))
+赋值 (pBufStart, VirtualAllocEx (hTargetHandle, 0, TextBufSize, #MEM_COMMIT, #PAGE_READWRITE)) ' 工具提示信息 存放空间
+.如果真 (或者 (等于 (pStart, 0), 等于 (pBufStart, 0))) ' 分配内存失败
+    CloseHandle (hTargetHandle)
+    返回 (-1) ' 0)
+.如果真结束
+赋值 (图标数, SendMessage (托盘区句柄, #TB_BUTTONCOUNT, 0, 0))
+.变量循环首 (1, 图标数, 1, iButton)
+    赋值 (TBi.cbSize, dwAllocSize)
+    赋值 (TBi.dwMask, 位或 (#TBIF_BYINDEX, #TBIF_COMMAND, #TBIF_STATE, #TBIF_STYLE, #TBIF_IMAGE, #TBIF_LPARAM, #TBIF_SIZE)) ' 'Or TBIF_TEXT
+    WriteProcessMemory (hTargetHandle, pStart, lstrcpyn (TBi.cbSize, TBi.cbSize, 0), dwAllocSize, dwWrite)
+    SendMessage (hTrayWnd, #TB_GETBUTTONINFOA, 相减 (iButton, 1), pStart)
+    ReadProcessMemory (hTargetHandle, pStart, lstrcpyn (TBi.cbSize, TBi.cbSize, 0), dwAllocSize, dwRead)
+    重定义数组 (TempBuf, 假, TextBufSize)
+    WriteProcessMemory (hTargetHandle, pBufStart, lstrcpynB (TempBuf [1], TempBuf [1], 0), TextBufSize, dwWrite)
+    赋值 (txtLen, SendMessage (hTrayWnd, #TB_GETBUTTONTEXTA, TBi.idCommand, pBufStart))
+    ReadProcessMemory (hTargetHandle, pBufStart, lstrcpynB (TempBuf [1], TempBuf [1], 0), TextBufSize, dwRead)
+    .如果真 (大于 (txtLen, 0))
+        重定义数组 (TempBuf, 真, txtLen)
+        .如果真 (不等于 (寻找文本 (到文本 (TempBuf), pszText, , 假), -1))
+            赋值 (结果, TBi.idCommand) ' 图标数 － iButton
+            输出调试文本 (到文本 (TempBuf))
+            跳出循环 ()
+        .如果真结束
+        
+    .如果真结束
+    
+.变量循环尾 ()
+VirtualFreeEx2 (hTargetHandle, pStart, dwAllocSize, #MEM_DECOMMIT)
+VirtualFreeEx2 (hTargetHandle, pBufStart, TextBufSize, #MEM_DECOMMIT)
+输出调试文本 (结果)
+返回 (结果)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

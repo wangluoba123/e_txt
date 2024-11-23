@@ -1,0 +1,360 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 612
+    高度 = 439
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “封包截取”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 进程信息, 公开, 进程信息
+    .成员 dwSize, 整数型, , , 
+    .成员 cntUsage, 整数型, , , 
+    .成员 进程ID, 整数型, , , 
+    .成员 th32DefaultHeapID, 整数型, , , 
+    .成员 th32ModuleID, 整数型, , , 
+    .成员 cntThreads, 整数型, , , 
+    .成员 th32ParentProcessID, 整数型, , , 
+    .成员 pcPriClassBase, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+    .成员 进程名称, 字节型, , "256", 
+
+数据类型 TOKEN_PRIVILEGES, 公开, From:AdjustTokenPrivileges
+    .成员 PrivilegeCount, 整数型, , , 
+    .成员 lowpart, 整数型, , , 
+    .成员 highpart, 整数型, , , 
+    .成员 Attributes, 整数型, , , 
+
+数据类型 LuID, 公开, 
+    .成员 lowpart, 整数型, , , 
+    .成员 highpart, 整数型, , , 
+
+
+.DLL命令 Process32First, 整数型, "", "Process32First", , 第一个进程，查找进程
+    .参数 hSnapShot, 整数型, , 
+    .参数 uProcess, 进程信息, , 
+
+.DLL命令 Process32Next, 整数型, "", "Process32Next", , 下一个进程
+    .参数 hSnapShot, 整数型, , 
+    .参数 uProcess, 进程信息, , 
+
+.DLL命令 OpenProcess, 整数型, "", "OpenProcess", , 打开进程 获得进程句柄
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 整数型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 CloseHandle, 整数型, "", "CloseHandle", , 关闭句柄
+    .参数 hObject, 整数型, , 
+
+.DLL命令 CreateToolhelp32Snapshot, 整数型, "kernel32.dll", "CreateToolhelp32Snapshot", , 创建进程快照
+    .参数 falg, 整数型, , 
+    .参数 进程ID, 整数型, , 
+
+.DLL命令 OpenProcessToken, 整数型, "advapi32.dll", "OpenProcessToken", , 打开进程令牌
+    .参数 ProcessHandle, 整数型, , 
+    .参数 DesiredAccess, 整数型, , 
+    .参数 TokenHandle, 整数型, 传址, 
+
+.DLL命令 LookupPrivilegeValueA, 逻辑型, "advapi32.dll", "LookupPrivilegeValueA", , 恢复权限
+    .参数 lpSystemName, 文本型, , 
+    .参数 lpName, 文本型, , 
+    .参数 lpLuid, LuID, 传址, 
+
+.DLL命令 GetCurrentProcess, 整数型, "kernel32.dll", "GetCurrentProcess", , 获取当前进程句柄
+
+.DLL命令 AdjustTokenPrivileges, 逻辑型, "advapi32.dll", "AdjustTokenPrivileges", , 获取令牌特权
+    .参数 TokenHandle, 整数型, , 
+    .参数 DisableAllPrivileges, 整数型, , 
+    .参数 NewState, TOKEN_PRIVILEGES, 传址, 
+    .参数 BufferLength, 整数型, , 
+    .参数 PreviousState, TOKEN_PRIVILEGES, 传址, 
+    .参数 ReturnLength, 整数型, 传址, 
+
+.DLL命令 VirtualProtect, 逻辑型, "", "", , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flNewProtect, 整数型, , 
+    .参数 lpflOldProtect, 整数型, 传址, 
+
+.DLL命令 GetProcAddress, 整数型, "", "", , 
+    .参数 hModule, 整数型, , 
+    .参数 lpProcName, 文本型, , 
+
+.DLL命令 GetModuleHandleA, 整数型, "", "", , 
+    .参数 lpModuleName, 文本型, , 
+
+.DLL命令 VirtualFreeEx_, 整数型, "kernel32.dll", "VirtualFreeEx", , 　
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 dwFreeType, 整数型, , 
+
+.DLL命令 VirtualAllocEx_, 整数型, "kernel32.dll", "VirtualAllocEx", , 　
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, 传址, 
+    .参数 flAllocationType, 整数型, , 
+    .参数 flProtect, 整数型, , 
+
+.DLL命令 发送文本, 整数型, "", "SendMessageA", , 
+    .参数 句柄, 整数型, , 
+    .参数 参数一, 整数型, , 
+    .参数 参数二, 整数型, , 
+    .参数 参数三, 文本型, , 
+
+.DLL命令 WriteProcessMemory_, 整数型, "kernel32", "WriteProcessMemory", , 在指定进程中写内存　
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 字节集, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, , 
+
+.DLL命令 CreateRemoteThread_, 整数型, "kernel32", "CreateRemoteThread", , 在另一进程中建立线索　
+    .参数 hProcess, 整数型, , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 整数型, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, , 
+
+.DLL命令 WaitForSingleObject_, 整数型, "kernel32", "WaitForSingleObject", , 监测一个对象　
+    .参数 hHandle, 整数型, , 
+    .参数 dwMilliseconds, 整数型, , 
+
+.DLL命令 取中止线程退出代码_, 整数型, "kernel32", "GetExitCodeThread", , 
+    .参数 线程句柄, 整数型, , 
+    .参数 退出代码, 整数型, 传址, 
+
+.DLL命令 拷贝内存, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目标, 整数型, , any
+    .参数 原数据, 整数型, 传址, any
+    .参数 尺寸, 整数型, , 
+
+.DLL命令 创建文件映射对象_, 整数型, "kernel32", "CreateFileMappingA", , 创建一个新的文件映射对象　新建文件映射对象的句柄；零意味着出错。会设置GetLastError。即使函数成功，但倘若返回的句柄属于一个现成的文件映射对象，那么GetLastError也会设置成ERROR_ALREADY_EXISTS。在这种情况下，文件映射的长度就是现有对象的长度，而不是这个函数指定的尺寸
+    .参数 文件映射句柄, 整数型, , 指定欲在其中创建映射的一个文件句柄。&HFFFFFFFF&表示在内存中创建一个文件映射
+    .参数 安全对象, 整数型, , SECURITY_ATTRIBUTES，指定一个安全对象，在创建文件映射时使用。如果为NULL（用ByVal As Long传递零），表示使用默认安全对象
+    .参数 打开映射方式, 整数型, , 下述常数之一：;PAGE_READONLY：以只读方式打开映射;PAGE_READWRITE：以可读、可写方式打开映射;PAGE_WRITECOPY：为写操作留下备份可组合使用下述一个或多个常数;SEC_COMMIT：为文件映射一个小节中的所有页分配内存;SEC_IMAGE：文件是个可执行文件;SEC_RESERVE：为没有分配实际内存的一个小节保留虚拟内存空间
+    .参数 文件映射最大长度, 整数型, , 文件映射的最大长度（高32位）
+    .参数 文件映射的最小长度, 整数型, , 文件映射的最小长度（低32位）。如这个参数和dwMaximumSizeHigh都是零，就用磁盘文件的实际长度
+    .参数 映射对象名, 文本型, , 指定文件映射对象的名字。如存在这个名字的一个映射，函数就会打开它。用vbNull创建一个无名的文件映射;
+
+.DLL命令 MapViewOfFile_, 整数型, "kernel32", "MapViewOfFile", , 将一个文件映射对象映射到当前应用程序的地址空间。MapViewOfFileEx允许我们指定一个基本地址来进行映射　文件映射在内存中的起始地址。零表示出错。会设置GetLastError
+    .参数 hFileMappingObject, 整数型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwFileOffsetHigh, 整数型, , 
+    .参数 dwFileOffsetLow, 整数型, , 
+    .参数 dwNumberOfBytesToMap, 整数型, , 
+
+.程序集 模块程序集, , , 
+
+.子程序 枚举进程, 整数型, , 失败返回0，成功返回进程数量
+.参数 进程信息, 进程信息, 参考 可空 数组, 进程信息 数组
+
+.局部变量 信息, 进程信息, , , 
+.局部变量 进程快照, 整数型, , , 
+.局部变量 进程句柄, 整数型, , , 
+
+赋值 (进程快照, CreateToolhelp32Snapshot (15, 0))
+.如果真 (等于 (进程快照, 0))
+    返回 (0)
+.如果真结束
+赋值 (信息.dwSize, 1024)
+赋值 (进程句柄, Process32First (进程快照, 信息))
+.判断循环首 (不等于 (进程句柄, 0))
+    加入成员 (进程信息, 信息)
+    赋值 (进程句柄, Process32Next (进程快照, 信息))
+.判断循环尾 ()
+返回 (取数组成员数 (进程信息))
+
+.子程序 提升权限, 逻辑型, , 
+.参数 权限类别, 文本型, 可空, 默认为 #调试 “SeDebugPrivilege”
+
+.局部变量 Token, 整数型, , , 
+.局部变量 tkp, TOKEN_PRIVILEGES, , , 
+.局部变量 tkpNewButIgnored, TOKEN_PRIVILEGES, , , 
+.局部变量 lpLuid, LuID, , , 
+
+.如果真 (等于 (权限类别, “”))
+    赋值 (权限类别, “SeDebugPrivilege”)
+.如果真结束
+OpenProcessToken (GetCurrentProcess (), 40, Token)
+LookupPrivilegeValueA (“”, 权限类别, lpLuid)
+赋值 (tkp.PrivilegeCount, 1)
+赋值 (tkp.lowpart, lpLuid.lowpart)
+赋值 (tkp.highpart, lpLuid.highpart)
+赋值 (tkp.Attributes, 2)
+AdjustTokenPrivileges (Token, 0, tkp, 16, tkpNewButIgnored, 16)
+.如果 (不等于 (tkpNewButIgnored.PrivilegeCount, 1))
+    返回 (假)
+.否则
+    返回 (真)
+.如果结束
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 DLL模块句柄, 整数型, , , 
+.程序集变量 编辑框句柄, 整数型, , , 
+.程序集变量 DLL关闭地址, 整数型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+提升权限 ()
+刷新进程 ()
+到文本 (取窗口句柄 ()).加入文本 ()
+
+.子程序 刷新进程, 空白型, , 
+.局部变量 进程数组, 进程信息, , "0", 
+.局部变量 计次, 整数型, , , 
+
+清空 ()
+枚举进程 (进程数组)
+.计次循环首 (取数组成员数 (进程数组), 计次)
+    到文本 (进程数组 [计次], 进程名称).加入项目 (进程数组 [计次], 进程ID)
+.计次循环尾 ()
+.如果真 (不等于 (取数组成员数 (进程数组), 0))
+    赋值 (., 0)
+.如果真结束
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 映射句柄, 整数型, , , 
+.局部变量 视图地址, 整数型, , , 
+
+.如果真 (等于 (文件是否存在 (相加 (取运行目录 (), “\sockhook.dll”)), 假))
+    信息框 (“sockhook.dll 文件不存在”, 0, )
+    返回 ()
+.如果真结束
+赋值 (映射句柄, 创建文件映射对象_ (-1, 0, 4, 0, 4, “雪山飞狐_9896”)) ' 4的整数倍-对齐
+赋值 (视图地址, MapViewOfFile_ (映射句柄, 6, 0, 0, 0))
+拷贝内存 (视图地址, 取窗口句柄 (), 4)
+注入DLL到进程 (.取项目数值 (.), 相加 (取运行目录 (), “\sockhook.dll”))
+
+.子程序 注入DLL到进程, 逻辑型, , 
+.参数 PID, 整数型, , 要注入的进程ID
+.参数 dll名, 文本型, , DLL名称
+
+.局部变量 长度, 整数型, , , 
+.局部变量 hvir, 整数型, , , 
+.局部变量 hprocess, 整数型, , , 
+.局部变量 hmod, 整数型, , , 
+.局部变量 hThread, 整数型, , , 
+
+赋值 (hprocess, OpenProcess (2035711, 0, PID))
+赋值 (长度, 相加 (取文本长度 (dll名), 1))
+赋值 (hvir, VirtualAllocEx_ (hprocess, 0, 长度, 4096, 4))
+WriteProcessMemory_ (hprocess, hvir, 到字节集 (dll名), 长度, 0)
+赋值 (hmod, GetProcAddress (GetModuleHandleA (“Kernel32”), “LoadLibraryA”))
+赋值 (hThread, CreateRemoteThread_ (hprocess, 0, 0, hmod, hvir, 0, 0))
+.如果真 (等于 (hThread, 0))
+    返回 (假)
+.如果真结束
+WaitForSingleObject_ (hThread, 4294967295)
+VirtualFreeEx_ (hprocess, hvir, 0, 32768)
+CloseHandle (hThread)
+CloseHandle (hprocess)
+返回 (真)
+
+
+.子程序 卸载DLL, 逻辑型, , 
+.参数 PID, 整数型, , 
+.参数 DLL名, 文本型, , 
+
+.局部变量 hprocess, 整数型, , , 
+.局部变量 hvir, 整数型, , , 
+.局部变量 hmod, 整数型, , , 
+.局部变量 hThread, 整数型, , , 
+.局部变量 计次, 整数型, , , 
+.局部变量 DLL句柄, 整数型, , , 
+.局部变量 返回值, 整数型, , , 
+.局部变量 长度, 整数型, , , 
+.局部变量 hThread1, 整数型, , , 
+
+赋值 (hprocess, OpenProcess (2035711, 0, PID))
+.如果真 (等于 (hprocess, 0))
+    返回 (假)
+.如果真结束
+
+赋值 (长度, 相加 (取文本长度 (DLL名), 1))
+赋值 (hvir, VirtualAllocEx_ (hprocess, 0, 长度, 4096, 4))
+WriteProcessMemory_ (hprocess, hvir, 到字节集 (DLL名), 长度, 0)
+赋值 (hmod, GetProcAddress (GetModuleHandleA (“Kernel32”), “GetModuleHandleA”))
+赋值 (hThread, CreateRemoteThread_ (hprocess, 0, 0, hmod, hvir, 0, 0))
+WaitForSingleObject_ (hThread, 4294967295)
+取中止线程退出代码_ (hThread, DLL句柄) ' 得到DLL句柄
+VirtualFreeEx_ (hprocess, hvir, 0, 32768)
+CloseHandle (hThread)
+.如果真 (等于 (DLL句柄, 0))
+    返回 (假)
+.如果真结束
+ ' ------------------------------------------------
+
+赋值 (hmod, GetProcAddress (GetModuleHandleA (“Kernel32”), “FreeLibrary”))
+赋值 (hThread1, CreateRemoteThread_ (hprocess, 0, 0, hmod, DLL句柄, 0, 0)) ' 执行FreeLibrary， 参数为模块句柄
+WaitForSingleObject_ (hThread1, 4294967295)
+取中止线程退出代码_ (hThread, 返回值)
+CloseHandle (hThread1)
+CloseHandle (hprocess)
+.如果 (不等于 (返回值, 0))
+    返回 (真)
+.否则
+    返回 (假)
+.如果结束
+
+
+.子程序 _按钮3_被单击, 空白型, , 
+刷新进程 ()
+
+.子程序 _按钮4_被单击, 空白型, , 
+赋值 (., “”)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

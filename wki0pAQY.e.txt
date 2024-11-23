@@ -1,0 +1,1043 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 220
+    高度 = 287
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 真
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “”
+    帮助文件名 = “”
+
+窗口 _窗口_范围窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 100
+    高度 = 100
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 3
+    底图方式 = 1
+    底色 = 0 '  0x0
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 假
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 假
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 真
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “取样窗口”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+ ' 所需要的模块
+ ' GDI+绘图模块-大力水手私用 C:\Documents and Settings\Administrator\桌面\GDI+绘图模块.ec
+
+
+数据类型 BITMAPINFO, 公开, 
+    .成员 BITMAPINFOHEADER, BITMAPINFOHEADER, , , 
+    .成员 bmiColors, 整数型, , , RGBQUAD          bmiColors[1]; 
+
+数据类型 BITMAPINFOHEADER, 公开, 
+    .成员 biSize, 整数型, , , 
+    .成员 biWidth, 整数型, , , 
+    .成员 biHeight, 整数型, , , 
+    .成员 biPlanes, 短整数型, , , 
+    .成员 biBitCount, 短整数型, , , 
+    .成员 biCompression, 整数型, , , 
+    .成员 biSizeImage, 整数型, , , 
+    .成员 biXPelsPerMeter, 整数型, , , 
+    .成员 biYPelsPerMeter, 整数型, , , 
+    .成员 biClrUsed, 整数型, , , 
+    .成员 biClrImportant, 整数型, , , 
+
+数据类型 BITMAPFILEHEADER, 公开, 
+    .成员 bfType, 短整数型, , , 
+    .成员 bfSize, 整数型, , , 
+    .成员 bfReserved1, 短整数型, , , 
+    .成员 bfReserved2, 短整数型, , , 
+    .成员 bfOffBits, 整数型, , , 
+
+数据类型 BITMAP, 公开, 
+    .成员 bmType, 整数型, , , 
+    .成员 bmWidth, 整数型, , , 
+    .成员 bmHeight, 整数型, , , 
+    .成员 bmWidthBytes, 整数型, , , 
+    .成员 bmPlanes, 短整数型, , , 
+    .成员 bmBitsPixel, 短整数型, , , 
+    .成员 bmBits, 整数型, 传址, , 
+
+数据类型 LOGFONT, 公开, 
+    .成员 lfHeight, 整数型, , , 
+    .成员 lfWidth, 整数型, , , 
+    .成员 lfEscapement, 整数型, , , 
+    .成员 lfOrientation, 整数型, , , 
+    .成员 lfWeight, 整数型, , , '是否粗体 0为粗体 非0为普通
+    .成员 lfItalic, 字节型, , , 斜体
+    .成员 lfUnderline, 字节型, , , 是否下划线 真为加下划线 假为正常
+    .成员 lfStrikeOut, 字节型, , , 
+    .成员 lfCharSet, 字节型, , , 
+    .成员 lfOutPrecision, 字节型, , , 
+    .成员 lfClipPrecision, 字节型, , , 
+    .成员 lfQuality, 字节型, , , 
+    .成员 lfPitchAndFamily, 字节型, , , 
+    .成员 lfFaceName, 字节集, , , LF_FACESIZE
+
+数据类型 GdiplusStartupInput, 公开, 
+    .成员 GdiplusVersion, 整数型, , , 
+    .成员 DebugEventCallback, 整数型, , , 
+    .成员 SuppressBackgroundThread, 整数型, , , 
+    .成员 SuppressExternalCodecs, 整数型, , , 
+
+数据类型 RectF, 公开, 
+    .成员 X, 小数型, , , 
+    .成员 Y, 小数型, , , 
+    .成员 Width, 小数型, , , 
+    .成员 Height, 小数型, , , 
+
+数据类型 ColorMatrix, 公开, 颜色调整距阵
+    .成员 cColorMatrix, 小数型, , "5,5", 
+
+
+.DLL命令 GdipCloneRegion, 整数型, "GdiPlus.dll", "GdipCloneRegion", , 
+    .参数 region, 整数型, , 
+    .参数 cloneRegion, 整数型, 传址, 
+
+.DLL命令 CreateDCA, 整数型, "", "CreateDCA", , 
+    .参数 lpDriverName, 文本型, , 
+    .参数 lpDeviceName, 文本型, , 
+    .参数 lpOutput, 文本型, , 
+    .参数 lpInitData, 整数型, , 
+
+.DLL命令 BitBlt, 整数型, "", "BitBlt", , 
+    .参数 hDestDC, 空白型, , 
+    .参数 x, 空白型, , 
+    .参数 y, 空白型, , 
+    .参数 nWidth, 空白型, , 
+    .参数 nHeight, 空白型, , 
+    .参数 hSrcDC, 空白型, , 
+    .参数 xSrc, 空白型, , 
+    .参数 ySrc, 空白型, , 
+    .参数 dwRop, 空白型, , 
+
+.DLL命令 GdipGraphicsClear, 整数型, "GdiPlus.dll", "GdipGraphicsClear", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 color, 整数型, , 
+
+.DLL命令 SetLayeredWindowAttributes, 整数型, "", "SetLayeredWindowAttributes", , 
+    .参数 句柄, 整数型, , 
+    .参数 抠像颜色, 整数型, , 
+    .参数 透明度, 整数型, , 
+    .参数 模式, 整数型, , 
+
+.DLL命令 SetWindowLongA, 整数型, "", "SetWindowLongA", , 
+    .参数 句柄, 整数型, , 
+    .参数 风格, 整数型, , 
+    .参数 参数, 整数型, , 
+
+.DLL命令 GetWindowLongA, 整数型, "", "GetWindowLongA", , 
+    .参数 句柄, 整数型, , 
+    .参数 参数, 整数型, , 
+
+.DLL命令 GdipCreateFromHDC, 整数型, "GdiPlus.dll", "GdipCreateFromHDC", 公开, 
+    .参数 hdc, 整数型, , 
+    .参数 graphics, 整数型, 传址, 
+
+.DLL命令 GdipLoadImageFromFile, 整数型, "GdiPlus.dll", "GdipLoadImageFromFile", 公开, 
+    .参数 filename, 字节集, , 
+    .参数 image, 整数型, 传址, 
+
+.DLL命令 GdipLoadImageFromStream, 整数型, "GdiPlus.dll", "GdipLoadImageFromStream", 公开, 
+    .参数 stream, 整数型, , 
+    .参数 image, 整数型, 传址, 
+
+.DLL命令 GdipGetImageDimension, 整数型, "GdiPlus.dll", "GdipGetImageDimension", 公开, 
+    .参数 image, 整数型, , 
+    .参数 width, 小数型, 传址, 
+    .参数 height, 小数型, 传址, 
+
+.DLL命令 GdipDrawImageRect, 整数型, "GdiPlus.dll", "GdipDrawImageRect", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 image, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+
+.DLL命令 GdipDisposeImage, 整数型, "gdiplus.dll", "GdipDisposeImage", 公开, 
+    .参数 image, 整数型, , 
+
+.DLL命令 GdipDeleteGraphics, 整数型, "GdiPlus.dll", "GdipDeleteGraphics", 公开, 
+    .参数 graphics, 整数型, , 
+
+.DLL命令 MultiByteToWideChar, 整数型, "", "MultiByteToWideChar", 公开, 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpWideCharStr, 字节集, , 
+    .参数 cchWideChar, 整数型, , 
+
+.DLL命令 CreateFontIndirectA, 整数型, "", "CreateFontIndirectA", 公开, 
+    .参数 lpLogFont, LOGFONT, , 
+
+.DLL命令 SelectObject, 整数型, "", "SelectObject", 公开, 
+    .参数 hdc, 整数型, , 一个设备场景的句柄
+    .参数 hObject, 整数型, , 一个画笔、位图、刷子、字体或区域的句柄
+
+.DLL命令 DeleteDC, 整数型, "", "DeleteDC", 公开, 
+    .参数 hdc, 整数型, , 
+
+.DLL命令 DeleteObject, 整数型, "", "DeleteObject", 公开, 
+    .参数 hdc, 整数型, , 
+
+.DLL命令 ReleaseDC, 空白型, "", "ReleaseDC", 公开, 
+    .参数 hwnd, 整数型, , 要释放的设备场景相关的窗口句柄
+    .参数 hdc, 整数型, , 要释放的设备场景句柄
+
+.DLL命令 SetBkMode, 空白型, "", "SetBkMode", 公开, 
+    .参数 hdc, 整数型, , 
+    .参数 nBkMode, 整数型, , 
+
+.DLL命令 SetTextColor, 空白型, "", "SetTextColor", 公开, 
+    .参数 hdc, 整数型, , 
+    .参数 crColor, 整数型, , 
+
+.DLL命令 TextOutA, 空白型, "", "TextOutA", 公开, 
+    .参数 hdc, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 lpString, 文本型, , 
+    .参数 nCount, 整数型, , 
+
+.DLL命令 CreateCompatibleDC, 整数型, "", "CreateCompatibleDC", 公开, 
+    .参数 hdc, 整数型, , 
+
+.DLL命令 LoadImageA, 整数型, "", "LoadImageA", 公开, 
+    .参数 hInst, 整数型, , 
+    .参数 lpsz, 文本型, , 
+    .参数 un1, 整数型, , 
+    .参数 n1, 整数型, , 
+    .参数 n2, 整数型, , 
+    .参数 un2, 整数型, , 
+
+.DLL命令 GetObjectA, 整数型, "", "GetObjectA", 公开, 
+    .参数 hgdiobj, 整数型, , 
+    .参数 cbBuffer, 整数型, , 
+    .参数 lpvObject, BITMAP, , 
+
+.DLL命令 GetDIBits_BimapInfo, 整数型, "", "GetDIBits", 公开, 
+    .参数 HDC, 整数型, , 
+    .参数 hBitmap, 整数型, , 
+    .参数 nStartScan, 整数型, , 
+    .参数 nNumScans, 整数型, , 
+    .参数 lpBits, 整数型, , 
+    .参数 lpBI, BITMAPINFO, , 
+    .参数 wUsage, 整数型, , 
+
+.DLL命令 GetDIBits, 整数型, "", "GetDIBits", 公开, 
+    .参数 HDC, 整数型, , 
+    .参数 hBitmap, 整数型, , 
+    .参数 nStartScan, 整数型, , 
+    .参数 nNumScans, 整数型, , 
+    .参数 lpBits, 字节集, , 
+    .参数 lpBI, BITMAPINFO, , 
+    .参数 wUsage, 整数型, , 
+
+.DLL命令 WideCharToMultiByte, 整数型, "", "WideCharToMultiByte", 公开, 返回 MultiByte字符数目,包括结尾0
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpWideCharStr, 整数型, , 
+    .参数 cchWideChar, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 unknow, 整数型, , 
+    .参数 unknow, 整数型, , 
+
+.DLL命令 GlobalAlloc, 整数型, "", "GlobalAlloc", 公开, 
+    .参数 wFlags, 整数型, , 
+    .参数 dwBytes, 整数型, , 
+
+.DLL命令 GlobalLock, 整数型, "", "GlobalLock", 公开, 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 GlobalUnlock, 整数型, "", "GlobalUnlock", 公开, 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 GlobalSize, 整数型, "", "GlobalSize", 公开, 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 GlobalFree, 整数型, "", "GlobalFree", 公开, 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 CreateStreamOnHGlobal, 整数型, "Ole32.dll", "CreateStreamOnHGlobal", 公开, 
+    .参数 hGlobal, 整数型, , 
+    .参数 fDeleteOnRelease, 整数型, , 
+    .参数 ppstm, 整数型, 传址, 
+
+.DLL命令 GdipCreateSolidFill, 整数型, "GdiPlus.dll", "GdipCreateSolidFill", 公开, 
+    .参数 color, 整数型, , 
+    .参数 brush, 整数型, 传址, 
+
+.DLL命令 GdipCreateFont, 整数型, "GdiPlus.dll", "GdipCreateFont", 公开, 
+    .参数 fontFamily, 整数型, , 
+    .参数 emSize, 小数型, , 
+    .参数 style, 整数型, , 
+    .参数 unit, 整数型, , 
+    .参数 font, 整数型, 传址, 
+
+.DLL命令 GdipDeleteFontFamily, 整数型, "GdiPlus.dll", "GdipDeleteFontFamily", 公开, 
+    .参数 FontFamily, 整数型, , 
+
+.DLL命令 GdipCreateFontFamilyFromName, 整数型, "GdiPlus.dll", "GdipCreateFontFamilyFromName", 公开, 
+    .参数 name, 字节集, , 
+    .参数 fontCollection, 整数型, , 
+    .参数 FontFamily, 整数型, 传址, 
+
+.DLL命令 GdipDrawString, 整数型, "GdiPlus.dll", "GdipDrawString", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 string, 字节集, , 
+    .参数 length, 整数型, , 
+    .参数 font, 整数型, , 
+    .参数 layoutRect, RectF, , 
+    .参数 stringFormat, 整数型, , 
+    .参数 brush, 整数型, , 
+
+.DLL命令 GdipGetTextRenderingHint, 整数型, "GdiPlus.dll", "GdipGetTextRenderingHint", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 mode, 整数型, 传址, 
+
+.DLL命令 GdipDeleteBrush, 整数型, "GdiPlus.dll", "GdipDeleteBrush", 公开, 
+    .参数 brush, 整数型, , 
+
+.DLL命令 GdipDeleteFont, 整数型, "GdiPlus.dll", "GdipDeleteFont", 公开, 
+    .参数 font, 整数型, , 
+
+.DLL命令 GdipCreateTexture, 整数型, "GdiPlus.dll", "GdipCreateTexture", 公开, 
+    .参数 image, 整数型, , 
+    .参数 wrapmode, 整数型, , 
+    .参数 texture, 整数型, 传址, 
+
+.DLL命令 CreateCompatibleBitmap, 整数型, "", "CreateCompatibleBitmap", 公开, 
+    .参数 hdc, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+
+.DLL命令 GdipSetTextRenderingHint, 整数型, "GdiPlus.dll", "GdipSetTextRenderingHint", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 mode, 整数型, , 
+
+.DLL命令 PaintDesktop, 空白型, "", "PaintDesktop", 公开, 
+    .参数 hdc, 整数型, , 
+
+.DLL命令 GetDC, 整数型, "", "GetDC", 公开, 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 更换壁纸bmp, 整数型, "", "SystemParametersInfoA", 公开, 
+    .参数 uAction, 整数型, , 
+    .参数 uParam, 整数型, , 
+    .参数 lpvParam, 文本型, , 
+    .参数 fuWinIn, 整数型, , 
+
+.DLL命令 GetPrivateProfileSection_取配置项目, 空白型, "", "GetPrivateProfileSectionA", 公开, 
+    .参数 lpAppName, 文本型, , 欲获取的小节。注意这个字串不区分大小写
+    .参数 lpReturnedString, 字节集, , 项和值字串的列表。每个字串都由一个NULL字符分隔，最后一个字串后面用两个NULL字符中止
+    .参数 nSize, 整数型, , lpReturnedString缓冲区的大小。在windows系统中最大值为32767
+    .参数 lpFileName, 文本型, , 初始化文件的名字。如没有指定完整路径名，windows就在Windows目录中查找文件
+
+.DLL命令 GdipFillRectangle, 整数型, "GdiPlus.dll", "GdipFillRectangle", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 brush, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+
+.DLL命令 GdipSetSmoothingMode, 整数型, "GdiPlus.dll", "GdipSetSmoothingMode", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 smoothingMode, 整数型, , 
+
+.DLL命令 GdipSaveImageToStream, 整数型, "GdiPlus.dll", "GdipSaveImageToStream", 公开, 
+    .参数 image, 整数型, , 
+    .参数 stream, 整数型, , 
+    .参数 clsidEncoder, 字节集, , 
+    .参数 encoderParams, 整数型, , 
+
+.DLL命令 GdipSaveImageToFile, 整数型, "GdiPlus.dll", "GdipSaveImageToFile", 公开, 
+    .参数 image, 整数型, , 
+    .参数 filename, 字节集, , 
+    .参数 clsidEncoder, 字节集, , 
+    .参数 encoderParams, 整数型, , 
+
+.DLL命令 CLSIDFromString, 空白型, "ole32.dll", "CLSIDFromString", 公开, 获取对应的Clsid
+    .参数 lpsz, 字节集, , Clsid文本.必须A转U
+    .参数 pclsid, 字节集, 传址, 返回的Clsid
+
+.DLL命令 GdipCreateBitmapFromGraphics, 整数型, "GdiPlus.dll", "GdipCreateBitmapFromGraphics", 公开, 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+    .参数 target, 整数型, , 
+    .参数 bitmap, 整数型, 传址, 
+
+.DLL命令 GdipGetImageGraphicsContext, 整数型, "GdiPlus.dll", "GdipGetImageGraphicsContext", 公开, 
+    .参数 image, 整数型, , 
+    .参数 graphics, 整数型, 传址, 
+
+.DLL命令 GdipCreateBitmapFromScan0, 整数型, "GdiPlus.dll", "GdipCreateBitmapFromScan0", 公开, 
+    .参数 width, 整数型, , 
+    .参数 height, 整数型, , 
+    .参数 stride, 整数型, , 
+    .参数 format, 整数型, , 
+    .参数 scan0, 整数型, , 
+    .参数 bitmap, 整数型, 传址, 
+
+.DLL命令 GdipSetCompositingMode, 整数型, "GdiPlus.dll", "GdipSetCompositingMode", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 CompositingMode, 整数型, , 
+
+.DLL命令 GdipCreateFromHWND, 整数型, "GdiPlus.dll", "GdipCreateFromHWND", 公开, 
+    .参数 hwnd, 整数型, , 
+    .参数 graphics, 整数型, 传址, 
+
+.DLL命令 GdipDrawImagePointRect, 整数型, "GdiPlus.dll", "GdipDrawImagePointRect", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 image, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 srcx, 小数型, , 
+    .参数 srcy, 小数型, , 
+    .参数 srcwidth, 小数型, , 
+    .参数 srcheight, 小数型, , 
+    .参数 srcUnit, 整数型, , 
+
+.DLL命令 GdipCreateImageAttributes, 整数型, "Gdiplus.dll", "GdipCreateImageAttributes", 公开, 
+    .参数 ImageAttributes, 整数型, 传址, 
+
+.DLL命令 GdipSetImageAttributesColorMatrix, 整数型, "Gdiplus.dll", "GdipSetImageAttributesColorMatrix", 公开, 
+    .参数 ImageAttributes, 整数型, , 
+    .参数 ClrAdjType, 整数型, , TColorAdjustType = (ctDefault, ctBitmap, ctBrush, ctPen, ctText, ctCount, ctAny);
+    .参数 enableFlag, 逻辑型, , 
+    .参数 colourMatrix, ColorMatrix, , 
+    .参数 grayMatrix, ColorMatrix, , 
+    .参数 ColorMatrixFlags, 整数型, , 
+
+.DLL命令 GdipDrawImageRectRect, 整数型, "GdiPlus.dll", "GdipDrawImageRectRect", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 Image, 整数型, , 
+    .参数 dstx, 小数型, , 
+    .参数 dsty, 小数型, , 
+    .参数 dstwidth, 小数型, , 
+    .参数 dstheight, 小数型, , 
+    .参数 srcx, 小数型, , 
+    .参数 srcy, 小数型, , 
+    .参数 srcwidth, 小数型, , 
+    .参数 srcheight, 小数型, , 
+    .参数 srcUnit, 整数型, , 
+    .参数 imageAttributes, 整数型, , 
+    .参数 callback, 整数型, , 
+    .参数 callbackData, 整数型, , 
+
+.DLL命令 GdipBitmapGetPixel, 整数型, "GdiPlus.dll", "GdipBitmapGetPixel", 公开, 
+    .参数 bitmap, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 color, 整数型, 传址, 
+
+.DLL命令 GdipGetDC, 整数型, "GdiPlus.dll", "GdipGetDC", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 hdc, 整数型, 传址, 
+
+.DLL命令 GdipReleaseDC, 整数型, "GdiPlus.dll", "GdipReleaseDC", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 hdc, 整数型, , 
+
+.DLL命令 GdipDrawImage, 整数型, "GdiPlus.dll", "GdipDrawImage", 公开, 
+    .参数 graphics, 整数型, , 
+    .参数 image, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+
+.DLL命令 BitBlt, 整数型, "", "BitBlt", 公开, 
+    .参数 hDestDC, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+    .参数 hSrcDC, 整数型, , 
+    .参数 xSrc, 整数型, , 
+    .参数 ySrc, 整数型, , 
+    .参数 dwRop, 整数型, , 
+
+.DLL命令 GdipSetImageAttributesThreshold, 整数型, "GdiPlus.dll", "GdipSetImageAttributesThreshold", 公开, 
+    .参数 imageattr, 整数型, , 
+    .参数 type, 整数型, , 
+    .参数 enableFlag, 逻辑型, , 
+    .参数 threshold, 小数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+未知函数_67178357 ()
+载入 (_窗口_范围窗口, , 假)
+
+.子程序 _时钟1_周期事件, 空白型, , 
+子程序3 ()
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+未知函数_67178358 ()
+结束 ()
+
+.程序集 程序集1, , , 
+
+.程序集变量 历史基准图象, 整数型, , , 
+.子程序 子程序1, 空白型, , 
+.局部变量 A, 空白型, , , 
+.局部变量 BB, 空白型, , , 
+.局部变量 B, 空白型, , , 
+.局部变量 C, 空白型, , , 
+
+输出调试文本 (未知函数_167841722 (0, A))
+输出调试文本 (未知函数_167841720 (300, 300, 0, 137224, 0, BB))
+输出调试文本 (未知函数_167841719 (BB, B))
+输出调试文本 (未知函数_167841722 (_启动窗口.取窗口句柄 (), C))
+ ' 输出调试文本 (GdipCloneRegion (A, B))
+输出调试文本 (未知函数_167841674 (C, BB, 0, 0, 300, 300))
+
+.子程序 子程序2, 空白型, , 
+.局部变量 屏幕DC, 空白型, , , 
+.局部变量 屏幕Graphics, 空白型, , , 
+.局部变量 屏幕HDC, 空白型, , , 
+.局部变量 内存image, 空白型, , , 
+.局部变量 内存Graphics, 空白型, , , 
+.局部变量 内存HDC, 空白型, , , 
+.局部变量 显示Graphics, 空白型, , , 
+
+赋值 (屏幕DC, CreateDCA (“DISPLAY”, “”, “”, 0))
+ ' 信息框 (屏幕DC, 0, )
+输出调试文本 (未知函数_167841670 (屏幕DC, 屏幕Graphics))
+输出调试文本 (未知函数_167841720 (300, 300, 0, 137224, 0, 内存image))
+输出调试文本 (未知函数_167841719 (内存image, 内存Graphics))
+GdipGraphicsClear (内存Graphics, 未知函数_67178355 (255, 255))
+输出调试文本 (未知函数_167841728 (屏幕Graphics, 屏幕HDC))
+输出调试文本 (未知函数_167841728 (内存Graphics, 内存HDC))
+输出调试文本 (未知函数_167841722 (_启动窗口.取窗口句柄 (), 显示Graphics))
+
+输出调试文本 (BitBlt (内存HDC, 0, 0, 300, 300, 屏幕HDC, 0, 0, 13369376))
+未知函数_167841729 (内存Graphics, 内存HDC)
+
+输出调试文本 (BitBlt (未知函数_167841710 (_启动窗口.取窗口句柄 ()), 0, 0, 300, 300, 屏幕HDC, 0, 0, 13369376))
+
+输出调试文本 (未知函数_167841674 (显示Graphics, 内存image, 100, 100, 300, 300))
+
+.子程序 子程序3, 空白型, , 
+.局部变量 A, 空白型, , , 
+.局部变量 显示Graphics, 空白型, , , 
+.局部变量 匿名局部变量_3922, 空白型, , , 
+.局部变量 B, 空白型, , , 
+.局部变量 C, 空白型, , , 
+
+ ' _启动窗口.底色 ＝ #默认色
+
+赋值 (_启动窗口.., “”)
+
+取屏幕截图 (相加 (_窗口_范围窗口., 4), 相加 (_窗口_范围窗口., 22), 相减 (_窗口_范围窗口., 相乘 (4, 2)), 相减 (_窗口_范围窗口., 22, 4), A)
+
+未知函数_167841722 (_启动窗口.取窗口句柄 (), 显示Graphics)
+
+赋值 (B, 未知函数_67178348 (#蓝灰, 255))
+未知函数_67178359 (显示Graphics, B, 0, 0, _启动窗口., _启动窗口.)
+
+
+未知函数_167841730 (显示Graphics, A, 0, 90)
+ ' GdipDeleteGraphics (显示Graphics)
+
+赋值 (A, 处理图片 (A, 4, 4))
+
+ ' GdipDisposeImage (A)
+
+赋值 (_启动窗口., 到文本 (判断是否变化 (A, 20, 4, 显示Graphics)))
+
+ ' GdipDisposeImage (A)
+
+.子程序 取屏幕截图, 整数型, , 创建了image，注意释放内存
+.参数 X, 空白型, , 
+.参数 Y, 空白型, , 
+.参数 宽度, 空白型, , 
+.参数 高度, 空白型, , 
+.参数 image, 空白型, 参考, 返回image
+
+.局部变量 屏幕DC, 空白型, , , 
+.局部变量 屏幕Graphics, 空白型, , , 
+.局部变量 屏幕HDC, 空白型, , , 
+.局部变量 内存image, 空白型, , , 
+.局部变量 内存Graphics, 空白型, , , 
+.局部变量 内存HDC, 空白型, , , 
+
+赋值 (屏幕DC, CreateDCA (“DISPLAY”, “”, “”, 0))
+未知函数_167841670 (屏幕DC, 屏幕Graphics)
+
+未知函数_167841720 (宽度, 高度, 0, 137224, 0, 内存image)
+未知函数_167841719 (内存image, 内存Graphics)
+
+未知函数_167841728 (屏幕Graphics, 屏幕HDC)
+未知函数_167841728 (内存Graphics, 内存HDC)
+
+BitBlt (内存HDC, 0, 0, 宽度, 高度, 屏幕HDC, X, Y, 13369376)
+
+ ' 释放资源
+未知函数_167841680 (屏幕DC)
+
+未知函数_167841676 (屏幕Graphics)
+未知函数_167841676 (内存Graphics)
+
+未知函数_167841729 (屏幕Graphics, 屏幕HDC)
+未知函数_167841729 (内存Graphics, 内存HDC)
+
+赋值 (image, 内存image)
+返回 (0)
+
+.子程序 处理图片, 整数型, , 返回处理后的image
+.参数 原始image, 整数型, , 
+.参数 基准点宽度, 整数型, , 
+.参数 基准点高度, 整数型, , 
+
+.局部变量 实际x, 小数型, , , 
+.局部变量 实际y, 小数型, , , 
+.局部变量 x, 小数型, , , 
+.局部变量 y, 小数型, , , 
+.局部变量 临时数值, 整数型, , , 
+.局部变量 匿名局部变量_2942, 空白型, , , 
+.局部变量 临时image, 整数型, , , 
+.局部变量 临时Graphics, 整数型, , , 
+.局部变量 输出image, 整数型, , , 
+.局部变量 输出Graphics, 空白型, , , 
+
+未知函数_167841673 (原始image, 实际x, 实际y)
+
+赋值 (临时数值, 相除 (实际x, 基准点宽度))
+赋值 (实际x, 相乘 (基准点宽度, 临时数值))
+赋值 (临时数值, 相除 (实际y, 基准点高度))
+赋值 (实际y, 相乘 (基准点宽度, 临时数值))
+
+未知函数_167841720 (实际x, 实际y, 0, 137224, 0, 临时image)
+未知函数_167841719 (临时image, 临时Graphics)
+
+未知函数_167841723 (临时Graphics, 原始image, 0, 0, 0, 0, 实际x, 实际y, 2)
+
+赋值 (x, 相除 (实际x, 基准点宽度))
+赋值 (y, 相除 (实际y, 基准点高度))
+
+未知函数_167841720 (x, y, 0, 137224, 0, 输出image)
+未知函数_167841719 (输出image, 输出Graphics)
+
+未知函数_167841674 (输出Graphics, 临时image, 0, 0, x, y)
+
+未知函数_167841676 (临时Graphics)
+未知函数_167841676 (输出Graphics)
+
+未知函数_167841675 (临时image)
+
+返回 (输出image)
+
+.子程序 判断是否变化, 逻辑型, , 
+.参数 image, 整数型, , 
+.参数 颜色波动范围, 整数型, , 在旧颜色值 减去 新颜色枝 在 + - 范围值 之间，为误差波动
+.参数 允许错误率, 整数型, , 百分比数值，在所有颜色中，不在颜色值波动范围内的基准点百分比阀值
+.参数 显示Graphics, 整数型, , 
+
+.局部变量 实际x, 小数型, , , 
+.局部变量 实际y, 小数型, , , 
+.局部变量 x, 整数型, , , 
+.局部变量 y, 整数型, , , 
+.局部变量 临时数值, 整数型, , , 
+.局部变量 匿名局部变量_3838, 空白型, , , 
+.局部变量 A, 空白型, , , 
+.局部变量 B, 空白型, , , 
+.局部变量 RGB颜色, 整数型, , , 
+.局部变量 历史RGB颜色, 空白型, , , 
+.局部变量 匿名局部变量_3871, 空白型, , , 
+.局部变量 R1, 空白型, , , 
+.局部变量 G1, 空白型, , , 
+.局部变量 B1, 空白型, , , 
+.局部变量 匿名局部变量_3873, 空白型, , , 
+.局部变量 R2, 空白型, , , 
+.局部变量 G2, 空白型, , , 
+.局部变量 B2, 空白型, , , 
+.局部变量 匿名局部变量_3875, 空白型, , , 
+.局部变量 错误记数, 空白型, , , 
+.局部变量 错误点坐标, 整数型, , "0", 
+
+.如果真 (等于 (历史基准图象, 0))
+    赋值 (历史基准图象, image)
+    返回 (假)
+.如果真结束
+
+未知函数_167841673 (image, 实际x, 实际y)
+赋值 (x, 实际x)
+赋值 (y, 实际y)
+
+_启动窗口.加入文本 (., 相加 (“横向基准点数量：”, 到文本 (x), #换行符))
+_启动窗口.加入文本 (., 相加 (“枞向基准点数量：”, 到文本 (y), #换行符))
+
+赋值 (错误记数, 0)
+
+.计次循环首 (x, A)
+    .计次循环首 (y, B)
+        赋值 (RGB颜色, 0)
+        赋值 (历史RGB颜色, 0)
+        未知函数_167841727 (image, A, B, RGB颜色)
+        赋值 (RGB颜色, 未知函数_67178371 (RGB颜色))
+        未知函数_167841727 (历史基准图象, A, B, 历史RGB颜色)
+        赋值 (历史RGB颜色, 未知函数_67178371 (历史RGB颜色))
+        解析RGB颜色 (RGB颜色, R1, G1, B1)
+        解析RGB颜色 (历史RGB颜色, R2, G2, B2)
+         ' 信息框 (到文本 (G1) ＋ “    ” ＋ 到文本 (G2), 0, )
+        .如果真 (或者 (大于 (取绝对值 (相减 (R1, R2)), 颜色波动范围), 大于 (取绝对值 (相减 (G1, G2)), 颜色波动范围), 大于 (取绝对值 (相减 (B1, B2)), 颜色波动范围)))
+            加入成员 (错误点坐标, A)
+            加入成员 (错误点坐标, B)
+            赋值 (错误记数, 相加 (错误记数, 1))
+        .如果真结束
+        
+    .计次循环尾 ()
+     ' 输出调试文本 (RGB颜色)
+.计次循环尾 ()
+
+画出错误点 (显示Graphics, 错误点坐标)
+
+_启动窗口.加入文本 (., 相加 (“历史Image：”, 到文本 (历史基准图象), #换行符))
+_启动窗口.加入文本 (., 相加 (“当前Image：”, 到文本 (image), #换行符))
+
+未知函数_167841675 (历史基准图象)
+赋值 (历史基准图象, image)
+
+_启动窗口.加入文本 (., 相加 (“当前错误率：”, 到文本 (相除 (错误记数, 相乘 (x, y))), #换行符))
+
+
+.如果 (大于 (相除 (错误记数, 相乘 (x, y)), 相除 (允许错误率, 100)))
+    _启动窗口.加入文本 (., 相加 (“当前侦测区域正在运动”, #换行符))
+    返回 (假)
+.否则
+    _启动窗口.加入文本 (., 相加 (“当前画面区域静止”, #换行符))
+    返回 (真)
+.如果结束
+
+
+
+.子程序 解析RGB颜色, 空白型, , 
+.参数 RGB颜色, 空白型, , 
+.参数 R, 空白型, 参考, 
+.参数 G, 空白型, 参考, 
+.参数 B, 空白型, 参考, 
+
+赋值 (R, 位与 (RGB颜色, 255))
+赋值 (G, 相除 (位与 (RGB颜色, 65280), 256))
+赋值 (B, 相除 (位与 (RGB颜色, 16711680), 65536))
+
+
+.子程序 画出错误点, 空白型, , 
+.参数 显示Graphics, 整数型, , 
+.参数 点阵, 整数型, 数组, 
+
+.局部变量 点数, 整数型, , , 
+.局部变量 A, 整数型, , , 
+.局部变量 画刷句柄, 整数型, , , 
+.局部变量 匿名局部变量_4385, 空白型, , , 
+
+赋值 (点数, 取数组成员数 (点阵))
+.如果真 (大于 (点数, 1))
+     ' 输出调试文本 (点数 ÷ 2)
+    赋值 (画刷句柄, 未知函数_67178348 (#红色, 150))
+    .计次循环首 (相除 (点数, 2), A)
+         ' 输出调试文本 (_窗口_范围窗口.宽度 ＋ 点阵 [A × 2 － 1] × 4)
+         ' 填充矩形_GDIPlus (显示Graphics, 画刷句柄, _窗口_范围窗口.宽度 ＋ 点阵 [A × 2 － 1] × 4, _窗口_范围窗口.高度 ＋ 点阵 [A × 2] × 4, 3, 3)
+        未知函数_67178359 (显示Graphics, 画刷句柄, 相加 (_窗口_范围窗口., 相乘 (点阵 [相减 (相乘 (A, 2), 1)], 4)), 相加 (90, 相乘 (点阵 [相乘 (A, 2)], 4)), 3, 3)
+         ' 输出调试文本 (点阵 [A × 2 － 1])
+    .计次循环尾 ()
+     ' 销毁画刷_GDIPlus (画刷句柄)
+.如果真结束
+
+
+
+
+.窗口程序集 窗口程序集2, , , 
+
+.子程序 __窗口_范围窗口_创建完毕, 空白型, , 
+.局部变量 窗口风格, 整数型, , , 
+
+移动 (相减 (_启动窗口., _窗口_范围窗口.), _启动窗口., , )
+
+ ' ☆ 设置窗口为透明背景
+赋值 (窗口风格, GetWindowLongA (取窗口句柄 (), -20))
+赋值 (窗口风格, 位或 (窗口风格, 524288))
+SetWindowLongA (取窗口句柄 (), -20, 窗口风格)
+SetLayeredWindowAttributes (取窗口句柄 (), 0, 200, 1)
+
+
+.子程序 __窗口_范围窗口_尺寸被改变, 空白型, , 
+赋值 (_启动窗口., 相乘 (., 2))
+赋值 (_启动窗口., 相加 (., 90))
+
+.类模块 字节流, , , 
+
+.子程序 释放字节流, 空白型, , 
+
+
+.子程序 创建字节流, 整数型, , 返回流指针
+.参数 字节集, 字节集, 可空, 
+
+
+
+.子程序 取字节流指针, 整数型, , 
+
+
+.子程序 取字节流尺寸, 整数型, , 
+
+
+.子程序 取出字节集, 字节集, , 
+
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 画图片_从文件_GDIPlus, 逻辑型, , 使用GDI+画出图片,支持多种图片格式
+.参数 Graphics, 整数型, , 
+.参数 文件名, 文本型, , 需要画出的完整文件名
+.参数 横坐标, 整数型, , 定位图片
+.参数 纵坐标, 整数型, , 定位图片
+.参数 图片宽度, 小数型, 可空, 留空使用图片默认宽度
+.参数 图片高度, 小数型, 可空, 留空使用图片默认高度
+
+
+
+.子程序 画图片_从字节集_GDIPlus, 逻辑型, , 使用GDI+画出图片,支持多种图片格式
+.参数 Graphics, 整数型, , 
+.参数 文件数据, 字节集, , 需要画出的图片数据
+.参数 左上角横坐标, 整数型, , 定位图片
+.参数 左上角纵坐标, 整数型, , 定位图片
+.参数 图片宽度, 小数型, 可空, 留空使用图片默认宽度
+.参数 图片高度, 小数型, 可空, 留空使用图片默认高度
+
+
+
+.子程序 创建画刷_图片画刷_GDIPlus, 整数型, , 返回刷子句柄,返回0表示失败
+.参数 图片路径, 文本型, , 
+.参数 环绕模式, 整数型, , 
+
+
+
+.子程序 创建画刷_固色画刷_GDIPlus, 整数型, , 返回刷子句柄,返回0表示失败
+.参数 画刷颜色, 整数型, , 
+.参数 透明度, 整数型, , 0~255
+
+
+
+.子程序 销毁画刷_GDIPlus, 整数型, , 
+.参数 画刷句柄, 整数型, , 
+
+
+
+.子程序 创建字体_GDIPlus, 整数型, , 返回字体句柄,返回0表示失败
+.参数 字体名称, 文本型, , 字体名称
+.参数 字体尺寸, 小数型, , 字体尺寸
+.参数 字体风格, 整数型, , 字体风格
+.参数 字体度量单位, 整数型, , 字体度量单位
+
+
+
+.子程序 销毁字体_GDIPlus, 整数型, , 
+.参数 字体句柄, 整数型, , 
+
+
+
+.子程序 画文字_GDIPlus, 整数型, , 
+.参数 Graphics, 整数型, , 
+.参数 文本内容, 文本型, , 
+.参数 画出横坐标, 整数型, , 
+.参数 画出纵坐标, 整数型, , 
+.参数 画刷句柄, 整数型, , 
+.参数 字体句柄, 整数型, , 
+
+
+
+.子程序 A2W, 字节集, , 将Ansi转成Unicode
+.参数 欲转换的文本, 文本型, , 
+
+
+
+.子程序 W2A, 文本型, , 将Unicode转成Ansi
+.参数 欲转换的文本, 整数型, , Unicode文本内存地址
+
+
+
+.子程序 RGB到ARGB, 整数型, , 
+.参数 RGB颜色, 整数型, , 
+.参数 透明度, 整数型, , 
+
+
+
+.子程序 取配置项目_LF_API, 空白型, , 使用"#换行符"分割文本来分割每个项目；使用“=”分割每个[配置项名称]和[项目内容]
+.参数 配置文件名, 文本型, , 
+.参数 节名称, 文本型, , 
+.参数 需要返回的内容, 整数型, 可空, 默认0，返回项目和项目内容；设置1，返回所有项目名；设置2，返回所有项目内容
+.参数 返回的项目数组, 文本型, 参考 数组, 
+
+
+
+.子程序 初始化GDIPlus, 空白型, , 
+
+
+.子程序 退出GDIPlus, 空白型, , 
+
+
+.子程序 填充矩形_GDIPlus, 逻辑型, , 
+.参数 Graphics, 整数型, , 
+.参数 画刷句柄, 整数型, , 
+.参数 横坐标, 整数型, , 
+.参数 纵坐标, 整数型, , 
+.参数 宽度, 小数型, , 宽度
+.参数 高度, 小数型, , 高度
+
+
+
+.子程序 保存图像_到字节集_GDIPlus, 逻辑型, , 
+.参数 Image, 整数型, , 图象
+.参数 文件格式, 文本型, , bmp,jpg,gif,tiff,png，暂时只支持5种格式
+.参数 图象数据, 字节集, , 
+
+
+
+.子程序 创建图象_GDIPlus, 整数型, , 失败返回0，成功返回位图
+.参数 width, 整数型, , 宽度
+.参数 height, 整数型, , 高度
+.参数 stride, 整数型, , 指定相邻扫描行开始处之间字节偏移量的整数。这通常（但不一定）是以像素格式表示的字节数（例如，2 表示每像素 16 位）乘以位图的宽度。传递给此参数的值必须为 4 的倍数。
+.参数 format, 整数型, , 常量。像素格式，16位色=135173，24位色137224
+.参数 scan0, 整数型, , 像素数据字节集地址，不用为0
+
+
+
+.子程序 创建图形_从图像_GDIPlus, 整数型, , 
+.参数 image, 整数型, , 图象
+
+
+
+.子程序 保存图像_到文件_GDIPlus, 逻辑型, , 
+.参数 Image, 整数型, , 图象
+.参数 文件格式, 文本型, , bmp,jpg,gif,tiff,png，暂时只支持5种格式
+.参数 文件名, 文本型, , 
+
+
+
+.子程序 销毁图像_GDIPlus, 空白型, , 
+.参数 Image, 整数型, , 
+
+
+
+.子程序 销毁图形_GDIPlus, 空白型, , 
+.参数 Graphics, 整数型, , 
+
+
+
+.子程序 画图片_从图像_GDIPlus, 逻辑型, , 
+.参数 Graphics, 整数型, , 
+.参数 Image, 整数型, , 需要画出的图像
+.参数 左上角横坐标, 整数型, , 定位图片
+.参数 左上角纵坐标, 整数型, , 定位图片
+.参数 图片宽度, 小数型, 可空, 留空使用图片默认宽度
+.参数 图片高度, 小数型, 可空, 留空使用图片默认高度
+
+
+
+.子程序 置绘图模式, 逻辑型, , 0为混合模式,1为覆盖模式
+.参数 Graphics, 整数型, , 
+.参数 CompositingMode, 整数型, , 
+
+
+
+.子程序 创建图形_从HWND_GDIPlus, 整数型, , 返回0成功,用 取错误描述() 来获取错误信息
+.参数 hwnd, 整数型, , 
+
+
+
+.子程序 画图片_局部_GDIPlus, 整数型, , 把图像的一部分画出为矩形
+.参数 Graphics, 整数型, , 
+.参数 image, 整数型, , 
+.参数 x, 小数型, , 画出位置
+.参数 y, 小数型, , 
+.参数 srcx, 小数型, , 图像局部起点x
+.参数 srcy, 小数型, , 图像局部起点y
+.参数 srcwidth, 小数型, , 图像局部宽度
+.参数 srcheight, 小数型, , 图像局部高度
+.参数 srcUnit, 整数型, , 图像单位,默认 #单位_像素
+
+
+
+.子程序 创建图象_从字节集_GDIPlus, 整数型, , 
+.参数 图像字节集, 字节集, , 
+.参数 字节数据流, 字节流, 参考, 
+
+
+
+.子程序 ARGB到RGB, 整数型, , 
+.参数 ARGB, 整数型, , 
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

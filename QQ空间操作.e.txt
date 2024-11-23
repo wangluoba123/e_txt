@@ -1,0 +1,724 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：QQ空间应用-怪怪E应用
+ ' 程序描述：QQ空间应用-怪怪E应用
+@备注:
+QQ空间应用-怪怪E应用
+ ' 程序作者：怪怪
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：陈彬版权所有
+ ' 版本号：1.0
+ ' 创建号：1.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 478
+    高度 = 423
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 假
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “QQ空间应用-怪怪E应用”
+    帮助文件名 = “”
+
+窗口 窗口1
+    左边 = 50
+    顶边 = 50
+    宽度 = 187
+    高度 = 75
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 0
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 假
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 假
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “”
+    帮助文件名 = “”
+
+窗口 窗口2
+    左边 = 50
+    顶边 = 50
+    宽度 = 387
+    高度 = 73
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 0
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 假
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 假
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “”
+    帮助文件名 = “”
+
+窗口 窗口3
+    左边 = 50
+    顶边 = 50
+    宽度 = 741
+    高度 = 693
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 1
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 3
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 假
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 假
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “”
+    帮助文件名 = “”
+
+
+
+.常量 md5, "“STR_UINTIP=1;STR_QLOGIN_VERSION_ERR=2;STR_NO_UIN=3;STR_NO_PWD=4;STR_NO_VCODE=5;STR_INV_UIN=6;STR_INV_VCODE=7;STR_UIN=8;STR_PWD=9;STR_VCODE=10;STR_VCODE_TIP=11;STR_CHANGE_VCODE=12;STR_REMEMBER_PWD=13;STR_1_DAY=14;STR_1_WEEK=15;STR_1_MONTH=16;STR_HALF_YEAR=17;STR_1_YEAR=18;STR_FORGET_PWD=19;STR_LOGIN=20;STR_RESET=21;STR_SWITCH_QLOGIN=22;STR_LOGIN_TITLE=23;STR_QLOGIN_INTRO=24;STR_QLOGINING=25;STR_QLOGIN_HELP=26;STR_SWITCH_NORMAL=27;STR_QLOGIN=28;STR_QLOGIN_BUSY=29;STR_QLOGIN_OFFLINE=30;STR_QLOGIN_OTHER_ERR=31;STR_BACK=32;STR_RETRY=33;function ptui_str(A){A-=1;if(A>=0&&A<g_strArray.length){return g_strArray[A]}return""}function ptui_mapStr(B){for(i=0;i<B.length;i++){var A=document.getElementById(B[i][1]);if(A!=null){if("A"==A.nodeName||"U"==A.nodeName||"OPTION"==A.nodeName){if(A.innerHTML==""){A.innerHTML=ptui_str(B[i][0])}}else{if("INPUT"==A.nodeName){if(A.value==""){A.value=ptui_str(B[i][0])}}else{if("IMG"==A.nodeName){A.alt=ptui_str(B[i][0])}}}}}}function ptui_onUserFocus(C,A){var B=document.getElementById(C);if(ptui_str(STR_UINTIP)==B.value){B.value=""}B.style.color=A}function ptui_onUserBlue(C,A){var B=document.getElementById(C);if(""==B.value){B.value=ptui_str(STR_UINTIP);B.style.color=A}}var g_speedArray=new Array();function ptui_setSpeed(B){if(B<=0){return }var A=g_speedArray.length;g_speedArray[A]=new Array(B,new Date())}function ptui_reportSpeed(B){if(Math.random()>0.1){return }url="http://isdspeed.qq.com/cgi-bin/r.cgi?flag1=6000&flag2=1&flag3=1";for(var A=0;A<g_speedArray.length;A++){url=url+"&"+g_speedArray[A][0]+"="+(g_speedArray[A][1]-B)}imgSendTimePoint=new Image();imgSendTimePoint.src=url}function ptui_showDiv(A,B){var C=document.getElementById(A);if(null==C){return }if(B){C.style.display="block"}else{C.style.display="none"}}function ptui_notifySize(B){try{obj=document.getElementById(B);if(obj){if(parent.ptlogin2_onResize){width=1;height=1;if(obj.offsetWidth>0){width=obj.offsetWidth}if(obj.offsetHeight>0){height=obj.offsetHeight}parent.ptlogin2_onResize(width,height)}}}catch(A){}}function ptui_notifyClose(){try{if(parent.ptlogin2_onClose){parent.ptlogin2_onClose()}else{if(top==this){window.close()}}}catch(A){window.close()}}function ptui_setUinColor(D,B,A){var C=document.getElementById(D);if(ptui_str(STR_UINTIP)==C.value){C.style.color=A}else{C.style.color=B}}function ptui_onEnableLLogin(B){var A=B.low_login_enable;var C=B.low_login_hour;if(A!=null&&C!=null){C.disabled=!A.checked}}function ptui_changeImgEx(D,C,F,E){var A=document.getElementById("imgVerify");if(A!=null){A.src=E+"?aid="+C+"&"+Math.random();var B=document.getElementById("verifycode");if(B!=null&&B.disabled==false&&F){B.focus();B.select()}}}function ptui_changeImg(B,A,C){ptui_changeImgEx(B,A,C,"http://ptlogin2."+B+"/getimage")}function ptui_changeImgHttps(B,A,C){ptui_changeImgEx(B,A,C,"./getimage")}function ptui_checkQQUin(qquin){if(qquin.length==0){return false}if(!(new RegExp(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/).test(qquin))){if(qquin.length<5||qquin.length>12||parseInt(qquin)<1000){return false}var exp=eval("/^[0-9]*$/");return exp.test(qquin)}return true}function ptui_checkPwdOnInput(){if(document.getElementById("p").value.length>=16){return false}return true}function ptui_onLogin(A){try{if(parent.ptlogin2_onLogin){if(!parent.ptlogin2_onLogin()){return false}}if(parent.ptlogin2_onLoginEx){var D=A.u.value;var B=A.verifycode.value;if(ptui_str(STR_UINTIP)==D){D=""}if(!parent.ptlogin2_onLoginEx(D,B)){return false}}}catch(C){}return ptui_checkValidate(A)}function ptui_onLoginEx(B,C){if(ptui_onLogin(B)){var A=new Date();A.setHours(A.getHours()+24*30);setCookie("ptui_loginuin",B.u.value,A,"/","ui.ptlogin2."+C);return true}return false}function ptui_setDefUin(B,A){if(A==""||A==null){A=getCookie("ptui_loginuin")}if(A!=""&&A!=null){B.u.value=A}}function ptui_onReset(A){try{if(parent.ptlogin2_onReset){if(!parent.ptlogin2_onReset()){return false}}}catch(B){}return true}function ptui_initFocus(B){try{var A=B.u;var D=B.p;var E=B.verifycode;if(A.value==""||ptui_str(STR_UINTIP)==A.value){A.focus();return }if(D.value==""){D.focus();return }if(E.value==""){E.focus()}}catch(C){}}function ptui_checkValidate(B){var A=B.u;var C=B.p;var D=B.verifycode;if(A.value==""||ptui_str(STR_UINTIP)==A.value){alert(ptui_str(STR_NO_UIN));A.focus();return false}if(C.value==""){alert(ptui_str(STR_NO_PWD));C.focus();return false}if(D.value==""){alert(ptui_str(STR_NO_VCODE));D.focus();return false}if(!ptui_checkQQUin(A.value)){alert(ptui_str(STR_INV_UIN));A.focus();A.select();return false}if(D.value.length!=4){alert(ptui_str(STR_INV_VCODE));D.focus();D.select();return false}C.setAttribute("maxlength","32");preprocess(B);return true}function getCookieVal(B){var A=document.cookie.indexOf(";",B);if(A==-1){A=document.cookie.length}return unescape(document.cookie.substring(B,A))}function getCookie(D){var B=D+"=";var F=B.length;var A=document.cookie.length;var E=0;while(E<A){var C=E+F;if(document.cookie.substring(E,C)==B){return getCookieVal(C)}E=document.cookie.indexOf(" ",E)+1;if(E==0){break}}return null}function setCookie(C,E){var A=setCookie.arguments;var H=setCookie.arguments.length;var B=(2<H)?A[2]:null;var G=(3<H)?A[3]:null;var D=(4<H)?A[4]:null;var F=(5<H)?A[5]:null;document.cookie=C+"="+escape(E)+((B==null)?" ":(";expires ="+B.toGMTString()))+((G==null)?"  ":(";path = "+G))+((D==null)?" ":(";domain ="+D))+((F==true)?";secure":" ")}var hexcase=1;var b64pad="";var chrsz=8;var mode=32;function preprocess(A){var B="";B+=A.verifycode.value;B=B.toUpperCase();A.p.value=md5(md5_3(A.p.value)+B);return true}function md5_3(B){var A=new Array;A=core_md5(str2binl(B),B.length*chrsz);A=core_md5(A,16*chrsz);A=core_md5(A,16*chrsz);return binl2hex(A)}function md5(A){return hex_md5(A)}function hex_md5(A){return binl2hex(core_md5(str2binl(A),A.length*chrsz))}function b64_md5(A){return binl2b64(core_md5(str2binl(A),A.length*chrsz))}function str_md5(A){return binl2str(core_md5(str2binl(A),A.length*chrsz))}function hex_hmac_md5(A,B){return binl2hex(core_hmac_md5(A,B))}function b64_hmac_md5(A,B){return binl2b64(core_hmac_md5(A,B))}function str_hmac_md5(A,B){return binl2str(core_hmac_md5(A,B))}function md5_vm_test(){return hex_md5("abc")=="900150983cd24fb0d6963f7d28e17f72"}function core_md5(K,F){K[F>>5]|=128<<((F)%32);K[(((F+64)>>>9)<<4)+14]=F;var J=1732584193;var I=-271733879;var H=-1732584194;var G=271733878;for(var C=0;C<K.length;C+=16){var E=J;var D=I;var B=H;var A=G;J=md5_ff(J,I,H,G,K[C+0],7,-680876936);G=md5_ff(G,J,I,H,K[C+1],12,-389564586);H=md5_ff(H,G,J,I,K[C+2],17,606105819);I=md5_ff(I,H,G,J,K[C+3],22,-1044525330);J=md5_ff(J,I,H,G,K[C+4],7,-176418897);G=md5_ff(G,J,I,H,K[C+5],12,1200080426);H=md5_ff(H,G,J,I,K[C+6],17,-1473231341);I=md5_ff(I,H,G,J,K[C+7],22,-45705983);J=md5_ff(J,I,H,G,K[C+8],7,1770035416);G=md5_ff(G,J,I,H,K[C+9],12,-1958414417);H=md5_ff(H,G,J,I,K[C+10],17,-42063);I=md5_ff(I,H,G,J,K[C+11],22,-1990404162);J=md5_ff(J,I,H,G,K[C+12],7,1804603682);G=md5_ff(G,J,I,H,K[C+13],12,-40341101);H=md5_ff(H,G,J,I,K[C+14],17,-1502002290);I=md5_ff(I,H,G,J,K[C+15],22,1236535329);J=md5_gg(J,I,H,G,K[C+1],5,-165796510);G=md5_gg(G,J,I,H,K[C+6],9,-1069501632);H=md5_gg(H,G,J,I,K[C+11],14,643717713);I=md5_gg(I,H,G,J,K[C+0],20,-373897302);J=md5_gg(J,I,H,G,K[C+5],5,-701558691);G=md5_gg(G,J,I,H,K[C+10],9,38016083);H=md5_gg(H,G,J,I,K[C+15],14,-660478335);I=md5_gg(I,H,G,J,K[C+4],20,-405537848);J=md5_gg(J,I,H,G,K[C+9],5,568446438);G=md5_gg(G,J,I,H,K[C+14],9,-1019803690);H=md5_gg(H,G,J,I,K[C+3],14,-187363961);I=md5_gg(I,H,G,J,K[C+8],20,1163531501);J=md5_gg(J,I,H,G,K[C+13],5,-1444681467);G=md5_gg(G,J,I,H,K[C+2],9,-51403784);H=md5_gg(H,G,J,I,K[C+7],14,1735328473);I=md5_gg(I,H,G,J,K[C+12],20,-1926607734);J=md5_hh(J,I,H,G,K[C+5],4,-378558);G=md5_hh(G,J,I,H,K[C+8],11,-2022574463);H=md5_hh(H,G,J,I,K[C+11],16,1839030562);I=md5_hh(I,H,G,J,K[C+14],23,-35309556);J=md5_hh(J,I,H,G,K[C+1],4,-1530992060);G=md5_hh(G,J,I,H,K[C+4],11,1272893353);H=md5_hh(H,G,J,I,K[C+7],16,-155497632);I=md5_hh(I,H,G,J,K[C+10],23,-1094730640);J=md5_hh(J,I,H,G,K[C+13],4,681279174);G=md5_hh(G,J,I,H,K[C+0],11,-358537222);H=md5_hh(H,G,J,I,K[C+3],16,-722521979);I=md5_hh(I,H,G,J,K[C+6],23,76029189);J=md5_hh(J,I,H,G,K[C+9],4,-640364487);G=md5_hh(G,J,I,H,K[C+12],11,-421815835);H=md5_hh(H,G,J,I,K[C+15],16,530742520);I=md5_hh(I,H,G,J,K[C+2],23,-995338651);J=md5_ii(J,I,H,G,K[C+0],6,-198630844);G=md5_ii(G,J,I,H,K[C+7],10,1126891415);H=md5_ii(H,G,J,I,K[C+14],15,-1416354905);I=md5_ii(I,H,G,J,K[C+5],21,-57434055);J=md5_ii(J,I,H,G,K[C+12],6,1700485571);G=md5_ii(G,J,I,H,K[C+3],10,-1894986606);H=md5_ii(H,G,J,I,K[C+10],15,-1051523);I=md5_ii(I,H,G,J,K[C+1],21,-2054922799);J=md5_ii(J,I,H,G,K[C+8],6,1873313359);G=md5_ii(G,J,I,H,K[C+15],10,-30611744);H=md5_ii(H,G,J,I,K[C+6],15,-1560198380);I=md5_ii(I,H,G,J,K[C+13],21,1309151649);J=md5_ii(J,I,H,G,K[C+4],6,-145523070);G=md5_ii(G,J,I,H,K[C+11],10,-1120210379);H=md5_ii(H,G,J,I,K[C+2],15,718787259);I=md5_ii(I,H,G,J,K[C+9],21,-343485551);J=safe_add(J,E);I=safe_add(I,D);H=safe_add(H,B);G=safe_add(G,A)}if(mode==16){return Array(I,H)}else{return Array(J,I,H,G)}}function md5_cmn(F,C,B,A,E,D){return safe_add(bit_rol(safe_add(safe_add(C,F),safe_add(A,D)),E),B)}function md5_ff(C,B,G,F,A,E,D){return md5_cmn((B&G)|((~B)&F),C,B,A,E,D)}function md5_gg(C,B,G,F,A,E,D){return md5_cmn((B&F)|(G&(~F)),C,B,A,E,D)}function md5_hh(C,B,G,F,A,E,D){return md5_cmn(B^G^F,C,B,A,E,D)}function md5_ii(C,B,G,F,A,E,D){return md5_cmn(G^(B|(~F)),C,B,A,E,D)}function core_hmac_md5(C,F){var E=str2binl(C);if(E.length>16){E=core_md5(E,C.length*chrsz)}var A=Array(16),D=Array(16);for(var B=0;B<16;B++){A[B]=E[B]^909522486;D[B]=E[B]^1549556828}var G=core_md5(A.concat(str2binl(F)),512+F.length*chrsz);return core_md5(D.concat(G),512+128)}function safe_add(A,D){var C=(A&65535)+(D&65535);var B=(A>>16)+(D>>16)+(C>>16);return(B<<16)|(C&65535)}function bit_rol(A,B){return(A<<B)|(A>>>(32-B))}function str2binl(D){var C=Array();var A=(1<<chrsz)-1;for(var B=0;B<D.length*chrsz;B+=chrsz){C[B>>5]|=(D.charCodeAt(B/chrsz)&A)<<(B%32)}return C}function binl2str(C){var D="";var A=(1<<chrsz)-1;for(var B=0;B<C.length*32;B+=chrsz){D+=String.fromCharCode((C[B>>5]>>>(B%32))&A)}return D}function binl2hex(C){var B=hexcase?"0123456789ABCDEF":"0123456789abcdef";var D="";for(var A=0;A<C.length*4;A++){D+=B.charAt((C[A>>2]>>((A%4)*8+4))&15)+B.charAt((C[A>>2]>>((A%4)*8))&15)}return D}function binl2b64(D){var C="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";var F="";for(var B=0;B<D.length*4;B+=3){var E=(((D[B>>2]>>8*(B%4))&255)<<16)|(((D[B+1>>2]>>8*((B+1)%4))&255)<<8)|((D[B+2>>2]>>8*((B+2)%4))&255);for(var A=0;A<4;A++){if(B*8+A*6>D.length*32){F+=b64pad}else{F+=C.charAt((E>>6*(3-A))&63)}}}return F};/*  |xGv00|ccbfd68b5fceb62707a9e4ce87b8c813 */”", , 
+.常量 常量1, "“rain;love;sun;nutri”", , 
+.常量 常量2, "“雨露;爱心;阳光;营养”", , 
+.图片 空白数据库, " ' 已保存到：D:\易语言学习\Data\QQ空间操作.e\空白数据库", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 2 0 扩展界面支持库一
+ ' script EDF19861DC454d15BA0B9E3FF9CA4F57 2 0 脚本语言支持组件
+ ' iconv {A0005538-9391-4dd9-B4D6-8EB7B9360F08} 2 0 编码转换支持库
+ ' HtmlView 5014D8FA6DCA40b68FA626D8183666EB 2 0 超文本浏览框支持库
+
+
+
+ ' 所需要的模块
+ ' 新编码转换大全 C:\Users\Administrator\Desktop\QQ空间操作\新编码转换大全.ec
+ ' 彗星HTTP应用模块 C:\Documents and Settings\Administrator\桌面\QQ空间操作\彗星HTTP应用模块.ec
+
+
+.全局变量 文件名, 文本型, , , 
+.全局变量 QQ号码1, 文本型, , , 
+.全局变量 QQ密码1, 文本型, , , 
+.全局变量 失败, 整数型, , , 
+.全局变量 成功, 整数型, , , 
+.全局变量 停止, 逻辑型, , , 
+.全局变量 日志, 逻辑型, , , 
+.全局变量 牧场, 逻辑型, , , 
+.全局变量 魔法, 逻辑型, , , 
+.全局变量 返回, 逻辑型, , , 
+.全局变量 农场, 逻辑型, , , 
+.全局变量 载入完成, 逻辑型, , , 
+.全局变量 空间, 逻辑型, , , 
+
+.DLL命令 WideCharToMultiByte, 整数型, "kernel32", "WideCharToMultiByte", 公开, 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpWideCharStr, 字节集, 传址, 
+    .参数 cchWideChar, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, 传址, 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpDefaultChar, 整数型, , 
+    .参数 lpUsedDefaultChar, 整数型, , 
+
+.DLL命令 MultiByteToWideChar, 整数型, "", "MultiByteToWideChar", 公开, 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, 传址, 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpWideCharStr, 字节集, 传址, 
+    .参数 cchWideChar, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+赋值 (牧场, 假)
+赋值 (魔法, 假)
+赋值 (空间, 假)
+赋值 (文件名, 相加 (取运行目录 (), “\QQ.MDB”))
+L_超级列表框_载入 (真)
+
+.子程序 _按钮1_被单击, 空白型, , 
+.如果 (等于 (信息框 (“是否保留表格内的数据?”, #是否钮, ), #是钮))
+    L_超级列表框_载入 (真)
+.否则
+    L_超级列表框_载入 (假)
+.如果结束
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+.如果 (等于 (信息框 (“确定要将表格内的账号/密码覆盖到数据库?”, #是否钮, ), #是钮))
+    L_超级列表框_保存 ()
+.否则
+    
+.如果结束
+
+
+.子程序 _超级列表框_右键单击表项, 空白型, , 
+.如果 (等于 (., -1))
+    赋值 (.禁止, 真)
+    赋值 (.禁止, 真)
+    赋值 (.禁止, 真)
+.否则
+    赋值 (.禁止, 假)
+    赋值 (.禁止, 假)
+    赋值 (.禁止, 假)
+     ' 本源码来自易语言资源网(www.5A5X.com)
+.如果结束
+弹出菜单 ()
+
+.子程序 _删除_被选择, 空白型, , 
+.如果 (等于 (信息框 (“真的要删除表格中您选中的数据?”, #是否钮, ), #是钮))
+    .删除表项 (.)
+.否则
+    
+.如果结束
+
+
+.子程序 L_超级列表框_保存, 逻辑型, , 完成。成功返回真，失败返回假
+.参数 超级列表框, 超级列表框, , 
+
+.局部变量 文件号, 整数型, , , 
+.局部变量 字节集, 字节集, , , 
+.局部变量 行数, 整数型, , , 
+.局部变量 列数, 整数型, , , 
+.局部变量 行循环, 整数型, , , 
+.局部变量 列循环, 整数型, , , 
+
+赋值 (文件号, 打开文件 (文件名, #重写, ))
+
+赋值 (行数, 超级列表框.取表项数 ())
+赋值 (列数, 超级列表框.取列数 ())
+.计次循环首 (行数, 行循环)
+    
+    赋值 (字节集, { 0 }) ' 表项头
+    赋值 (字节集, 相加 (字节集, 到字节集 (超级列表框.取图片 (相减 (行循环, 1), 0)))) ' 图片索引
+    赋值 (字节集, 相加 (字节集, 到字节集 (超级列表框.取当前状态图片 (相减 (行循环, 1))))) ' 状态图片索引
+    赋值 (字节集, 相加 (字节集, 到字节集 (超级列表框.取缩进数目 (相减 (行循环, 1))))) ' 缩进数目
+    赋值 (字节集, 相加 (字节集, 到字节集 (超级列表框.取表项数值 (相减 (行循环, 1))))) ' 表项数值
+    赋值 (字节集, 相加 (字节集, 到字节集 (超级列表框.取标题 (相减 (行循环, 1), 0)))) ' 项目文本
+    赋值 (字节集, 相加 (字节集, { 0, 0 })) ' 表项尾
+    
+    .如果真 (等于 (写出字节集 (文件号, 字节集), 假))
+        关闭文件 (文件号)
+        返回 (假)
+    .如果真结束
+    
+    .计次循环首 (相减 (列数, 1), 列循环)
+        赋值 (字节集, { 1, 255, 255, 255, 255, 255, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0 }) ' 表项之间的分隔符
+        赋值 (字节集, 相加 (字节集, 到字节集 (超级列表框.取标题 (相减 (行循环, 1), 列循环)))) ' 子项标题
+        赋值 (字节集, 相加 (字节集, { 0, 0 })) ' 表项尾
+        
+        .如果真 (等于 (写出字节集 (文件号, 字节集), 假))
+            关闭文件 (文件号)
+            返回 (假)
+        .如果真结束
+        处理事件 ()
+    .计次循环尾 ()
+    处理事件 ()
+.计次循环尾 ()
+
+关闭文件 (文件号)
+
+返回 (真)
+
+.子程序 L_超级列表框_载入, 逻辑型, , 11111
+.参数 超级列表框, 超级列表框, , 
+.参数 保存原有数据, 逻辑型, , 默认保存
+
+赋值 (超级列表框., 真)
+赋值 (超级列表框., 真)
+赋值 (超级列表框., 3)
+.如果 (等于 (保存原有数据, 真))
+    赋值 (超级列表框., 相加 (超级列表框., 读入文件 (文件名)))
+.否则
+    赋值 (超级列表框., 读入文件 (文件名))
+.如果结束
+返回 (真)
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+.如果 (等于 (信息框 (“是否将表格内的账号/密码覆盖到数据库?”, #是否钮, ), #是钮))
+    L_超级列表框_保存 ()
+.否则
+    
+.如果结束
+
+
+
+.子程序 _修改密码_被选择, 空白型, , 
+载入 (窗口1, , 真)
+
+.子程序 _按钮3_被单击, 空白型, , 
+.局部变量 位置索引, 整数型, , , 
+
+.如果 (等于 (.内容, “”))
+    信息框 (“QQ号码不能为空!”, 0, )
+.否则
+    .如果 (等于 (.内容, “”))
+        信息框 (“密码不能为空!”, 0, )
+    .否则
+        赋值 (位置索引, .插入表项 (.内容, , , , ))
+        位置索引.置标题 (1, .内容)
+        
+    .如果结束
+    
+.如果结束
+
+
+.子程序 _按钮4_被单击, 空白型, , 
+赋值 (失败, 0)
+赋值 (成功, 0)
+赋值 (_启动窗口., “初始化完毕”)
+.如果 (等于 (.内容, “”))
+    信息框 (“日志标题不能为空!”, 0, )
+.否则
+    .如果 (等于 (.内容, “”))
+        信息框 (“日志内容不能为空!”, 0, )
+    .否则
+        .如果 (等于 (.选中, 真))
+            选中的QQ号码写日志 ()
+        .否则
+            .如果 (等于 (.选中, 真))
+                全部的QQ号码写日志 ()
+            .否则
+                信息框 (“请选择写日志的方式（单个/批量）”, 0, )
+            .如果结束
+            
+        .如果结束
+        
+    .如果结束
+    
+.如果结束
+
+
+
+.子程序 选中的QQ号码写日志, 空白型, , 
+.如果 (等于 (., -1))
+    信息框 (“请在右边的表单中选中QQ号码再写日志!”, 0, )
+.否则
+    赋值 (_启动窗口., 真)
+    赋值 (.标题, “请稍后..”)
+    赋值 (.禁止, 真)
+    赋值 (.字体名称, 真)
+    写日志 ()
+    赋值 (.字体名称, 假)
+    赋值 (.标题, “写日志”)
+    赋值 (.禁止, 假)
+    赋值 (_启动窗口., 假)
+     ' 本源码来自易语言资源网(www.5A5X.com)
+.如果结束
+
+
+.子程序 全部的QQ号码写日志, 空白型, , 
+.局部变量 表数, 整数型, , , 
+
+赋值 (_启动窗口., 真)
+赋值 (.标题, “请稍后..”)
+赋值 (.禁止, 真)
+赋值 (.字体名称, 真)
+赋值 (表数, .插入表项 (“”, , , , ))
+表数.删除表项 ()
+赋值 (., 0)
+赋值 (停止, 假)
+.计次循环首 (表数, )
+    .如果 (等于 (返回, 真))
+        跳出循环 ()
+    .否则
+        
+    .如果结束
+    写日志 ()
+    .如果 (等于 (停止, 真))
+        跳出循环 ()
+    .否则
+        
+    .如果结束
+    赋值 (_启动窗口., 相加 (“共”, 到文本 (表数), “个QQ号码,已完成”, 到文本 (相加 (., 1)), “个QQ号码”))
+    赋值 (., 相加 (., 1))
+    .如果 (等于 (., 表数))
+        跳出循环 ()
+    .否则
+        
+    .如果结束
+    
+.计次循环尾 ()
+赋值 (.字体名称, 假)
+赋值 (.标题, “写日志”)
+赋值 (.禁止, 假)
+赋值 (_启动窗口., 假)
+赋值 (返回, 假)
+信息框 (相加 (“共”, 到文本 (表数), “个QQ号码,完成了”, 到文本 (成功), “个QQ号码”), 0, )
+
+.子程序 写日志, 空白型, , 
+赋值 (QQ号码1, .取标题 (., 0))
+赋值 (QQ密码1, .取标题 (., 1))
+赋值 (日志, 真)
+载入 (窗口2, , 真)
+
+.子程序 _QQ农场_被选择, 空白型, , 
+赋值 (农场, 真)
+赋值 (QQ号码1, .取标题 (., 0))
+赋值 (QQ密码1, .取标题 (., 1))
+赋值 (日志, 假)
+载入 (窗口2, , 真)
+
+.子程序 _QQ空间_被选择, 空白型, , 
+赋值 (空间, 真)
+赋值 (QQ号码1, .取标题 (., 0))
+赋值 (QQ密码1, .取标题 (., 1))
+赋值 (日志, 假)
+载入 (窗口2, , 真)
+' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 _魔法卡片_被选择, 空白型, , 
+赋值 (魔法, 真)
+赋值 (QQ号码1, .取标题 (., 0))
+赋值 (QQ密码1, .取标题 (., 1))
+赋值 (日志, 假)
+载入 (窗口2, , 真)
+
+
+.窗口程序集 窗口程序集2, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.如果 (等于 (.内容, “”))
+    信息框 (“密码不能为空!”, 0, )
+.否则
+    _启动窗口.置标题 (., _启动窗口.., 1, .内容)
+    窗口1.销毁 ()
+    ' 本源码来自易语言资源网(www.5A5X.com)
+.如果结束
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+窗口1.销毁 ()
+
+.窗口程序集 窗口程序集3, , , 
+
+.子程序 _窗口2_创建完毕, 空白型, , 
+赋值 (.图片, 彗星HTTP读文件 (“http://ptlogin2.qq.com/getimage”))
+
+.子程序 _按钮2_被单击, 空白型, , 
+赋值 (.图片, 彗星HTTP读文件 (“http://ptlogin2.qq.com/getimage”))
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 登陆返回临时数据, 字节集, , , 
+.局部变量 QQ密码, 文本型, , , 
+.局部变量 临时文本, 文本型, , , 
+.局部变量 临时文本2, 文本型, , , 
+.局部变量 临时文本1, 字节集, , , 
+.局部变量 QQ号, 文本型, , , 
+
+赋值 (.标题, “稍后..”)
+赋值 (.禁止, 真)
+赋值 (.禁止, 真)
+赋值 (.禁止, 真)
+赋值 (.禁止, 真)
+#md5.未知支持库函数_0 () ' QQ网页登陆密码MD5加密方式
+赋值 (QQ号, 删首尾空 (QQ号码1))
+赋值 (QQ密码, “md5_3”.未知支持库函数_3 (删首尾空 (QQ密码1)))
+赋值 (QQ密码, “md5”.未知支持库函数_3 (相加 (QQ密码, 到大写 (删首尾空 (窗口2..内容)))))
+赋值 (登陆返回临时数据, 彗星HTTP读文件 (“http://ptlogin2.qq.com/login”, “POST”, , , 相加 (“u1=http%3A%2F%2Fimgcache.qq.com%2Fqzone%2Ftoolbar%2Floginsucc.html%3Fpara%3DblogComment&fp=loginerroralert&h=1&u=”, QQ号, “&p=”, QQ密码, “&verifycode=”, 删首尾空 (窗口2..内容), “&aid=15000101&from_ui=1”), ))
+.如果 (大于 (寻找文本 (到文本 (登陆返回临时数据), “登陆成功”, , 假), 0))
+    .如果 (等于 (日志, 真))
+        赋值 (临时文本1, 未知支持库函数_0 (彗星HTTP读文件 (“http://b.qzone.qq.com/cgi-bin/blognew/blog_add”, “POST”, , , 相加 (“uin=”, QQ号, “&category=个人日志&title=”, _启动窗口..内容, “&content=”, _启动窗口..内容, “&cb_autograph=1&topflag=0&needfeed=0”)), #, #, ))
+        赋值 (临时文本1, 未知支持库函数_0 (彗星HTTP读文件 (“http://imgcache.qq.com/qzone/newblog/v5/success.html”, “GET”, , , ), #, #, ))
+        赋值 (_启动窗口..内容, 到文本 (临时文本1))
+        .如果 (不等于 (寻找文本 (到文本 (临时文本1), “发表成功”, , 假), -1))
+            赋值 (_启动窗口., 相加 (QQ号码1, “的日志发表成功”))
+            赋值 (成功, 相加 (成功, 1))
+            赋值 (.标题, “确定”)
+            赋值 (.禁止, 假)
+            赋值 (.禁止, 假)
+            赋值 (.禁止, 假)
+            赋值 (.禁止, 假)
+            窗口2.销毁 ()
+            连续赋值 (“”, _启动窗口..内容, _启动窗口..内容)
+        .否则
+            赋值 (_启动窗口., 相加 (QQ号码1, “的日志发表失败”))
+            赋值 (失败, 相加 (失败, 1))
+            赋值 (.标题, “确定”)
+            赋值 (.禁止, 假)
+            赋值 (.禁止, 假)
+            赋值 (.禁止, 假)
+            赋值 (.禁止, 假)
+            窗口2.销毁 ()
+        .如果结束
+        
+    .否则
+        窗口2.销毁 ()
+        载入 (窗口3, , 真)
+    .如果结束
+    
+.否则
+    赋值 (失败, 相加 (失败, 1))
+    赋值 (.标题, “确定”)
+    赋值 (.禁止, 假)
+    赋值 (.禁止, 假)
+    赋值 (.禁止, 假)
+    赋值 (.禁止, 假)
+    信息框 (“登陆失败,请检查QQ账号/密码以及验证码是否输入正确！”, 0, “提示”)
+    赋值 (.图片, 彗星HTTP读文件 (“http://ptlogin2.qq.com/getimage”))
+.如果结束
+
+
+.子程序 _按钮3_被单击, 空白型, , 
+赋值 (返回, 真)
+赋值 (停止, 真)
+窗口2.销毁 ()
+赋值 (失败, 相加 (失败, 1))
+
+.子程序 _编辑框1_内容被改变, 空白型, , 
+.如果 (等于 (取文本长度 (.内容), 4))
+    _按钮1_被单击 ()
+.否则
+    ' 本源码来自易语言资源网(www.5A5X.com)
+.如果结束
+
+
+.窗口程序集 窗口程序集4, , , 
+
+.子程序 _时钟1_周期事件, 空白型, , 
+.如果 (等于 (农场, 真))
+    赋值 (., “http://happyfarm.qzone.qq.com/?ptlang=2052”)
+.否则
+    .如果 (等于 (空间, 真))
+        赋值 (., “http://qzone.qq.com”)
+    .否则
+        .如果 (等于 (魔法, 真))
+            赋值 (., “http://show.qq.com/show2.html?MUrl=http%3A//imgcache.qq.com/qqhome_v2/card/index.html%3Fqzone%3D1”)
+        .否则
+            
+        .如果结束
+        
+    .如果结束
+     ' 本源码来自易语言资源网(www.5A5X.com)
+.如果结束
+赋值 (农场, 假)
+赋值 (魔法, 假)
+赋值 (空间, 假)
+赋值 (.时钟周期, 0)
+
+.子程序 _窗口3_尺寸被改变, 空白型, , 
+赋值 (., 0)
+赋值 (., 0)
+赋值 (., 相减 (窗口3., 18))
+赋值 (., 窗口3.)
+
+.子程序 _超文本浏览框1_命令状态被改变, 空白型, , 
+.参数 命令, 整数型, , 
+.参数 是否被允许, 逻辑型, , 
+
+赋值 (窗口3., .)
+
+.子程序 _超文本浏览框1_跳转完毕, 空白型, , 
+赋值 (窗口3., .)
+
+.子程序 _超文本浏览框1_载入完毕, 空白型, , 
+赋值 (窗口3., .)
+
+.子程序 _超文本浏览框1_状态文本被改变, 空白型, , 
+赋值 (窗口3., .)
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 UTF8转ANSI, 文本型, , 方圆软件工作室－林炳崇（进在眼前）出品
+.参数 UTF8, 字节集, , 待转换UTF-8编码字节集
+
+
+
+.子程序 UNICODE转ANSI, 文本型, , 方圆软件工作室－林炳崇（近在眼前）出品
+.参数 Unicode数据, 字节集, , Unicode码字节集数据
+
+
+
+.子程序 ANSI转UNICODE, 字节集, , 方圆软件工作室－林炳崇（近在眼前）出品
+.参数 文本, 文本型, , Ansi码文本，只针对中文或双字节全角字符
+
+
+
+.子程序 UTF8转UNICODE, 字节集, , 方圆软件工作室－林炳崇（近在眼前）出品
+.参数 UTF8, 字节集, , 待转换UTF-8编码字节集
+
+
+
+.子程序 UNICODE转UTF8, 字节集, , 方圆软件工作室－林炳崇（近在眼前）出品
+.参数 UNICODE, 字节集, , 待转换UNICODE编码字节集
+
+
+
+.子程序 ANSI转UTF8, 字节集, , 方圆软件工作室－林炳崇（进在眼前）出品
+.参数 文本, 文本型, , 要转换为UTF8编码的文本
+
+
+
+.子程序 BASE64编码, 文本型, , 方圆软件工作室－林炳崇（近在眼前）出品
+.参数 待编码数据, 字节集, , 
+
+
+
+.子程序 BASE64解码, 字节集, , 方圆软件工作室－林炳崇（近在眼前）出品
+.参数 待解码数据, 文本型, , 
+
+
+
+.子程序 文本加密, 文本型, , 方圆软件工作室－林炳崇（近在眼前）出品
+.参数 文本, 文本型, , 待加密文本（本加密方法为动态随机加密，所以每次加密后的文本都不同）
+.参数 密匙, 文本型, 可空, 长度为62任意不重复单字节可见字符，默认为：ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz
+
+
+
+.子程序 文本解密, 文本型, , 方圆软件工作室－林炳崇（近在眼前）出品
+.参数 文本, 文本型, , 待解密文本
+.参数 密匙, 文本型, 可空, 必须跟加密时相同的密匙文本
+
+
+
+.子程序 ANSI转USC2, 文本型, , 方圆软件工作室－林炳崇（近在眼前）出品
+.参数 文本, 文本型, , 
+
+
+
+.子程序 USC2转ANSI, 文本型, , 方圆软件工作室－林炳崇（近在眼前）出品
+.参数 USC2, 文本型, , 
+
+
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 彗星URL编码, 文本型, , 返回已编码的URL
+.参数 Bin_URL, 文本型, , 
+
+
+
+.子程序 彗星URL编码_UTF8, 文本型, , 返回已编码的URL
+.参数 Bin_URL, 文本型, , 
+
+
+
+.子程序 彗星URL解码, 文本型, , 返回已解码的URL
+.参数 Bin_URL, 文本型, , 
+
+
+
+.子程序 彗星URL解码_UTF8, 文本型, , 返回已解码的URL
+.参数 Bin_URL, 文本型, , 
+
+
+
+.子程序 彗星HTTP读文件, 字节集, , 有可能线程阻塞,请在外部加超时判断
+.参数 完整网址, 文本型, , 
+.参数 访问方式, 文本型, 可空, "GET" or "POST",为空默认"GET"
+.参数 代理地址, 文本型, 可空, 
+.参数 附加协议头, 文本型, 可空, 
+.参数 提交信息, 文本型, 可空, "POST"专用
+.参数 网页头, 文本型, 参考 可空, 返回网页头部信息
+
+
+
+.子程序 彗星HTTP读文本, 文本型, , 有可能线程阻塞,请在外部加超时判断
+.参数 完整网址, 文本型, , 
+.参数 访问方式, 文本型, 可空, "GET" or "POST",为空默认"GET"
+.参数 代理地址, 文本型, 可空, 
+.参数 附加协议头, 文本型, 可空, 
+.参数 提交信息, 文本型, 可空, "POST"专用
+.参数 网页头, 文本型, 参考 可空, 返回网页头部信息
+
+
+
+.子程序 彗星打开指定网址, 空白型, , 调用默认浏览器打开指定网址
+.参数 要打开的网址, 文本型, , 
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

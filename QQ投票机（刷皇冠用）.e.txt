@@ -1,0 +1,586 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 297
+    高度 = 444
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “QQ群投票机”
+    帮助文件名 = “”
+
+窗口 窗口1
+    左边 = 50
+    顶边 = 50
+    宽度 = 138
+    高度 = 157
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “验证码”
+    帮助文件名 = “”
+
+窗口 窗口2
+    左边 = 50
+    顶边 = 50
+    宽度 = 163
+    高度 = 113
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “投票次数”
+    帮助文件名 = “”
+
+窗口 窗口3
+    左边 = 50
+    顶边 = 50
+    宽度 = 302
+    高度 = 247
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “投票完毕，执行后的数据对比”
+    帮助文件名 = “”
+
+
+
+.常量 JS, "“STR_UINTIP=1;STR_QLOGIN_VERSION_ERR=2;STR_NO_UIN=3;STR_NO_PWD=4;STR_NO_VCODE=5;STR_INV_UIN=6;STR_INV_VCODE=7;STR_UIN=8;STR_PWD=9;STR_VCODE=10;STR_VCODE_TIP=11;STR_CHANGE_VCODE=12;STR_REMEMBER_PWD=13;STR_1_DAY=14;STR_1_WEEK=15;STR_1_MONTH=16;STR_HALF_YEAR=17;STR_1_YEAR=18;STR_FORGET_PWD=19;STR_LOGIN=20;STR_RESET=21;STR_SWITCH_QLOGIN=22;STR_LOGIN_TITLE=23;STR_QLOGIN_INTRO=24;STR_QLOGINING=25;STR_QLOGIN_HELP=26;STR_SWITCH_NORMAL=27;STR_QLOGIN=28;STR_QLOGIN_BUSY=29;STR_QLOGIN_OFFLINE=30;STR_QLOGIN_OTHER_ERR=31;STR_BACK=32;STR_RETRY=33;function ptui_str(A){A-=1;if(A>=0&&A<g_strArray.length){return g_strArray[A]}return""}function ptui_mapStr(B){for(i=0;i<B.length;i++){var A=document.getElementById(B[i][1]);if(A!=null){if("A"==A.nodeName||"U"==A.nodeName||"OPTION"==A.nodeName){if(A.innerHTML==""){A.innerHTML=ptui_str(B[i][0])}}else{if("INPUT"==A.nodeName){if(A.value==""){A.value=ptui_str(B[i][0])}}else{if("IMG"==A.nodeName){A.alt=ptui_str(B[i][0])}}}}}}function ptui_onUserFocus(C,A){var B=document.getElementById(C);if(ptui_str(STR_UINTIP)==B.value){B.value=""}B.style.color=A}function ptui_onUserBlue(C,A){var B=document.getElementById(C);if(""==B.value){B.value=ptui_str(STR_UINTIP);B.style.color=A}}var g_speedArray=new Array();function ptui_setSpeed(B){if(B<=0){return }var A=g_speedArray.length;g_speedArray[A]=new Array(B,new Date())}function ptui_reportSpeed(B){if(Math.random()>0.1){return }url="http://isdspeed.qq.com/cgi-bin/r.cgi?flag1=6000&flag2=1&flag3=1";for(var A=0;A<g_speedArray.length;A++){url=url+"&"+g_speedArray[A][0]+"="+(g_speedArray[A][1]-B)}imgSendTimePoint=new Image();imgSendTimePoint.src=url}function ptui_showDiv(A,B){var C=document.getElementById(A);if(null==C){return }if(B){C.style.display="block"}else{C.style.display="none"}}function ptui_notifySize(B){try{obj=document.getElementById(B);if(obj){if(parent.ptlogin2_onResize){width=1;height=1;if(obj.offsetWidth>0){width=obj.offsetWidth}if(obj.offsetHeight>0){height=obj.offsetHeight}parent.ptlogin2_onResize(width,height)}}}catch(A){}}function ptui_notifyClose(){try{if(parent.ptlogin2_onClose){parent.ptlogin2_onClose()}else{if(top==this){window.close()}}}catch(A){window.close()}}function ptui_setUinColor(D,B,A){var C=document.getElementById(D);if(ptui_str(STR_UINTIP)==C.value){C.style.color=A}else{C.style.color=B}}function ptui_onEnableLLogin(B){var A=B.low_login_enable;var C=B.low_login_hour;if(A!=null&&C!=null){C.disabled=!A.checked}}function ptui_changeImgEx(D,C,F,E){var A=document.getElementById("imgVerify");if(A!=null){A.src=E+"?aid="+C+"&"+Math.random();var B=document.getElementById("verifycode");if(B!=null&&B.disabled==false&&F){B.focus();B.select()}}}function ptui_changeImg(B,A,C){ptui_changeImgEx(B,A,C,"http://ptlogin2."+B+"/getimage")}function ptui_changeImgHttps(B,A,C){ptui_changeImgEx(B,A,C,"./getimage")}function ptui_checkQQUin(qquin){if(qquin.length==0){return false}if(!(new RegExp(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/).test(qquin))){if(qquin.length<5||qquin.length>12||parseInt(qquin)<1000){return false}var exp=eval("/^[0-9]*$/");return exp.test(qquin)}return true}function ptui_checkPwdOnInput(){if(document.getElementById("p").value.length>=16){return false}return true}function ptui_onLogin(A){try{if(parent.ptlogin2_onLogin){if(!parent.ptlogin2_onLogin()){return false}}if(parent.ptlogin2_onLoginEx){var D=A.u.value;var B=A.verifycode.value;if(ptui_str(STR_UINTIP)==D){D=""}if(!parent.ptlogin2_onLoginEx(D,B)){return false}}}catch(C){}return ptui_checkValidate(A)}function ptui_onLoginEx(B,C){if(ptui_onLogin(B)){var A=new Date();A.setHours(A.getHours()+24*30);setCookie("ptui_loginuin",B.u.value,A,"/","ui.ptlogin2."+C);return true}return false}function ptui_setDefUin(B,A){if(A==""||A==null){A=getCookie("ptui_loginuin")}if(A!=""&&A!=null){B.u.value=A}}function ptui_onReset(A){try{if(parent.ptlogin2_onReset){if(!parent.ptlogin2_onReset()){return false}}}catch(B){}return true}function ptui_initFocus(B){try{var A=B.u;var D=B.p;var E=B.verifycode;if(A.value==""||ptui_str(STR_UINTIP)==A.value){A.focus();return }if(D.value==""){D.focus();return }if(E.value==""){E.focus()}}catch(C){}}function ptui_checkValidate(B){var A=B.u;var C=B.p;var D=B.verifycode;if(A.value==""||ptui_str(STR_UINTIP)==A.value){alert(ptui_str(STR_NO_UIN));A.focus();return false}if(C.value==""){alert(ptui_str(STR_NO_PWD));C.focus();return false}if(D.value==""){alert(ptui_str(STR_NO_VCODE));D.focus();return false}if(!ptui_checkQQUin(A.value)){alert(ptui_str(STR_INV_UIN));A.focus();A.select();return false}if(D.value.length!=4){alert(ptui_str(STR_INV_VCODE));D.focus();D.select();return false}C.setAttribute("maxlength","32");preprocess(B);return true}function getCookieVal(B){var A=document.cookie.indexOf(";",B);if(A==-1){A=document.cookie.length}return unescape(document.cookie.substring(B,A))}function getCookie(D){var B=D+"=";var F=B.length;var A=document.cookie.length;var E=0;while(E<A){var C=E+F;if(document.cookie.substring(E,C)==B){return getCookieVal(C)}E=document.cookie.indexOf(" ",E)+1;if(E==0){break}}return null}function setCookie(C,E){var A=setCookie.arguments;var H=setCookie.arguments.length;var B=(2<H)?A[2]:null;var G=(3<H)?A[3]:null;var D=(4<H)?A[4]:null;var F=(5<H)?A[5]:null;document.cookie=C+"="+escape(E)+((B==null)?" ":(";expires ="+B.toGMTString()))+((G==null)?"  ":(";path = "+G))+((D==null)?" ":(";domain ="+D))+((F==true)?";secure":" ")}var hexcase=1;var b64pad="";var chrsz=8;var mode=32;function preprocess(A){var B="";B+=A.verifycode.value;B=B.toUpperCase();A.p.value=md5(md5_3(A.p.value)+B);return true}function md5_3(B){var A=new Array;A=core_md5(str2binl(B),B.length*chrsz);A=core_md5(A,16*chrsz);A=core_md5(A,16*chrsz);return binl2hex(A)}function md5(A){return hex_md5(A)}function hex_md5(A){return binl2hex(core_md5(str2binl(A),A.length*chrsz))}function b64_md5(A){return binl2b64(core_md5(str2binl(A),A.length*chrsz))}function str_md5(A){return binl2str(core_md5(str2binl(A),A.length*chrsz))}function hex_hmac_md5(A,B){return binl2hex(core_hmac_md5(A,B))}function b64_hmac_md5(A,B){return binl2b64(core_hmac_md5(A,B))}function str_hmac_md5(A,B){return binl2str(core_hmac_md5(A,B))}function md5_vm_test(){return hex_md5("abc")=="900150983cd24fb0d6963f7d28e17f72"}function core_md5(K,F){K[F>>5]|=128<<((F)%32);K[(((F+64)>>>9)<<4)+14]=F;var J=1732584193;var I=-271733879;var H=-1732584194;var G=271733878;for(var C=0;C<K.length;C+=16){var E=J;var D=I;var B=H;var A=G;J=md5_ff(J,I,H,G,K[C+0],7,-680876936);G=md5_ff(G,J,I,H,K[C+1],12,-389564586);H=md5_ff(H,G,J,I,K[C+2],17,606105819);I=md5_ff(I,H,G,J,K[C+3],22,-1044525330);J=md5_ff(J,I,H,G,K[C+4],7,-176418897);G=md5_ff(G,J,I,H,K[C+5],12,1200080426);H=md5_ff(H,G,J,I,K[C+6],17,-1473231341);I=md5_ff(I,H,G,J,K[C+7],22,-45705983);J=md5_ff(J,I,H,G,K[C+8],7,1770035416);G=md5_ff(G,J,I,H,K[C+9],12,-1958414417);H=md5_ff(H,G,J,I,K[C+10],17,-42063);I=md5_ff(I,H,G,J,K[C+11],22,-1990404162);J=md5_ff(J,I,H,G,K[C+12],7,1804603682);G=md5_ff(G,J,I,H,K[C+13],12,-40341101);H=md5_ff(H,G,J,I,K[C+14],17,-1502002290);I=md5_ff(I,H,G,J,K[C+15],22,1236535329);J=md5_gg(J,I,H,G,K[C+1],5,-165796510);G=md5_gg(G,J,I,H,K[C+6],9,-1069501632);H=md5_gg(H,G,J,I,K[C+11],14,643717713);I=md5_gg(I,H,G,J,K[C+0],20,-373897302);J=md5_gg(J,I,H,G,K[C+5],5,-701558691);G=md5_gg(G,J,I,H,K[C+10],9,38016083);H=md5_gg(H,G,J,I,K[C+15],14,-660478335);I=md5_gg(I,H,G,J,K[C+4],20,-405537848);J=md5_gg(J,I,H,G,K[C+9],5,568446438);G=md5_gg(G,J,I,H,K[C+14],9,-1019803690);H=md5_gg(H,G,J,I,K[C+3],14,-187363961);I=md5_gg(I,H,G,J,K[C+8],20,1163531501);J=md5_gg(J,I,H,G,K[C+13],5,-1444681467);G=md5_gg(G,J,I,H,K[C+2],9,-51403784);H=md5_gg(H,G,J,I,K[C+7],14,1735328473);I=md5_gg(I,H,G,J,K[C+12],20,-1926607734);J=md5_hh(J,I,H,G,K[C+5],4,-378558);G=md5_hh(G,J,I,H,K[C+8],11,-2022574463);H=md5_hh(H,G,J,I,K[C+11],16,1839030562);I=md5_hh(I,H,G,J,K[C+14],23,-35309556);J=md5_hh(J,I,H,G,K[C+1],4,-1530992060);G=md5_hh(G,J,I,H,K[C+4],11,1272893353);H=md5_hh(H,G,J,I,K[C+7],16,-155497632);I=md5_hh(I,H,G,J,K[C+10],23,-1094730640);J=md5_hh(J,I,H,G,K[C+13],4,681279174);G=md5_hh(G,J,I,H,K[C+0],11,-358537222);H=md5_hh(H,G,J,I,K[C+3],16,-722521979);I=md5_hh(I,H,G,J,K[C+6],23,76029189);J=md5_hh(J,I,H,G,K[C+9],4,-640364487);G=md5_hh(G,J,I,H,K[C+12],11,-421815835);H=md5_hh(H,G,J,I,K[C+15],16,530742520);I=md5_hh(I,H,G,J,K[C+2],23,-995338651);J=md5_ii(J,I,H,G,K[C+0],6,-198630844);G=md5_ii(G,J,I,H,K[C+7],10,1126891415);H=md5_ii(H,G,J,I,K[C+14],15,-1416354905);I=md5_ii(I,H,G,J,K[C+5],21,-57434055);J=md5_ii(J,I,H,G,K[C+12],6,1700485571);G=md5_ii(G,J,I,H,K[C+3],10,-1894986606);H=md5_ii(H,G,J,I,K[C+10],15,-1051523);I=md5_ii(I,H,G,J,K[C+1],21,-2054922799);J=md5_ii(J,I,H,G,K[C+8],6,1873313359);G=md5_ii(G,J,I,H,K[C+15],10,-30611744);H=md5_ii(H,G,J,I,K[C+6],15,-1560198380);I=md5_ii(I,H,G,J,K[C+13],21,1309151649);J=md5_ii(J,I,H,G,K[C+4],6,-145523070);G=md5_ii(G,J,I,H,K[C+11],10,-1120210379);H=md5_ii(H,G,J,I,K[C+2],15,718787259);I=md5_ii(I,H,G,J,K[C+9],21,-343485551);J=safe_add(J,E);I=safe_add(I,D);H=safe_add(H,B);G=safe_add(G,A)}if(mode==16){return Array(I,H)}else{return Array(J,I,H,G)}}function md5_cmn(F,C,B,A,E,D){return safe_add(bit_rol(safe_add(safe_add(C,F),safe_add(A,D)),E),B)}function md5_ff(C,B,G,F,A,E,D){return md5_cmn((B&G)|((~B)&F),C,B,A,E,D)}function md5_gg(C,B,G,F,A,E,D){return md5_cmn((B&F)|(G&(~F)),C,B,A,E,D)}function md5_hh(C,B,G,F,A,E,D){return md5_cmn(B^G^F,C,B,A,E,D)}function md5_ii(C,B,G,F,A,E,D){return md5_cmn(G^(B|(~F)),C,B,A,E,D)}function core_hmac_md5(C,F){var E=str2binl(C);if(E.length>16){E=core_md5(E,C.length*chrsz)}var A=Array(16),D=Array(16);for(var B=0;B<16;B++){A[B]=E[B]^909522486;D[B]=E[B]^1549556828}var G=core_md5(A.concat(str2binl(F)),512+F.length*chrsz);return core_md5(D.concat(G),512+128)}function safe_add(A,D){var C=(A&65535)+(D&65535);var B=(A>>16)+(D>>16)+(C>>16);return(B<<16)|(C&65535)}function bit_rol(A,B){return(A<<B)|(A>>>(32-B))}function str2binl(D){var C=Array();var A=(1<<chrsz)-1;for(var B=0;B<D.length*chrsz;B+=chrsz){C[B>>5]|=(D.charCodeAt(B/chrsz)&A)<<(B%32)}return C}function binl2str(C){var D="";var A=(1<<chrsz)-1;for(var B=0;B<C.length*32;B+=chrsz){D+=String.fromCharCode((C[B>>5]>>>(B%32))&A)}return D}function binl2hex(C){var B=hexcase?"0123456789ABCDEF":"0123456789abcdef";var D="";for(var A=0;A<C.length*4;A++){D+=B.charAt((C[A>>2]>>((A%4)*8+4))&15)+B.charAt((C[A>>2]>>((A%4)*8))&15)}return D}function binl2b64(D){var C="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";var F="";for(var B=0;B<D.length*4;B+=3){var E=(((D[B>>2]>>8*(B%4))&255)<<16)|(((D[B+1>>2]>>8*((B+1)%4))&255)<<8)|((D[B+2>>2]>>8*((B+2)%4))&255);for(var A=0;A<4;A++){if(B*8+A*6>D.length*32){F+=b64pad}else{F+=C.charAt((E>>6*(3-A))&63)}}}return F};/*  |xGv00|ccbfd68b5fceb62707a9e4ce87b8c813 */”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' script EDF19861DC454d15BA0B9E3FF9CA4F57 2 0 脚本语言支持组件
+ ' internet 707ca37322474f6ca841f0e224f4b620 2 0 互联网支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 2 0 扩展界面支持库一
+ ' EThread 5F99C1642A2F4e03850721B4F5D7C3F8 2 0 多线程支持库
+
+
+
+ ' 所需要的模块
+ ' 新编码转换大全 F:\学习\新编码转换大全.ec
+ ' 彗星HTTP应用模块 F:\学习\彗星HTTP应用模块.ec
+
+
+.全局变量 验证码, 文本型, , , 
+.全局变量 验证码ID, 文本型, , , 
+.全局变量 群主, 文本型, , , 
+.全局变量 类型, 文本型, , , 
+.全局变量 成员, 文本型, , , 
+.全局变量 创建, 文本型, , , 
+.全局变量 等级, 文本型, , , 
+.全局变量 人气, 文本型, , , 
+.全局变量 贡献, 文本型, , , 
+.全局变量 参与, 文本型, , , 
+.全局变量 投票次数, 整数型, , , 
+
+.DLL命令 WideCharToMultiByte, 整数型, "kernel32", "WideCharToMultiByte", 公开, 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpWideCharStr, 字节集, 传址, 
+    .参数 cchWideChar, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, 传址, 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpDefaultChar, 整数型, , 
+    .参数 lpUsedDefaultChar, 整数型, , 
+
+.DLL命令 MultiByteToWideChar, 整数型, "", "MultiByteToWideChar", 公开, 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, 传址, 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpWideCharStr, 字节集, 传址, 
+    .参数 cchWideChar, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+
+
+.子程序 _按钮_登陆_被单击, 空白型, , 
+判断验证码 ()
+赋值 (验证码, “”)
+
+.子程序 判断验证码, 空白型, , 
+.局部变量 文本, 文本型, , , 
+.局部变量 是否需要验证码, 文本型, , , 
+.局部变量 获取系统验证码, 文本型, , , 
+
+赋值 (文本, UTF8转ANSI (未知支持库函数_7 (相加 (“http://ptlogin2.qq.com/check?uin=”, .内容, “&appid=3000801&r=0.612639372164045”))))
+输出调试文本 (文本)
+赋值 (是否需要验证码, 取指定内容 (文本, “ptui_checkVC('”, “'”))
+输出调试文本 (是否需要验证码)
+.如果 (等于 (是否需要验证码, “0”))
+    赋值 (获取系统验证码, 取指定内容 (文本, “,'”, “');”))
+    输出调试文本 (获取系统验证码)
+    赋值 (验证码, 获取系统验证码)
+    登录 ()
+.否则
+    赋值 (获取系统验证码, 取指定内容 (文本, “,'”, “');”))
+    输出调试文本 (获取系统验证码)
+    赋值 (验证码ID, 获取系统验证码)
+    载入 (窗口1, , 真)
+.如果结束
+
+
+.子程序 登录, 空白型, , 
+.局部变量 文本, 文本型, , , 
+.局部变量 QQ密码, 文本型, , , 
+
+.如果真 (不等于 (验证码, “”))
+    #JS.未知支持库函数_0 ()
+    赋值 (QQ密码, “md5_3”.未知支持库函数_3 (删首尾空 (.内容)))
+    赋值 (QQ密码, “md5”.未知支持库函数_3 (相加 (QQ密码, 到大写 (删首尾空 (验证码)))))
+    赋值 (文本, UTF8转ANSI (未知支持库函数_7 (相加 (“ http://ptlogin2.qq.com/login?u=”, 删首尾空 (.内容), “&p=”, 删首尾空 (QQ密码), “&verifycode=”, 删首尾空 (验证码), “&aid=3000801&u1=http%3A%2F%2Fqun.qq.com%2Fair%2F&h=1&ptredirect=1&ptlang=2052&from_ui=1&dumy=&fp=loginerroralert&mibao_css=”))))
+    输出调试文本 (文本)
+    .如果 (不等于 (寻找文本 (文本, “成功”, , 假), -1))
+        .如果真 (等于 (是否已创建 (窗口1), 真))
+            窗口1.销毁 ()
+        .如果真结束
+        登录群空间 ()
+        信息框 (“登陆成功”, 0, )
+    .否则
+        .如果 (不等于 (寻找文本 (文本, “验证码”, , 假), -1))
+            .如果真 (等于 (是否已创建 (窗口1), 真))
+                窗口1.刷新验证码 ()
+            .如果真结束
+            信息框 (“验证码错误”, 0, )
+        .否则
+            .如果 (不等于 (寻找文本 (文本, “密码有误”, , 假), -1))
+                .如果真 (等于 (是否已创建 (窗口1), 真))
+                    窗口1.销毁 ()
+                .如果真结束
+                信息框 (“账号或者密码有误”, 0, )
+            .否则
+                
+            .如果结束
+            
+        .如果结束
+        
+    .如果结束
+    
+    
+.如果真结束
+
+
+
+.子程序 登录群空间, 空白型, , 
+.局部变量 文本, 文本型, , , 
+.局部变量 昵称, 文本型, , , 
+.局部变量 群信息, 文本型, , , 
+.局部变量 您创建了, 文本型, , , 
+.局部变量 取群, 文本型, , , 
+.局部变量 分割群, 文本型, , "0", 
+.局部变量 几次, 整数型, , , 
+.局部变量 表项数, 整数型, , , 
+
+全部删除 ()
+赋值 (文本, UTF8转ANSI (未知支持库函数_7 (“http://qun.qq.com/air/?w=n&_=0.012932301905058563”)))
+输出调试文本 (文本)
+.如果真 (不等于 (寻找文本 (文本, “您创建了”, , 假), -1))
+    赋值 (昵称, 取指定内容 (文本, “<a>”, “</a>的群<span>”))
+    赋值 (群信息, 取指定内容 (文本, “</a>的群<span>”, “</span></div>”))
+    赋值 (您创建了, 删全部空 (取指定内容 (文本, 相加 (“<div class=”, #引号, “fl”, #引号, “>”), “</div></span>”)))
+    输出调试文本 (相加 (昵称, “  ”, 群信息, “  ”, 您创建了))
+    赋值 (.标题, 相加 (“昵称：”, 昵称, 群信息))
+    赋值 (.标题, 您创建了)
+    赋值 (.图片, 未知支持库函数_7 (相加 (“http://face6.qun.qq.com/cgi/svr/face/getface?type=1&uin=”, .内容)))
+    赋值 (取群, 取指定内容 (文本, 相加 (“class=”, #引号, “undis”, #引号, “>”, #换行符), 相加 (#换行符, “                                   </div>”)))
+    输出调试文本 (取群)
+    清除数组 (分割群)
+    赋值 (分割群, 分割文本 (取群, #换行符, ))
+    .计次循环首 (取数组成员数 (分割群), 几次)
+        .如果真 (不等于 (寻找文本 (分割群 [几次], “rev=”, , 假), -1))
+            赋值 (表项数, .插入表项 (到文本 (相加 (取表项数 (), 1)), , , , ))
+            表项数.置标题 (0, 取指定内容 (分割群 [几次], 相加 (“title=”, #引号), #引号))
+            表项数.置标题 (1, 取指定内容 (分割群 [几次], 相加 (“rev=”, #引号, “#”), #引号))
+        .如果真结束
+        
+    .计次循环尾 ()
+.如果真结束
+
+
+
+.子程序 取指定内容, 文本型, , 取出想要的内容
+.参数 完整内容, 文本型, , 
+.参数 左边文本, 文本型, , 
+.参数 右边文本, 文本型, , 
+
+.局部变量 临时位置, 整数型, , , 
+.局部变量 总长度, 整数型, , , 
+.局部变量 临时文本, 文本型, , , 
+
+赋值 (总长度, 取文本长度 (完整内容))
+赋值 (临时位置, 相加 (寻找文本 (完整内容, 左边文本, , 假), 取文本长度 (左边文本)))
+赋值 (临时文本, 取文本中间 (完整内容, 临时位置, 总长度))
+赋值 (总长度, 取文本长度 (临时文本))
+赋值 (临时位置, 相减 (寻找文本 (临时文本, 右边文本, , 假), 1))
+赋值 (临时文本, 取文本中间 (临时文本, 1, 临时位置))
+返回 (临时文本)
+
+.子程序 _超级列表框1_左键单击表项, 空白型, , 
+.局部变量 局部_表项索引, 整数型, , , 
+
+赋值 (局部_表项索引, .)
+.如果真 (等于 (局部_表项索引, -1))
+    返回 ()
+.如果真结束
+获取群信息 ()
+
+
+
+.子程序 获取群信息, 空白型, , 
+.局部变量 文本, 文本型, , , 
+
+赋值 (文本, UTF8转ANSI (未知支持库函数_7 (相加 (“http://qun.qq.com/air/”, .取标题 (., 1), “/group/home/?w=n&_=0.08175433034549106”))))
+输出调试文本 (文本)
+.如果真 (不等于 (寻找文本 (文本, .取标题 (., 1), , 假), -1))
+    赋值 (.标题, 相加 (“群信息：”, .取标题 (., 0), “[”, .取标题 (., 1), “]”))
+    赋值 (群主, 取指定内容 (文本, “detail/u/”, “群类型：”))
+    赋值 (群主, 取指定内容 (群主, “>”, “</a>”))
+    赋值 (.标题, 群主)
+    赋值 (类型, 取指定内容 (文本, “群类型：”, “</div>”))
+    .如果 (不等于 (寻找文本 (类型, “普通群”, , 假), -1))
+        赋值 (.标题, “普通群”)
+    .否则
+        赋值 (类型, 取指定内容 (类型, 相加 (“fcred”, #引号, “>”), “</span>”))
+        赋值 (.标题, 类型)
+    .如果结束
+    赋值 (成员, 取指定内容 (文本, “群成员：”, “  <!--<a href”))
+    赋值 (.标题, 成员)
+    赋值 (创建, 取指定内容 (文本, “创建于：”, “           </div>”))
+    赋值 (.标题, 创建)
+    赋值 (等级, 取指定内容 (文本, “群等级”, “人气、贡献、参与值都达到”))
+    赋值 (等级, 取指定内容 (等级, 相加 (“class=”, #引号), 相加 (#引号, “ title”)))
+    赋值 (.标题, 等级)
+    赋值 (人气, 取指定内容 (文本, “人气值”, “贡献值”))
+    赋值 (人气, 取指定内容 (人气, “<span>”, “</span>”))
+    赋值 (.标题, 人气)
+    赋值 (贡献, 取指定内容 (文本, “贡献值”, “参与值”))
+    赋值 (贡献, 取指定内容 (贡献, “<span>”, “</span>”))
+    赋值 (.标题, 贡献)
+    赋值 (参与, 取指定内容 (文本, “<th>参与值</th>”, “cl details”))
+    赋值 (参与, 取指定内容 (参与, “<span>”, “</span>”))
+    赋值 (.标题, 参与)
+    
+.如果真结束
+
+.如果真 (等于 (是否已创建 (窗口3), 真))
+    窗口3.投票后 ()
+.如果真结束
+
+
+
+.子程序 _超级列表框1_右键单击表项, 空白型, , 
+.局部变量 局部_表项索引, 整数型, , , 
+
+赋值 (局部_表项索引, .)
+.如果真 (等于 (局部_表项索引, -1))
+    返回 ()
+.如果真结束
+弹出菜单 ()
+
+.子程序 _投票_被选择, 空白型, , 
+载入 (窗口2, , 真)
+
+.子程序 开始投票, 空白型, , 
+.如果真 (等于 (是否已创建 (窗口2), 真))
+    窗口2.销毁 ()
+.如果真结束
+未知支持库函数_0 (&投票线程, , )
+
+.子程序 投票线程, 空白型, , 
+.局部变量 文本, 文本型, , , 
+.局部变量 取得ID, 文本型, , , 
+.局部变量 计次, 整数型, , , 
+
+
+.计次循环首 (投票次数, 计次)
+    赋值 (.可视, 真)
+    赋值 (.标题, 相加 (“当前正在执行投票！正在进行第：”, 到文本 (计次), “次！”))
+    赋值 (文本, 彗星HTTP读文本 (相加 (“http://qun.qq.com/?w=a&c=vote&a=add&g=”, .取标题 (., 1)), “POST”, , , “t=1111&d=&ty=0&maxo=2&ol=2222%2C3333&vcode=&refer=1”))
+    输出调试文本 (文本)
+    赋值 (取得ID, 取指定内容 (文本, 相加 (“:0,”, #引号, “id”, #引号, “:”), “}”))
+    
+    赋值 (文本, 彗星HTTP读文本 (相加 (“http://qun.qq.com/?w=a&c=vote&a=vote&g=”, .取标题 (., 1)), “POST”, , , 相加 (“id=”, 取得ID, “&ct=0&comc=&oid=0&olc=2222&flag=0”)))
+    输出调试文本 (文本)
+    
+    
+.计次循环尾 ()
+打开对比窗口 ()
+赋值 (.可视, 假)
+赋值 (.标题, “”)
+
+延时 (1000)
+
+.子程序 打开对比窗口, 空白型, , 
+载入 (窗口3, , 真)
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 UTF8转ANSI, 文本型, , 方圆软件工作室－林炳崇（进在眼前）出品
+.参数 UTF8, 字节集, , 待转换UTF-8编码字节集
+
+
+
+.子程序 UNICODE转ANSI, 文本型, , 方圆软件工作室－林炳崇（近在眼前）出品
+.参数 Unicode数据, 字节集, , Unicode码字节集数据
+
+
+
+.子程序 ANSI转UNICODE, 字节集, , 方圆软件工作室－林炳崇（近在眼前）出品
+.参数 文本, 文本型, , Ansi码文本，只针对中文或双字节全角字符
+
+
+
+.子程序 UTF8转UNICODE, 字节集, , 方圆软件工作室－林炳崇（近在眼前）出品
+.参数 UTF8, 字节集, , 待转换UTF-8编码字节集
+
+
+
+.子程序 UNICODE转UTF8, 字节集, , 方圆软件工作室－林炳崇（近在眼前）出品
+.参数 UNICODE, 字节集, , 待转换UNICODE编码字节集
+
+
+
+.子程序 ANSI转UTF8, 字节集, , 方圆软件工作室－林炳崇（进在眼前）出品
+.参数 文本, 文本型, , 要转换为UTF8编码的文本
+
+
+
+.子程序 BASE64编码, 文本型, , 方圆软件工作室－林炳崇（近在眼前）出品
+.参数 待编码数据, 字节集, , 
+
+
+
+.子程序 BASE64解码, 字节集, , 方圆软件工作室－林炳崇（近在眼前）出品
+.参数 待解码数据, 文本型, , 
+
+
+
+.子程序 文本加密, 文本型, , 方圆软件工作室－林炳崇（近在眼前）出品
+.参数 文本, 文本型, , 待加密文本（本加密方法为动态随机加密，所以每次加密后的文本都不同）
+.参数 密匙, 文本型, 可空, 长度为62任意不重复单字节可见字符，默认为：ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz
+
+
+
+.子程序 文本解密, 文本型, , 方圆软件工作室－林炳崇（近在眼前）出品
+.参数 文本, 文本型, , 待解密文本
+.参数 密匙, 文本型, 可空, 必须跟加密时相同的密匙文本
+
+
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 彗星URL编码, 文本型, , 返回已编码的URL
+.参数 Bin_URL, 文本型, , 
+
+
+
+.子程序 彗星URL编码_UTF8, 文本型, , 返回已编码的URL
+.参数 Bin_URL, 文本型, , 
+
+
+
+.子程序 彗星URL解码, 文本型, , 返回已解码的URL
+.参数 Bin_URL, 文本型, , 
+
+
+
+.子程序 彗星URL解码_UTF8, 文本型, , 返回已解码的URL
+.参数 Bin_URL, 文本型, , 
+
+
+
+.子程序 彗星HTTP读文件, 字节集, , 有可能线程阻塞,请在外部加超时判断
+.参数 完整网址, 文本型, , 
+.参数 访问方式, 文本型, 可空, "GET" or "POST",为空默认"GET"
+.参数 代理地址, 文本型, 可空, 
+.参数 附加协议头, 文本型, 可空, 
+.参数 提交信息, 文本型, 可空, "POST"专用
+.参数 网页头, 文本型, 参考 可空, 返回网页头部信息
+
+
+
+.子程序 彗星HTTP读文本, 文本型, , 有可能线程阻塞,请在外部加超时判断
+.参数 完整网址, 文本型, , 
+.参数 访问方式, 文本型, 可空, "GET" or "POST",为空默认"GET"
+.参数 代理地址, 文本型, 可空, 
+.参数 附加协议头, 文本型, 可空, 
+.参数 提交信息, 文本型, 可空, "POST"专用
+.参数 网页头, 文本型, 参考 可空, 返回网页头部信息
+
+
+
+.子程序 彗星打开指定网址, 空白型, , 调用默认浏览器打开指定网址
+.参数 要打开的网址, 文本型, , 
+
+
+
+.窗口程序集 窗口程序集2, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.如果真 (等于 (.内容, “”))
+    信息框 (“验证码不能为空！”, 0, )
+    返回 ()
+.如果真结束
+
+赋值 (验证码, .内容)
+_启动窗口.登录 ()
+
+.子程序 _图片框1_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+刷新验证码 ()
+
+.子程序 _窗口1_创建完毕, 空白型, , 
+刷新验证码 ()
+
+.子程序 刷新验证码, 空白型, , 
+赋值 (.图片, 彗星HTTP读文件 (相加 (“http://captcha.qq.com/getimage?aid=3000801&r=0.26337844765068863&uin=”, _启动窗口..内容, “&vc_type=”, 验证码ID)))
+
+.窗口程序集 窗口程序集3, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.如果真 (不等于 (.内容, “”))
+    赋值 (投票次数, 到整数 (.内容))
+    _启动窗口.开始投票 ()
+.如果真结束
+
+
+.窗口程序集 窗口程序集4, , , 
+
+.子程序 _窗口3_创建完毕, 空白型, , 
+赋值 (.标题, 相加 (“投票前：”, _启动窗口.取标题 (., _启动窗口.., 0), “[”, _启动窗口.取标题 (., _启动窗口.., 1), “]”))
+赋值 (.标题, 群主)
+赋值 (.标题, 成员)
+赋值 (.标题, 类型)
+赋值 (.标题, 创建)
+赋值 (.标题, 等级)
+赋值 (.标题, 人气)
+赋值 (.标题, 贡献)
+赋值 (.标题, 参与)
+_启动窗口.获取群信息 ()
+
+.子程序 投票后, 空白型, , 
+赋值 (.标题, 相加 (“投票后：”, _启动窗口.取标题 (., _启动窗口.., 0), “[”, _启动窗口.取标题 (., _启动窗口.., 1), “]”))
+赋值 (.标题, 群主)
+赋值 (.标题, 成员)
+赋值 (.标题, 类型)
+赋值 (.标题, 创建)
+赋值 (.标题, 等级)
+赋值 (.标题, 人气)
+赋值 (.标题, 贡献)
+赋值 (.标题, 参与)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

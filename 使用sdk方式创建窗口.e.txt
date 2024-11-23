@@ -1,0 +1,218 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 CS_HREDRAW, "2", , 
+.常量 CS_VREDRAW, "1", , 
+.常量 NULL, "0", , 
+.常量 COLOR_WINDOW, "5", , 
+.常量 IDI_APPLICATION, "32512", , 
+.常量 IDC_ARROW, "32512", , 
+.常量 WS_OVERLAPPEDWINDOW, "13565952", , 
+.常量 CW_USEDEFAULT, "2147483648", , 
+.常量 WM_DESTROY, "2", , 
+.常量 SW_SHOWDEFAULT, "10", , 
+.常量 SW_SHOWNORMAL, "1", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 WNDCLASSEX, , wndclassex结构
+    .成员 cbSize, 整数型, , , 本结构字节数
+    .成员 style, 整数型, , , 风格
+    .成员 lpfnWndProc, 子程序指针, , , 窗口回调函数指针
+    .成员 cbClsExtra, 整数型, , , 类额外字节数
+    .成员 cbWndExtra, 整数型, , , 窗口额外字节数
+    .成员 hInstance, 整数型, , , 实例句柄
+    .成员 hIcon, 整数型, , , 图标句柄
+    .成员 hCursor, 整数型, , , 光标句柄
+    .成员 hbrBackground, 整数型, , , 背景刷句柄
+    .成员 lpszMenuName, 文本型, , , 菜单名指针
+    .成员 lpszClassName, 文本型, , , 类名指针
+    .成员 hIconSm, 整数型, , , 窗口类小图标
+
+数据类型 POINT, , 
+    .成员 X, 整数型, , , 
+    .成员 Y, 整数型, , , 
+
+数据类型 MSG, , 
+    .成员 hwnd, 整数型, , , 
+    .成员 message, 整数型, , , 
+    .成员 wParam, 整数型, , , 
+    .成员 lParam, 整数型, , , 
+    .成员 time, 整数型, , , 
+    .成员 pt, POINT, , , 
+
+
+.DLL命令 GetModuleHandle, 整数型, "kernel32.dll", "GetModuleHandleA", , 获得模块句柄
+    .参数 lpModuleName, 文本型, , 
+
+.DLL命令 GetCommandLine, 文本型, "kernel32.dll", "GetCommandLineA", , 获得命令行
+
+.DLL命令 LoadIcon, 整数型, "", "LoadIconA", , 从指定的模块或应用程序实例中载入一个图标指针。
+    .参数 hInstance, 整数型, , 指定包含了图标的可执行程序
+    .参数 lpcstr, 整数型, , 作为一个字串，指定欲载入的指针资源。作为一个长整数值，指定欲载入的资源ID；或者设置一个常数，代表某幅固有系统指针。如装载的是一个固有系统指针，注意hInstance参数应设为零。在api32.txt文件中以前缀IDC_ 作为标志;
+
+.DLL命令 LoadCursor, 整数型, "", "LoadCursorA", , 从指定的模块或应用程序实例中载入一个光标指针
+    .参数 hInstance, 整数型, , 
+    .参数 lpCursorName, 整数型, , 
+
+.DLL命令 RegisterClassEx, 短整数型, "", "RegisterClassExA", , 
+    .参数 pwcx, WNDCLASSEX, , 
+
+.DLL命令 CreateWindowEx, 整数型, "", "CreateWindowExA", , 
+    .参数 dwExStyle, 整数型, , 
+    .参数 lpClassName, 文本型, , 
+    .参数 lpWindowName, 文本型, , 
+    .参数 dwStyle, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+    .参数 hWndParent, 整数型, , 
+    .参数 hMenu, 整数型, , 
+    .参数 hInstance, 整数型, , 
+    .参数 lpParam, 整数型, , 
+
+.DLL命令 ShowWindow, 空白型, "", "ShowWindow", , 
+    .参数 hWnd, 整数型, , 
+    .参数 nCmdShow, 整数型, , 
+
+.DLL命令 UpdateWindow, 整数型, "", "UpdateWindow", , 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 GetMessage, 整数型, "", "GetMessageA", , 
+    .参数 lpMsg, MSG, , 
+    .参数 HWND, 整数型, , 
+    .参数 wMsgFilterMin, 整数型, , 
+    .参数 wMsgFilterMax, 整数型, , 
+
+.DLL命令 TranslateMessage, 整数型, "", "TranslateMessage", , 
+    .参数 lpMsg, MSG, , 
+
+.DLL命令 DispatchMessage, 整数型, "", "DispatchMessageA", , 
+    .参数 lpmsg, MSG, , 
+
+.DLL命令 PostQuitMessage, 整数型, "", "PostQuitMessage", , 
+    .参数 nExitCode, 整数型, , 
+
+.DLL命令 DefWindowProc, 整数型, "", "DefWindowProcA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 uMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 ExitProcess, 整数型, "", "ExitProcess", , 
+    .参数 退出代码, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.程序集变量 NULL, 文本型, , , 
+.子程序 _启动子程序, 整数型, , 本子程序在程序启动后最先执行
+.局部变量 模块句柄, 整数型, , , 模块句柄，即实例句柄
+.局部变量 命令行文本, 文本型, , , 命令行的文本
+
+ ' 使用sdk方式在桌面显示一个窗口的步骤：
+ ' 1得到您应用程序的句柄(必需)；
+ ' 2得到命令行参数(如果您想从命令行得到参数，可选)；
+ ' 3注册窗口类(必需，除非您使用 Windows 预定义的窗口类，如 MessageBox 或 dialog box；
+ ' 4产生窗口(必需)；
+ ' 5在桌面显示窗口(必需，除非您不想立即显示它)；
+ ' 6刷新窗口客户区；
+ ' 7进入获取窗口消息的循环；
+ ' 8如果有消息到达，由负责该窗口的窗口回调函数处理；
+ ' 9 如果用户关闭窗口，进行退出处理。
+
+赋值 (模块句柄, GetModuleHandle (NULL)) ' 获得模块句柄
+赋值 (命令行文本, GetCommandLine ()) ' 获得命令行参数
+信息框 (命令行文本, #确认钮, “命令行文本为:”)
+
+返回 (窗口主程序 (模块句柄, 0, 命令行文本, #SW_SHOWDEFAULT)) ' 调窗口主程序直至返回
+
+
+.子程序 窗口主程序, 整数型, , 
+.参数 实例句柄, 整数型, , 
+.参数 前导实例句柄, 整数型, , '
+.参数 命令行, 文本型, , 
+.参数 显示方式, 整数型, , 
+
+.局部变量 msg, MSG, , , 
+.局部变量 类名, 文本型, , , 
+.局部变量 程序名, 文本型, , , 
+.局部变量 窗口句柄, 整数型, , , 
+.局部变量 窗口扩展类, 未知类型0x41010179, , , 
+.局部变量 NULL, 文本型, , , 
+.局部变量 匿名局部变量_376, 空白型, , , 
+
+赋值 (类名, “SimpleWinClass”)
+赋值 (程序名, “我们的第一个窗口”)
+赋值 (.cbSize, 48)
+赋值 (.style, 位或 (#CS_HREDRAW, #CS_VREDRAW))
+赋值 (.lpfnWndProc, &窗口回调函数)
+赋值 (.cbClsExtra, 0)
+赋值 (.cbWndExtra, 0)
+赋值 (.hInstance, 实例句柄)
+赋值 (.hbrBackground, 相加 (#COLOR_WINDOW, 1))
+赋值 (.lpszMenuName, NULL)
+赋值 (.lpszClassName, 类名)
+赋值 (.hIcon, LoadIcon (0, #IDI_APPLICATION))
+赋值 (.hIconSm, LoadIcon (0, #IDI_APPLICATION))
+赋值 (.hCursor, LoadCursor (0, #IDC_ARROW))
+.如果真 (等于 (RegisterClassEx (), 0))
+    信息框 (“注册窗口类失败！”, #错误图标, )
+    返回 (1)
+.如果真结束
+
+赋值 (窗口句柄, CreateWindowEx (0, 类名, 程序名, #WS_OVERLAPPEDWINDOW, #CW_USEDEFAULT, #CW_USEDEFAULT, #CW_USEDEFAULT, #CW_USEDEFAULT, 0, 0, 实例句柄, 0))
+.如果真 (等于 (窗口句柄, 0))
+    信息框 (“创建窗口失败！”, #错误图标, )
+    返回 (1)
+    
+.如果真结束
+ShowWindow (窗口句柄, 显示方式)
+UpdateWindow (窗口句柄)
+
+.判断循环首 (不等于 (GetMessage (msg, #NULL, 0, 0), 0))
+    TranslateMessage (msg)
+    DispatchMessage (msg)
+.判断循环尾 ()
+信息框 (“退出消息循环。”, #信息图标, )
+返回 (msg.wParam)
+
+.子程序 窗口回调函数, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 uMsg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+
+.如果 (等于 (uMsg, #WM_DESTROY))
+    PostQuitMessage (0) ' 将 WM_QUIT 消息放入消息队列中，GetMessage收到WM_QUIT返回0，退出消息循环
+    返回 (0)
+.否则
+    返回 (DefWindowProc (hWnd, uMsg, wParam, lParam)) ' 其他的消息通通交给DefWindowProc函数处理。
+.如果结束
+
+
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

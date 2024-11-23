@@ -1,0 +1,446 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 549
+    高度 = 421
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 2 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 1 1 扩展界面支持库一
+
+
+
+
+数据类型 PROCESSENTRY32, , 
+    .成员 dwSize, 整数型, , , 296
+    .成员 cntUsage, 整数型, , , 
+    .成员 th32ProcessID, 整数型, , , 
+    .成员 th32DefaultHeapID, 整数型, , , 
+    .成员 th32ModuleID, 整数型, , , 
+    .成员 cntThreads, 整数型, , , 
+    .成员 th32ParentProcessID, 整数型, , , 
+    .成员 pcPriClassBase, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+    .成员 szExeFile, 字节型, , "260", 
+
+数据类型 HEAPLIST32, , 
+    .成员 dwSize, 整数型, , , 16
+    .成员 th32ProcessID, 整数型, , , 
+    .成员 th32HeapID, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+
+数据类型 HEAPENTRY32, , 
+    .成员 dwSize, 整数型, , , 36
+    .成员 hHandle, 整数型, , , 
+    .成员 dwAddress, 整数型, , , 
+    .成员 dwBlockSize, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+    .成员 dwLockCount, 整数型, , , 
+    .成员 dwResvd, 整数型, , , 
+    .成员 th32ProcessID, 整数型, , , 
+    .成员 th32HeapID, 整数型, , , 
+
+数据类型 MODULEENTRY32, , 
+    .成员 dwSize, 整数型, , , 548
+    .成员 th32ModuleID, 整数型, , , 
+    .成员 th32ProcessID, 整数型, , , 
+    .成员 GlblcntUsage, 整数型, , , 
+    .成员 ProccntUsage, 整数型, , , 
+    .成员 modBaseAddr, 整数型, , , 
+    .成员 modBaseSize, 整数型, , , 
+    .成员 hModule, 整数型, , , 
+    .成员 szModule, 字节型, , "256", 
+    .成员 szExePath, 字节型, , "260", 
+
+数据类型 THREADENTRY32, , 
+    .成员 dwSize, 整数型, , , 28
+    .成员 cntUsage, 整数型, , , 
+    .成员 th32ThreadID, 整数型, , , 
+    .成员 th32OwnerProcessID, 整数型, , , 
+    .成员 tpBasePri, 整数型, , , 
+    .成员 tpDeltaPri, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+
+数据类型 VS_FIXEDFILEINFO, , 
+    .成员 Signatur, 整数型, , , 
+    .成员 StrucVersion, 整数型, , , 
+    .成员 FileVersionMS, 整数型, , , 
+    .成员 FileVersionLS, 整数型, , , 
+    .成员 ProductVersionMS, 整数型, , , 
+    .成员 ProductVersionLS, 整数型, , , 
+    .成员 FileFlagsMask, 整数型, , , 
+    .成员 FileFlags, 整数型, , , 
+    .成员 FileOS, 整数型, , , 
+    .成员 FileType, 整数型, , , 
+    .成员 FileSubtype, 整数型, , , 
+    .成员 FileDateMS, 整数型, , , 
+    .成员 FileDateLS, 整数型, , , 
+
+
+.DLL命令 CreateToolhelp32Snapshot, 整数型, "", "CreateToolhelp32Snapshot", , 
+    .参数 dwFlags, 整数型, , 
+    .参数 th32ProcessID, 整数型, , 
+
+.DLL命令 Process32First, 整数型, "", "Process32First", , 
+    .参数 hSnapshot, 整数型, , 
+    .参数 lppe, PROCESSENTRY32, , 
+
+.DLL命令 CloseHandle, 空白型, "", "CloseHandle", , 
+    .参数 ProcessHandle, 整数型, , 
+
+.DLL命令 Process32Next, 整数型, "", "Process32Next", , 
+    .参数 hSnapshot, 整数型, , 
+    .参数 lppe, PROCESSENTRY32, , 
+
+.DLL命令 Thread32First, 整数型, "", "Thread32First", , 
+    .参数 hSnapshot, 整数型, , 
+    .参数 lpte, THREADENTRY32, , 
+
+.DLL命令 Thread32Next, 整数型, "", "Thread32Next", , 
+    .参数 hSnapshot, 整数型, , 
+    .参数 lpte, THREADENTRY32, , 
+
+.DLL命令 Module32Next, 整数型, "", "Module32Next", , 
+    .参数 hSnapshot, 整数型, , 
+    .参数 lpme, MODULEENTRY32, , 
+
+.DLL命令 Module32First, 整数型, "", "Module32First", , 
+    .参数 hSnapshot, 整数型, , 
+    .参数 lpme, MODULEENTRY32, , 
+
+.DLL命令 Heap32ListNext, 整数型, "", "Heap32ListNext", , 
+    .参数 hSnapshot, 整数型, , 
+    .参数 lphl, HEAPLIST32, , 
+
+.DLL命令 Heap32ListFirst, 整数型, "", "Heap32ListFirst", , 
+    .参数 hSnapshot, 整数型, , 
+    .参数 lphl, HEAPLIST32, , 
+
+.DLL命令 Heap32Next, 整数型, "", "Heap32Next", , 
+    .参数 lphe, HEAPENTRY32, , 
+
+.DLL命令 Heap32First, 整数型, "", "Heap32First", , 
+    .参数 lphe, HEAPENTRY32, , 
+    .参数 th32ProcessID, 整数型, , 
+    .参数 th32HeapID, 整数型, , 
+
+.DLL命令 GetFileVersionInfoSize, 整数型, "VERSION.DLL", "GetFileVersionInfoSizeA", , 
+    .参数 File, 文本型, , 
+    .参数 Num, 整数型, , 
+
+.DLL命令 GetFileVersionInfo, 整数型, "VERSION.DLL", "GetFileVersionInfoA", , 
+    .参数 File, 文本型, , 
+    .参数 Num, 整数型, , 
+    .参数 Size, 整数型, , 
+    .参数 VerInfo, 字节集, 传址, 
+
+.DLL命令 VerQueryValue, 整数型, "VERSION.DLL", "VerQueryValueA", , 
+    .参数 VerInfo, 字节集, 传址, 
+    .参数 String, 文本型, 传址, 
+    .参数 Buffer, 整数型, 传址, 
+    .参数 Len, 整数型, 传址, 
+
+.DLL命令 MoveMemory, 空白型, "", "RtlMoveMemory", , 
+    .参数 dest, 字节集, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 length, 整数型, , 
+
+.DLL命令 GetModuleFileName, 整数型, "", "GetModuleFileNameA", , 
+    .参数 hModule, 整数型, , 
+    .参数 lpFileName, 文本型, , 
+    .参数 nSize, 整数型, , 
+
+.DLL命令 OpenProcess, 整数型, "", "OpenProcess", , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 逻辑型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 TerminateProcess, 整数型, "", "TerminateProcess", , 
+    .参数 hProcess, 整数型, , 
+    .参数 uExitCode, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+New ()
+
+.子程序 New, 空白型, , 
+.局部变量 hSnapShot, 整数型, , , 
+.局部变量 End, 整数型, , , 
+.局部变量 buffer, PROCESSENTRY32, , , 
+.局部变量 进程名, 文本型, , "0", 
+.局部变量 进程ID, 整数型, , "0", 
+.局部变量 默认堆ID, 整数型, , "0", 
+.局部变量 模块ID, 整数型, , "0", 
+.局部变量 父进程ID, 整数型, , "0", 
+.局部变量 线程数, 整数型, , "0", 
+.局部变量 线程基本优先级, 整数型, , "0", 
+.局部变量 引用数, 整数型, , "0", 
+
+全部删除 ()
+赋值 (hSnapShot, CreateToolhelp32Snapshot (2, 0))
+赋值 (buffer.dwSize, 296)
+赋值 (End, Process32First (hSnapShot, buffer))
+.判断循环首 (不等于 (End, 0))
+    加入成员 (进程名, 到文本 (buffer.szExeFile))
+    加入成员 (进程ID, buffer.th32ProcessID)
+    加入成员 (默认堆ID, buffer.th32DefaultHeapID)
+    加入成员 (模块ID, buffer.th32ModuleID)
+    加入成员 (父进程ID, buffer.th32ParentProcessID)
+    加入成员 (线程数, buffer.cntThreads)
+    加入成员 (线程基本优先级, buffer.pcPriClassBase)
+    加入成员 (引用数, buffer.cntUsage)
+    赋值 (End, Process32Next (hSnapShot, buffer))
+.判断循环尾 ()
+CloseHandle (hSnapShot)
+赋值 (End, 取数组成员数 (进程名))
+赋值 (_启动窗口.标题, 相加 (“当前进程数：”, 到文本 (End)))
+.计次循环首 (End, hSnapShot)
+    -1.插入表项 (进程名 [hSnapShot], , , , 进程ID [hSnapShot])
+    相减 (hSnapShot, 1).置标题 (1, bw (取十六进制文本 (进程ID [hSnapShot])))
+    相减 (hSnapShot, 1).置标题 (2, 到文本 (线程基本优先级 [hSnapShot]))
+    相减 (hSnapShot, 1).置标题 (3, 到文本 (线程数 [hSnapShot]))
+    相减 (hSnapShot, 1).置标题 (4, 到文本 (引用数 [hSnapShot]))
+    相减 (hSnapShot, 1).置标题 (5, bw (取十六进制文本 (父进程ID [hSnapShot])))
+    相减 (hSnapShot, 1).置标题 (6, bw (取十六进制文本 (默认堆ID [hSnapShot])))
+    相减 (hSnapShot, 1).置标题 (7, bw (取十六进制文本 (模块ID [hSnapShot])))
+.计次循环尾 ()
+
+.子程序 bw, 文本型, , 
+.参数 a, 文本型, , 
+
+返回 (相加 (取重复文本 (相减 (8, 取文本长度 (a)), “0”), a))
+
+.子程序 模块信息, 空白型, , 
+.局部变量 hSnapShot, 整数型, , , 
+.局部变量 End, 整数型, , , 
+.局部变量 buffer, MODULEENTRY32, , , 
+.局部变量 模块路径, 文本型, , "0", 
+.局部变量 模块名, 文本型, , "0", 
+.局部变量 模块ID, 整数型, , "0", 
+.局部变量 模块句柄, 整数型, , "0", 
+.局部变量 全局引用数, 整数型, , "0", 
+.局部变量 引用数, 整数型, , "0", 
+.局部变量 模块基址, 整数型, , "0", 
+.局部变量 模块大小, 整数型, , "0", 
+
+全部删除 ()
+.如果真 (不等于 (., -1))
+    赋值 (hSnapShot, CreateToolhelp32Snapshot (8, .取表项数值 (.)))
+    赋值 (buffer.dwSize, 548)
+    赋值 (End, Module32First (hSnapShot, buffer))
+    .判断循环首 (不等于 (End, 0))
+        加入成员 (模块名, 到文本 (buffer.szModule))
+        加入成员 (模块路径, 到文本 (buffer.szExePath))
+        加入成员 (模块ID, buffer.th32ModuleID)
+        加入成员 (模块句柄, buffer.hModule)
+        加入成员 (全局引用数, buffer.GlblcntUsage)
+        加入成员 (引用数, buffer.ProccntUsage)
+        加入成员 (模块基址, buffer.modBaseAddr)
+        加入成员 (模块大小, buffer.modBaseSize)
+        赋值 (End, Module32Next (hSnapShot, buffer))
+    .判断循环尾 ()
+    CloseHandle (hSnapShot)
+    .计次循环首 (取数组成员数 (模块名), hSnapShot)
+        -1.插入表项 (模块名 [hSnapShot], , , , 模块句柄 [hSnapShot])
+        相减 (hSnapShot, 1).置标题 (1, 模块路径 [hSnapShot])
+        相减 (hSnapShot, 1).置标题 (2, bw (取十六进制文本 (模块ID [hSnapShot])))
+        相减 (hSnapShot, 1).置标题 (3, bw (取十六进制文本 (模块基址 [hSnapShot])))
+        相减 (hSnapShot, 1).置标题 (4, 相加 (到文本 (四舍五入 (相除 (模块大小 [hSnapShot], 1024), 2)), “ KB”))
+        相减 (hSnapShot, 1).置标题 (5, 到文本 (引用数 [hSnapShot]))
+        相减 (hSnapShot, 1).置标题 (6, 到文本 (全局引用数 [hSnapShot]))
+    .计次循环尾 ()
+.如果真结束
+
+
+.子程序 线程信息, 空白型, , 
+.局部变量 hSnapShot, 整数型, , , 
+.局部变量 End, 整数型, , , 
+.局部变量 buffer, THREADENTRY32, , , 
+.局部变量 线程ID, 整数型, , "0", 
+.局部变量 线程基本优先级, 整数型, , "0", 
+.局部变量 线程优先级, 整数型, , "0", 
+.局部变量 引用数, 整数型, , "0", 
+
+全部删除 ()
+.如果真 (不等于 (., -1))
+    赋值 (hSnapShot, CreateToolhelp32Snapshot (4, 0))
+    赋值 (buffer.dwSize, 28)
+    赋值 (End, Thread32First (hSnapShot, buffer))
+    .判断循环首 (不等于 (End, 0))
+        .如果真 (等于 (buffer.th32OwnerProcessID, .取表项数值 (.)))
+            加入成员 (线程ID, buffer.th32ThreadID)
+            加入成员 (线程基本优先级, buffer.tpBasePri)
+            加入成员 (线程优先级, buffer.tpDeltaPri)
+            加入成员 (引用数, buffer.cntUsage)
+        .如果真结束
+        赋值 (End, Thread32Next (hSnapShot, buffer))
+    .判断循环尾 ()
+    CloseHandle (hSnapShot)
+    .计次循环首 (取数组成员数 (线程ID), hSnapShot)
+        -1.插入表项 (bw (取十六进制文本 (线程ID [hSnapShot])), , , , 线程ID [hSnapShot])
+        相减 (hSnapShot, 1).置标题 (1, 到文本 (线程基本优先级 [hSnapShot]))
+        相减 (hSnapShot, 1).置标题 (2, 到文本 (线程优先级 [hSnapShot]))
+        相减 (hSnapShot, 1).置标题 (3, 到文本 (引用数 [hSnapShot]))
+    .计次循环尾 ()
+.如果真结束
+
+
+.子程序 堆信息, 空白型, , 
+.局部变量 hSnapShot, 整数型, , , 
+.局部变量 End, 整数型, , , 
+.局部变量 buffer1, HEAPLIST32, , , 
+.局部变量 buffer2, HEAPENTRY32, , , 
+.局部变量 堆ID, 整数型, , "0", 
+.局部变量 堆标志, 整数型, , "0", 
+.局部变量 堆位置, 整数型, , "0", 
+.局部变量 PID, 整数型, , , 
+.局部变量 块句柄, 整数型, , "0", 
+.局部变量 块基址, 整数型, , "0", 
+.局部变量 块尺寸, 整数型, , "0", 
+.局部变量 块标志, 整数型, , "0", 
+.局部变量 块锁定次数, 整数型, , "0", 
+.局部变量 size, 整数型, , , 
+.局部变量 high, 整数型, , , 
+
+清空 ()
+.如果真 (不等于 (., -1))
+    赋值 (PID, .取表项数值 (.))
+    赋值 (hSnapShot, CreateToolhelp32Snapshot (1, PID))
+    赋值 (buffer1.dwSize, 16)
+    赋值 (End, Heap32ListFirst (hSnapShot, buffer1))
+    .判断循环首 (不等于 (End, 0))
+        加入成员 (堆ID, buffer1.th32HeapID)
+        加入成员 (堆标志, buffer1.dwFlags)
+        赋值 (End, Heap32ListNext (hSnapShot, buffer1))
+    .判断循环尾 ()
+    CloseHandle (hSnapShot)
+    .计次循环首 (取数组成员数 (堆ID), hSnapShot)
+        赋值 (buffer2.dwSize, 36)
+        赋值 (End, Heap32First (buffer2, PID, 堆ID [hSnapShot]))
+        赋值 (size, 0)
+        .判断循环首 (不等于 (End, 0))
+            加入成员 (块句柄, buffer2.hHandle)
+            加入成员 (块基址, buffer2.dwAddress)
+            加入成员 (块尺寸, buffer2.dwBlockSize)
+            赋值 (size, 相加 (size, buffer2.dwBlockSize))
+            加入成员 (块标志, buffer2.dwFlags)
+            加入成员 (块锁定次数, buffer2.dwLockCount)
+            赋值 (End, Heap32Next (buffer2))
+        .判断循环尾 ()
+        .判断开始 (等于 (堆标志 [hSnapShot], 1))
+            赋值 (high, -1.加入项目 (相加 (“堆ID：”, bw (取十六进制文本 (堆ID [hSnapShot])), “ - 尺寸：”, 到文本 (size), “字节 - 标志：默认”), , , 堆标志 [hSnapShot]))
+        .判断 (等于 (堆标志 [hSnapShot], 2))
+            赋值 (high, -1.加入项目 (相加 (“堆ID：”, bw (取十六进制文本 (堆ID [hSnapShot])), “ - 尺寸：”, 到文本 (size), “字节 - 标志：共享”), , , 堆ID [hSnapShot]))
+        .默认
+            赋值 (high, -1.加入项目 (相加 (“堆ID：”, bw (取十六进制文本 (堆ID [hSnapShot])), “ - 尺寸：”, 到文本 (size), “字节”), , , 堆ID [hSnapShot]))
+        .判断结束
+        .计次循环首 (取数组成员数 (块句柄), End)
+            .判断开始 (等于 (块标志 [End], 1))
+                high.加入项目 (相加 (“块句柄：”, bw (取十六进制文本 (块句柄 [End])), “ - 块基址：”, bw (取十六进制文本 (块基址 [End])), “ - 块尺寸：”, 到文本 (块尺寸 [End]), “字节 - 标志：固定 - 块锁定次数：”, 到文本 (块锁定次数 [End])), , , )
+            .判断 (等于 (块标志 [End], 2))
+                high.加入项目 (相加 (“块句柄：”, bw (取十六进制文本 (块句柄 [End])), “ - 块基址：”, bw (取十六进制文本 (块基址 [End])), “ - 块尺寸：”, 到文本 (块尺寸 [End]), “字节 - 标志：空闲 - 块锁定次数：”, 到文本 (块锁定次数 [End])), , , )
+            .判断 (等于 (块标志 [End], 4))
+                high.加入项目 (相加 (“块句柄：”, bw (取十六进制文本 (块句柄 [End])), “ - 块基址：”, bw (取十六进制文本 (块基址 [End])), “ - 块尺寸：”, 到文本 (块尺寸 [End]), “字节 - 标志：可移动 - 块锁定次数：”, 到文本 (块锁定次数 [End])), , , )
+            .默认
+                high.加入项目 (相加 (“块句柄：”, bw (取十六进制文本 (块句柄 [End])), “ - 块基址：”, bw (取十六进制文本 (块基址 [End])), “ - 块尺寸：”, 到文本 (块尺寸 [End]), “字节 - 块锁定次数：”, 到文本 (块锁定次数 [End])), , , )
+            .判断结束
+            
+        .计次循环尾 ()
+    .计次循环尾 ()
+.如果真结束
+
+
+.子程序 版本信息, 空白型, , 
+.局部变量 Info, 字节集, , , 
+.局部变量 Size, 整数型, , , 
+.局部变量 VerPointer, 整数型, , , 
+.局部变量 Len, 整数型, , , 
+.局部变量 Ver, 字节集, , , 
+.局部变量 language, 文本型, , , 
+.局部变量 文件名, 文本型, , , 
+
+赋值 (.内容, “”)
+赋值 (文件名, .取标题 (., 0))
+赋值 (Size, GetFileVersionInfoSize (文件名, 0))
+.如果真 (等于 (Size, 0))
+    返回 ()
+.如果真结束
+赋值 (Info, 取空白字节集 (Size))
+GetFileVersionInfo (文件名, 0, Size, Info)
+.如果真 (等于 (VerQueryValue (Info, “\VarFileInfo\Translation”, VerPointer, Len), 0))
+    返回 ()
+.如果真结束
+赋值 (Ver, 取空白字节集 (Len))
+MoveMemory (Ver, VerPointer, Len)
+赋值 (language, bw (取十六进制文本 (取字节集数据 (Ver, 3))))
+赋值 (language, 相加 (取文本右边 (language, 4), 取文本左边 (language, 4)))
+.计次循环首 (12, Size)
+    .如果真 (不等于 (VerQueryValue (Info, 相加 (“\StringFileInfo\”, language, “\”, 多项选择 (Size, “Comments”, “CompanyName”, “FileDescription”, “FileVersion”, “InternalName”, “LegalCopyright”, “LegalTrademarks”, “OriginalFilename”, “PrivateBuild”, “ProductName”, “ProductVersion”, “SpecialBuild”)), VerPointer, Len), 0))
+        赋值 (Ver, 取空白字节集 (Len))
+        MoveMemory (Ver, VerPointer, Len)
+        赋值 (文件名, 取字节集数据 (Ver, 10))
+        .如果真 (不等于 (文件名, “”))
+            相加 (多项选择 (Size, “备注”, “公司名”, “描述”, “文件版本”, “内部名称”, “版权”, “合法商标”, “原文件名”, “个人用编译版说明”, “产品名称”, “产品版本”, “特殊编译版说明”), “：”, 文件名, #换行符).加入文本 ()
+        .如果真结束
+        
+    .如果真结束
+    
+.计次循环尾 ()
+
+
+.子程序 _选择夹1_子夹被改变, 空白型, , 
+_超级列表框1_左键单击表项 ()
+
+.子程序 _刷新_被选择, 空白型, , 
+New ()
+
+.子程序 _超级列表框1_左键单击表项, 空白型, , 
+.判断开始 (等于 (.现行子夹, 0))
+    模块信息 ()
+.判断 (等于 (.现行子夹, 1))
+    线程信息 ()
+.判断 (等于 (.现行子夹, 2))
+    堆信息 ()
+.默认
+    版本信息 ()
+.判断结束
+
+
+.子程序 _终止_被选择, 空白型, , 
+.局部变量 handle, 整数型, , , 
+
+.如果真 (等于 (信息框 (“要强行终止吗？”, 33, ), 0))
+    赋值 (handle, OpenProcess (1, 假, .取表项数值 (.)))
+    TerminateProcess (handle, 0)
+    CloseHandle (handle)
+    New ()
+    _超级列表框1_左键单击表项 ()
+.如果真结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

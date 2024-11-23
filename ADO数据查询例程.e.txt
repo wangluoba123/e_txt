@@ -1,0 +1,1314 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 640
+    高度 = 480
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 1
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “”
+    帮助文件名 = “”
+
+
+
+.常量 常量_软件名称, "“ADO数据查询例程”", , 
+.常量 常量_版本号, "“ Ver1.0”", , 
+.常量 常量_版权信息, "“ 作者:esir E-mail:cjdn@163.com ”", , 
+.常量 常量_数据库名称, "“\Data.MDB”", , 
+.常量 常量_数据库密码, "“”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' eGrid 0B4337DA651B4b619ACF61334A7E8B47 2 0 高级表格支持库
+
+
+
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 集_程序目录, 文本型, , , 
+.程序集变量 集_数据库文件, 文本型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+赋值 (集_程序目录, 取运行目录 ())
+.如果真 (不等于 (取文本右边 (集_程序目录, 1), “\”))
+    赋值 (集_程序目录, 相加 (集_程序目录, “\”))
+.如果真结束
+赋值 (集_数据库文件, 相加 (集_程序目录, “Data.MDB”))
+高级表格_填充行号及交替色显示 ()
+
+
+.子程序 _时钟1_周期事件, 空白型, , 
+.局部变量 私_sql查询语句, 文本型, , , 
+
+赋值 (.时钟周期, 0)
+赋值 (_启动窗口., “正在读取村组数据，请稍候...”)
+赋值 (私_sql查询语句, “Select * From  [村组编码表]”)
+读取Access数据到列表框 (集_数据库文件, , 私_sql查询语句, )
+处理事件 ()
+赋值 (_启动窗口., “正在读取农户数据，请稍候...”)
+赋值 (., 0)
+赋值 (., 0)
+赋值 (私_sql查询语句, “select * from [农户信息表]”)
+读取Access数据到高级表格 (集_数据库文件, , 私_sql查询语句, )
+赋值 (., 470)
+赋值 (., 350)
+赋值 (_启动窗口., 相加 (#常量_软件名称, #常量_版本号, #常量_版权信息))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+
+.子程序 _列表框1_列表项被选择, 空白型, , 
+根据村组查询数据子程序 ()
+
+
+.子程序 根据村组查询数据子程序, 空白型, , 
+.局部变量 私_临时文本数组, 文本型, , "0", 
+.局部变量 私_村组编码, 文本型, , , 
+.局部变量 私_村组名称, 文本型, , , 
+.局部变量 私_sql查询语句, 文本型, , , 
+
+赋值 (私_临时文本数组, 分割文本 (.取项目文本 (.现行选中项), “|”, ))
+赋值 (私_村组编码, 私_临时文本数组 [1])
+赋值 (私_村组名称, 私_临时文本数组 [取数组下标 (私_临时文本数组, )])
+输出调试文本 (私_村组编码)
+输出调试文本 (私_村组名称)
+
+赋值 (_启动窗口., “数据读取中，请稍候...”)
+.如果 (等于 (.现行选中项, 0))
+    赋值 (私_sql查询语句, “select * from [农户信息表]”)
+.否则
+    赋值 (私_sql查询语句, 相加 (“select * from [农户信息表] where 所属村组 like '”, 私_村组编码, “%'”))
+.如果结束
+读取Access数据到高级表格 (集_数据库文件, , 私_sql查询语句, )
+赋值 (_启动窗口., 相加 (#常量_软件名称, #常量_版本号, #常量_版权信息))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+
+.子程序 __启动窗口_尺寸被改变, 空白型, , 
+赋值 (.高度, 相减 (_启动窗口., 120))
+赋值 (., 相减 (_启动窗口., 120))
+赋值 (., 相减 (_启动窗口., 200))
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 私__SQL语句, 文本型, , , 
+
+赋值 (_启动窗口., “正在读取村组数据，请稍候...”)
+赋值 (私__SQL语句, “Select * From  [村组编码表]”)
+读取Access数据到列表框 (集_数据库文件, , 私__SQL语句, )
+赋值 (_启动窗口., 相加 (#常量_软件名称, #常量_版本号, #常量_版权信息))
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+.局部变量 私_连接字符串, 文本型, , , 
+.局部变量 私__SQL语句, 文本型, , , 
+
+赋值 (_启动窗口., “正在读取村组数据，请稍候...”)
+赋值 (私_连接字符串, 相加 (“DBQ=”, 集_数据库文件, “;DRIVER={Microsoft Access Driver (*.mdb)};Pwd=''”))
+赋值 (私__SQL语句, “Select * From [村组编码表]”)
+读取Access数据到列表框 (集_数据库文件, , 私__SQL语句, )
+赋值 (_启动窗口., 相加 (#常量_软件名称, #常量_版本号, #常量_版权信息))
+
+
+.子程序 _按钮3_被单击, 空白型, , 
+.局部变量 私__SQL语句, 文本型, , , 
+
+赋值 (_启动窗口., “正在读取农户数据，请稍候...”)
+赋值 (私__SQL语句, “Select * From  [农户信息表]”)
+读取Access数据到高级表格 (集_数据库文件, , 私__SQL语句, )
+赋值 (_启动窗口., 相加 (#常量_软件名称, #常量_版本号, #常量_版权信息))
+
+
+.子程序 _按钮4_被单击, 空白型, , 
+.局部变量 私_连接字符串, 文本型, , , 
+.局部变量 私__SQL语句, 文本型, , , 
+
+赋值 (_启动窗口., “正在读取农户数据，请稍候...”)
+赋值 (私_连接字符串, 相加 (“DBQ=”, 集_数据库文件, “;DRIVER={Microsoft Access Driver (*.mdb)};Pwd=''”))
+赋值 (私__SQL语句, “Select * From [农户信息表]”)
+读取外部数据到高级表格 (私_连接字符串, 私__SQL语句, )
+赋值 (_启动窗口., 相加 (#常量_软件名称, #常量_版本号, #常量_版权信息))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 _按钮5_被单击, 空白型, , 
+.局部变量 私_连接字符串, 文本型, , , 
+.局部变量 私__SQL语句, 文本型, , , 
+.局部变量 我的excel文件, 文本型, , , 
+
+赋值 (_启动窗口., “正在读取数据，请稍候...”)
+赋值 (我的excel文件, 相加 (取运行目录 (), “\扬州公务员面试总成绩.xls”))
+赋值 (私_连接字符串, 相加 (“ODBC;DBQ=”, 我的excel文件, “;Driver={Driver do Microsoft Excel(*.xls)};”))
+赋值 (私__SQL语句, “[sheet1$]”) ' 这是“select * from [sheet1$]”的又一种写法
+读取外部数据到高级表格 (私_连接字符串, 私__SQL语句, )
+赋值 (_启动窗口., 相加 (#常量_软件名称, #常量_版本号, #常量_版权信息))
+
+
+.类模块 数据库连接对象, , , 
+
+.程序集变量 ado_conn对象, 对象, , , 
+.程序集变量 ado_errors对象, 对象, , , 
+.程序集变量 ado_error对象, 对象, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+ado_conn对象.创建 (“ADODB.Connection”, )
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+ado_conn对象.方法 (“close”, )
+ado_conn对象.清除 ()
+
+
+
+.子程序 conn创建, 逻辑型, 公开, 
+返回 (ado_conn对象.创建 (“ADODB.Connection”, ))
+
+
+.子程序 err取错误集, 空白型, 公开, 
+赋值 (ado_errors对象, ado_conn对象.读对象型属性 (“Errors”, ))
+
+
+.子程序 err清空错误集, 空白型, 公开, 
+ado_errors对象.方法 (“Clear”, )
+
+
+.子程序 err取错误数, 整数型, 公开, 
+返回 (ado_errors对象.读数值属性 (“count”, ))
+
+
+.子程序 err取错误对象, 对象, 公开, 
+.参数 索引, 整数型, , 计算集合中对象的名称或顺序号
+
+.局部变量 变体, 变体型, , , 
+
+变体.赋值 (索引, )
+返回 (ado_errors对象.读对象型属性 (“Item ”, 变体))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 err取错误文本, 文本型, 公开, 使用 Description 属性可获得错误的简要说明。显示该属性可针对您无法或不想处理的错误向用户提出警告。该字符串可源于 ADO 或提供者。
+.参数 错误序号, 整数型, , 
+
+.局部变量 变体, 变体型, , , 
+
+变体.赋值 (错误序号, )
+赋值 (ado_error对象, ado_errors对象.读对象型属性 (“Item”, 变体))
+返回 (ado_error对象.读文本属性 (“Description”, ))
+
+
+.子程序 err取错误号, 整数型, 公开, 指示用于唯一标识 Error 对象的数字。
+.参数 错误序号, 整数型, , 
+
+.局部变量 变体, 变体型, , , 
+
+变体.赋值 (错误序号, )
+赋值 (ado_error对象, ado_error对象.读对象型属性 (“Item”, 变体))
+返回 (ado_error对象.读数值属性 (“Number”, ))
+
+
+.子程序 err取错误源, 文本型, 公开, 使用 Error 对象的 Source 属性来确定产生错误的原始对象或应用程序的名称。该名称可以是对象的类名或编程 ID。对于 ADODB 的错误，属性值将是 ADODB.ObjectName，ObjectName 是触发错误的对象名称。Error 对象的 Source 属性是只读的。
+.参数 错误序号, 整数型, , 
+
+.局部变量 变体, 变体型, , , 
+
+变体.赋值 (错误序号, )
+赋值 (ado_error对象, ado_errors对象.读对象型属性 (“Item”, 变体))
+返回 (ado_error对象.读文本属性 (“Source”, ))
+
+
+.子程序 err取错误源状态, 文本型, 公开, 使用 SQLState 属性读取由提供者在处理 SQL 语句过程中出现错误时返回的 5 个字符的错误代码
+.参数 错误序号, 整数型, , 
+
+.局部变量 变体, 变体型, , , 
+
+变体.赋值 (错误序号, )
+赋值 (ado_error对象, ado_errors对象.读对象型属性 (“Item”, 变体))
+返回 (ado_error对象.读文本属性 (“SQLState”, ))
+
+
+.子程序 err取错误源错误代码, 整数型, 公开, 指示给定 Error 对象的、特定提供者的错误代码。
+.参数 错误序号, 整数型, , 
+
+.局部变量 变体, 变体型, , , 
+
+变体.赋值 (错误序号, )
+赋值 (ado_error对象, ado_errors对象.读对象型属性 (“Item”, 变体))
+返回 (ado_error对象.读数值属性 (“NativeError”, ))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 conn取事务隔离级别, 整数型, 公开, IsolationLevel
+返回 (ado_conn对象.读数值属性 (“IsolationLevel”, ))
+
+
+.子程序 conn置事务隔离级别, 空白型, 公开, IsolationLevel
+.参数 欲写入属性值, 整数型, , 类型为“整数型”，参数值为以下值之一： -1、adXactUnspecified； 16、adXactChaos； 256、adXactReadUncommitted； 256、adXactBrowse； 4096、adXactCursorStability； 4096、adXactReadCommitted； 65536、adXactRepeatableRead； 1048576、adXactSerializable； 1048576、adXactIsolated。
+
+ado_conn对象.写属性 (“IsolationLevel”, 欲写入属性值)
+
+
+.子程序 conn启动事务, 空白型, 公开, BeginTrans
+ado_conn对象.数值方法 (“BeginTrans”, )
+
+
+.子程序 conn提交事务, 空白型, 公开, CommitTrans
+ado_conn对象.方法 (“CommitTrans”, )
+
+
+.子程序 conn回滚事务, 空白型, 公开, RollbackTrans
+ado_conn对象.方法 (“RollbackTrans”, )
+
+
+.子程序 conn取性质, 对象, 公开, Properties
+返回 (ado_conn对象.读对象型属性 (“Properties”, ))
+
+
+.子程序 conn取状态, 整数型, 公开, State
+返回 (ado_conn对象.读数值属性 (“State”, ))
+
+
+.子程序 conn取OLE提供者, 文本型, 公开, Provider
+返回 (ado_conn对象.读文本属性 (“Provider”, ))
+
+
+.子程序 conn置OLE提供者, 空白型, 公开, Provider
+.参数 欲写入属性值, 文本型, , 
+
+ado_conn对象.写属性 (“Provider”, 欲写入属性值)
+
+
+.子程序 conn取权限, 整数型, 公开, Mode,返回：0未知权限;1只读权限;2只写权限;3读写权限;4独占读权限8独占写权限;12独占权限；16共享权限
+返回 (ado_conn对象.读数值属性 (“Mode”, ))
+' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 conn置权限, 空白型, 公开, Mode,返回：0未知权限;1只读权限;2只写权限;3读写权限;4独占读权限8独占写权限;12独占权限；16共享权限
+.参数 欲写入属性值, 整数型, , 类型为“整数型”，参数值为以下值之一： 0、adModeUnknown； 1、adModeRead； 2、adModeWrite； 3、adModeReadWrite； 4、adModeShareDenyRead； 8、adModeShareDenyWrite； 12、adModeShareExclusive； 16、adModeShareDenyNone； 4194304、adModeRecursive。
+
+ado_conn对象.写属性 (“Mode”, 欲写入属性值)
+
+
+.子程序 conn取游标位置, 整数型, 公开, CursorLocation,1.NONE ; 2.SERVER ;3. CLIENT 
+返回 (ado_conn对象.读数值属性 (“CursorLocation”, ))
+
+
+.子程序 conn置游标位置, 空白型, 公开, CursorLocation,1.NONE ; 2.SERVER ;3. CLIENT 
+.参数 欲写入属性值, 整数型, , 类型为“整数型”，参数值为以下值之一： 1、adUseNone； 2、adUseServer； 3、adUseClient； 3、adUseClientBatch。
+
+ado_conn对象.写属性 (“CursorLocation”, 欲写入属性值)
+
+
+.子程序 conn取属性, 整数型, 公开, Attributes
+返回 (ado_conn对象.读数值属性 (“Attributes”, ))
+
+
+.子程序 conn置属性, 空白型, 公开, Attributes
+.参数 欲写入属性值, 整数型, , 
+
+ado_conn对象.写属性 (“Attributes”, 欲写入属性值)
+
+
+.子程序 conn取默认数据库, 文本型, 公开, DefaultDatabase
+返回 (ado_conn对象.读文本属性 (“DefaultDatabase”, ))
+
+
+.子程序 conn置默认数据库, 空白型, 公开, DefaultDatabase
+.参数 欲写入属性值, 文本型, , 
+
+ado_conn对象.写属性 (“DefaultDatabase”, 欲写入属性值)
+
+
+
+.子程序 conn取命令超时, 整数型, 公开, CommandTimeout
+返回 (ado_conn对象.读数值属性 (“CommandTimeout”, ))
+
+
+.子程序 conn置命令超时, 空白型, 公开, CommandTimeout
+.参数 欲写入属性值, 整数型, , 
+
+ado_conn对象.写属性 (“CommandTimeout”, 欲写入属性值)
+
+
+.子程序 conn取连接超时, 整数型, 公开, ConnectionTimeout
+返回 (ado_conn对象.读数值属性 (“ConnectionTimeout”, ))
+
+
+.子程序 conn置连接超时, 空白型, 公开, ConnectionTimeout
+.参数 欲写入属性值, 整数型, , 
+
+ado_conn对象.写属性 (“ConnectionTimeout”, 欲写入属性值)
+
+
+.子程序 conn取ADO版本, 文本型, 公开, Version
+返回 (ado_conn对象.读文本属性 (“Version”, ))
+
+
+.子程序 conn获取, 逻辑型, 公开, 获取ADODB.Connection
+返回 (ado_conn对象.获取 (“ADODB.Connection”))
+
+
+
+.子程序 conn取连接字符串, 文本型, 公开, ConnectionString
+返回 (ado_conn对象.读文本属性 (“ConnectionString”, ))
+
+
+
+.子程序 conn置连接字符串, 空白型, 公开, ConnectionString
+.参数 欲写入属性值, 文本型, , 类型为“文本型”。
+
+ado_conn对象.写属性 (“ConnectionString”, 欲写入属性值)
+
+
+
+.子程序 conn取数据供应源, 文本型, 公开, Provider
+返回 (ado_conn对象.读文本属性 (“Provider”, ))
+
+
+.子程序 conn置数据供应源, 空白型, 公开, Provider
+.参数 欲写入属性值, 文本型, , 类型为“文本型”。
+
+ado_conn对象.写属性 (“Provider”, 欲写入属性值)
+
+
+
+
+.子程序 conn打开, 逻辑型, 公开, Open
+ado_conn对象.方法 (“Open”, )
+.如果真 (大于 (ado_conn对象.读数值属性 (“State”, ), 0))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+
+
+.子程序 conn打开EX, 整数型, 公开, 
+.参数 连接字符, 文本型, , 
+.参数 权限, 整数型, , 0未知权限;1只读权限;2只写权限;3读写权限;4独占读权限8独占写权限;12独占权限；16共享权限
+.参数 游标位置, 整数型, , 1.NONE ; 2.SERVER ;3. CLIENT  
+
+ado_conn对象.写属性 (“Mode”, 权限)
+ado_conn对象.写属性 (“CursorLocation”, 游标位置)
+ado_conn对象.写属性 (“ConnectionString”, 连接字符)
+ado_conn对象.方法 (“Open”, )
+返回 (ado_conn对象.读数值属性 (“State”, ))
+
+
+.子程序 conn连接, 逻辑型, 公开, Open
+.参数 ConnectionString, 文本型, , 类型为“文本型”。
+.参数 UserID, 文本型, 可空, 类型为“文本型”。
+.参数 Password, 文本型, 可空, 类型为“文本型”。
+.参数 Options, 整数型, 可空, 类型为“整数型”，参数默认值为“-1”。
+
+ado_conn对象.方法 (“Open”, ConnectionString, UserID, Password, Options)
+.如果真 (大于 (ado_conn对象.读数值属性 (“State”, ), 0))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+
+.子程序 conn连接ACCESS, 逻辑型, 公开, Open
+.参数 私_数据库文件, 文本型, , 要连接的MDB数据库文件
+.参数 私_密码, 文本型, , 
+
+ ' ADO数据对象用来连接数据库的方式有两种，分别是ODBC和OLE DB方式(通过DSN方法链接也是采用这两种方式)
+
+ ' conn.方法 (“open”, “Data Source=” ＋ 私_数据库文件 ＋ “;Password=” ＋ 私_密码 ＋ “;Provider=Microsoft.Jet.OLEDB.4.0;”)  ' OLE DB方式，OLE DB Provider for Microsoft Jet方法
+
+ ' conn.方法 (“open”, “DBQ=” ＋ 私_数据库文件 ＋ “;Pwd=” ＋ 私_密码 ＋ “;Provider=MSDASQL;Driver={Microsoft Access Driver (*.mdb)};”)  ' OLE DB方式，OLE DB Provider for ODBC Databases方法
+
+ado_conn对象.方法 (“open”, 相加 (“DBQ=”, 私_数据库文件, “;Pwd=”, 私_密码, “;DRIVER={Microsoft Access Driver (*.mdb)};”)) ' ODBC方式，ODBC Driver for Access方法
+.如果真 (大于 (ado_conn对象.读数值属性 (“State”, ), 0))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+
+
+.子程序 conn关闭, 空白型, 公开, Close
+ado_conn对象.方法 (“Close”, )
+
+
+.子程序 conn取消, 空白型, 公开, Cancel
+ado_conn对象.方法 (“Cancel”, )
+
+
+.子程序 conn执行, 对象, 公开, Execute
+.参数 CommandText, 文本型, , 执行命令。包含要执行的 SQL 语句、表名、存储过程或特定提供者的文本。
+.参数 RecordsAffected, 整数型, 可空, 返回记录数。可选，长整型变量，提供者向其返回操作所影响的记录数目
+.参数 Options, 整数型, 可空, 选项。参数默认值为“-1”，值 UNSPECIFIED -1 ;UNKNOWN 8 ;TEXT 1 ;TABLE 2 ;STOREDPROC 4 ;FILE 256 ;TABLEDIRECT 512 ;
+
+.局部变量 execute对象, 空白型, , , 
+
+.如果真 (是否为空 (Options))
+    赋值 (Options, -1)
+.如果真结束
+返回 (ado_conn对象.对象型方法 (“Execute”, CommandText, RecordsAffected, Options))
+
+
+
+.子程序 conn取连接对象本身, 对象, 公开, 返回ADODB.Connection对象
+返回 (ado_conn对象)
+
+
+.子程序 conn取模式信息, 对象, 公开, OpenSchema
+.参数 Schema, 整数型, , 类型为“整数型”，参数值为以下值之一： -1、adSchemaProviderSpecific； 0、adSchemaAsserts； 1、adSchemaCatalogs； 2、adSchemaCharacterSets； 3、adSchemaCollations； 4、adSchemaColumns； 5、adSchemaCheckConstraints； 6、adSchemaConstraintColumnUsage； 7、adSchemaConstraintTableUsage； 8、adSchemaKeyColumnUsage； 9、adSchemaReferentialContraints； 9、adSchemaReferentialConstraints； 10、adSchemaTableConstraints； 11、adSchemaColumnsDomainUsage； 12、adSchemaIndexes； 13、adSchemaColumnPrivileges； 14、adSchemaTablePrivileges； 15、adSchemaUsagePrivileges； 16、adSchemaProcedures； 17、adSchemaSchemata； 18、adSchemaSQLLanguages； 19、adSchemaStatistics； 20、adSchemaTables； 21、adSchemaTranslations； 22、adSchemaProviderTypes； 23、adSchemaViews； 24、adSchemaViewColumnUsage； 25、adSchemaViewTableUsage； 26、adSchemaProcedureParameters； 27、adSchemaForeignKeys； 28、adSchemaPrimaryKeys； 29、adSchemaProcedureColumns； 30、adSchemaDBInfoKeywords； 31、adSchemaDBInfoLiterals； 32、adSchemaCubes； 33、adSchemaDimensions； 34、adSchemaHierarchies； 35、adSchemaLevels； 36、adSchemaMeasures； 37、adSchemaProperties； 38、adSchemaMembers； 39、adSchemaTrustees； 40、adSchemaFunctions； 41、adSchemaActions； 42、adSchemaCommands； 43、adSchemaSets。
+.参数 Restrictions, 变体型, 可空, 
+.参数 SchemaID, 变体型, 可空, 
+
+返回 (ado_conn对象.对象型方法 (“OpenSchema”, Schema, Restrictions, SchemaID))
+ ' 返回包含纲要信息的 Recordset对象。Recordset将以只读、静态游标打开
+
+
+.类模块 记录集对象, , , 
+
+.程序集变量 ado_rs对象, 对象, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+ado_rs对象.创建 (“ADODB.RecordSet”, )
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+ado_rs对象.方法 (“close”, )
+ado_rs对象.清除 ()
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+
+.子程序 rs取性质, 对象, 公开, Properties
+返回 (ado_rs对象.读对象型属性 (“Properties”, ))
+
+
+.子程序 rs取状态, 整数型, 公开, Status
+返回 (ado_rs对象.读数值属性 (“Status”, ))
+
+
+.子程序 rs置游标类型, 空白型, 公开, 
+.参数 欲写入属性值, 整数型, , 类型为“整数型”，参数值为以下值之一： -1、adOpenUnspecified； 0、adOpenForwardOnly； 1、adOpenKeyset； 2、adOpenDynamic； 3、adOpenStatic。
+
+ado_rs对象.写属性 (“CursorType”, 欲写入属性值)
+
+
+.子程序 rs读游标类型, 变体型, 公开, 
+返回 (ado_rs对象.读属性 (“CursorType”, ))
+
+
+.子程序 rs置活动连接, 逻辑型, 公开, 
+.参数 连接, 对象, , 
+
+.局部变量 变连接, 变体型, , , 
+
+变连接.赋值 (连接, )
+返回 (ado_rs对象.写属性 (“ActiveConnection”, 变连接))
+' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 rs置数据源, 逻辑型, 公开, 
+.参数 数据源, 文本型, , 
+
+.局部变量 变体数据源, 变体型, , , 
+
+变体数据源.赋值 (数据源, )
+返回 (ado_rs对象.写属性 (“Source”, 变体数据源))
+
+
+
+.子程序 rs打开, 逻辑型, 公开, 
+ado_rs对象.方法 (“Open”, )
+.如果真 (不等于 (ado_rs对象.读数值属性 (“State”, ), 0))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+
+
+.子程序 rs参数查询, 逻辑型, 公开, 
+.参数 SQL, 文本型, , 
+.参数 conn, 变体型, 可空, 
+
+.局部变量 变体型参数1, 变体型, , , 变体型
+.局部变量 变体型参数2, 变体型, , , 变体型
+
+变体型参数1.赋值 (SQL, )
+变体型参数2.赋值 (conn, )
+ado_rs对象.方法 (“open”, 变体型参数1, 变体型参数2, 1, 3)
+.如果真 (不等于 (ado_rs对象.读数值属性 (“State”, ), 0))
+    返回 (真)
+.如果真结束
+返回 (假)
+ ' 方法调用格式： 〈无返回值〉 对象．方法 （"Open"，Source，ActiveConnection，CursorType，LockType，Options）
+ ' 参数<1>的名称为“Source”，类型为“变体型”。
+ ' 参数<2>的名称为“ActiveConnection”，类型为“变体型”。
+ ' 参数<3>的名称为“CursorType”，类型为“整数型”，参数默认值为“-1”，参数值为以下值之一： -1、adOpenUnspecified； 0、adOpenForwardOnly； 1、adOpenKeyset； 2、adOpenDynamic； 3、adOpenStatic。
+ ' 参数<4>的名称为“LockType”，类型为“整数型”，参数默认值为“-1”，参数值为以下值之一： -1、adLockUnspecified； 1、adLockReadOnly； 2、adLockPessimistic； 3、adLockOptimistic； 4、adLockBatchOptimistic。
+ ' 参数<5>的名称为“Options”，类型为“整数型”，参数默认值为“-1”。
+ ' rs.Open(sqlStr,conn,1,A)
+ ' 注：A=1表示读取数据；A=3表示新增、修改或删除数据。
+
+
+.子程序 rs字段数, 整数型, 公开, 取字段数
+ ' rs.Fields.Count：RecordSet对象字段数。
+返回 (ado_rs对象.读对象型属性 (“Fields”, ).读数值属性 (“Count”, ))
+
+
+
+.子程序 rs记录数, 整数型, 公开, 取记录数
+ ' rs.Record.Count：数据记录总数
+返回 (ado_rs对象.读对象型属性 (“Record”, ).读数值属性 (“Count”, ))
+
+
+
+.子程序 rs取字段名, 文本型, 公开, 字段的序号从0开始
+.参数 位置, 整数型, , 
+
+.局部变量 Fields_Item对象, 对象, , , 
+
+赋值 (Fields_Item对象, ado_rs对象.读对象型属性 (“Fields”, ).读对象型属性 (“Item”, 位置))
+返回 (Fields_Item对象.读文本属性 (“Name”, ))
+ ' rs(i).Name：第i个字段的名称，i为0至rs.Fields.Count-1
+
+
+.子程序 rs取得字段类型, 整数型, 公开, 字段的序号从0开始
+.参数 位置, 整数型, , 
+
+.局部变量 Fields_Item对象, 对象, , , 
+
+赋值 (Fields_Item对象, ado_rs对象.读对象型属性 (“Fields”, ).读对象型属性 (“Item”, 位置))
+返回 (Fields_Item对象.读数值属性 (“Type”, ))
+ ' 属性读取格式： 〈整数型〉 对象．读数值属性 （"Type"）
+ ' 属性写入格式： 〈整数型〉 对象．写属性 （"Type"，欲写入属性值）
+ ' 参数<1>的名称为“欲写入属性值”，类型为“整数型”，参数值为以下值之一： 0、adEmpty； 16、adTinyInt； 2、adSmallInt； 3、adInteger； 20、adBigInt； 17、adUnsignedTinyInt； 18、adUnsignedSmallInt； 19、adUnsignedInt； 21、adUnsignedBigInt； 4、adSingle； 5、adDouble； 6、adCurrency； 14、adDecimal； 131、adNumeric； 11、adBoolean； 10、adError； 132、adUserDefined； 12、adVariant； 9、adIDispatch； 13、adIUnknown； 72、adGUID； 7、adDate； 133、adDBDate； 134、adDBTime； 135、adDBTimeStamp； 8、adBSTR； 129、adChar； 200、adVarChar； 201、adLongVarChar； 130、adWChar； 202、adVarWChar； 203、adLongVarWChar； 128、adBinary； 204、adVarBinary； 205、adLongVarBinary； 136、adChapter； 64、adFileTime； 138、adPropVariant； 139、adVarNumeric； 8192、adArray。
+
+
+
+
+.子程序 rs取字段定义长度, 整数型, 公开, 字段的序号从0开始
+.参数 位置, 整数型, , 
+
+.局部变量 Fields_Item对象, 对象, , , 
+
+赋值 (Fields_Item对象, ado_rs对象.读对象型属性 (“Fields”, ).读对象型属性 (“Item”, 位置))
+返回 (Fields_Item对象.读数值属性 (“DefinedSize”, ))
+
+
+
+
+.子程序 rs取字段精度, 整数型, 公开, 字段的序号从0开始
+.参数 位置, 整数型, , 
+
+.局部变量 Fields_Item对象, 对象, , , 
+
+赋值 (Fields_Item对象, ado_rs对象.读对象型属性 (“Fields”, ).读对象型属性 (“Item”, 位置))
+返回 (Fields_Item对象.读数值属性 (“Precision”, ))
+
+
+
+.子程序 rs取记录实际大小, 整数型, 公开, 取记录的长度，字段的序号从0开始
+.参数 位置, 整数型, , 
+
+.局部变量 Fields_Item对象, 对象, , , 
+
+赋值 (Fields_Item对象, ado_rs对象.读对象型属性 (“Fields”, ).读对象型属性 (“Item”, 位置))
+返回 (Fields_Item对象.读数值属性 (“ActualSize”, ))
+
+
+.子程序 rs移动, 空白型, 公开, Move
+.参数 NumRecords, 整数型, , 
+
+ado_rs对象.方法 (“Move”, NumRecords)
+
+.子程序 rs移动到上一条, 空白型, 公开, MovePrevious
+ado_rs对象.方法 (“MovePrevious”, )
+
+.子程序 rs移动到下一条, 空白型, 公开, MoveNext
+ado_rs对象.方法 (“MoveNext”, )
+
+.子程序 rs移动到首记录, 空白型, 公开, MoveFirst
+ado_rs对象.方法 (“MoveFirst”, )
+
+.子程序 rs移动到尾记录, 空白型, 公开, MoveLast
+ado_rs对象.方法 (“MoveLast”, )
+
+.子程序 rs更新, 空白型, 公开, UpDate
+ado_rs对象.方法 (“UpDate”, )
+
+.子程序 rs关闭, 空白型, 公开, 关闭查询时打开的表
+ado_rs对象.方法 (“Close”, )
+
+.子程序 rsGetRows, 变体型, 公开, 
+.参数 Rows, 整数型, 可空, 
+.参数 Start, 整数型, 可空, 
+.参数 Fields, 整数型, 可空, 
+
+.如果真 (是否为空 (Rows))
+    赋值 (Rows, -1)
+.如果真结束
+返回 (ado_rs对象.通用方法 (“GetRows”, Rows, Start, Fields))
+
+
+.子程序 rs添加, 空白型, 公开, AddNew
+ado_rs对象.方法 (“AddNew”, )
+
+.子程序 rs尾记录后, 逻辑型, 公开, eof
+返回 (ado_rs对象.读逻辑属性 (“eof”, ))
+
+.子程序 rs取记录数, 整数型, 公开, RecordCount
+返回 (ado_rs对象.读数值属性 (“RecordCount”, ))
+
+
+.子程序 rs取记录集对象本身, 对象, 公开, 返回对象
+返回 (ado_rs对象)
+
+
+.子程序 rs读文本, 文本型, 公开, 根据字段名取得记录内容
+.参数 字段名, 文本型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+
+赋值 (Fields, ado_rs对象.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+返回 (Item.读文本属性 (“Value”, ))
+
+
+.子程序 rs读, 文本型, 公开, 
+.参数 字段, 整数型, , 
+
+.局部变量 变体, 变体型, , , 
+.局部变量 对象, 对象, , , 
+
+变体.赋值 (字段, )
+赋值 (对象, ado_rs对象.读对象型属性 (“Fields”, ))
+赋值 (对象, 对象.读对象型属性 (“Item”, 变体))
+赋值 (变体, 对象.读属性 (“Value”, ))
+返回 (变体.取文本 ())
+
+
+.子程序 rs读整数, 整数型, 公开, 
+.参数 字段名, 文本型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+
+赋值 (Fields, ado_rs对象.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+返回 (Item.读数值属性 (“Value”, ))
+
+.子程序 rs读小数, 双精度小数型, 公开, 
+.参数 字段名, 文本型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+
+赋值 (Fields, ado_rs对象.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+返回 (Item.读数值属性 (“Value”, ))
+
+.子程序 rs读逻辑值, 逻辑型, 公开, 
+.参数 字段名, 文本型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+
+赋值 (Fields, ado_rs对象.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+返回 (Item.读逻辑属性 (“Value”, ))
+
+.子程序 rs读日期时间, 日期时间型, 公开, 
+.参数 字段名, 文本型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+
+赋值 (Fields, ado_rs对象.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+返回 (Item.读日期属性 (“Value”, ))
+
+.子程序 rs读字节集, 字节集, 公开, 
+.参数 字段名, 文本型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, ado_rs对象.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+赋值 (Vairant, Item.读属性 (“Value”, ))
+返回 (Vairant.取字节集 ())
+
+.子程序 rs读变体型, 变体型, 公开, 
+.参数 字段名, 文本型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, ado_rs对象.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+赋值 (Vairant, Item.读属性 (“Value”, ))
+返回 (Vairant)
+
+.子程序 rs写文本, 空白型, 公开, 
+.参数 字段名, 文本型, , 
+.参数 写入文本, 文本型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, ado_rs对象.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+Vairant.赋值 (写入文本, )
+Item.写属性 (“Value”, Vairant)
+
+.子程序 rs写整数, 空白型, 公开, 
+.参数 字段名, 文本型, , 
+.参数 写入值, 整数型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, ado_rs对象.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+Vairant.赋值 (写入值, )
+Item.写属性 (“Value”, Vairant)
+
+.子程序 rs写小数, 空白型, 公开, 
+.参数 字段名, 文本型, , 
+.参数 写入值, 双精度小数型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, ado_rs对象.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+Vairant.赋值 (写入值, )
+Item.写属性 (“Value”, Vairant)
+
+.子程序 rs写日期时间, 空白型, 公开, 
+.参数 字段名, 文本型, , 
+.参数 写入值, 日期时间型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, ado_rs对象.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+Vairant.赋值 (写入值, )
+Item.写属性 (“Value”, Vairant)
+
+.子程序 rs写字节集, 空白型, 公开, 
+.参数 字段名, 文本型, , 
+.参数 写入值, 字节集, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, ado_rs对象.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+Vairant.赋值 (写入值, )
+Item.写属性 (“Value”, Vairant)
+
+.子程序 rs写变体型, 空白型, 公开, 
+.参数 字段名, 文本型, , 
+.参数 写入值, 变体型, , 
+
+.局部变量 Fields, 对象, , , 
+.局部变量 Item, 对象, , , 
+.局部变量 Vairant, 变体型, , , 
+
+赋值 (Fields, ado_rs对象.对象型方法 (“Fields”, ))
+赋值 (Item, Fields.读对象型属性 (“Item”, 字段名))
+Item.写属性 (“Value”, 写入值)
+
+.类模块 命令对象, , , 
+
+.程序集变量 ado_cmd对象, 对象, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+ado_cmd对象.创建 (“ADODB.Command”, )
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+ado_cmd对象.方法 (“close”, )
+ado_cmd对象.清除 ()
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+
+.子程序 cmd获取, 逻辑型, 公开, 
+返回 (ado_cmd对象.获取 (“ADODB.Command”))
+
+
+.子程序 cmd读名字, 变体型, 公开, 
+返回 (ado_cmd对象.读属性 (“Name”, ))
+
+
+.子程序 cmd置名字, 空白型, 公开, 
+.参数 欲写入属性值, 文本型, , 类型为“文本型”
+
+ado_cmd对象.写属性 (“Name”, 欲写入属性值)
+
+
+.子程序 cmd置Prepared, 空白型, 公开, 
+.参数 欲写入属性值, 文本型, , 
+
+ado_cmd对象.写属性 (“Prepared”, 欲写入属性值)
+
+
+
+.子程序 cmd置活动连接, 逻辑型, 公开, ActiveConnection
+.参数 欲写入属性值, 对象, , 参数“欲写入属性值”，类型为“对象(_Connection)”。
+
+.如果真 (ado_cmd对象.写属性 (“ActiveConnection”, 欲写入属性值))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+
+.子程序 cmd置命令文本, 逻辑型, 公开, CommandText
+.参数 欲写入属性值, 文本型, , 
+
+.如果真 (ado_cmd对象.写属性 (“CommandText”, 欲写入属性值))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+
+
+.子程序 cmd置命令类型, 逻辑型, 公开, CommandType
+.参数 欲写入属性值, 整数型, , 类型为“整数型”，参数值为以下值之一： -1、adCmdUnspecified； 8、adCmdUnknown； 1、adCmdText； 2、adCmdTable； 4、adCmdStoredProc； 256、adCmdFile； 512、adCmdTableDirect。
+
+.如果真 (ado_cmd对象.写属性 (“CommandType”, 欲写入属性值))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+
+.子程序 cmd建立参数并追加参数, 空白型, 公开, CreateParameter并且Append
+.参数 Name, 文本型, , 类型为“文本型”。
+.参数 Type, 整数型, , 类型为“整数型”，参数值为以下值之一：0、adEmpty； 16、adTinyInt； 2、adSmallInt； 3、adInteger； 20、adBigInt； 17、adUnsignedTinyInt； 18、adUnsignedSmallInt； 19、adUnsignedInt； 21、adUnsignedBigInt； 4、adSingle； 5、adDouble； 6、adCurrency； 14、adDecimal； 131、adNumeric； 11、adBoolean； 10、adError； 132、adUserDefined； 12、adVariant； 9、adIDispatch； 13、adIUnknown； 72、adGUID； 7、adDate； 133、adDBDate； 134、adDBTime； 135、adDBTimeStamp； 8、adBSTR； 129、adChar； 200、adVarChar； 201、adLongVarChar； 130、adWChar； 202、adVarWChar； 203、adLongVarWChar； 128、adBinary； 204、adVarBinary； 205、adLongVarBinary； 136、adChapter； 64、adFileTime； 138、adPropVariant； 139、adVarNumeric； 8192、adArray。
+.参数 Direction, 整数型, , 类型为“整数型”，参数值为以下值之一：0、adParamUnknown； 1、adParamInput； 2、adParamOutput； 3、adParamInputOutput； 4、adParamReturnValue。
+.参数 Size, 整数型, , 类型为“整数型”，参数默认值为“0”。
+.参数 Value, 文本型, , 类型为“变体型”，可以被省略。
+
+.局部变量 参数值, 变体型, , , 
+.局部变量 CreateParameter对象, 对象, , , 
+
+参数值.赋值 (Value, )
+赋值 (CreateParameter对象, ado_cmd对象.对象型方法 (“CreateParameter”, Name, Type, Direction, Size, 参数值))
+ado_cmd对象.读对象型属性 (“Parameters”, ).方法 (“Append”, CreateParameter对象)
+
+ ' 对象．对象型方法 （"CreateParameter"，Name，Type，Direction，Size，Value）
+ ' 参数<1>的名称为“Name”，类型为“文本型”。
+ ' 参数<2>的名称为“Type”，类型为“整数型”，参数默认值为“0”，参数值为以下值之一： 0、adEmpty； 16、adTinyInt； 2、adSmallInt； 3、adInteger； 20、adBigInt； 17、adUnsignedTinyInt； 18、adUnsignedSmallInt； 19、adUnsignedInt； 21、adUnsignedBigInt； 4、adSingle； 5、adDouble； 6、adCurrency； 14、adDecimal； 131、adNumeric； 11、adBoolean； 10、adError； 132、adUserDefined； 12、adVariant； 9、adIDispatch； 13、adIUnknown； 72、adGUID； 7、adDate； 133、adDBDate； 134、adDBTime； 135、adDBTimeStamp； 8、adBSTR； 129、adChar； 200、adVarChar； 201、adLongVarChar； 130、adWChar； 202、adVarWChar； 203、adLongVarWChar； 128、adBinary； 204、adVarBinary； 205、adLongVarBinary； 136、adChapter； 64、adFileTime； 138、adPropVariant； 139、adVarNumeric； 8192、adArray。
+ ' 参数<3>的名称为“Direction”，类型为“整数型”，参数默认值为“1”，参数值为以下值之一： 0、adParamUnknown； 1、adParamInput； 2、adParamOutput； 3、adParamInputOutput； 4、adParamReturnValue。
+ ' 参数<4>的名称为“Size”，类型为“整数型”，参数默认值为“0”。
+ ' 参数<5>的名称为“Value”，类型为“变体型”，可以被省略。
+
+
+.子程序 cmd对象追加, 空白型, 公开, Parameters.Append
+.参数 object, 对象, , 
+
+.局部变量 Parameters对象, 对象, , , 
+
+赋值 (Parameters对象, ado_cmd对象.读对象型属性 (“Parameters”, ))
+Parameters对象.方法 (“Append”, object)
+' 本源码来自易语言资源网(www.5A5X.com)
+
+
+.子程序 cmd对象Execute, 对象, 公开, 
+.参数 RecordsAffected, 文本型, 可空, 类型为“变体型”，需要提供变量以取回方法所返回的数据。
+.参数 Options, 整数型, 可空, 类型为“整数型”，参数默认值为“-1”。
+
+.局部变量 Execute对象, 对象, , , 
+.局部变量 Parameters, 对象, , , 
+
+.如果真 (是否为空 (RecordsAffected))
+    赋值 (RecordsAffected, “”)
+.如果真结束
+
+赋值 (Parameters, ado_cmd对象.读对象型属性 (“Parameters”, ))
+
+.如果真 (是否为空 (Options))
+    赋值 (Options, -1)
+.如果真结束
+
+赋值 (Execute对象, ado_cmd对象.对象型方法 (“Execute”, RecordsAffected, Parameters, Options))
+返回 (Execute对象)
+
+ ' http://www.w3school.com.cn/ado/met_comm_execute.asp
+ ' ra 可选。返回受查询影响的记录的数目。对于以行返回的查询，请使用 Recordset 对象的 RecordCount 属性来计算该对象中的记录数量。
+ ' parameters 可选。用 SQL 语句传递的参数值。用于更改、更新或向 Parameters 集合插入新的参数值。
+ ' options 可选。指示提供者应如何计算 Command 对象的 CommandText 属性。可以是一个或者多个 CommandTypeEnum 或 ExecuteOptionEnum 值。默认是 adCmdUnspecified。
+
+
+
+.子程序 cmd取命令对象本身, 对象, 公开, 返回对象
+返回 (ado_cmd对象)
+
+.类模块 参数对象, , , 
+
+.程序集变量 ado_par对象, 对象, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+ado_par对象.创建 (“ADODB.Parameter”, )
+
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+ado_par对象.方法 (“close”, )
+ado_par对象.清除 ()
+
+
+.子程序 par取大小, 整数型, 公开, 
+返回 (ado_par对象.读数值属性 (“Size”, ))
+
+
+.子程序 par设大小, 空白型, 公开, 
+.参数 欲写入属性值, 整数型, , 
+
+ado_par对象.写属性 (“Size”, 欲写入属性值)
+
+
+.子程序 par取类型, 整数型, 公开, 
+返回 (ado_par对象.读数值属性 (“Type”, ))
+
+
+.子程序 par设类型, 空白型, 公开, 
+.参数 欲写入属性值, 整数型, , 参数值为以下值之一： 0、adEmpty； 16、adTinyInt； 2、adSmallInt； 3、adInteger； 20、adBigInt； 17、adUnsignedTinyInt； 18、adUnsignedSmallInt； 19、adUnsignedInt； 21、adUnsignedBigInt； 4、adSingle； 5、adDouble； 6、adCurrency； 14、adDecimal； 131、adNumeric； 11、adBoolean； 10、adError； 132、adUserDefined； 12、adVariant； 9、adIDispatch； 13、adIUnknown； 72、adGUID； 7、adDate； 133、adDBDate； 134、adDBTime； 135、adDBTimeStamp； 8、adBSTR； 129、adChar； 200、adVarChar； 201、adLongVarChar； 130、adWChar； 202、adVarWChar； 203、adLongVarWChar； 128、adBinary； 204、adVarBinary； 205、adLongVarBinary； 136、adChapter； 64、adFileTime； 138、adPropVariant； 139、adVarNumeric； 8192、adArray。
+
+ado_par对象.写属性 (“Type”, 欲写入属性值)
+
+
+.子程序 par取值, 变体型, 公开, 
+返回 (ado_par对象.读属性 (“Value”, ))
+
+
+.子程序 par写值, 空白型, 公开, 
+.参数 欲写入属性值, 文本型, , 类型为“变体型”。
+
+ado_par对象.写属性 (“Value”, 欲写入属性值)
+
+
+.子程序 par取方向, 整数型, 公开, 
+返回 (ado_par对象.读数值属性 (“Direction”, ))
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 par置方向, 空白型, 公开, 
+.参数 欲写入属性值, 整数型, , 类型为“整数型”，参数值为以下值之一： 0、adParamUnknown； 1、adParamInput； 2、adParamOutput； 3、adParamInputOutput； 4、adParamReturnValue。
+
+ado_par对象.写属性 (“Direction”, 欲写入属性值)
+ ' 参数<1>的名称为“欲写入属性值”，类型为“整数型”，参数值为以下值之一： 0、adParamUnknown； 1、adParamInput； 2、adParamOutput； 3、adParamInputOutput； 4、adParamReturnValue。
+
+
+.子程序 par取参数对象本身, 对象, 公开, 
+返回 (ado_par对象)
+
+
+
+.程序集 公共程序集1, , , 
+
+.子程序 读取Access数据到列表框, 空白型, 公开, 
+.参数 参_数据库文件, 文本型, , 
+.参数 参_数据库密码, 文本型, 可空, 
+.参数 参_SQL查询语句, 文本型, , 
+.参数 参_列表框1, 列表框, , 
+
+.局部变量 私_数据库连接1, 数据库连接对象, , , 
+.局部变量 私_记录集1, 记录集对象, , , 
+.局部变量 匿名局部变量_1584, 空白型, , , 
+.局部变量 私_临时文本, 文本型, , , 
+.局部变量 i, 整数型, , , 
+
+.如果真 (等于 (是否为空 (参_数据库密码), 真))
+    赋值 (参_数据库密码, “”)
+.如果真结束
+
+参_列表框1.清空 ()
+
+ ' 一、ADO连接
+.如果 (等于 (私_数据库连接1.conn连接ACCESS (参_数据库文件, 参_数据库密码), 真)) ' (1) 连接到Access数据库
+    
+    
+     ' 二、ADO记录集
+    私_记录集1.rs置活动连接 (私_数据库连接1.conn取连接对象本身 ()) ' (1)置记录集连接
+    私_记录集1.rs置数据源 (参_SQL查询语句) ' (2)置记录集数据源
+    
+    私_记录集1.rs打开 () ' (3)打开记录集
+    
+     ' 输出调试文本 (记录集2.rs查询 (参_SQL语句, ))
+    .判断循环首 (等于 (私_记录集1.rs尾记录后 (), 假))
+        赋值 (私_临时文本, “”)
+        .计次循环首 (私_记录集1.rs字段数 (), i)
+            赋值 (私_临时文本, 相加 (私_临时文本, “|”, 私_记录集1.rs读 (相减 (i, 1))))
+        .计次循环尾 ()
+        赋值 (私_临时文本, 取文本中间 (私_临时文本, 2, 取文本长度 (私_临时文本))) ' 把第1个|去掉
+         ' 输出调试文本 (私_临时文本)
+        参_列表框1.加入项目 (私_临时文本, )
+        私_记录集1.rs移动到下一条 ()
+    .判断循环尾 ()
+    私_记录集1.rs关闭 () ' 关闭当前记录集
+    私_数据库连接1.conn关闭 () ' 断开连接
+    
+.否则
+    信息框 (“连接到数据源失败。”, 相加 (16, 0), “提示”)
+.如果结束
+
+
+
+
+.子程序 读取外部数据到列表框, 空白型, 公开, 
+.参数 参_连接字符串, 文本型, , connstr
+.参数 参_SQL查询语句, 文本型, , 
+.参数 参_列表框1, 列表框, , 
+
+.局部变量 私_数据库连接1, 数据库连接对象, , , 
+.局部变量 私_记录集1, 记录集对象, , , 
+.局部变量 匿名局部变量_1664, 空白型, , , 
+.局部变量 私_临时文本, 文本型, , , 
+.局部变量 i, 整数型, , , 
+
+参_列表框1.清空 ()
+
+ ' 一、ADO连接
+私_数据库连接1.conn置连接字符串 (参_连接字符串) ' (1)置连接字符串
+
+.如果 (等于 (私_数据库连接1.conn打开 (), 真)) ' (2)连接打开
+    
+     ' 二、ADO记录集
+    私_记录集1.rs置活动连接 (私_数据库连接1.conn取连接对象本身 ()) ' (1)置记录集连接
+    
+    私_记录集1.rs置数据源 (参_SQL查询语句) ' (2)置记录集数据源
+    
+    .如果 (私_记录集1.rs打开 ()) ' (3)打开记录集
+        .判断循环首 (等于 (私_记录集1.rs尾记录后 (), 假))
+            赋值 (私_临时文本, “”)
+            .计次循环首 (私_记录集1.rs字段数 (), i)
+                赋值 (私_临时文本, 相加 (私_临时文本, “|”, 私_记录集1.rs读文本 (私_记录集1.rs取字段名 (相减 (i, 1)))))
+            .计次循环尾 ()
+            赋值 (私_临时文本, 取文本中间 (私_临时文本, 2, 取文本长度 (私_临时文本))) ' 把第1个|去掉
+             ' 输出调试文本 (私_临时文本)
+            参_列表框1.加入项目 (私_临时文本, )
+            私_记录集1.rs移动到下一条 ()
+        .判断循环尾 ()
+        私_记录集1.rs关闭 () ' 关闭当前记录集
+    .否则
+        信息框 (相加 (“打开记录集失败。”, 到文本 (私_记录集1.rs取状态 ())), 相加 (16, 0), “提示”)
+    .如果结束
+    私_数据库连接1.conn关闭 () ' 断开连接
+.否则
+    信息框 (“连接到数据源失败。”, 相加 (16, 0), “提示”)
+    
+.如果结束
+
+
+
+.子程序 读取Access数据到高级表格, 空白型, 公开, 
+.参数 参_数据库文件, 文本型, , 
+.参数 参_数据库密码, 文本型, 可空, 
+.参数 参_SQL查询语句, 文本型, , 
+.参数 参_高级表格, 未知类型0x20001, , 
+
+.局部变量 私_数据库连接1, 数据库连接对象, , , 
+.局部变量 私_记录集1, 记录集对象, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 j, 整数型, , , 
+
+.如果真 (等于 (是否为空 (参_数据库密码), 真))
+    赋值 (参_数据库密码, “”)
+.如果真结束
+
+赋值 (参_高级表格., 1)
+
+ ' 一、ADO连接
+.如果 (等于 (私_数据库连接1.conn连接ACCESS (参_数据库文件, 参_数据库密码), 真)) ' (1) 连接到Access数据库
+    
+     ' 二、ADO记录集
+    私_记录集1.rs置活动连接 (私_数据库连接1.conn取连接对象本身 ()) ' (1)置记录集连接
+    
+    私_记录集1.rs置数据源 (参_SQL查询语句) ' (2)置记录集数据源
+    
+    .如果 (等于 (私_记录集1.rs打开 (), 真)) ' (3)打开记录集
+        
+        赋值 (参_高级表格., 相加 (私_记录集1.rs字段数 (), 1))
+        .计次循环首 (相加 (私_记录集1.rs字段数 (), 1), i)
+            参_高级表格.未知支持库函数_9 (0, 0, #, “序号”)
+            参_高级表格.未知支持库函数_9 (0, i, #, 私_记录集1.rs取字段名 (相减 (i, 1)))
+        .计次循环尾 ()
+        
+        赋值 (i, 1)
+        赋值 (参_高级表格., 假)
+        .判断循环首 (等于 (私_记录集1.rs尾记录后 (), 假))
+            参_高级表格.未知支持库函数_38 ()
+            参_高级表格.未知支持库函数_9 (i, 0, #, i)
+            .计次循环首 (私_记录集1.rs字段数 (), j)
+                参_高级表格.未知支持库函数_9 (i, j, #, 到文本 (私_记录集1.rs读 (相减 (j, 1))))
+            .计次循环尾 ()
+            私_记录集1.rs移动到下一条 ()
+            赋值 (i, 相加 (i, 1))
+        .判断循环尾 ()
+        赋值 (参_高级表格., 真)
+        私_记录集1.rs关闭 () ' 关闭当前记录集
+    .否则
+        
+    .如果结束
+    私_数据库连接1.conn关闭 () ' 断开连接
+    高级表格_填充行号及交替色显示 (参_高级表格)
+.否则
+    信息框 (“连接到数据源失败。”, 相加 (16, 0), “提示”)
+.如果结束
+
+
+
+
+.子程序 读取外部数据到高级表格, 空白型, 公开, 
+.参数 参_连接字符串, 文本型, , connstr
+.参数 参_SQL查询语句, 文本型, , 
+.参数 参_高级表格, 未知类型0x20001, , 
+
+.局部变量 私_数据库连接1, 数据库连接对象, , , 
+.局部变量 私_记录集1, 记录集对象, , , 
+.局部变量 匿名局部变量_1820, 空白型, , , 
+.局部变量 私_临时文本, 文本型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 j, 整数型, , , 
+
+赋值 (参_高级表格., 1)
+
+ ' 一、ADO连接
+私_数据库连接1.conn置连接字符串 (参_连接字符串) ' (1)置连接字符串
+
+.如果 (等于 (私_数据库连接1.conn打开 (), 真)) ' (2)连接打开
+    
+     ' 二、ADO记录集
+    私_记录集1.rs置活动连接 (私_数据库连接1.conn取连接对象本身 ()) ' (1)置记录集连接
+    
+    私_记录集1.rs置数据源 (参_SQL查询语句) ' (2)置记录集数据源
+    
+    .如果 (等于 (私_记录集1.rs打开 (), 真)) ' (3)打开记录集
+        
+        赋值 (参_高级表格., 相加 (私_记录集1.rs字段数 (), 1))
+        .计次循环首 (相加 (私_记录集1.rs字段数 (), 1), i)
+            参_高级表格.未知支持库函数_9 (0, 0, #, “序号”)
+            参_高级表格.未知支持库函数_9 (0, i, #, 私_记录集1.rs取字段名 (相减 (i, 1)))
+        .计次循环尾 ()
+        
+        赋值 (i, 1)
+        赋值 (参_高级表格., 假)
+        .判断循环首 (等于 (私_记录集1.rs尾记录后 (), 假))
+            参_高级表格.未知支持库函数_38 ()
+            参_高级表格.未知支持库函数_9 (i, 0, #, i)
+            .计次循环首 (私_记录集1.rs字段数 (), j)
+                参_高级表格.未知支持库函数_9 (i, j, #, 到文本 (私_记录集1.rs读文本 (私_记录集1.rs取字段名 (相减 (j, 1)))))
+            .计次循环尾 ()
+            私_记录集1.rs移动到下一条 ()
+            赋值 (i, 相加 (i, 1))
+        .判断循环尾 ()
+        赋值 (参_高级表格., 真)
+        私_记录集1.rs关闭 () ' 关闭当前记录集
+    .否则
+        信息框 (相加 (“打开记录集失败。”, 到文本 (私_记录集1.rs取状态 ())), 相加 (16, 0), “提示”)
+    .如果结束
+    私_数据库连接1.conn关闭 () ' 断开连接
+    高级表格_填充行号及交替色显示 (参_高级表格)
+.否则
+    信息框 (“连接到数据源失败。”, 相加 (16, 0), “提示”)
+    
+.如果结束
+
+
+.子程序 高级表格_填充行号及交替色显示, 空白型, 公开, 
+.参数 参_高级表格1, 未知类型0x20001, , 
+
+.局部变量 私_高级表格的列数, 整数型, , , 
+.局部变量 i, 整数型, , , 
+
+赋值 (私_高级表格的列数, 参_高级表格1.)
+.计次循环首 (相减 (参_高级表格1., 1), i)
+    .如果 (等于 (求余数 (i, 2), 0))
+         ' 高级表格1.置单元格背景颜色 (i, 0, i, 高级表格的列数 － 1, #透明)  ' 透明 有BUG？
+        参_高级表格1.未知支持库函数_24 (i, 0, i, 相减 (私_高级表格的列数, 1), #银白)
+    .否则
+        参_高级表格1.未知支持库函数_24 (i, 0, i, 相减 (私_高级表格的列数, 1), #白色)
+    .如果结束
+    
+.计次循环尾 ()
+
+
+
+.子程序 取excel文档表名, 空白型, , 笨笨呀
+.参数 excel文件, 文本型, , 
+.参数 表名数组, 文本型, 参考 数组, 
+
+.局部变量 conn, 对象, , , 
+.局部变量 rs, 对象, , , 
+.局部变量 _表名, 文本型, , , 
+
+清除数组 (表名数组)
+conn.创建 (“ADODB.Connection”, )
+rs.创建 (“ADODB.RecordSet”, )
+conn.方法 (“open”, 相加 (“DBQ=”, excel文件, “;Driver={Microsoft Excel Driver (*.xls)};”))
+赋值 (rs, conn.对象型方法 (“OpenSchema”, 20))
+rs.方法 (“MoveFirst”, )
+.判断循环首 (等于 (rs.读逻辑属性 (“EOF”, ), 假))
+    赋值 (_表名, rs.对象型方法 (“Fields”, ).读对象型属性 (“Item”, “TABLE_NAME”).读文本属性 (“Value”, ))
+     ' 输出调试文本 (_表名)
+    加入成员 (表名数组, _表名)
+    rs.方法 (“MoveNext”, )
+.判断循环尾 ()
+rs.方法 (“Close”, )
+conn.方法 (“Close”, )
+
+
+ ' 不属于任何一个程序集、类模块的函数：

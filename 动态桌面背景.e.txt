@@ -1,0 +1,1044 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' internet 707ca37322474f6ca841f0e224f4b620 1 0 互联网支持库
+
+
+
+
+数据类型 BITMAPINFO, , 
+    .成员 BITMAPINFOHEADER, BITMAPINFOHEADER, , , 
+    .成员 bmiColors, 空白型, , , RGBQUAD          bmiColors[1]; 
+
+数据类型 BITMAPINFOHEADER, , 
+    .成员 biSize, 空白型, , , 
+    .成员 biWidth, 空白型, , , 
+    .成员 biHeight, 空白型, , , 
+    .成员 biPlanes, 短整数型, , , 
+    .成员 biBitCount, 短整数型, , , 
+    .成员 biCompression, 空白型, , , 
+    .成员 biSizeImage, 空白型, , , 
+    .成员 biXPelsPerMeter, 空白型, , , 
+    .成员 biYPelsPerMeter, 空白型, , , 
+    .成员 biClrUsed, 空白型, , , 
+    .成员 biClrImportant, 空白型, , , 
+
+数据类型 BITMAPFILEHEADER, , 
+    .成员 bfType, 短整数型, , , 
+    .成员 bfSize, 空白型, , , 
+    .成员 bfReserved1, 短整数型, , , 
+    .成员 bfReserved2, 短整数型, , , 
+    .成员 bfOffBits, 空白型, , , 
+
+数据类型 BITMAP, , 
+    .成员 bmType, 空白型, , , 
+    .成员 bmWidth, 空白型, , , 
+    .成员 bmHeight, 空白型, , , 
+    .成员 bmWidthBytes, 空白型, , , 
+    .成员 bmPlanes, 短整数型, , , 
+    .成员 bmBitsPixel, 短整数型, , , 
+    .成员 bmBits, 空白型, 传址, , 
+
+数据类型 LOGFONT, , 
+    .成员 lfHeight, 整数型, , , 
+    .成员 lfWidth, 整数型, , , 
+    .成员 lfEscapement, 整数型, , , 
+    .成员 lfOrientation, 整数型, , , 
+    .成员 lfWeight, 整数型, , , '是否粗体 0为粗体 非0为普通
+    .成员 lfItalic, 字节型, , , 斜体
+    .成员 lfUnderline, 字节型, , , 是否下划线 真为加下划线 假为正常
+    .成员 lfStrikeOut, 字节型, , , 
+    .成员 lfCharSet, 字节型, , , 
+    .成员 lfOutPrecision, 字节型, , , 
+    .成员 lfClipPrecision, 字节型, , , 
+    .成员 lfQuality, 字节型, , , 
+    .成员 lfPitchAndFamily, 字节型, , , 
+    .成员 lfFaceName, 字节集, , , LF_FACESIZE
+
+数据类型 GdiplusStartupInput, , 
+    .成员 GdiplusVersion, 整数型, , , 
+    .成员 DebugEventCallback, 整数型, , , 
+    .成员 SuppressBackgroundThread, 整数型, , , 
+    .成员 SuppressExternalCodecs, 整数型, , , 
+
+数据类型 RectF, 公开, 
+    .成员 X, 小数型, , , 
+    .成员 Y, 小数型, , , 
+    .成员 Width, 小数型, , , 
+    .成员 Height, 小数型, , , 
+
+
+.DLL命令 GdipCreateFromHDC, 整数型, "GdiPlus.dll", "GdipCreateFromHDC", , 
+    .参数 hdc, 整数型, , 
+    .参数 graphics, 整数型, 传址, 
+
+.DLL命令 GdipLoadImageFromFile, 整数型, "GdiPlus.dll", "GdipLoadImageFromFile", , 
+    .参数 filename, 字节集, , 
+    .参数 image, 整数型, 传址, 
+
+.DLL命令 GdipLoadImageFromStream, 整数型, "GdiPlus.dll", "GdipLoadImageFromStream", , 
+    .参数 stream, 整数型, , 
+    .参数 image, 整数型, 传址, 
+
+.DLL命令 GdipGetImageDimension, 整数型, "GdiPlus.dll", "GdipGetImageDimension", , 
+    .参数 image, 整数型, , 
+    .参数 width, 小数型, 传址, 
+    .参数 height, 小数型, 传址, 
+
+.DLL命令 GdipDrawImageRect, 整数型, "GdiPlus.dll", "GdipDrawImageRect", , 
+    .参数 graphics, 整数型, , 
+    .参数 image, 整数型, , 
+    .参数 x, 小数型, , 
+    .参数 y, 小数型, , 
+    .参数 width, 小数型, , 
+    .参数 height, 小数型, , 
+
+.DLL命令 GdipDisposeImage, 整数型, "gdiplus.dll", "GdipDisposeImage", , 
+    .参数 image, 整数型, , 
+
+.DLL命令 GdipDeleteGraphics, 整数型, "GdiPlus.dll", "GdipDeleteGraphics", , 
+    .参数 graphics, 整数型, , 
+
+.DLL命令 MultiByteToWideChar, 整数型, "", "MultiByteToWideChar", , 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpWideCharStr, 字节集, , 
+    .参数 cchWideChar, 整数型, , 
+
+.DLL命令 CreateFontIndirectA, 整数型, "", "CreateFontIndirectA", , 
+    .参数 lpLogFont, LOGFONT, , 
+
+.DLL命令 SelectObject, 整数型, "", "SelectObject", , 
+    .参数 hdc, 整数型, , 一个设备场景的句柄
+    .参数 hObject, 整数型, , 一个画笔、位图、刷子、字体或区域的句柄
+
+.DLL命令 DeleteDC, 整数型, "", "DeleteDC", , 
+    .参数 hdc, 空白型, , 
+
+.DLL命令 DeleteObject, 整数型, "", "DeleteObject", , 
+    .参数 hdc, 空白型, , 
+
+.DLL命令 ReleaseDC, 空白型, "", "ReleaseDC", , 
+    .参数 hwnd, 整数型, , 要释放的设备场景相关的窗口句柄
+    .参数 hdc, 整数型, , 要释放的设备场景句柄
+
+.DLL命令 SetBkMode, 空白型, "", "SetBkMode", , 
+    .参数 hdc, 空白型, , 
+    .参数 nBkMode, 空白型, , 
+
+.DLL命令 SetTextColor, 空白型, "", "SetTextColor", , 
+    .参数 hdc, 空白型, , 
+    .参数 crColor, 空白型, , 
+
+.DLL命令 TextOutA, 空白型, "", "TextOutA", , 
+    .参数 hdc, 空白型, , 
+    .参数 x, 空白型, , 
+    .参数 y, 空白型, , 
+    .参数 lpString, 文本型, , 
+    .参数 nCount, 空白型, , 
+
+.DLL命令 CreateCompatibleDC, 整数型, "", "CreateCompatibleDC", , 
+    .参数 hdc, 整数型, , 
+
+.DLL命令 LoadImageA, 整数型, "", "LoadImageA", , 
+    .参数 hInst, 整数型, , 
+    .参数 lpsz, 文本型, , 
+    .参数 un1, 整数型, , 
+    .参数 n1, 整数型, , 
+    .参数 n2, 整数型, , 
+    .参数 un2, 整数型, , 
+
+.DLL命令 GetObjectA, 整数型, "", "GetObjectA", , 
+    .参数 hgdiobj, 空白型, , 
+    .参数 cbBuffer, 空白型, , 
+    .参数 lpvObject, BITMAP, , 
+
+.DLL命令 GetDIBits_BimapInfo, 整数型, "", "GetDIBits", , 
+    .参数 HDC, 空白型, , 
+    .参数 hBitmap, 空白型, , 
+    .参数 nStartScan, 空白型, , 
+    .参数 nNumScans, 空白型, , 
+    .参数 lpBits, 空白型, , 
+    .参数 lpBI, BITMAPINFO, , 
+    .参数 wUsage, 空白型, , 
+
+.DLL命令 GetDIBits, 整数型, "", "GetDIBits", , 
+    .参数 HDC, 空白型, , 
+    .参数 hBitmap, 空白型, , 
+    .参数 nStartScan, 空白型, , 
+    .参数 nNumScans, 空白型, , 
+    .参数 lpBits, 字节集, , 
+    .参数 lpBI, BITMAPINFO, , 
+    .参数 wUsage, 空白型, , 
+
+.DLL命令 CopyMemory_BITMAPINFO, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, BITMAPINFO, , 
+    .参数 Length, 空白型, , 
+
+.DLL命令 CopyMemory_BITMAPFILEHEADER, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, BITMAPFILEHEADER, , 
+    .参数 Length, 空白型, , 
+
+.DLL命令 WideCharToMultiByte, 整数型, "", "WideCharToMultiByte", , 返回 MultiByte字符数目,包括结尾0
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpWideCharStr, 整数型, , 
+    .参数 cchWideChar, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 unknow, 整数型, , 
+    .参数 unknow, 整数型, , 
+
+.DLL命令 GdiplusStartup, 整数型, "gdiplus.dll", "GdiplusStartup", , 
+    .参数 token, 整数型, 传址, 
+    .参数 inputbuf, GdiplusStartupInput, , 
+    .参数 outputbuf, 整数型, , 
+
+.DLL命令 GdiplusShutdown, 空白型, "gdiplus.dll", "GdiplusShutdown", , 
+    .参数 token, 整数型, , 
+
+.DLL命令 GlobalAlloc, 整数型, "", "GlobalAlloc", , 
+    .参数 wFlags, 整数型, , 
+    .参数 dwBytes, 整数型, , 
+
+.DLL命令 GlobalLock, 整数型, "", "GlobalLock", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 GlobalUnlock, 整数型, "", "GlobalUnlock", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 GlobalSize, 整数型, "", "GlobalSize", , 
+    .参数 hMem, 空白型, , 
+
+.DLL命令 GlobalFree, 整数型, "", "GlobalFree", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 CreateStreamOnHGlobal, 整数型, "Ole32.dll", "CreateStreamOnHGlobal", , 
+    .参数 hGlobal, 整数型, , 
+    .参数 fDeleteOnRelease, 整数型, , 
+    .参数 ppstm, 整数型, 传址, 
+
+.DLL命令 GdipCreateSolidFill, 整数型, "GdiPlus.dll", "GdipCreateSolidFill", , 
+    .参数 color, 整数型, , 
+    .参数 brush, 整数型, 传址, 
+
+.DLL命令 GdipCreateFont, 整数型, "GdiPlus.dll", "GdipCreateFont", , 
+    .参数 fontFamily, 整数型, , 
+    .参数 emSize, 小数型, , 
+    .参数 style, 整数型, , 
+    .参数 unit, 整数型, , 
+    .参数 font, 整数型, 传址, 
+
+.DLL命令 GdipDeleteFontFamily, 整数型, "GdiPlus.dll", "GdipDeleteFontFamily", , 
+    .参数 FontFamily, 整数型, , 
+
+.DLL命令 GdipCreateFontFamilyFromName, 整数型, "GdiPlus.dll", "GdipCreateFontFamilyFromName", , 
+    .参数 name, 字节集, , 
+    .参数 fontCollection, 整数型, , 
+    .参数 FontFamily, 整数型, 传址, 
+
+.DLL命令 GdipDrawString, 整数型, "GdiPlus.dll", "GdipDrawString", , 
+    .参数 graphics, 整数型, , 
+    .参数 string, 字节集, , 
+    .参数 length, 整数型, , 
+    .参数 font, 整数型, , 
+    .参数 layoutRect, RectF, , 
+    .参数 stringFormat, 整数型, , 
+    .参数 brush, 整数型, , 
+
+.DLL命令 GdipGetTextRenderingHint, 整数型, "GdiPlus.dll", "GdipGetTextRenderingHint", , 
+    .参数 graphics, 整数型, , 
+    .参数 mode, 整数型, 传址, 
+
+.DLL命令 GdipDeleteBrush, 整数型, "GdiPlus.dll", "GdipDeleteBrush", , 
+    .参数 brush, 整数型, , 
+
+.DLL命令 GdipDeleteFont, 整数型, "GdiPlus.dll", "GdipDeleteFont", , 
+    .参数 font, 整数型, , 
+
+.DLL命令 GdipCreateTexture, 整数型, "GdiPlus.dll", "GdipCreateTexture", , 
+    .参数 image, 整数型, , 
+    .参数 wrapmode, 整数型, , 
+    .参数 texture, 整数型, 传址, 
+
+.DLL命令 CreateCompatibleBitmap, 整数型, "", "CreateCompatibleBitmap", , 
+    .参数 hdc, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+
+.DLL命令 GdipSetTextRenderingHint, 整数型, "GdiPlus.dll", "GdipSetTextRenderingHint", , 
+    .参数 graphics, 整数型, , 
+    .参数 mode, 整数型, , 
+
+.DLL命令 PaintDesktop, 空白型, "", "PaintDesktop", , 
+    .参数 hdc, 空白型, , 
+
+.DLL命令 GetDC, 整数型, "", "GetDC", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 更换壁纸bmp, 整数型, "", "SystemParametersInfoA", , 
+    .参数 uAction, 空白型, , 
+    .参数 uParam, 空白型, , 
+    .参数 lpvParam, 文本型, , 
+    .参数 fuWinIn, 空白型, , 
+
+.DLL命令 GetPrivateProfileSection_取配置项目, 空白型, "", "GetPrivateProfileSectionA", , 
+    .参数 lpAppName, 文本型, , 欲获取的小节。注意这个字串不区分大小写
+    .参数 lpReturnedString, 字节集, , 项和值字串的列表。每个字串都由一个NULL字符分隔，最后一个字串后面用两个NULL字符中止
+    .参数 nSize, 整数型, , lpReturnedString缓冲区的大小。在windows系统中最大值为32767
+    .参数 lpFileName, 文本型, , 初始化文件的名字。如没有指定完整路径名，windows就在Windows目录中查找文件
+
+.DLL命令 DLL命令1, 空白型, "", "", , 
+
+.程序集 主程序集, , , 
+
+.程序集变量 Token, 空白型, , , 
+.子程序 _启动子程序, 整数型, , 
+.局部变量 GpInput, GdiplusStartupInput, , , 
+
+赋值 (GpInput.GdiplusVersion, 1)
+GdiplusStartup (Token, GpInput, 0) ' 启动 GDI+
+
+主处理 ()
+
+GdiplusShutdown (Token) ' 关闭 GDI+
+返回 (0)
+
+.子程序 参数初始化, 空白型, , 
+.参数 天气横坐标, 空白型, 参考, 
+.参数 天气纵坐标, 空白型, 参考, 
+.参数 标题横坐标, 空白型, 参考, 
+.参数 标题纵坐标, 空白型, 参考, 
+.参数 天气代码, 空白型, 参考, 
+.参数 计算机名信息, 文本型, 参考, 
+
+赋值 (天气横坐标, 到数值 (读配置项 (相加 (取运行目录 (), “\zmcl.ini”), “程序配置”, “天气预报定位横坐标”, )))
+赋值 (天气纵坐标, 到数值 (读配置项 (相加 (取运行目录 (), “\zmcl.ini”), “程序配置”, “天气预报定位纵坐标”, )))
+赋值 (标题横坐标, 到数值 (读配置项 (相加 (取运行目录 (), “\zmcl.ini”), “程序配置”, “网吧标题横幅横坐标”, )))
+赋值 (标题纵坐标, 到数值 (读配置项 (相加 (取运行目录 (), “\zmcl.ini”), “程序配置”, “网吧标题横幅纵坐标”, )))
+赋值 (天气代码, 到数值 (读配置项 (相加 (取运行目录 (), “\zmcl.ini”), “程序配置”, “天气代码”, )))
+赋值 (计算机名信息, 读配置项 (相加 (取运行目录 (), “\zmcl.ini”), “程序配置”, “计算机名”, ))
+
+.子程序 主处理, 空白型, , 
+.局部变量 HDC, 空白型, , , 
+.局部变量 CDC, 空白型, , , 
+.局部变量 nDC, 空白型, , , 
+.局部变量 iBitmap, 空白型, , , 
+.局部变量 oldBitmap, 空白型, , , 
+.局部变量 AA, 字节集, , , 
+.局部变量 字体格式, LOGFONT, , , 
+.局部变量 匿名局部变量_527, 空白型, , , 
+.局部变量 a, 空白型, , , 
+.局部变量 b, 空白型, , , 
+.局部变量 匿名局部变量_576, 空白型, , , 
+.局部变量 天气横坐标, 空白型, 静态, , 
+.局部变量 天气纵坐标, 空白型, 静态, , 
+.局部变量 标题横坐标, 空白型, 静态, , 
+.局部变量 标题纵坐标, 空白型, 静态, , 
+.局部变量 天气代码, 空白型, 静态, , 
+.局部变量 计算机名信息, 文本型, 静态, , 
+
+
+参数初始化 (天气横坐标, 天气纵坐标, 标题横坐标, 标题纵坐标, 天气代码, 计算机名信息)
+
+赋值 (HDC, GetDC (0))
+赋值 (CDC, CreateCompatibleDC (HDC))
+赋值 (iBitmap, CreateCompatibleBitmap (HDC, 1024, 768))
+ReleaseDC (0, HDC)
+赋值 (oldBitmap, SelectObject (CDC, iBitmap))
+
+画图片_从文件_GDIPlus (CDC, 相加 (取运行目录 (), “\背景.jpg”), 0, 0, 0, 0)
+
+画图片_从文件_GDIPlus (CDC, 相加 (取运行目录 (), “\网吧标题.png”), 标题横坐标, 标题纵坐标, 0, 0)
+
+计算机名处理 (CDC, 计算机名信息)
+
+天气预报部分代码 (CDC, 天气代码, 天气横坐标, 天气纵坐标)
+
+自定义处理 (CDC)
+
+赋值 (iBitmap, SelectObject (CDC, oldBitmap))
+赋值 (AA, GetBitsFromBitmapHandle (iBitmap))
+
+写到文件 (“c:\liangfei.bmp”, AA)
+
+.如果真 (文件是否存在 (“c:\liangfei.bmp”))
+    更换壁纸bmp (20, 0, “c:\liangfei.bmp”, 1)
+.如果真结束
+
+
+.子程序 计算机名处理, 空白型, , 
+.参数 CDC, 空白型, , 
+.参数 信息, 文本型, , 
+
+.局部变量 资源分解, 文本型, , "0", 
+.局部变量 笔刷句柄, 整数型, , , 
+.局部变量 字体句柄, 整数型, , , 
+
+
+赋值 (资源分解, 分割文本 (信息, “|”, ))
+
+.如果真 (不等于 (取数组成员数 (资源分解), 7))
+    返回 ()
+.如果真结束
+
+赋值 (笔刷句柄, 创建画刷_固色画刷_GDIPlus (到数值 (资源分解 [3]), 到数值 (资源分解 [4])))
+赋值 (字体句柄, 创建字体_GDIPlus (资源分解 [5], 到数值 (资源分解 [6]), 到数值 (资源分解 [7]), 2))
+画文字_GDIPlus (CDC, 取主机名 (), 到数值 (资源分解 [1]), 到数值 (资源分解 [2]), 笔刷句柄, 字体句柄)
+销毁画刷_GDIPlus (笔刷句柄)
+销毁字体_GDIPlus (字体句柄)
+
+.子程序 自定义处理, 空白型, , 
+.参数 CDC, 整数型, , 
+
+.局部变量 数据组, 文本型, , "0", 
+.局部变量 A, 空白型, , , 
+.局部变量 数据分解, 文本型, , "0", 
+.局部变量 资源分解, 文本型, , "0", 
+.局部变量 笔刷句柄, 整数型, , , 
+.局部变量 字体句柄, 整数型, , , 
+
+取配置项目_LF_API (相加 (取运行目录 (), “\zmcl.ini”), “自定义处理”, , 数据组)
+.计次循环首 (取数组成员数 (数据组), A)
+    赋值 (数据分解, 分割文本 (数据组 [A], “=”, ))
+    .如果真 (等于 (取数组成员数 (数据分解), 2))
+        .判断开始 (等于 (数据分解 [1], “文字”))
+            赋值 (资源分解, 分割文本 (数据分解 [2], “|”, ))
+            .如果真 (等于 (取数组成员数 (资源分解), 8))
+                赋值 (笔刷句柄, 创建画刷_固色画刷_GDIPlus (到数值 (资源分解 [3]), 到数值 (资源分解 [4])))
+                赋值 (字体句柄, 创建字体_GDIPlus (资源分解 [5], 到数值 (资源分解 [6]), 到数值 (资源分解 [7]), 2))
+                画文字_GDIPlus (CDC, 资源分解 [8], 到数值 (资源分解 [1]), 到数值 (资源分解 [2]), 笔刷句柄, 字体句柄)
+                销毁画刷_GDIPlus (笔刷句柄)
+                销毁字体_GDIPlus (字体句柄)
+            .如果真结束
+            
+        .判断 (等于 (数据分解 [1], “图片”))
+            赋值 (资源分解, 分割文本 (数据分解 [2], “|”, ))
+            .如果真 (等于 (取数组成员数 (资源分解), 3))
+                赋值 (资源分解 [3], 子文本替换 (资源分解 [3], “[大力-水手]”, 取运行目录 (), , , 真))
+                画图片_从文件_GDIPlus (CDC, 资源分解 [3], 到数值 (资源分解 [1]), 到数值 (资源分解 [2]), 0, 0)
+            .如果真结束
+            
+        .默认
+            
+        .判断结束
+        
+    .如果真结束
+    
+.计次循环尾 ()
+
+
+.子程序 天气预报部分代码, 空白型, , 
+.参数 CDC, 空白型, , 
+.参数 天气所在地代码, 整数型, , 
+.参数 横坐标, 空白型, , 
+.参数 纵坐标, 空白型, , 
+
+.局部变量 变_天气原始内容, 文本型, , , 
+.局部变量 地址A处, 空白型, , , 
+.局部变量 地址B处, 空白型, , , 
+.局部变量 地址文本, 文本型, , , 
+.局部变量 变_天气图片字节, 字节集, , , 
+.局部变量 匿名局部变量_417, 空白型, , , 
+.局部变量 AA, 文本型, , , 
+.局部变量 a, 空白型, , , 
+.局部变量 b, 空白型, , , 
+.局部变量 c, 空白型, , , 
+.局部变量 d, 空白型, , , 
+.局部变量 Graphics, 空白型, , , 
+.局部变量 字体大小, 空白型, , , 
+.局部变量 间距, 空白型, , , 
+.局部变量 字体, 文本型, , , 
+
+ ' <option selected="selected" value="125">北京</option>
+ ' <option value="292">广州</option>
+ ' <option value="252">上海</option>
+ ' <option value="127">天津</option>
+ ' <option value="212">重庆</option>
+ ' <option value="115">沈阳</option>
+ ' <option value="244">南京</option>
+ ' <option value="211">武汉</option>
+ ' <option value="166">成都</option>
+ ' <option value="186">西安</option>
+ ' <option value="82">石家庄</option>
+ ' <option value="84">太原</option>
+ ' <option value="189">郑州</option>
+ ' <option value="103">长春</option>
+ ' <option value="17">哈尔滨</option>
+ ' <option value="69">呼和浩特</option>
+ ' <option value="140">济南</option>
+ ' <option value="248">合肥</option>
+ ' <option value="255">杭州</option>
+ ' <option value="276">福州</option>
+ ' <option value="287">厦门</option>
+ ' <option value="218">长沙</option>
+ ' <option value="296">深圳</option>
+ ' <option value="295">南宁</option>
+ ' <option value="232">桂林</option>
+ ' <option value="264">南昌</option>
+ ' <option value="227">贵阳</option>
+ ' <option value="1">香港</option>
+ ' <option value="2">澳门</option>
+ ' <option value="179">昆明</option>
+ ' <option value="280">台北</option>
+ ' <option value="150">拉萨</option>
+ ' <option value="303">海口</option>
+ ' <option value="57">兰州</option>
+ ' <option value="78">银川</option>
+ ' <option value="56">西宁</option>
+ ' <option value="28">乌鲁木齐</option>
+
+ ' 判断 (组合框_天气所在地.取项目文本 (组合框_天气所在地.现行选中项) ＝ “北京”)
+ ' 变_天气所在地代码 ＝ “125”
+ ' 判断 (组合框_天气所在地.取项目文本 (组合框_天气所在地.现行选中项) ＝ “广州”)
+ ' 变_天气所在地代码 ＝ “292”
+ ' 判断 (组合框_天气所在地.取项目文本 (组合框_天气所在地.现行选中项) ＝ “上海”)
+ ' 变_天气所在地代码 ＝ “252”
+ ' 判断 (组合框_天气所在地.取项目文本 (组合框_天气所在地.现行选中项) ＝ “重庆”)
+ ' 变_天气所在地代码 ＝ “212”
+ ' 判断 (组合框_天气所在地.取项目文本 (组合框_天气所在地.现行选中项) ＝ “沈阳”)
+ ' 变_天气所在地代码 ＝ “115”
+ ' 判断 (变_天气所在地代码 ＝ “”)
+ ' 变_天气所在地代码 ＝ “115”
+
+赋值 (字体大小, 15)
+赋值 (间距, 20)
+赋值 (字体, “宋体”)
+ ' 宋体 “微软雅黑”
+画图片_从文件_GDIPlus (CDC, 相加 (取运行目录 (), “\天气预报背景.png”), 横坐标, 纵坐标, 0, 0)
+
+赋值 (变_天气原始内容, 到文本 (未知支持库函数_7 (相加 (“http://weather.news.qq.com/inc/07_ss”, 到文本 (天气所在地代码), “.htm”))))
+ ' 输出调试文本 (变_天气原始内容)
+ ' 输出调试文本 (取文本中间 (变_天气原始内容, 寻找文本_ (变_天气原始内容, “<td class=” ＋ #引号 ＋ “wht3 lk2e” ＋ #引号 ＋ “><img width=” ＋ #引号 ＋ “64” ＋ #引号 ＋ “ height=” ＋ #引号 ＋ “64” ＋ #引号 ＋ “ src=” ＋ #引号 ＋ “”, , 真), 倒找文本_ (变_天气原始内容, #引号 ＋ “></td>+#换行符+</tr>”, , 真)))
+
+赋值 (地址A处, 寻找文本 (变_天气原始内容, 相加 (“<td class=”, #引号, “wht3 lk2e”, #引号, “><img width=”, #引号, “64”, #引号, “ height=”, #引号, “64”, #引号, “ src=”, #引号, “”), , 真))
+
+赋值 (地址B处, 寻找文本 (变_天气原始内容, 相加 (#引号, “></td>”), , 真))
+赋值 (变_天气图片字节, 未知支持库函数_7 (取文本中间 (变_天气原始内容, 相加 (地址A处, 55), 相减 (地址B处, 地址A处, 55))))
+ ' 画PNG (CDC, AA, 300, 300)
+ ' 画图片_字节集_GDIPlus (CDC, 变_天气图片字节, 300, 300)
+
+画图片_从字节集_GDIPlus (CDC, 变_天气图片字节, 相加 (横坐标, 20), 相加 (纵坐标, 120))
+
+
+赋值 (地址A处, 相加 (寻找文本 (变_天气原始内容, 相加 (“lk37”, #引号), , 真), 6))
+赋值 (地址B处, 寻找文本 (变_天气原始内容, “<”, 地址A处, 真))
+赋值 (地址文本, 取文本中间 (变_天气原始内容, 地址A处, 相减 (地址B处, 地址A处)))
+ ' 宋体
+赋值 (b, 创建字体_GDIPlus (字体, 25, 0, 2))
+赋值 (c, 相加 (横坐标, 110))
+赋值 (d, 相加 (纵坐标, 100))
+赋值 (a, 创建画刷_固色画刷_GDIPlus (8730368, 255))
+ ' 地址文本 ＝ “地区：” ＋ 地址文本
+画文字_GDIPlus (CDC, 地址文本, c, d, a, b)
+销毁画刷_GDIPlus (a)
+销毁字体_GDIPlus (b)
+
+
+
+赋值 (地址A处, 相加 (寻找文本 (变_天气原始内容, 相加 (“txbd”, #引号), , 真), 6))
+赋值 (地址B处, 寻找文本 (变_天气原始内容, “<”, 地址A处, 真))
+赋值 (地址文本, 取文本中间 (变_天气原始内容, 地址A处, 相减 (地址B处, 地址A处)))
+
+ ' 信息框 (地址文本, 0, )
+
+ ' 地址文本 ＝ “小雨转阴”
+
+ ' a ＝ 创建画刷_固色画刷_GDIPlus (#黑色, 100)
+ ' b ＝ 创建字体_GDIPlus (“宋体”, 25, 1, 2)
+赋值 (b, 创建字体_GDIPlus (字体, 字体大小, 0, 2))
+赋值 (c, 相加 (横坐标, 30))
+赋值 (d, 相加 (纵坐标, 200))
+ ' 画文字_GDIPlus (CDC, 地址文本, c ＋ 2, d ＋ 2, a, b)
+ ' 销毁画刷_GDIPlus (a)
+
+赋值 (a, 创建画刷_固色画刷_GDIPlus (8730368, 255))
+画文字_GDIPlus (CDC, 地址文本, c, d, a, b)
+ ' 销毁画刷_GDIPlus (a)
+ ' 销毁字体_GDIPlus (b)
+
+
+赋值 (地址A处, 相加 (寻找文本 (变_天气原始内容, “>”, 地址B处, 真), 1))
+赋值 (地址B处, 寻找文本 (变_天气原始内容, “<”, 地址A处, 真))
+赋值 (地址文本, 取文本中间 (变_天气原始内容, 地址A处, 相减 (地址B处, 地址A处)))
+
+ ' a ＝ 创建画刷_固色画刷_GDIPlus (8730368, 255)
+ ' b ＝ 创建字体_GDIPlus (字体, 字体大小, 0, 2)
+赋值 (c, 相加 (横坐标, 90))
+赋值 (d, 相加 (纵坐标, 140))
+赋值 (地址文本, 相加 (“温度：”, 地址文本))
+画文字_GDIPlus (CDC, 地址文本, c, d, a, b)
+ ' 销毁画刷_GDIPlus (a)
+ ' 销毁字体_GDIPlus (b)
+
+
+赋值 (地址A处, 相加 (寻找文本 (变_天气原始内容, “·”, 地址B处, 真), 2))
+赋值 (地址B处, 寻找文本 (变_天气原始内容, “<”, 地址A处, 真))
+赋值 (地址文本, 取文本中间 (变_天气原始内容, 地址A处, 相减 (地址B处, 地址A处)))
+ ' a ＝ 创建画刷_固色画刷_GDIPlus (8730368, 255)
+ ' b ＝ 创建字体_GDIPlus (字体, 字体大小, 1, 2)
+ ' c ＝ 横坐标 ＋ 100
+赋值 (d, 相加 (d, 20))
+画文字_GDIPlus (CDC, 地址文本, c, d, a, b)
+ ' 销毁画刷_GDIPlus (a)
+ ' 销毁字体_GDIPlus (b)
+
+赋值 (地址A处, 相加 (寻找文本 (变_天气原始内容, “·”, 地址B处, 真), 2))
+赋值 (地址B处, 寻找文本 (变_天气原始内容, “<”, 地址A处, 真))
+赋值 (地址文本, 取文本中间 (变_天气原始内容, 地址A处, 相减 (地址B处, 地址A处)))
+ ' a ＝ 创建画刷_固色画刷_GDIPlus (8730368, 255)
+ ' b ＝ 创建字体_GDIPlus (字体, 字体大小, 1, 2)
+ ' c ＝ 横坐标 ＋ 90
+赋值 (d, 相加 (d, 间距))
+画文字_GDIPlus (CDC, 地址文本, c, d, a, b)
+ ' 销毁画刷_GDIPlus (a)
+ ' 销毁字体_GDIPlus (b)
+
+赋值 (地址A处, 相加 (寻找文本 (变_天气原始内容, “·”, 地址B处, 真), 2))
+赋值 (地址B处, 寻找文本 (变_天气原始内容, “<”, 地址A处, 真))
+赋值 (地址文本, 取文本中间 (变_天气原始内容, 地址A处, 相减 (地址B处, 地址A处)))
+ ' a ＝ 创建画刷_固色画刷_GDIPlus (8730368, 255)
+ ' b ＝ 创建字体_GDIPlus (字体, 字体大小, 1, 2)
+ ' c ＝ 横坐标 ＋ 90
+赋值 (d, 相加 (d, 间距))
+画文字_GDIPlus (CDC, 地址文本, c, d, a, b)
+销毁画刷_GDIPlus (a)
+销毁字体_GDIPlus (b)
+
+.类模块 字节流, , , 
+
+.程序集变量 hMem, 空白型, , , 
+.程序集变量 stream, 空白型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+释放字节流 ()
+
+.子程序 释放字节流, 空白型, 公开, 
+.如果真 (不等于 (hMem, 0))
+    GlobalFree (hMem)
+    赋值 (hMem, 0)
+.如果真结束
+
+
+.子程序 创建字节流, 整数型, 公开, 返回流指针
+.参数 字节集, 字节集, 可空, 
+
+.局部变量 p, 空白型, , , 
+.局部变量 n, 空白型, , , 
+
+释放字节流 ()
+.如果 (是否为空 (字节集))
+    赋值 (hMem, GlobalAlloc (2, 0)) ' GMEM_MOVEABLE=2
+    CreateStreamOnHGlobal (hMem, 1, stream)
+    
+.否则
+    赋值 (n, 取字节集长度 (字节集))
+    赋值 (hMem, GlobalAlloc (0, n)) ' GMEM_FIXED=0
+    赋值 (p, GlobalLock (hMem))
+    写到内存 (字节集, p, n)
+    GlobalUnlock (hMem)
+    CreateStreamOnHGlobal (hMem, 0, stream)
+.如果结束
+
+
+返回 (stream)
+
+.子程序 取字节流指针, 整数型, , 
+返回 (stream)
+
+
+.子程序 取字节流尺寸, 整数型, 公开, 
+返回 (GlobalSize (hMem))
+
+
+.子程序 取出字节集, 字节集, 公开, 
+.局部变量 字节集, 字节集, , , 
+.局部变量 p, 空白型, , , 
+.局部变量 n, 空白型, , , 
+
+赋值 (n, 取字节流尺寸 ())
+赋值 (p, GlobalLock (hMem))
+赋值 (字节集, 指针到字节集 (p, n))
+GlobalUnlock (hMem)
+返回 (字节集)
+
+
+.类模块 GdiplusFontFamily, , , 
+
+.程序集变量 nativeFamily, 空白型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+销毁 ()
+
+.子程序 销毁, 空白型, , 
+.如果真 (不等于 (nativeFamily, 0))
+    GdipDeleteFontFamily (nativeFamily)
+    赋值 (nativeFamily, 0)
+.如果真结束
+
+
+.子程序 创建_自名称, 整数型, 公开, 
+.参数 name, 文本型, , 
+
+.局部变量 n, 空白型, , , 
+.局部变量 r, 空白型, , , 
+
+赋值 (r, GdipCreateFontFamilyFromName (A2W (name), 0, n))
+SetNativeFamily (n)
+返回 (r)
+
+
+.子程序 GetNativeFamily, 整数型, 公开, 
+返回 (nativeFamily)
+
+
+.子程序 SetNativeFamily, 空白型, 公开, 
+.参数 Family, 整数型, , 
+
+销毁 ()
+赋值 (nativeFamily, Family)
+
+.程序集 程序集, , , 
+
+.子程序 画图片_从文件_GDIPlus, 逻辑型, , 使用GDI+在一个设备场景中画出图片,支持多种图片格式
+.参数 HDC, 整数型, , 设备场景句柄
+.参数 文件名, 文本型, , 需要画出的完整文件名
+.参数 横坐标, 整数型, , 定位图片
+.参数 纵坐标, 整数型, , 定位图片
+.参数 图片宽度, 小数型, 可空, 留空使用图片默认宽度
+.参数 图片高度, 小数型, 可空, 留空使用图片默认高度
+
+.局部变量 Graphics, 整数型, , , 
+.局部变量 Image, 整数型, , , 
+.局部变量 x, 小数型, , , 
+.局部变量 y, 小数型, , , 
+
+.如果真 (不等于 (GdipCreateFromHDC (HDC, Graphics), 0))
+    返回 (假)
+.如果真结束
+.如果真 (不等于 (GdipLoadImageFromFile (A2W (文件名), Image), 0))
+    返回 (假)
+.如果真结束
+.如果真 (不等于 (GdipGetImageDimension (Image, x, y), 0))
+    返回 (假)
+.如果真结束
+.如果真 (大于 (图片宽度, 0))
+    赋值 (x, 图片宽度)
+.如果真结束
+.如果真 (大于 (图片高度, 0))
+    赋值 (y, 图片高度)
+.如果真结束
+.如果真 (不等于 (GdipDrawImageRect (Graphics, Image, 横坐标, 纵坐标, x, y), 0))
+    返回 (假)
+.如果真结束
+GdipDisposeImage (Image) ' 销毁图像，释放资源
+GdipDeleteGraphics (Graphics) ' 释放资源
+返回 (真)
+
+.子程序 画图片_从字节集_GDIPlus, 逻辑型, , 使用GDI+在一个设备场景中画出图片,支持多种图片格式
+.参数 HDC, 整数型, , 设备场景句柄
+.参数 文件数据, 字节集, , 需要画出的图片数据
+.参数 左上角横坐标, 整数型, , 定位图片
+.参数 左上角纵坐标, 整数型, , 定位图片
+.参数 图片宽度, 小数型, 可空, 留空使用图片默认宽度
+.参数 图片高度, 小数型, 可空, 留空使用图片默认高度
+
+.局部变量 Graphics, 整数型, , , 
+.局部变量 Image, 整数型, , , 
+.局部变量 x, 小数型, , , 
+.局部变量 y, 小数型, , , 
+.局部变量 AA, 空白型, , , 
+.局部变量 BB, 字节流, , , 
+
+.如果真 (不等于 (GdipCreateFromHDC (HDC, Graphics), 0))
+    返回 (假)
+.如果真结束
+BB.创建字节流 (文件数据)
+赋值 (AA, BB.取字节流指针 ())
+.如果真 (不等于 (GdipLoadImageFromStream (AA, Image), 0))
+    返回 (假)
+.如果真结束
+.如果真 (不等于 (GdipGetImageDimension (Image, x, y), 0))
+    返回 (假)
+.如果真结束
+.如果真 (大于 (图片宽度, 0))
+    赋值 (x, 图片宽度)
+.如果真结束
+.如果真 (大于 (图片高度, 0))
+    赋值 (y, 图片高度)
+.如果真结束
+.如果真 (不等于 (GdipDrawImageRect (Graphics, Image, 左上角横坐标, 左上角纵坐标, x, y), 0))
+    返回 (假)
+.如果真结束
+BB.释放字节流 ()
+GdipDisposeImage (Image) ' 销毁图像，释放资源
+GdipDeleteGraphics (Graphics) ' 释放资源
+返回 (真)
+
+.子程序 创建画刷_图片画刷_GDIPlus, 整数型, , 返回刷子句柄,返回0表示失败
+.参数 图片路径, 文本型, , 
+.参数 环绕模式, 整数型, , 
+
+.局部变量 a, 空白型, , , 
+.局部变量 b, 空白型, , , 
+
+ ' 环绕模式_平铺, "0", 公开, Tile 平铺渐变或纹理。
+ ' 环绕模式_水平反转后平铺, "1", 公开, TileFlipX 水平反转纹理或渐变，然后平铺该纹理或渐变。
+ ' 环绕模式_垂直反转后平铺, "2", 公开, TileFlipY 垂直反转纹理或渐变，然后平铺该纹理或渐变。
+ ' 环绕模式_水平垂直反转后平铺, "3", 公开, TileFlipXY 水平和垂直反转纹理或渐变，然后平铺该纹理或渐变。
+ ' 环绕模式_不平铺, "4", 公开, Clamp 纹理或渐变没有平铺。
+.如果真 (不等于 (GdipLoadImageFromFile (A2W (图片路径), a), 0)) ' 读取图片
+    返回 (0)
+.如果真结束
+.如果真 (不等于 (GdipCreateTexture (a, 0, b), 0))
+    返回 (0)
+.如果真结束
+GdipDisposeImage (a)
+返回 (b)
+
+.子程序 创建画刷_固色画刷_GDIPlus, 整数型, , 返回刷子句柄,返回0表示失败
+.参数 画刷颜色, 整数型, , 
+.参数 透明度, 整数型, , 0~255
+
+.局部变量 a, 空白型, , , 
+
+.如果真 (不等于 (GdipCreateSolidFill (RGB到ARGB (画刷颜色, 透明度), a), 0))
+    返回 (0)
+.如果真结束
+返回 (a)
+
+
+.子程序 销毁画刷_GDIPlus, 整数型, , 
+.参数 画刷句柄, 整数型, , 
+
+返回 (GdipDeleteBrush (画刷句柄))
+
+.子程序 创建字体_GDIPlus, 整数型, , 返回字体句柄,返回0表示失败
+.参数 字体名称, 文本型, , 字体名称
+.参数 字体尺寸, 小数型, , 字体尺寸
+.参数 字体风格, 整数型, , 字体风格
+.参数 字体度量单位, 整数型, , 字体度量单位
+
+.局部变量 a, GdiplusFontFamily, , , 
+.局部变量 b, 空白型, , , 
+
+ ' 单位_世界坐标, "0", 公开, // 0 -- World coordinate (non-physical unit)
+ ' 单位_Display, "1", 公开, // 1 -- Variable -- for PageTransform only
+ ' 单位_像素, "2", 公开, // 2 -- Each unit is one device pixel.像素
+ ' 单位_点, "3", 公开, // 3 -- Each unit is a printer's point 点
+ ' 单位_英寸, "4", 公开, // 4 -- Each unit is 1 inch.英寸
+ ' 单位_Document, "5", 公开, // 5 -- Each unit is 1/300 inch.
+ ' 单位_毫米, "6", 公开, // 6 -- Each unit is 1 millimeter.毫米
+
+
+ ' 字体风格_普通, "0", 公开
+ ' 字体风格_加粗, "1", 公开
+ ' 字体风格_倾斜, "2", 公开
+ ' 字体风格_加粗倾斜, "3", 公开
+ ' 字体风格_带下划线, "4", 公开
+ ' 字体风格_带中间线, "8", 公开
+a.创建_自名称 (字体名称)
+.如果真 (不等于 (GdipCreateFont (a.GetNativeFamily (), 字体尺寸, 字体风格, 字体度量单位, b), 0))
+    返回 (0)
+.如果真结束
+返回 (b)
+
+.子程序 销毁字体_GDIPlus, 整数型, , 
+.参数 字体句柄, 整数型, , 
+
+返回 (GdipDeleteFont (字体句柄))
+
+.子程序 画文字_GDIPlus, 整数型, , 
+.参数 HDC, 空白型, , 
+.参数 文本内容, 文本型, , 
+.参数 画出横坐标, 空白型, , 
+.参数 画出纵坐标, 空白型, , 
+.参数 画刷句柄, 空白型, , 
+.参数 字体句柄, 空白型, , 
+
+.局部变量 Graphics, 整数型, , , 
+.局部变量 a, RectF, , , 
+.局部变量 b, 字节集, , , 
+
+.如果真 (不等于 (GdipCreateFromHDC (HDC, Graphics), 0))
+    返回 (0)
+.如果真结束
+赋值 (a.X, 画出横坐标)
+赋值 (a.Y, 画出纵坐标)
+赋值 (a.Width, 0)
+赋值 (a.Height, 0)
+赋值 (b, A2W (文本内容))
+GdipSetTextRenderingHint (Graphics, 5)
+.如果真 (不等于 (GdipDrawString (Graphics, b, 相减 (相除 (取字节集长度 (b), 2), 1), 字体句柄, a, 0, 画刷句柄), 0))
+    返回 (0)
+.如果真结束
+返回 (1)
+
+.子程序 GetBitsFromBitmapHandle, 字节集, , 
+.参数 hBitmap, 整数型, , 
+
+.局部变量 Bitmap, BITMAP, , , 
+.局部变量 Resource, 字节集, , , 
+.局部变量 BitmapFileHeader, BITMAPFILEHEADER, , , 
+.局部变量 bfh, 字节集, , , 
+.局部变量 hMemDC, 整数型, , , 
+.局部变量 BitmapInfo, BITMAPINFO, , , 
+.局部变量 bi, 字节集, , , 
+
+GetObjectA (hBitmap, 相加 (相乘 (5, 4), 2, 2), Bitmap)
+赋值 (hMemDC, CreateCompatibleDC (0))
+赋值 (BitmapInfo.BITMAPINFOHEADER.biSize, 相乘 (4, 11))
+GetDIBits_BimapInfo (hMemDC, hBitmap, 0, 0, 0, BitmapInfo, 0)
+赋值 (Resource, 取空白字节集 (BitmapInfo.BITMAPINFOHEADER.biSizeImage))
+赋值 (BitmapInfo.BITMAPINFOHEADER.biCompression, 0)
+GetDIBits (hMemDC, hBitmap, 0, Bitmap.bmHeight, Resource, BitmapInfo, 0)
+ ' 构造位图信息
+赋值 (bi, 取空白字节集 (BitmapInfo.BITMAPINFOHEADER.biSize))
+CopyMemory_BITMAPINFO (bi, BitmapInfo, BitmapInfo.BITMAPINFOHEADER.biSize)
+ ' 构造位图文件头
+赋值 (BitmapFileHeader.bfType, 19778)
+赋值 (BitmapFileHeader.bfOffBits, 相加 (相乘 (2, 4), 相乘 (3, 2), BitmapInfo.BITMAPINFOHEADER.biSize))
+赋值 (BitmapFileHeader.bfSize, 相加 (BitmapFileHeader.bfOffBits, BitmapInfo.BITMAPINFOHEADER.biSizeImage))
+赋值 (BitmapFileHeader.bfReserved1, 0)
+赋值 (BitmapFileHeader.bfReserved2, 0)
+赋值 (bfh, 取空白字节集 (14))
+CopyMemory_BITMAPFILEHEADER (bfh, BitmapFileHeader, 14)
+DeleteDC (hMemDC)
+返回 (相加 (bfh, bi, Resource))
+
+.子程序 A2W, 字节集, 公开, 将Ansi转成Unicode
+.参数 欲转换的文本, 文本型, , 
+
+.局部变量 缓冲区, 字节集, , , 
+.局部变量 字符数目, 整数型, , , 包括结尾0
+
+赋值 (字符数目, MultiByteToWideChar (0, 0, 欲转换的文本, -1, {  }, 0)) ' 返回字符数目
+ ' 输出调试文本 (字符数目)
+赋值 (缓冲区, 取空白字节集 (相乘 (字符数目, 2)))
+MultiByteToWideChar (0, 0, 欲转换的文本, -1, 缓冲区, 字符数目)
+返回 (缓冲区)
+ ' BOOL MByteToWChar(LPCSTR lpcszStr, LPWSTR lpwszStr, DWORD dwSize)
+ ' {
+ ' // Get the required size of the buffer that receives the Unicode' // string.
+ ' DWORD dwMinSize;
+ ' dwMinSize = MultiByteToWideChar (CP_ACP, 0, lpcszStr, -1, NULL, 0);
+
+ ' if(dwSize < dwMinSize)
+ ' {' return FALSE;' }
+
+ ' // Convert headers from ASCII to Unicode.
+ ' MultiByteToWideChar (CP_ACP, 0, lpcszStr, -1, lpwszStr, dwMinSize);
+ ' return TRUE;
+ ' }
+
+
+
+.子程序 W2A, 文本型, 公开, 将Unicode转成Ansi
+.参数 欲转换的文本, 整数型, , Unicode文本内存地址
+
+.局部变量 缓冲区, 文本型, , , 
+.局部变量 字符数目, 整数型, , , 包括结尾0
+
+赋值 (字符数目, WideCharToMultiByte (1, 0, 欲转换的文本, -1, “”, 0, 0, 0))
+ ' 输出调试文本 (字符数目)
+赋值 (缓冲区, 取空白文本 (字符数目))
+WideCharToMultiByte (1, 0, 欲转换的文本, -1, 缓冲区, 字符数目, 0, 0)
+返回 (缓冲区)
+ ' BOOL WCharToMByte(LPCWSTR lpcwszStr, LPSTR lpszStr, DWORD dwSize)
+ ' {
+ ' DWORD dwMinSize;
+ ' dwMinSize = WideCharToMultiByte(CP_OEMCP,NULL,lpcwszStr,-1,NULL,0,NULL,FALSE);
+ ' if(dwSize < dwMinSize)
+ ' {return FALSE;}
+ ' WideCharToMultiByte(CP_OEMCP,NULL,lpcwszStr,-1,lpszStr,dwSize,NULL,FALSE);
+ ' return TRUE;
+ ' }
+
+
+.子程序 RGB到ARGB, 整数型, 公开, 
+.参数 RGB颜色, 整数型, , 
+.参数 透明度, 整数型, , 
+
+.局部变量 Color, 字节集, , , 
+
+赋值 (Color, 到字节集 (RGB颜色))
+赋值 (RGB颜色, 位或 (相加 (Color [3], 相乘 (Color [2], 256), 相乘 (Color [1], 65536)), 左移 (透明度, 24))) ' 转换成GDI+的颜色值
+返回 (RGB颜色)
+
+.子程序 取配置项目_LF_API, 空白型, , 使用"#换行符"分割文本来分割每个项目；使用“=”分割每个[配置项名称]和[项目内容]
+.参数 配置文件名, 文本型, , 
+.参数 节名称, 文本型, , 
+.参数 需要返回的内容, 整数型, 可空, 默认0，返回项目和项目内容；设置1，返回所有项目名；设置2，返回所有项目内容
+.参数 返回的项目数组, 文本型, 参考 数组, 
+
+.局部变量 配置数组, 字节集, , "0", 
+.局部变量 配置数据, 字节集, , , 
+.局部变量 A, 整数型, , , 
+.局部变量 待返回的数据, 文本型, , , 
+.局部变量 临时文本数组, 文本型, , "0", 
+.局部变量 临时文本, 文本型, , , 
+
+赋值 (配置数据, 取空白字节集 (32767))
+GetPrivateProfileSection_取配置项目 (节名称, 配置数据, 32767, 配置文件名)
+赋值 (配置数据, 取字节集左边 (配置数据, 寻找字节集 (配置数据, { 0, 0 }, )))
+赋值 (配置数组, 分割字节集 (配置数据, { 0 }, ))
+.如果 (等于 (取数组成员数 (配置数组), 0))
+    返回 ()
+.否则
+    .判断开始 (等于 (需要返回的内容, 0)) ' 默认0，返回项目和项目内容
+        .计次循环首 (取数组成员数 (配置数组), A)
+            加入成员 (返回的项目数组, 到文本 (配置数组 [A]))
+        .计次循环尾 ()
+    .判断 (等于 (需要返回的内容, 1)) ' 设置1，返回所有项目名
+        .计次循环首 (取数组成员数 (配置数组), A)
+            赋值 (临时文本数组, 分割文本 (到文本 (配置数组 [A]), “=”, ))
+            .如果真 (等于 (取数组成员数 (临时文本数组), 2))
+                加入成员 (返回的项目数组, 临时文本数组 [1])
+            .如果真结束
+            
+        .计次循环尾 ()
+    .判断 (等于 (需要返回的内容, 2)) ' 设置2，返回所有项目内容
+        .计次循环首 (取数组成员数 (配置数组), A)
+            赋值 (临时文本数组, 分割文本 (到文本 (配置数组 [A]), “=”, ))
+            .如果真 (等于 (取数组成员数 (临时文本数组), 2))
+                加入成员 (返回的项目数组, 临时文本数组 [2])
+            .如果真结束
+            
+        .计次循环尾 ()
+    .默认
+        .计次循环首 (取数组成员数 (配置数组), A) ' 非0，1，2，则返回项目和项目内容
+            加入成员 (返回的项目数组, 到文本 (配置数组 [A]))
+        .计次循环尾 ()
+    .判断结束
+    
+.如果结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

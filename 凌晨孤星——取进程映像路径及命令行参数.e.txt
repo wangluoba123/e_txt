@@ -1,0 +1,202 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：取进程映像路径及命令行参数
+ ' 程序描述：
+ ' 程序作者：凌晨孤星
+ ' 邮政编码：528251
+ ' 联系地址：广东省佛山市南海区
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：lzj85@163.com
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 419
+    高度 = 268
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “凌晨孤星——取进程映像路径及命令行参数”
+    帮助文件名 = “”
+
+
+
+.常量 PROCESS_VM_READ, "16", , 
+.常量 PROCESS_VM_OPERATION, "8", , 
+.常量 PROCESS_CREATE_THREAD, "2", , 
+.常量 PROCESS_QUERY_INFORMATION, "1024", , 
+.常量 PROCESS_DUP_HANDLE, "64", , 
+.常量 INFINITE, "-1", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' eAPI F7FC1AE45C5C4758AF03EF19F18A395D 1 1 应用接口支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 1 2 扩展界面支持库一
+
+
+
+
+
+.DLL命令 OpenProcess_API, 整数型, "", "OpenProcess", , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 逻辑型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 CloseHandle, 逻辑型, "", "", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 GetModuleHandleA, 整数型, "", "", , 
+    .参数 lpModuleName, 文本型, , 
+
+.DLL命令 GetProcAddress, 整数型, "", "", , 
+    .参数 hModule, 整数型, , 
+    .参数 lpProcName, 文本型, , 
+
+.DLL命令 CreateRemoteThread, 整数型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 整数型, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, , 
+
+.DLL命令 GetExitCodeThread, 逻辑型, "", "GetExitCodeThread", , 
+    .参数 hThread, 空白型, , 
+    .参数 lpExitCode, 空白型, 传址, 
+
+.DLL命令 WaitForSingleObject, 整数型, "", "", , 
+    .参数 hHandle, 整数型, , 
+    .参数 dwMilliseconds, 整数型, , 
+
+.DLL命令 ReadProcessMemory, 逻辑型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 文本型, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesRead, 整数型, 传址, 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 ipacl, CImagePathAndCommandLine, , , 
+.局部变量 strBuffer, 文本型, , , 
+.局部变量 ProcessInfo, 未知类型0x20009, , "0", 
+.局部变量 n, 整数型, , , 
+.局部变量 nIndex, 整数型, , , 
+
+全部删除 ()
+赋值 (ProcessInfo, 未知支持库函数_10 ())
+.计次循环首 (取数组成员数 (ProcessInfo), n)
+    赋值 (nIndex, .插入表项 (ProcessInfo [n], , , , , ))
+    .如果 (ipacl.OpenProcess (ProcessInfo [n], ))
+        ipacl.GetProcessImagePathAndCommandLine (strBuffer)
+        ipacl.Close ()
+        nIndex.置标题 (1, strBuffer)
+    .否则
+        nIndex.置标题 (1, “打开进程失败，请先提升进程权限。”)
+    .如果结束
+    
+.计次循环尾 ()
+
+
+.类模块 CImagePathAndCommandLine, , , 
+
+.程序集变量 m_hProcess, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 OpenProcess, 逻辑型, , 打开目标进程。成功返回真，失败返回假。备注：若不再操作目标进程，请调用“Close”方法释放资源。
+.参数 dwProcessId, 整数型, , 目标进程ID
+
+赋值 (m_hProcess, OpenProcess_API (位或 (#PROCESS_VM_READ, #PROCESS_DUP_HANDLE, #PROCESS_VM_OPERATION, #PROCESS_CREATE_THREAD, #PROCESS_QUERY_INFORMATION), 假, dwProcessId)) ' 打开目标进程
+返回 (不等于 (m_hProcess, 0))
+
+.子程序 Close, 逻辑型, , 关闭已打开的句柄，释放资源。成功返回真，失败返回假。
+.如果真 (不等于 (m_hProcess, 0))
+    .如果真 (CloseHandle (m_hProcess)) ' 关闭进程句柄
+        赋值 (m_hProcess, 0)
+        返回 (真)
+    .如果真结束
+    
+.如果真结束
+返回 (假)
+
+.子程序 SetHandle, 空白型, , 置入进程句柄，可通过本类的实例操作目标进程。
+.参数 hProcess, 整数型, , 目标进程ID
+.参数 bCloseOldHandle, 逻辑型, 可空, 是否把已打开的句柄释放。建议该参数为真。否则有可能会导致内存泄漏。
+
+.如果真 (bCloseOldHandle)
+    CloseHandle (m_hProcess) ' 关于进程句柄
+.如果真结束
+赋值 (m_hProcess, hProcess)
+
+.子程序 GetSaveHandle, 整数型, , 获取已保存的句柄
+返回 (m_hProcess)
+
+.子程序 GetProcessImagePathAndCommandLine, 逻辑型, , 获取目标进程的映像路径及命令行参数。成功返回真，失败返回假。
+.参数 lpstrImagePathAndCommandLine, 文本型, 参考, 用于保存目标进程的映像路径及命令行参数的文本型变量
+
+.局部变量 GetCommandLineA_addr, 整数型, , , GetCommandLineA的地址
+.局部变量 hRemoteThread, 整数型, , , 远程线程句柄
+.局部变量 lptstr, 整数型, , , 远程进程的映像路径及命令行参数的基址
+.局部变量 lstrlenA_addr, 整数型, , , lstrlenA的地址
+.局部变量 strlen, 整数型, , , 长度
+
+赋值 (GetCommandLineA_addr, GetProcAddress (GetModuleHandleA (“Kernel32.dll”), “GetCommandLineA”)) ' 获取 GetCommandLineA 的地址
+赋值 (hRemoteThread, CreateRemoteThread (m_hProcess, 0, 0, GetCommandLineA_addr, 0, 0, 0)) ' 创建远程线程执行 GetCommandLineA 函数，并获取该线程的线程句柄
+.如果 (不等于 (hRemoteThread, 0))
+    WaitForSingleObject (hRemoteThread, #INFINITE) ' 等待线程结束
+    GetExitCodeThread (hRemoteThread, lptstr) ' 获取线程退出代码
+    CloseHandle (hRemoteThread) ' 关闭线程句柄
+.否则
+    返回 (假)
+.如果结束
+赋值 (lstrlenA_addr, GetProcAddress (GetModuleHandleA (“Kernel32.dll”), “lstrlenA”)) ' 获取 lstrlenA 的地址
+赋值 (hRemoteThread, CreateRemoteThread (m_hProcess, 0, 0, lstrlenA_addr, lptstr, 0, 0)) ' 创建远程线程执行 lstrlenA 函数，并获取该线程的线程句柄
+.如果 (不等于 (hRemoteThread, 0))
+    WaitForSingleObject (hRemoteThread, #INFINITE) ' 等待线程结束
+    GetExitCodeThread (hRemoteThread, strlen) ' 获取线程退出代码
+    CloseHandle (hRemoteThread) ' 关闭线程句柄
+.否则
+    返回 (假)
+.如果结束
+赋值 (lpstrImagePathAndCommandLine, 取空白文本 (strlen)) ' 申请内存空间，用于保存远程进程的映像路径及命令行参数的基址
+.如果真 (ReadProcessMemory (m_hProcess, lptstr, lpstrImagePathAndCommandLine, strlen, 0)) ' 读取远程进程的映像路径及命令行参数
+    返回 (真)
+.如果真结束
+返回 (假)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

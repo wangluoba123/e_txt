@@ -1,0 +1,310 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：后台截图
+ ' 程序描述：
+ ' 程序作者：凌晨孤星
+ ' 邮政编码：528251
+ ' 联系地址：广东省佛山市南海区
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：lzj85@163.com
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 494
+    高度 = 229
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “凌晨孤星——后台截图例程！”
+    帮助文件名 = “”
+
+窗口 窗口1
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 1
+    底图方式 = 2
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 BITMAP, , 
+    .成员 bmType, 空白型, , , 
+    .成员 bmWidth, 空白型, , , 
+    .成员 bmHeight, 空白型, , , 
+    .成员 bmWidthBytes, 空白型, , , 
+    .成员 bmPlanes, 短整数型, , , 
+    .成员 bmBitsPixel, 短整数型, , , 
+    .成员 bmBits, 空白型, 传址, , 
+
+数据类型 BITMAPINFO, , 
+    .成员 BITMAPINFOHEADER, BITMAPINFOHEADER, , , 
+    .成员 bmiColors, 空白型, , , RGBQUAD          bmiColors[1]; 
+
+数据类型 BITMAPINFOHEADER, , 
+    .成员 biSize, 空白型, , , 
+    .成员 biWidth, 空白型, , , 
+    .成员 biHeight, 空白型, , , 
+    .成员 biPlanes, 短整数型, , , 
+    .成员 biBitCount, 短整数型, , , 
+    .成员 biCompression, 空白型, , , 
+    .成员 biSizeImage, 空白型, , , 
+    .成员 biXPelsPerMeter, 空白型, , , 
+    .成员 biYPelsPerMeter, 空白型, , , 
+    .成员 biClrUsed, 空白型, , , 
+    .成员 biClrImportant, 空白型, , , 
+
+数据类型 BITMAPFILEHEADER, , 
+    .成员 bfType, 短整数型, , , 
+    .成员 bfSize, 空白型, , , 
+    .成员 bfReserved1, 短整数型, , , 
+    .成员 bfReserved2, 短整数型, , , 
+    .成员 bfOffBits, 空白型, , , 
+
+数据类型 RECT, , 
+    .成员 left, 整数型, , , 
+    .成员 top, 整数型, , , 
+    .成员 right, 整数型, , , 
+    .成员 bottom, 整数型, , , 
+
+
+.DLL命令 GetObjectA, 整数型, "", "GetObjectA", , 
+    .参数 hgdiobj, 空白型, , 
+    .参数 cbBuffer, 空白型, , 
+    .参数 lpvObject, BITMAP, , 
+
+.DLL命令 CreateCompatibleDC, 整数型, "", "CreateCompatibleDC", , 
+    .参数 hdc, 整数型, , 
+
+.DLL命令 GetDIBits_BimapInfo, 整数型, "", "GetDIBits", , 
+    .参数 HDC, 空白型, , 
+    .参数 hBitmap, 空白型, , 
+    .参数 nStartScan, 空白型, , 
+    .参数 nNumScans, 空白型, , 
+    .参数 lpBits, 空白型, , 
+    .参数 lpBI, BITMAPINFO, , 
+    .参数 wUsage, 空白型, , 
+
+.DLL命令 GetDIBits, 整数型, "", "GetDIBits", , 
+    .参数 HDC, 空白型, , 
+    .参数 hBitmap, 空白型, , 
+    .参数 nStartScan, 空白型, , 
+    .参数 nNumScans, 空白型, , 
+    .参数 lpBits, 字节集, , 
+    .参数 lpBI, BITMAPINFO, , 
+    .参数 wUsage, 空白型, , 
+
+.DLL命令 CopyMemory_BITMAPINFO, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, BITMAPINFO, , 
+    .参数 Length, 空白型, , 
+
+.DLL命令 CopyMemory_BITMAPFILEHEADER, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, BITMAPFILEHEADER, , 
+    .参数 Length, 空白型, , 
+
+.DLL命令 DeleteDC, 整数型, "", "DeleteDC", , 
+    .参数 hdc, 空白型, , 
+
+.DLL命令 GetWindowRect, 逻辑型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpRect, RECT, , 
+
+.DLL命令 IsWindow, 逻辑型, "", "", , 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 SelectObject, 整数型, "", "SelectObject", , 
+    .参数 hdc, 空白型, , 
+    .参数 hgdiobj, 空白型, , 
+
+.DLL命令 PrintWindow, 逻辑型, "", "", , 
+    .参数 hwnd, 整数型, , 
+    .参数 hdcBlt, 整数型, , 
+    .参数 nFlags, 整数型, , 
+
+.DLL命令 CreateCompatibleBitmap, 整数型, "", "CreateCompatibleBitmap", , 
+    .参数 hdc, 空白型, , 
+    .参数 nWidth, 空白型, , 
+    .参数 nHeight, 空白型, , 
+
+.DLL命令 DeleteObject, 逻辑型, "", "DeleteObject", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 GetDC, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 ReleaseDC, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 hDC, 整数型, , 
+
+.DLL命令 EnumWindows, 逻辑型, "", "", , 
+    .参数 lpEnumFunc, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 IsWindowVisible, 逻辑型, "", "", , 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 GetWindowTextLengthA, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 GetWindowTextA, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpString, 文本型, , 
+    .参数 nMaxCount, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+清空 ()
+EnumWindows (到数值 (&EnumWindowsProc), 0)
+
+.子程序 EnumWindowsProc, 逻辑型, , 
+.参数 hwnd, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 窗口文本, 文本型, , , 
+.局部变量 文本长度, 整数型, , , 
+
+.如果真 (不等于 (hwnd, 0))
+    .如果真 (IsWindowVisible (hwnd))
+        赋值 (文本长度, 相加 (GetWindowTextLengthA (hwnd), 1))
+        赋值 (窗口文本, 取空白文本 (文本长度))
+        GetWindowTextA (hwnd, 窗口文本, 文本长度)
+        .如果真 (并且 (不等于 (窗口文本, “”), 不等于 (窗口文本, “Program Manager”)))
+            窗口文本.加入项目 (hwnd)
+        .如果真结束
+        
+    .如果真结束
+    返回 (真)
+.如果真结束
+返回 (假)
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+EnumWindows (到数值 (&EnumWindowsProc), 0)
+
+.子程序 _列表框1_列表项被选择, 空白型, , 
+.如果真 (取反 (是否已创建 (窗口1)))
+    载入 (窗口1, _启动窗口, 假)
+.如果真结束
+赋值 (窗口1., 未知函数_67174594 (.取项目数值 (.)))
+
+
+.程序集 程序集1, , , 
+
+.子程序 截取窗口位图, 字节集, , 
+.参数 窗口句柄, 整数型, , 
+
+.局部变量 矩形区域, 未知类型0x4101011D, , , 
+.局部变量 屏幕设备上下文句柄, 整数型, , , 
+.局部变量 内存设备上下文句柄, 整数型, , , 
+.局部变量 位图句柄, 整数型, , , 
+.局部变量 旧位图句柄, 整数型, , , 
+.局部变量 位图, 未知类型0x4101011E, , , 
+.局部变量 位图像素点阵, 字节集, , , 
+.局部变量 位图文件头, 未知类型0x4101011F, , , 
+.局部变量 位图文件头字节集, 字节集, , , 
+.局部变量 位图信息, 未知类型0x41010120, , , 
+.局部变量 位图信息字节集, 字节集, , , 
+
+.如果真 (取反 (未知函数_167837985 (窗口句柄)))
+    返回 ({  })
+.如果真结束
+GetWindowRect (窗口句柄, 矩形区域)
+赋值 (屏幕设备上下文句柄, 未知函数_167837987 (0))
+赋值 (内存设备上下文句柄, CreateCompatibleDC (屏幕设备上下文句柄))
+赋值 (位图句柄, CreateCompatibleBitmap (屏幕设备上下文句柄, 相减 (矩形区域.right, 矩形区域.left), 相减 (矩形区域.bottom, 矩形区域.top)))
+赋值 (旧位图句柄, SelectObject (内存设备上下文句柄, 位图句柄))
+.如果真 (取反 (PrintWindow (窗口句柄, 内存设备上下文句柄, 0)))
+    未知函数_167837989 (内存设备上下文句柄, 旧位图句柄)
+    DeleteObject (位图句柄)
+    DeleteDC (内存设备上下文句柄)
+    ReleaseDC (0, 屏幕设备上下文句柄)
+    返回 ({  })
+.如果真结束
+GetObjectA (位图句柄, 相加 (相乘 (5, 4), 2, 2), 位图)
+赋值 (位图信息.BITMAPINFOHEADER.biSize, 相乘 (4, 11))
+GetDIBits_BimapInfo (内存设备上下文句柄, 位图句柄, 0, 0, 0, 位图信息, 0)
+赋值 (位图像素点阵, 取空白字节集 (位图信息..))
+赋值 (位图信息.., 0)
+GetDIBits (内存设备上下文句柄, 位图句柄, 0, 位图.bmHeight, 位图像素点阵, 位图信息, 0)
+ ' 构造位图信息
+赋值 (位图信息字节集, 取空白字节集 (位图信息..))
+CopyMemory_BITMAPINFO (位图信息字节集, 位图信息, 位图信息.BITMAPINFOHEADER.biSize)
+ ' 构造位图文件头
+赋值 (位图文件头., 19778)
+赋值 (位图文件头.bfOffBits, 相加 (相乘 (2, 4), 相乘 (3, 2), 位图信息.BITMAPINFOHEADER.biSize))
+赋值 (位图文件头., 相加 (位图文件头., 位图信息..))
+赋值 (位图文件头., 0)
+赋值 (位图文件头., 0)
+赋值 (位图文件头字节集, 取空白字节集 (14))
+CopyMemory_BITMAPFILEHEADER (位图文件头字节集, 位图文件头, 14)
+SelectObject (内存设备上下文句柄, 旧位图句柄)
+未知函数_167837991 (位图句柄)
+DeleteDC (内存设备上下文句柄)
+ReleaseDC (0, 屏幕设备上下文句柄)
+返回 (相加 (位图文件头字节集, 位图信息字节集, 位图像素点阵))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

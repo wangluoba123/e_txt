@@ -1,0 +1,348 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：纯API实现枚举并预览系统字体。
+ ' 程序作者：曾劲松
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：13886174425
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：http://goomoo.cn
+ ' 版权声明：《易精经》例程
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 CW_USEDEFAULT, "2147483648", , 
+.常量 SW_SHOWNORMAL, "1", , 
+.常量 CS_HREDRAW, "2", , 
+.常量 CS_VREDRAW, "1", , 
+.常量 WS_CAPTION, "12582912", , 
+.常量 WS_MAXIMIZEBOX, "65536", , 
+.常量 WS_MINIMIZEBOX, "131072", , 
+.常量 WS_OVERLAPPED, "0", , 
+.常量 WS_SYSMENU, "524288", , 
+.常量 WS_THICKFRAME, "262144", , 
+.常量 IDC_ARROW, "32512", , 
+.常量 COLOR_WINDOW, "5", , 
+.常量 WM_DESTROY, "2", , 
+.常量 COLOR_BTNFACE, "15", , 
+.常量 WM_CLOSE, "16", , 
+.常量 CS_DBLCLKS, "8", , 
+.常量 WM_LBUTTONDBLCLK, "515", , 
+.常量 WM_LBUTTONDOWN, "513", , 
+.常量 WM_LBUTTONUP, "514", , 
+.常量 WM_MOUSEMOVE, "512", , 
+.常量 BS_GROUPBOX, "7", , 
+.常量 BS_PUSHBUTTON, "0", , 
+.常量 WS_CHILD, "1073741824", , 
+.常量 WS_VISIBLE, "268435456", , 
+.常量 WM_SETFONT, "48", , 
+.常量 WS_EX_CLIENTEDGE, "512", , 
+.常量 DEFAULT_CHARSET, "1", , 
+.常量 GB2312_CHARSET, "134", , 
+.常量 WM_GETFONT, "49", , 
+.常量 WM_COMMAND, "273", , 
+.常量 WS_TABSTOP, "65536", , 
+.常量 LBS_STANDARD, "10485763", , 
+.常量 LBS_SORT, "2", , 
+.常量 LB_INSERTSTRING, "385", , 
+.常量 WS_VSCROLL, "2097152", , 
+.常量 LBS_NOTIFY, "1", , 
+.常量 SS_CENTER, "1", , 
+.常量 LBN_SELCHANGE, "1", , 
+.常量 LB_GETCURSEL, "392", , 
+.常量 LB_GETTEXT, "393", , 
+.常量 LB_GETTEXTLEN, "394", , 
+.常量 DS_SETFONT, "64", , 
+.常量 LB_RESETCONTENT, "388", , 
+.常量 LBS_MULTICOLUMN, "512", , 
+.常量 WS_HSCROLL, "1048576", , 
+.常量 , , , 
+.常量 控件号之按钮, "10000", , 
+.常量 控件号之列表框, "10001", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' spec A512548E76954B6E92C21055517615B0 2 0 特殊功能支持库
+
+
+
+
+数据类型 WNDCLASSEX, , 
+    .成员 cbSize, 整数型, , , 
+    .成员 style, 整数型, , , 
+    .成员 lpfnWndProc, 子程序指针, , , '<<<<注意这里要改成子程序指针类型
+    .成员 cbClsExtra, 整数型, , , 
+    .成员 cbWndExtra, 整数型, , , 
+    .成员 hInstance, 整数型, , , 
+    .成员 hIcon, 整数型, , , 
+    .成员 hCursor, 整数型, , , 
+    .成员 hbrBackground, 整数型, , , 
+    .成员 lpszMenuName, 文本型, , , 
+    .成员 lpszClassName, 文本型, , , 
+    .成员 hIconSm, 整数型, , , 
+
+数据类型 MSG, , 
+    .成员 hwnd, 整数型, , , 
+    .成员 message, 整数型, , , 
+    .成员 wParam, 整数型, , , 
+    .成员 lParam, 整数型, , , 
+    .成员 time, 整数型, , , 
+    .成员 pt, POINTAPI, , , 
+
+数据类型 POINTAPI, , 
+    .成员 横向位置, 整数型, , , 
+    .成员 纵向位置, 整数型, , , 
+
+
+.DLL命令 CreateWindowEx, 整数型, "user32", "CreateWindowExA", , 建立窗口　
+    .参数 dwExStyle, 整数型, , 
+    .参数 lpClassName, 文本型, , 
+    .参数 lpWindowName, 文本型, , 
+    .参数 dwStyle, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+    .参数 hWndParent, 整数型, , 
+    .参数 hMenu, 整数型, , 
+    .参数 hInstance, 整数型, , 
+    .参数 lpParam, 整数型, , 
+
+.DLL命令 RegisterClassEx, 整数型, "user32", "RegisterClassExA", , 　
+    .参数 pcWndClassEx, WNDCLASSEX, , 
+
+.DLL命令 ShowWindow, 整数型, "user32", "ShowWindow", , 控制窗口的可见性（在vb里使用：针对vb窗体及控件，请使用对应的vb属性）　如窗口之前是可见的，则返回TRUE（非零），否则返回FALSE（零）
+    .参数 hwnd, 整数型, , 窗口句柄，要向这个窗口应用由nCmdShow指定的命令
+    .参数 nCmdShow, 整数型, , 为窗口指定可视性方面的一个命令。请用下述任何一个常数;SW_HIDE：隐藏窗口，活动状态给令一个窗口;SW_MINIMIZE：最小化窗口，活动状态给令一个窗口;SW_RESTORE：用原来的大小和位置显示一个窗口，同时令其进入活动状态;SW_SHOW：用当前的大小和位置显示一个窗口，同时令其进入活动状态;SW_SHOWMAXIMIZED：最大化窗口，并将其激活;SW_SHOWMINIMIZED：最小化窗口，并将其激活;SW_SHOWMINNOACTIVE：最小化一个窗口，同时不改变活动窗口;SW_SHOWNA：用当前的大小和位置显示一个窗口，不改变活动窗口;SW_SHOWNOACTIVATE：用最近的大小和位置显示一个窗口，同时不改变活动窗口;SW_SHOWNORMAL：与SW_RESTORE相同;
+
+.DLL命令 UpdateWindow, 整数型, "user32", "UpdateWindow", , 强制立即更新窗口，窗口中以前屏蔽的所有区域都会重画（在vb里使用：如vb窗体或控件的任何部分需要更新，可考虑直接使用refresh方法　非零表示成功，零表示失败
+    .参数 hwnd, 整数型, , 欲更新窗口的句柄;
+
+.DLL命令 GetModuleHandle, 整数型, "kernel32", "GetModuleHandleA", , 获取一个应用程序或动态链接库的模块句柄　如执行成功成功，则返回模块句柄。零表示失败。会设置GetLastError
+    .参数 lpModuleName, 文本型, , 指定模块名，这通常是与模块的文件名相同的一个名字。例如，NOTEPAD.EXE程序的模块文件名就叫作NOTEPAD;  
+
+.DLL命令 DefWindowProc, 整数型, "user32", "DefWindowProcA", , 调用缺省窗口过程　
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 DispatchMessage, 整数型, "user32", "DispatchMessageA", , 向窗口发送消息　
+    .参数 lpMsg, MSG, , 
+
+.DLL命令 GetMessage, 整数型, "user32", "GetMessageA", , 从线索消息队列中返回一条消息　
+    .参数 lpMsg, MSG, , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsgFilterMin, 整数型, , 
+    .参数 wMsgFilterMax, 整数型, , 
+
+.DLL命令 TranslateMessage, 整数型, "user32", "TranslateMessage", , 转换虚拟关键字消息　
+    .参数 lpMsg, MSG, , 
+
+.DLL命令 LoadCursor, 整数型, "user32", "LoadCursorA", , 从指定的模块或应用程序实例中载入一个鼠标指针。LoadCursorBynum是LoadCursor函数的类型安全声明　执行成功则返回已载入的指针的句柄；零表示失败。在Windows ;    95 和Win16环境中，这个函数只能载入标准尺寸的图标
+    .参数 实例句柄, 整数型, , 一个DLL的模块句柄；或者一个实例句柄，指定包含了鼠标指针的可执行程序
+    .参数 鼠标指针标识, 整数型, , 作为一个字串，指定欲载入的指针资源。作为一个长整数值，指定欲载入的资源ID；或者设置一个常数，代表某幅固有系统指针。如装载的是一个固有系统指针，注意hInstance参数应设为零。在api32.txt文件中以前缀IDC_ 作为标志;  
+
+.DLL命令 LoadIcon, 整数型, "user32", "LoadIconA", , 从指定的模块或应用程序实例中载入一个图标。其中，LoadIconBynum是LoadIcon函数的类型安全声明　执行成功则返回已载入的图标的句柄；零表示失败。会设置GetLastError
+    .参数 实例句柄, 整数型, , 
+    .参数 图标标识, 整数型, , 
+
+.DLL命令 PostQuitMessage, 空白型, "user32", "PostQuitMessage", , 通知WINDOWS线索将中断　
+    .参数 nExitCode, 整数型, , 
+
+.DLL命令 SendMessage, 整数型, "user32", "SendMessageA", , 调用一个窗口的窗口函数，将一条消息发给那个窗口。除非消息处理完毕，否则该函数不会返回。SendMessageBynum， ;    SendMessageByString是该函数的“类型安全”声明形式　由具体的消息决定
+    .参数 窗口句柄, 整数型, , 要接收消息的那个窗口的句柄
+    .参数 信息值, 整数型, , 消息的标识符
+    .参数 参数一, 整数型, , 具体取决于消息
+    .参数 参数二, 整数型, , 具体取决于消息;
+
+.DLL命令 CreateFont, 整数型, "gdi32", "CreateFontA", , 用指定的属性创建一种逻辑字体　执行成功则返回逻辑字体的句柄，零表示失败。会设置GetLastError
+    .参数 nHeight, 整数型, , IfHeight
+    .参数 nWidth, 整数型, , IfWidth
+    .参数 nEscapement, 整数型, , IfEscapement
+    .参数 nOrientation, 整数型, , IfOrientation
+    .参数 fnWeight, 整数型, , IfWeight
+    .参数 fdwItalic, 整数型, , IfItalic
+    .参数 fdwUnderline, 整数型, , IfUnderline
+    .参数 fdwStrikeOut, 整数型, , IfStrikeOut
+    .参数 fdwCharSet, 整数型, , IfCharSet
+    .参数 OutputPrecision, 整数型, , IfOutputPrecision
+    .参数 ClipPrecision, 整数型, , IfClipPrecision
+    .参数 Quality, 整数型, , IfQuality
+    .参数 PitchAndFamily, 整数型, , IfPitchAndFamily
+    .参数 lpszFace, 文本型, , IfFaceName;  
+
+.DLL命令 DeleteObject, 整数型, "gdi32", "DeleteObject", , 用这个函数删除GDI对象，比如画笔、刷子、字体、位图、区域以及调色板等等。对象使用的所有系统资源都会被释放　非零表示成功，零表示失败
+    .参数 对象句柄, 整数型, , 一个GDI对象的句柄;  
+
+.DLL命令 GetDC, 整数型, "user32", "GetDC", , 获取指定窗口的设备场景　指定窗口的设备场景句柄，出错则为0
+    .参数 hwnd, 整数型, , 将获取其设备场景的窗口的句柄。若为0，则要获取整个屏幕的DC;  
+
+.DLL命令 EnumFontFamilies, 整数型, "gdi32", "EnumFontFamiliesA", , 列举指定设备可用的字体　由回调函数返回的前一个值
+    .参数 设备场景句柄, 整数型, , 设备场景的句柄
+    .参数 枚举的字体资源, 文本型, , 欲枚举的字体家族。如指定 vbNull，可枚举出每种可用字体家族中的一种字体
+    .参数 函数地址, 整数型, , 欲调用的函数地址。这个地址是用 AddressOf 运算符为来自一个标准模块的函数进行操作，或者利用某个回调控件得到
+    .参数 自定义值, 整数型, , 指定希望传递给回调函数的一个用户自定义值;  
+
+.DLL命令 EnumFonts, 整数型, "gdi32", "EnumFontsA", , 列举指定设备可用的字体　
+    .参数 设备场景句柄, 整数型, , 
+    .参数 枚举的字体资源, 文本型, , 
+    .参数 函数地址, 子程序指针, , 
+    .参数 自定义值, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.程序集变量 集主窗口句柄, 整数型, , , 
+.程序集变量 集按钮句柄, 整数型, , , 
+.程序集变量 集列表框句柄, 整数型, , , 
+.程序集变量 集分组框句柄, 整数型, , , 
+.程序集变量 集静态文本句柄, 整数型, , , 
+.子程序 _启动子程序, 整数型, , 本子程序在程序启动后最先执行
+.局部变量 窗口类, WNDCLASSEX, , , 
+.局部变量 NULL, 文本型, , , 
+.局部变量 窗口类名, 文本型, , , 
+.局部变量 消息, MSG, , , 
+.局部变量 窗口样式, 整数型, , , 
+
+赋值 (窗口类名, “MyWindowClass”)
+ ' 下面的代码填写窗口类的“注册表格”
+赋值 (窗口类.cbSize, 48) ' 要指定整个结构所占的字节数，必须
+赋值 (窗口类.style, 位或 (#CS_HREDRAW, #CS_VREDRAW, #CS_DBLCLKS))
+赋值 (窗口类.hInstance, GetModuleHandle (NULL)) ' 取当前应用程序的实例句柄。
+ ' 上面这句也可以这样：
+ ' 窗口类.hInstance ＝ GetModuleHandle (取执行文件名 ())
+ ' ！！注意：LoadIcon和LoadCursor的两个函数的参数都改成了整数型。
+赋值 (窗口类.hIcon, LoadIcon (窗口类.hInstance, 129)) ' 易语言EXE文件的图标标号为129
+赋值 (窗口类.hCursor, LoadCursor (0, #IDC_ARROW)) ' 装载系统内定的箭头光标
+赋值 (窗口类.hbrBackground, 相加 (#COLOR_BTNFACE, 1)) ' 也可以使用其他的Color常量，注意在后面要＋1。
+赋值 (窗口类.lpszClassName, 窗口类名)
+赋值 (窗口类.lpfnWndProc, &窗口函数) ' 指定窗口函数的地址
+ ' 注册表填写好了之后，进行注册登记窗口类。
+.如果真 (等于 (RegisterClassEx (窗口类), 0))
+    信息框 (“注册窗口类失败！”, #错误图标, )
+    返回 (1)
+.如果真结束
+ ' 窗口类注册成功了就可以创建窗口了。
+赋值 (窗口样式, 位或 (#WS_CAPTION, #WS_SYSMENU, #WS_OVERLAPPED, #WS_MINIMIZEBOX, #DS_SETFONT))
+赋值 (集主窗口句柄, CreateWindowEx (0, 窗口类名, “《易精经》例程－枚举预览系统字体”, 窗口样式, #CW_USEDEFAULT, #CW_USEDEFAULT, 400, 450, 0, 0, 窗口类.hInstance, 0))
+.如果真 (等于 (集主窗口句柄, 0))
+    信息框 (“创建窗口失败！”, #错误图标, )
+    返回 (1)
+.如果真结束
+ ' 创建按钮
+赋值 (集按钮句柄, CreateWindowEx (0, “BUTTON”, “枚举系统字体”, 位或 (#WS_VISIBLE, #WS_CHILD, #WS_TABSTOP, #BS_PUSHBUTTON), 8, 8, 144, 24, 集主窗口句柄, #控件号之按钮, 窗口类.hInstance, 0))
+设置字体 (集按钮句柄, “宋体”, 14)
+ ' 创建列表框
+赋值 (集列表框句柄, CreateWindowEx (#WS_EX_CLIENTEDGE, “LISTBOX”, “”, 位或 (#WS_VISIBLE, #WS_TABSTOP, #WS_CHILD, #LBS_SORT, #WS_HSCROLL, #LBS_NOTIFY, #LBS_MULTICOLUMN), 8, 40, 376, 304, 集主窗口句柄, #控件号之列表框, 窗口类.hInstance, 0))
+设置字体 (集列表框句柄, “宋体”, 12)
+ ' 创建分组框
+赋值 (集分组框句柄, CreateWindowEx (0, “BUTTON”, “预览”, 位或 (#WS_VISIBLE, #WS_CHILD, #BS_GROUPBOX), 8, 336, 376, 70, 集主窗口句柄, #控件号之列表框, 窗口类.hInstance, 0))
+设置字体 (集分组框句柄, “宋体”, 14)
+ ' 创建静态文本
+赋值 (集静态文本句柄, CreateWindowEx (0, “STATIC”, “天地玄黄，宇宙洪荒”, 位或 (#WS_VISIBLE, #WS_CHILD, #SS_CENTER), 16, 24, 352, 32, 集分组框句柄, 0, 窗口类.hInstance, 0))
+设置字体 (集静态文本句柄, “宋体”, 30)
+ ' 将窗口显示出来。
+ShowWindow (集主窗口句柄, #SW_SHOWNORMAL)
+UpdateWindow (集主窗口句柄)
+ ' 下面就是消息循环
+ ' 当GetMessage函数发现消息的消息值为WM_QUIT的时候，就返回0，从而退出循环。
+.判断循环首 (不等于 (GetMessage (消息, 0, 0, 0), 0))
+    TranslateMessage (消息)
+    DispatchMessage (消息)
+.判断循环尾 ()
+返回 (消息.wParam)
+
+
+.子程序 窗口函数, 整数型, , 这是窗口过程，用来处理窗口消息
+.参数 hWnd, 整数型, , 窗口句柄
+.参数 uMsg, 整数型, , 消息值
+.参数 wParam, 整数型, , 参数一
+.参数 lParam, 整数型, , 参数二
+
+.局部变量 NULL, 文本型, , , 
+.局部变量 列表框当前选项, 整数型, , , 
+.局部变量 文本, 文本型, , , 
+.局部变量 文本长度, 整数型, , , 
+.局部变量 控件编号, 整数型, , , 
+.局部变量 通知消息, 整数型, , , 
+
+.判断开始 (等于 (uMsg, #WM_DESTROY))
+    PostQuitMessage (0) ' 将 WM_QUIT 消息放入消息队列中，这样GetMessage收到WM_QUIT消息时就会返回0，从而退出消息循环
+    返回 (0)
+.判断 (等于 (uMsg, #WM_COMMAND)) ' 子控件会向父窗口发送WM_COMMAND消息
+    赋值 (控件编号, 取低字 (wParam)) ' 控件编号在wParam的低字中
+    赋值 (通知消息, 取高字 (wParam)) ' 通知消息在wParam的高字中
+    .判断开始 (等于 (控件编号, #控件号之按钮))
+         ' 按钮被单击
+        SendMessage (集列表框句柄, #LB_RESETCONTENT, 0, 0) ' 清空列表框
+        EnumFonts (GetDC (集主窗口句柄), NULL, &枚举字体函数, 0) ' 枚举字体
+    .判断 (等于 (控件编号, #控件号之列表框))
+        .如果真 (等于 (通知消息, #LBN_SELCHANGE)) ' 选择项被改变
+             ' 先得到当前选项
+            赋值 (列表框当前选项, SendMessage (集列表框句柄, #LB_GETCURSEL, 0, 0))
+            .如果真 (大于或等于 (列表框当前选项, 0))
+                赋值 (文本长度, SendMessage (集列表框句柄, #LB_GETTEXTLEN, 列表框当前选项, 0)) ' 取得当前列表况选中项文本长度
+                赋值 (文本, 取空白文本 (相加 (文本长度, 1))) ' 先要分配足够的内存空间
+                SendMessage (集列表框句柄, #LB_GETTEXT, 列表框当前选项, 取变量数据地址 (文本)) ' 获得字体名
+                设置字体 (集静态文本句柄, 文本, 30)
+            .如果真结束
+            
+        .如果真结束
+        
+    .默认
+        
+    .判断结束
+    
+.默认
+    
+.判断结束
+返回 (DefWindowProc (hWnd, uMsg, wParam, lParam)) ' 其他的消息通通交给DefWindowProc函数处理。
+
+
+.子程序 设置字体, 空白型, , 给指定的窗口设置字体
+.参数 参窗口句柄, 整数型, , 
+.参数 参字体名, 文本型, , 
+.参数 参字号大小, 整数型, 可空, 
+
+.局部变量 旧字体句柄, 整数型, , , 
+.局部变量 字体句柄, 整数型, , , 
+
+.如果真 (是否为空 (参字号大小))
+    赋值 (参字号大小, 20)
+.如果真结束
+赋值 (旧字体句柄, SendMessage (参窗口句柄, #WM_GETFONT, 0, 0)) ' 获得窗口当前字体
+赋值 (字体句柄, CreateFont (参字号大小, 0, 0, 0, 0, 0, 0, 0, #DEFAULT_CHARSET, 0, 0, 0, 0, 参字体名))
+SendMessage (参窗口句柄, #WM_SETFONT, 字体句柄, 1) ' 设置窗口字体
+DeleteObject (旧字体句柄)
+
+
+.子程序 取高字, 整数型, , HIWORD
+.参数 参数, 整数型, , 
+
+返回 (右移 (参数, 16))
+
+
+.子程序 取低字, 整数型, , LOWORD
+.参数 参数, 整数型, , 
+
+返回 (位与 (参数, 65535))
+
+
+.子程序 枚举字体函数, 逻辑型, , 
+.参数 lpLogFont, 整数型, , 
+.参数 lpTextMetric, 整数型, , 
+.参数 dwType, 整数型, , 
+.参数 lpData, 整数型, , 
+
+ ' 输出调试文本 (指针到文本 (lpLogFont ＋ 28)) ' 把字体名从内存地址中挖出来
+SendMessage (集列表框句柄, #LB_INSERTSTRING, -1, 相加 (lpLogFont, 28))
+返回 (真) ' 表示继续枚举
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

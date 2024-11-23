@@ -1,0 +1,237 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 445
+    高度 = 289
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 5 系统核心支持库
+
+
+
+
+.全局变量 变量1, 空白型, , , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 DisabledServ, 文本型, , "30", 
+.局部变量 DemandServ, 文本型, , "21", 
+.局部变量 AutoServ, 文本型, , "28", 
+.局部变量 DisabledServName, 文本型, , "30", 
+.局部变量 DemandServName, 文本型, , "21", 
+.局部变量 AutoServName, 文本型, , "28", 
+.局部变量 t, 整数型, , , 
+.局部变量 i, 整数型, , , 
+
+赋值 (t, 0)
+赋值 (DisabledServ [1], “Alerter”)
+赋值 (DisabledServ [2], “ClipSrv”)
+赋值 (DisabledServ [3], “TrkWks”)
+赋值 (DisabledServ [4], “MSDTC”)
+赋值 (DisabledServ [5], “ERSvc”)
+赋值 (DisabledServ [6], “FastUserSwitchingCompatibility”)
+赋值 (DisabledServ [7], “helpsvc”)
+赋值 (DisabledServ [8], “HidServ”)
+赋值 (DisabledServ [9], “ImapiService”)
+赋值 (DisabledServ [10], “CiSvc”)
+赋值 (DisabledServ [11], “Messenger”)
+赋值 (DisabledServ [12], “SwPrv”)
+赋值 (DisabledServ [13], “mnmsrvc”)
+赋值 (DisabledServ [14], “NetDDE”)
+赋值 (DisabledServ [15], “NetDDEdsdm”)
+赋值 (DisabledServ [16], “RSVP”)
+赋值 (DisabledServ [17], “RemoteRegistry”)
+赋值 (DisabledServ [18], “NtmsSvc”)
+赋值 (DisabledServ [19], “RemoteAccess”)
+赋值 (DisabledServ [20], “seclogon”)
+赋值 (DisabledServ [21], “wscsvc”)
+赋值 (DisabledServ [22], “ShellHWDetection”)
+赋值 (DisabledServ [23], “SENS”)
+赋值 (DisabledServ [24], “srservice”)
+赋值 (DisabledServ [25], “TlntSvr”)
+赋值 (DisabledServ [26], “TermService”)
+赋值 (DisabledServ [27], “UPS”)
+赋值 (DisabledServ [28], “VSS”)
+赋值 (DisabledServ [29], “WebClient”)
+赋值 (DisabledServ [30], “W32Time”)
+ ' 服务
+赋值 (DisabledServName [1], “Alerter”)
+赋值 (DisabledServName [2], “ClipBook”)
+赋值 (DisabledServName [3], “Distributed Link Tracking Client”)
+赋值 (DisabledServName [4], “Distributed Transaction Coordinator”)
+赋值 (DisabledServName [5], “Error Reporting Service”)
+赋值 (DisabledServName [6], “Fast User Switching Compatibility”)
+赋值 (DisabledServName [7], “Help and Support”)
+赋值 (DisabledServName [8], “Human Interface Device Access”)
+赋值 (DisabledServName [9], “IMAPI CD-Burning COM Service”)
+赋值 (DisabledServName [10], “Indexing Service”)
+赋值 (DisabledServName [11], “Messenger”)
+赋值 (DisabledServName [12], “MS Software Shadow Copy Provider”)
+赋值 (DisabledServName [13], “NetMeeting Remote Desktop Sharing”)
+赋值 (DisabledServName [14], “Network DDE”)
+赋值 (DisabledServName [15], “Network DDE DSDM”)
+赋值 (DisabledServName [16], “QoS RSVP”)
+赋值 (DisabledServName [17], “Remote Registry”)
+赋值 (DisabledServName [18], “Removable Storage”)
+赋值 (DisabledServName [19], “Routing and Remote Access”)
+赋值 (DisabledServName [20], “Secondary Logon”)
+赋值 (DisabledServName [21], “Security Center”)
+赋值 (DisabledServName [22], “Shell Hardware Detection”)
+赋值 (DisabledServName [23], “System Event Notification”)
+赋值 (DisabledServName [24], “System Restore Service”)
+赋值 (DisabledServName [25], “Telnet”)
+赋值 (DisabledServName [26], “Terminal Services”)
+赋值 (DisabledServName [27], “Uninterruptible Power Supply”)
+赋值 (DisabledServName [28], “Volume Shadow Copy”)
+赋值 (DisabledServName [29], “WebClient”)
+赋值 (DisabledServName [30], “Windows Time”)
+
+ ' Demand
+
+赋值 (DemandServ [1], “AppMgmt”)
+赋值 (DemandServ [2], “COMSysApp”)
+赋值 (DemandServ [3], “HTTPFilter”)
+赋值 (DemandServ [4], “dmadmin”)
+赋值 (DemandServ [5], “Netlogon”)
+赋值 (DemandServ [6], “Netman”)
+赋值 (DemandServ [7], “xmlprov”)
+赋值 (DemandServ [8], “NtLmSsp”)
+赋值 (DemandServ [9], “SysmonLog”)
+赋值 (DemandServ [10], “WmdmPmSN”)
+赋值 (DemandServ [11], “RasAuto”)
+赋值 (DemandServ [12], “RasMan”)
+赋值 (DemandServ [13], “RDSessMgr”)
+赋值 (DemandServ [14], “RpcLocator”)
+赋值 (DemandServ [15], “SCardSvr”)
+赋值 (DemandServ [16], “SSDPSRV”)
+赋值 (DemandServ [17], “TapiSrv”)
+赋值 (DemandServ [18], “stisvc”)
+赋值 (DemandServ [19], “MSIServer”)
+赋值 (DemandServ [20], “Wmi”)
+赋值 (DemandServ [21], “WmiApSrv”)
+ ' DemandServ[] = "WudfSvc"
+ ' DemandServ[] = "WMPNetworkSvc"
+
+赋值 (DemandServName [1], “Application Management”)
+赋值 (DemandServName [2], “COM+ System Application”)
+赋值 (DemandServName [3], “HTTP SSL”)
+赋值 (DemandServName [4], “Logical Disk Manager Administrative Service”)
+赋值 (DemandServName [5], “Net Logon”)
+赋值 (DemandServName [6], “Network Connections”)
+赋值 (DemandServName [7], “Network Provisioning Service”)
+赋值 (DemandServName [8], “NT LM Security Support Provider”)
+赋值 (DemandServName [9], “Performance Logs and Alerts”)
+赋值 (DemandServName [10], “Portable Media Serial Number Service”)
+赋值 (DemandServName [11], “Remote Access Auto Connection Manager”)
+赋值 (DemandServName [12], “Remote Access Connection Manager”)
+赋值 (DemandServName [13], “Remote Desktop Help Session Manager”)
+赋值 (DemandServName [14], “Remote Procedure Call (RPC) Locator”)
+赋值 (DemandServName [15], “Smart Card”)
+赋值 (DemandServName [16], “SSDP Discovery Service”)
+赋值 (DemandServName [17], “Telephony”)
+赋值 (DemandServName [18], “Windows Image Acquisition (WIA)”)
+赋值 (DemandServName [19], “Windows Installer”)
+赋值 (DemandServName [20], “Windows Management Instrumentation Driver Extensions”)
+赋值 (DemandServName [21], “WMI Performance Adapter”)
+
+ ' 自动
+
+赋值 (AutoServ [1], “ALG”)
+赋值 (AutoServ [2], “wuauserv”)
+赋值 (AutoServ [3], “BITS”)
+赋值 (AutoServ [4], “EventSystem”)
+赋值 (AutoServ [5], “Browser”)
+赋值 (AutoServ [6], “CryptSvc”)
+赋值 (AutoServ [7], “DcomLaunch”)
+赋值 (AutoServ [8], “Dhcp”)
+赋值 (AutoServ [9], “Dnscache”)
+赋值 (AutoServ [10], “Eventlog”)
+赋值 (AutoServ [11], “PolicyAgent”)
+赋值 (AutoServ [12], “dmserver”)
+赋值 (AutoServ [13], “Nla”)
+赋值 (AutoServ [14], “PlugPlay”)
+赋值 (AutoServ [15], “Spooler”)
+赋值 (AutoServ [16], “ProtectedStorage”)
+赋值 (AutoServ [17], “RpcSs”)
+赋值 (AutoServ [18], “SamSs”)
+赋值 (AutoServ [19], “lanmanserver”)
+赋值 (AutoServ [20], “Schedule”)
+赋值 (AutoServ [21], “LmHosts”)
+赋值 (AutoServ [22], “Themes”)
+赋值 (AutoServ [23], “upnphost”)
+赋值 (AutoServ [24], “AudioSrv”)
+赋值 (AutoServ [25], “SharedAccess”)
+赋值 (AutoServ [26], “winmgmt”)
+赋值 (AutoServ [27], “WZCSVC”)
+赋值 (AutoServ [28], “lanmanworkstation”)
+
+赋值 (AutoServ [1], “Application Layer Gateway Service”)
+赋值 (AutoServ [2], “Automatic Updates”)
+赋值 (AutoServ [3], “Background Intelligent Transfer Service”)
+赋值 (AutoServ [4], “COM+ Event System”)
+赋值 (AutoServ [5], “Computer Browser”)
+赋值 (AutoServ [6], “Cryptographic Services”)
+赋值 (AutoServ [7], “DCOM Server Process Launcher”)
+赋值 (AutoServ [8], “DHCP Client”)
+赋值 (AutoServ [9], “DNS Client”)
+赋值 (AutoServ [10], “Event Log”)
+赋值 (AutoServ [11], “IPSEC Services”)
+赋值 (AutoServ [12], “Logical Disk Manager”)
+赋值 (AutoServ [13], “Network Location Awareness (NLA)”)
+赋值 (AutoServ [14], “Plug and Play”)
+赋值 (AutoServ [15], “Print Spooler”)
+赋值 (AutoServ [16], “Protected Storage”)
+赋值 (AutoServ [17], “Remote Procedure Call (RPC)”)
+赋值 (AutoServ [18], “Security Accounts Manager”)
+赋值 (AutoServ [19], “Server”)
+赋值 (AutoServ [20], “Task Scheduler”)
+赋值 (AutoServ [21], “TCP/IP NetBIOS Helper”)
+赋值 (AutoServ [22], “Themes”)
+赋值 (AutoServ [23], “Universal Plug and Play Device Host”)
+赋值 (AutoServ [24], “Windows Audio”)
+赋值 (AutoServ [25], “Windows Firewall/Internet Connection Sharing (ICS)”)
+赋值 (AutoServ [26], “Windows Management Instrumentation”)
+赋值 (AutoServ [27], “Wireless Zero Configuration”)
+赋值 (AutoServ [28], “Workstation”)
+.变量循环首 (1, 30, 1, i)
+    相加 (“正在设置该服务为禁止”, DisabledServName [i]).加入项目 ()
+     ' 运行 (相加 (“sc config ”, DisabledServ [i], “”, “start= disabled”), 真, #隐藏窗口)
+    延时 (t)
+    相加 (“正在停用”, DisabledServName [i]).加入项目 ()
+    运行 (相加 (“sc stop ”, DisabledServ [i]), 真, #隐藏窗口)
+    延时 (t)
+.变量循环尾 ()
+.变量循环首 (1, 21, 1, i)
+    相加 (“正在设置该服务为手动”, DemandServName [i]).加入项目 ()
+    运行 (相加 (“sc config ”, DemandServ [i], “”, “start= disabled”), 真, #隐藏窗口)
+    延时 (t)
+    .如果真 (或者 (等于 (i, 6), 等于 (i, 12), 等于 (i, 16), 等于 (i, 17)))
+        相加 (“正在启用”, DemandServName [i]).加入项目 ()
+        运行 (相加 (“sc start ”,  [)], 真, #隐藏窗口))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

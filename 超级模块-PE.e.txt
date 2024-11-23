@@ -1,0 +1,1652 @@
+ ' 文件类型：未知类型
+
+ ' 程序名称：PE构造模块
+ ' 程序描述：
+@备注:
+2011-05-30 12:28:04
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.9
+ ' 创建号：1.0
+
+
+
+.图片 DOS, " ' 已保存到：D:\易语言学习\Data\超级模块-PE.e\DOS", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 3 系统核心支持库
+
+
+
+
+数据类型 IMAGE_NT_HEADERS, , 
+    .成员 Signature, 整数型, , , 4
+    .成员 FileHeader, IMAGE_FILE_HEADER, , , 20
+    .成员 OptionalHeader, IMAGE_OPTIONAL_HEADER, , , 
+
+数据类型 IMAGE_FILE_HEADER, , 
+    .成员 Machine, 短整数型, , , CPU,332
+    .成员 NumberOfSections, 短整数型, , , 2
+    .成员 TimeDateStamp, 整数型, , , 4
+    .成员 PointerToSymbolTable, 整数型, , , 4
+    .成员 NumberOfSymbols, 整数型, , , 4
+    .成员 SizeOfOptionalHeader, 短整数型, , , 2
+    .成员 Characteristics, 短整数型, , , 2
+
+数据类型 IMAGE_DATA_DIRECTORY, , 
+    .成员 VirtualAddress, 整数型, , , 
+    .成员 Size, 整数型, , , 
+
+数据类型 IMAGE_OPTIONAL_HEADER, , 
+    .成员 Magic, 短整数型, , , 
+    .成员 MajorLinkerVersion, 字节型, , , 
+    .成员 MinorLinkerVersion, 字节型, , , 
+    .成员 SizeOfCode, 整数型, , , 
+    .成员 SizeOfInitializedData, 整数型, , , 
+    .成员 SizeOfUninitializedData, 整数型, , , 
+    .成员 AddressOfEntryPoint, 整数型, , , 
+    .成员 BaseOfCode, 整数型, , , 
+    .成员 BaseOfData, 整数型, , , 
+    .成员 ImageBase, 整数型, , , 
+    .成员 SectionAlignment, 整数型, , , 
+    .成员 FileAlignment, 整数型, , , 
+    .成员 MajorOperatingSystemVersion, 短整数型, , , 
+    .成员 MinorOperatingSystemVersion, 短整数型, , , 
+    .成员 MajorImageVersion, 短整数型, , , 
+    .成员 MinorImageVersion, 短整数型, , , 
+    .成员 MajorSubsystemVersion, 短整数型, , , 
+    .成员 MinorSubsystemVersion, 短整数型, , , 
+    .成员 Win32VersionValue, 整数型, , , 
+    .成员 SizeOfImage, 整数型, , , 
+    .成员 SizeOfHeaders, 整数型, , , 
+    .成员 CheckSum, 整数型, , , 
+    .成员 Subsystem, 短整数型, , , 
+    .成员 DllCharacteristics, 短整数型, , , 
+    .成员 SizeOfStackReserve, 整数型, , , 
+    .成员 SizeOfStackCommit, 整数型, , , 
+    .成员 SizeOfHeapReserve, 整数型, , , 
+    .成员 SizeOfHeapCommit, 整数型, , , 
+    .成员 LoaderFlags, 整数型, , , 
+    .成员 NumberOfRvaAndSizes, 整数型, , , 
+    .成员 DataDirectory, IMAGE_DATA_DIRECTORY, , "16", 
+
+数据类型 IMAGE_SECTION_HEADER, , 
+    .成员 Name, 字节型, , "8", 
+    .成员 Misc, 整数型, , , 
+    .成员 VirtualAddress, 整数型, , , 
+    .成员 SizeOfRawData, 整数型, , , 
+    .成员 PointerToRawData, 整数型, , , 
+    .成员 PointerToRelocations, 整数型, , , 
+    .成员 PointerToLinenumbers, 整数型, , , 
+    .成员 NumberOfRelocations, 短整数型, , , 
+    .成员 NumberOfLinenumbers, 短整数型, , , 
+    .成员 Characteristics, 整数型, , , 
+
+数据类型 IMAGE_IMPORT_DESCRIPTOR, , 
+    .成员 OriginalFirstThunk, 整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 ForwarderChain, 整数型, , , 
+    .成员 Name, 整数型, , , 
+    .成员 FirstThunk, 整数型, , , 
+
+数据类型 Import, , 
+    .成员 RVA, 长整数型, , "1", 
+    .成员 End, 整数型, , , 0
+
+数据类型 _IMAGE_RESOURCE_DIRECTORY, , 
+    .成员 Characteristics, 整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 MajorVersion, 短整数型, , , 
+    .成员 MinorVersion, 短整数型, , , 
+    .成员 NumberOfNamedEntries, 短整数型, , , 
+    .成员 NumberOfIdEntries, 短整数型, , , 
+
+数据类型 _IMAGE_RESOURCE_DIRECTORY_ENTRY, , 
+    .成员 Name, 整数型, , , 
+    .成员 OffsetToData, 整数型, , , 
+
+数据类型 _IMAGE_RESOURCE_DATA_ENTRY, , 
+    .成员 OffsetToData, 整数型, , , 
+    .成员 Size, 整数型, , , 
+    .成员 CodePage, 整数型, , , 
+    .成员 Reserved, 整数型, , , 
+
+数据类型 TagIconDir, , '6
+    .成员 idReserved, 短整数型, , , 
+    .成员 idType, 短整数型, , , 
+    .成员 idCount, 短整数型, , , 
+
+数据类型 TagIconDirEntry, , '16
+    .成员 bWidth, 字节型, , , 
+    .成员 bHeight, 字节型, , , 
+    .成员 bColorCount, 字节型, , , 
+    .成员 bReserved, 字节型, , , 0
+    .成员 wPlanes, 短整数型, , , 
+    .成员 wBitCount, 短整数型, , , 
+    .成员 dwBytesInRes, 整数型, , , 
+    .成员 dwImageOffset, 整数型, , , 
+
+数据类型 _IMAGE_EXPORT_DIRECTORY, , 
+    .成员 Characteristics, 整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 MajorVersion, 短整数型, , , 
+    .成员 MinorVersion, 短整数型, , , 
+    .成员 Name, 整数型, , , 
+    .成员 Base, 整数型, , , 
+    .成员 NumberOfFunctions, 整数型, , , 
+    .成员 NumberOfNames, 整数型, , , 
+    .成员 AddressOfFunctions, 整数型, , , 函数偏移
+    .成员 AddressOfNames, 整数型, , , 名字偏移
+    .成员 AddressOfNameOrdinals, 整数型, , , 序号偏移
+
+数据类型 导出函数, , 
+    .成员 函数名, 文本型, , , 
+    .成员 偏移, 整数型, , , 
+    .成员 区段, 整数型, , , 
+
+数据类型 重定位结构, , 
+    .成员 类型, 整数型, , , 
+    .成员 偏移, 整数型, , , 
+
+数据类型 _代码定位, , 
+    .成员 类型, 整数型, , , 
+    .成员 偏移, 整数型, , , 
+    .成员 数值, 整数型, , , 
+
+.全局变量 PE_IATAddr, 整数型, 公开, , '没啥用,给以前写过的代码准备的
+.全局变量 PE_DataAddr, 整数型, 公开, , '没啥用,给以前写过的代码准备的
+
+.DLL命令 RtlMoveMemory_IMAGE_NT_HEADERS_1, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, IMAGE_NT_HEADERS, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_Byte, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, 字节集, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_SECTION_HEADER_1, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, IMAGE_SECTION_HEADER, 数组, 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_IMPORT_DESCRIPTOR_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, IMAGE_IMPORT_DESCRIPTOR, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_RESOURCE_DIRECTORY, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, _IMAGE_RESOURCE_DIRECTORY, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_RESOURCE_DIRECTORY_ENTRY, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, _IMAGE_RESOURCE_DIRECTORY_ENTRY, 数组, 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IconDir, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, TagIconDir, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IconDirEntry, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, TagIconDirEntry, 数组, 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IconDir2, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, TagIconDir, , 
+    .参数 Source, 字节集, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IconDirEntry2, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, TagIconDirEntry, 数组, 
+    .参数 Source, 字节集, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_RESOURCE_DATA_ENTRY, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, _IMAGE_RESOURCE_DATA_ENTRY, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 GetProcAddress, 整数型, "", "GetProcAddress", , 
+    .参数 hModule, 整数型, , 
+    .参数 lpProcName, 文本型, , 
+
+.DLL命令 LoadLibrary, 整数型, "", "LoadLibraryA", , 
+    .参数 lpLibFileName, 文本型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_EXPORT_DIRECTORY, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, _IMAGE_EXPORT_DIRECTORY, 传址, 
+    .参数 Length, 整数型, , 
+
+.DLL命令 lstrcpyn_字节集, 整数型, "", "lstrcpynA", , 
+    .参数 lpString1, 字节集, , 
+    .参数 lpString2, 字节集, , 
+    .参数 iMaxLength, 整数型, , 
+
+.程序集 PE类, , , 易语言编程论坛全新域名：http://www.360bc.cn 保留2007年用户数据至今。
+
+.程序集变量 g_Code, 字节集, , , 
+.程序集变量 g_Data, 字节集, , , 
+.程序集变量 g_LibName, 文本型, , "0", 
+.程序集变量 g_LibProc, 文本型, , "0", 
+.程序集变量 g_type, 整数型, , "0", 
+.程序集变量 g_resid, 整数型, , "0", 
+.程序集变量 g_data1, 字节集, , "0", 
+.程序集变量 g_resid_bak, 整数型, , "0", 
+.程序集变量 g_Reloc, 重定位结构, , "0", 
+.程序集变量 g_Export, 导出函数, , "0", 
+.程序集变量 g_data1_bak, 字节集, , "0", 
+.程序集变量 g_api, 文本型, , , 
+.程序集变量 g_resdata, 字节集, , , 
+.程序集变量 g_CodeReloc, _代码定位, , "0", 
+.程序集变量 sb360, 文本型, , , 
+.程序集变量 MajorVersion, 短整数型, , , 
+.程序集变量 MinorVersion, 短整数型, , , 
+.程序集变量 MajorLinkerVersion, 短整数型, , , 
+.程序集变量 MinorLinkerVersion, 短整数型, , , 
+.程序集变量 g_Reloc1, 重定位结构, , "0", 
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置动态链接库初始化代码
+PE_重置 ()
+赋值 (MajorVersion, 1) ' 资源编译器版本
+赋值 (MinorVersion, 10)
+赋值 (MajorLinkerVersion, 1) ' 编译器版本
+赋值 (MinorLinkerVersion, 20)
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 返回值被忽略。
+
+.子程序 _临时子程序, 空白型, , 
+.局部变量 i, 整数型, , , 
+
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+ ' 加入代码 (取重复字节集 (50000, { 68 }))
+ ' 加入数据 (取重复字节集 (50000, { 33 }))
+
+ ' 写到文件 (取特定目录 (3) ＋ “\test1.exe”, 构造PE文件 ())
+ ' PE_加入数据 (到字节集 (“Msg”) ＋ { 0 } ＋ 到字节集 (“hello!S Basic!”))
+ ' PE_导入API (“user32.dll”, “MessageBoxA”)
+ ' PE_导入API (“kernel32.dll”, “ExitProcess”)
+
+ ' ' PE_不要迷恋哥_哥不是传说_哥只是个茶几_承载着所有的杯具_mamashuomingzichangcaibijiaoyougexing_suoyiwobazichengxvmingzigaidehenchanghenchang_xiandezhegezichengxvshigebijiaoyougexingdezichengxv (“[E_Code v1.6]”)
+
+ ' PE_加入代码 ({ 106, 64, 104, 0, 48, 64, 0, 104, 4, 48, 64, 0, 106, 0, 255, 21, 0, 32, 64, 0, 80, 255, 21, 8, 32, 64, 0 })
+
+ ' ' PE_加入资源 (5, 100, 读入文件 (取运行目录 () ＋ “\ico.ico”))
+ ' ' PE_加入资源 (3, 100, 读入文件 (取运行目录 () ＋ “\ico.ico”))
+ ' PE_导出函数 (“MyMsgBox”, 52, 1)
+ ' 写到文件 (取特定目录 (3) ＋ “\SBasic.exe”, PE_构造Dll (, “test.dll”))
+
+.子程序 PE_重置, 空白型, , 清空内部数据,重新构造PE文件
+赋值 (g_api, “”)
+赋值 (g_Code, {  })
+赋值 (g_Data, {  })
+赋值 (g_resdata, {  })
+赋值 (sb360, “”)
+重定义数组 (g_LibName, 假, 0)
+重定义数组 (g_LibProc, 假, 0)
+重定义数组 (g_type, 假, 0)
+重定义数组 (g_resid, 假, 0)
+重定义数组 (g_data1, 假, 0)
+重定义数组 (g_resid_bak, 假, 0)
+重定义数组 (g_Reloc, 假, 0)
+重定义数组 (g_Reloc1, 假, 0)
+重定义数组 (g_Export, 假, 0)
+重定义数组 (g_data1_bak, 假, 0)
+重定义数组 (g_CodeReloc, 假, 0)
+赋值 (PE_DataAddr, 4096)
+赋值 (PE_IATAddr, 4096)
+
+.子程序 PE_代码定位, 空白型, , 类似DLL重定位的功能,修正代码内调用地址
+.参数 偏移, 整数型, , 代码偏移
+.参数 类型, 整数型, , '1,IAT'2,Data'3,text,,,,,,修正VirtualAddress
+.参数 数值, 整数型, , Offset,将偏移处修正为类型的VA+Offset,-1为当前数值加上类型的VA,
+
+.局部变量 CodeReloc, _代码定位, , , 
+
+赋值 (CodeReloc.类型, 类型)
+赋值 (CodeReloc.偏移, 偏移)
+赋值 (CodeReloc.数值, 数值)
+加入成员 (g_CodeReloc, CodeReloc)
+
+
+.子程序 PE_加入资源数据, 空白型, , 未纠正VA,加入已经编译好的资源数据,不能分开添加,数据保持为最后一次调用本子程序
+.参数 resData, 字节集, , 
+
+赋值 (g_resdata, resData)
+
+
+.子程序 PE_加入资源Res, 空白型, , 加入RES资源,
+.参数 resData, 字节集, , 
+
+解析Res (resData)
+
+.子程序 解析Res, 空白型, , 
+.参数 ResData, 字节集, , 
+
+.局部变量 addr, 整数型, , , 
+.局部变量 datalen, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 DataSize, 整数型, , , 
+.局部变量 HeaderSize, 整数型, , , 
+.局部变量 type, 整数型, , , 
+.局部变量 name, 整数型, , , 
+
+赋值 (addr, lstrcpyn_字节集 (ResData, ResData, 0))
+赋值 (datalen, 取字节集长度 (ResData))
+.循环判断首 ()
+    赋值 (DataSize, 取字节集数据 (指针到字节集 (相加 (addr, i), 4), #整数型, ))
+    赋值 (HeaderSize, 取字节集数据 (指针到字节集 (相加 (addr, i, 4), 4), #整数型, ))
+    赋值 (type, 取字节集数据 (指针到字节集 (相加 (addr, i, 8), 4), #整数型, ))
+    赋值 (name, 取字节集数据 (指针到字节集 (相加 (addr, i, 12), 4), #整数型, ))
+    赋值 (i, 相加 (i, HeaderSize))
+    .如果真 (大于 (DataSize, 0))
+         ' 调试输出 (指针到字节集 (addr ＋ i, DataSize))
+        .判断开始 (等于 (指针到字节集 (相加 (addr, i, DataSize), 2), { 0, 0 }))
+            PE_加入资源2 (右移 (type, 16), 右移 (name, 16), 指针到字节集 (相加 (addr, i), DataSize))
+            赋值 (i, 相加 (i, DataSize, 2))
+        .默认
+            PE_加入资源2 (右移 (type, 16), 右移 (name, 16), 指针到字节集 (相加 (addr, i), DataSize))
+            赋值 (i, 相加 (i, DataSize))
+        .判断结束
+         ' 输出调试文本 (右移 (type, 16), 右移 (name, 16))
+    .如果真结束
+    
+.循环判断尾 (小于 (相加 (i, 32), datalen))
+
+.子程序 PE_加入资源2, 逻辑型, , 不自动处理资源,需自己对资源格式解析,加入*.res资源专用,注,需自己解析*.res
+.参数 type, 整数型, , '资源类型
+.参数 resid, 整数型, , '资源ID
+.参数 data, 字节集, , '资源数据
+
+.如果真 (或者 (等于 (type, 0), 等于 (data, {  })))
+    返回 (假)
+.如果真结束
+加入成员 (g_type, type)
+加入成员 (g_resid, resid)
+加入成员 (g_data1, data)
+返回 (真)
+
+.子程序 PE_不要迷恋哥_哥不是传说_哥只是个茶几_承载着所有的杯具_mamashuomingzichangcaibijiaoyougexing_suoyiwobazichengxvmingzigaidehenchanghenchang_xiandezhegezichengxvshigebijiaoyougexingdezichengxv, 逻辑型, , 
+.参数 hebigeicanshuqigemingzinamemafanne_fanzhengzhegezichengxvyemeishenmetaidadezuoyong_zuozheshuole_zhegezichengxvmeiyong_maosizhishiyonglaihaowande_tamade_sb360_jianzhijiushizhaopen_fucker, 文本型, , 
+
+.局部变量 i, 整数型, , , 
+
+赋值 (i, 取文本长度 (“TMDSB360太不给力了,老误杀我们的程序,大家鄙视它!!”))
+.如果真 (大于 (取文本长度 (hebigeicanshuqigemingzinamemafanne_fanzhengzhegezichengxvyemeishenmetaidadezuoyong_zuozheshuole_zhegezichengxvmeiyong_maosizhishiyonglaihaowande_tamade_sb360_jianzhijiushizhaopen_fucker), i))
+    返回 (假)
+.如果真结束
+赋值 (sb360, hebigeicanshuqigemingzinamemafanne_fanzhengzhegezichengxvyemeishenmetaidadezuoyong_zuozheshuole_zhegezichengxvmeiyong_maosizhishiyonglaihaowande_tamade_sb360_jianzhijiushizhaopen_fucker)
+返回 (真)
+
+
+.子程序 PE_加入资源, 逻辑型, , 仅仅处理过,RT_ICON
+.参数 type, 整数型, , '资源类型
+.参数 resid, 整数型, , '资源ID
+.参数 data, 字节集, , '资源数据
+
+.局部变量 IconDir, TagIconDir, , , 
+.局部变量 IconDirEntry, TagIconDirEntry, , "0", 
+.局部变量 Count, 短整数型, , , 
+.局部变量 tData, 字节集, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 ResId2, 整数型, 静态, , 
+.局部变量 tByte, 字节集, , , 
+
+.如果真 (或者 (等于 (type, 0), 等于 (data, {  })))
+    返回 (假)
+.如果真结束
+
+.如果 (等于 (type, 3)) ' 图标#89
+    RtlMoveMemory_IconDir2 (IconDir, data, 6)
+    赋值 (Count, IconDir.idCount)
+    重定义数组 (IconDirEntry, 假, Count)
+    赋值 (tData, 取字节集右边 (data, 相减 (取字节集长度 (data), 6)))
+    RtlMoveMemory_IconDirEntry2 (IconDirEntry, tData, 相乘 (Count, 16))
+    
+    .计次循环首 (Count, i)
+         ' 输出调试文本 (IconDirEntry [i].dwBytesInRes, IconDirEntry [i].dwImageOffset)
+        赋值 (ResId2, 相加 (ResId2, 1))
+        加入成员 (g_type, 3)
+        加入成员 (g_resid, ResId2)
+        加入成员 (g_data1, 取字节集中间 (data, 相加 (IconDirEntry [i], dwImageOffset, 1), IconDirEntry [i], dwBytesInRes))
+        赋值 (IconDirEntry [i], dwImageOffset, ResId2)
+    .计次循环尾 ()
+    赋值 (tByte, 取字节集左边 (data, 6))
+    赋值 (tData, {  })
+    .计次循环首 (Count, i)
+        赋值 (tData, 相加 (tData, 到字节集 (IconDirEntry [i], bWidth)))
+        赋值 (tData, 相加 (tData, 到字节集 (IconDirEntry [i], bHeight)))
+        赋值 (tData, 相加 (tData, 到字节集 (IconDirEntry [i], bColorCount)))
+        赋值 (tData, 相加 (tData, 到字节集 (IconDirEntry [i], bReserved)))
+        赋值 (tData, 相加 (tData, 到字节集 (IconDirEntry [i], wPlanes)))
+        赋值 (tData, 相加 (tData, 到字节集 (IconDirEntry [i], wBitCount)))
+        赋值 (tData, 相加 (tData, 到字节集 (IconDirEntry [i], dwBytesInRes)))
+        赋值 (tData, 相加 (tData, 到字节集 (到短整数 (IconDirEntry [i], dwImageOffset))))
+    .计次循环尾 ()
+    加入成员 (g_resid_bak, resid)
+    加入成员 (g_data1_bak, 相加 (tByte, tData))
+.否则
+    加入成员 (g_type, type)
+    加入成员 (g_resid, resid)
+    加入成员 (g_data1, data)
+.如果结束
+返回 (真)
+
+.子程序 生成资源, 字节集, , 
+.参数 RVA, 整数型, , 
+
+.局部变量 DIRECTORY, _IMAGE_RESOURCE_DIRECTORY, , , 
+.局部变量 ENTRY, _IMAGE_RESOURCE_DIRECTORY_ENTRY, , "0", 
+.局部变量 DATA_ENTRY, _IMAGE_RESOURCE_DATA_ENTRY, , , 
+.局部变量 rsrc, 字节集, , , 
+.局部变量 rLen, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 Numer, 整数型, , , 
+.局部变量 p_type, 整数型, , "0", 
+.局部变量 n, 整数型, , , 
+.局部变量 已存在, 逻辑型, , , 
+.局部变量 t_Byte, 字节集, , , 
+.局部变量 p_numer, 整数型, , "0", 
+.局部变量 rLen2, 整数型, , , 
+.局部变量 x, 整数型, , , 
+.局部变量 sLen, 整数型, , , 
+.局部变量 rData, 字节集, , , 
+.局部变量 x1, 整数型, , , 
+.局部变量 Max, 整数型, , , 
+.局部变量 tmp, 整数型, , , 
+.局部变量 tmp1, 整数型, , , 
+.局部变量 index, 整数型, , "0", 
+.局部变量 p, 整数型, , , 
+.局部变量 u, 整数型, , , 
+.局部变量 loop, 逻辑型, , , 
+.局部变量 type, 整数型, , , 
+.局部变量 id, 整数型, , , 
+.局部变量 data, 字节集, , , 
+
+赋值 (Max, 取数组成员数 (g_type))
+.如果真 (等于 (Max, 0))
+    返回 ({  })
+.如果真结束
+
+.计次循环首 (取数组成员数 (g_resid_bak), i)
+    加入成员 (g_type, 14)
+    加入成员 (g_resid, g_resid_bak [i])
+    加入成员 (g_data1, g_data1_bak [i])
+.计次循环尾 ()
+
+ ' 冒泡排序,从小到大排列资源
+赋值 (Max, 取数组成员数 (g_type))
+赋值 (loop, 真)
+.判断循环首 (loop)
+    赋值 (loop, 假)
+    .变量循环首 (1, 相减 (Max, 1), 1, i)
+        .如果真 (大于 (g_type [i], g_type [相加 (i, 1)]))
+            赋值 (type, g_type [i])
+            赋值 (id, g_resid [i])
+            赋值 (data, g_data1 [i])
+            赋值 (g_type [i], g_type [相加 (i, 1)])
+            赋值 (g_type [相加 (i, 1)], type)
+            赋值 (g_resid [i], g_resid [相加 (i, 1)])
+            赋值 (g_resid [相加 (i, 1)], id)
+            赋值 (g_data1 [i], g_data1 [相加 (i, 1)])
+            赋值 (g_data1 [相加 (i, 1)], data)
+            赋值 (loop, 真)
+        .如果真结束
+        
+    .变量循环尾 ()
+    赋值 (Max, 相减 (Max, 1))
+.判断循环尾 ()
+ ' 调试输出 (g_type)
+
+.计次循环首 (取数组成员数 (g_type), i)
+    赋值 (已存在, 假)
+    .计次循环首 (取数组成员数 (p_type), n)
+        .如果真 (等于 (p_type [n], g_type [i]))
+            赋值 (u, 1)
+            .计次循环首 (n, p)
+                赋值 (u, 相加 (u, p_numer [p]))
+            .计次循环尾 ()
+            赋值 (x, 相加 (p_numer [n], 1))
+            赋值 (p_numer [n], x)
+            插入成员 (index, u, i)
+            赋值 (已存在, 真)
+        .如果真结束
+        
+    .计次循环尾 ()
+    .如果真 (等于 (已存在, 假))
+        加入成员 (p_type, g_type [i])
+        加入成员 (p_numer, 1)
+        加入成员 (index, i)
+    .如果真结束
+    
+.计次循环尾 ()
+ ' 调试输出 (index, g_type)
+
+
+赋值 (Numer, 取数组成员数 (p_type))
+赋值 (sLen, 相加 (相乘 (Numer, 24), 相乘 (取数组成员数 (g_type), 48), 16))
+
+赋值 (rLen, 相加 (相乘 (Numer, 8), 16))
+重定义数组 (ENTRY, 假, Numer)
+
+.计次循环首 (Numer, i)
+    .如果 (等于 (i, 1))
+        赋值 (ENTRY [i], Name, p_type [i])
+        赋值 (ENTRY [i], OffsetToData, 相加 (rLen, 2147483648))
+    .否则
+        赋值 (ENTRY [i], Name, p_type [i])
+        赋值 (tmp, ENTRY [相减 (i, 1)].OffsetToData)
+        赋值 (tmp1, p_numer [相减 (i, 1)])
+        赋值 (ENTRY [i], OffsetToData, 相加 (tmp, 相乘 (tmp1, 64)))
+        .如果真 (大于 (tmp1, 1))
+            赋值 (ENTRY [i], OffsetToData, 相减 (ENTRY [i], OffsetToData, 相乘 (相减 (tmp1, 1), 16)))
+        .如果真结束
+        
+    .如果结束
+    
+.计次循环尾 ()
+
+赋值 (DIRECTORY.Characteristics, 0)
+赋值 (DIRECTORY.TimeDateStamp, 0)
+赋值 (DIRECTORY.MajorVersion, MajorVersion) ' 版本
+赋值 (DIRECTORY.MinorVersion, MinorVersion)
+赋值 (DIRECTORY.NumberOfNamedEntries, 0)
+赋值 (DIRECTORY.NumberOfIdEntries, Numer) ' 结构数目
+
+赋值 (t_Byte, 取空白字节集 (16))
+RtlMoveMemory_IMAGE_RESOURCE_DIRECTORY (t_Byte, DIRECTORY, 16)
+赋值 (rsrc, t_Byte)
+
+
+赋值 (t_Byte, 取空白字节集 (相乘 (Numer, 8)))
+RtlMoveMemory_IMAGE_RESOURCE_DIRECTORY_ENTRY (t_Byte, ENTRY, 相乘 (Numer, 8))
+赋值 (rsrc, 相加 (rsrc, t_Byte))
+赋值 (x, 0)
+.计次循环首 (取数组成员数 (p_type), i)
+    赋值 (rLen2, 取字节集长度 (rsrc))
+    赋值 (Numer, p_numer [i])
+    重定义数组 (ENTRY, 真, Numer)
+    赋值 (DIRECTORY.Characteristics, 0)
+    赋值 (DIRECTORY.TimeDateStamp, 0)
+    赋值 (DIRECTORY.MajorVersion, MajorVersion) ' 版本
+    赋值 (DIRECTORY.MinorVersion, MinorVersion)
+    赋值 (DIRECTORY.NumberOfNamedEntries, 0)
+    赋值 (DIRECTORY.NumberOfIdEntries, Numer) ' 结构数目
+    赋值 (t_Byte, 取空白字节集 (16))
+    RtlMoveMemory_IMAGE_RESOURCE_DIRECTORY (t_Byte, DIRECTORY, 16)
+    赋值 (rsrc, 相加 (rsrc, t_Byte))
+    .计次循环首 (Numer, n)
+        赋值 (x1, index [相加 (x, n)])
+        赋值 (ENTRY [n], Name, g_resid [x1])
+        赋值 (ENTRY [n], OffsetToData, 相加 (rLen2, 16, 相乘 (Numer, 8), 相乘 (相减 (n, 1), 40), 2147483648))
+    .计次循环尾 ()
+    赋值 (t_Byte, 取空白字节集 (相乘 (Numer, 8)))
+    RtlMoveMemory_IMAGE_RESOURCE_DIRECTORY_ENTRY (t_Byte, ENTRY, 相乘 (Numer, 8))
+    赋值 (rsrc, 相加 (rsrc, t_Byte))
+    
+    .计次循环首 (Numer, n)
+        赋值 (x1, index [相加 (x, n)])
+        赋值 (DIRECTORY.Characteristics, 0)
+        赋值 (DIRECTORY.TimeDateStamp, 0)
+        赋值 (DIRECTORY.MajorVersion, MajorVersion) ' 版本
+        赋值 (DIRECTORY.MinorVersion, MinorVersion)
+        赋值 (DIRECTORY.NumberOfNamedEntries, 0)
+        赋值 (DIRECTORY.NumberOfIdEntries, 1)
+        赋值 (t_Byte, 取空白字节集 (16))
+        RtlMoveMemory_IMAGE_RESOURCE_DIRECTORY (t_Byte, DIRECTORY, 16)
+        赋值 (rsrc, 相加 (rsrc, t_Byte))
+        赋值 (rsrc, 相加 (rsrc, 到字节集 (2052)))
+        赋值 (rsrc, 相加 (rsrc, 到字节集 (到整数 (相加 (取字节集长度 (rsrc), 4)))))
+        赋值 (rsrc, 相加 (rsrc, 到字节集 (到整数 (相加 (sLen, 取字节集长度 (rData), RVA)))))
+        赋值 (rsrc, 相加 (rsrc, 到字节集 (取字节集长度 (g_data1 [x1]))))
+        赋值 (rsrc, 相加 (rsrc, { 0, 0, 0, 0, 0, 0, 0, 0 }))
+        赋值 (rData, 相加 (rData, g_data1 [x1], { 0, 0 }))
+    .计次循环尾 ()
+    赋值 (rLen2, 取字节集长度 (rsrc))
+    赋值 (x, 相加 (x, Numer))
+.计次循环尾 ()
+返回 (相加 (rsrc, rData))
+
+.子程序 PE_加入数据, 整数型, , 返回所在区段偏移地址,不会重复添加数据
+.参数 Data, 字节集, , 数据
+.参数 Null, 逻辑型, , 是否在结尾+{0}
+
+.局部变量 ret, 整数型, , , 
+
+.判断开始 (Null)
+    赋值 (ret, 寻找字节集 (g_Data, 相加 (Data, { 0 }), ))
+.默认
+    赋值 (ret, 寻找字节集 (g_Data, Data, ))
+.判断结束
+.如果真 (不等于 (ret, -1))
+    返回 (相减 (ret, 1))
+.如果真结束
+赋值 (ret, 取字节集长度 (g_Data))
+赋值 (g_Data, 相加 (g_Data, Data))
+.如果真 (Null)
+    赋值 (g_Data, 相加 (g_Data, { 0 }))
+.如果真结束
+返回 (ret)
+
+
+.子程序 PE_加入全局变量, 整数型, , 在数据段加入{0,0,0,0}
+.局部变量 ret, 整数型, , , 
+
+赋值 (ret, 取字节集长度 (g_Data))
+赋值 (g_Data, 相加 (g_Data, { 0, 0, 0, 0 }))
+返回 (ret)
+
+.子程序 构造导入表, 字节集, , 
+.参数 RVA, 整数型, , 
+.参数 TableAddr, 整数型, 参考, 
+.参数 TableSize, 整数型, 参考, 
+
+.局部变量 i, 整数型, , , 
+.局部变量 Proc, 文本型, , "0", 
+.局部变量 n, 整数型, , , 
+.局部变量 ImportSize, 整数型, , , 
+.局部变量 pNumer, 整数型, , , 
+.局部变量 IData, 字节集, , , 
+.局部变量 NV, 整数型, , "0", 
+.局部变量 Import, IMAGE_IMPORT_DESCRIPTOR, , "0", 
+.局部变量 Import2, Import, , "0", 
+.局部变量 ILen, 整数型, , , 
+.局部变量 ILen2, 整数型, , , 
+.局部变量 IData1, 字节集, , , 
+.局部变量 IData2, 字节集, , , 
+.局部变量 ProcId, 整数型, , , 
+
+
+赋值 (ImportSize, 取数组成员数 (g_LibName))
+重定义数组 (Import, 假, 相加 (ImportSize, 1))
+重定义数组 (Import2, 假, ImportSize)
+.计次循环首 (ImportSize, i)
+    赋值 (Proc, 分割文本 (g_LibProc [i], 字符 (1), ))
+    赋值 (pNumer, 取数组成员数 (Proc))
+    重定义数组 (Import2 [i], RVA, 假, 0)
+    .计次循环首 (pNumer, n)
+        .判断开始 (等于 (到整数 (Proc [n]), 0))
+            加入成员 (Import2 [i], RVA, 取字节集长度 (IData))
+            赋值 (IData, 相加 (IData, { 0, 0 }, 到字节集 (Proc [n]), { 0 }))
+        .默认
+            加入成员 (Import2 [i], RVA, 到长整数 (Proc [n]))
+        .判断结束
+        
+    .计次循环尾 ()
+    加入成员 (NV, 取字节集长度 (IData)) ' DLL名字偏移
+    赋值 (IData, 相加 (IData, 到字节集 (g_LibName [i]), { 0 }))
+.计次循环尾 ()
+赋值 (IData, 相加 (IData, { 0 }))
+赋值 (ILen, 0)
+.计次循环首 (取数组成员数 (Import2), i)
+    赋值 (ILen, 相加 (ILen, 取数组成员数 (Import2 [i], RVA), 1))
+.计次循环尾 ()
+ ' 输出调试文本 (ILen)
+赋值 (IData1, {  })
+
+
+.计次循环首 (ImportSize, i)
+    .计次循环首 (取数组成员数 (Import2 [i], RVA), n)
+        .判断开始 (大于 (Import2 [i], RVA [n], 2147483648))
+            赋值 (IData1, 相加 (IData1, 到字节集 (到整数 (Import2 [i], RVA [n]))))
+        .默认
+            赋值 (IData1, 相加 (IData1, 到字节集 (到整数 (相加 (Import2 [i], RVA [n], RVA, 相乘 (ILen, 8), 相乘 (相加 (ImportSize, 1), 20))))))
+        .判断结束
+        
+    .计次循环尾 ()
+    赋值 (IData1, 相加 (IData1, 到字节集 (0)))
+    
+    .如果 (等于 (i, 1))
+        赋值 (ILen2, 到整数 (相加 (RVA, 相乘 (ILen, 4))))
+    .否则
+        赋值 (ILen2, 相加 (ILen2, 相乘 (取数组成员数 (Import2 [相减 (i, 1)].RVA), 4), 4))
+    .如果结束
+    
+    赋值 (IData2, 相加 (IData2, 到字节集 (ILen2), { 0, 0, 0, 0, 0, 0, 0, 0 }, 到字节集 (到整数 (相加 (RVA, NV [i], 相乘 (ILen, 8), 相乘 (相加 (ImportSize, 1), 20)))), 到字节集 (到整数 (相减 (相加 (取字节集长度 (IData1), RVA), 相乘 (取数组成员数 (Import2 [i], RVA), 4), 4)))))
+    
+.计次循环尾 ()
+赋值 (IData2, 相加 (IData2, 取空白字节集 (20)))
+赋值 (IData1, 相加 (IData1, IData1))
+赋值 (TableAddr, 取字节集长度 (IData1))
+赋值 (TableSize, 相乘 (相加 (ImportSize, 1), 20))
+ ' 写到文件 (取特定目录 (3) ＋ “1.bin”, IData1)
+
+返回 (相加 (IData1, IData2, IData))
+
+
+.子程序 PE_取API地址, 整数型, , 在已导入的API中取调用地址,返回所在区段偏移地址.没取到返回0
+.参数 ApiName, 文本型, , API名
+.参数 ProcId, 整数型, , 序号 -1表示apiname
+.参数 LibName, 文本型, , DLL名,如果有相同的DLL,需指定
+
+.局部变量 i, 整数型, , , 
+.局部变量 Proc, 文本型, , "0", 
+.局部变量 pNumer, 整数型, , , 
+.局部变量 n, 整数型, , , 
+.局部变量 tAddr, 整数型, , , 
+.局部变量 RegEx, 正则表达式类, , , 
+.局部变量 Matchs, 整数型, , , 
+.局部变量 tName, 文本型, , , 
+.局部变量 bds, 文本型, , , 
+
+.如果真 (等于 (g_api, “”))
+    .计次循环首 (取数组成员数 (g_LibName), i)
+        赋值 (g_api, 相加 (g_api, g_LibName [i], 字符 (1), 字符 (2)))
+        赋值 (Proc, 分割文本 (g_LibProc [i], 字符 (1), ))
+        赋值 (pNumer, 取数组成员数 (Proc))
+        .计次循环首 (pNumer, n)
+            赋值 (g_api, 相加 (g_api, Proc [n], 字符 (1), 到文本 (tAddr), 字符 (2)))
+            赋值 (tAddr, 相加 (tAddr, 4))
+        .计次循环尾 ()
+        赋值 (tAddr, 相加 (tAddr, 4))
+    .计次循环尾 ()
+.如果真结束
+
+.判断开始 (等于 (ProcId, -1))
+    赋值 (tName, ApiName)
+.默认
+    赋值 (tName, 到文本 (相加 (2147483648, ProcId)))
+.判断结束
+.如果 (等于 (LibName, “”))
+    赋值 (bds, 相加 (tName, 字符 (1), “(.*)”, 字符 (2)))
+.否则
+    赋值 (bds, 相加 (LibName, “.*?”, tName, 字符 (1), “(.*)”, 字符 (2)))
+.如果结束
+RegEx.创建 (bds, 假, 假, 假)
+赋值 (Matchs, RegEx.搜索全部 (g_api))
+返回 (到整数 (RegEx.取子匹配文本 (1, 1)))
+
+
+.子程序 PE_导入API, 整数型, , '返回-1代表无法获取API,0代表已存在,成功返回1
+.参数 LibName, 文本型, , DLL名
+.参数 ProcName, 文本型, , API名
+.参数 ProcId, 整数型, , 序号
+
+.局部变量 i, 整数型, , , 
+.局部变量 Index, 整数型, , , 
+.局部变量 tName, 文本型, , , 
+
+.如果真 (并且 (等于 (ProcName, “”), 等于 (ProcId, -1)))
+    返回 (-1)
+.如果真结束
+
+.判断开始 (等于 (ProcId, -1))
+    .如果真 (等于 (GetProcAddress (LoadLibrary (LibName), ProcName), 0))
+        返回 (-1)
+    .如果真结束
+    赋值 (tName, ProcName)
+.默认
+    赋值 (tName, 到文本 (相加 (2147483648, ProcId)))
+.判断结束
+
+.计次循环首 (取数组成员数 (g_LibName), i)
+    .如果真 (等于 (到小写 (g_LibName [i]), 到小写 (LibName)))
+        .如果真 (不等于 (寻找文本 (g_LibProc [i], tName, , 假), -1))
+            返回 (0)
+        .如果真结束
+        赋值 (Index, i)
+        跳出循环 ()
+    .如果真结束
+    
+.计次循环尾 ()
+.如果 (等于 (Index, 0))
+    加入成员 (g_LibName, 到小写 (LibName))
+    加入成员 (g_LibProc, 相加 (tName, 字符 (1)))
+.否则
+    .如果 (等于 (ProcId, -1))
+        赋值 (g_LibProc [Index], 相加 (g_LibProc [Index], ProcName, 字符 (1)))
+    .否则
+        赋值 (g_LibProc [Index], 相加 (g_LibProc [Index], tName, 字符 (1)))
+    .如果结束
+    
+.如果结束
+赋值 (g_api, “”)
+返回 (1)
+
+.子程序 PE_加入代码, 整数型, , 返回所在区段偏移地址
+.参数 Code, 字节集, , 代码.
+
+.局部变量 ret, 整数型, , , 
+
+赋值 (ret, 取字节集长度 (g_Code))
+赋值 (g_Code, 相加 (g_Code, Code))
+返回 (ret)
+
+.子程序 PE_构造Exe, 字节集, , '返回EXE数据,
+.参数 入口点, 整数型, 可空, 代码段偏移,可空
+
+.局部变量 PE, IMAGE_NT_HEADERS, , , 
+.局部变量 PE_Data, 字节集, , , 
+.局部变量 Section, IMAGE_SECTION_HEADER, , "4", 
+.局部变量 SE_Data, 字节集, , , 
+.局部变量 SE_Name, 字节型, , "8", 
+.局部变量 SE, 整数型, , , 
+.局部变量 CodeLen, 整数型, , , 
+.局部变量 CodeLen2, 整数型, , , 
+.局部变量 CodeLen3, 整数型, , , 
+.局部变量 PE_Exe_Data, 字节集, , , 
+.局部变量 PELen, 整数型, , , 
+.局部变量 Import, IMAGE_IMPORT_DESCRIPTOR, , , 
+.局部变量 Byte, 字节集, , , 
+.局部变量 tableaddr, 整数型, , , 
+.局部变量 tablesize, 整数型, , , 
+.局部变量 IATData, 字节集, , , 
+.局部变量 rsrcData, 字节集, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 Offset, 整数型, , , 
+.局部变量 n, 整数型, , , 
+.局部变量 Add, 整数型, , , 
+.局部变量 x, 整数型, , , 
+.局部变量 DOS, 字节集, , , 
+.局部变量 IntDataSize, 整数型, , , 
+.局部变量 rsrcAddr, 整数型, , , 
+.局部变量 rsrcSize, 整数型, , , 
+
+赋值 (SE, 4)
+重定义数组 (Section, 假, SE)
+
+文本到字节 (“.text”, SE_Name)
+赋值 (Section [1].Name, SE_Name)
+赋值 (Section [1].VirtualAddress, 4096) ' 偏移,必须为区段校正的倍数,
+
+赋值 (CodeLen, 取字节集长度 (g_Code))
+赋值 (Section [1].Misc, CodeLen) ' 实际区段大小,代码长度
+
+赋值 (CodeLen2, 相除 (CodeLen, 512))
+赋值 (CodeLen3, 到整数 (大于 (求余数 (CodeLen, 512), 0)))
+.如果真 (并且 (等于 (CodeLen2, 0), 等于 (CodeLen3, 0)))
+    赋值 (CodeLen2, 1)
+.如果真结束
+赋值 (Section [1].SizeOfRawData, 相乘 (512, 相加 (CodeLen2, CodeLen3))) ' 读取大小,必须为文件校正的倍数
+赋值 (Section [1].PointerToRawData, 1024) ' 读取偏移,取整,代码写入位置,
+赋值 (Section [1].Characteristics, 1610612768) ' 标记区段属性
+
+
+文本到字节 (“.rdata”, SE_Name)
+赋值 (CodeLen, 取字节集长度 (g_Code))
+赋值 (CodeLen2, 相除 (CodeLen, 4096))
+赋值 (CodeLen3, 到整数 (大于 (求余数 (CodeLen, 4096), 0)))
+.如果真 (并且 (等于 (CodeLen2, 0), 等于 (CodeLen3, 0)))
+    赋值 (CodeLen2, 1)
+.如果真结束
+赋值 (IATData, 构造导入表 (相加 (Section [1].VirtualAddress, 相乘 (4096, 相加 (CodeLen2, CodeLen3))), tableaddr, tablesize))
+赋值 (Section [2].VirtualAddress, 相加 (Section [1].VirtualAddress, 相乘 (4096, 相加 (CodeLen2, CodeLen3)))) ' 偏移,必须为区段校正的倍数,
+赋值 (Section [2].Name, SE_Name)
+
+赋值 (CodeLen, 取字节集长度 (IATData))
+赋值 (Section [2].Misc, CodeLen) ' 实际区段大小,代码长度
+
+赋值 (CodeLen2, 相除 (CodeLen, 512))
+赋值 (CodeLen3, 到整数 (大于 (求余数 (CodeLen, 512), 0)))
+.如果真 (并且 (等于 (CodeLen2, 0), 等于 (CodeLen3, 0)))
+    赋值 (CodeLen2, 1)
+.如果真结束
+赋值 (Section [2].SizeOfRawData, 相乘 (512, 相加 (CodeLen2, CodeLen3))) ' 读取大小,必须为文件校正的倍数
+赋值 (Section [2].PointerToRawData, 相加 (Section [1].PointerToRawData, Section [1].SizeOfRawData)) ' 读取偏移,取整,代码写入位置,
+赋值 (Section [2].Characteristics, 1073741888) ' 标记区段属性
+
+
+文本到字节 (“.data”, SE_Name)
+赋值 (CodeLen, 取字节集长度 (IATData))
+赋值 (CodeLen2, 相除 (CodeLen, 4096))
+赋值 (CodeLen3, 到整数 (大于 (求余数 (CodeLen, 4096), 0)))
+.如果真 (并且 (等于 (CodeLen2, 0), 等于 (CodeLen3, 0)))
+    赋值 (CodeLen2, 1)
+.如果真结束
+
+赋值 (Section [3].Name, SE_Name)
+赋值 (Section [3].VirtualAddress, 相加 (Section [2].VirtualAddress, 相乘 (4096, 相加 (CodeLen2, CodeLen3)))) ' 偏移,必须为区段校正的倍数,
+
+赋值 (CodeLen, 取字节集长度 (g_Data))
+赋值 (Section [3].Misc, CodeLen) ' 实际区段大小,代码长度
+
+赋值 (CodeLen2, 相除 (CodeLen, 512))
+赋值 (CodeLen3, 到整数 (大于 (求余数 (CodeLen, 512), 0)))
+.如果真 (并且 (等于 (CodeLen2, 0), 等于 (CodeLen3, 0)))
+    赋值 (CodeLen2, 1)
+.如果真结束
+赋值 (Section [3].SizeOfRawData, 相乘 (512, 相加 (CodeLen2, CodeLen3))) ' 读取大小,必须为文件校正的倍数
+赋值 (Section [3].PointerToRawData, 相加 (Section [2].PointerToRawData, Section [2].SizeOfRawData)) ' 读取偏移,取整,代码写入位置,
+赋值 (Section [3].Characteristics, 3221225536) ' 标记区段属性
+
+
+文本到字节 (“.rsrc”, SE_Name)
+赋值 (CodeLen, 取字节集长度 (g_Data))
+赋值 (CodeLen2, 相除 (CodeLen, 4096))
+赋值 (CodeLen3, 到整数 (大于 (求余数 (CodeLen, 4096), 0)))
+.如果真 (并且 (等于 (CodeLen2, 0), 等于 (CodeLen3, 0)))
+    赋值 (CodeLen2, 1)
+.如果真结束
+赋值 (Section [4].Name, SE_Name)
+赋值 (Section [4].VirtualAddress, 相加 (Section [3].VirtualAddress, 相乘 (4096, 相加 (CodeLen2, CodeLen3)))) ' 偏移,必须为区段校正的倍数,
+.判断开始 (不等于 (g_resdata, {  }))
+    赋值 (rsrcData, g_resdata)
+.默认
+    赋值 (rsrcData, 生成资源 (Section [4].VirtualAddress))
+.判断结束
+赋值 (CodeLen, 取字节集长度 (rsrcData))
+
+.判断开始 (大于或等于 (CodeLen, 1))
+    赋值 (Section [4].Misc, CodeLen) ' 实际区段大小,代码长度
+    
+    赋值 (CodeLen2, 相除 (CodeLen, 512))
+    赋值 (CodeLen3, 到整数 (大于 (求余数 (CodeLen, 512), 0)))
+    .如果真 (并且 (等于 (CodeLen2, 0), 等于 (CodeLen3, 0)))
+        赋值 (CodeLen2, 1)
+    .如果真结束
+    赋值 (Section [4].SizeOfRawData, 相乘 (512, 相加 (CodeLen2, CodeLen3))) ' 读取大小,必须为文件校正的倍数
+    赋值 (Section [4].PointerToRawData, 相加 (Section [3].PointerToRawData, Section [3].SizeOfRawData)) ' 读取偏移,取整,代码写入位置,
+    赋值 (Section [4].Characteristics, 1073741888) ' 标记区段属性
+    赋值 (rsrcAddr, Section [4].VirtualAddress)
+    赋值 (rsrcSize, Section [4].Misc)
+.默认
+    赋值 (SE, 相减 (SE, 1))
+    赋值 (rsrcAddr, 0)
+    赋值 (rsrcSize, 0)
+.判断结束
+
+赋值 (SE_Data, 取空白字节集 (相乘 (40, SE)))
+RtlMoveMemory_IMAGE_SECTION_HEADER_1 (SE_Data, Section, 相乘 (40, SE))
+
+ ' '''''''''PE
+赋值 (PE.Signature, 17744)
+赋值 (PE.FileHeader.Machine, 332)
+赋值 (PE.FileHeader.NumberOfSections, SE) ' 区段数
+赋值 (PE.FileHeader.TimeDateStamp, 0)
+赋值 (PE.FileHeader.PointerToSymbolTable, 0)
+赋值 (PE.FileHeader.NumberOfSymbols, 0)
+赋值 (PE.FileHeader.SizeOfOptionalHeader, 224) ' E0
+赋值 (PE.FileHeader.Characteristics, 271) ' 271 EXE,8462,DLL
+赋值 (PE.OptionalHeader.Magic, 267)
+赋值 (PE.OptionalHeader.MajorLinkerVersion, MajorLinkerVersion) ' 编译器
+赋值 (PE.OptionalHeader.MinorLinkerVersion, MinorLinkerVersion) ' 1.0
+赋值 (PE.OptionalHeader.SizeOfCode, Section [1].SizeOfRawData)
+赋值 (IntDataSize, 0)
+.计次循环首 (相减 (SE, 1), i)
+    赋值 (IntDataSize, 相加 (IntDataSize, Section [相加 (i, 1)].SizeOfRawData))
+.计次循环尾 ()
+赋值 (PE.OptionalHeader.SizeOfInitializedData, IntDataSize) ' 已初始化数据的大小
+赋值 (PE.OptionalHeader.SizeOfUninitializedData, 0)
+
+赋值 (PE.OptionalHeader.AddressOfEntryPoint, 相加 (4096, 入口点))
+
+赋值 (PE.OptionalHeader.BaseOfCode, 4096) ' 代码基址
+赋值 (PE.OptionalHeader.BaseOfData, Section [3].VirtualAddress) ' 数据基址 ,'0x3000
+赋值 (PE.OptionalHeader.ImageBase, 4194304) ' 映像基址 0x00400000
+赋值 (PE.OptionalHeader.SectionAlignment, 4096) ' 区段校正
+赋值 (PE.OptionalHeader.FileAlignment, 512) ' 文件校正
+赋值 (PE.OptionalHeader.MajorOperatingSystemVersion, 4)
+赋值 (PE.OptionalHeader.MinorOperatingSystemVersion, 0)
+赋值 (PE.OptionalHeader.MajorImageVersion, 0)
+赋值 (PE.OptionalHeader.MinorImageVersion, 0)
+赋值 (PE.OptionalHeader.MajorSubsystemVersion, 4)
+赋值 (PE.OptionalHeader.MinorSubsystemVersion, 0)
+赋值 (PE.OptionalHeader.Win32VersionValue, 0)
+赋值 (PE.OptionalHeader.SizeOfImage, 相加 (Section [SE], VirtualAddress, Section [SE], SizeOfRawData)) ' 映像大小
+赋值 (PE.OptionalHeader.SizeOfHeaders, 1024) ' PE文件头大小,
+赋值 (PE.OptionalHeader.CheckSum, 0) ' 效验和'
+赋值 (PE.OptionalHeader.Subsystem, 2) ' 2:图形界面程序
+赋值 (PE.OptionalHeader.DllCharacteristics, 0)
+赋值 (PE.OptionalHeader.SizeOfStackReserve, 1048576) ' ???
+赋值 (PE.OptionalHeader.SizeOfStackCommit, 4096) ' ???
+赋值 (PE.OptionalHeader.SizeOfHeapReserve, 1048576) ' ???
+赋值 (PE.OptionalHeader.SizeOfHeapCommit, 4096) ' ???
+赋值 (PE.OptionalHeader.LoaderFlags, 0) ' ???
+赋值 (PE.OptionalHeader.NumberOfRvaAndSizes, 16)
+赋值 (PE.OptionalHeader.DataDirectory [1].VirtualAddress, 0) ' 导出表地址
+赋值 (PE.OptionalHeader.DataDirectory [1].Size, 0) ' 导出表大小
+赋值 (PE.OptionalHeader.DataDirectory [2].VirtualAddress, 相加 (Section [2].VirtualAddress, tableaddr)) ' 导入表地址
+赋值 (PE.OptionalHeader.DataDirectory [2].Size, tablesize) ' 导入表
+赋值 (PE.OptionalHeader.DataDirectory [3].VirtualAddress, rsrcAddr) ' 资源表
+赋值 (PE.OptionalHeader.DataDirectory [3].Size, rsrcSize) ' 大小
+赋值 (PE.OptionalHeader.DataDirectory [13].VirtualAddress, Section [2].VirtualAddress) ' IAT
+赋值 (PE.OptionalHeader.DataDirectory [13].Size, 相除 (tableaddr, 2)) ' 大小
+
+赋值 (PE_Data, 取空白字节集 (248))
+RtlMoveMemory_IMAGE_NT_HEADERS_1 (PE_Data, PE, 248)
+赋值 (PE_Exe_Data, 取空白字节集 (相加 (Section [SE], PointerToRawData, Section [SE], SizeOfRawData)))
+
+.判断开始 (不等于 (sb360, “”))
+    赋值 (DOS, 字节集替换 (#DOS, 129, 48, 相加 (到字节集 (sb360), 取空白字节集 (相减 (48, 取字节集长度 (到字节集 (sb360)))))))
+.默认
+    赋值 (DOS, #DOS)
+.判断结束
+赋值 (PELen, 取字节集长度 (相加 (DOS, PE_Data, SE_Data)))
+
+RtlMoveMemory_Byte (PE_Exe_Data, 相加 (DOS, PE_Data, SE_Data), PELen)
+
+
+.计次循环首 (取数组成员数 (g_CodeReloc), i)
+    赋值 (Offset, 相加 (g_CodeReloc [i], 偏移, 1))
+    赋值 (n, 取字节集数据 (取字节集中间 (g_Code, Offset, 4), #整数型, ))
+    .判断开始 (等于 (g_CodeReloc [i], 类型, 1))
+        赋值 (Add, Section [2].VirtualAddress)
+    .判断 (等于 (g_CodeReloc [i], 类型, 2))
+        赋值 (Add, Section [3].VirtualAddress)
+    .判断 (等于 (g_CodeReloc [i], 类型, 3))
+        赋值 (Add, Section [1].VirtualAddress)
+    .默认
+        
+    .判断结束
+    赋值 (x, g_CodeReloc [i], 数值)
+    .判断开始 (等于 (x, -1))
+        赋值 (n, 相加 (n, Add, 4194304))
+    .默认
+        赋值 (n, 相加 (Add, x, 4194304))
+    .判断结束
+    赋值 (g_Code, 字节集替换 (g_Code, Offset, 4, 到字节集 (n)))
+.计次循环尾 ()
+
+赋值 (PE_Exe_Data, 字节集替换 (PE_Exe_Data, 相加 (Section [1].PointerToRawData, 1), 取字节集长度 (g_Code), g_Code))
+赋值 (PE_Exe_Data, 字节集替换 (PE_Exe_Data, 相加 (Section [2].PointerToRawData, 1), 取字节集长度 (IATData), IATData))
+赋值 (PE_Exe_Data, 字节集替换 (PE_Exe_Data, 相加 (Section [3].PointerToRawData, 1), 取字节集长度 (g_Data), g_Data))
+.如果真 (大于 (rsrcSize, 0))
+    赋值 (PE_Exe_Data, 字节集替换 (PE_Exe_Data, 相加 (Section [4].PointerToRawData, 1), 取字节集长度 (rsrcData), rsrcData))
+.如果真结束
+
+返回 (PE_Exe_Data)
+
+
+.子程序 文本到字节, 空白型, , 
+.参数 文本, 文本型, , 
+.参数 字节, 字节型, 参考 数组, 
+
+.局部变量 tmp, 字节集, , , 
+.局部变量 len, 整数型, , , 
+.局部变量 i, 整数型, , , 
+
+重定义数组 (字节, 假, 取数组成员数 (字节))
+赋值 (tmp, 到字节集 (文本))
+赋值 (len, 取字节集长度 (tmp))
+.计次循环首 (取数组成员数 (字节), i)
+    .如果真 (大于 (i, len))
+        跳出循环 ()
+    .如果真结束
+    赋值 (字节 [i], tmp [i])
+.计次循环尾 ()
+
+.子程序 PE_构造Dll, 字节集, , '返回DLL数据,
+.参数 入口点, 整数型, 可空, 代码偏移,可空
+.参数 DLL名, 文本型, , 
+.参数 基址, 整数型, 可空, 默认为0x10000000
+
+.局部变量 PE, IMAGE_NT_HEADERS, , , 
+.局部变量 PE_Data, 字节集, , , 
+.局部变量 Section, IMAGE_SECTION_HEADER, , "4", 
+.局部变量 SE_Data, 字节集, , , 
+.局部变量 SE_Name, 字节型, , "8", 
+.局部变量 SE, 整数型, , , 
+.局部变量 CodeLen, 整数型, , , 
+.局部变量 CodeLen2, 整数型, , , 
+.局部变量 CodeLen3, 整数型, , , 
+.局部变量 PE_Exe_Data, 字节集, , , 
+.局部变量 PELen, 整数型, , , 
+.局部变量 Import, IMAGE_IMPORT_DESCRIPTOR, , , 
+.局部变量 Byte, 字节集, , , 
+.局部变量 tableaddr, 整数型, , , 
+.局部变量 tablesize, 整数型, , , 
+.局部变量 IATData, 字节集, , , 
+.局部变量 rsrcData, 字节集, , , 
+.局部变量 ExportAddr, 整数型, , , 
+.局部变量 ExportSize, 整数型, , , 
+.局部变量 relocData, 字节集, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 Offset, 整数型, , , 
+.局部变量 n, 整数型, , , 
+.局部变量 Add, 整数型, , , 
+.局部变量 x, 整数型, , , 
+.局部变量 DOS, 字节集, , , 
+.局部变量 rsrcAddr, 整数型, , , 
+.局部变量 rsrcSize, 整数型, , , 
+.局部变量 IntDataSize, 整数型, , , 
+.局部变量 导出定位, 整数型, , "0", 
+.局部变量 ExportData, 字节集, , , 
+
+赋值 (SE, 5)
+重定义数组 (Section, 假, SE)
+
+文本到字节 (“.text”, SE_Name)
+赋值 (Section [1].Name, SE_Name)
+赋值 (Section [1].VirtualAddress, 4096) ' 偏移,必须为区段校正的倍数,
+
+赋值 (CodeLen, 取字节集长度 (g_Code))
+赋值 (Section [1].Misc, CodeLen) ' 实际区段大小,代码长度
+
+赋值 (CodeLen2, 相除 (CodeLen, 512))
+赋值 (CodeLen3, 到整数 (大于 (求余数 (CodeLen, 512), 0)))
+.如果真 (并且 (等于 (CodeLen2, 0), 等于 (CodeLen3, 0)))
+    赋值 (CodeLen2, 1)
+.如果真结束
+赋值 (Section [1].SizeOfRawData, 相乘 (512, 相加 (CodeLen2, CodeLen3))) ' 读取大小,必须为文件校正的倍数
+赋值 (Section [1].PointerToRawData, 1024) ' 读取偏移,取整,代码写入位置,
+赋值 (Section [1].Characteristics, 1610612768) ' 标记区段属性
+
+
+文本到字节 (“.rdata”, SE_Name)
+赋值 (CodeLen, 取字节集长度 (g_Code))
+赋值 (CodeLen2, 相除 (CodeLen, 4096))
+赋值 (CodeLen3, 到整数 (大于 (求余数 (CodeLen, 4096), 0)))
+.如果真 (并且 (等于 (CodeLen2, 0), 等于 (CodeLen3, 0)))
+    赋值 (CodeLen2, 1)
+.如果真结束
+赋值 (IATData, 构造导入表 (相加 (Section [1].VirtualAddress, 相乘 (4096, 相加 (CodeLen2, CodeLen3))), tableaddr, tablesize))
+赋值 (Section [2].VirtualAddress, 相加 (Section [1].VirtualAddress, 相乘 (4096, 相加 (CodeLen2, CodeLen3)))) ' 偏移,必须为区段校正的倍数,
+赋值 (Section [2].Name, SE_Name)
+赋值 (ExportAddr, 取字节集长度 (IATData))
+赋值 (ExportData, 构造导出表 (相加 (Section [2].VirtualAddress, ExportAddr), DLL名, 导出定位))
+赋值 (ExportSize, 取字节集长度 (ExportData))
+赋值 (IATData, 相加 (IATData, ExportData))
+
+赋值 (CodeLen, 取字节集长度 (IATData))
+赋值 (Section [2].Misc, CodeLen) ' 实际区段大小,代码长度
+
+赋值 (CodeLen2, 相除 (CodeLen, 512))
+赋值 (CodeLen3, 到整数 (大于 (求余数 (CodeLen, 512), 0)))
+.如果真 (并且 (等于 (CodeLen2, 0), 等于 (CodeLen3, 0)))
+    赋值 (CodeLen2, 1)
+.如果真结束
+赋值 (Section [2].SizeOfRawData, 相乘 (512, 相加 (CodeLen2, CodeLen3))) ' 读取大小,必须为文件校正的倍数
+赋值 (Section [2].PointerToRawData, 相加 (Section [1].PointerToRawData, Section [1].SizeOfRawData)) ' 读取偏移,取整,代码写入位置,
+赋值 (Section [2].Characteristics, 1073741888) ' 标记区段属性
+
+
+文本到字节 (“.data”, SE_Name)
+赋值 (CodeLen, 取字节集长度 (IATData))
+赋值 (CodeLen2, 相除 (CodeLen, 4096))
+赋值 (CodeLen3, 到整数 (大于 (求余数 (CodeLen, 4096), 0)))
+.如果真 (并且 (等于 (CodeLen2, 0), 等于 (CodeLen3, 0)))
+    赋值 (CodeLen2, 1)
+.如果真结束
+
+赋值 (Section [3].Name, SE_Name)
+赋值 (Section [3].VirtualAddress, 相加 (Section [2].VirtualAddress, 相乘 (4096, 相加 (CodeLen2, CodeLen3)))) ' 偏移,必须为区段校正的倍数,
+
+.计次循环首 (取数组成员数 (导出定位), i)
+    赋值 (Offset, 取字节集数据 (IATData, #整数型, 相加 (导出定位 [i], ExportAddr, 1)))
+    赋值 (IATData, 字节集替换 (IATData, 相加 (导出定位 [i], ExportAddr, 1), 4, 到字节集 (到整数 (相加 (相减 (Offset, 4096), Section [3].VirtualAddress)))))
+.计次循环尾 ()
+
+赋值 (CodeLen, 取字节集长度 (g_Data))
+赋值 (Section [3].Misc, CodeLen) ' 实际区段大小,代码长度
+
+赋值 (CodeLen2, 相除 (CodeLen, 512))
+赋值 (CodeLen3, 到整数 (大于 (求余数 (CodeLen, 512), 0)))
+.如果真 (并且 (等于 (CodeLen2, 0), 等于 (CodeLen3, 0)))
+    赋值 (CodeLen2, 1)
+.如果真结束
+赋值 (Section [3].SizeOfRawData, 相乘 (512, 相加 (CodeLen2, CodeLen3))) ' 读取大小,必须为文件校正的倍数
+赋值 (Section [3].PointerToRawData, 相加 (Section [2].PointerToRawData, Section [2].SizeOfRawData)) ' 读取偏移,取整,代码写入位置,
+赋值 (Section [3].Characteristics, 3221225536) ' 标记区段属性
+
+文本到字节 (“.rsrc”, SE_Name)
+赋值 (CodeLen, 取字节集长度 (g_Data))
+赋值 (CodeLen2, 相除 (CodeLen, 4096))
+赋值 (CodeLen3, 到整数 (大于 (求余数 (CodeLen, 4096), 0)))
+.如果真 (并且 (等于 (CodeLen2, 0), 等于 (CodeLen3, 0)))
+    赋值 (CodeLen2, 1)
+.如果真结束
+赋值 (Section [4].Name, SE_Name)
+赋值 (Section [4].VirtualAddress, 相加 (Section [3].VirtualAddress, 相乘 (4096, 相加 (CodeLen2, CodeLen3)))) ' 偏移,必须为区段校正的倍数,
+.判断开始 (不等于 (g_resdata, {  }))
+    赋值 (rsrcData, g_resdata)
+.默认
+    赋值 (rsrcData, 生成资源 (Section [4].VirtualAddress))
+.判断结束
+赋值 (CodeLen, 取字节集长度 (rsrcData))
+
+.判断开始 (大于或等于 (CodeLen, 1))
+    赋值 (Section [4].Misc, CodeLen) ' 实际区段大小,代码长度
+    
+    赋值 (CodeLen2, 相除 (CodeLen, 512))
+    赋值 (CodeLen3, 到整数 (大于 (求余数 (CodeLen, 512), 0)))
+    .如果真 (并且 (等于 (CodeLen2, 0), 等于 (CodeLen3, 0)))
+        赋值 (CodeLen2, 1)
+    .如果真结束
+    赋值 (Section [4].SizeOfRawData, 相乘 (512, 相加 (CodeLen2, CodeLen3))) ' 读取大小,必须为文件校正的倍数
+    赋值 (Section [4].PointerToRawData, 相加 (Section [3].PointerToRawData, Section [3].SizeOfRawData)) ' 读取偏移,取整,代码写入位置,
+    赋值 (Section [4].Characteristics, 1073741888) ' 标记区段属性
+    赋值 (rsrcAddr, Section [4].VirtualAddress)
+    赋值 (rsrcSize, Section [4].Misc)
+    赋值 (CodeLen, 取字节集长度 (rsrcData))
+.默认
+    赋值 (SE, 相减 (SE, 1))
+    赋值 (rsrcAddr, 0)
+    赋值 (rsrcSize, 0)
+    赋值 (CodeLen, 取字节集长度 (g_Data))
+.判断结束
+
+文本到字节 (“.reloc”, SE_Name)
+
+赋值 (CodeLen2, 相除 (CodeLen, 4096))
+赋值 (CodeLen3, 到整数 (大于 (求余数 (CodeLen, 4096), 0)))
+.如果真 (并且 (等于 (CodeLen2, 0), 等于 (CodeLen3, 0)))
+    赋值 (CodeLen2, 1)
+.如果真结束
+
+赋值 (Section [SE], Name, SE_Name)
+赋值 (Section [SE], VirtualAddress, 相加 (Section [相减 (SE, 1)].VirtualAddress, 相乘 (4096, 相加 (CodeLen2, CodeLen3)))) ' 偏移,必须为区段校正的倍数,
+赋值 (relocData, 构造重定位 (Section [3].VirtualAddress))
+赋值 (CodeLen, 取字节集长度 (relocData))
+赋值 (Section [SE], Misc, CodeLen) ' 实际区段大小,代码长度
+
+赋值 (CodeLen2, 相除 (CodeLen, 512))
+赋值 (CodeLen3, 到整数 (大于 (求余数 (CodeLen, 512), 0)))
+.如果真 (并且 (等于 (CodeLen2, 0), 等于 (CodeLen3, 0)))
+    赋值 (CodeLen2, 1)
+.如果真结束
+赋值 (Section [SE], SizeOfRawData, 相乘 (512, 相加 (CodeLen2, CodeLen3))) ' 读取大小,必须为文件校正的倍数
+赋值 (Section [SE], PointerToRawData, 相加 (Section [相减 (SE, 1)].PointerToRawData, Section [相减 (SE, 1)].SizeOfRawData)) ' 读取偏移,取整,代码写入位置,
+赋值 (Section [SE], Characteristics, 1107296320) ' 标记区段属性
+
+
+赋值 (SE_Data, 取空白字节集 (相乘 (40, SE)))
+RtlMoveMemory_IMAGE_SECTION_HEADER_1 (SE_Data, Section, 相乘 (40, SE))
+
+ ' '''''''''PE
+赋值 (PE.Signature, 17744)
+赋值 (PE.FileHeader.Machine, 332)
+赋值 (PE.FileHeader.NumberOfSections, SE) ' 区段数
+赋值 (PE.FileHeader.TimeDateStamp, 0)
+赋值 (PE.FileHeader.PointerToSymbolTable, 0)
+赋值 (PE.FileHeader.NumberOfSymbols, 0)
+赋值 (PE.FileHeader.SizeOfOptionalHeader, 224) ' E0
+赋值 (PE.FileHeader.Characteristics, 8462) ' 271 EXE,8462,DLL
+赋值 (PE.OptionalHeader.Magic, 267)
+赋值 (PE.OptionalHeader.MajorLinkerVersion, MajorLinkerVersion) ' 编译器
+赋值 (PE.OptionalHeader.MinorLinkerVersion, MinorLinkerVersion) ' 1.0
+赋值 (PE.OptionalHeader.SizeOfCode, Section [1].SizeOfRawData)
+赋值 (IntDataSize, 0)
+.计次循环首 (相减 (SE, 1), i)
+    赋值 (IntDataSize, 相加 (IntDataSize, Section [相加 (i, 1)].SizeOfRawData))
+.计次循环尾 ()
+赋值 (PE.OptionalHeader.SizeOfInitializedData, IntDataSize) ' 已初始化数据的大小
+赋值 (PE.OptionalHeader.SizeOfUninitializedData, 0)
+
+赋值 (PE.OptionalHeader.AddressOfEntryPoint, 相加 (4096, 入口点))
+
+赋值 (PE.OptionalHeader.BaseOfCode, 4096) ' 代码基址
+赋值 (PE.OptionalHeader.BaseOfData, Section [3].VirtualAddress) ' 数据基址 ,'0x3000
+.判断开始 (等于 (基址, 0))
+    赋值 (PE.OptionalHeader.ImageBase, 268435456) ' 映像基址 0x010000000
+.默认
+    赋值 (PE.OptionalHeader.ImageBase, 基址)
+.判断结束
+
+赋值 (PE.OptionalHeader.SectionAlignment, 4096) ' 区段校正
+赋值 (PE.OptionalHeader.FileAlignment, 512) ' 文件校正
+赋值 (PE.OptionalHeader.MajorOperatingSystemVersion, 4)
+赋值 (PE.OptionalHeader.MinorOperatingSystemVersion, 0)
+赋值 (PE.OptionalHeader.MajorImageVersion, 0)
+赋值 (PE.OptionalHeader.MinorImageVersion, 0)
+赋值 (PE.OptionalHeader.MajorSubsystemVersion, 4)
+赋值 (PE.OptionalHeader.MinorSubsystemVersion, 0)
+赋值 (PE.OptionalHeader.Win32VersionValue, 0)
+赋值 (PE.OptionalHeader.SizeOfImage, 相加 (Section [SE], VirtualAddress, Section [SE], SizeOfRawData)) ' 映像大小
+赋值 (PE.OptionalHeader.SizeOfHeaders, 1024) ' PE文件头大小,
+赋值 (PE.OptionalHeader.CheckSum, 0) ' 效验和'
+赋值 (PE.OptionalHeader.Subsystem, 2) ' 2:图形界面程序
+赋值 (PE.OptionalHeader.DllCharacteristics, 0)
+赋值 (PE.OptionalHeader.SizeOfStackReserve, 1048576) ' ???
+赋值 (PE.OptionalHeader.SizeOfStackCommit, 4096) ' ???
+赋值 (PE.OptionalHeader.SizeOfHeapReserve, 1048576) ' ???
+赋值 (PE.OptionalHeader.SizeOfHeapCommit, 4096) ' ???
+赋值 (PE.OptionalHeader.LoaderFlags, 0) ' ???
+赋值 (PE.OptionalHeader.NumberOfRvaAndSizes, 16)
+赋值 (PE.OptionalHeader.DataDirectory [1].VirtualAddress, 相加 (Section [2].VirtualAddress, ExportAddr)) ' 导出表地址
+赋值 (PE.OptionalHeader.DataDirectory [1].Size, ExportSize) ' 导出表大小
+赋值 (PE.OptionalHeader.DataDirectory [2].VirtualAddress, 相加 (Section [2].VirtualAddress, tableaddr)) ' 导入表地址
+赋值 (PE.OptionalHeader.DataDirectory [2].Size, tablesize) ' 导入表
+赋值 (PE.OptionalHeader.DataDirectory [3].VirtualAddress, rsrcAddr) ' 资源表
+赋值 (PE.OptionalHeader.DataDirectory [3].Size, rsrcSize) ' 大小
+
+赋值 (PE.OptionalHeader.DataDirectory [6].VirtualAddress, Section [SE], VirtualAddress) ' 重定位
+赋值 (PE.OptionalHeader.DataDirectory [6].Size, Section [SE], Misc) ' 大小
+
+赋值 (PE.OptionalHeader.DataDirectory [13].VirtualAddress, Section [2].VirtualAddress) ' IAT
+赋值 (PE.OptionalHeader.DataDirectory [13].Size, 相除 (tableaddr, 2)) ' 大小
+
+赋值 (PE_Data, 取空白字节集 (248))
+RtlMoveMemory_IMAGE_NT_HEADERS_1 (PE_Data, PE, 248)
+赋值 (PE_Exe_Data, 取空白字节集 (相加 (Section [SE], PointerToRawData, Section [SE], SizeOfRawData)))
+
+.判断开始 (不等于 (sb360, “”))
+    赋值 (DOS, 字节集替换 (#DOS, 129, 48, 相加 (到字节集 (sb360), 取空白字节集 (相减 (48, 取字节集长度 (到字节集 (sb360)))))))
+.默认
+    赋值 (DOS, #DOS)
+.判断结束
+
+
+赋值 (PELen, 取字节集长度 (相加 (DOS, PE_Data, SE_Data)))
+
+RtlMoveMemory_Byte (PE_Exe_Data, 相加 (DOS, PE_Data, SE_Data), PELen)
+
+
+.计次循环首 (取数组成员数 (g_CodeReloc), i)
+    赋值 (Offset, 相加 (g_CodeReloc [i], 偏移, 1))
+    赋值 (n, 取字节集数据 (取字节集中间 (g_Code, Offset, 4), #整数型, ))
+    .判断开始 (等于 (g_CodeReloc [i], 类型, 1))
+        赋值 (Add, Section [2].VirtualAddress)
+    .判断 (等于 (g_CodeReloc [i], 类型, 2))
+        赋值 (Add, Section [3].VirtualAddress)
+    .判断 (等于 (g_CodeReloc [i], 类型, 3))
+        赋值 (Add, Section [1].VirtualAddress)
+    .默认
+        
+    .判断结束
+    赋值 (x, g_CodeReloc [i], 数值)
+    .判断开始 (等于 (x, -1))
+        赋值 (n, 相加 (n, Add, 268435456))
+    .默认
+        赋值 (n, 相加 (Add, x, 268435456))
+    .判断结束
+    赋值 (g_Code, 字节集替换 (g_Code, Offset, 4, 到字节集 (n)))
+.计次循环尾 ()
+
+赋值 (PE_Exe_Data, 字节集替换 (PE_Exe_Data, 相加 (Section [1].PointerToRawData, 1), 取字节集长度 (g_Code), g_Code))
+赋值 (PE_Exe_Data, 字节集替换 (PE_Exe_Data, 相加 (Section [2].PointerToRawData, 1), 取字节集长度 (IATData), IATData))
+赋值 (PE_Exe_Data, 字节集替换 (PE_Exe_Data, 相加 (Section [3].PointerToRawData, 1), 取字节集长度 (g_Data), g_Data))
+.如果真 (大于 (rsrcSize, 0))
+    赋值 (PE_Exe_Data, 字节集替换 (PE_Exe_Data, 相加 (Section [4].PointerToRawData, 1), 取字节集长度 (rsrcData), rsrcData))
+.如果真结束
+赋值 (PE_Exe_Data, 字节集替换 (PE_Exe_Data, 相加 (Section [SE], PointerToRawData, 1), 取字节集长度 (relocData), relocData))
+返回 (PE_Exe_Data)
+
+.子程序 PE_导出函数, 整数型, , -1名称重复,0,偏移重复,1导出成功
+.参数 名字, 文本型, , 
+.参数 偏移, 整数型, , 
+.参数 区段, 整数型, 可空, 空或0,表示代码段,1表示数据段,
+
+.局部变量 Export, 导出函数, , , 
+.局部变量 i, 整数型, , , 
+
+
+.计次循环首 (取数组成员数 (g_Export), i)
+    .判断开始 (等于 (g_Export [i], 函数名, 名字))
+        输出调试文本 (相加 (“导出函数名重复:[”, 名字, “]”))
+        返回 (-1)
+    .判断 (并且 (等于 (g_Export [i], 偏移, 偏移), 等于 (g_Export [i], 区段, 区段)))
+        输出调试文本 (相加 (“导出函数偏移重复:[”, 到文本 (偏移), “]”))
+        返回 (0)
+    .默认
+        
+    .判断结束
+    
+.计次循环尾 ()
+赋值 (Export.函数名, 名字)
+赋值 (Export.偏移, 偏移)
+赋值 (Export.区段, 区段)
+加入成员 (g_Export, Export)
+返回 (1)
+
+.子程序 构造导出表, 字节集, , 
+.参数 RVA, 整数型, , 
+.参数 模块名, 文本型, , 
+.参数 重定位, 整数型, 参考 数组, 
+
+.局部变量 Export, _IMAGE_EXPORT_DIRECTORY, , , 
+.局部变量 bytes, 字节集, , , 
+.局部变量 x, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 bytes2, 字节集, , , 
+.局部变量 bytes3, 字节集, , , 
+.局部变量 Len, 整数型, , , 
+
+赋值 (x, 取数组成员数 (g_Export))
+赋值 (Export.Characteristics, 0)
+赋值 (Export.TimeDateStamp, 0)
+赋值 (Export.MajorVersion, 1)
+赋值 (Export.MinorVersion, 0)
+赋值 (Export.Name, 相加 (RVA, 40, 相乘 (x, 10)))
+赋值 (Export.Base, 1)
+赋值 (Export.NumberOfFunctions, x)
+赋值 (Export.NumberOfNames, x)
+赋值 (Export.AddressOfFunctions, 相加 (RVA, 40))
+赋值 (Export.AddressOfNames, 相加 (Export.AddressOfFunctions, 相乘 (x, 4)))
+赋值 (Export.AddressOfNameOrdinals, 相加 (Export.AddressOfNames, 相乘 (x, 4)))
+赋值 (bytes, 取空白字节集 (40))
+RtlMoveMemory_IMAGE_EXPORT_DIRECTORY (bytes, Export, 40)
+
+赋值 (bytes2, 相加 (到字节集 (模块名), { 0 }))
+.计次循环首 (x, i)
+    .如果真 (不等于 (g_Export [i], 区段, 0))
+        加入成员 (重定位, 取字节集长度 (bytes))
+    .如果真结束
+    
+    赋值 (bytes, 相加 (bytes, 到字节集 (到整数 (相加 (4096, g_Export [i], 偏移)))))
+    赋值 (bytes2, 相加 (bytes2, 到字节集 (g_Export [i], 函数名), { 0 }))
+.计次循环尾 ()
+赋值 (Len, 相加 (取文本长度 (模块名), 1))
+.计次循环首 (x, i)
+    赋值 (bytes, 相加 (bytes, 到字节集 (到整数 (相加 (Export.Name, Len)))))
+    赋值 (bytes3, 相加 (bytes3, 到字节集 (到短整数 (相减 (i, 1)))))
+    赋值 (Len, 相加 (Len, 取文本长度 (g_Export [i], 函数名), 1))
+.计次循环尾 ()
+赋值 (bytes, 相加 (bytes, bytes3, bytes2))
+返回 (bytes)
+
+
+.子程序 PE_加入重定位, 整数型, , 返回0存在,返回1成功
+.参数 偏移, 整数型, , 
+.参数 类型, 整数型, , 默认为3,IMAGE_REL_BASED_HIGHLOW (3) 全部32位应用于所有32位。
+.参数 区段, 整数型, , 实现dll对2个区段重定位功能,空或0,代表代码区段,1,数据段
+
+.局部变量 i, 整数型, , , 
+.局部变量 Reloc, 重定位结构, , , 
+
+
+.判断开始 (等于 (区段, 0)) ' 目前没想到好办法
+    .计次循环首 (取数组成员数 (g_Reloc), i)
+        .如果真 (等于 (g_Reloc [i], 偏移, 偏移))
+            输出调试文本 (相加 (“重定位已存在:[”, 到文本 (偏移), “]”))
+            返回 (0)
+        .如果真结束
+        
+    .计次循环尾 ()
+    赋值 (Reloc.类型, 类型)
+    赋值 (Reloc.偏移, 偏移)
+    加入成员 (g_Reloc, Reloc)
+    返回 (1)
+.默认
+    .计次循环首 (取数组成员数 (g_Reloc1), i)
+        .如果真 (等于 (g_Reloc1 [i], 偏移, 偏移))
+            输出调试文本 (相加 (“重定位已存在:[”, 到文本 (偏移), “]”))
+            返回 (0)
+        .如果真结束
+        
+    .计次循环尾 ()
+    赋值 (Reloc.类型, 类型)
+    赋值 (Reloc.偏移, 偏移)
+    加入成员 (g_Reloc1, Reloc)
+    返回 (1)
+.判断结束
+
+
+.子程序 构造重定位, 字节集, , 
+.参数 DataVA, 整数型, , 
+
+.局部变量 x, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 bytes, 字节集, , "0", 
+.局部变量 n, 整数型, , , 
+.局部变量 bytes2, 字节集, , , 
+
+赋值 (x, 取数组成员数 (g_Reloc))
+.计次循环首 (x, i)
+    赋值 (n, 整除 (g_Reloc [i], 偏移, 4096))
+    .如果真 (大于或等于 (求余数 (g_Reloc [i], 偏移, 4096), 0))
+        赋值 (n, 相加 (n, 1))
+    .如果真结束
+    .如果真 (小于 (取数组成员数 (bytes), n))
+        加入成员 (bytes, 取空白字节集 (0))
+    .如果真结束
+    赋值 (bytes [n], 相加 (bytes [n], 到字节集 (到短整数 (相减 (相加 (相乘 (g_Reloc [i], 类型, 4096), g_Reloc [i], 偏移), 相乘 (相减 (n, 1), 4096))))))
+.计次循环尾 ()
+赋值 (bytes2, {  })
+.计次循环首 (取数组成员数 (bytes), i)
+    赋值 (bytes [i], 相加 (bytes [i], { 0, 0 }))
+    赋值 (bytes2, 相加 (bytes2, 到字节集 (到整数 (相乘 (i, 4096))), 到字节集 (到整数 (相加 (取字节集长度 (bytes [i]), 8))), bytes [i]))
+.计次循环尾 ()
+清除数组 (bytes)
+赋值 (x, 取数组成员数 (g_Reloc1))
+.计次循环首 (x, i)
+    赋值 (n, 整除 (g_Reloc1 [i], 偏移, 4096))
+    .如果真 (大于或等于 (求余数 (g_Reloc1 [i], 偏移, 4096), 0))
+        赋值 (n, 相加 (n, 1))
+    .如果真结束
+    .如果真 (小于 (取数组成员数 (bytes), n))
+        加入成员 (bytes, 取空白字节集 (0))
+    .如果真结束
+    赋值 (bytes [n], 相加 (bytes [n], 到字节集 (到短整数 (相减 (相加 (相乘 (g_Reloc1 [i], 类型, 4096), g_Reloc1 [i], 偏移), 相乘 (相减 (n, 1), 4096))))))
+.计次循环尾 ()
+.计次循环首 (取数组成员数 (bytes), i)
+    赋值 (bytes [i], 相加 (bytes [i], { 0, 0 }))
+    赋值 (bytes2, 相加 (bytes2, 到字节集 (到整数 (相加 (相乘 (相减 (i, 1), 4096), DataVA))), 到字节集 (到整数 (相加 (取字节集长度 (bytes [i]), 8))), bytes [i]))
+.计次循环尾 ()
+返回 (bytes2)
+
+.程序集 辅助类, , , 易语言编程论坛全新域名：http://www.360bc.cn 保留2007年用户数据至今。
+
+.程序集变量 IfCode, 字节集, , "0", 
+.程序集变量 RunCode, 字节集, , "0", 
+.程序集变量 IRCLen, 整数型, , , 
+.子程序 PE_Switch_加入判断, 空白型, 公开, 辅助_类,Switch
+.参数 判断代码, 字节集, , 
+.参数 执行代码, 字节集, , 
+
+加入成员 (IfCode, 判断代码)
+加入成员 (RunCode, 执行代码)
+赋值 (IRCLen, 相加 (IRCLen, 取字节集长度 (判断代码), 4, 取字节集长度 (执行代码))) ' 4为 jnz xx 和 jmp xx的长度
+
+
+.子程序 PE_Switch_生成代码, 字节集, 公开, 辅助_类,Switch
+.参数 默认代码, 字节集, , {}空字节集为无默认代码
+
+.局部变量 i, 整数型, , , 
+.局部变量 Code, 字节集, , , 
+.局部变量 N, 整数型, , , 
+
+.如果真 (等于 (默认代码, {  }))
+    赋值 (IRCLen, 相减 (IRCLen, 2)) ' 减掉最后1个jmp xx的长度
+.如果真结束
+赋值 (N, 取数组成员数 (IfCode))
+.计次循环首 (N, i)
+    .判断开始 (小于 (i, N))
+        赋值 (Code, 相加 (Code, IfCode [i], { 117 }, 到字节集 (到字节 (相加 (取字节集长度 (RunCode [i]), 2)))))
+    .判断 (不等于 (默认代码, {  }))
+        赋值 (Code, 相加 (Code, IfCode [i], { 117 }, 到字节集 (到字节 (相加 (取字节集长度 (RunCode [i]), 2)))))
+    .默认
+        赋值 (Code, 相加 (Code, IfCode [i], { 117 }, 到字节集 (到字节 (取字节集长度 (RunCode [i])))))
+    .判断结束
+    赋值 (Code, 相加 (Code, RunCode [i]))
+    .判断开始 (小于 (i, N))
+        赋值 (Code, 相加 (Code, { 235 }, 到字节集 (到字节 (相加 (相减 (IRCLen, 取字节集长度 (Code), 2), 取字节集长度 (默认代码))))))
+    .判断 (不等于 (默认代码, {  }))
+        赋值 (Code, 相加 (Code, { 235 }, 到字节集 (到字节 (相加 (相减 (IRCLen, 取字节集长度 (Code), 2), 取字节集长度 (默认代码))))))
+    .默认
+        
+    .判断结束
+    
+.计次循环尾 ()
+赋值 (Code, 相加 (Code, 默认代码))
+赋值 (IRCLen, 0)
+清除数组 (IfCode)
+清除数组 (RunCode)
+返回 (Code)
+
+.类模块 正则表达式类, , , 
+
+.程序集变量 对象, 对象, , , 
+.程序集变量 搜索全部, 对象, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 创建, 逻辑型, 公开, 创建正则表达式
+.参数 正则表达式文本, 文本型, , 
+.参数 是否区分大小写, 逻辑型, , 
+.参数 全局匹配, 逻辑型, , 
+.参数 多行模式, 逻辑型, , 
+
+.如果真 (对象.创建 (“VBScript.RegExp”, ))
+    .如果真 (对象.写属性 (“pattern”, 正则表达式文本))
+        .如果真 (对象.写属性 (“ignorecase”, 取反 (是否区分大小写)))
+            .如果真 (对象.写属性 (“global”, 全局匹配))
+                .如果真 (对象.写属性 (“MultiLine”, 多行模式))
+                    返回 (真)
+                .如果真结束
+                
+            .如果真结束
+            
+        .如果真结束
+        
+    .如果真结束
+    
+.如果真结束
+返回 (假)
+
+.子程序 匹配, 逻辑型, 公开, 匹配
+.参数 欲匹配的文本, 文本型, , 
+
+返回 (对象.逻辑方法 (“test”, 欲匹配的文本))
+
+.子程序 搜索全部, 整数型, 公开, 返回匹配数, 用于 取匹配文本
+.参数 欲搜索的文本, 文本型, , 
+
+.局部变量 匹配数, 整数型, , , 
+
+赋值 (搜索全部, 对象.对象型方法 (“Execute”, 欲搜索的文本))
+赋值 (匹配数, 搜索全部.读数值属性 (“count”, ))
+返回 (匹配数)
+
+.子程序 取匹配文本, 文本型, 公开, 返回匹配文本
+.参数 匹配索引, 整数型, , 
+
+.局部变量 匹配文本, 对象, , , 
+
+赋值 (匹配文本, 搜索全部.读对象型属性 (“item”, 相减 (匹配索引, 1)))
+返回 (匹配文本.文本方法 (“Value”, ))
+
+.子程序 取子表达式个数, 整数型, 公开, 返回子表达式个数,用于 取子匹配文本
+.参数 匹配索引, 整数型, , 
+
+.局部变量 匹配文本, 对象, , , 
+.局部变量 子匹配文本, 对象, , , 
+
+赋值 (匹配文本, 搜索全部.读对象型属性 (“item”, 相减 (匹配索引, 1)))
+赋值 (子匹配文本, 匹配文本.读对象型属性 (“SubMatches”, ))
+返回 (子匹配文本.读数值属性 (“count”, ))
+
+.子程序 取子匹配文本, 文本型, 公开, 返回子匹配文本
+.参数 匹配索引, 整数型, , 
+.参数 子表达式索引, 整数型, , 
+
+.局部变量 匹配文本, 对象, , , 
+.局部变量 子匹配文本, 对象, , , 
+
+赋值 (匹配文本, 搜索全部.读对象型属性 (“item”, 相减 (匹配索引, 1)))
+赋值 (子匹配文本, 匹配文本.读对象型属性 (“SubMatches”, ))
+返回 (子匹配文本.文本方法 (“item”, 相减 (子表达式索引, 1)))
+
+.子程序 替换, 文本型, 公开, 
+.参数 原文本, 文本型, , 
+.参数 替换文本, 文本型, 可空, 
+
+返回 (对象.文本方法 (“Replace”, 原文本, 替换文本))
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

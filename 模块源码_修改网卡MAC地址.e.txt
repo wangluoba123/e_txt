@@ -1,0 +1,478 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：更改MAC地址模块
+ ' 程序描述：BY醉眼看花,版权没有,欢迎修改
+ ' 程序作者：易语言
+ ' 邮政编码：
+ ' 联系地址：本源码来自易语言资源网(www.5A5X.com)
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：www.5A5X.com
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 INVALID_HANDLE_VALUE, "-1", , 
+.常量 , , , 
+.常量 ERROR_INSUFFICIENT_BUFFER, "122", , The data area passed to a system call is too small
+.常量 NO_ERROR, "0", , 
+.常量 ERROR_SUCCESS, "0", , 
+.常量 MAXLEN_PHYSADDR, "8", , 
+.常量 MAXLEN_IFDESCR, "256", , 
+.常量 MAX_INTERFACE_NAME_LEN, "256", , 
+.常量 , , , 
+.常量 DIGCF_PRESENT, "2", , 
+.常量 DIGCF_ALLCLASSES, "4", , 
+.常量 DIGCF_DEVICEINTERFACE, "16", , 
+.常量 , , , 
+.常量 SPDRP_DEVICEDESC, "0", , 
+.常量 SPDRP_DRIVER, "9", , 
+.常量 SPDRP_CLASS, "7", , 
+.常量 , , , 
+.常量 HKEY_LOCAL_MACHINE, "2147483650", , 
+.常量 REG_SZ, "1", , 
+.常量 , , , 
+.常量 DIF_PROPERTYCHANGE, "18", , 
+.常量 DICS_FLAG_CONFIGSPECIFIC, "2", , 
+.常量 DICS_ENABLE, "1", , 
+.常量 DICS_DISABLE, "2", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 SP_DEVINFO_DATA, , 
+    .成员 cbSize, 整数型, , , 
+    .成员 ClassDriver, Guid, , , 
+    .成员 DevInst, 整数型, , , 
+    .成员 Reserved, 整数型, , , 
+
+数据类型 SP_DEVICE_INTERFACE_DATA, , 
+    .成员 cbSizeas, 整数型, , , 
+    .成员 ClassDriver, Guid, , , 
+    .成员 DevInst, 整数型, , , 
+    .成员 Reserved, 整数型, , , 
+
+数据类型 Guid, , 
+    .成员 Data1, 整数型, , , 
+    .成员 Data2, 整数型, , , 
+    .成员 Data3, 整数型, , , 
+    .成员 Data4, 整数型, , "8", 
+
+数据类型 PUNICODE_STRING, , UNICODE字符
+    .成员 长度, 短整数型, , , Length
+    .成员 最大长度, 短整数型, , , MaximumLength
+    .成员 缓冲区, 整数型, , , Buffer
+
+数据类型 PANSI_STRING, , ANSI字符
+    .成员 长度, 短整数型, , , Length
+    .成员 最大长度, 短整数型, , , MaximumLength
+    .成员 缓冲区, 整数型, , , Buffer
+
+数据类型 IP_ADDR_STRING, , 
+    .成员 Next, 整数型, , , 
+    .成员 IpAddress, 字节型, , "16", 
+    .成员 IpMask, 字节型, , "16", 
+    .成员 Context, 整数型, , , 
+
+数据类型 IP_ADAPTER_INFO, , 
+    .成员 Next, 整数型, , , 
+    .成员 ComboIndex, 整数型, , , 
+    .成员 AdapterName, 字节型, , "260", MAX_ADAPTER_NAME_LENGTH
+    .成员 Description, 字节型, , "132", MAX_ADAPTER_DESCRIPTION_LENGTH
+    .成员 AddressLength, 整数型, , , 
+    .成员 Address, 字节型, , "8", Address(MAX_ADAPTER_ADDRESS_LENGTH - 1) As Byte
+    .成员 Index, 整数型, , , 
+    .成员 Type, 整数型, , , 
+    .成员 DhcpEnabled, 整数型, , , 
+    .成员 CurrentIpAddress, 整数型, , , 
+    .成员 IpAddressList, IP_ADDR_STRING, , , 
+    .成员 GatewayList, IP_ADDR_STRING, , , 
+    .成员 DhcpServer, IP_ADDR_STRING, , , 
+    .成员 HaveWins, 字节集, , , 
+    .成员 PrimaryWinsServer, IP_ADDR_STRING, , , 
+    .成员 SecondaryWinsServer, IP_ADDR_STRING, , , 
+    .成员 LeaseObtained, 整数型, , , 
+    .成员 LeaseExpires, 整数型, , , 
+
+数据类型 FIXED_INFO, , 
+    .成员 HostName, 字节型, , "132", MAX_HOSTNAME_LEN
+    .成员 DomainName, 字节型, , "132", MAX_DOMAIN_NAME_LEN
+    .成员 CurrentDnsServer, 整数型, , , 
+    .成员 DnsServerList, IP_ADDR_STRING, , , 
+    .成员 NodeType, 整数型, , , 
+    .成员 ScopeId, 字节型, , "260", MAX_SCOPE_ID_LEN
+    .成员 EnableRouting, 整数型, , , 
+    .成员 EnableProxy, 整数型, , , 
+    .成员 EnableDns, 整数型, , , 
+
+数据类型 模块_网卡信息, 公开, 
+    .成员 网卡描述, 文本型, , , 
+    .成员 MAC地址, 文本型, , , 
+    .成员 IP地址, 文本型, , , 
+    .成员 子网掩码, 文本型, , , 
+    .成员 网关, 文本型, , , 
+    .成员 网卡名称, 文本型, , , 
+    .成员 注册表路径, 文本型, , , 
+    .成员 接口类型, 文本型, , , 
+    .成员 索引, 整数型, , , 
+
+数据类型 SP_PROPCHANGE_PARAMS, , 
+    .成员 ClassInstallHeader, SP_CLASSINSTALL_HEADER, , , 
+    .成员 StateChange, 整数型, , , 
+    .成员 Scope, 整数型, , , 
+    .成员 HwProfile, 整数型, , , 
+
+数据类型 SP_CLASSINSTALL_HEADER, , 
+    .成员 cbSize, 整数型, , , 
+    .成员 InstallFunction, 整数型, , , 
+
+
+.DLL命令 取结构数据尺寸, 整数型, "", "LocalSize", , 
+    .参数 结构数据, SP_DEVINFO_DATA, , 
+
+.DLL命令 RtlFreeAnsiString, 整数型, "ntdll.dll", "RtlFreeUnicodeString", , 
+    .参数 AnsiString, PANSI_STRING, , 
+
+.DLL命令 RtlUnicodeStringToAnsiString, 整数型, "ntdll.dll", "RtlUnicodeStringToAnsiString", , 
+    .参数 DestinationString, PANSI_STRING, , 
+    .参数 SourceString, PUNICODE_STRING, , 
+    .参数 AllocateDestinationString, 逻辑型, , 
+
+.DLL命令 取字节集变量地址_, 整数型, "kernel32.dll", "lstrcpyn", , ,
+    .参数 数据1, 字节集, 传址, lpString1
+    .参数 数据2, 字节集, 传址, lpString2
+    .参数 数据长度, 整数型, , iMaxLength
+
+.DLL命令 SetupDiGetClassDevs, 整数型, "setupapi.dll", "SetupDiGetClassDevsA", , 
+    .参数 ClassDriver, 空白型, , 
+    .参数 Enumerator, 文本型, , 
+    .参数 hwndParent, 整数型, , 
+    .参数 Flags, 整数型, , 
+
+.DLL命令 SetupDiEnumDeviceInfo, 整数型, "setupapi.dll", "", , 
+    .参数 DeviceInfoSet, 整数型, , 
+    .参数 MemberIndex, 整数型, , 
+    .参数 DeviceInfoData, SP_DEVINFO_DATA, 传址, 
+
+.DLL命令 SetupDiGetDeviceRegistryProperty, 整数型, "setupapi.dll", "SetupDiGetDeviceRegistryPropertyA", , 
+    .参数 DeviceInfoSet, 整数型, , 
+    .参数 DeviceInfoData, SP_DEVINFO_DATA, 传址, 
+    .参数 Property, 整数型, , 
+    .参数 PropertyRegDataType, 整数型, 传址, 
+    .参数 PropertyBuffer, 文本型, , 
+    .参数 PropertyBufferSize, 整数型, , 
+    .参数 RequiredSize, 整数型, 传址, 
+
+.DLL命令 SetupDiGetDeviceInstanceId, 整数型, "setupapi.dll", "SetupDiGetDeviceInstanceIdA", , 
+    .参数 DeviceInfoSet, 整数型, , 
+    .参数 DeviceInfoData, SP_DEVINFO_DATA, 传址, 
+    .参数 DeviceInstanceId, 文本型, , 
+    .参数 DeviceInstanceIdSize, 整数型, , 
+    .参数 RequiredSize, 整数型, 传址, 
+
+.DLL命令 GetLastError, 整数型, "kernel32.dll", "", , 
+
+.DLL命令 RegOpenKey, 整数型, "advapi32.dll", "RegOpenKeyA", , 打开一个现有的注册表项  零（ERROR_SUCCESS）表示成功。其他任何值都代表一个错误代码
+    .参数 hKey, 整数型, , 一个已打开项的句柄，或指定一个标准项名
+    .参数 lpSubKey, 文本型, , 要打开的项名
+    .参数 phkResult, 整数型, 传址, 指定一个变量，用于装载（保存）打开注册表项的一个句柄;
+
+.DLL命令 RegCloseKey, 整数型, "advapi32.dll", "RegCloseKey", , 关闭系统注册表中的一个项（或键）  零（ERROR_SUCCESS）表示成功。其他任何值都代表一个错误代码
+    .参数 hKey, 整数型, , 要关闭的项;
+
+.DLL命令 RegFlushKey, 整数型, "advapi32.dll", "RegFlushKey", , 写出注册表缓存_, RegFlushKey，零（ERROR_SUCCESS）表示成功。其他任何值都代表一个错误代码
+    .参数 标准项名或项句柄, 整数型, , hKey，Long，欲刷新的一个项的句柄，或指定一个标准项名
+
+.DLL命令 RegSetValueEx, 整数型, "advapi32.dll", "RegSetValueExA", , RegSetValue，零（ERROR_SUCCESS）表示成功。其他任何值都代表一个错误代码
+    .参数 hKey, 整数型, , 一个已打开项的句柄，或指定一个标准项名
+    .参数 pValueName, 文本型, , 要设置值的名字
+    .参数 Reserved, 整数型, , 未用，设为零
+    .参数 dwType, 整数型, , 要设置的数量类型
+    .参数 lpData, 文本型, 传址, 包含数据的缓冲区中的第一个字节
+    .参数 cbData, 整数型, , lpData缓冲区的长度
+
+.DLL命令 RegQueryValueEx, 整数型, "advapi32.dll", "RegQueryValueExA", , 获取一个项的设置值  零（ERROR_SUCCESS）表示成功。其他任何值都代表一个错误代码
+    .参数 hKey, 整数型, , 一个已打开项的句柄，或者指定一个标准项名
+    .参数 lpValueName, 文本型, , 要获取值的名字
+    .参数 lpReserved, 整数型, , 未用，设为零
+    .参数 lpType, 整数型, 传址, 用于装载取回数据类型的一个变量
+    .参数 lpData, 文本型, 传址, 用于装载指定值的一个缓冲区
+    .参数 lpcbData, 整数型, 传址, 用于装载lpData缓冲区长度的一个变量。一旦返回，它会设为实际装载到缓冲区的字节数;
+
+.DLL命令 SetupDiDestroyDeviceInfoList, 整数型, "setupapi.dll", "", , 
+    .参数 DeviceInfoSet, 整数型, , 
+
+.DLL命令 GetAdaptersInfo, 整数型, "IPHlpApi.dll", "GetAdaptersInfo", , 
+    .参数 IpAdapterInfo, IP_ADAPTER_INFO, 数组, Any
+    .参数 pOutBufLen, 整数型, 传址, 
+
+.DLL命令 SetupDiSetClassInstallParams, 整数型, "setupapi.dll", "SetupDiSetClassInstallParamsA", , 
+    .参数 DeviceInfoSet, 整数型, , 
+    .参数 DeviceInfoData, SP_DEVINFO_DATA, 传址, 
+    .参数 ClassInstallParams, SP_PROPCHANGE_PARAMS, 传址, 
+    .参数 ClassInstallParamsSize, 整数型, , 
+
+.DLL命令 SetupDiChangeState, 整数型, "setupapi.dll", "", , 
+    .参数 DeviceInfoSet, 整数型, , 
+    .参数 DeviceInfoData, SP_DEVINFO_DATA, 传址, 
+
+.DLL命令 取结构数据尺寸2, 整数型, "", "LocalSize", , 
+    .参数 结构数据, SP_CLASSINSTALL_HEADER, , 
+
+.DLL命令 取结构数据尺寸3, 整数型, "", "LocalSize", , 
+    .参数 结构数据, SP_PROPCHANGE_PARAMS, , 
+
+.窗口程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.子程序 ListAdapters, 空白型, , 
+.参数 sEnumerator, 文本型, , 
+.参数 匿名参数_797, 模块_网卡信息, 数组, 
+
+.局部变量 hkKey, 整数型, , , 
+.局部变量 hDevInfo, 整数型, , , 
+.局部变量 DataT, 整数型, , , 
+.局部变量 DeviceInfoData, SP_DEVINFO_DATA, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 j, 整数型, , , 
+.局部变量 BufferSize, 整数型, , , 
+.局部变量 RegType, 整数型, , , 
+.局部变量 sDriver, 文本型, , , 
+.局部变量 sClass, 文本型, , , 
+.局部变量 sDevice, 文本型, , , 
+.局部变量 sInstanceID, 文本型, , , 
+.局部变量 sNetCfgIID, 文本型, , , 
+.局部变量 sNetWorkAddress, 文本型, , , 
+.局部变量 regpath, 文本型, , , 
+
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+赋值 (hDevInfo, SetupDiGetClassDevs (0, sEnumerator, 0, 位或 (#DIGCF_PRESENT, #DIGCF_ALLCLASSES)))
+.如果真 (不等于 (hDevInfo, #INVALID_HANDLE_VALUE))
+    赋值 (DeviceInfoData.cbSize, 相除 (取结构数据尺寸 (DeviceInfoData), 2))
+    .判断循环首 (不等于 (SetupDiEnumDeviceInfo (hDevInfo, i, DeviceInfoData), 0))
+        
+         ' Class 名为 Net 则为网络适配器
+        赋值 (BufferSize, 0)
+        .判断循环首 (等于 (SetupDiGetDeviceRegistryProperty (hDevInfo, DeviceInfoData, #SPDRP_CLASS, DataT, sClass, BufferSize, BufferSize), 0))
+            赋值 (sClass, 取空白文本 (BufferSize))
+        .判断循环尾 ()
+         ' 本源码来自易语言资源网(www.5A5X.com)
+         ' 获取网络适配器的注册表相关信息路径
+        赋值 (BufferSize, 128)
+        赋值 (sDriver, 取空白文本 (BufferSize))
+        .判断循环首 (等于 (SetupDiGetDeviceRegistryProperty (hDevInfo, DeviceInfoData, #SPDRP_DRIVER, DataT, sDriver, BufferSize, BufferSize), 0))
+            .如果 (等于 (GetLastError (), #ERROR_INSUFFICIENT_BUFFER))
+                赋值 (sDriver, 取空白文本 (相乘 (BufferSize, 2)))
+            .否则
+                跳出循环 ()
+            .如果结束
+             ' 本源码来自易语言资源网(www.5A5X.com)
+        .判断循环尾 ()
+        
+         ' 获取网络适配器名称描述
+        赋值 (BufferSize, 0)
+        赋值 (sDevice, 取空白文本 (1))
+        .判断循环首 (等于 (SetupDiGetDeviceRegistryProperty (hDevInfo, DeviceInfoData, #SPDRP_DEVICEDESC, DataT, sDevice, BufferSize, BufferSize), 0))
+            赋值 (sDevice, 取空白文本 (BufferSize))
+        .判断循环尾 ()
+        
+         ' 获取网络适配器识别码，用于匹配网卡的物理地址
+        赋值 (BufferSize, 128)
+        赋值 (sInstanceID, 取空白文本 (BufferSize))
+        .判断循环首 (等于 (SetupDiGetDeviceInstanceId (hDevInfo, DeviceInfoData, sInstanceID, 取文本长度 (sInstanceID), BufferSize), 0))
+            .如果 (等于 (GetLastError (), #ERROR_INSUFFICIENT_BUFFER))
+                赋值 (sInstanceID, 取空白文本 (相乘 (BufferSize, 2)))
+            .否则
+                跳出循环 ()
+            .如果结束
+             ' 本源码来自易语言资源网(www.5A5X.com)
+        .判断循环尾 ()
+         ' 用 NetCfgInstanceId 匹配网卡名称
+        
+        .如果真 (不等于 (寻找文本 (sClass, “Net”, 1, 假), -1))
+            赋值 (regpath, 相加 (“SYSTEM\CurrentControlSet\Control\Class\”, sDriver))
+            .如果真 (等于 (RegOpenKey (#HKEY_LOCAL_MACHINE, regpath, hkKey), #ERROR_SUCCESS))
+                赋值 (sNetCfgIID, 取空白文本 (80))
+                赋值 (BufferSize, 80)
+                .如果真 (等于 (RegQueryValueEx (hkKey, “NetCfgInstanceId”, 0, RegType, sNetCfgIID, BufferSize), #ERROR_SUCCESS))
+                    .计次循环首 (取数组成员数 (匿名参数_797), j)
+                        .如果真 (等于 (匿名参数_797 [j], 网卡名称, sNetCfgIID))
+                            跳出循环 ()
+                        .如果真结束
+                         ' 本源码来自易语言资源网(www.5A5X.com)
+                    .计次循环尾 ()
+                .如果真结束
+                
+            .如果真结束
+            RegCloseKey (hkKey)
+            .如果真 (小于或等于 (j, 取数组成员数 (匿名参数_797)))
+                赋值 (匿名参数_797 [j], 注册表路径, regpath)
+                赋值 (匿名参数_797 [j], 接口类型, sEnumerator)
+                赋值 (匿名参数_797 [j], 索引, i)
+            .如果真结束
+            
+        .如果真结束
+        赋值 (i, 相加 (i, 1))
+    .判断循环尾 ()
+.如果真结束
+SetupDiDestroyDeviceInfoList (hDevInfo)
+
+.子程序 修改MAC地址, 逻辑型, 公开, 修改成功返回真,失败返回假
+.参数 网卡描述, 文本型, , 
+.参数 MAC地址, 文本型, , 格式类似于:000C2947EF9E
+
+.局部变量 网卡数据, 模块_网卡信息, , "0", 
+.局部变量 i, 整数型, , , 
+.局部变量 hkKey, 整数型, , , 
+.局部变量 hDevInfo, 整数型, , , 
+.局部变量 DeviceInfoData, SP_DEVINFO_DATA, , , 
+.局部变量 PCP, SP_PROPCHANGE_PARAMS, , , 
+
+取本机所有网卡信息 (网卡数据)
+.计次循环首 (取数组成员数 (网卡数据), i)
+    .如果真 (等于 (网卡数据 [i], 网卡描述, 网卡描述))
+        跳出循环 ()
+    .如果真结束
+    
+.计次循环尾 ()
+.如果真 (大于 (i, 取数组成员数 (网卡数据)))
+    返回 (假)
+.如果真结束
+.如果真 (等于 (RegOpenKey (#HKEY_LOCAL_MACHINE, 网卡数据 [i], 注册表路径, hkKey), #ERROR_SUCCESS))
+    .如果真 (或者 (不等于 (RegSetValueEx (hkKey, “NetworkAddress”, 0, #REG_SZ, MAC地址, 取文本长度 (MAC地址)), #ERROR_SUCCESS), 不等于 (RegFlushKey (hkKey), #ERROR_SUCCESS)))
+        返回 (假)
+    .如果真结束
+    赋值 (hDevInfo, SetupDiGetClassDevs (0, 网卡数据 [i], 接口类型, 0, 位或 (#DIGCF_PRESENT, #DIGCF_ALLCLASSES)))
+    .如果真 (不等于 (hDevInfo, #INVALID_HANDLE_VALUE))
+        赋值 (DeviceInfoData.cbSize, 相除 (取结构数据尺寸 (DeviceInfoData), 2))
+        .如果真 (不等于 (SetupDiEnumDeviceInfo (hDevInfo, 网卡数据 [i], 索引, DeviceInfoData), 0))
+            赋值 (PCP.ClassInstallHeader.cbSize, 取结构数据尺寸2 (PCP.ClassInstallHeader))
+            赋值 (PCP.ClassInstallHeader.InstallFunction, #DIF_PROPERTYCHANGE)
+            赋值 (PCP.Scope, #DICS_FLAG_CONFIGSPECIFIC)
+            赋值 (PCP.StateChange, #DICS_DISABLE)
+            赋值 (PCP.HwProfile, 0)
+            SetupDiSetClassInstallParams (hDevInfo, DeviceInfoData, PCP, 取结构数据尺寸3 (PCP))
+            SetupDiChangeState (hDevInfo, DeviceInfoData)
+            赋值 (PCP.StateChange, #DICS_ENABLE)
+            SetupDiSetClassInstallParams (hDevInfo, DeviceInfoData, PCP, 取结构数据尺寸3 (PCP))
+            SetupDiChangeState (hDevInfo, DeviceInfoData)
+            返回 (真)
+        .如果真结束
+         ' 本源码来自易语言资源网(www.5A5X.com)
+    .如果真结束
+    
+.如果真结束
+返回 (假)
+
+
+
+.子程序 取本机所有网卡信息, 逻辑型, 公开, 取本机所有网卡信息
+.参数 网卡信息, 模块_网卡信息, 数组, 
+
+.局部变量 AdapterInfoSize, 整数型, , , 
+.局部变量 error, 整数型, , , 
+.局部变量 AdapterInfoBuffer, 字节型, , "0", 
+.局部变量 AdapterInfo, IP_ADAPTER_INFO, , "0", 
+.局部变量 计次, 整数型, , , 
+.局部变量 地址, 文本型, , , 
+.局部变量 addr, 文本型, , , 
+.局部变量 MAC地址, 文本型, , , 
+.局部变量 i, 整数型, , , 
+
+赋值 (AdapterInfoSize, 0)
+赋值 (error, GetAdaptersInfo (AdapterInfo, AdapterInfoSize))
+.如果真 (不等于 (error, 111))
+    返回 (假)
+.如果真结束
+重定义数组 (AdapterInfo, 假, 相除 (AdapterInfoSize, 640))
+赋值 (error, GetAdaptersInfo (AdapterInfo, AdapterInfoSize))
+.如果真 (等于 (error, 0))
+    重定义数组 (网卡信息, 假, 取数组成员数 (AdapterInfo))
+    ' 本源码来自易语言资源网(www.5A5X.com)
+    .计次循环首 (取数组成员数 (AdapterInfo), i)
+        赋值 (MAC地址, “”)
+        .计次循环首 (AdapterInfo [i], AddressLength, 计次)
+            赋值 (addr, 取十六进制文本 (AdapterInfo [i], Address [计次]))
+            .如果真 (等于 (取文本长度 (addr), 1))
+                赋值 (addr, 相加 (“0”, addr))
+            .如果真结束
+            赋值 (MAC地址, 相加 (MAC地址, addr))
+        .计次循环尾 ()
+        赋值 (网卡信息 [i], 网卡名称, 到文本 (AdapterInfo [i], AdapterName))
+        赋值 (网卡信息 [i], 网卡描述, 到文本 (AdapterInfo [i], Description))
+        赋值 (网卡信息 [i], MAC地址, MAC地址)
+        赋值 (网卡信息 [i], IP地址, 到文本 (AdapterInfo [i], IpAddressList.IpAddress))
+        赋值 (网卡信息 [i], 子网掩码, 到文本 (AdapterInfo [i], IpAddressList.IpMask))
+        赋值 (网卡信息 [i], 网关, 到文本 (AdapterInfo [i], GatewayList.IpAddress))
+         ' 本源码来自易语言资源网(www.5A5X.com)
+    .计次循环尾 ()
+    ListAdapters (“USB”, 网卡信息)
+    ListAdapters (“PCI”, 网卡信息)
+    ListAdapters (“ROOT”, 网卡信息)
+    返回 (真)
+.如果真结束
+返回 (假)
+
+
+.子程序 取随机MAC地址, 文本型, 公开, 
+.局部变量 a, 文本型, , "15", 
+.局部变量 b, 文本型, , "4", 
+.局部变量 i, 整数型, , , 
+.局部变量 MAC, 文本型, , , 
+
+.计次循环首 (9, i)
+    赋值 (a [i], 到文本 (i))
+.计次循环尾 ()
+赋值 (a [10], “A”)
+赋值 (a [11], “B”)
+赋值 (a [12], “C”)
+赋值 (a [13], “D”)
+赋值 (a [14], “E”)
+赋值 (a [15], “F”)
+赋值 (b [1], “2”)
+赋值 (b [2], “6”)
+赋值 (b [3], “A”)
+赋值 (b [4], “E”)
+置随机数种子 ()
+ ' 本源码来自易语言资源网(www.5A5X.com)
+赋值 (MAC, 相加 (a [取随机数 (1, 15)], b [取随机数 (1, 4)]))
+.计次循环首 (10, i)
+    赋值 (MAC, 相加 (MAC, a [取随机数 (1, 15)]))
+.计次循环尾 ()
+返回 (MAC)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

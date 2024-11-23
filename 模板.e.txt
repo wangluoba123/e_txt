@@ -1,0 +1,4450 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 29
+    底图方式 = 402718724
+    底色 = 0 '  0x0
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 23
+    可否移动 = 真
+    背景音乐播放次数 = 63
+    回车下移焦点 = 真
+    Esc键关闭 = 真
+    F1键打开帮助 = 真
+    帮助标志值 = -741556221
+    在任务栏中显示 = 真
+    随意移动 = 真
+    外形 = 50361113
+    总在最前 = 真
+    保持标题栏激活 = 真
+    帮助文件名 = “s”
+
+
+
+.常量 常量, "1", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 2 系统核心支持库
+
+
+
+
+数据类型 数据类型, , 由于易向导不支持自定义数据类型，所以要预先定义带有自定义数据类型的参数。
+    .成员 成员, 整数型, , , 
+    .成员 ABC, ABC, , , $(删除)
+    .成员 ABCFLOAT, ABCFLOAT, , , $(删除)
+    .成员 ACCEL, ACCEL, 传址, , $(删除)
+    .成员 ACCESS_MASK, ACCESS_MASK, 传址, , $(删除)
+    .成员 ACCESS_MODE, ACCESS_MODE, 传址, , $(删除)
+    .成员 ACE_HEADER, ACE_HEADER, 传址, , $(删除)
+    .成员 ACL, ACL, 传址, , $(删除)
+    .成员 ACMDRIVERDETAILSA, ACMDRIVERDETAILSA, 传址, , $(删除)
+    .成员 ACMFILTERCHOOSEA, ACMFILTERCHOOSEA, 传址, , $(删除)
+    .成员 ACMFILTERDETAILSA, ACMFILTERDETAILSA, 传址, , $(删除)
+    .成员 ACMFILTERTAGDETAILSA, ACMFILTERTAGDETAILSA, 传址, , $(删除)
+    .成员 ACMFORMATCHOOSEA, ACMFORMATCHOOSEA, 传址, , $(删除)
+    .成员 ACMFORMATDETAILSA, ACMFORMATDETAILSA, 传址, , $(删除)
+    .成员 ACMFORMATTAGDETAILSA, ACMFORMATTAGDETAILSA, 传址, , $(删除)
+    .成员 ACMSTREAMHEADER, ACMSTREAMHEADER, , , $(删除)
+    .成员 Any, Any, 传址, , $(删除)
+    .成员 API_VERSION, API_VERSION, 传址, , $(删除)
+    .成员 APPBARDATA, APPBARDATA, 传址, , $(删除)
+    .成员 AsnAny, AsnAny, 传址, , $(删除)
+    .成员 AsnInteger, AsnInteger, 传址, , $(删除)
+    .成员 AsnOctetString, AsnOctetString, 传址, , $(删除)
+    .成员 ASSOCF, ASSOCF, 传址, , $(删除)
+    .成员 ASYNCCOMPLETIONHANDLE, ASYNCCOMPLETIONHANDLE, 传址, , $(删除)
+    .成员 ATL_INTMAP_ENTRY, ATL_INTMAP_ENTRY, 传址, , $(删除)
+    .成员 ATL_MODULE, ATL_MODULE, 传址, , $(删除)
+    .成员 ATL_OBJMAP_ENTRY, ATL_OBJMAP_ENTRY, 传址, , $(删除)
+    .成员 ATL_REGMAP_ENTRY, ATL_REGMAP_ENTRY, 传址, , $(删除)
+    .成员 ATL_TERMFUNC, ATL_TERMFUNC, 传址, , $(删除)
+    .成员 AtlCreateWndData, AtlCreateWndData, 传址, , $(删除)
+    .成员 AUDIT_EVENT_TYPE, AUDIT_EVENT_TYPE, 传址, , $(删除)
+    .成员 AUTHZ_AUDIT_INFO_HANDLE, AUTHZ_AUDIT_INFO_HANDLE, 传址, , $(删除)
+    .成员 AUTHZ_CLIENT_CONTEXT_HANDLE, AUTHZ_CLIENT_CONTEXT_HANDLE, 传址, , $(删除)
+    .成员 AUTHZ_HANDLE, AUTHZ_HANDLE, 传址, , $(删除)
+    .成员 AUTHZ_RESOURCE_MANAGER_HANDLE, AUTHZ_RESOURCE_MANAGER_HANDLE, 传址, , $(删除)
+    .成员 AUTHZ_RM_AUDIT_INFO_HANDLE, AUTHZ_RM_AUDIT_INFO_HANDLE, 传址, , $(删除)
+    .成员 AUXCAPS, AUXCAPS, 传址, , $(删除)
+    .成员 AVICOMPRESSOPTIONS, AVICOMPRESSOPTIONS, 传址, , $(删除)
+    .成员 AVIFileInfo, AVIFileInfo, 传址, , $(删除)
+    .成员 AVISTREAMINFOA, AVISTREAMINFOA, 传址, , $(删除)
+    .成员 BerElement, BerElement, 传址, , $(删除)
+    .成员 BERVAL, BERVAL, 传址, , $(删除)
+    .成员 BIND_OPTS, BIND_OPTS, 传址, , $(删除)
+    .成员 BINDINFO, BINDINFO, 传址, , $(删除)
+    .成员 BITMAP, BITMAP, 传址, , $(删除)
+    .成员 BITMAPCOREHEADER, BITMAPCOREHEADER, 传址, , $(删除)
+    .成员 BITMAPINFO, BITMAPINFO, 传址, , $(删除)
+    .成员 BITMAPINFOHEADER, BITMAPINFOHEADER, 传址, , $(删除)
+    .成员 BLENDFUNCTION, BLENDFUNCTION, 传址, , $(删除)
+    .成员 BMCALLBACKFN, BMCALLBACKFN, 传址, , $(删除)
+    .成员 Boolean, Boolean, 传址, , $(删除)
+    .成员 BROWSEINFO, BROWSEINFO, 传址, , $(删除)
+    .成员 BY_HANDLE_FILE_INFORMATION, BY_HANDLE_FILE_INFORMATION, 传址, , $(删除)
+    .成员 BYTE, 字节型, , , $(删除)
+    .成员 Byte1, 字节型, , , $(删除)
+    .成员 CALINFO_ENUMPROCEXA, CALINFO_ENUMPROCEXA, 传址, , $(删除)
+    .成员 CANDIDATEFORM, CANDIDATEFORM, 传址, , $(删除)
+    .成员 CANDIDATELIST, CANDIDATELIST, 传址, , $(删除)
+    .成员 CERT_EXTENSION, CERT_EXTENSION, 传址, , $(删除)
+    .成员 CERT_INFO, CERT_INFO, 传址, , $(删除)
+    .成员 CGUID, CGUID, 传址, , $(删除)
+    .成员 CHAR_INFO, CHAR_INFO, 传址, , $(删除)
+    .成员 CHARSETINFO, CHARSETINFO, 传址, , $(删除)
+    .成员 CHOOSECOLOR, CHOOSECOLOR, 传址, , $(删除)
+    .成员 CHOOSEFONT, CHOOSEFONT, 传址, , $(删除)
+    .成员 CI_STATE, CI_STATE, 传址, , $(删除)
+    .成员 CIEXYZ, CIEXYZ, 传址, , $(删除)
+    .成员 CIEXYZTRIPLE, CIEXYZTRIPLE, 传址, , $(删除)
+    .成员 CIPROPERTYDEF, CIPROPERTYDEF, 传址, , $(删除)
+    .成员 CITEMIDLIST, CITEMIDLIST, 传址, , $(删除)
+    .成员 CMC_extension, CMC_extension, 传址, , $(删除)
+    .成员 CMC_message, CMC_message, 传址, , $(删除)
+    .成员 CMC_message_reference, CMC_message_reference, 传址, , $(删除)
+    .成员 CMC_message_summary, CMC_message_summary, 传址, , $(删除)
+    .成员 CMC_recipient, CMC_recipient, 传址, , $(删除)
+    .成员 CMENUINFO, CMENUINFO, 传址, , $(删除)
+    .成员 COLOR, COLOR, 传址, , $(删除)
+    .成员 ColorAdjustment, ColorAdjustment, 传址, , $(删除)
+    .成员 COLORADJUSTMENT1, ColorAdjustment, 传址, , $(删除)
+    .成员 ColorMap, ColorMap, 传址, , $(删除)
+    .成员 COMMCONFIG, COMMCONFIG, 传址, , $(删除)
+    .成员 COMMPROP, COMMPROP, 传址, , $(删除)
+    .成员 COMMTIMEOUTS, COMMTIMEOUTS, 传址, , $(删除)
+    .成员 COMPOSITIONFORM, COMPOSITIONFORM, 传址, , $(删除)
+    .成员 COMSTAT, COMSTAT, 传址, , $(删除)
+    .成员 CONDITIONPROC, CONDITIONPROC, 传址, , $(删除)
+    .成员 CONNECTDLGSTRUCTA, CONNECTDLGSTRUCTA, 传址, , $(删除)
+    .成员 CONSOLE_CURSOR_INFO, CONSOLE_CURSOR_INFO, 传址, , $(删除)
+    .成员 CONSOLE_SCREEN_BUFFER_INFO, CONSOLE_SCREEN_BUFFER_INFO, 传址, , $(删除)
+    .成员 CONTEXT, CONTEXT, 传址, , $(删除)
+    .成员 CONVCONTEXT, CONVCONTEXT, 传址, , $(删除)
+    .成员 CONVINFO, CONVINFO, 传址, , $(删除)
+    .成员 COORD, COORD, 传址, , $(删除)
+    .成员 COSERVERINFO, COSERVERINFO, 传址, , $(删除)
+    .成员 CPINFO, CPINFO, 传址, , $(删除)
+    .成员 CPINFOEXA, CPINFOEXA, 传址, , $(删除)
+    .成员 CPROPSHEETHEADERA, CPROPSHEETHEADERA, 传址, , $(删除)
+    .成员 CPROPSHEETPAGEA, CPROPSHEETPAGEA, 传址, , $(删除)
+    .成员 CREATESTRUCT, CREATESTRUCT, 传址, , $(删除)
+    .成员 CRITICAL_SECTION, CRITICAL_SECTION, 传址, , $(删除)
+    .成员 CRYPT_ATTRIBUTE, CRYPT_ATTRIBUTE, 传址, , $(删除)
+    .成员 CRYPT_HASH_BLOB, CRYPT_HASH_BLOB, 传址, , $(删除)
+    .成员 CRYPT_OID_FUNC_ENTRY, CRYPT_OID_FUNC_ENTRY, 传址, , $(删除)
+    .成员 CRYPT_PKCS, CRYPT_PKCS, 传址, , $(删除)
+    .成员 CRYPT_PROVIDER_DATA, CRYPT_PROVIDER_DATA, 传址, , $(删除)
+    .成员 CRYPT_PROVIDER_DEFUSAGE, CRYPT_PROVIDER_DEFUSAGE, 传址, , $(删除)
+    .成员 CRYPT_PROVIDER_FUNCTIONS, CRYPT_PROVIDER_FUNCTIONS, 传址, , $(删除)
+    .成员 CRYPT_PROVIDER_REGDEFUSAGE, CRYPT_PROVIDER_REGDEFUSAGE, 传址, , $(删除)
+    .成员 CRYPT_PROVIDER_SGNR, CRYPT_PROVIDER_SGNR, 传址, , $(删除)
+    .成员 CRYPT_REGISTER_ACTIONID, CRYPT_REGISTER_ACTIONID, 传址, , $(删除)
+    .成员 CRYPTPROTECT_PROMPTSTRUCT, CRYPTPROTECT_PROMPTSTRUCT, 传址, , $(删除)
+    .成员 CSCARD_IO_REQUEST, CSCARD_IO_REQUEST, 传址, , $(删除)
+    .成员 CStdPSFactoryBuffer, CStdPSFactoryBuffer, 传址, , $(删除)
+    .成员 CSTRTABLE, CSTRTABLE, 传址, , $(删除)
+    .成员 CTBBUTTON, CTBBUTTON, 传址, , $(删除)
+    .成员 Currency, Currency, 传址, , $(删除)
+    .成员 CURRENCYFMT, CURRENCYFMT, 传址, , $(删除)
+    .成员 CUSTDATA, CUSTDATA, 传址, , $(删除)
+    .成员 CY, CY, 传址, , $(删除)
+    .成员 D, D, 传址, , $(删除)
+    .成员 DATA_BLOB, DATA_BLOB, 传址, , $(删除)
+    .成员 DATAOBJECT, DATAOBJECT, 传址, , $(删除)
+    .成员 DataObject1, DATAOBJECT, 传址, , $(删除)
+    .成员 DATEFMT_ENUMPROCEXA, DATEFMT_ENUMPROCEXA, 传址, , $(删除)
+    .成员 DBCOMMANDOP, DBCOMMANDOP, 传址, , $(删除)
+    .成员 DBCOMMANDTREE, DBCOMMANDTREE, 传址, , $(删除)
+    .成员 DBGPRINT, DBGPRINT, 传址, , $(删除)
+    .成员 DBINT, DBINT, 传址, , $(删除)
+    .成员 DCB, DCB, 传址, , $(删除)
+    .成员 DDEML_MSG_HOOK_DATA, DDEML_MSG_HOOK_DATA, 传址, , $(删除)
+    .成员 DDENUMCALLBACKA, DDENUMCALLBACKA, 传址, , $(删除)
+    .成员 DDENUMCALLBACKEXA, DDENUMCALLBACKEXA, 传址, , $(删除)
+    .成员 DEBUG_EVENT, DEBUG_EVENT, 传址, , $(删除)
+    .成员 DECIMAL, DECIMAL, 传址, , $(删除)
+    .成员 DEFAULT_QUEUESIZE, DEFAULT_QUEUESIZE, 传址, , $(删除)
+    .成员 DESIGNVECTOR, DESIGNVECTOR, 传址, , $(删除)
+    .成员 DEVCHARACTER, DEVCHARACTER, 传址, , $(删除)
+    .成员 DEVMODE, DEVMODE, 传址, , $(删除)
+    .成员 DHCPCAPI_PARAMS_ARRAY, DHCPCAPI_PARAMS_ARRAY, 传址, , $(删除)
+    .成员 DI_FUNCTIONstallFunction, DI_FUNCTIONstallFunction, 传址, , $(删除)
+    .成员 DIGEST_FUNCTION, DIGEST_FUNCTION, 传址, , $(删除)
+    .成员 DIGEST_HANDLE, DIGEST_HANDLE, 传址, , $(删除)
+    .成员 DIRECTDRAW, DIRECTDRAW, 传址, , $(删除)
+    .成员 DIRECTDRAWCLIPPER, DIRECTDRAWCLIPPER, 传址, , $(删除)
+    .成员 DIRECTPLAY, DIRECTPLAY, 传址, , $(删除)
+    .成员 DIRECTSOUND, DIRECTSOUND, 传址, , $(删除)
+    .成员 DIRECTSOUNDCAPTURE, DIRECTSOUNDCAPTURE, 传址, , $(删除)
+    .成员 DISCDLGSTRUCTA, DISCDLGSTRUCTA, 传址, , $(删除)
+    .成员 DISPPARAMS, DISPPARAMS, 传址, , $(删除)
+    .成员 DLGTEMPLATE, DLGTEMPLATE, 传址, , $(删除)
+    .成员 DOCINFO, DOCINFO, 传址, , $(删除)
+    .成员 DOUBLE, 双精度小数型, , , $(删除)
+    .成员 Double1, 双精度小数型, , , $(删除)
+    .成员 DPENUMDPCALLBACKA, DPENUMDPCALLBACKA, 传址, , $(删除)
+    .成员 DRAWDIBTIME, DRAWDIBTIME, 传址, , $(删除)
+    .成员 DRAWTEXTPARAMS, DRAWTEXTPARAMS, 传址, , $(删除)
+    .成员 DS_NAME_RESULTA, DS_NAME_RESULTA, 传址, , $(删除)
+    .成员 DS_SCHEMA_GUID_MAPA, DS_SCHEMA_GUID_MAPA, 传址, , $(删除)
+    .成员 DSBROWSEINFO, DSBROWSEINFO, 传址, , $(删除)
+    .成员 DSENUMCALLBACKA, DSENUMCALLBACKA, 传址, , $(删除)
+    .成员 DVTARGETDEVICE, DVTARGETDEVICE, 传址, , $(删除)
+    .成员 DWORD, DWORD, 传址, , $(删除)
+    .成员 DWORD_PTR, DWORD_PTR, 传址, , $(删除)
+    .成员 emr, emr, 传址, , $(删除)
+    .成员 emrtext, emrtext, 传址, , $(删除)
+    .成员 ENHMETAHEADER, ENHMETAHEADER, 传址, , $(删除)
+    .成员 ENHMETARECORD, ENHMETARECORD, 传址, , $(删除)
+    .成员 ENUM_SERVICE_STATUS, ENUM_SERVICE_STATUS, 传址, , $(删除)
+    .成员 ENUMLOGFONTEXDVA, ENUMLOGFONTEXDVA, 传址, , $(删除)
+    .成员 EVENTLOGRECORD, EVENTLOGRECORD, 传址, , $(删除)
+    .成员 EXCEPINFO, EXCEPINFO, 传址, , $(删除)
+    .成员 EXCEPTION_POINTERS, EXCEPTION_POINTERS, 传址, , $(删除)
+    .成员 EXCEPTION_RECORD, EXCEPTION_RECORD, 传址, , $(删除)
+    .成员 EXECUTION_STATE, EXECUTION_STATE, 传址, , $(删除)
+    .成员 EXTENSION_CONTROL_BLOCK, EXTENSION_CONTROL_BLOCK, 传址, , $(删除)
+    .成员 EXTLOGFONT, EXTLOGFONT, 传址, , $(删除)
+    .成员 EXTLOGPEN, EXTLOGPEN, 传址, , $(删除)
+    .成员 fd_set, fd_set, 传址, , $(删除)
+    .成员 FIBER_START_ROUTINE, FIBER_START_ROUTINE, 传址, , $(删除)
+    .成员 FILE_SEGMENT_ELEMENT, FILE_SEGMENT_ELEMENT, 传址, , $(删除)
+    .成员 FILETIME, FILETIME, 传址, , $(删除)
+    .成员 FINDREPLACE, FINDREPLACE, 传址, , $(删除)
+    .成员 FIXED, FIXED, 传址, , $(删除)
+    .成员 FMTID, FMTID, 传址, , $(删除)
+    .成员 FN_PROGRESS, FN_PROGRESS, 传址, , $(删除)
+    .成员 FONTDESC, FONTDESC, 传址, , $(删除)
+    .成员 FONTSIGNATURE, FONTSIGNATURE, 传址, , $(删除)
+    .成员 FORMATETC, FORMATETC, 传址, , $(删除)
+    .成员 FULL_PTR_XLAT_TABLES, FULL_PTR_XLAT_TABLES, 传址, , $(删除)
+    .成员 g_netSID_NAME_USE, g_netSID_NAME_USE, 传址, , $(删除)
+    .成员 GCP_RESULTS, GCP_RESULTS, 传址, , $(删除)
+    .成员 GENERIC_MAPPING, GENERIC_MAPPING, 传址, , $(删除)
+    .成员 GLbitfield, GLbitfield, 传址, , $(删除)
+    .成员 GLboolean, GLboolean, 传址, , $(删除)
+    .成员 GLbyte, GLbyte, 传址, , $(删除)
+    .成员 GLclampd, GLclampd, 传址, , $(删除)
+    .成员 GLclampf, GLclampf, 传址, , $(删除)
+    .成员 GLdouble, GLdouble, 传址, , $(删除)
+    .成员 GLenum, GLenum, 传址, , $(删除)
+    .成员 GLfloat, GLfloat, 传址, , $(删除)
+    .成员 GLint, GLint, 传址, , $(删除)
+    .成员 GLshort, GLshort, 传址, , $(删除)
+    .成员 GLsizei, GLsizei, 传址, , $(删除)
+    .成员 GLubyte, GLubyte, 传址, , $(删除)
+    .成员 GLuint, GLuint, 传址, , $(删除)
+    .成员 GLushort, GLushort, 传址, , $(删除)
+    .成员 GLvoid, GLvoid, 传址, , $(删除)
+    .成员 GLYPHMETRICS, GLYPHMETRICS, 传址, , $(删除)
+    .成员 GLYPHMETRICSFLOAT, GLYPHMETRICSFLOAT, 传址, , $(删除)
+    .成员 GLYPHSET, GLYPHSET, 传址, , $(删除)
+    .成员 GOFFSET, GOFFSET, 传址, , $(删除)
+    .成员 GOPHER_ATTRIBUTE_ENUMERATOR, GOPHER_ATTRIBUTE_ENUMERATOR, 传址, , $(删除)
+    .成员 GOPHER_FIND_DATAA, GOPHER_FIND_DATAA, 传址, , $(删除)
+    .成员 GRADIENT_RECT, GRADIENT_RECT, 传址, , $(删除)
+    .成员 GROUP, GROUP, 传址, , $(删除)
+    .成员 GROUPID, GROUPID, 传址, , $(删除)
+    .成员 GUID, GUID, 传址, , $(删除)
+    .成员 Guid1, GUID, 传址, , $(删除)
+    .成员 HAGENT, HAGENT, 传址, , $(删除)
+    .成员 HAGENTSESSION, HAGENTSESSION, 传址, , $(删除)
+    .成员 hbc, hbc, 传址, , $(删除)
+    .成员 hBlob, hBlob, 传址, , $(删除)
+    .成员 hChange, hChange, 传址, , $(删除)
+    .成员 HCLUSENUM, HCLUSENUM, 传址, , $(删除)
+    .成员 hCluster, hCluster, 传址, , $(删除)
+    .成员 hCounter, hCounter, 传址, , $(删除)
+    .成员 hCryptProv, hCryptProv, 传址, , $(删除)
+    .成员 HDBC, HDBC, 传址, , $(删除)
+    .成员 hfci, hfci, 传址, , $(删除)
+    .成员 hfdi, hfdi, 传址, , $(删除)
+    .成员 hGroup, hGroup, 传址, , $(删除)
+    .成员 hGroupEnum, hGroupEnum, 传址, , $(删除)
+    .成员 HILITE, HILITE, 传址, , $(删除)
+    .成员 hLog, hLog, 传址, , $(删除)
+    .成员 hNode, hNode, 传址, , $(删除)
+    .成员 hNodeEnum, hNodeEnum, 传址, , $(删除)
+    .成员 hPort, hPort, 传址, , $(删除)
+    .成员 hQuery, hQuery, 传址, , $(删除)
+    .成员 hResource, hResource, 传址, , $(删除)
+    .成员 HSE_VERSION_INFO, HSE_VERSION_INFO, 传址, , $(删除)
+    .成员 HSNMP_CONTEXT, HSNMP_CONTEXT, 传址, , $(删除)
+    .成员 HSNMP_ENTITY, HSNMP_ENTITY, 传址, , $(删除)
+    .成员 HSNMP_PDU, HSNMP_PDU, 传址, , $(删除)
+    .成员 HSNMP_SESSION, HSNMP_SESSION, 传址, , $(删除)
+    .成员 HSNMP_VBL, HSNMP_VBL, 传址, , $(删除)
+    .成员 HW_PROFILE_INFOA, HW_PROFILE_INFOA, 传址, , $(删除)
+    .成员 IAccessible, IAccessible, 传址, , $(删除)
+    .成员 IBindStatusCallback, IBindStatusCallback, 传址, , $(删除)
+    .成员 ICINFO, ICINFO, 传址, , $(删除)
+    .成员 ICommand, ICommand, 传址, , $(删除)
+    .成员 ICONINFO, ICONINFO, 传址, , $(删除)
+    .成员 IDispenserManager, IDispenserManager, 传址, , $(删除)
+    .成员 IHTMLWindow, IHTMLWindow, 传址, , $(删除)
+    .成员 IInternetSecurityManager, IInternetSecurityManager, 传址, , $(删除)
+    .成员 IInternetSession, IInternetSession, 传址, , $(删除)
+    .成员 IInternetZoneManager, IInternetZoneManager, 传址, , $(删除)
+    .成员 IMAGEINFO, IMAGEINFO, 传址, , $(删除)
+    .成员 IMAGELISTDRAWPARAMS, IMAGELISTDRAWPARAMS, 传址, , $(删除)
+    .成员 IMCENUMPROC, IMCENUMPROC, 传址, , $(删除)
+    .成员 IMEMENUITEMINFOA, IMEMENUITEMINFOA, 传址, , $(删除)
+    .成员 IMEPROA, IMEPROA, 传址, , $(删除)
+    .成员 INITCOMMONCONTROLSEX, INITCOMMONCONTROLSEX, 传址, , $(删除)
+    .成员 INPUT, INPUT, 传址, , $(删除)
+    .成员 INSTALLMESSAGE, INSTALLMESSAGE, 传址, , $(删除)
+    .成员 INSTALLSTATE, INSTALLSTATE, 传址, , $(删除)
+    .成员 INSTALLUI_HANDLERA, INSTALLUI_HANDLERA, 传址, , $(删除)
+    .成员 INT_PTR, INT_PTR, 传址, , $(删除)
+    .成员 Integer, Integer, 传址, , $(删除)
+    .成员 INTERNET_BUFFERSA, INTERNET_BUFFERSA, 传址, , $(删除)
+    .成员 INTERNET_CACHE_ENTRY_INFOA, INTERNET_CACHE_ENTRY_INFOA, 传址, , $(删除)
+    .成员 INTERNET_PORT, INTERNET_PORT, 传址, , $(删除)
+    .成员 INTERNET_STATUS_CALLBACK, INTERNET_STATUS_CALLBACK, 传址, , $(删除)
+    .成员 IObjectContext, IObjectContext, 传址, , $(删除)
+    .成员 IP_ADDR_FAMILY, IP_ADDR_FAMILY, 传址, , $(删除)
+    .成员 IPAddr, IPAddr, 传址, , $(删除)
+    .成员 IpMask, IpMask, 传址, , $(删除)
+    .成员 IPropertyPage, IPropertyPage, 传址, , $(删除)
+    .成员 IServiceProvider, IServiceProvider, 传址, , $(删除)
+    .成员 ITEMIDLIST, ITEMIDLIST, 传址, , $(删除)
+    .成员 ITextHost, ITextHost, 传址, , $(删除)
+    .成员 ITransaction, ITransaction, 传址, , $(删除)
+    .成员 JOBOBJECTINFOCLASS, JOBOBJECTINFOCLASS, 传址, , $(删除)
+    .成员 JOYCAPS, JOYCAPS, 传址, , $(删除)
+    .成员 JOYINFO, JOYINFO, 传址, , $(删除)
+    .成员 JOYINFOEX, JOYINFOEX, 传址, , $(删除)
+    .成员 KERNINGPAIR, KERNINGPAIR, 传址, , $(删除)
+    .成员 LANGGROUPLOCALE_ENUMPROCA, LANGGROUPLOCALE_ENUMPROCA, 传址, , $(删除)
+    .成员 LANGUAGEGROUP_ENUMPROCA, LANGUAGEGROUP_ENUMPROCA, 传址, , $(删除)
+    .成员 LARGE_INTEGER, LARGE_INTEGER, 传址, , $(删除)
+    .成员 LATENCY_TIME, LATENCY_TIME, 传址, , $(删除)
+    .成员 LAYERPLANEDESCRIPTOR, LAYERPLANEDESCRIPTOR, 传址, , $(删除)
+    .成员 LDAP, LDAP, 传址, , $(删除)
+    .成员 LDAPControlA, LDAPControlA, 传址, , $(删除)
+    .成员 LDAPMessage, LDAPMessage, 传址, , $(删除)
+    .成员 LDAPMod, LDAPMod, 传址, , $(删除)
+    .成员 LDAPModA, LDAPModA, 传址, , $(删除)
+    .成员 LDT_ENTRY, LDT_ENTRY, 传址, , $(删除)
+    .成员 LGRPID, LGRPID, 传址, , $(删除)
+    .成员 LINEADDRESSCAPS, LINEADDRESSCAPS, 传址, , $(删除)
+    .成员 LINEADDRESSSTATUS, LINEADDRESSSTATUS, 传址, , $(删除)
+    .成员 LINEAGENTACTIVITYLIST, LINEAGENTACTIVITYLIST, 传址, , $(删除)
+    .成员 LINEAGENTCAPS, LINEAGENTCAPS, 传址, , $(删除)
+    .成员 LINEAGENTGROUPLIST, LINEAGENTGROUPLIST, 传址, , $(删除)
+    .成员 LINEAGENTINFO, LINEAGENTINFO, 传址, , $(删除)
+    .成员 LINEAGENTSESSIONINFO, LINEAGENTSESSIONINFO, 传址, , $(删除)
+    .成员 LINEAGENTSESSIONLIST, LINEAGENTSESSIONLIST, 传址, , $(删除)
+    .成员 LINEAGENTSTATUS, LINEAGENTSTATUS, 传址, , $(删除)
+    .成员 LINECALLINFO, LINECALLINFO, 传址, , $(删除)
+    .成员 LINECALLLIST, LINECALLLIST, 传址, , $(删除)
+    .成员 LINECALLPARAMS, LINECALLPARAMS, 传址, , $(删除)
+    .成员 LINECALLSTATUS, LINECALLSTATUS, 传址, , $(删除)
+    .成员 LINECOUNTRYLIST, LINECOUNTRYLIST, 传址, , $(删除)
+    .成员 LINEDEVCAPS, LINEDEVCAPS, 传址, , $(删除)
+    .成员 LINEDEVSTATUS, LINEDEVSTATUS, 传址, , $(删除)
+    .成员 LINEDIALPARAMS, LINEDIALPARAMS, 传址, , $(删除)
+    .成员 LINEEXTENSIONID, LINEEXTENSIONID, 传址, , $(删除)
+    .成员 LINEFORWARDLIST, LINEFORWARDLIST, 传址, , $(删除)
+    .成员 LINEGENERATETONE, LINEGENERATETONE, 传址, , $(删除)
+    .成员 LINEINITIALIZEEXPARAMS, LINEINITIALIZEEXPARAMS, 传址, , $(删除)
+    .成员 LINEMEDIACONTROLCALLSTATE, LINEMEDIACONTROLCALLSTATE, 传址, , $(删除)
+    .成员 LINEMEDIACONTROLDIGIT, LINEMEDIACONTROLDIGIT, 传址, , $(删除)
+    .成员 LINEMEDIACONTROLMEDIA, LINEMEDIACONTROLMEDIA, 传址, , $(删除)
+    .成员 LINEMEDIACONTROLTONE, LINEMEDIACONTROLTONE, 传址, , $(删除)
+    .成员 LINEMESSAGE, LINEMESSAGE, 传址, , $(删除)
+    .成员 LINEMONITORTONE, LINEMONITORTONE, 传址, , $(删除)
+    .成员 LINEPROVIDERLIST, LINEPROVIDERLIST, 传址, , $(删除)
+    .成员 LINEPROXYREQUEST, LINEPROXYREQUEST, 传址, , $(删除)
+    .成员 LINEPROXYREQUESTLIST, LINEPROXYREQUESTLIST, 传址, , $(删除)
+    .成员 LINEQUEUEINFO, LINEQUEUEINFO, 传址, , $(删除)
+    .成员 LINEQUEUELIST, LINEQUEUELIST, 传址, , $(删除)
+    .成员 LINETEXTMETRIC, LINETEXTMETRIC, 传址, , $(删除)
+    .成员 LINETRANSLATECAPS, LINETRANSLATECAPS, 传址, , $(删除)
+    .成员 LINETRANSLATEOUTPUT, LINETRANSLATEOUTPUT, 传址, , $(删除)
+    .成员 LIST_ENTRY, LIST_ENTRY, 传址, , $(删除)
+    .成员 LMCSTR, LMCSTR, 传址, , $(删除)
+    .成员 LMSTR, LMSTR, 传址, , $(删除)
+    .成员 LOGBRUSH, LOGBRUSH, 传址, , $(删除)
+    .成员 LOGCOLORSPACE, LOGCOLORSPACE, 传址, , $(删除)
+    .成员 LOGFONT, LOGFONT, 传址, , $(删除)
+    .成员 LOGPALETTE, LOGPALETTE, 传址, , $(删除)
+    .成员 LOGPEN, LOGPEN, 传址, , $(删除)
+    .成员 LogSeverity, LogSeverity, 传址, , $(删除)
+    .成员 Long, Long, 传址, , $(删除)
+    .成员 long1, Long, 传址, , $(删除)
+    .成员 longx, longx, 传址, , $(删除)
+    .成员 LPADDRESSTABLE, LPADDRESSTABLE, 传址, , $(删除)
+    .成员 LPBINDSTATUSCALLBACK, LPBINDSTATUSCALLBACK, 传址, , $(删除)
+    .成员 LPCBYTE, LPCBYTE, 传址, , $(删除)
+    .成员 LPCITEMIDLIST, LPCITEMIDLIST, 传址, , $(删除)
+    .成员 LPD, LPD, 传址, , $(删除)
+    .成员 LPDBINT, LPDBINT, 传址, , $(删除)
+    .成员 LPDHCPCAPI_CLASSID, LPDHCPCAPI_CLASSID, 传址, , $(删除)
+    .成员 LPDIRECT, LPDIRECT, 传址, , $(删除)
+    .成员 LPDIRECTINPUTA, LPDIRECTINPUTA, 传址, , $(删除)
+    .成员 LPDISPATCH, LPDISPATCH, 传址, , $(删除)
+    .成员 LPEXPRESSION, LPEXPRESSION, 传址, , $(删除)
+    .成员 lpGlobalEntry, lpGlobalEntry, 传址, , $(删除)
+    .成员 LPGPOBROWSEINFO, LPGPOBROWSEINFO, 传址, , $(删除)
+    .成员 LPHANDLER_FUNCTION_EX, LPHANDLER_FUNCTION_EX, 传址, , $(删除)
+    .成员 LPHEAPENTRY, LPHEAPENTRY, 传址, , $(删除)
+    .成员 LPHEAPLIST, LPHEAPLIST, 传址, , $(删除)
+    .成员 LPHIT_LOGGING_INFO, LPHIT_LOGGING_INFO, 传址, , $(删除)
+    .成员 LPHLOG, LPHLOG, 传址, , $(删除)
+    .成员 LPHSNMP_CONTEXT, LPHSNMP_CONTEXT, 传址, , $(删除)
+    .成员 LPHSNMP_ENTITY, LPHSNMP_ENTITY, 传址, , $(删除)
+    .成员 LPHSNMP_PDU, LPHSNMP_PDU, 传址, , $(删除)
+    .成员 LPHSNMP_VBL, LPHSNMP_VBL, 传址, , $(删除)
+    .成员 LPINTERNET_CACHE_GROUP_INFOA, LPINTERNET_CACHE_GROUP_INFOA, 传址, , $(删除)
+    .成员 LPMCAST_CLIENT_UID, LPMCAST_CLIENT_UID, 传址, , $(删除)
+    .成员 lpModuleEntry, lpModuleEntry, 传址, , $(删除)
+    .成员 LPMODULEENTRY1, lpModuleEntry, 传址, , $(删除)
+    .成员 LPMODULEINFO, LPMODULEINFO, 传址, , $(删除)
+    .成员 lpNetworkInfo, lpNetworkInfo, 传址, , $(删除)
+    .成员 LPNSP_ROUTINE, LPNSP_ROUTINE, 传址, , $(删除)
+    .成员 LPNTMS_ALLOCATION_INFORMATION, LPNTMS_ALLOCATION_INFORMATION, 传址, , $(删除)
+    .成员 LPNTMS_GUID, LPNTMS_GUID, 传址, , $(删除)
+    .成员 LPNTMS_MOUNT_INFORMATION, LPNTMS_MOUNT_INFORMATION, 传址, , $(删除)
+    .成员 LPNTMS_NOTIFICATIONINFORMATION, LPNTMS_NOTIFICATIONINFORMATION, 传址, , $(删除)
+    .成员 LPNTMS_OBJECTINFORMATIONA, LPNTMS_OBJECTINFORMATIONA, 传址, , $(删除)
+    .成员 LPOLECLIENT, LPOLECLIENT, 传址, , $(删除)
+    .成员 LPOLESTREAM, LPOLESTREAM, 传址, , $(删除)
+    .成员 LPPROCESSENTRY, LPPROCESSENTRY, 传址, , $(删除)
+    .成员 lpQOCInfo, lpQOCInfo, 传址, , $(删除)
+    .成员 LPRASDIALDLG, LPRASDIALDLG, 传址, , $(删除)
+    .成员 LPRASENTRYDLGA, LPRASENTRYDLGA, 传址, , $(删除)
+    .成员 LPRASMONITORDLG, LPRASMONITORDLG, 传址, , $(删除)
+    .成员 LPRASPBDLGA, LPRASPBDLGA, 传址, , $(删除)
+    .成员 LPRESOURCE_CALLBACK, LPRESOURCE_CALLBACK, 传址, , $(删除)
+    .成员 LPSECURITYINFO, LPSECURITYINFO, 传址, , $(删除)
+    .成员 LPSERVICE_ASYNC_INFO, LPSERVICE_ASYNC_INFO, 传址, , $(删除)
+    .成员 LPSNMP_MGR_SESSION, LPSNMP_MGR_SESSION, 传址, , $(删除)
+    .成员 LPSOFTDISTINFO, LPSOFTDISTINFO, 传址, , $(删除)
+    .成员 LPTHREADENTRY, LPTHREADENTRY, 传址, , $(删除)
+    .成员 LPTRIGGER, LPTRIGGER, 传址, , $(删除)
+    .成员 lpVDMContext, lpVDMContext, 传址, , $(删除)
+    .成员 LPVDMLDT_ENTRY, LPVDMLDT_ENTRY, 传址, , $(删除)
+    .成员 LPWIN_CERTIFICATE, LPWIN_CERTIFICATE, 传址, , $(删除)
+    .成员 LSA_HANDLE, LSA_HANDLE, 传址, , $(删除)
+    .成员 LUID, LUID, 传址, , $(删除)
+    .成员 LUID_AND_ATTRIBUTES, LUID_AND_ATTRIBUTES, 传址, , $(删除)
+    .成员 MAPIMessage, MAPIMessage, 传址, , $(删除)
+    .成员 MapiRecip, MapiRecip, 传址, , $(删除)
+    .成员 MAT, MAT, 传址, , $(删除)
+    .成员 MEMORY_BASIC_INFORMATION, MEMORY_BASIC_INFORMATION, 传址, , $(删除)
+    .成员 MEMORYSTATUS, MEMORYSTATUS, 传址, , $(删除)
+    .成员 MEMORYSTATUSEX, MEMORYSTATUSEX, 传址, , $(删除)
+    .成员 MENUINFO, MENUINFO, 传址, , $(删除)
+    .成员 MENUITEMINFO, MENUITEMINFO, 传址, , $(删除)
+    .成员 METAFILEPICT, METAFILEPICT, 传址, , $(删除)
+    .成员 METARECORD, METARECORD, 传址, , $(删除)
+    .成员 MIB_SERVER_HANDLE, MIB_SERVER_HANDLE, 传址, , $(删除)
+    .成员 MIDIHDR, MIDIHDR, 传址, , $(删除)
+    .成员 MIDIINCAPS, MIDIINCAPS, 传址, , $(删除)
+    .成员 MIDIOUTCAPS, MIDIOUTCAPS, 传址, , $(删除)
+    .成员 MIDL_STUB_DESC, MIDL_STUB_DESC, 传址, , $(删除)
+    .成员 MIDL_STUB_MESSAGE, MIDL_STUB_MESSAGE, 传址, , $(删除)
+    .成员 MIXERCAPS, MIXERCAPS, 传址, , $(删除)
+    .成员 MIXERCONTROL, MIXERCONTROL, 传址, , $(删除)
+    .成员 MIXERCONTROLDETAILS, MIXERCONTROLDETAILS, 传址, , $(删除)
+    .成员 MIXERLINE, MIXERLINE, 传址, , $(删除)
+    .成员 MIXERLINECONTROLS, MIXERLINECONTROLS, 传址, , $(删除)
+    .成员 MMCKINFO, MMCKINFO, 传址, , $(删除)
+    .成员 MMIOINFO, MMIOINFO, 传址, , $(删除)
+    .成员 MMTIME, MMTIME, 传址, , $(删除)
+    .成员 MONITORENUMPROC, MONITORENUMPROC, 传址, , $(删除)
+    .成员 MONITORINFO, MONITORINFO, 传址, , $(删除)
+    .成员 MOUSEMOVEPOINT, MOUSEMOVEPOINT, 传址, , $(删除)
+    .成员 MPR_SERVER_HANDLE, MPR_SERVER_HANDLE, 传址, , $(删除)
+    .成员 MQCOLUMNSET, MQCOLUMNSET, 传址, , $(删除)
+    .成员 MQMSGPROPS, MQMSGPROPS, 传址, , $(删除)
+    .成员 MQQUEUEPROPS, MQQUEUEPROPS, 传址, , $(删除)
+    .成员 MQRESTRICTION, MQRESTRICTION, 传址, , $(删除)
+    .成员 MQSORTSET, MQSORTSET, 传址, , $(删除)
+    .成员 MSG, MSG, 传址, , $(删除)
+    .成员 msg1, MSG, 传址, , $(删除)
+    .成员 MSGBOXPARAMS, MSGBOXPARAMS, 传址, , $(删除)
+    .成员 MSIHANDLE, MSIHANDLE, 传址, , $(删除)
+    .成员 MULTI_QI, MULTI_QI, 传址, , $(删除)
+    .成员 NDR_CCONTEXT, NDR_CCONTEXT, 传址, , $(删除)
+    .成员 NDR_USER_MARSHAL_INFO, NDR_USER_MARSHAL_INFO, 传址, , $(删除)
+    .成员 NETCONNECTINFOSTRUCT, NETCONNECTINFOSTRUCT, 传址, , $(删除)
+    .成员 NETINFOSTRUCT, NETINFOSTRUCT, 传址, , $(删除)
+    .成员 NETRESOURCE, NETRESOURCE, 传址, , $(删除)
+    .成员 NETSETUP_JOIN_STATUS, NETSETUP_JOIN_STATUS, 传址, , $(删除)
+    .成员 NEWTEXTMETRIC, NEWTEXTMETRIC, 传址, , $(删除)
+    .成员 NMHDR, NMHDR, 传址, , $(删除)
+    .成员 NOTIFYICONDATA, NOTIFYICONDATA, 传址, , $(删除)
+    .成员 NTSTATUS, NTSTATUS, 传址, , $(删除)
+    .成员 NUMBERFMT, NUMBERFMT, 传址, , $(删除)
+    .成员 NUMPARSE, NUMPARSE, 传址, , $(删除)
+    .成员 OCPFIPARAMS, OCPFIPARAMS, 传址, , $(删除)
+    .成员 OFSTRUCT, OFSTRUCT, 传址, , $(删除)
+    .成员 OLE_COLOR, OLE_COLOR, 传址, , $(删除)
+    .成员 OLEOPT_UPDATE, OLEOPT_UPDATE, 传址, , $(删除)
+    .成员 OLESERVER, OLESERVER, 传址, , $(删除)
+    .成员 OLESERVERDOC, OLESERVERDOC, 传址, , $(删除)
+    .成员 OLEUIBUSYA, OLEUIBUSYA, 传址, , $(删除)
+    .成员 OLEUICHANGEICONA, OLEUICHANGEICONA, 传址, , $(删除)
+    .成员 OLEUICHANGESOURCEA, OLEUICHANGESOURCEA, 传址, , $(删除)
+    .成员 OLEUICONVERTA, OLEUICONVERTA, 传址, , $(删除)
+    .成员 OLEUIEDITLINKSA, OLEUIEDITLINKSA, 传址, , $(删除)
+    .成员 OLEUIINSERTOBJECTA, OLEUIINSERTOBJECTA, 传址, , $(删除)
+    .成员 OLEUIOBJECTPROPSA, OLEUIOBJECTPROPSA, 传址, , $(删除)
+    .成员 OLEUIPASTESPECIALA, OLEUIPASTESPECIALA, 传址, , $(删除)
+    .成员 OPENCARDNAMEA, OPENCARDNAMEA, 传址, , $(删除)
+    .成员 OPENCARDNAMEA_EX, OPENCARDNAMEA_EX, 传址, , $(删除)
+    .成员 OPENFILENAME, OPENFILENAME, 传址, , $(删除)
+    .成员 OPTIONALPMIB_IPFORWARDROW, OPTIONALPMIB_IPFORWARDROW, 传址, , $(删除)
+    .成员 OSVERSIONINFO, OSVERSIONINFO, 传址, , $(删除)
+    .成员 OSVERSIONINFOEXA, OSVERSIONINFOEXA, 传址, , $(删除)
+    .成员 OUT, OUT, 传址, , $(删除)
+    .成员 overlapped, overlapped, 传址, , $(删除)
+    .成员 OVERLAPPED1, overlapped, 传址, , $(删除)
+    .成员 PACL, PACL, 传址, , $(删除)
+    .成员 pAcl1, PACL, 传址, , $(删除)
+    .成员 PADDRESS_RESERVED, PADDRESS_RESERVED, 传址, , $(删除)
+    .成员 PADSPROPINITPARAMS, PADSPROPINITPARAMS, 传址, , $(删除)
+    .成员 PADSVALUE, PADSVALUE, 传址, , $(删除)
+    .成员 PAGESETUPDLG, PAGESETUPDLG, 传址, , $(删除)
+    .成员 PAINTSTRUCT, PAINTSTRUCT, 传址, , $(删除)
+    .成员 PALETTEENTRY, PALETTEENTRY, 传址, , $(删除)
+    .成员 PALTTABINFO, PALTTABINFO, 传址, , $(删除)
+    .成员 PANOSE, PANOSE, 传址, , $(删除)
+    .成员 PAPCFUNC, PAPCFUNC, 传址, , $(删除)
+    .成员 ParseAction, ParseAction, 传址, , $(删除)
+    .成员 PAUDIT_EVENT_INFO, PAUDIT_EVENT_INFO, 传址, , $(删除)
+    .成员 PAUTHZ_ACCESS_REQUEST, PAUTHZ_ACCESS_REQUEST, 传址, , $(删除)
+    .成员 PAUTHZ_CLIENT_CONTEXT_HANDLE, PAUTHZ_CLIENT_CONTEXT_HANDLE, 传址, , $(删除)
+    .成员 PAUTHZ_HANDLE, PAUTHZ_HANDLE, 传址, , $(删除)
+    .成员 PAUTHZ_RESOURCE_MANAGER_HANDLE, PAUTHZ_RESOURCE_MANAGER_HANDLE, 传址, , $(删除)
+    .成员 PBERVAL, PBERVAL, 传址, , $(删除)
+    .成员 pBerVal1, PBERVAL, 传址, , $(删除)
+    .成员 PBLOB_TABLE, PBLOB_TABLE, 传址, , $(删除)
+    .成员 PBMCALLBACKFN, PBMCALLBACKFN, 传址, , $(删除)
+    .成员 PCABINFO, PCABINFO, 传址, , $(删除)
+    .成员 pccab, pccab, 传址, , $(删除)
+    .成员 PCCERT_CHAIN_CONTEXT, PCCERT_CHAIN_CONTEXT, 传址, , $(删除)
+    .成员 PCCRL_CONTEXT, PCCRL_CONTEXT, 传址, , $(删除)
+    .成员 PCCRYPT_OID_INFO, PCCRYPT_OID_INFO, 传址, , $(删除)
+    .成员 PCCTL_CONTEXT, PCCTL_CONTEXT, 传址, , $(删除)
+    .成员 PCERT_CHAIN, PCERT_CHAIN, 传址, , $(删除)
+    .成员 PCERT_CHAIN_ENGINE_CONFIG, PCERT_CHAIN_ENGINE_CONFIG, 传址, , $(删除)
+    .成员 PCERT_CHAIN_PARA, PCERT_CHAIN_PARA, 传址, , $(删除)
+    .成员 PCERT_CHAIN_POLICY_PARA, PCERT_CHAIN_POLICY_PARA, 传址, , $(删除)
+    .成员 PCERT_CHAIN_POLICY_STATUS, PCERT_CHAIN_POLICY_STATUS, 传址, , $(删除)
+    .成员 PCERT_CREATE_CONTEXT_PARA, PCERT_CREATE_CONTEXT_PARA, 传址, , $(删除)
+    .成员 PCERT_ENHKEY_USAGE, PCERT_ENHKEY_USAGE, 传址, , $(删除)
+    .成员 PCERT_EXTENSIONS, PCERT_EXTENSIONS, 传址, , $(删除)
+    .成员 PCERT_INFO, PCERT_INFO, 传址, , $(删除)
+    .成员 PCERT_NAME_BLOB, PCERT_NAME_BLOB, 传址, , $(删除)
+    .成员 PCERT_NAME_INFO, PCERT_NAME_INFO, 传址, , $(删除)
+    .成员 PCERT_PHYSICAL_STORE_INFO, PCERT_PHYSICAL_STORE_INFO, 传址, , $(删除)
+    .成员 PCERT_PUBLIC_KEY_INFO, PCERT_PUBLIC_KEY_INFO, 传址, , $(删除)
+    .成员 PCERT_RDN, PCERT_RDN, 传址, , $(删除)
+    .成员 PCERT_RDN_VALUE_BLOB, PCERT_RDN_VALUE_BLOB, 传址, , $(删除)
+    .成员 PCERT_REVOCATION_PARA, PCERT_REVOCATION_PARA, 传址, , $(删除)
+    .成员 PCERT_REVOCATION_STATUS, PCERT_REVOCATION_STATUS, 传址, , $(删除)
+    .成员 PCERT_SYSTEM_STORE_INFO, PCERT_SYSTEM_STORE_INFO, 传址, , $(删除)
+    .成员 PCLUS_RESOURCE_CLASS_INFO, PCLUS_RESOURCE_CLASS_INFO, 传址, , $(删除)
+    .成员 PCLUS_WORKER, PCLUS_WORKER, 传址, , $(删除)
+    .成员 PCMSG_SIGNED_ENCODE_INFO, PCMSG_SIGNED_ENCODE_INFO, 传址, , $(删除)
+    .成员 PCMSG_SIGNER_ENCODE_INFO, PCMSG_SIGNER_ENCODE_INFO, 传址, , $(删除)
+    .成员 PCMSG_STREAM_INFO, PCMSG_STREAM_INFO, 传址, , $(删除)
+    .成员 PCOLOR, PCOLOR, 传址, , $(删除)
+    .成员 PCOLOR_NAME, PCOLOR_NAME, 传址, , $(删除)
+    .成员 PCOLORMATCHSETUPA, PCOLORMATCHSETUPA, 传址, , $(删除)
+    .成员 PCOMBOBOXINFO, PCOMBOBOXINFO, 传址, , $(删除)
+    .成员 PCOMPVARS, PCOMPVARS, 传址, , $(删除)
+    .成员 PCredHandle, PCredHandle, 传址, , $(删除)
+    .成员 PCRL_ENTRY, PCRL_ENTRY, 传址, , $(删除)
+    .成员 PCRL_INFO, PCRL_INFO, 传址, , $(删除)
+    .成员 PCRYPT_ALGORITHM_IDENTIFIER, PCRYPT_ALGORITHM_IDENTIFIER, 传址, , $(删除)
+    .成员 PCRYPT_CREDENTIALS, PCRYPT_CREDENTIALS, 传址, , $(删除)
+    .成员 PCRYPT_DATA_BLOB, PCRYPT_DATA_BLOB, 传址, , $(删除)
+    .成员 PCRYPT_DECODE_PARA, PCRYPT_DECODE_PARA, 传址, , $(删除)
+    .成员 PCRYPT_DER_BLOB, PCRYPT_DER_BLOB, 传址, , $(删除)
+    .成员 PCRYPT_ENCRYPT_MESSAGE_PARA, PCRYPT_ENCRYPT_MESSAGE_PARA, 传址, , $(删除)
+    .成员 PCRYPT_HASH_MESSAGE_PARA, PCRYPT_HASH_MESSAGE_PARA, 传址, , $(删除)
+    .成员 PCRYPT_INTEGER_BLOB, PCRYPT_INTEGER_BLOB, 传址, , $(删除)
+    .成员 PCRYPT_KEY_PROV_INFO, PCRYPT_KEY_PROV_INFO, 传址, , $(删除)
+    .成员 PCRYPT_KEY_SIGN_MESSAGE_PARA, PCRYPT_KEY_SIGN_MESSAGE_PARA, 传址, , $(删除)
+    .成员 PCRYPT_KEY_VERIFY_MESSAGE_PARA, PCRYPT_KEY_VERIFY_MESSAGE_PARA, 传址, , $(删除)
+    .成员 PCRYPT_SIGN_MESSAGE_PARA, PCRYPT_SIGN_MESSAGE_PARA, 传址, , $(删除)
+    .成员 PCRYPT_URL_ARRAY, PCRYPT_URL_ARRAY, 传址, , $(删除)
+    .成员 PCRYPT_URL_INFO, PCRYPT_URL_INFO, 传址, , $(删除)
+    .成员 PCRYPT_VERIFY_MESSAGE_PARA, PCRYPT_VERIFY_MESSAGE_PARA, 传址, , $(删除)
+    .成员 PCTL_INFO, PCTL_INFO, 传址, , $(删除)
+    .成员 PCTL_USAGE, PCTL_USAGE, 传址, , $(删除)
+    .成员 PCTL_VERIFY_USAGE_PARA, PCTL_VERIFY_USAGE_PARA, 传址, , $(删除)
+    .成员 PCTL_VERIFY_USAGE_STATUS, PCTL_VERIFY_USAGE_STATUS, 传址, , $(删除)
+    .成员 PCURSORINFO, PCURSORINFO, 传址, , $(删除)
+    .成员 PDBPROCESS, PDBPROCESS, 传址, , $(删除)
+    .成员 PDH_COUNTER_PATH_ELEMENTS_A, PDH_COUNTER_PATH_ELEMENTS_A, 传址, , $(删除)
+    .成员 PDISPLAY_DEVICEA, PDISPLAY_DEVICEA, 传址, , $(删除)
+    .成员 PDOMAIN_CONTROLLER_INFO, PDOMAIN_CONTROLLER_INFO, 传址, , $(删除)
+    .成员 PDS_NAME_RESULTA, PDS_NAME_RESULTA, 传址, , $(删除)
+    .成员 PDS_REPSYNCALL_ERRINFOA, PDS_REPSYNCALL_ERRINFOA, 传址, , $(删除)
+    .成员 PDS_SCHEMA_GUID_MAPA, PDS_SCHEMA_GUID_MAPA, 传址, , $(删除)
+    .成员 PDWORD, PDWORD, 传址, , $(删除)
+    .成员 PENCRYPTION_CERTIFICATE, PENCRYPTION_CERTIFICATE, 传址, , $(删除)
+    .成员 PENCRYPTION_CERTIFICATE_HASH_LIST, PENCRYPTION_CERTIFICATE_HASH_LIST, 传址, , $(删除)
+    .成员 PENCRYPTION_CERTIFICATE_LIST, PENCRYPTION_CERTIFICATE_LIST, 传址, , $(删除)
+    .成员 pEntry, pEntry, 传址, , $(删除)
+    .成员 PENUMERATION_BUFFER, PENUMERATION_BUFFER, 传址, , $(删除)
+    .成员 PENUMLOADED_MODULES_CALLBACK, PENUMLOADED_MODULES_CALLBACK, 传址, , $(删除)
+    .成员 PENUMTYPEA, PENUMTYPEA, 传址, , $(删除)
+    .成员 perf, perf, 传址, , $(删除)
+    .成员 PEXPLICIT_ACCESS_A, PEXPLICIT_ACCESS_A, 传址, , $(删除)
+    .成员 PFAX_CONFIGURATIONA, PFAX_CONFIGURATIONA, 传址, , $(删除)
+    .成员 PFAX_CONTEXT_INFOA, PFAX_CONTEXT_INFOA, 传址, , $(删除)
+    .成员 PFAX_DEVICE_STATUSA, PFAX_DEVICE_STATUSA, 传址, , $(删除)
+    .成员 PFAX_GLOBAL_ROUTING_INFOA, PFAX_GLOBAL_ROUTING_INFOA, 传址, , $(删除)
+    .成员 PFAX_JOB_ENTRYA, PFAX_JOB_ENTRYA, 传址, , $(删除)
+    .成员 PFAX_JOB_PARAMA, PFAX_JOB_PARAMA, 传址, , $(删除)
+    .成员 PFAX_LOG_CATEGORYA, PFAX_LOG_CATEGORYA, 传址, , $(删除)
+    .成员 PFAX_PORT_INFOA, PFAX_PORT_INFOA, 传址, , $(删除)
+    .成员 PFAX_RECIPIENT_CALLBACKA, PFAX_RECIPIENT_CALLBACKA, 传址, , $(删除)
+    .成员 PFAX_ROUTING_METHODA, PFAX_ROUTING_METHODA, 传址, , $(删除)
+    .成员 PFDICABINETINFO, PFDICABINETINFO, 传址, , $(删除)
+    .成员 PFE_EXPORT_FUNC, PFE_EXPORT_FUNC, 传址, , $(删除)
+    .成员 PFE_IMPORT_FUNC, PFE_IMPORT_FUNC, 传址, , $(删除)
+    .成员 PFIND_DEBUG_FILE_CALLBACK, PFIND_DEBUG_FILE_CALLBACK, 传址, , $(删除)
+    .成员 PFIND_EXE_FILE_CALLBACK, PFIND_EXE_FILE_CALLBACK, 传址, , $(删除)
+    .成员 PFIXED_INFO, PFIXED_INFO, 传址, , $(删除)
+    .成员 PFLASHWINFO, PFLASHWINFO, 传址, , $(删除)
+    .成员 PFN_AUTHZ_ACCESS_CHECK, PFN_AUTHZ_ACCESS_CHECK, 传址, , $(删除)
+    .成员 PFN_AUTHZ_COMPUTE_DYNAMIC_GROUPS, PFN_AUTHZ_COMPUTE_DYNAMIC_GROUPS, 传址, , $(删除)
+    .成员 PFN_AUTHZ_FREE_DYNAMIC_GROUPS, PFN_AUTHZ_FREE_DYNAMIC_GROUPS, 传址, , $(删除)
+    .成员 PFN_CERT_ENUM_PHYSICAL_STORE, PFN_CERT_ENUM_PHYSICAL_STORE, 传址, , $(删除)
+    .成员 PFN_CERT_ENUM_SYSTEM_STORE, PFN_CERT_ENUM_SYSTEM_STORE, 传址, , $(删除)
+    .成员 PFN_CERT_ENUM_SYSTEM_STORE_LOCATION, PFN_CERT_ENUM_SYSTEM_STORE_LOCATION, 传址, , $(删除)
+    .成员 PFN_CRYPT_ASYNC_PARAM_FREE_FUNC, PFN_CRYPT_ASYNC_PARAM_FREE_FUNC, 传址, , $(删除)
+    .成员 PFN_CRYPT_CANCEL_RETRIEVAL, PFN_CRYPT_CANCEL_RETRIEVAL, 传址, , $(删除)
+    .成员 PFN_CRYPT_ENUM_KEYID_PROP, PFN_CRYPT_ENUM_KEYID_PROP, 传址, , $(删除)
+    .成员 PFN_CRYPT_ENUM_OID_INFO, PFN_CRYPT_ENUM_OID_INFO, 传址, , $(删除)
+    .成员 PFN_OBJECT_MGR_FUNCTS, PFN_OBJECT_MGR_FUNCTS, 传址, , $(删除)
+    .成员 pfnalloc, pfnalloc, 传址, , $(删除)
+    .成员 pfnclose, pfnclose, 传址, , $(删除)
+    .成员 PFNFCIALLOC, PFNFCIALLOC, 传址, , $(删除)
+    .成员 PFNFCICLOSE, PFNFCICLOSE, 传址, , $(删除)
+    .成员 PFNFCIDELETE, PFNFCIDELETE, 传址, , $(删除)
+    .成员 PFNFCIFILEPLACED, PFNFCIFILEPLACED, 传址, , $(删除)
+    .成员 PFNFCIFREE, PFNFCIFREE, 传址, , $(删除)
+    .成员 PFNFCIGETNEXTCABINET, PFNFCIGETNEXTCABINET, 传址, , $(删除)
+    .成员 PFNFCIGETOPENINFO, PFNFCIGETOPENINFO, 传址, , $(删除)
+    .成员 PFNFCIGETTEMPFILE, PFNFCIGETTEMPFILE, 传址, , $(删除)
+    .成员 PFNFCIOPEN, PFNFCIOPEN, 传址, , $(删除)
+    .成员 PFNFCIREAD, PFNFCIREAD, 传址, , $(删除)
+    .成员 PFNFCISEEK, PFNFCISEEK, 传址, , $(删除)
+    .成员 PFNFCISTATUS, PFNFCISTATUS, 传址, , $(删除)
+    .成员 PFNFCIWRITE, PFNFCIWRITE, 传址, , $(删除)
+    .成员 PFNFDIDECRYPT, PFNFDIDECRYPT, 传址, , $(删除)
+    .成员 PFNFDINOTIFY, PFNFDINOTIFY, 传址, , $(删除)
+    .成员 pfnfree, pfnfree, 传址, , $(删除)
+    .成员 pfnopen, pfnopen, 传址, , $(删除)
+    .成员 pfnread, pfnread, 传址, , $(删除)
+    .成员 pfnseek, pfnseek, 传址, , $(删除)
+    .成员 pfnwrite, pfnwrite, 传址, , $(删除)
+    .成员 PFUNCTION_TABLE_ACCESS_ROUTINE, PFUNCTION_TABLE_ACCESS_ROUTINE, 传址, , $(删除)
+    .成员 PGET_MODULE_BASE_ROUTINE, PGET_MODULE_BASE_ROUTINE, 传址, , $(删除)
+    .成员 PGROUP_POLICY_OBJECTA, PGROUP_POLICY_OBJECTA, 传址, , $(删除)
+    .成员 PGUITHREADINFO, PGUITHREADINFO, 传址, , $(删除)
+    .成员 PHCRYPTASYNC, PHCRYPTASYNC, 传址, , $(删除)
+    .成员 PHONEBUTTONINFO, PHONEBUTTONINFO, 传址, , $(删除)
+    .成员 PHONECAPS, PHONECAPS, 传址, , $(删除)
+    .成员 PHONEEXTENSIONID, PHONEEXTENSIONID, 传址, , $(删除)
+    .成员 PHONEINITIALIZEEXPARAMS, PHONEINITIALIZEEXPARAMS, 传址, , $(删除)
+    .成员 PHONEMESSAGE, PHONEMESSAGE, 传址, , $(删除)
+    .成员 PHONESTATUS, PHONESTATUS, 传址, , $(删除)
+    .成员 PHPROFILE, PHPROFILE, 传址, , $(删除)
+    .成员 PHUSKEY, PHUSKEY, 传址, , $(删除)
+    .成员 PICTDESC, PICTDESC, 传址, , $(删除)
+    .成员 PIMAGE_DEBUG_INFORMATION, PIMAGE_DEBUG_INFORMATION, 传址, , $(删除)
+    .成员 PIMAGE_LOAD_CONFIG_DIRECTORY, PIMAGE_LOAD_CONFIG_DIRECTORY, 传址, , $(删除)
+    .成员 PIMAGE_NT_HEADERS, PIMAGE_NT_HEADERS, 传址, , $(删除)
+    .成员 PIMAGE_SECTION_HEADER, PIMAGE_SECTION_HEADER, 传址, , $(删除)
+    .成员 PIMAGEHLP_CONTEXT, PIMAGEHLP_CONTEXT, 传址, , $(删除)
+    .成员 PIMAGEHLP_LINE, PIMAGEHLP_LINE, 传址, , $(删除)
+    .成员 PIMAGEHLP_MODULE, PIMAGEHLP_MODULE, 传址, , $(删除)
+    .成员 PIMAGEHLP_MODULEW, PIMAGEHLP_MODULEW, 传址, , $(删除)
+    .成员 PIMAGEHLP_STACK_FRAME, PIMAGEHLP_STACK_FRAME, 传址, , $(删除)
+    .成员 PIMAGEHLP_STATUS_ROUTINE, PIMAGEHLP_STATUS_ROUTINE, 传址, , $(删除)
+    .成员 PIMAGEHLP_SYMBOL, PIMAGEHLP_SYMBOL, 传址, , $(删除)
+    .成员 PINFCONTEXT, PINFCONTEXT, 传址, , $(删除)
+    .成员 PINFCONTEXTfContext, PINFCONTEXTfContext, 传址, , $(删除)
+    .成员 PINHERITED_FROMA, PINHERITED_FROMA, 传址, , $(删除)
+    .成员 PINHERITED_FROMW, PINHERITED_FROMW, 传址, , $(删除)
+    .成员 PIO_COUNTERS, PIO_COUNTERS, 传址, , $(删除)
+    .成员 PIP_ADAPTER_INDEX_MAP, PIP_ADAPTER_INDEX_MAP, 传址, , $(删除)
+    .成员 PIP_ADAPTER_INFO, PIP_ADAPTER_INFO, 传址, , $(删除)
+    .成员 PIP_INTERFACE_INFO, PIP_INTERFACE_INFO, 传址, , $(删除)
+    .成员 PIP_OPTION_INFORMATION, PIP_OPTION_INFORMATION, 传址, , $(删除)
+    .成员 PIP_PER_ADAPTER_INFO, PIP_PER_ADAPTER_INFO, 传址, , $(删除)
+    .成员 PIP_UNIDIRECTIONAL_ADAPTER_ADDRESS, PIP_UNIDIRECTIONAL_ADAPTER_ADDRESS, 传址, , $(删除)
+    .成员 PIXELFORMATDESCRIPTOR, PIXELFORMATDESCRIPTOR, 传址, , $(删除)
+    .成员 PKSALLOCATOR_FRAMING, PKSALLOCATOR_FRAMING, 传址, , $(删除)
+    .成员 PKSCLOCK_CREATE, PKSCLOCK_CREATE, 传址, , $(删除)
+    .成员 PKSNODE_CREATE, PKSNODE_CREATE, 传址, , $(删除)
+    .成员 PKSPIN_CONNECT, PKSPIN_CONNECT, 传址, , $(删除)
+    .成员 PLASTINPUTINFO, PLASTINPUTINFO, 传址, , $(删除)
+    .成员 PLDAP, PLDAP, 传址, , $(删除)
+    .成员 PLDAP_VERSION_INFO, PLDAP_VERSION_INFO, 传址, , $(删除)
+    .成员 PLDAPControlA, PLDAPControlA, 传址, , $(删除)
+    .成员 PLDAPMessage, PLDAPMessage, 传址, , $(删除)
+    .成员 PLDAPSearch, PLDAPSearch, 传址, , $(删除)
+    .成员 PLDAPSortKeyA, PLDAPSortKeyA, 传址, , $(删除)
+    .成员 PLOADED_IMAGE, PLOADED_IMAGE, 传址, , $(删除)
+    .成员 PLOG_EVENT_ROUTINE, PLOG_EVENT_ROUTINE, 传址, , $(删除)
+    .成员 PLSA_HANDLE, PLSA_HANDLE, 传址, , $(删除)
+    .成员 PLSA_OBJECT_ATTRIBUTES, PLSA_OBJECT_ATTRIBUTES, 传址, , $(删除)
+    .成员 PLSA_OPERATIONAL_MODE, PLSA_OPERATIONAL_MODE, 传址, , $(删除)
+    .成员 PLSA_REFERENCED_DOMAIN_LIST, PLSA_REFERENCED_DOMAIN_LIST, 传址, , $(删除)
+    .成员 PLSA_STRING, PLSA_STRING, 传址, , $(删除)
+    .成员 PLSA_TRANSLATED_NAME, PLSA_TRANSLATED_NAME, 传址, , $(删除)
+    .成员 PLSA_TRANSLATED_SID, PLSA_TRANSLATED_SID, 传址, , $(删除)
+    .成员 PLSA_UNICODE_STRING, PLSA_UNICODE_STRING, 传址, , $(删除)
+    .成员 PMCAST_LEASE_REQUEST, PMCAST_LEASE_REQUEST, 传址, , $(删除)
+    .成员 PMCAST_SCOPE_CTX, PMCAST_SCOPE_CTX, 传址, , $(删除)
+    .成员 PMENUBARINFO, PMENUBARINFO, 传址, , $(删除)
+    .成员 PMIB_ICMP, PMIB_ICMP, 传址, , $(删除)
+    .成员 PMIB_IFROW, PMIB_IFROW, 传址, , $(删除)
+    .成员 PMIB_IFTABLE, PMIB_IFTABLE, 传址, , $(删除)
+    .成员 PMIB_IPADDRTABLE, PMIB_IPADDRTABLE, 传址, , $(删除)
+    .成员 PMIB_IPFORWARDROW, PMIB_IPFORWARDROW, 传址, , $(删除)
+    .成员 PMIB_IPFORWARDTABLE, PMIB_IPFORWARDTABLE, 传址, , $(删除)
+    .成员 PMIB_IPMCAST_MFE, PMIB_IPMCAST_MFE, 传址, , $(删除)
+    .成员 PMIB_IPNETROW, PMIB_IPNETROW, 传址, , $(删除)
+    .成员 PMIB_IPNETTABLE, PMIB_IPNETTABLE, 传址, , $(删除)
+    .成员 PMIB_IPSTATS, PMIB_IPSTATS, 传址, , $(删除)
+    .成员 PMIB_TCPROW, PMIB_TCPROW, 传址, , $(删除)
+    .成员 PMIB_TCPSTATS, PMIB_TCPSTATS, 传址, , $(删除)
+    .成员 PMIB_TCPTABLE, PMIB_TCPTABLE, 传址, , $(删除)
+    .成员 PMIB_UDPSTATS, PMIB_UDPSTATS, 传址, , $(删除)
+    .成员 PMIB_UDPTABLE, PMIB_UDPTABLE, 传址, , $(删除)
+    .成员 PMIDL_TYPE_PICKLING_INFO, PMIDL_TYPE_PICKLING_INFO, 传址, , $(删除)
+    .成员 PMPR_IPINIP_INTERFACE_, PMPR_IPINIP_INTERFACE_, 传址, , $(删除)
+    .成员 PMQRECEIVECALLBACK, PMQRECEIVECALLBACK, 传址, , $(删除)
+    .成员 PMSV, PMSV, 传址, , $(删除)
+    .成员 PNAMED_PROFILE_INFO, PNAMED_PROFILE_INFO, 传址, , $(删除)
+    .成员 PNDR_PIPE_DESC, PNDR_PIPE_DESC, 传址, , $(删除)
+    .成员 PNDR_PIPE_MESSAGE, PNDR_PIPE_MESSAGE, 传址, , $(删除)
+    .成员 PNTSTATUS, PNTSTATUS, 传址, , $(删除)
+    .成员 POBJECT_TYPE_LIST, POBJECT_TYPE_LIST, 传址, , $(删除)
+    .成员 POBJECTS_AND_NAME_A, POBJECTS_AND_NAME_A, 传址, , $(删除)
+    .成员 POBJECTS_AND_SID, POBJECTS_AND_SID, 传址, , $(删除)
+    .成员 PODBC_VS_ARGS, PODBC_VS_ARGS, 传址, , $(删除)
+    .成员 POINT, POINT, 传址, , $(删除)
+    .成员 POINTAPI, POINTAPI, 传址, , $(删除)
+    .成员 POINTFX, POINTFX, 传址, , $(删除)
+    .成员 POINTL, POINTL, 传址, , $(删除)
+    .成员 POINTS, POINTS, 传址, , $(删除)
+    .成员 POLYTEXT, POLYTEXT, 传址, , $(删除)
+    .成员 PPATCH_IGNORE_RANGE, PPATCH_IGNORE_RANGE, 传址, , $(删除)
+    .成员 PPATCH_PROGRESS_CALLBACK, PPATCH_PROGRESS_CALLBACK, 传址, , $(删除)
+    .成员 PPATCH_RETAIN_RANGE, PPATCH_RETAIN_RANGE, 传址, , $(删除)
+    .成员 PPDH_BROWSE_DLG_CONFIG_A, PPDH_BROWSE_DLG_CONFIG_A, 传址, , $(删除)
+    .成员 PPDH_COUNTER_INFO_A, PPDH_COUNTER_INFO_A, 传址, , $(删除)
+    .成员 PPDH_FMT_COUNTERVALUE, PPDH_FMT_COUNTERVALUE, 传址, , $(删除)
+    .成员 PPDH_FMT_COUNTERVALUE_ITEM_A, PPDH_FMT_COUNTERVALUE_ITEM_A, 传址, , $(删除)
+    .成员 PPDH_LOG_SERVICE_QUERY_INFO_A, PPDH_LOG_SERVICE_QUERY_INFO_A, 传址, , $(删除)
+    .成员 PPDH_RAW_COUNTER, PPDH_RAW_COUNTER, 传址, , $(删除)
+    .成员 PPDH_RAW_COUNTER_ITEM_A, PPDH_RAW_COUNTER_ITEM_A, 传址, , $(删除)
+    .成员 PPDH_RAW_LOG_RECORD, PPDH_RAW_LOG_RECORD, 传址, , $(删除)
+    .成员 PPDH_STATISTICS, PPDH_STATISTICS, 传址, , $(删除)
+    .成员 PPDH_TIME_INFO, PPDH_TIME_INFO, 传址, , $(删除)
+    .成员 PPERUSERSECTION, PPERUSERSECTION, 传址, , $(删除)
+    .成员 PPP_EAP_INFO, PPP_EAP_INFO, 传址, , $(删除)
+    .成员 PPROCESS_MEMORY_COUNTERS, PPROCESS_MEMORY_COUNTERS, 传址, , $(删除)
+    .成员 PPROFILE, PPROFILE, 传址, , $(删除)
+    .成员 PPROFILEHEADER, PPROFILEHEADER, 传址, , $(删除)
+    .成员 PPROTECTED_FILE_DATA, PPROTECTED_FILE_DATA, 传址, , $(删除)
+    .成员 PPSAPI_WS_WATCH_INFORMATION, PPSAPI_WS_WATCH_INFORMATION, 传址, , $(删除)
+    .成员 PQUOTA_LIMITS, PQUOTA_LIMITS, 传址, , $(删除)
+    .成员 PRAS_PORT_, PRAS_PORT_, 传址, , $(删除)
+    .成员 PRAS_SERVER_, PRAS_SERVER_, 传址, , $(删除)
+    .成员 PRAS_USER_, PRAS_USER_, 传址, , $(删除)
+    .成员 PREAD_PROCESS_MEMORY_ROUTINE, PREAD_PROCESS_MEMORY_ROUTINE, 传址, , $(删除)
+    .成员 PRINTDLG, PRINTDLG, 传址, , $(删除)
+    .成员 PRINTDLGEXA, PRINTDLGEXA, 传址, , $(删除)
+    .成员 PRINTER_DEFAULTS, PRINTER_DEFAULTS, 传址, , $(删除)
+    .成员 PRIVILEGE_SET, PRIVILEGE_SET, 传址, , $(删除)
+    .成员 PROCESS_HEAP_ENTRY, PROCESS_HEAP_ENTRY, 传址, , $(删除)
+    .成员 PROCESS_INFORMATION, PROCESS_INFORMATION, 传址, , $(删除)
+    .成员 PROG_INVOKE_SETTING, PROG_INVOKE_SETTING, 传址, , $(删除)
+    .成员 PROGRESS_ROUTINE, PROGRESS_ROUTINE, 传址, , $(删除)
+    .成员 PROPSHEETHEADER, PROPSHEETHEADER, 传址, , $(删除)
+    .成员 PROPVARIANT, PROPVARIANT, 传址, , $(删除)
+    .成员 PROUTING_PROTOCOL_CONFIG, PROUTING_PROTOCOL_CONFIG, 传址, , $(删除)
+    .成员 ProxyFileInfo, ProxyFileInfo, 传址, , $(删除)
+    .成员 PRPC_ASYNC_STATE, PRPC_ASYNC_STATE, 传址, , $(删除)
+    .成员 PRPC_POLICY, PRPC_POLICY, 传址, , $(删除)
+    .成员 PRTM_DEST_HANDLE, PRTM_DEST_HANDLE, 传址, , $(删除)
+    .成员 PRTM_DEST_INFO, PRTM_DEST_INFO, 传址, , $(删除)
+    .成员 PRTM_ENTITY_EXPORT_METHOD, PRTM_ENTITY_EXPORT_METHOD, 传址, , $(删除)
+    .成员 PRTM_ENTITY_EXPORT_METHODS, PRTM_ENTITY_EXPORT_METHODS, 传址, , $(删除)
+    .成员 PRTM_ENTITY_HANDLE, PRTM_ENTITY_HANDLE, 传址, , $(删除)
+    .成员 PRTM_ENTITY_INFO, PRTM_ENTITY_INFO, 传址, , $(删除)
+    .成员 PRTM_ENTITY_METHOD_INPUT, PRTM_ENTITY_METHOD_INPUT, 传址, , $(删除)
+    .成员 PRTM_ENTITY_METHOD_OUTPUT, PRTM_ENTITY_METHOD_OUTPUT, 传址, , $(删除)
+    .成员 PRTM_ENUM_HANDLE, PRTM_ENUM_HANDLE, 传址, , $(删除)
+    .成员 PRTM_NET_ADDRESS, PRTM_NET_ADDRESS, 传址, , $(删除)
+    .成员 PRTM_NEXTHOP_CHANGE_FLAGS, PRTM_NEXTHOP_CHANGE_FLAGS, 传址, , $(删除)
+    .成员 PRTM_NEXTHOP_HANDLE, PRTM_NEXTHOP_HANDLE, 传址, , $(删除)
+    .成员 PRTM_NEXTHOP_INFO, PRTM_NEXTHOP_INFO, 传址, , $(删除)
+    .成员 PRTM_NOTIFY_HANDLE, PRTM_NOTIFY_HANDLE, 传址, , $(删除)
+    .成员 PRTM_REGN_PROFILE, PRTM_REGN_PROFILE, 传址, , $(删除)
+    .成员 PRTM_ROUTE_CHANGE_FLAGS, PRTM_ROUTE_CHANGE_FLAGS, 传址, , $(删除)
+    .成员 PRTM_ROUTE_HANDLE, PRTM_ROUTE_HANDLE, 传址, , $(删除)
+    .成员 PRTM_ROUTE_INFO, PRTM_ROUTE_INFO, 传址, , $(删除)
+    .成员 PRTM_ROUTE_LIST_HANDLE, PRTM_ROUTE_LIST_HANDLE, 传址, , $(删除)
+    .成员 PRTM_VIEW_SET, PRTM_VIEW_SET, 传址, , $(删除)
+    .成员 PSCROLLBARINFO, PSCROLLBARINFO, 传址, , $(删除)
+    .成员 PSecBuffer, PSecBuffer, 传址, , $(删除)
+    .成员 PSecBufferDesc, PSecBufferDesc, 传址, , $(删除)
+    .成员 PSecPkgInfoA, PSecPkgInfoA, 传址, , $(删除)
+    .成员 PSP_ALTPLATFORM_INFO, PSP_ALTPLATFORM_INFO, 传址, , $(删除)
+    .成员 PSP_BACKUP_QUEUE_PARAMS_A, PSP_BACKUP_QUEUE_PARAMS_A, 传址, , $(删除)
+    .成员 PSP_CLASSIMAGELIST_DATA, PSP_CLASSIMAGELIST_DATA, 传址, , $(删除)
+    .成员 PSP_CLASSINSTALL_HEADER, PSP_CLASSINSTALL_HEADER, 传址, , $(删除)
+    .成员 PSP_DETSIG_CMPPROC, PSP_DETSIG_CMPPROC, 传址, , $(删除)
+    .成员 PSP_DEVICE_INTERFACE_DATA, PSP_DEVICE_INTERFACE_DATA, 传址, , $(删除)
+    .成员 PSP_DEVICE_INTERFACE_DETAIL_DATA_A, PSP_DEVICE_INTERFACE_DETAIL_DATA_A, 传址, , $(删除)
+    .成员 PSP_DEVINFO_DATA, PSP_DEVINFO_DATA, 传址, , $(删除)
+    .成员 PSP_DEVINFO_LIST_DETAIL_DATA_A, PSP_DEVINFO_LIST_DETAIL_DATA_A, 传址, , $(删除)
+    .成员 PSP_DEVINSTALL_PARAMS_A, PSP_DEVINSTALL_PARAMS_A, 传址, , $(删除)
+    .成员 PSP_DRVINFO_DATA_A, PSP_DRVINFO_DATA_A, 传址, , $(删除)
+    .成员 PSP_DRVINFO_DETAIL_DATA_A, PSP_DRVINFO_DETAIL_DATA_A, 传址, , $(删除)
+    .成员 PSP_DRVINSTALL_PARAMS, PSP_DRVINSTALL_PARAMS, 传址, , $(删除)
+    .成员 PSP_FILE_CALLBACK_A, PSP_FILE_CALLBACK_A, 传址, , $(删除)
+    .成员 PSP_FILE_COPY_PARAMS_A, PSP_FILE_COPY_PARAMS_A, 传址, , $(删除)
+    .成员 PSP_INF_INFORMATION, PSP_INF_INFORMATION, 传址, , $(删除)
+    .成员 PSP_INF_INFORMATIONfInformation, PSP_INF_INFORMATIONfInformation, 传址, , $(删除)
+    .成员 PSP_INSTALLWIZARD_DATAstallWizardData, PSP_INSTALLWIZARD_DATAstallWizardData, 传址, , $(删除)
+    .成员 PSP_ORIGINAL_FILE_INFO_A, PSP_ORIGINAL_FILE_INFO_A, 传址, , $(删除)
+    .成员 psuAction, psuAction, 传址, , $(删除)
+    .成员 PSYM_ENUMERATESYMBOLS_CALLBACK, PSYM_ENUMERATESYMBOLS_CALLBACK, 传址, , $(删除)
+    .成员 PSYM_ENUMMODULES_CALLBACK, PSYM_ENUMMODULES_CALLBACK, 传址, , $(删除)
+    .成员 PSYM_ENUMSYMBOLS_CALLBACK, PSYM_ENUMSYMBOLS_CALLBACK, 传址, , $(删除)
+    .成员 PSYMBOL_FUNCENTRY_CALLBACK, PSYMBOL_FUNCENTRY_CALLBACK, 传址, , $(删除)
+    .成员 PSYMBOL_INFO, PSYMBOL_INFO, 传址, , $(删除)
+    .成员 PSYMBOL_REGISTERED_CALLBACK, PSYMBOL_REGISTERED_CALLBACK, 传址, , $(删除)
+    .成员 PTAGTYPE, PTAGTYPE, 传址, , $(删除)
+    .成员 PTC_GEN_FILTER, PTC_GEN_FILTER, 传址, , $(删除)
+    .成员 PTC_GEN_FLOW, PTC_GEN_FLOW, 传址, , $(删除)
+    .成员 PTC_IFC_DESCRIPTOR, PTC_IFC_DESCRIPTOR, 传址, , $(删除)
+    .成员 PTCI_CLIENT_FUNC_LIST, PTCI_CLIENT_FUNC_LIST, 传址, , $(删除)
+    .成员 PTIMERAPCROUTINE, PTIMERAPCROUTINE, 传址, , $(删除)
+    .成员 PTimeStamp, PTimeStamp, 传址, , $(删除)
+    .成员 PTITLEBARINFO, PTITLEBARINFO, 传址, , $(删除)
+    .成员 PTRANSLATE_ADDRESS_ROUTINE, PTRANSLATE_ADDRESS_ROUTINE, 传址, , $(删除)
+    .成员 PTRIVERTEX, PTRIVERTEX, 传址, , $(删除)
+    .成员 PTRUSTED_DOMAIN_AUTH_INFORMATION, PTRUSTED_DOMAIN_AUTH_INFORMATION, 传址, , $(删除)
+    .成员 PTRUSTED_DOMAIN_INFORMATION_EX, PTRUSTED_DOMAIN_INFORMATION_EX, 传址, , $(删除)
+    .成员 PTRUSTEE_A, PTRUSTEE_A, 传址, , $(删除)
+    .成员 PUBLICKEYSTRUC, PUBLICKEYSTRUC, 传址, , $(删除)
+    .成员 PULONG_PTR, PULONG_PTR, 传址, , $(删除)
+    .成员 PUSER_ALL_INFORMATION, PUSER_ALL_INFORMATION, 传址, , $(删除)
+    .成员 PUT_RECORD, PUT_RECORD, 传址, , $(删除)
+    .成员 PWINDOWINFO, PWINDOWINFO, 传址, , $(删除)
+    .成员 PWLX_MPR_NOTIFY_INFO, PWLX_MPR_NOTIFY_INFO, 传址, , $(删除)
+    .成员 PWORKER_START_ROUTINE, PWORKER_START_ROUTINE, 传址, , $(删除)
+    .成员 PWT_EVENT_BINDING, PWT_EVENT_BINDING, 传址, , $(删除)
+    .成员 PWT_EVENT_ENTRY, PWT_EVENT_ENTRY, 传址, , $(删除)
+    .成员 PWT_TIMER_ENTRY, PWT_TIMER_ENTRY, 传址, , $(删除)
+    .成员 PWTS_PROCESS_INFOA, PWTS_PROCESS_INFOA, 传址, , $(删除)
+    .成员 PWTS_SERVER_INFOA, PWTS_SERVER_INFOA, 传址, , $(删除)
+    .成员 PWTS_SESSION_INFOA, PWTS_SESSION_INFOA, 传址, , $(删除)
+    .成员 QOS, QOS, 传址, , $(删除)
+    .成员 QUERY_SERVICE_CONFIG, QUERY_SERVICE_CONFIG, 传址, , $(删除)
+    .成员 QUERY_SERVICE_LOCK_STATUS, QUERY_SERVICE_LOCK_STATUS, 传址, , $(删除)
+    .成员 QUERYCONTEXT, QUERYCONTEXT, 传址, , $(删除)
+    .成员 QUERYOPTION, QUERYOPTION, 传址, , $(删除)
+    .成员 QUEUEHANDLE, QUEUEHANDLE, 传址, , $(删除)
+    .成员 RAS_PARAMETERS, RAS_PARAMETERS, 传址, , $(删除)
+    .成员 RAS_PORT_, RAS_PORT_, 传址, , $(删除)
+    .成员 RAS_PORT_STATISTICS, RAS_PORT_STATISTICS, 传址, , $(删除)
+    .成员 RAS_SECURITY_INFO, RAS_SECURITY_INFO, 传址, , $(删除)
+    .成员 RAS_SERVER_HANDLE, RAS_SERVER_HANDLE, 传址, , $(删除)
+    .成员 RAS_STATS, RAS_STATS, 传址, , $(删除)
+    .成员 RASAUTODIALENTRYA, RASAUTODIALENTRYA, 传址, , $(删除)
+    .成员 RASCONN, RASCONN, 传址, , $(删除)
+    .成员 RASCONNSTATUS, RASCONNSTATUS, 传址, , $(删除)
+    .成员 RASCREDENTIALSA, RASCREDENTIALSA, 传址, , $(删除)
+    .成员 RASCTRYINFOA, RASCTRYINFOA, 传址, , $(删除)
+    .成员 RASDEVINFOA, RASDEVINFOA, 传址, , $(删除)
+    .成员 RASDIALEXTENSIONS, RASDIALEXTENSIONS, 传址, , $(删除)
+    .成员 RASDIALPARAMS, RASDIALPARAMS, 传址, , $(删除)
+    .成员 RASEAPUSERIDENTITYA, RASEAPUSERIDENTITYA, 传址, , $(删除)
+    .成员 RASENTRYA, RASENTRYA, 传址, , $(删除)
+    .成员 RASENTRYNAME, RASENTRYNAME, 传址, , $(删除)
+    .成员 RASSUBENTRYA, RASSUBENTRYA, 传址, , $(删除)
+    .成员 RASTERIZER_STATUS, RASTERIZER_STATUS, 传址, , $(删除)
+    .成员 Rect, Rect, 传址, , $(删除)
+    .成员 RECT1, Rect, 传址, , $(删除)
+    .成员 RECTL, RECTL, 传址, , $(删除)
+    .成员 REFFMTID, REFFMTID, 传址, , $(删除)
+    .成员 REFGPEXTENSIONID, REFGPEXTENSIONID, 传址, , $(删除)
+    .成员 RESOURCE_HANDLE, RESOURCE_HANDLE, 传址, , $(删除)
+    .成员 RFCDLGPARAMA, RFCDLGPARAMA, 传址, , $(删除)
+    .成员 RGBQUAD, RGBQUAD, 传址, , $(删除)
+    .成员 RGBTRIPLE, RGBTRIPLE, 传址, , $(删除)
+    .成员 RgnData, RgnData, 传址, , $(删除)
+    .成员 RGNDATA1, RgnData, 传址, , $(删除)
+    .成员 RGNDATAHEADER, RGNDATAHEADER, 传址, , $(删除)
+    .成员 RPC_ADDRESS_CHANGE_FN, RPC_ADDRESS_CHANGE_FN, 传址, , $(删除)
+    .成员 RPC_BINDING_VECTOR, RPC_BINDING_VECTOR, 传址, , $(删除)
+    .成员 RPC_IF_CALLBACK_FN, RPC_IF_CALLBACK_FN, 传址, , $(删除)
+    .成员 RPC_IF_ID, RPC_IF_ID, 传址, , $(删除)
+    .成员 RPC_IF_ID_VECTOR, RPC_IF_ID_VECTOR, 传址, , $(删除)
+    .成员 RPC_MESSAGE, RPC_MESSAGE, 传址, , $(删除)
+    .成员 RPC_PROTSEQ_VECTORA, RPC_PROTSEQ_VECTORA, 传址, , $(删除)
+    .成员 RPC_SECURITY_QOS, RPC_SECURITY_QOS, 传址, , $(删除)
+    .成员 RPC_SERVER_INTERFACE, RPC_SERVER_INTERFACE, 传址, , $(删除)
+    .成员 RPC_STATS_VECTOR, RPC_STATS_VECTOR, 传址, , $(删除)
+    .成员 RPC_TRANSFER_SYNTAX, RPC_TRANSFER_SYNTAX, 传址, , $(删除)
+    .成员 RPC_VERSION, RPC_VERSION, 传址, , $(删除)
+    .成员 RTM_DEST_HANDLE, RTM_DEST_HANDLE, 传址, , $(删除)
+    .成员 RTM_ENTITY_HANDLE, RTM_ENTITY_HANDLE, 传址, , $(删除)
+    .成员 RTM_ENUM_FLAGS, RTM_ENUM_FLAGS, 传址, , $(删除)
+    .成员 RTM_ENUM_HANDLE, RTM_ENUM_HANDLE, 传址, , $(删除)
+    .成员 RTM_EVENT_CALLBACK, RTM_EVENT_CALLBACK, 传址, , $(删除)
+    .成员 RTM_MATCH_FLAGS, RTM_MATCH_FLAGS, 传址, , $(删除)
+    .成员 RTM_NEXTHOP_HANDLE, RTM_NEXTHOP_HANDLE, 传址, , $(删除)
+    .成员 RTM_NOTIFY_FLAGS, RTM_NOTIFY_FLAGS, 传址, , $(删除)
+    .成员 RTM_NOTIFY_HANDLE, RTM_NOTIFY_HANDLE, 传址, , $(删除)
+    .成员 RTM_ROUTE_HANDLE, RTM_ROUTE_HANDLE, 传址, , $(删除)
+    .成员 RTM_ROUTE_LIST_HANDLE, RTM_ROUTE_LIST_HANDLE, 传址, , $(删除)
+    .成员 RTM_VIEW_SET, RTM_VIEW_SET, 传址, , $(删除)
+    .成员 SAFEARRAY, SAFEARRAY, 传址, , $(删除)
+    .成员 SAFEARRAYBOUND, SAFEARRAYBOUND, 传址, , $(删除)
+    .成员 SAM_HANDLE, SAM_HANDLE, 传址, , $(删除)
+    .成员 SCARD_IO_REQUEST, SCARD_IO_REQUEST, 传址, , $(删除)
+    .成员 SCARD_READERSTATEA, SCARD_READERSTATEA, 传址, , $(删除)
+    .成员 SCARDCONTEXT, SCARDCONTEXT, 传址, , $(删除)
+    .成员 SCARDHANDLE, SCARDHANDLE, 传址, , $(删除)
+    .成员 SCRIPT_ANALYSIS, SCRIPT_ANALYSIS, 传址, , $(删除)
+    .成员 SCRIPT_CACHE, SCRIPT_CACHE, 传址, , $(删除)
+    .成员 SCRIPT_CONTROL, SCRIPT_CONTROL, 传址, , $(删除)
+    .成员 SCRIPT_DIGITSUBSTITUTE, SCRIPT_DIGITSUBSTITUTE, 传址, , $(删除)
+    .成员 SCRIPT_FONTPROPERTIES, SCRIPT_FONTPROPERTIES, 传址, , $(删除)
+    .成员 SCRIPT_ITEM, SCRIPT_ITEM, 传址, , $(删除)
+    .成员 SCRIPT_LOGATTR, SCRIPT_LOGATTR, 传址, , $(删除)
+    .成员 SCRIPT_STATE, SCRIPT_STATE, 传址, , $(删除)
+    .成员 SCRIPT_STRING_ANALYSIS, SCRIPT_STRING_ANALYSIS, 传址, , $(删除)
+    .成员 SCRIPT_TABDEF, SCRIPT_TABDEF, 传址, , $(删除)
+    .成员 SCRIPT_VISATTR, SCRIPT_VISATTR, 传址, , $(删除)
+    .成员 SCROLLINFO, SCROLLINFO, 传址, , $(删除)
+    .成员 SE_OBJECT_TYPE, SE_OBJECT_TYPE, 传址, , $(删除)
+    .成员 SEC_CHAR, SEC_CHAR, 传址, , $(删除)
+    .成员 SEC_GET_KEY_FN, SEC_GET_KEY_FN, 传址, , $(删除)
+    .成员 SECURITY_ATTRIBUTES, SECURITY_ATTRIBUTES, 传址, , $(删除)
+    .成员 SECURITY_DESCRIPTOR, SECURITY_DESCRIPTOR, 传址, , $(删除)
+    .成员 SECURITY_PACKAGE_OPTIONS, SECURITY_PACKAGE_OPTIONS, 传址, , $(删除)
+    .成员 SECURITY_QUALITY_OF_SERVICE, SECURITY_QUALITY_OF_SERVICE, 传址, , $(删除)
+    .成员 SERVICE_INFO, SERVICE_INFO, 传址, , $(删除)
+    .成员 SERVICE_STATUS, SERVICE_STATUS, 传址, , $(删除)
+    .成员 SERVICE_TABLE_ENTRY, SERVICE_TABLE_ENTRY, 传址, , $(删除)
+    .成员 SHELLEXECUTEINFOA, SHELLEXECUTEINFOA, 传址, , $(删除)
+    .成员 SHELLFLAGSTATE, SHELLFLAGSTATE, 传址, , $(删除)
+    .成员 SHFILEINFO, SHFILEINFO, 传址, , $(删除)
+    .成员 SHFILEOPSTRUCT, SHFILEOPSTRUCT, 传址, , $(删除)
+    .成员 SHQUERYRBINFO, SHQUERYRBINFO, 传址, , $(删除)
+    .成员 Sid, Sid, 传址, , $(删除)
+    .成员 SID1, Sid, 传址, , $(删除)
+    .成员 SID_AND_ATTRIBUTES, SID_AND_ATTRIBUTES, 传址, , $(删除)
+    .成员 SID_IDENTIFIER_AUTHORITY, SID_IDENTIFIER_AUTHORITY, 传址, , $(删除)
+    .成员 Single, Single, 传址, , $(删除)
+    .成员 SIP_ADD_NEWPROVIDER, SIP_ADD_NEWPROVIDER, 传址, , $(删除)
+    .成员 SIP_INDIRECT_DATA, SIP_INDIRECT_DATA, 传址, , $(删除)
+    .成员 SIP_SUBJECTINFO, SIP_SUBJECTINFO, 传址, , $(删除)
+    .成员 SIZE, SIZE, 传址, , $(删除)
+    .成员 SIZEL, SIZEL, 传址, , $(删除)
+    .成员 SMALL_RECT, SMALL_RECT, 传址, , $(删除)
+    .成员 smiINT, smiINT, 传址, , $(删除)
+    .成员 smiLPCOCTETS, smiLPCOCTETS, 传址, , $(删除)
+    .成员 smiLPCOID, smiLPCOID, 传址, , $(删除)
+    .成员 smiLPCVALUE, smiLPCVALUE, 传址, , $(删除)
+    .成员 smiLPINT, smiLPINT, 传址, , $(删除)
+    .成员 smiLPOCTETS, smiLPOCTETS, 传址, , $(删除)
+    .成员 smiLPOID, smiLPOID, 传址, , $(删除)
+    .成员 smiLPOPAQUE, smiLPOPAQUE, 传址, , $(删除)
+    .成员 smiLPTIMETICKS, smiLPTIMETICKS, 传址, , $(删除)
+    .成员 smiLPUINT, smiLPUINT, 传址, , $(删除)
+    .成员 smiLPVALUE, smiLPVALUE, 传址, , $(删除)
+    .成员 smiLPVENDORINFO, smiLPVENDORINFO, 传址, , $(删除)
+    .成员 smiTIMETICKS, smiTIMETICKS, 传址, , $(删除)
+    .成员 smiUINT, smiUINT, 传址, , $(删除)
+    .成员 SNMPAPI_CALLBACK, SNMPAPI_CALLBACK, 传址, , $(删除)
+    .成员 SNMPAPI_STATUS, SNMPAPI_STATUS, 传址, , $(删除)
+    .成员 SnmpVarBind, SnmpVarBind, 传址, , $(删除)
+    .成员 SnmpVarBindList, SnmpVarBindList, 传址, , $(删除)
+    .成员 SOCKADDR, SOCKADDR, 传址, , $(删除)
+    .成员 sockaddr1, SOCKADDR, 传址, , $(删除)
+    .成员 SOFTDISTINFO, SOFTDISTINFO, 传址, , $(删除)
+    .成员 SOLE_AUTHENTICATION_SERVICE, SOLE_AUTHENTICATION_SERVICE, 传址, , $(删除)
+    .成员 SQLHANDLE, SQLHANDLE, 传址, , $(删除)
+    .成员 SQLHDESC, SQLHDESC, 传址, , $(删除)
+    .成员 SQLLEN, SQLLEN, 传址, , $(删除)
+    .成员 SQLROWOFFSET, SQLROWOFFSET, 传址, , $(删除)
+    .成员 SQLULEN, SQLULEN, 传址, , $(删除)
+    .成员 sstruct, sstruct, 传址, , $(删除)
+    .成员 STACKFRAME, STACKFRAME, 传址, , $(删除)
+    .成员 STARTUPINFO, STARTUPINFO, 传址, , $(删除)
+    .成员 STGMEDIUM, STGMEDIUM, 传址, , $(删除)
+    .成员 STGOPTIONS, STGOPTIONS, 传址, , $(删除)
+    .成员 String, String, 传址, , $(删除)
+    .成员 STRRET, STRRET, 传址, , $(删除)
+    .成员 Struct_MembersOf_ASSOCKEY, Struct_MembersOf_ASSOCKEY, 传址, , $(删除)
+    .成员 Struct_MembersOf_ASSOCSTR, Struct_MembersOf_ASSOCSTR, 传址, , $(删除)
+    .成员 Struct_MembersOf_AUTHZ_CONTEXT_INFORMATION_CLASS, Struct_MembersOf_AUTHZ_CONTEXT_INFORMATION_CLASS, 传址, , $(删除)
+    .成员 Struct_MembersOf_BMFORMAT, Struct_MembersOf_BMFORMAT, 传址, , $(删除)
+    .成员 Struct_MembersOf_COLORTYPE, Struct_MembersOf_COLORTYPE, 传址, , $(删除)
+    .成员 Struct_MembersOf_COMPUTER_NAME_FORMAT, Struct_MembersOf_COMPUTER_NAME_FORMAT, 传址, , $(删除)
+    .成员 Struct_MembersOf_CY, Struct_MembersOf_CY, 传址, , $(删除)
+    .成员 Struct_MembersOf_DS_KCC_TASKID, Struct_MembersOf_DS_KCC_TASKID, 传址, , $(删除)
+    .成员 Struct_MembersOf_DS_NAME_FLAGS, Struct_MembersOf_DS_NAME_FLAGS, 传址, , $(删除)
+    .成员 Struct_MembersOf_DS_NAME_FORMAT, Struct_MembersOf_DS_NAME_FORMAT, 传址, , $(删除)
+    .成员 Struct_MembersOf_DS_REPL_INFO_TYPE, Struct_MembersOf_DS_REPL_INFO_TYPE, 传址, , $(删除)
+    .成员 Struct_MembersOf_DS_SPN_NAME_TYPE, Struct_MembersOf_DS_SPN_NAME_TYPE, 传址, , $(删除)
+    .成员 Struct_MembersOf_DS_SPN_WRITE_OP, Struct_MembersOf_DS_SPN_WRITE_OP, 传址, , $(删除)
+    .成员 Struct_MembersOf_EXTENDED_NAME_FORMAT, Struct_MembersOf_EXTENDED_NAME_FORMAT, 传址, , $(删除)
+    .成员 Struct_MembersOf_FILETIME, Struct_MembersOf_FILETIME, 传址, , $(删除)
+    .成员 Struct_MembersOf_FINDEX_INFO_LEVELS, Struct_MembersOf_FINDEX_INFO_LEVELS, 传址, , $(删除)
+    .成员 Struct_MembersOf_FINDEX_SEARCH_OPS, Struct_MembersOf_FINDEX_SEARCH_OPS, 传址, , $(删除)
+    .成员 Struct_MembersOf_GET_FILEEX_INFO_LEVELS, Struct_MembersOf_GET_FILEEX_INFO_LEVELS, 传址, , $(删除)
+    .成员 Struct_MembersOf_IMAGEHLP_TYPES, Struct_MembersOf_IMAGEHLP_TYPES, 传址, , $(删除)
+    .成员 Struct_MembersOf_INSTALLSTATE, Struct_MembersOf_INSTALLSTATE, 传址, , $(删除)
+    .成员 Struct_MembersOf_INSTALLTYPE, Struct_MembersOf_INSTALLTYPE, 传址, , $(删除)
+    .成员 Struct_MembersOf_INSTALLUILEVEL, Struct_MembersOf_INSTALLUILEVEL, 传址, , $(删除)
+    .成员 Struct_MembersOf_LARGE_INTEGER, Struct_MembersOf_LARGE_INTEGER, 传址, , $(删除)
+    .成员 Struct_MembersOf_MGM_ENUM_TYPES, Struct_MembersOf_MGM_ENUM_TYPES, 传址, , $(删除)
+    .成员 Struct_MembersOf_MIDL_ES_ALLOC, Struct_MembersOf_MIDL_ES_ALLOC, 传址, , $(删除)
+    .成员 Struct_MembersOf_MIDL_ES_CODE, Struct_MembersOf_MIDL_ES_CODE, 传址, , $(删除)
+    .成员 Struct_MembersOf_MIDL_ES_READ, Struct_MembersOf_MIDL_ES_READ, 传址, , $(删除)
+    .成员 Struct_MembersOf_MIDL_ES_WRITE, Struct_MembersOf_MIDL_ES_WRITE, 传址, , $(删除)
+    .成员 Struct_MembersOf_MSICOLINFO, Struct_MembersOf_MSICOLINFO, 传址, , $(删除)
+    .成员 Struct_MembersOf_MSICOSTTREE, Struct_MembersOf_MSICOSTTREE, 传址, , $(删除)
+    .成员 Struct_MembersOf_MSIMODIFY, Struct_MembersOf_MSIMODIFY, 传址, , $(删除)
+    .成员 Struct_MembersOf_MSIRUNMODE, Struct_MembersOf_MSIRUNMODE, 传址, , $(删除)
+    .成员 Struct_MembersOf_NDR_CCONTEXT, Struct_MembersOf_NDR_CCONTEXT, 传址, , $(删除)
+    .成员 Struct_MembersOf_NDR_SCONTEXT, Struct_MembersOf_NDR_SCONTEXT, 传址, , $(删除)
+    .成员 Struct_MembersOf_NETLOGON_LOGON_INFO_CLASS, Struct_MembersOf_NETLOGON_LOGON_INFO_CLASS, 传址, , $(删除)
+    .成员 Struct_MembersOf_NETSETUP_NAME_TYPE, Struct_MembersOf_NETSETUP_NAME_TYPE, 传址, , $(删除)
+    .成员 Struct_MembersOf_OLE_SERVER_USE, Struct_MembersOf_OLE_SERVER_USE, 传址, , $(删除)
+    .成员 Struct_MembersOf_OLEOPT_RENDER, Struct_MembersOf_OLEOPT_RENDER, 传址, , $(删除)
+    .成员 Struct_MembersOf_OLEOPT_UPDATE, Struct_MembersOf_OLEOPT_UPDATE, 传址, , $(删除)
+    .成员 Struct_MembersOf_PACL, Struct_MembersOf_PACL, 传址, , $(删除)
+    .成员 Struct_MembersOf_PLUID, Struct_MembersOf_PLUID, 传址, , $(删除)
+    .成员 Struct_MembersOf_POINT, Struct_MembersOf_POINT, 传址, , $(删除)
+    .成员 Struct_MembersOf_POLICY_DOMAIN_INFORMATION_CLASS, Struct_MembersOf_POLICY_DOMAIN_INFORMATION_CLASS, 传址, , $(删除)
+    .成员 Struct_MembersOf_POLICY_INFORMATION_CLASS, Struct_MembersOf_POLICY_INFORMATION_CLASS, 传址, , $(删除)
+    .成员 Struct_MembersOf_POLICY_NOTIFICATION_INFORMATION_CLASS, Struct_MembersOf_POLICY_NOTIFICATION_INFORMATION_CLASS, 传址, , $(删除)
+    .成员 Struct_MembersOf_RASPROJECTION, Struct_MembersOf_RASPROJECTION, 传址, , $(删除)
+    .成员 Struct_MembersOf_RECT, Struct_MembersOf_RECT, 传址, , $(删除)
+    .成员 Struct_MembersOf_REGKIND, Struct_MembersOf_REGKIND, 传址, , $(删除)
+    .成员 Struct_MembersOf_SC_ENUM_TYPE, Struct_MembersOf_SC_ENUM_TYPE, 传址, , $(删除)
+    .成员 Struct_MembersOf_SC_STATUS_TYPE, Struct_MembersOf_SC_STATUS_TYPE, 传址, , $(删除)
+    .成员 Struct_MembersOf_SECURITY_IMPERSONATION_LEVEL, Struct_MembersOf_SECURITY_IMPERSONATION_LEVEL, 传址, , $(删除)
+    .成员 Struct_MembersOf_SECURITY_LOGON_TYPE, Struct_MembersOf_SECURITY_LOGON_TYPE, 传址, , $(删除)
+    .成员 Struct_MembersOf_SetupFileLogInfo, Struct_MembersOf_SetupFileLogInfo, 传址, , $(删除)
+    .成员 Struct_MembersOf_SHREGDEL_FLAGS, Struct_MembersOf_SHREGDEL_FLAGS, 传址, , $(删除)
+    .成员 Struct_MembersOf_SHREGENUM_FLAGS, Struct_MembersOf_SHREGENUM_FLAGS, 传址, , $(删除)
+    .成员 Struct_MembersOf_TOKEN_TYPE, Struct_MembersOf_TOKEN_TYPE, 传址, , $(删除)
+    .成员 Struct_MembersOf_TRUSTED_INFORMATION_CLASS, Struct_MembersOf_TRUSTED_INFORMATION_CLASS, 传址, , $(删除)
+    .成员 Struct_MembersOf_URLIS, Struct_MembersOf_URLIS, 传址, , $(删除)
+    .成员 Struct_MembersOf_WSAESETSERVICEOP, Struct_MembersOf_WSAESETSERVICEOP, 传址, , $(删除)
+    .成员 Struct_MembersOf_WTS_CONFIG_CLASS, Struct_MembersOf_WTS_CONFIG_CLASS, 传址, , $(删除)
+    .成员 Struct_MembersOf_WTS_INFO_CLASS, Struct_MembersOf_WTS_INFO_CLASS, 传址, , $(删除)
+    .成员 Struct_MembersOf_WTS_VIRTUAL_CLASS, Struct_MembersOf_WTS_VIRTUAL_CLASS, 传址, , $(删除)
+    .成员 Struct_MembersOf_XLAT_SIDE, Struct_MembersOf_XLAT_SIDE, 传址, , $(删除)
+    .成员 STYLEBUF, STYLEBUF, 传址, , $(删除)
+    .成员 SURROGATE, SURROGATE, 传址, , $(删除)
+    .成员 SYSTEM_INFO, SYSTEM_INFO, 传址, , $(删除)
+    .成员 SYSTEM_POWER_CAPABILITIES, SYSTEM_POWER_CAPABILITIES, 传址, , $(删除)
+    .成员 SYSTEM_POWER_STATUS, SYSTEM_POWER_STATUS, 传址, , $(删除)
+    .成员 SYSTEMTIME, SYSTEMTIME, 传址, , $(删除)
+    .成员 T_PTR, T_PTR, 传址, , $(删除)
+    .成员 TAGTYPE, TAGTYPE, 传址, , $(删除)
+    .成员 Target, Target, 传址, , $(删除)
+    .成员 TASKENUMPROCEX, TASKENUMPROCEX, 传址, , $(删除)
+    .成员 TCOMP, TCOMP, 传址, , $(删除)
+    .成员 TERFACEDATA, TERFACEDATA, 传址, , $(删除)
+    .成员 TERNET_PORT, TERNET_PORT, 传址, , $(删除)
+    .成员 TEXTMETRIC, TEXTMETRIC, 传址, , $(删除)
+    .成员 TIME_ZONE_INFORMATION, TIME_ZONE_INFORMATION, 传址, , $(删除)
+    .成员 TIMECAPS, TIMECAPS, 传址, , $(删除)
+    .成员 TOKEN_GROUPS, TOKEN_GROUPS, 传址, , $(删除)
+    .成员 TOKEN_PRIVILEGES, TOKEN_PRIVILEGES, 传址, , $(删除)
+    .成员 TOKEN_SOURCE, TOKEN_SOURCE, 传址, , $(删除)
+    .成员 TPMPARAMS, TPMPARAMS, 传址, , $(删除)
+    .成员 TRACKMOUSEEVENT, TRACKMOUSEEVENT, 传址, , $(删除)
+    .成员 TRANSMIT_FILE_BUFFERS, TRANSMIT_FILE_BUFFERS, 传址, , $(删除)
+    .成员 TRIVERTEX, TRIVERTEX, 传址, , $(删除)
+    .成员 uCLSSPEC, uCLSSPEC, 传址, , $(删除)
+    .成员 UDATE, UDATE, 传址, , $(删除)
+    .成员 UILANGUAGE_ENUMPROCA, UILANGUAGE_ENUMPROCA, 传址, , $(删除)
+    .成员 ULARGE_INTEGER, ULARGE_INTEGER, 传址, , $(删除)
+    .成员 ULONG, ULONG, 传址, , $(删除)
+    .成员 ULONG_PTR, ULONG_PTR, 传址, , $(删除)
+    .成员 URL_COMPONENTSA, URL_COMPONENTSA, 传址, , $(删除)
+    .成员 UUID_VECTOR, UUID_VECTOR, 传址, , $(删除)
+    .成员 VALENTA, VALENTA, 传址, , $(删除)
+    .成员 VARIANT, VARIANT, 传址, , $(删除)
+    .成员 Variant1, VARIANT, 传址, , $(删除)
+    .成员 VARSTRING, VARSTRING, 传址, , $(删除)
+    .成员 VDM_SEGINFO, VDM_SEGINFO, 传址, , $(删除)
+    .成员 WAITORTIMERCALLBACK, WAITORTIMERCALLBACK, 传址, , $(删除)
+    .成员 WAVEFILTER, WAVEFILTER, 传址, , $(删除)
+    .成员 WAVEFORMAT, WAVEFORMAT, 传址, , $(删除)
+    .成员 WAVEFORMATEX, WAVEFORMATEX, 传址, , $(删除)
+    .成员 WAVEHDR, WAVEHDR, 传址, , $(删除)
+    .成员 WAVEINCAPS, WAVEINCAPS, 传址, , $(删除)
+    .成员 WAVEOUTCAPS, WAVEOUTCAPS, 传址, , $(删除)
+    .成员 WGLSWAP, WGLSWAP, 传址, , $(删除)
+    .成员 WIN, WIN, 传址, , $(删除)
+    .成员 WINDOWPLACEMENT, WINDOWPLACEMENT, 传址, , $(删除)
+    .成员 WINEVENTPROC, WINEVENTPROC, 传址, , $(删除)
+    .成员 WNDCLASS, WNDCLASS, 传址, , $(删除)
+    .成员 WNDCLASSEX, WNDCLASSEX, 传址, , $(删除)
+    .成员 WORKERFUNCTION, WORKERFUNCTION, 传址, , $(删除)
+    .成员 WSABUF, WSABUF, 传址, , $(删除)
+    .成员 WSADATA, WSADATA, 传址, , $(删除)
+    .成员 WSAEVENT, WSAEVENT, 传址, , $(删除)
+    .成员 WSANAMESPACE_INFOA, WSANAMESPACE_INFOA, 传址, , $(删除)
+    .成员 WSANETWORKEVENTS, WSANETWORKEVENTS, 传址, , $(删除)
+    .成员 WSAOVERLAPPED, WSAOVERLAPPED, 传址, , $(删除)
+    .成员 WSAOVERLAPPED_COMPLETION_ROUTINE, WSAOVERLAPPED_COMPLETION_ROUTINE, 传址, , $(删除)
+    .成员 WSAPROTOCOL_INFOA, WSAPROTOCOL_INFOA, 传址, , $(删除)
+    .成员 WSAPROTOCOL_INFOW, WSAPROTOCOL_INFOW, 传址, , $(删除)
+    .成员 WSAQUERYSETA, WSAQUERYSETA, 传址, , $(删除)
+    .成员 WSASERVICECLASSINFOA, WSASERVICECLASSINFOA, 传址, , $(删除)
+    .成员 WSPDATA, WSPDATA, 传址, , $(删除)
+    .成员 WSPPROC_TABLE, WSPPROC_TABLE, 传址, , $(删除)
+    .成员 WSPUPCALLTABLE, WSPUPCALLTABLE, 传址, , $(删除)
+    .成员 XA_SWITCH_FLAGS, XA_SWITCH_FLAGS, 传址, , $(删除)
+    .成员 xa_switch_t, xa_switch_t, 传址, , $(删除)
+    .成员 XFORM, XFORM, 传址, , $(删除)
+
+数据类型 ABC, , $(删除数据类型)声明这些数据类型，是为了保证DLL参数数据类型及成员数据类型的信息在保存后不会丢失。
+
+数据类型 ABCFLOAT, , $(删除数据类型)
+
+数据类型 ACCEL, , $(删除数据类型)
+
+数据类型 ACCESS_MASK, , $(删除数据类型)
+
+数据类型 ACCESS_MODE, , $(删除数据类型)
+
+数据类型 ACE_HEADER, , $(删除数据类型)
+
+数据类型 ACL, , $(删除数据类型)
+
+数据类型 ACMDRIVERDETAILSA, , $(删除数据类型)
+
+数据类型 ACMFILTERCHOOSEA, , $(删除数据类型)
+
+数据类型 ACMFILTERDETAILSA, , $(删除数据类型)
+
+数据类型 ACMFILTERTAGDETAILSA, , $(删除数据类型)
+
+数据类型 ACMFORMATCHOOSEA, , $(删除数据类型)
+
+数据类型 ACMFORMATDETAILSA, , $(删除数据类型)
+
+数据类型 ACMFORMATTAGDETAILSA, , $(删除数据类型)
+
+数据类型 ACMSTREAMHEADER, , $(删除数据类型)
+
+数据类型 Any, , $(删除数据类型)
+
+数据类型 API_VERSION, , $(删除数据类型)
+
+数据类型 APPBARDATA, , $(删除数据类型)
+
+数据类型 AsnAny, , $(删除数据类型)
+
+数据类型 AsnInteger, , $(删除数据类型)
+
+数据类型 AsnOctetString, , $(删除数据类型)
+
+数据类型 ASSOCF, , $(删除数据类型)
+
+数据类型 ASYNCCOMPLETIONHANDLE, , $(删除数据类型)
+
+数据类型 ATL_INTMAP_ENTRY, , $(删除数据类型)
+
+数据类型 ATL_MODULE, , $(删除数据类型)
+
+数据类型 ATL_OBJMAP_ENTRY, , $(删除数据类型)
+
+数据类型 ATL_REGMAP_ENTRY, , $(删除数据类型)
+
+数据类型 ATL_TERMFUNC, , $(删除数据类型)
+
+数据类型 AtlCreateWndData, , $(删除数据类型)
+
+数据类型 AUDIT_EVENT_TYPE, , $(删除数据类型)
+
+数据类型 AUTHZ_AUDIT_INFO_HANDLE, , $(删除数据类型)
+
+数据类型 AUTHZ_CLIENT_CONTEXT_HANDLE, , $(删除数据类型)
+
+数据类型 AUTHZ_HANDLE, , $(删除数据类型)
+
+数据类型 AUTHZ_RESOURCE_MANAGER_HANDLE, , $(删除数据类型)
+
+数据类型 AUTHZ_RM_AUDIT_INFO_HANDLE, , $(删除数据类型)
+
+数据类型 AUXCAPS, , $(删除数据类型)
+
+数据类型 AVICOMPRESSOPTIONS, , $(删除数据类型)
+
+数据类型 AVIFileInfo, , $(删除数据类型)
+
+数据类型 AVISTREAMINFOA, , $(删除数据类型)
+
+数据类型 BerElement, , $(删除数据类型)
+
+数据类型 BERVAL, , $(删除数据类型)
+
+数据类型 BIND_OPTS, , $(删除数据类型)
+
+数据类型 BINDINFO, , $(删除数据类型)
+
+数据类型 BITMAP, , $(删除数据类型)
+
+数据类型 BITMAPCOREHEADER, , $(删除数据类型)
+
+数据类型 BITMAPINFO, , $(删除数据类型)
+
+数据类型 BITMAPINFOHEADER, , $(删除数据类型)
+
+数据类型 BLENDFUNCTION, , $(删除数据类型)
+
+数据类型 BMCALLBACKFN, , $(删除数据类型)
+
+数据类型 Boolean, , $(删除数据类型)
+
+数据类型 BROWSEINFO, , $(删除数据类型)
+
+数据类型 BY_HANDLE_FILE_INFORMATION, , $(删除数据类型)
+
+数据类型 BYTE, , $(删除数据类型)
+
+数据类型 Byte1, , $(删除数据类型)
+
+数据类型 CALINFO_ENUMPROCEXA, , $(删除数据类型)
+
+数据类型 CANDIDATEFORM, , $(删除数据类型)
+
+数据类型 CANDIDATELIST, , $(删除数据类型)
+
+数据类型 CERT_EXTENSION, , $(删除数据类型)
+
+数据类型 CERT_INFO, , $(删除数据类型)
+
+数据类型 CGUID, , $(删除数据类型)
+
+数据类型 CHAR_INFO, , $(删除数据类型)
+
+数据类型 CHARSETINFO, , $(删除数据类型)
+
+数据类型 CHOOSECOLOR, , $(删除数据类型)
+
+数据类型 CHOOSEFONT, , $(删除数据类型)
+
+数据类型 CI_STATE, , $(删除数据类型)
+
+数据类型 CIEXYZ, , $(删除数据类型)
+
+数据类型 CIEXYZTRIPLE, , $(删除数据类型)
+
+数据类型 CIPROPERTYDEF, , $(删除数据类型)
+
+数据类型 CITEMIDLIST, , $(删除数据类型)
+
+数据类型 CMC_extension, , $(删除数据类型)
+
+数据类型 CMC_message, , $(删除数据类型)
+
+数据类型 CMC_message_reference, , $(删除数据类型)
+
+数据类型 CMC_message_summary, , $(删除数据类型)
+
+数据类型 CMC_recipient, , $(删除数据类型)
+
+数据类型 CMENUINFO, , $(删除数据类型)
+
+数据类型 COLOR, , $(删除数据类型)
+
+数据类型 ColorAdjustment, , $(删除数据类型)
+
+数据类型 COLORADJUSTMENT1, , $(删除数据类型)
+
+数据类型 ColorMap, , $(删除数据类型)
+
+数据类型 COMMCONFIG, , $(删除数据类型)
+
+数据类型 COMMPROP, , $(删除数据类型)
+
+数据类型 COMMTIMEOUTS, , $(删除数据类型)
+
+数据类型 COMPOSITIONFORM, , $(删除数据类型)
+
+数据类型 COMSTAT, , $(删除数据类型)
+
+数据类型 CONDITIONPROC, , $(删除数据类型)
+
+数据类型 CONNECTDLGSTRUCTA, , $(删除数据类型)
+
+数据类型 CONSOLE_CURSOR_INFO, , $(删除数据类型)
+
+数据类型 CONSOLE_SCREEN_BUFFER_INFO, , $(删除数据类型)
+
+数据类型 CONTEXT, , $(删除数据类型)
+
+数据类型 CONVCONTEXT, , $(删除数据类型)
+
+数据类型 CONVINFO, , $(删除数据类型)
+
+数据类型 COORD, , $(删除数据类型)
+
+数据类型 COSERVERINFO, , $(删除数据类型)
+
+数据类型 CPINFO, , $(删除数据类型)
+
+数据类型 CPINFOEXA, , $(删除数据类型)
+
+数据类型 CPROPSHEETHEADERA, , $(删除数据类型)
+
+数据类型 CPROPSHEETPAGEA, , $(删除数据类型)
+
+数据类型 CREATESTRUCT, , $(删除数据类型)
+
+数据类型 CRITICAL_SECTION, , $(删除数据类型)
+
+数据类型 CRYPT_ATTRIBUTE, , $(删除数据类型)
+
+数据类型 CRYPT_HASH_BLOB, , $(删除数据类型)
+
+数据类型 CRYPT_OID_FUNC_ENTRY, , $(删除数据类型)
+
+数据类型 CRYPT_PKCS, , $(删除数据类型)
+
+数据类型 CRYPT_PROVIDER_DATA, , $(删除数据类型)
+
+数据类型 CRYPT_PROVIDER_DEFUSAGE, , $(删除数据类型)
+
+数据类型 CRYPT_PROVIDER_FUNCTIONS, , $(删除数据类型)
+
+数据类型 CRYPT_PROVIDER_REGDEFUSAGE, , $(删除数据类型)
+
+数据类型 CRYPT_PROVIDER_SGNR, , $(删除数据类型)
+
+数据类型 CRYPT_REGISTER_ACTIONID, , $(删除数据类型)
+
+数据类型 CRYPTPROTECT_PROMPTSTRUCT, , $(删除数据类型)
+
+数据类型 CSCARD_IO_REQUEST, , $(删除数据类型)
+
+数据类型 CStdPSFactoryBuffer, , $(删除数据类型)
+
+数据类型 CSTRTABLE, , $(删除数据类型)
+
+数据类型 CTBBUTTON, , $(删除数据类型)
+
+数据类型 Currency, , $(删除数据类型)
+
+数据类型 CURRENCYFMT, , $(删除数据类型)
+
+数据类型 CUSTDATA, , $(删除数据类型)
+
+数据类型 CY, , $(删除数据类型)
+
+数据类型 D, , $(删除数据类型)
+
+数据类型 DATA_BLOB, , $(删除数据类型)
+
+数据类型 DATAOBJECT, , $(删除数据类型)
+
+数据类型 DataObject1, , $(删除数据类型)
+
+数据类型 DATEFMT_ENUMPROCEXA, , $(删除数据类型)
+
+数据类型 DBCOMMANDOP, , $(删除数据类型)
+
+数据类型 DBCOMMANDTREE, , $(删除数据类型)
+
+数据类型 DBGPRINT, , $(删除数据类型)
+
+数据类型 DBINT, , $(删除数据类型)
+
+数据类型 DCB, , $(删除数据类型)
+
+数据类型 DDEML_MSG_HOOK_DATA, , $(删除数据类型)
+
+数据类型 DDENUMCALLBACKA, , $(删除数据类型)
+
+数据类型 DDENUMCALLBACKEXA, , $(删除数据类型)
+
+数据类型 DEBUG_EVENT, , $(删除数据类型)
+
+数据类型 DECIMAL, , $(删除数据类型)
+
+数据类型 DEFAULT_QUEUESIZE, , $(删除数据类型)
+
+数据类型 DESIGNVECTOR, , $(删除数据类型)
+
+数据类型 DEVCHARACTER, , $(删除数据类型)
+
+数据类型 DEVMODE, , $(删除数据类型)
+
+数据类型 DHCPCAPI_PARAMS_ARRAY, , $(删除数据类型)
+
+数据类型 DI_FUNCTIONstallFunction, , $(删除数据类型)
+
+数据类型 DIGEST_FUNCTION, , $(删除数据类型)
+
+数据类型 DIGEST_HANDLE, , $(删除数据类型)
+
+数据类型 DIRECTDRAW, , $(删除数据类型)
+
+数据类型 DIRECTDRAWCLIPPER, , $(删除数据类型)
+
+数据类型 DIRECTPLAY, , $(删除数据类型)
+
+数据类型 DIRECTSOUND, , $(删除数据类型)
+
+数据类型 DIRECTSOUNDCAPTURE, , $(删除数据类型)
+
+数据类型 DISCDLGSTRUCTA, , $(删除数据类型)
+
+数据类型 DISPPARAMS, , $(删除数据类型)
+
+数据类型 DLGTEMPLATE, , $(删除数据类型)
+
+数据类型 DOCINFO, , $(删除数据类型)
+
+数据类型 DOUBLE, , $(删除数据类型)
+
+数据类型 Double1, , $(删除数据类型)
+
+数据类型 DPENUMDPCALLBACKA, , $(删除数据类型)
+
+数据类型 DRAWDIBTIME, , $(删除数据类型)
+
+数据类型 DRAWTEXTPARAMS, , $(删除数据类型)
+
+数据类型 DS_NAME_RESULTA, , $(删除数据类型)
+
+数据类型 DS_SCHEMA_GUID_MAPA, , $(删除数据类型)
+
+数据类型 DSBROWSEINFO, , $(删除数据类型)
+
+数据类型 DSENUMCALLBACKA, , $(删除数据类型)
+
+数据类型 DVTARGETDEVICE, , $(删除数据类型)
+
+数据类型 DWORD, , $(删除数据类型)
+
+数据类型 DWORD_PTR, , $(删除数据类型)
+
+数据类型 emr, , $(删除数据类型)
+
+数据类型 emrtext, , $(删除数据类型)
+
+数据类型 ENHMETAHEADER, , $(删除数据类型)
+
+数据类型 ENHMETARECORD, , $(删除数据类型)
+
+数据类型 ENUM_SERVICE_STATUS, , $(删除数据类型)
+
+数据类型 ENUMLOGFONTEXDVA, , $(删除数据类型)
+
+数据类型 EVENTLOGRECORD, , $(删除数据类型)
+
+数据类型 EXCEPINFO, , $(删除数据类型)
+
+数据类型 EXCEPTION_POINTERS, , $(删除数据类型)
+
+数据类型 EXCEPTION_RECORD, , $(删除数据类型)
+
+数据类型 EXECUTION_STATE, , $(删除数据类型)
+
+数据类型 EXTENSION_CONTROL_BLOCK, , $(删除数据类型)
+
+数据类型 EXTLOGFONT, , $(删除数据类型)
+
+数据类型 EXTLOGPEN, , $(删除数据类型)
+
+数据类型 fd_set, , $(删除数据类型)
+
+数据类型 FIBER_START_ROUTINE, , $(删除数据类型)
+
+数据类型 FILE_SEGMENT_ELEMENT, , $(删除数据类型)
+
+数据类型 FILETIME, , $(删除数据类型)
+
+数据类型 FINDREPLACE, , $(删除数据类型)
+
+数据类型 FIXED, , $(删除数据类型)
+
+数据类型 FMTID, , $(删除数据类型)
+
+数据类型 FN_PROGRESS, , $(删除数据类型)
+
+数据类型 FONTDESC, , $(删除数据类型)
+
+数据类型 FONTSIGNATURE, , $(删除数据类型)
+
+数据类型 FORMATETC, , $(删除数据类型)
+
+数据类型 FULL_PTR_XLAT_TABLES, , $(删除数据类型)
+
+数据类型 g_netSID_NAME_USE, , $(删除数据类型)
+
+数据类型 GCP_RESULTS, , $(删除数据类型)
+
+数据类型 GENERIC_MAPPING, , $(删除数据类型)
+
+数据类型 GLbitfield, , $(删除数据类型)
+
+数据类型 GLboolean, , $(删除数据类型)
+
+数据类型 GLbyte, , $(删除数据类型)
+
+数据类型 GLclampd, , $(删除数据类型)
+
+数据类型 GLclampf, , $(删除数据类型)
+
+数据类型 GLdouble, , $(删除数据类型)
+
+数据类型 GLenum, , $(删除数据类型)
+
+数据类型 GLfloat, , $(删除数据类型)
+
+数据类型 GLint, , $(删除数据类型)
+
+数据类型 GLshort, , $(删除数据类型)
+
+数据类型 GLsizei, , $(删除数据类型)
+
+数据类型 GLubyte, , $(删除数据类型)
+
+数据类型 GLuint, , $(删除数据类型)
+
+数据类型 GLushort, , $(删除数据类型)
+
+数据类型 GLvoid, , $(删除数据类型)
+
+数据类型 GLYPHMETRICS, , $(删除数据类型)
+
+数据类型 GLYPHMETRICSFLOAT, , $(删除数据类型)
+
+数据类型 GLYPHSET, , $(删除数据类型)
+
+数据类型 GOFFSET, , $(删除数据类型)
+
+数据类型 GOPHER_ATTRIBUTE_ENUMERATOR, , $(删除数据类型)
+
+数据类型 GOPHER_FIND_DATAA, , $(删除数据类型)
+
+数据类型 GRADIENT_RECT, , $(删除数据类型)
+
+数据类型 GROUP, , $(删除数据类型)
+
+数据类型 GROUPID, , $(删除数据类型)
+
+数据类型 GUID, , $(删除数据类型)
+
+数据类型 Guid1, , $(删除数据类型)
+
+数据类型 HAGENT, , $(删除数据类型)
+
+数据类型 HAGENTSESSION, , $(删除数据类型)
+
+数据类型 hbc, , $(删除数据类型)
+
+数据类型 hBlob, , $(删除数据类型)
+
+数据类型 hChange, , $(删除数据类型)
+
+数据类型 HCLUSENUM, , $(删除数据类型)
+
+数据类型 hCluster, , $(删除数据类型)
+
+数据类型 hCounter, , $(删除数据类型)
+
+数据类型 hCryptProv, , $(删除数据类型)
+
+数据类型 HDBC, , $(删除数据类型)
+
+数据类型 hfci, , $(删除数据类型)
+
+数据类型 hfdi, , $(删除数据类型)
+
+数据类型 hGroup, , $(删除数据类型)
+
+数据类型 hGroupEnum, , $(删除数据类型)
+
+数据类型 HILITE, , $(删除数据类型)
+
+数据类型 hLog, , $(删除数据类型)
+
+数据类型 hNode, , $(删除数据类型)
+
+数据类型 hNodeEnum, , $(删除数据类型)
+
+数据类型 hPort, , $(删除数据类型)
+
+数据类型 hQuery, , $(删除数据类型)
+
+数据类型 hResource, , $(删除数据类型)
+
+数据类型 HSE_VERSION_INFO, , $(删除数据类型)
+
+数据类型 HSNMP_CONTEXT, , $(删除数据类型)
+
+数据类型 HSNMP_ENTITY, , $(删除数据类型)
+
+数据类型 HSNMP_PDU, , $(删除数据类型)
+
+数据类型 HSNMP_SESSION, , $(删除数据类型)
+
+数据类型 HSNMP_VBL, , $(删除数据类型)
+
+数据类型 HW_PROFILE_INFOA, , $(删除数据类型)
+
+数据类型 IAccessible, , $(删除数据类型)
+
+数据类型 IBindStatusCallback, , $(删除数据类型)
+
+数据类型 ICINFO, , $(删除数据类型)
+
+数据类型 ICommand, , $(删除数据类型)
+
+数据类型 ICONINFO, , $(删除数据类型)
+
+数据类型 IDispenserManager, , $(删除数据类型)
+
+数据类型 IHTMLWindow, , $(删除数据类型)
+
+数据类型 IInternetSecurityManager, , $(删除数据类型)
+
+数据类型 IInternetSession, , $(删除数据类型)
+
+数据类型 IInternetZoneManager, , $(删除数据类型)
+
+数据类型 IMAGEINFO, , $(删除数据类型)
+
+数据类型 IMAGELISTDRAWPARAMS, , $(删除数据类型)
+
+数据类型 IMCENUMPROC, , $(删除数据类型)
+
+数据类型 IMEMENUITEMINFOA, , $(删除数据类型)
+
+数据类型 IMEPROA, , $(删除数据类型)
+
+数据类型 INITCOMMONCONTROLSEX, , $(删除数据类型)
+
+数据类型 INPUT, , $(删除数据类型)
+
+数据类型 INSTALLMESSAGE, , $(删除数据类型)
+
+数据类型 INSTALLSTATE, , $(删除数据类型)
+
+数据类型 INSTALLUI_HANDLERA, , $(删除数据类型)
+
+数据类型 INT_PTR, , $(删除数据类型)
+
+数据类型 Integer, , $(删除数据类型)
+
+数据类型 INTERNET_BUFFERSA, , $(删除数据类型)
+
+数据类型 INTERNET_CACHE_ENTRY_INFOA, , $(删除数据类型)
+
+数据类型 INTERNET_PORT, , $(删除数据类型)
+
+数据类型 INTERNET_STATUS_CALLBACK, , $(删除数据类型)
+
+数据类型 IObjectContext, , $(删除数据类型)
+
+数据类型 IP_ADDR_FAMILY, , $(删除数据类型)
+
+数据类型 IPAddr, , $(删除数据类型)
+
+数据类型 IpMask, , $(删除数据类型)
+
+数据类型 IPropertyPage, , $(删除数据类型)
+
+数据类型 IServiceProvider, , $(删除数据类型)
+
+数据类型 ITEMIDLIST, , $(删除数据类型)
+
+数据类型 ITextHost, , $(删除数据类型)
+
+数据类型 ITransaction, , $(删除数据类型)
+
+数据类型 JOBOBJECTINFOCLASS, , $(删除数据类型)
+
+数据类型 JOYCAPS, , $(删除数据类型)
+
+数据类型 JOYINFO, , $(删除数据类型)
+
+数据类型 JOYINFOEX, , $(删除数据类型)
+
+数据类型 KERNINGPAIR, , $(删除数据类型)
+
+数据类型 LANGGROUPLOCALE_ENUMPROCA, , $(删除数据类型)
+
+数据类型 LANGUAGEGROUP_ENUMPROCA, , $(删除数据类型)
+
+数据类型 LARGE_INTEGER, , $(删除数据类型)
+
+数据类型 LATENCY_TIME, , $(删除数据类型)
+
+数据类型 LAYERPLANEDESCRIPTOR, , $(删除数据类型)
+
+数据类型 LDAP, , $(删除数据类型)
+
+数据类型 LDAPControlA, , $(删除数据类型)
+
+数据类型 LDAPMessage, , $(删除数据类型)
+
+数据类型 LDAPMod, , $(删除数据类型)
+
+数据类型 LDAPModA, , $(删除数据类型)
+
+数据类型 LDT_ENTRY, , $(删除数据类型)
+
+数据类型 LGRPID, , $(删除数据类型)
+
+数据类型 LINEADDRESSCAPS, , $(删除数据类型)
+
+数据类型 LINEADDRESSSTATUS, , $(删除数据类型)
+
+数据类型 LINEAGENTACTIVITYLIST, , $(删除数据类型)
+
+数据类型 LINEAGENTCAPS, , $(删除数据类型)
+
+数据类型 LINEAGENTGROUPLIST, , $(删除数据类型)
+
+数据类型 LINEAGENTINFO, , $(删除数据类型)
+
+数据类型 LINEAGENTSESSIONINFO, , $(删除数据类型)
+
+数据类型 LINEAGENTSESSIONLIST, , $(删除数据类型)
+
+数据类型 LINEAGENTSTATUS, , $(删除数据类型)
+
+数据类型 LINECALLINFO, , $(删除数据类型)
+
+数据类型 LINECALLLIST, , $(删除数据类型)
+
+数据类型 LINECALLPARAMS, , $(删除数据类型)
+
+数据类型 LINECALLSTATUS, , $(删除数据类型)
+
+数据类型 LINECOUNTRYLIST, , $(删除数据类型)
+
+数据类型 LINEDEVCAPS, , $(删除数据类型)
+
+数据类型 LINEDEVSTATUS, , $(删除数据类型)
+
+数据类型 LINEDIALPARAMS, , $(删除数据类型)
+
+数据类型 LINEEXTENSIONID, , $(删除数据类型)
+
+数据类型 LINEFORWARDLIST, , $(删除数据类型)
+
+数据类型 LINEGENERATETONE, , $(删除数据类型)
+
+数据类型 LINEINITIALIZEEXPARAMS, , $(删除数据类型)
+
+数据类型 LINEMEDIACONTROLCALLSTATE, , $(删除数据类型)
+
+数据类型 LINEMEDIACONTROLDIGIT, , $(删除数据类型)
+
+数据类型 LINEMEDIACONTROLMEDIA, , $(删除数据类型)
+
+数据类型 LINEMEDIACONTROLTONE, , $(删除数据类型)
+
+数据类型 LINEMESSAGE, , $(删除数据类型)
+
+数据类型 LINEMONITORTONE, , $(删除数据类型)
+
+数据类型 LINEPROVIDERLIST, , $(删除数据类型)
+
+数据类型 LINEPROXYREQUEST, , $(删除数据类型)
+
+数据类型 LINEPROXYREQUESTLIST, , $(删除数据类型)
+
+数据类型 LINEQUEUEINFO, , $(删除数据类型)
+
+数据类型 LINEQUEUELIST, , $(删除数据类型)
+
+数据类型 LINETEXTMETRIC, , $(删除数据类型)
+
+数据类型 LINETRANSLATECAPS, , $(删除数据类型)
+
+数据类型 LINETRANSLATEOUTPUT, , $(删除数据类型)
+
+数据类型 LIST_ENTRY, , $(删除数据类型)
+
+数据类型 LMCSTR, , $(删除数据类型)
+
+数据类型 LMSTR, , $(删除数据类型)
+
+数据类型 LOGBRUSH, , $(删除数据类型)
+
+数据类型 LOGCOLORSPACE, , $(删除数据类型)
+
+数据类型 LOGFONT, , $(删除数据类型)
+
+数据类型 LOGPALETTE, , $(删除数据类型)
+
+数据类型 LOGPEN, , $(删除数据类型)
+
+数据类型 LogSeverity, , $(删除数据类型)
+
+数据类型 Long, , $(删除数据类型)
+
+数据类型 long1, , $(删除数据类型)
+
+数据类型 longx, , $(删除数据类型)
+
+数据类型 LPADDRESSTABLE, , $(删除数据类型)
+
+数据类型 LPBINDSTATUSCALLBACK, , $(删除数据类型)
+
+数据类型 LPCBYTE, , $(删除数据类型)
+
+数据类型 LPCITEMIDLIST, , $(删除数据类型)
+
+数据类型 LPD, , $(删除数据类型)
+
+数据类型 LPDBINT, , $(删除数据类型)
+
+数据类型 LPDHCPCAPI_CLASSID, , $(删除数据类型)
+
+数据类型 LPDIRECT, , $(删除数据类型)
+
+数据类型 LPDIRECTINPUTA, , $(删除数据类型)
+
+数据类型 LPDISPATCH, , $(删除数据类型)
+
+数据类型 LPEXPRESSION, , $(删除数据类型)
+
+数据类型 lpGlobalEntry, , $(删除数据类型)
+
+数据类型 LPGPOBROWSEINFO, , $(删除数据类型)
+
+数据类型 LPHANDLER_FUNCTION_EX, , $(删除数据类型)
+
+数据类型 LPHEAPENTRY, , $(删除数据类型)
+
+数据类型 LPHEAPLIST, , $(删除数据类型)
+
+数据类型 LPHIT_LOGGING_INFO, , $(删除数据类型)
+
+数据类型 LPHLOG, , $(删除数据类型)
+
+数据类型 LPHSNMP_CONTEXT, , $(删除数据类型)
+
+数据类型 LPHSNMP_ENTITY, , $(删除数据类型)
+
+数据类型 LPHSNMP_PDU, , $(删除数据类型)
+
+数据类型 LPHSNMP_VBL, , $(删除数据类型)
+
+数据类型 LPINTERNET_CACHE_GROUP_INFOA, , $(删除数据类型)
+
+数据类型 LPMCAST_CLIENT_UID, , $(删除数据类型)
+
+数据类型 lpModuleEntry, , $(删除数据类型)
+
+数据类型 LPMODULEENTRY1, , $(删除数据类型)
+
+数据类型 LPMODULEINFO, , $(删除数据类型)
+
+数据类型 lpNetworkInfo, , $(删除数据类型)
+
+数据类型 LPNSP_ROUTINE, , $(删除数据类型)
+
+数据类型 LPNTMS_ALLOCATION_INFORMATION, , $(删除数据类型)
+
+数据类型 LPNTMS_GUID, , $(删除数据类型)
+
+数据类型 LPNTMS_MOUNT_INFORMATION, , $(删除数据类型)
+
+数据类型 LPNTMS_NOTIFICATIONINFORMATION, , $(删除数据类型)
+
+数据类型 LPNTMS_OBJECTINFORMATIONA, , $(删除数据类型)
+
+数据类型 LPOLECLIENT, , $(删除数据类型)
+
+数据类型 LPOLESTREAM, , $(删除数据类型)
+
+数据类型 LPPROCESSENTRY, , $(删除数据类型)
+
+数据类型 lpQOCInfo, , $(删除数据类型)
+
+数据类型 LPRASDIALDLG, , $(删除数据类型)
+
+数据类型 LPRASENTRYDLGA, , $(删除数据类型)
+
+数据类型 LPRASMONITORDLG, , $(删除数据类型)
+
+数据类型 LPRASPBDLGA, , $(删除数据类型)
+
+数据类型 LPRESOURCE_CALLBACK, , $(删除数据类型)
+
+数据类型 LPSECURITYINFO, , $(删除数据类型)
+
+数据类型 LPSERVICE_ASYNC_INFO, , $(删除数据类型)
+
+数据类型 LPSNMP_MGR_SESSION, , $(删除数据类型)
+
+数据类型 LPSOFTDISTINFO, , $(删除数据类型)
+
+数据类型 LPTHREADENTRY, , $(删除数据类型)
+
+数据类型 LPTRIGGER, , $(删除数据类型)
+
+数据类型 lpVDMContext, , $(删除数据类型)
+
+数据类型 LPVDMLDT_ENTRY, , $(删除数据类型)
+
+数据类型 LPWIN_CERTIFICATE, , $(删除数据类型)
+
+数据类型 LSA_HANDLE, , $(删除数据类型)
+
+数据类型 LUID, , $(删除数据类型)
+
+数据类型 LUID_AND_ATTRIBUTES, , $(删除数据类型)
+
+数据类型 MAPIMessage, , $(删除数据类型)
+
+数据类型 MapiRecip, , $(删除数据类型)
+
+数据类型 MAT, , $(删除数据类型)
+
+数据类型 MEMORY_BASIC_INFORMATION, , $(删除数据类型)
+
+数据类型 MEMORYSTATUS, , $(删除数据类型)
+
+数据类型 MEMORYSTATUSEX, , $(删除数据类型)
+
+数据类型 MENUINFO, , $(删除数据类型)
+
+数据类型 MENUITEMINFO, , $(删除数据类型)
+
+数据类型 METAFILEPICT, , $(删除数据类型)
+
+数据类型 METARECORD, , $(删除数据类型)
+
+数据类型 MIB_SERVER_HANDLE, , $(删除数据类型)
+
+数据类型 MIDIHDR, , $(删除数据类型)
+
+数据类型 MIDIINCAPS, , $(删除数据类型)
+
+数据类型 MIDIOUTCAPS, , $(删除数据类型)
+
+数据类型 MIDL_STUB_DESC, , $(删除数据类型)
+
+数据类型 MIDL_STUB_MESSAGE, , $(删除数据类型)
+
+数据类型 MIXERCAPS, , $(删除数据类型)
+
+数据类型 MIXERCONTROL, , $(删除数据类型)
+
+数据类型 MIXERCONTROLDETAILS, , $(删除数据类型)
+
+数据类型 MIXERLINE, , $(删除数据类型)
+
+数据类型 MIXERLINECONTROLS, , $(删除数据类型)
+
+数据类型 MMCKINFO, , $(删除数据类型)
+
+数据类型 MMIOINFO, , $(删除数据类型)
+
+数据类型 MMTIME, , $(删除数据类型)
+
+数据类型 MONITORENUMPROC, , $(删除数据类型)
+
+数据类型 MONITORINFO, , $(删除数据类型)
+
+数据类型 MOUSEMOVEPOINT, , $(删除数据类型)
+
+数据类型 MPR_SERVER_HANDLE, , $(删除数据类型)
+
+数据类型 MQCOLUMNSET, , $(删除数据类型)
+
+数据类型 MQMSGPROPS, , $(删除数据类型)
+
+数据类型 MQQUEUEPROPS, , $(删除数据类型)
+
+数据类型 MQRESTRICTION, , $(删除数据类型)
+
+数据类型 MQSORTSET, , $(删除数据类型)
+
+数据类型 MSG, , $(删除数据类型)
+
+数据类型 msg1, , $(删除数据类型)
+
+数据类型 MSGBOXPARAMS, , $(删除数据类型)
+
+数据类型 MSIHANDLE, , $(删除数据类型)
+
+数据类型 MULTI_QI, , $(删除数据类型)
+
+数据类型 NDR_CCONTEXT, , $(删除数据类型)
+
+数据类型 NDR_USER_MARSHAL_INFO, , $(删除数据类型)
+
+数据类型 NETCONNECTINFOSTRUCT, , $(删除数据类型)
+
+数据类型 NETINFOSTRUCT, , $(删除数据类型)
+
+数据类型 NETRESOURCE, , $(删除数据类型)
+
+数据类型 NETSETUP_JOIN_STATUS, , $(删除数据类型)
+
+数据类型 NEWTEXTMETRIC, , $(删除数据类型)
+
+数据类型 NMHDR, , $(删除数据类型)
+
+数据类型 NOTIFYICONDATA, , $(删除数据类型)
+
+数据类型 NTSTATUS, , $(删除数据类型)
+
+数据类型 NUMBERFMT, , $(删除数据类型)
+
+数据类型 NUMPARSE, , $(删除数据类型)
+
+数据类型 OCPFIPARAMS, , $(删除数据类型)
+
+数据类型 OFSTRUCT, , $(删除数据类型)
+
+数据类型 OLE_COLOR, , $(删除数据类型)
+
+数据类型 OLEOPT_UPDATE, , $(删除数据类型)
+
+数据类型 OLESERVER, , $(删除数据类型)
+
+数据类型 OLESERVERDOC, , $(删除数据类型)
+
+数据类型 OLEUIBUSYA, , $(删除数据类型)
+
+数据类型 OLEUICHANGEICONA, , $(删除数据类型)
+
+数据类型 OLEUICHANGESOURCEA, , $(删除数据类型)
+
+数据类型 OLEUICONVERTA, , $(删除数据类型)
+
+数据类型 OLEUIEDITLINKSA, , $(删除数据类型)
+
+数据类型 OLEUIINSERTOBJECTA, , $(删除数据类型)
+
+数据类型 OLEUIOBJECTPROPSA, , $(删除数据类型)
+
+数据类型 OLEUIPASTESPECIALA, , $(删除数据类型)
+
+数据类型 OPENCARDNAMEA, , $(删除数据类型)
+
+数据类型 OPENCARDNAMEA_EX, , $(删除数据类型)
+
+数据类型 OPENFILENAME, , $(删除数据类型)
+
+数据类型 OPTIONALPMIB_IPFORWARDROW, , $(删除数据类型)
+
+数据类型 OSVERSIONINFO, , $(删除数据类型)
+
+数据类型 OSVERSIONINFOEXA, , $(删除数据类型)
+
+数据类型 OUT, , $(删除数据类型)
+
+数据类型 overlapped, , $(删除数据类型)
+
+数据类型 OVERLAPPED1, , $(删除数据类型)
+
+数据类型 PACL, , $(删除数据类型)
+
+数据类型 pAcl1, , $(删除数据类型)
+
+数据类型 PADDRESS_RESERVED, , $(删除数据类型)
+
+数据类型 PADSPROPINITPARAMS, , $(删除数据类型)
+
+数据类型 PADSVALUE, , $(删除数据类型)
+
+数据类型 PAGESETUPDLG, , $(删除数据类型)
+
+数据类型 PAINTSTRUCT, , $(删除数据类型)
+
+数据类型 PALETTEENTRY, , $(删除数据类型)
+
+数据类型 PALTTABINFO, , $(删除数据类型)
+
+数据类型 PANOSE, , $(删除数据类型)
+
+数据类型 PAPCFUNC, , $(删除数据类型)
+
+数据类型 ParseAction, , $(删除数据类型)
+
+数据类型 PAUDIT_EVENT_INFO, , $(删除数据类型)
+
+数据类型 PAUTHZ_ACCESS_REQUEST, , $(删除数据类型)
+
+数据类型 PAUTHZ_CLIENT_CONTEXT_HANDLE, , $(删除数据类型)
+
+数据类型 PAUTHZ_HANDLE, , $(删除数据类型)
+
+数据类型 PAUTHZ_RESOURCE_MANAGER_HANDLE, , $(删除数据类型)
+
+数据类型 PBERVAL, , $(删除数据类型)
+
+数据类型 pBerVal1, , $(删除数据类型)
+
+数据类型 PBLOB_TABLE, , $(删除数据类型)
+
+数据类型 PBMCALLBACKFN, , $(删除数据类型)
+
+数据类型 PCABINFO, , $(删除数据类型)
+
+数据类型 pccab, , $(删除数据类型)
+
+数据类型 PCCERT_CHAIN_CONTEXT, , $(删除数据类型)
+
+数据类型 PCCRL_CONTEXT, , $(删除数据类型)
+
+数据类型 PCCRYPT_OID_INFO, , $(删除数据类型)
+
+数据类型 PCCTL_CONTEXT, , $(删除数据类型)
+
+数据类型 PCERT_CHAIN, , $(删除数据类型)
+
+数据类型 PCERT_CHAIN_ENGINE_CONFIG, , $(删除数据类型)
+
+数据类型 PCERT_CHAIN_PARA, , $(删除数据类型)
+
+数据类型 PCERT_CHAIN_POLICY_PARA, , $(删除数据类型)
+
+数据类型 PCERT_CHAIN_POLICY_STATUS, , $(删除数据类型)
+
+数据类型 PCERT_CREATE_CONTEXT_PARA, , $(删除数据类型)
+
+数据类型 PCERT_ENHKEY_USAGE, , $(删除数据类型)
+
+数据类型 PCERT_EXTENSIONS, , $(删除数据类型)
+
+数据类型 PCERT_INFO, , $(删除数据类型)
+
+数据类型 PCERT_NAME_BLOB, , $(删除数据类型)
+
+数据类型 PCERT_NAME_INFO, , $(删除数据类型)
+
+数据类型 PCERT_PHYSICAL_STORE_INFO, , $(删除数据类型)
+
+数据类型 PCERT_PUBLIC_KEY_INFO, , $(删除数据类型)
+
+数据类型 PCERT_RDN, , $(删除数据类型)
+
+数据类型 PCERT_RDN_VALUE_BLOB, , $(删除数据类型)
+
+数据类型 PCERT_REVOCATION_PARA, , $(删除数据类型)
+
+数据类型 PCERT_REVOCATION_STATUS, , $(删除数据类型)
+
+数据类型 PCERT_SYSTEM_STORE_INFO, , $(删除数据类型)
+
+数据类型 PCLUS_RESOURCE_CLASS_INFO, , $(删除数据类型)
+
+数据类型 PCLUS_WORKER, , $(删除数据类型)
+
+数据类型 PCMSG_SIGNED_ENCODE_INFO, , $(删除数据类型)
+
+数据类型 PCMSG_SIGNER_ENCODE_INFO, , $(删除数据类型)
+
+数据类型 PCMSG_STREAM_INFO, , $(删除数据类型)
+
+数据类型 PCOLOR, , $(删除数据类型)
+
+数据类型 PCOLOR_NAME, , $(删除数据类型)
+
+数据类型 PCOLORMATCHSETUPA, , $(删除数据类型)
+
+数据类型 PCOMBOBOXINFO, , $(删除数据类型)
+
+数据类型 PCOMPVARS, , $(删除数据类型)
+
+数据类型 PCredHandle, , $(删除数据类型)
+
+数据类型 PCRL_ENTRY, , $(删除数据类型)
+
+数据类型 PCRL_INFO, , $(删除数据类型)
+
+数据类型 PCRYPT_ALGORITHM_IDENTIFIER, , $(删除数据类型)
+
+数据类型 PCRYPT_CREDENTIALS, , $(删除数据类型)
+
+数据类型 PCRYPT_DATA_BLOB, , $(删除数据类型)
+
+数据类型 PCRYPT_DECODE_PARA, , $(删除数据类型)
+
+数据类型 PCRYPT_DER_BLOB, , $(删除数据类型)
+
+数据类型 PCRYPT_ENCRYPT_MESSAGE_PARA, , $(删除数据类型)
+
+数据类型 PCRYPT_HASH_MESSAGE_PARA, , $(删除数据类型)
+
+数据类型 PCRYPT_INTEGER_BLOB, , $(删除数据类型)
+
+数据类型 PCRYPT_KEY_PROV_INFO, , $(删除数据类型)
+
+数据类型 PCRYPT_KEY_SIGN_MESSAGE_PARA, , $(删除数据类型)
+
+数据类型 PCRYPT_KEY_VERIFY_MESSAGE_PARA, , $(删除数据类型)
+
+数据类型 PCRYPT_SIGN_MESSAGE_PARA, , $(删除数据类型)
+
+数据类型 PCRYPT_URL_ARRAY, , $(删除数据类型)
+
+数据类型 PCRYPT_URL_INFO, , $(删除数据类型)
+
+数据类型 PCRYPT_VERIFY_MESSAGE_PARA, , $(删除数据类型)
+
+数据类型 PCTL_INFO, , $(删除数据类型)
+
+数据类型 PCTL_USAGE, , $(删除数据类型)
+
+数据类型 PCTL_VERIFY_USAGE_PARA, , $(删除数据类型)
+
+数据类型 PCTL_VERIFY_USAGE_STATUS, , $(删除数据类型)
+
+数据类型 PCURSORINFO, , $(删除数据类型)
+
+数据类型 PDBPROCESS, , $(删除数据类型)
+
+数据类型 PDH_COUNTER_PATH_ELEMENTS_A, , $(删除数据类型)
+
+数据类型 PDISPLAY_DEVICEA, , $(删除数据类型)
+
+数据类型 PDOMAIN_CONTROLLER_INFO, , $(删除数据类型)
+
+数据类型 PDS_NAME_RESULTA, , $(删除数据类型)
+
+数据类型 PDS_REPSYNCALL_ERRINFOA, , $(删除数据类型)
+
+数据类型 PDS_SCHEMA_GUID_MAPA, , $(删除数据类型)
+
+数据类型 PDWORD, , $(删除数据类型)
+
+数据类型 PENCRYPTION_CERTIFICATE, , $(删除数据类型)
+
+数据类型 PENCRYPTION_CERTIFICATE_HASH_LIST, , $(删除数据类型)
+
+数据类型 PENCRYPTION_CERTIFICATE_LIST, , $(删除数据类型)
+
+数据类型 pEntry, , $(删除数据类型)
+
+数据类型 PENUMERATION_BUFFER, , $(删除数据类型)
+
+数据类型 PENUMLOADED_MODULES_CALLBACK, , $(删除数据类型)
+
+数据类型 PENUMTYPEA, , $(删除数据类型)
+
+数据类型 perf, , $(删除数据类型)
+
+数据类型 PEXPLICIT_ACCESS_A, , $(删除数据类型)
+
+数据类型 PFAX_CONFIGURATIONA, , $(删除数据类型)
+
+数据类型 PFAX_CONTEXT_INFOA, , $(删除数据类型)
+
+数据类型 PFAX_DEVICE_STATUSA, , $(删除数据类型)
+
+数据类型 PFAX_GLOBAL_ROUTING_INFOA, , $(删除数据类型)
+
+数据类型 PFAX_JOB_ENTRYA, , $(删除数据类型)
+
+数据类型 PFAX_JOB_PARAMA, , $(删除数据类型)
+
+数据类型 PFAX_LOG_CATEGORYA, , $(删除数据类型)
+
+数据类型 PFAX_PORT_INFOA, , $(删除数据类型)
+
+数据类型 PFAX_RECIPIENT_CALLBACKA, , $(删除数据类型)
+
+数据类型 PFAX_ROUTING_METHODA, , $(删除数据类型)
+
+数据类型 PFDICABINETINFO, , $(删除数据类型)
+
+数据类型 PFE_EXPORT_FUNC, , $(删除数据类型)
+
+数据类型 PFE_IMPORT_FUNC, , $(删除数据类型)
+
+数据类型 PFIND_DEBUG_FILE_CALLBACK, , $(删除数据类型)
+
+数据类型 PFIND_EXE_FILE_CALLBACK, , $(删除数据类型)
+
+数据类型 PFIXED_INFO, , $(删除数据类型)
+
+数据类型 PFLASHWINFO, , $(删除数据类型)
+
+数据类型 PFN_AUTHZ_ACCESS_CHECK, , $(删除数据类型)
+
+数据类型 PFN_AUTHZ_COMPUTE_DYNAMIC_GROUPS, , $(删除数据类型)
+
+数据类型 PFN_AUTHZ_FREE_DYNAMIC_GROUPS, , $(删除数据类型)
+
+数据类型 PFN_CERT_ENUM_PHYSICAL_STORE, , $(删除数据类型)
+
+数据类型 PFN_CERT_ENUM_SYSTEM_STORE, , $(删除数据类型)
+
+数据类型 PFN_CERT_ENUM_SYSTEM_STORE_LOCATION, , $(删除数据类型)
+
+数据类型 PFN_CRYPT_ASYNC_PARAM_FREE_FUNC, , $(删除数据类型)
+
+数据类型 PFN_CRYPT_CANCEL_RETRIEVAL, , $(删除数据类型)
+
+数据类型 PFN_CRYPT_ENUM_KEYID_PROP, , $(删除数据类型)
+
+数据类型 PFN_CRYPT_ENUM_OID_INFO, , $(删除数据类型)
+
+数据类型 PFN_OBJECT_MGR_FUNCTS, , $(删除数据类型)
+
+数据类型 pfnalloc, , $(删除数据类型)
+
+数据类型 pfnclose, , $(删除数据类型)
+
+数据类型 PFNFCIALLOC, , $(删除数据类型)
+
+数据类型 PFNFCICLOSE, , $(删除数据类型)
+
+数据类型 PFNFCIDELETE, , $(删除数据类型)
+
+数据类型 PFNFCIFILEPLACED, , $(删除数据类型)
+
+数据类型 PFNFCIFREE, , $(删除数据类型)
+
+数据类型 PFNFCIGETNEXTCABINET, , $(删除数据类型)
+
+数据类型 PFNFCIGETOPENINFO, , $(删除数据类型)
+
+数据类型 PFNFCIGETTEMPFILE, , $(删除数据类型)
+
+数据类型 PFNFCIOPEN, , $(删除数据类型)
+
+数据类型 PFNFCIREAD, , $(删除数据类型)
+
+数据类型 PFNFCISEEK, , $(删除数据类型)
+
+数据类型 PFNFCISTATUS, , $(删除数据类型)
+
+数据类型 PFNFCIWRITE, , $(删除数据类型)
+
+数据类型 PFNFDIDECRYPT, , $(删除数据类型)
+
+数据类型 PFNFDINOTIFY, , $(删除数据类型)
+
+数据类型 pfnfree, , $(删除数据类型)
+
+数据类型 pfnopen, , $(删除数据类型)
+
+数据类型 pfnread, , $(删除数据类型)
+
+数据类型 pfnseek, , $(删除数据类型)
+
+数据类型 pfnwrite, , $(删除数据类型)
+
+数据类型 PFUNCTION_TABLE_ACCESS_ROUTINE, , $(删除数据类型)
+
+数据类型 PGET_MODULE_BASE_ROUTINE, , $(删除数据类型)
+
+数据类型 PGROUP_POLICY_OBJECTA, , $(删除数据类型)
+
+数据类型 PGUITHREADINFO, , $(删除数据类型)
+
+数据类型 PHCRYPTASYNC, , $(删除数据类型)
+
+数据类型 PHONEBUTTONINFO, , $(删除数据类型)
+
+数据类型 PHONECAPS, , $(删除数据类型)
+
+数据类型 PHONEEXTENSIONID, , $(删除数据类型)
+
+数据类型 PHONEINITIALIZEEXPARAMS, , $(删除数据类型)
+
+数据类型 PHONEMESSAGE, , $(删除数据类型)
+
+数据类型 PHONESTATUS, , $(删除数据类型)
+
+数据类型 PHPROFILE, , $(删除数据类型)
+
+数据类型 PHUSKEY, , $(删除数据类型)
+
+数据类型 PICTDESC, , $(删除数据类型)
+
+数据类型 PIMAGE_DEBUG_INFORMATION, , $(删除数据类型)
+
+数据类型 PIMAGE_LOAD_CONFIG_DIRECTORY, , $(删除数据类型)
+
+数据类型 PIMAGE_NT_HEADERS, , $(删除数据类型)
+
+数据类型 PIMAGE_SECTION_HEADER, , $(删除数据类型)
+
+数据类型 PIMAGEHLP_CONTEXT, , $(删除数据类型)
+
+数据类型 PIMAGEHLP_LINE, , $(删除数据类型)
+
+数据类型 PIMAGEHLP_MODULE, , $(删除数据类型)
+
+数据类型 PIMAGEHLP_MODULEW, , $(删除数据类型)
+
+数据类型 PIMAGEHLP_STACK_FRAME, , $(删除数据类型)
+
+数据类型 PIMAGEHLP_STATUS_ROUTINE, , $(删除数据类型)
+
+数据类型 PIMAGEHLP_SYMBOL, , $(删除数据类型)
+
+数据类型 PINFCONTEXT, , $(删除数据类型)
+
+数据类型 PINFCONTEXTfContext, , $(删除数据类型)
+
+数据类型 PINHERITED_FROMA, , $(删除数据类型)
+
+数据类型 PINHERITED_FROMW, , $(删除数据类型)
+
+数据类型 PIO_COUNTERS, , $(删除数据类型)
+
+数据类型 PIP_ADAPTER_INDEX_MAP, , $(删除数据类型)
+
+数据类型 PIP_ADAPTER_INFO, , $(删除数据类型)
+
+数据类型 PIP_INTERFACE_INFO, , $(删除数据类型)
+
+数据类型 PIP_OPTION_INFORMATION, , $(删除数据类型)
+
+数据类型 PIP_PER_ADAPTER_INFO, , $(删除数据类型)
+
+数据类型 PIP_UNIDIRECTIONAL_ADAPTER_ADDRESS, , $(删除数据类型)
+
+数据类型 PIXELFORMATDESCRIPTOR, , $(删除数据类型)
+
+数据类型 PKSALLOCATOR_FRAMING, , $(删除数据类型)
+
+数据类型 PKSCLOCK_CREATE, , $(删除数据类型)
+
+数据类型 PKSNODE_CREATE, , $(删除数据类型)
+
+数据类型 PKSPIN_CONNECT, , $(删除数据类型)
+
+数据类型 PLASTINPUTINFO, , $(删除数据类型)
+
+数据类型 PLDAP, , $(删除数据类型)
+
+数据类型 PLDAP_VERSION_INFO, , $(删除数据类型)
+
+数据类型 PLDAPControlA, , $(删除数据类型)
+
+数据类型 PLDAPMessage, , $(删除数据类型)
+
+数据类型 PLDAPSearch, , $(删除数据类型)
+
+数据类型 PLDAPSortKeyA, , $(删除数据类型)
+
+数据类型 PLOADED_IMAGE, , $(删除数据类型)
+
+数据类型 PLOG_EVENT_ROUTINE, , $(删除数据类型)
+
+数据类型 PLSA_HANDLE, , $(删除数据类型)
+
+数据类型 PLSA_OBJECT_ATTRIBUTES, , $(删除数据类型)
+
+数据类型 PLSA_OPERATIONAL_MODE, , $(删除数据类型)
+
+数据类型 PLSA_REFERENCED_DOMAIN_LIST, , $(删除数据类型)
+
+数据类型 PLSA_STRING, , $(删除数据类型)
+
+数据类型 PLSA_TRANSLATED_NAME, , $(删除数据类型)
+
+数据类型 PLSA_TRANSLATED_SID, , $(删除数据类型)
+
+数据类型 PLSA_UNICODE_STRING, , $(删除数据类型)
+
+数据类型 PMCAST_LEASE_REQUEST, , $(删除数据类型)
+
+数据类型 PMCAST_SCOPE_CTX, , $(删除数据类型)
+
+数据类型 PMENUBARINFO, , $(删除数据类型)
+
+数据类型 PMIB_ICMP, , $(删除数据类型)
+
+数据类型 PMIB_IFROW, , $(删除数据类型)
+
+数据类型 PMIB_IFTABLE, , $(删除数据类型)
+
+数据类型 PMIB_IPADDRTABLE, , $(删除数据类型)
+
+数据类型 PMIB_IPFORWARDROW, , $(删除数据类型)
+
+数据类型 PMIB_IPFORWARDTABLE, , $(删除数据类型)
+
+数据类型 PMIB_IPMCAST_MFE, , $(删除数据类型)
+
+数据类型 PMIB_IPNETROW, , $(删除数据类型)
+
+数据类型 PMIB_IPNETTABLE, , $(删除数据类型)
+
+数据类型 PMIB_IPSTATS, , $(删除数据类型)
+
+数据类型 PMIB_TCPROW, , $(删除数据类型)
+
+数据类型 PMIB_TCPSTATS, , $(删除数据类型)
+
+数据类型 PMIB_TCPTABLE, , $(删除数据类型)
+
+数据类型 PMIB_UDPSTATS, , $(删除数据类型)
+
+数据类型 PMIB_UDPTABLE, , $(删除数据类型)
+
+数据类型 PMIDL_TYPE_PICKLING_INFO, , $(删除数据类型)
+
+数据类型 PMPR_IPINIP_INTERFACE_, , $(删除数据类型)
+
+数据类型 PMQRECEIVECALLBACK, , $(删除数据类型)
+
+数据类型 PMSV, , $(删除数据类型)
+
+数据类型 PNAMED_PROFILE_INFO, , $(删除数据类型)
+
+数据类型 PNDR_PIPE_DESC, , $(删除数据类型)
+
+数据类型 PNDR_PIPE_MESSAGE, , $(删除数据类型)
+
+数据类型 PNTSTATUS, , $(删除数据类型)
+
+数据类型 POBJECT_TYPE_LIST, , $(删除数据类型)
+
+数据类型 POBJECTS_AND_NAME_A, , $(删除数据类型)
+
+数据类型 POBJECTS_AND_SID, , $(删除数据类型)
+
+数据类型 PODBC_VS_ARGS, , $(删除数据类型)
+
+数据类型 POINT, , $(删除数据类型)
+
+数据类型 POINTAPI, , $(删除数据类型)
+
+数据类型 POINTFX, , $(删除数据类型)
+
+数据类型 POINTL, , $(删除数据类型)
+
+数据类型 POINTS, , $(删除数据类型)
+
+数据类型 POLYTEXT, , $(删除数据类型)
+
+数据类型 PPATCH_IGNORE_RANGE, , $(删除数据类型)
+
+数据类型 PPATCH_PROGRESS_CALLBACK, , $(删除数据类型)
+
+数据类型 PPATCH_RETAIN_RANGE, , $(删除数据类型)
+
+数据类型 PPDH_BROWSE_DLG_CONFIG_A, , $(删除数据类型)
+
+数据类型 PPDH_COUNTER_INFO_A, , $(删除数据类型)
+
+数据类型 PPDH_FMT_COUNTERVALUE, , $(删除数据类型)
+
+数据类型 PPDH_FMT_COUNTERVALUE_ITEM_A, , $(删除数据类型)
+
+数据类型 PPDH_LOG_SERVICE_QUERY_INFO_A, , $(删除数据类型)
+
+数据类型 PPDH_RAW_COUNTER, , $(删除数据类型)
+
+数据类型 PPDH_RAW_COUNTER_ITEM_A, , $(删除数据类型)
+
+数据类型 PPDH_RAW_LOG_RECORD, , $(删除数据类型)
+
+数据类型 PPDH_STATISTICS, , $(删除数据类型)
+
+数据类型 PPDH_TIME_INFO, , $(删除数据类型)
+
+数据类型 PPERUSERSECTION, , $(删除数据类型)
+
+数据类型 PPP_EAP_INFO, , $(删除数据类型)
+
+数据类型 PPROCESS_MEMORY_COUNTERS, , $(删除数据类型)
+
+数据类型 PPROFILE, , $(删除数据类型)
+
+数据类型 PPROFILEHEADER, , $(删除数据类型)
+
+数据类型 PPROTECTED_FILE_DATA, , $(删除数据类型)
+
+数据类型 PPSAPI_WS_WATCH_INFORMATION, , $(删除数据类型)
+
+数据类型 PQUOTA_LIMITS, , $(删除数据类型)
+
+数据类型 PRAS_PORT_, , $(删除数据类型)
+
+数据类型 PRAS_SERVER_, , $(删除数据类型)
+
+数据类型 PRAS_USER_, , $(删除数据类型)
+
+数据类型 PREAD_PROCESS_MEMORY_ROUTINE, , $(删除数据类型)
+
+数据类型 PRINTDLG, , $(删除数据类型)
+
+数据类型 PRINTDLGEXA, , $(删除数据类型)
+
+数据类型 PRINTER_DEFAULTS, , $(删除数据类型)
+
+数据类型 PRIVILEGE_SET, , $(删除数据类型)
+
+数据类型 PROCESS_HEAP_ENTRY, , $(删除数据类型)
+
+数据类型 PROCESS_INFORMATION, , $(删除数据类型)
+
+数据类型 PROG_INVOKE_SETTING, , $(删除数据类型)
+
+数据类型 PROGRESS_ROUTINE, , $(删除数据类型)
+
+数据类型 PROPSHEETHEADER, , $(删除数据类型)
+
+数据类型 PROPVARIANT, , $(删除数据类型)
+
+数据类型 PROUTING_PROTOCOL_CONFIG, , $(删除数据类型)
+
+数据类型 ProxyFileInfo, , $(删除数据类型)
+
+数据类型 PRPC_ASYNC_STATE, , $(删除数据类型)
+
+数据类型 PRPC_POLICY, , $(删除数据类型)
+
+数据类型 PRTM_DEST_HANDLE, , $(删除数据类型)
+
+数据类型 PRTM_DEST_INFO, , $(删除数据类型)
+
+数据类型 PRTM_ENTITY_EXPORT_METHOD, , $(删除数据类型)
+
+数据类型 PRTM_ENTITY_EXPORT_METHODS, , $(删除数据类型)
+
+数据类型 PRTM_ENTITY_HANDLE, , $(删除数据类型)
+
+数据类型 PRTM_ENTITY_INFO, , $(删除数据类型)
+
+数据类型 PRTM_ENTITY_METHOD_INPUT, , $(删除数据类型)
+
+数据类型 PRTM_ENTITY_METHOD_OUTPUT, , $(删除数据类型)
+
+数据类型 PRTM_ENUM_HANDLE, , $(删除数据类型)
+
+数据类型 PRTM_NET_ADDRESS, , $(删除数据类型)
+
+数据类型 PRTM_NEXTHOP_CHANGE_FLAGS, , $(删除数据类型)
+
+数据类型 PRTM_NEXTHOP_HANDLE, , $(删除数据类型)
+
+数据类型 PRTM_NEXTHOP_INFO, , $(删除数据类型)
+
+数据类型 PRTM_NOTIFY_HANDLE, , $(删除数据类型)
+
+数据类型 PRTM_REGN_PROFILE, , $(删除数据类型)
+
+数据类型 PRTM_ROUTE_CHANGE_FLAGS, , $(删除数据类型)
+
+数据类型 PRTM_ROUTE_HANDLE, , $(删除数据类型)
+
+数据类型 PRTM_ROUTE_INFO, , $(删除数据类型)
+
+数据类型 PRTM_ROUTE_LIST_HANDLE, , $(删除数据类型)
+
+数据类型 PRTM_VIEW_SET, , $(删除数据类型)
+
+数据类型 PSCROLLBARINFO, , $(删除数据类型)
+
+数据类型 PSecBuffer, , $(删除数据类型)
+
+数据类型 PSecBufferDesc, , $(删除数据类型)
+
+数据类型 PSecPkgInfoA, , $(删除数据类型)
+
+数据类型 PSP_ALTPLATFORM_INFO, , $(删除数据类型)
+
+数据类型 PSP_BACKUP_QUEUE_PARAMS_A, , $(删除数据类型)
+
+数据类型 PSP_CLASSIMAGELIST_DATA, , $(删除数据类型)
+
+数据类型 PSP_CLASSINSTALL_HEADER, , $(删除数据类型)
+
+数据类型 PSP_DETSIG_CMPPROC, , $(删除数据类型)
+
+数据类型 PSP_DEVICE_INTERFACE_DATA, , $(删除数据类型)
+
+数据类型 PSP_DEVICE_INTERFACE_DETAIL_DATA_A, , $(删除数据类型)
+
+数据类型 PSP_DEVINFO_DATA, , $(删除数据类型)
+
+数据类型 PSP_DEVINFO_LIST_DETAIL_DATA_A, , $(删除数据类型)
+
+数据类型 PSP_DEVINSTALL_PARAMS_A, , $(删除数据类型)
+
+数据类型 PSP_DRVINFO_DATA_A, , $(删除数据类型)
+
+数据类型 PSP_DRVINFO_DETAIL_DATA_A, , $(删除数据类型)
+
+数据类型 PSP_DRVINSTALL_PARAMS, , $(删除数据类型)
+
+数据类型 PSP_FILE_CALLBACK_A, , $(删除数据类型)
+
+数据类型 PSP_FILE_COPY_PARAMS_A, , $(删除数据类型)
+
+数据类型 PSP_INF_INFORMATION, , $(删除数据类型)
+
+数据类型 PSP_INF_INFORMATIONfInformation, , $(删除数据类型)
+
+数据类型 PSP_INSTALLWIZARD_DATAstallWizardData, , $(删除数据类型)
+
+数据类型 PSP_ORIGINAL_FILE_INFO_A, , $(删除数据类型)
+
+数据类型 psuAction, , $(删除数据类型)
+
+数据类型 PSYM_ENUMERATESYMBOLS_CALLBACK, , $(删除数据类型)
+
+数据类型 PSYM_ENUMMODULES_CALLBACK, , $(删除数据类型)
+
+数据类型 PSYM_ENUMSYMBOLS_CALLBACK, , $(删除数据类型)
+
+数据类型 PSYMBOL_FUNCENTRY_CALLBACK, , $(删除数据类型)
+
+数据类型 PSYMBOL_INFO, , $(删除数据类型)
+
+数据类型 PSYMBOL_REGISTERED_CALLBACK, , $(删除数据类型)
+
+数据类型 PTAGTYPE, , $(删除数据类型)
+
+数据类型 PTC_GEN_FILTER, , $(删除数据类型)
+
+数据类型 PTC_GEN_FLOW, , $(删除数据类型)
+
+数据类型 PTC_IFC_DESCRIPTOR, , $(删除数据类型)
+
+数据类型 PTCI_CLIENT_FUNC_LIST, , $(删除数据类型)
+
+数据类型 PTIMERAPCROUTINE, , $(删除数据类型)
+
+数据类型 PTimeStamp, , $(删除数据类型)
+
+数据类型 PTITLEBARINFO, , $(删除数据类型)
+
+数据类型 PTRANSLATE_ADDRESS_ROUTINE, , $(删除数据类型)
+
+数据类型 PTRIVERTEX, , $(删除数据类型)
+
+数据类型 PTRUSTED_DOMAIN_AUTH_INFORMATION, , $(删除数据类型)
+
+数据类型 PTRUSTED_DOMAIN_INFORMATION_EX, , $(删除数据类型)
+
+数据类型 PTRUSTEE_A, , $(删除数据类型)
+
+数据类型 PUBLICKEYSTRUC, , $(删除数据类型)
+
+数据类型 PULONG_PTR, , $(删除数据类型)
+
+数据类型 PUSER_ALL_INFORMATION, , $(删除数据类型)
+
+数据类型 PUT_RECORD, , $(删除数据类型)
+
+数据类型 PWINDOWINFO, , $(删除数据类型)
+
+数据类型 PWLX_MPR_NOTIFY_INFO, , $(删除数据类型)
+
+数据类型 PWORKER_START_ROUTINE, , $(删除数据类型)
+
+数据类型 PWT_EVENT_BINDING, , $(删除数据类型)
+
+数据类型 PWT_EVENT_ENTRY, , $(删除数据类型)
+
+数据类型 PWT_TIMER_ENTRY, , $(删除数据类型)
+
+数据类型 PWTS_PROCESS_INFOA, , $(删除数据类型)
+
+数据类型 PWTS_SERVER_INFOA, , $(删除数据类型)
+
+数据类型 PWTS_SESSION_INFOA, , $(删除数据类型)
+
+数据类型 QOS, , $(删除数据类型)
+
+数据类型 QUERY_SERVICE_CONFIG, , $(删除数据类型)
+
+数据类型 QUERY_SERVICE_LOCK_STATUS, , $(删除数据类型)
+
+数据类型 QUERYCONTEXT, , $(删除数据类型)
+
+数据类型 QUERYOPTION, , $(删除数据类型)
+
+数据类型 QUEUEHANDLE, , $(删除数据类型)
+
+数据类型 RAS_PARAMETERS, , $(删除数据类型)
+
+数据类型 RAS_PORT_, , $(删除数据类型)
+
+数据类型 RAS_PORT_STATISTICS, , $(删除数据类型)
+
+数据类型 RAS_SECURITY_INFO, , $(删除数据类型)
+
+数据类型 RAS_SERVER_HANDLE, , $(删除数据类型)
+
+数据类型 RAS_STATS, , $(删除数据类型)
+
+数据类型 RASAUTODIALENTRYA, , $(删除数据类型)
+
+数据类型 RASCONN, , $(删除数据类型)
+
+数据类型 RASCONNSTATUS, , $(删除数据类型)
+
+数据类型 RASCREDENTIALSA, , $(删除数据类型)
+
+数据类型 RASCTRYINFOA, , $(删除数据类型)
+
+数据类型 RASDEVINFOA, , $(删除数据类型)
+
+数据类型 RASDIALEXTENSIONS, , $(删除数据类型)
+
+数据类型 RASDIALPARAMS, , $(删除数据类型)
+
+数据类型 RASEAPUSERIDENTITYA, , $(删除数据类型)
+
+数据类型 RASENTRYA, , $(删除数据类型)
+
+数据类型 RASENTRYNAME, , $(删除数据类型)
+
+数据类型 RASSUBENTRYA, , $(删除数据类型)
+
+数据类型 RASTERIZER_STATUS, , $(删除数据类型)
+
+数据类型 Rect, , $(删除数据类型)
+
+数据类型 RECT1, , $(删除数据类型)
+
+数据类型 RECTL, , $(删除数据类型)
+
+数据类型 REFFMTID, , $(删除数据类型)
+
+数据类型 REFGPEXTENSIONID, , $(删除数据类型)
+
+数据类型 RESOURCE_HANDLE, , $(删除数据类型)
+
+数据类型 RFCDLGPARAMA, , $(删除数据类型)
+
+数据类型 RGBQUAD, , $(删除数据类型)
+
+数据类型 RGBTRIPLE, , $(删除数据类型)
+
+数据类型 RgnData, , $(删除数据类型)
+
+数据类型 RGNDATA1, , $(删除数据类型)
+
+数据类型 RGNDATAHEADER, , $(删除数据类型)
+
+数据类型 RPC_ADDRESS_CHANGE_FN, , $(删除数据类型)
+
+数据类型 RPC_BINDING_VECTOR, , $(删除数据类型)
+
+数据类型 RPC_IF_CALLBACK_FN, , $(删除数据类型)
+
+数据类型 RPC_IF_ID, , $(删除数据类型)
+
+数据类型 RPC_IF_ID_VECTOR, , $(删除数据类型)
+
+数据类型 RPC_MESSAGE, , $(删除数据类型)
+
+数据类型 RPC_PROTSEQ_VECTORA, , $(删除数据类型)
+
+数据类型 RPC_SECURITY_QOS, , $(删除数据类型)
+
+数据类型 RPC_SERVER_INTERFACE, , $(删除数据类型)
+
+数据类型 RPC_STATS_VECTOR, , $(删除数据类型)
+
+数据类型 RPC_TRANSFER_SYNTAX, , $(删除数据类型)
+
+数据类型 RPC_VERSION, , $(删除数据类型)
+
+数据类型 RTM_DEST_HANDLE, , $(删除数据类型)
+
+数据类型 RTM_ENTITY_HANDLE, , $(删除数据类型)
+
+数据类型 RTM_ENUM_FLAGS, , $(删除数据类型)
+
+数据类型 RTM_ENUM_HANDLE, , $(删除数据类型)
+
+数据类型 RTM_EVENT_CALLBACK, , $(删除数据类型)
+
+数据类型 RTM_MATCH_FLAGS, , $(删除数据类型)
+
+数据类型 RTM_NEXTHOP_HANDLE, , $(删除数据类型)
+
+数据类型 RTM_NOTIFY_FLAGS, , $(删除数据类型)
+
+数据类型 RTM_NOTIFY_HANDLE, , $(删除数据类型)
+
+数据类型 RTM_ROUTE_HANDLE, , $(删除数据类型)
+
+数据类型 RTM_ROUTE_LIST_HANDLE, , $(删除数据类型)
+
+数据类型 RTM_VIEW_SET, , $(删除数据类型)
+
+数据类型 SAFEARRAY, , $(删除数据类型)
+
+数据类型 SAFEARRAYBOUND, , $(删除数据类型)
+
+数据类型 SAM_HANDLE, , $(删除数据类型)
+
+数据类型 SCARD_IO_REQUEST, , $(删除数据类型)
+
+数据类型 SCARD_READERSTATEA, , $(删除数据类型)
+
+数据类型 SCARDCONTEXT, , $(删除数据类型)
+
+数据类型 SCARDHANDLE, , $(删除数据类型)
+
+数据类型 SCRIPT_ANALYSIS, , $(删除数据类型)
+
+数据类型 SCRIPT_CACHE, , $(删除数据类型)
+
+数据类型 SCRIPT_CONTROL, , $(删除数据类型)
+
+数据类型 SCRIPT_DIGITSUBSTITUTE, , $(删除数据类型)
+
+数据类型 SCRIPT_FONTPROPERTIES, , $(删除数据类型)
+
+数据类型 SCRIPT_ITEM, , $(删除数据类型)
+
+数据类型 SCRIPT_LOGATTR, , $(删除数据类型)
+
+数据类型 SCRIPT_STATE, , $(删除数据类型)
+
+数据类型 SCRIPT_STRING_ANALYSIS, , $(删除数据类型)
+
+数据类型 SCRIPT_TABDEF, , $(删除数据类型)
+
+数据类型 SCRIPT_VISATTR, , $(删除数据类型)
+
+数据类型 SCROLLINFO, , $(删除数据类型)
+
+数据类型 SE_OBJECT_TYPE, , $(删除数据类型)
+
+数据类型 SEC_CHAR, , $(删除数据类型)
+
+数据类型 SEC_GET_KEY_FN, , $(删除数据类型)
+
+数据类型 SECURITY_ATTRIBUTES, , $(删除数据类型)
+
+数据类型 SECURITY_DESCRIPTOR, , $(删除数据类型)
+
+数据类型 SECURITY_PACKAGE_OPTIONS, , $(删除数据类型)
+
+数据类型 SECURITY_QUALITY_OF_SERVICE, , $(删除数据类型)
+
+数据类型 SERVICE_INFO, , $(删除数据类型)
+
+数据类型 SERVICE_STATUS, , $(删除数据类型)
+
+数据类型 SERVICE_TABLE_ENTRY, , $(删除数据类型)
+
+数据类型 SHELLEXECUTEINFOA, , $(删除数据类型)
+
+数据类型 SHELLFLAGSTATE, , $(删除数据类型)
+
+数据类型 SHFILEINFO, , $(删除数据类型)
+
+数据类型 SHFILEOPSTRUCT, , $(删除数据类型)
+
+数据类型 SHQUERYRBINFO, , $(删除数据类型)
+
+数据类型 Sid, , $(删除数据类型)
+
+数据类型 SID1, , $(删除数据类型)
+
+数据类型 SID_AND_ATTRIBUTES, , $(删除数据类型)
+
+数据类型 SID_IDENTIFIER_AUTHORITY, , $(删除数据类型)
+
+数据类型 Single, , $(删除数据类型)
+
+数据类型 SIP_ADD_NEWPROVIDER, , $(删除数据类型)
+
+数据类型 SIP_INDIRECT_DATA, , $(删除数据类型)
+
+数据类型 SIP_SUBJECTINFO, , $(删除数据类型)
+
+数据类型 SIZE, , $(删除数据类型)
+
+数据类型 SIZEL, , $(删除数据类型)
+
+数据类型 SMALL_RECT, , $(删除数据类型)
+
+数据类型 smiINT, , $(删除数据类型)
+
+数据类型 smiLPCOCTETS, , $(删除数据类型)
+
+数据类型 smiLPCOID, , $(删除数据类型)
+
+数据类型 smiLPCVALUE, , $(删除数据类型)
+
+数据类型 smiLPINT, , $(删除数据类型)
+
+数据类型 smiLPOCTETS, , $(删除数据类型)
+
+数据类型 smiLPOID, , $(删除数据类型)
+
+数据类型 smiLPOPAQUE, , $(删除数据类型)
+
+数据类型 smiLPTIMETICKS, , $(删除数据类型)
+
+数据类型 smiLPUINT, , $(删除数据类型)
+
+数据类型 smiLPVALUE, , $(删除数据类型)
+
+数据类型 smiLPVENDORINFO, , $(删除数据类型)
+
+数据类型 smiTIMETICKS, , $(删除数据类型)
+
+数据类型 smiUINT, , $(删除数据类型)
+
+数据类型 SNMPAPI_CALLBACK, , $(删除数据类型)
+
+数据类型 SNMPAPI_STATUS, , $(删除数据类型)
+
+数据类型 SnmpVarBind, , $(删除数据类型)
+
+数据类型 SnmpVarBindList, , $(删除数据类型)
+
+数据类型 SOCKADDR, , $(删除数据类型)
+
+数据类型 sockaddr1, , $(删除数据类型)
+
+数据类型 SOFTDISTINFO, , $(删除数据类型)
+
+数据类型 SOLE_AUTHENTICATION_SERVICE, , $(删除数据类型)
+
+数据类型 SQLHANDLE, , $(删除数据类型)
+
+数据类型 SQLHDESC, , $(删除数据类型)
+
+数据类型 SQLLEN, , $(删除数据类型)
+
+数据类型 SQLROWOFFSET, , $(删除数据类型)
+
+数据类型 SQLULEN, , $(删除数据类型)
+
+数据类型 sstruct, , $(删除数据类型)
+
+数据类型 STACKFRAME, , $(删除数据类型)
+
+数据类型 STARTUPINFO, , $(删除数据类型)
+
+数据类型 STGMEDIUM, , $(删除数据类型)
+
+数据类型 STGOPTIONS, , $(删除数据类型)
+
+数据类型 String, , $(删除数据类型)
+
+数据类型 STRRET, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_ASSOCKEY, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_ASSOCSTR, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_AUTHZ_CONTEXT_INFORMATION_CLASS, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_BMFORMAT, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_COLORTYPE, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_COMPUTER_NAME_FORMAT, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_CY, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_DS_KCC_TASKID, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_DS_NAME_FLAGS, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_DS_NAME_FORMAT, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_DS_REPL_INFO_TYPE, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_DS_SPN_NAME_TYPE, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_DS_SPN_WRITE_OP, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_EXTENDED_NAME_FORMAT, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_FILETIME, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_FINDEX_INFO_LEVELS, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_FINDEX_SEARCH_OPS, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_GET_FILEEX_INFO_LEVELS, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_IMAGEHLP_TYPES, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_INSTALLSTATE, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_INSTALLTYPE, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_INSTALLUILEVEL, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_LARGE_INTEGER, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_MGM_ENUM_TYPES, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_MIDL_ES_ALLOC, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_MIDL_ES_CODE, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_MIDL_ES_READ, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_MIDL_ES_WRITE, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_MSICOLINFO, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_MSICOSTTREE, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_MSIMODIFY, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_MSIRUNMODE, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_NDR_CCONTEXT, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_NDR_SCONTEXT, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_NETLOGON_LOGON_INFO_CLASS, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_NETSETUP_NAME_TYPE, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_OLE_SERVER_USE, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_OLEOPT_RENDER, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_OLEOPT_UPDATE, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_PACL, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_PLUID, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_POINT, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_POLICY_DOMAIN_INFORMATION_CLASS, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_POLICY_INFORMATION_CLASS, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_POLICY_NOTIFICATION_INFORMATION_CLASS, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_RASPROJECTION, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_RECT, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_REGKIND, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_SC_ENUM_TYPE, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_SC_STATUS_TYPE, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_SECURITY_IMPERSONATION_LEVEL, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_SECURITY_LOGON_TYPE, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_SetupFileLogInfo, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_SHREGDEL_FLAGS, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_SHREGENUM_FLAGS, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_TOKEN_TYPE, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_TRUSTED_INFORMATION_CLASS, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_URLIS, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_WSAESETSERVICEOP, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_WTS_CONFIG_CLASS, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_WTS_INFO_CLASS, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_WTS_VIRTUAL_CLASS, , $(删除数据类型)
+
+数据类型 Struct_MembersOf_XLAT_SIDE, , $(删除数据类型)
+
+数据类型 STYLEBUF, , $(删除数据类型)
+
+数据类型 SURROGATE, , $(删除数据类型)
+
+数据类型 SYSTEM_INFO, , $(删除数据类型)
+
+数据类型 SYSTEM_POWER_CAPABILITIES, , $(删除数据类型)
+
+数据类型 SYSTEM_POWER_STATUS, , $(删除数据类型)
+
+数据类型 SYSTEMTIME, , $(删除数据类型)
+
+数据类型 T_PTR, , $(删除数据类型)
+
+数据类型 TAGTYPE, , $(删除数据类型)
+
+数据类型 Target, , $(删除数据类型)
+
+数据类型 TASKENUMPROCEX, , $(删除数据类型)
+
+数据类型 TCOMP, , $(删除数据类型)
+
+数据类型 TERFACEDATA, , $(删除数据类型)
+
+数据类型 TERNET_PORT, , $(删除数据类型)
+
+数据类型 TEXTMETRIC, , $(删除数据类型)
+
+数据类型 TIME_ZONE_INFORMATION, , $(删除数据类型)
+
+数据类型 TIMECAPS, , $(删除数据类型)
+
+数据类型 TOKEN_GROUPS, , $(删除数据类型)
+
+数据类型 TOKEN_PRIVILEGES, , $(删除数据类型)
+
+数据类型 TOKEN_SOURCE, , $(删除数据类型)
+
+数据类型 TPMPARAMS, , $(删除数据类型)
+
+数据类型 TRACKMOUSEEVENT, , $(删除数据类型)
+
+数据类型 TRANSMIT_FILE_BUFFERS, , $(删除数据类型)
+
+数据类型 TRIVERTEX, , $(删除数据类型)
+
+数据类型 uCLSSPEC, , $(删除数据类型)
+
+数据类型 UDATE, , $(删除数据类型)
+
+数据类型 UILANGUAGE_ENUMPROCA, , $(删除数据类型)
+
+数据类型 ULARGE_INTEGER, , $(删除数据类型)
+
+数据类型 ULONG, , $(删除数据类型)
+
+数据类型 ULONG_PTR, , $(删除数据类型)
+
+数据类型 URL_COMPONENTSA, , $(删除数据类型)
+
+数据类型 UUID_VECTOR, , $(删除数据类型)
+
+数据类型 VALENTA, , $(删除数据类型)
+
+数据类型 VARIANT, , $(删除数据类型)
+
+数据类型 Variant1, , $(删除数据类型)
+
+数据类型 VARSTRING, , $(删除数据类型)
+
+数据类型 VDM_SEGINFO, , $(删除数据类型)
+
+数据类型 WAITORTIMERCALLBACK, , $(删除数据类型)
+
+数据类型 WAVEFILTER, , $(删除数据类型)
+
+数据类型 WAVEFORMAT, , $(删除数据类型)
+
+数据类型 WAVEFORMATEX, , $(删除数据类型)
+
+数据类型 WAVEHDR, , $(删除数据类型)
+
+数据类型 WAVEINCAPS, , $(删除数据类型)
+
+数据类型 WAVEOUTCAPS, , $(删除数据类型)
+
+数据类型 WGLSWAP, , $(删除数据类型)
+
+数据类型 WIN, , $(删除数据类型)
+
+数据类型 WINDOWPLACEMENT, , $(删除数据类型)
+
+数据类型 WINEVENTPROC, , $(删除数据类型)
+
+数据类型 WNDCLASS, , $(删除数据类型)
+
+数据类型 WNDCLASSEX, , $(删除数据类型)
+
+数据类型 WORKERFUNCTION, , $(删除数据类型)
+
+数据类型 WSABUF, , $(删除数据类型)
+
+数据类型 WSADATA, , $(删除数据类型)
+
+数据类型 WSAEVENT, , $(删除数据类型)
+
+数据类型 WSANAMESPACE_INFOA, , $(删除数据类型)
+
+数据类型 WSANETWORKEVENTS, , $(删除数据类型)
+
+数据类型 WSAOVERLAPPED, , $(删除数据类型)
+
+数据类型 WSAOVERLAPPED_COMPLETION_ROUTINE, , $(删除数据类型)
+
+数据类型 WSAPROTOCOL_INFOA, , $(删除数据类型)
+
+数据类型 WSAPROTOCOL_INFOW, , $(删除数据类型)
+
+数据类型 WSAQUERYSETA, , $(删除数据类型)
+
+数据类型 WSASERVICECLASSINFOA, , $(删除数据类型)
+
+数据类型 WSPDATA, , $(删除数据类型)
+
+数据类型 WSPPROC_TABLE, , $(删除数据类型)
+
+数据类型 WSPUPCALLTABLE, , $(删除数据类型)
+
+数据类型 XA_SWITCH_FLAGS, , $(删除数据类型)
+
+数据类型 xa_switch_t, , $(删除数据类型)
+
+数据类型 XFORM, , $(删除数据类型)
+
+数据类型 xform1, , $(删除数据类型)
+
+
+.DLL命令 DLL命令, 空白型, "", "", , 由于易向导不支持自定义数据类型，所以要预先定义带有自定义数据类型的参数。
+    .参数 参数, 整数型, , 
+    .参数 ABC, ABC, , $(删除)
+    .参数 ABCFLOAT, ABCFLOAT, , $(删除)
+    .参数 ACCEL, ACCEL, , $(删除)
+    .参数 ACCESS_MASK, ACCESS_MASK, , $(删除)
+    .参数 ACCESS_MODE, ACCESS_MODE, , $(删除)
+    .参数 ACE_HEADER, ACE_HEADER, , $(删除)
+    .参数 ACL, ACL, , $(删除)
+    .参数 ACMDRIVERDETAILSA, ACMDRIVERDETAILSA, , $(删除)
+    .参数 ACMFILTERCHOOSEA, 空白型, , $(删除)
+    .参数 ACMFILTERDETAILSA, ACMFILTERTAGDETAILSA, , $(删除)
+    .参数 ACMFILTERTAGDETAILSA, ACMFILTERTAGDETAILSA, , $(删除)
+    .参数 ACMFORMATCHOOSEA, ACMFORMATCHOOSEA, , $(删除)
+    .参数 ACMFORMATDETAILSA, ACMFORMATDETAILSA, , $(删除)
+    .参数 ACMFORMATTAGDETAILSA, ACMFORMATTAGDETAILSA, , $(删除)
+    .参数 ACMSTREAMHEADER, ACMSTREAMHEADER, , $(删除)
+    .参数 Any, Any, , $(删除)
+    .参数 API_VERSION, API_VERSION, , $(删除)
+    .参数 APPBARDATA, APPBARDATA, , $(删除)
+    .参数 AsnAny, AsnAny, , $(删除)
+    .参数 AsnInteger, AsnInteger, , $(删除)
+    .参数 AsnOctetString, AsnOctetString, , $(删除)
+    .参数 ASSOCF, ASSOCF, , $(删除)
+    .参数 ASYNCCOMPLETIONHANDLE, ASYNCCOMPLETIONHANDLE, , $(删除)
+    .参数 ATL_INTMAP_ENTRY, ATL_INTMAP_ENTRY, , $(删除)
+    .参数 ATL_MODULE, ATL_MODULE, , $(删除)
+    .参数 ATL_OBJMAP_ENTRY, ATL_OBJMAP_ENTRY, , $(删除)
+    .参数 ATL_REGMAP_ENTRY, ATL_REGMAP_ENTRY, , $(删除)
+    .参数 ATL_TERMFUNC, ATL_TERMFUNC, , $(删除)
+    .参数 AtlCreateWndData, AtlCreateWndData, , $(删除)
+    .参数 AUDIT_EVENT_TYPE, AUDIT_EVENT_TYPE, , $(删除)
+    .参数 AUTHZ_AUDIT_INFO_HANDLE, AUTHZ_AUDIT_INFO_HANDLE, , $(删除)
+    .参数 AUTHZ_CLIENT_CONTEXT_HANDLE, AUTHZ_CLIENT_CONTEXT_HANDLE, , $(删除)
+    .参数 AUTHZ_HANDLE, AUTHZ_HANDLE, , $(删除)
+    .参数 AUTHZ_RESOURCE_MANAGER_HANDLE, AUTHZ_RESOURCE_MANAGER_HANDLE, , $(删除)
+    .参数 AUTHZ_RM_AUDIT_INFO_HANDLE, AUTHZ_RM_AUDIT_INFO_HANDLE, , $(删除)
+    .参数 AUXCAPS, AUXCAPS, , $(删除)
+    .参数 AVICOMPRESSOPTIONS, AVICOMPRESSOPTIONS, , $(删除)
+    .参数 AVIFileInfo, AVIFileInfo, , $(删除)
+    .参数 AVISTREAMINFOA, AVISTREAMINFOA, , $(删除)
+    .参数 BerElement, BerElement, , $(删除)
+    .参数 BERVAL, BERVAL, , $(删除)
+    .参数 BIND_OPTS, BIND_OPTS, , $(删除)
+    .参数 BINDINFO, BINDINFO, , $(删除)
+    .参数 BITMAP, BITMAP, , $(删除)
+    .参数 BITMAPCOREHEADER, BITMAPCOREHEADER, , $(删除)
+    .参数 BITMAPINFO, BITMAPINFO, , $(删除)
+    .参数 BITMAPINFOHEADER, BITMAPINFOHEADER, , $(删除)
+    .参数 BLENDFUNCTION, BLENDFUNCTION, , $(删除)
+    .参数 BMCALLBACKFN, BMCALLBACKFN, , $(删除)
+    .参数 Boolean, Boolean, , $(删除)
+    .参数 BROWSEINFO, BROWSEINFO, , $(删除)
+    .参数 BY_HANDLE_FILE_INFORMATION, BY_HANDLE_FILE_INFORMATION, , $(删除)
+    .参数 BYTE, 字节型, , $(删除)
+    .参数 Byte1, 字节型, , $(删除)
+    .参数 CALINFO_ENUMPROCEXA, CALINFO_ENUMPROCEXA, , $(删除)
+    .参数 CANDIDATEFORM, CANDIDATEFORM, , $(删除)
+    .参数 CANDIDATELIST, CANDIDATELIST, , $(删除)
+    .参数 CERT_EXTENSION, CERT_EXTENSION, , $(删除)
+    .参数 CERT_INFO, CERT_INFO, , $(删除)
+    .参数 CGUID, CGUID, , $(删除)
+    .参数 CHAR_INFO, CHAR_INFO, , $(删除)
+    .参数 CHARSETINFO, CHARSETINFO, , $(删除)
+    .参数 CHOOSECOLOR, CHOOSECOLOR, , $(删除)
+    .参数 CHOOSEFONT, CHOOSEFONT, , $(删除)
+    .参数 CI_STATE, CI_STATE, , $(删除)
+    .参数 CIEXYZ, CIEXYZ, , $(删除)
+    .参数 CIEXYZTRIPLE, CIEXYZTRIPLE, , $(删除)
+    .参数 CIPROPERTYDEF, CIPROPERTYDEF, , $(删除)
+    .参数 CITEMIDLIST, CITEMIDLIST, , $(删除)
+    .参数 CMC_extension, CMC_extension, , $(删除)
+    .参数 CMC_message, CMC_message, , $(删除)
+    .参数 CMC_message_reference, CMC_message_reference, , $(删除)
+    .参数 CMC_message_summary, CMC_message_summary, , $(删除)
+    .参数 CMC_recipient, CMC_recipient, , $(删除)
+    .参数 CMENUINFO, CMENUINFO, , $(删除)
+    .参数 COLOR, COLOR, , $(删除)
+    .参数 ColorAdjustment, ColorAdjustment, , $(删除)
+    .参数 COLORADJUSTMENT1, 未知类型0x41013C94, , $(删除)
+    .参数 ColorMap, ColorMap, , $(删除)
+    .参数 COMMCONFIG, COMMCONFIG, , $(删除)
+    .参数 COMMPROP, COMMPROP, , $(删除)
+    .参数 COMMTIMEOUTS, COMMTIMEOUTS, , $(删除)
+    .参数 COMPOSITIONFORM, COMPOSITIONFORM, , $(删除)
+    .参数 COMSTAT, COMSTAT, , $(删除)
+    .参数 CONDITIONPROC, CONDITIONPROC, , $(删除)
+    .参数 CONNECTDLGSTRUCTA, CONNECTDLGSTRUCTA, , $(删除)
+    .参数 CONSOLE_CURSOR_INFO, CONSOLE_CURSOR_INFO, , $(删除)
+    .参数 CONSOLE_SCREEN_BUFFER_INFO, CONSOLE_SCREEN_BUFFER_INFO, , $(删除)
+    .参数 CONTEXT, CONTEXT, , $(删除)
+    .参数 CONVCONTEXT, CONVCONTEXT, , $(删除)
+    .参数 CONVINFO, CONVINFO, , $(删除)
+    .参数 COORD, COORD, , $(删除)
+    .参数 COSERVERINFO, COSERVERINFO, , $(删除)
+    .参数 CPINFO, CPINFO, , $(删除)
+    .参数 CPINFOEXA, CPINFOEXA, , $(删除)
+    .参数 CPROPSHEETHEADERA, CPROPSHEETHEADERA, , $(删除)
+    .参数 CPROPSHEETPAGEA, CPROPSHEETPAGEA, , $(删除)
+    .参数 CREATESTRUCT, CREATESTRUCT, , $(删除)
+    .参数 CRITICAL_SECTION, CRITICAL_SECTION, , $(删除)
+    .参数 CRYPT_ATTRIBUTE, CRYPT_ATTRIBUTE, , $(删除)
+    .参数 CRYPT_HASH_BLOB, CRYPT_HASH_BLOB, , $(删除)
+    .参数 CRYPT_OID_FUNC_ENTRY, CRYPT_OID_FUNC_ENTRY, , $(删除)
+    .参数 CRYPT_PKCS, CRYPT_PKCS, , $(删除)
+    .参数 CRYPT_PROVIDER_DATA, CRYPT_PROVIDER_DATA, , $(删除)
+    .参数 CRYPT_PROVIDER_DEFUSAGE, CRYPT_PROVIDER_DEFUSAGE, , $(删除)
+    .参数 CRYPT_PROVIDER_FUNCTIONS, CRYPT_PROVIDER_FUNCTIONS, , $(删除)
+    .参数 CRYPT_PROVIDER_REGDEFUSAGE, CRYPT_PROVIDER_REGDEFUSAGE, , $(删除)
+    .参数 CRYPT_PROVIDER_SGNR, CRYPT_PROVIDER_SGNR, , $(删除)
+    .参数 CRYPT_REGISTER_ACTIONID, CRYPT_REGISTER_ACTIONID, , $(删除)
+    .参数 CRYPTPROTECT_PROMPTSTRUCT, CRYPTPROTECT_PROMPTSTRUCT, , $(删除)
+    .参数 CSCARD_IO_REQUEST, CSCARD_IO_REQUEST, , $(删除)
+    .参数 CStdPSFactoryBuffer, CStdPSFactoryBuffer, , $(删除)
+    .参数 CSTRTABLE, CSTRTABLE, , $(删除)
+    .参数 CTBBUTTON, CTBBUTTON, , $(删除)
+    .参数 Currency, Currency, , $(删除)
+    .参数 CURRENCYFMT, CURRENCYFMT, , $(删除)
+    .参数 CUSTDATA, CUSTDATA, , $(删除)
+    .参数 CY, CY, , $(删除)
+    .参数 D, D, , $(删除)
+    .参数 DATA_BLOB, DATA_BLOB, , $(删除)
+    .参数 DATAOBJECT, DATAOBJECT, , $(删除)
+    .参数 DataObject1, 未知类型0x41013CC0, , $(删除)
+    .参数 DATEFMT_ENUMPROCEXA, DATEFMT_ENUMPROCEXA, , $(删除)
+    .参数 DBCOMMANDOP, DBCOMMANDOP, , $(删除)
+    .参数 DBCOMMANDTREE, DBCOMMANDTREE, , $(删除)
+    .参数 DBGPRINT, DBGPRINT, , $(删除)
+    .参数 DBINT, DBINT, , $(删除)
+    .参数 DCB, DCB, , $(删除)
+    .参数 DDEML_MSG_HOOK_DATA, DDEML_MSG_HOOK_DATA, , $(删除)
+    .参数 DDENUMCALLBACKA, DDENUMCALLBACKA, , $(删除)
+    .参数 DDENUMCALLBACKEXA, DDENUMCALLBACKEXA, , $(删除)
+    .参数 DEBUG_EVENT, DEBUG_EVENT, , $(删除)
+    .参数 DECIMAL, DECIMAL, , $(删除)
+    .参数 DEFAULT_QUEUESIZE, DEFAULT_QUEUESIZE, , $(删除)
+    .参数 DESIGNVECTOR, DESIGNVECTOR, , $(删除)
+    .参数 DEVCHARACTER, DEVCHARACTER, , $(删除)
+    .参数 DEVMODE, DEVMODE, , $(删除)
+    .参数 DHCPCAPI_PARAMS_ARRAY, DHCPCAPI_PARAMS_ARRAY, , $(删除)
+    .参数 DI_FUNCTIONstallFunction, DI_FUNCTIONstallFunction, , $(删除)
+    .参数 DIGEST_FUNCTION, DIGEST_FUNCTION, , $(删除)
+    .参数 DIGEST_HANDLE, DIGEST_HANDLE, , $(删除)
+    .参数 DIRECTDRAW, DIRECTDRAW, , $(删除)
+    .参数 DIRECTDRAWCLIPPER, DIRECTDRAWCLIPPER, , $(删除)
+    .参数 DIRECTPLAY, DIRECTPLAY, , $(删除)
+    .参数 DIRECTSOUND, DIRECTSOUND, , $(删除)
+    .参数 DIRECTSOUNDCAPTURE, DIRECTSOUNDCAPTURE, , $(删除)
+    .参数 DISCDLGSTRUCTA, DISCDLGSTRUCTA, , $(删除)
+    .参数 DISPPARAMS, DISPPARAMS, , $(删除)
+    .参数 DLGTEMPLATE, DLGTEMPLATE, , $(删除)
+    .参数 DOCINFO, DOCINFO, , $(删除)
+    .参数 DOUBLE, 双精度小数型, , $(删除)
+    .参数 Double1, 双精度小数型, , $(删除)
+    .参数 DPENUMDPCALLBACKA, DPENUMDPCALLBACKA, , $(删除)
+    .参数 DRAWDIBTIME, DRAWDIBTIME, , $(删除)
+    .参数 DRAWTEXTPARAMS, DRAWTEXTPARAMS, , $(删除)
+    .参数 DS_NAME_RESULTA, DS_NAME_RESULTA, , $(删除)
+    .参数 DS_SCHEMA_GUID_MAPA, DS_SCHEMA_GUID_MAPA, , $(删除)
+    .参数 DSBROWSEINFO, DSBROWSEINFO, , $(删除)
+    .参数 DSENUMCALLBACKA, DSENUMCALLBACKA, , $(删除)
+    .参数 DVTARGETDEVICE, DVTARGETDEVICE, , $(删除)
+    .参数 DWORD, DWORD, , $(删除)
+    .参数 DWORD_PTR, DWORD_PTR, , $(删除)
+    .参数 emr, emr, , $(删除)
+    .参数 emrtext, emrtext, , $(删除)
+    .参数 ENHMETAHEADER, ENHMETAHEADER, , $(删除)
+    .参数 ENHMETARECORD, ENHMETARECORD, , $(删除)
+    .参数 ENUM_SERVICE_STATUS, ENUM_SERVICE_STATUS, , $(删除)
+    .参数 ENUMLOGFONTEXDVA, ENUMLOGFONTEXDVA, , $(删除)
+    .参数 EVENTLOGRECORD, EVENTLOGRECORD, , $(删除)
+    .参数 EXCEPINFO, EXCEPINFO, , $(删除)
+    .参数 EXCEPTION_POINTERS, EXCEPTION_POINTERS, , $(删除)
+    .参数 EXCEPTION_RECORD, EXCEPTION_RECORD, , $(删除)
+    .参数 EXECUTION_STATE, EXECUTION_STATE, , $(删除)
+    .参数 EXTENSION_CONTROL_BLOCK, EXTENSION_CONTROL_BLOCK, , $(删除)
+    .参数 EXTLOGFONT, EXTLOGFONT, , $(删除)
+    .参数 EXTLOGPEN, EXTLOGPEN, , $(删除)
+    .参数 fd_set, fd_set, , $(删除)
+    .参数 FIBER_START_ROUTINE, FIBER_START_ROUTINE, , $(删除)
+    .参数 FILE_SEGMENT_ELEMENT, FILE_SEGMENT_ELEMENT, , $(删除)
+    .参数 FILETIME, FILETIME, , $(删除)
+    .参数 FINDREPLACE, FINDREPLACE, , $(删除)
+    .参数 FIXED, FIXED, , $(删除)
+    .参数 FMTID, FMTID, , $(删除)
+    .参数 FN_PROGRESS, FN_PROGRESS, , $(删除)
+    .参数 FONTDESC, FONTDESC, , $(删除)
+    .参数 FONTSIGNATURE, FONTSIGNATURE, , $(删除)
+    .参数 FORMATETC, FORMATETC, , $(删除)
+    .参数 FULL_PTR_XLAT_TABLES, FULL_PTR_XLAT_TABLES, , $(删除)
+    .参数 g_netSID_NAME_USE, g_netSID_NAME_USE, , $(删除)
+    .参数 GCP_RESULTS, GCP_RESULTS, , $(删除)
+    .参数 GENERIC_MAPPING, GENERIC_MAPPING, , $(删除)
+    .参数 GLbitfield, GLbitfield, , $(删除)
+    .参数 GLboolean, GLboolean, , $(删除)
+    .参数 GLbyte, GLbyte, , $(删除)
+    .参数 GLclampd, GLclampd, , $(删除)
+    .参数 GLclampf, GLclampf, , $(删除)
+    .参数 GLdouble, GLdouble, , $(删除)
+    .参数 GLenum, GLenum, , $(删除)
+    .参数 GLfloat, GLfloat, , $(删除)
+    .参数 GLint, GLint, , $(删除)
+    .参数 GLshort, GLshort, , $(删除)
+    .参数 GLsizei, GLsizei, , $(删除)
+    .参数 GLubyte, GLubyte, , $(删除)
+    .参数 GLuint, GLuint, , $(删除)
+    .参数 GLushort, GLushort, , $(删除)
+    .参数 GLvoid, GLvoid, , $(删除)
+    .参数 GLYPHMETRICS, GLYPHMETRICS, , $(删除)
+    .参数 GLYPHMETRICSFLOAT, GLYPHMETRICSFLOAT, , $(删除)
+    .参数 GLYPHSET, GLYPHSET, , $(删除)
+    .参数 GOFFSET, GOFFSET, , $(删除)
+    .参数 GOPHER_ATTRIBUTE_ENUMERATOR, GOPHER_ATTRIBUTE_ENUMERATOR, , $(删除)
+    .参数 GOPHER_FIND_DATAA, GOPHER_FIND_DATAA, , $(删除)
+    .参数 GRADIENT_RECT, GRADIENT_RECT, , $(删除)
+    .参数 GROUP, GROUP, , $(删除)
+    .参数 GROUPID, GROUPID, , $(删除)
+    .参数 GUID, GUID, , $(删除)
+    .参数 Guid1, 未知类型0x41013D1D, , $(删除)
+    .参数 HAGENT, HAGENT, , $(删除)
+    .参数 HAGENTSESSION, HAGENTSESSION, , $(删除)
+    .参数 hbc, hbc, , $(删除)
+    .参数 hBlob, hBlob, , $(删除)
+    .参数 hChange, hChange, , $(删除)
+    .参数 HCLUSENUM, HCLUSENUM, , $(删除)
+    .参数 hCluster, hCluster, , $(删除)
+    .参数 hCounter, hCounter, , $(删除)
+    .参数 hCryptProv, hCryptProv, , $(删除)
+    .参数 HDBC, HDBC, , $(删除)
+    .参数 hfci, hfci, , $(删除)
+    .参数 hfdi, hfdi, , $(删除)
+    .参数 hGroup, hGroup, , $(删除)
+    .参数 hGroupEnum, hGroupEnum, , $(删除)
+    .参数 HILITE, HILITE, , $(删除)
+    .参数 hLog, hLog, , $(删除)
+    .参数 hNode, hNode, , $(删除)
+    .参数 hNodeEnum, hNodeEnum, , $(删除)
+    .参数 hPort, hPort, , $(删除)
+    .参数 hQuery, hQuery, , $(删除)
+    .参数 hResource, hResource, , $(删除)
+    .参数 HSE_VERSION_INFO, HSE_VERSION_INFO, , $(删除)
+    .参数 HSNMP_CONTEXT, HSNMP_CONTEXT, , $(删除)
+    .参数 HSNMP_ENTITY, HSNMP_ENTITY, , $(删除)
+    .参数 HSNMP_PDU, HSNMP_PDU, , $(删除)
+    .参数 HSNMP_SESSION, HSNMP_SESSION, , $(删除)
+    .参数 HSNMP_VBL, HSNMP_VBL, , $(删除)
+    .参数 HW_PROFILE_INFOA, HW_PROFILE_INFOA, , $(删除)
+    .参数 IAccessible, IAccessible, , $(删除)
+    .参数 IBindStatusCallback, IBindStatusCallback, , $(删除)
+    .参数 ICINFO, ICINFO, , $(删除)
+    .参数 ICommand, ICommand, , $(删除)
+    .参数 ICONINFO, ICONINFO, , $(删除)
+    .参数 IDispenserManager, IDispenserManager, , $(删除)
+    .参数 IHTMLWindow, IHTMLWindow, , $(删除)
+    .参数 IInternetSecurityManager, IInternetSecurityManager, , $(删除)
+    .参数 IInternetSession, IInternetSession, , $(删除)
+    .参数 IInternetZoneManager, IInternetZoneManager, , $(删除)
+    .参数 IMAGEINFO, IMAGEINFO, , $(删除)
+    .参数 IMAGELISTDRAWPARAMS, IMAGELISTDRAWPARAMS, , $(删除)
+    .参数 IMCENUMPROC, IMCENUMPROC, , $(删除)
+    .参数 IMEMENUITEMINFOA, IMEMENUITEMINFOA, , $(删除)
+    .参数 IMEPROA, IMEPROA, , $(删除)
+    .参数 INITCOMMONCONTROLSEX, INITCOMMONCONTROLSEX, , $(删除)
+    .参数 INPUT, INPUT, , $(删除)
+    .参数 INSTALLMESSAGE, INSTALLMESSAGE, , $(删除)
+    .参数 INSTALLSTATE, INSTALLSTATE, , $(删除)
+    .参数 INSTALLUI_HANDLERA, INSTALLUI_HANDLERA, , $(删除)
+    .参数 INT_PTR, INT_PTR, , $(删除)
+    .参数 Integer, Integer, , $(删除)
+    .参数 INTERNET_BUFFERSA, INTERNET_BUFFERSA, , $(删除)
+    .参数 INTERNET_CACHE_ENTRY_INFOA, INTERNET_CACHE_ENTRY_INFOA, , $(删除)
+    .参数 INTERNET_PORT, INTERNET_PORT, , $(删除)
+    .参数 INTERNET_STATUS_CALLBACK, INTERNET_STATUS_CALLBACK, , $(删除)
+    .参数 IObjectContext, IObjectContext, , $(删除)
+    .参数 IP_ADDR_FAMILY, IP_ADDR_FAMILY, , $(删除)
+    .参数 IPAddr, IPAddr, , $(删除)
+    .参数 IpMask, IpMask, , $(删除)
+    .参数 IPropertyPage, IPropertyPage, , $(删除)
+    .参数 IServiceProvider, IServiceProvider, , $(删除)
+    .参数 ITEMIDLIST, ITEMIDLIST, , $(删除)
+    .参数 ITextHost, ITextHost, , $(删除)
+    .参数 ITransaction, ITransaction, , $(删除)
+    .参数 JOBOBJECTINFOCLASS, JOBOBJECTINFOCLASS, , $(删除)
+    .参数 JOYCAPS, JOYCAPS, , $(删除)
+    .参数 JOYINFO, JOYINFO, , $(删除)
+    .参数 JOYINFOEX, JOYINFOEX, , $(删除)
+    .参数 KERNINGPAIR, KERNINGPAIR, , $(删除)
+    .参数 LANGGROUPLOCALE_ENUMPROCA, LANGGROUPLOCALE_ENUMPROCA, , $(删除)
+    .参数 LANGUAGEGROUP_ENUMPROCA, LANGUAGEGROUP_ENUMPROCA, , $(删除)
+    .参数 LARGE_INTEGER, LARGE_INTEGER, , $(删除)
+    .参数 LATENCY_TIME, LATENCY_TIME, , $(删除)
+    .参数 LAYERPLANEDESCRIPTOR, LAYERPLANEDESCRIPTOR, , $(删除)
+    .参数 LDAP, LDAP, , $(删除)
+    .参数 LDAPControlA, LDAPControlA, , $(删除)
+    .参数 LDAPMessage, LDAPMessage, , $(删除)
+    .参数 LDAPMod, LDAPMod, , $(删除)
+    .参数 LDAPModA, LDAPModA, , $(删除)
+    .参数 LDT_ENTRY, LDT_ENTRY, , $(删除)
+    .参数 LGRPID, LGRPID, , $(删除)
+    .参数 LINEADDRESSCAPS, LINEADDRESSCAPS, , $(删除)
+    .参数 LINEADDRESSSTATUS, LINEADDRESSSTATUS, , $(删除)
+    .参数 LINEAGENTACTIVITYLIST, LINEAGENTACTIVITYLIST, , $(删除)
+    .参数 LINEAGENTCAPS, LINEAGENTCAPS, , $(删除)
+    .参数 LINEAGENTGROUPLIST, LINEAGENTGROUPLIST, , $(删除)
+    .参数 LINEAGENTINFO, LINEAGENTINFO, , $(删除)
+    .参数 LINEAGENTSESSIONINFO, LINEAGENTSESSIONINFO, , $(删除)
+    .参数 LINEAGENTSESSIONLIST, LINEAGENTSESSIONLIST, , $(删除)
+    .参数 LINEAGENTSTATUS, LINEAGENTSTATUS, , $(删除)
+    .参数 LINECALLINFO, LINECALLINFO, , $(删除)
+    .参数 LINECALLLIST, LINECALLLIST, , $(删除)
+    .参数 LINECALLPARAMS, LINECALLPARAMS, , $(删除)
+    .参数 LINECALLSTATUS, LINECALLSTATUS, , $(删除)
+    .参数 LINECOUNTRYLIST, LINECOUNTRYLIST, , $(删除)
+    .参数 LINEDEVCAPS, LINEDEVCAPS, , $(删除)
+    .参数 LINEDEVSTATUS, LINEDEVSTATUS, , $(删除)
+    .参数 LINEDIALPARAMS, LINEDIALPARAMS, , $(删除)
+    .参数 LINEEXTENSIONID, LINEEXTENSIONID, , $(删除)
+    .参数 LINEFORWARDLIST, LINEFORWARDLIST, , $(删除)
+    .参数 LINEGENERATETONE, LINEGENERATETONE, , $(删除)
+    .参数 LINEINITIALIZEEXPARAMS, LINEINITIALIZEEXPARAMS, , $(删除)
+    .参数 LINEMEDIACONTROLCALLSTATE, LINEMEDIACONTROLCALLSTATE, , $(删除)
+    .参数 LINEMEDIACONTROLDIGIT, LINEMEDIACONTROLDIGIT, , $(删除)
+    .参数 LINEMEDIACONTROLMEDIA, LINEMEDIACONTROLMEDIA, , $(删除)
+    .参数 LINEMEDIACONTROLTONE, LINEMEDIACONTROLTONE, , $(删除)
+    .参数 LINEMESSAGE, LINEMESSAGE, , $(删除)
+    .参数 LINEMONITORTONE, LINEMONITORTONE, , $(删除)
+    .参数 LINEPROVIDERLIST, LINEPROVIDERLIST, , $(删除)
+    .参数 LINEPROXYREQUEST, LINEPROXYREQUEST, , $(删除)
+    .参数 LINEPROXYREQUESTLIST, LINEPROXYREQUESTLIST, , $(删除)
+    .参数 LINEQUEUEINFO, LINEQUEUEINFO, , $(删除)
+    .参数 LINEQUEUELIST, LINEQUEUELIST, , $(删除)
+    .参数 LINETEXTMETRIC, LINETEXTMETRIC, , $(删除)
+    .参数 LINETRANSLATECAPS, LINETRANSLATECAPS, , $(删除)
+    .参数 LINETRANSLATEOUTPUT, LINETRANSLATEOUTPUT, , $(删除)
+    .参数 LIST_ENTRY, LIST_ENTRY, , $(删除)
+    .参数 LMCSTR, LMCSTR, , $(删除)
+    .参数 LMSTR, LMSTR, , $(删除)
+    .参数 LOGBRUSH, LOGBRUSH, , $(删除)
+    .参数 LOGCOLORSPACE, LOGCOLORSPACE, , $(删除)
+    .参数 LOGFONT, LOGFONT, , $(删除)
+    .参数 LOGPALETTE, LOGPALETTE, , $(删除)
+    .参数 LOGPEN, LOGPEN, , $(删除)
+    .参数 LogSeverity, LogSeverity, , $(删除)
+    .参数 Long, Long, , $(删除)
+    .参数 long1, 未知类型0x41013D9B, , $(删除)
+    .参数 longx, longx, , $(删除)
+    .参数 LPADDRESSTABLE, LPADDRESSTABLE, , $(删除)
+    .参数 LPBINDSTATUSCALLBACK, LPBINDSTATUSCALLBACK, , $(删除)
+    .参数 LPCBYTE, LPCBYTE, , $(删除)
+    .参数 LPCITEMIDLIST, LPCITEMIDLIST, , $(删除)
+    .参数 LPD, LPD, , $(删除)
+    .参数 LPDBINT, LPDBINT, , $(删除)
+    .参数 LPDHCPCAPI_CLASSID, LPDHCPCAPI_CLASSID, , $(删除)
+    .参数 LPDIRECT, LPDIRECT, , $(删除)
+    .参数 LPDIRECTINPUTA, LPDIRECTINPUTA, , $(删除)
+    .参数 LPDISPATCH, LPDISPATCH, , $(删除)
+    .参数 LPEXPRESSION, LPEXPRESSION, , $(删除)
+    .参数 lpGlobalEntry, lpGlobalEntry, , $(删除)
+    .参数 LPGPOBROWSEINFO, LPGPOBROWSEINFO, , $(删除)
+    .参数 LPHANDLER_FUNCTION_EX, LPHANDLER_FUNCTION_EX, , $(删除)
+    .参数 LPHEAPENTRY, LPHEAPENTRY, , $(删除)
+    .参数 LPHEAPLIST, LPHEAPLIST, , $(删除)
+    .参数 LPHIT_LOGGING_INFO, LPHIT_LOGGING_INFO, , $(删除)
+    .参数 LPHLOG, LPHLOG, , $(删除)
+    .参数 LPHSNMP_CONTEXT, LPHSNMP_CONTEXT, , $(删除)
+    .参数 LPHSNMP_ENTITY, LPHSNMP_ENTITY, , $(删除)
+    .参数 LPHSNMP_PDU, LPHSNMP_PDU, , $(删除)
+    .参数 LPHSNMP_VBL, LPHSNMP_VBL, , $(删除)
+    .参数 LPINTERNET_CACHE_GROUP_INFOA, LPINTERNET_CACHE_GROUP_INFOA, , $(删除)
+    .参数 LPMCAST_CLIENT_UID, LPMCAST_CLIENT_UID, , $(删除)
+    .参数 lpModuleEntry, lpModuleEntry, , $(删除)
+    .参数 LPMODULEENTRY1, 未知类型0x41013DB6, , $(删除)
+    .参数 LPMODULEINFO, LPMODULEINFO, , $(删除)
+    .参数 lpNetworkInfo, lpNetworkInfo, , $(删除)
+    .参数 LPNSP_ROUTINE, LPNSP_ROUTINE, , $(删除)
+    .参数 LPNTMS_ALLOCATION_INFORMATION, LPNTMS_ALLOCATION_INFORMATION, , $(删除)
+    .参数 LPNTMS_GUID, LPNTMS_GUID, , $(删除)
+    .参数 LPNTMS_MOUNT_INFORMATION, LPNTMS_MOUNT_INFORMATION, , $(删除)
+    .参数 LPNTMS_NOTIFICATIONINFORMATION, LPNTMS_NOTIFICATIONINFORMATION, , $(删除)
+    .参数 LPNTMS_OBJECTINFORMATIONA, LPNTMS_OBJECTINFORMATIONA, , $(删除)
+    .参数 LPOLECLIENT, LPOLECLIENT, , $(删除)
+    .参数 LPOLESTREAM, LPOLESTREAM, , $(删除)
+    .参数 LPPROCESSENTRY, LPPROCESSENTRY, , $(删除)
+    .参数 lpQOCInfo, lpQOCInfo, , $(删除)
+    .参数 LPRASDIALDLG, LPRASDIALDLG, , $(删除)
+    .参数 LPRASENTRYDLGA, LPRASENTRYDLGA, , $(删除)
+    .参数 LPRASMONITORDLG, LPRASMONITORDLG, , $(删除)
+    .参数 LPRASPBDLGA, LPRASPBDLGA, , $(删除)
+    .参数 LPRESOURCE_CALLBACK, LPRESOURCE_CALLBACK, , $(删除)
+    .参数 LPSECURITYINFO, LPSECURITYINFO, , $(删除)
+    .参数 LPSERVICE_ASYNC_INFO, LPSERVICE_ASYNC_INFO, , $(删除)
+    .参数 LPSNMP_MGR_SESSION, LPSNMP_MGR_SESSION, , $(删除)
+    .参数 LPSOFTDISTINFO, LPSOFTDISTINFO, , $(删除)
+    .参数 LPTHREADENTRY, LPTHREADENTRY, , $(删除)
+    .参数 LPTRIGGER, LPTRIGGER, , $(删除)
+    .参数 lpVDMContext, lpVDMContext, , $(删除)
+    .参数 LPVDMLDT_ENTRY, LPVDMLDT_ENTRY, , $(删除)
+    .参数 LPWIN_CERTIFICATE, LPWIN_CERTIFICATE, , $(删除)
+    .参数 LSA_HANDLE, LSA_HANDLE, , $(删除)
+    .参数 LUID, LUID, , $(删除)
+    .参数 LUID_AND_ATTRIBUTES, LUID_AND_ATTRIBUTES, , $(删除)
+    .参数 MAPIMessage, MAPIMessage, , $(删除)
+    .参数 MapiRecip, MapiRecip, , $(删除)
+    .参数 MAT, MAT, , $(删除)
+    .参数 MEMORY_BASIC_INFORMATION, MEMORY_BASIC_INFORMATION, , $(删除)
+    .参数 MEMORYSTATUS, MEMORYSTATUS, , $(删除)
+    .参数 MEMORYSTATUSEX, MEMORYSTATUSEX, , $(删除)
+    .参数 MENUINFO, MENUINFO, , $(删除)
+    .参数 MENUITEMINFO, MENUITEMINFO, , $(删除)
+    .参数 METAFILEPICT, METAFILEPICT, , $(删除)
+    .参数 METARECORD, METARECORD, , $(删除)
+    .参数 MIB_SERVER_HANDLE, MIB_SERVER_HANDLE, , $(删除)
+    .参数 MIDIHDR, MIDIHDR, , $(删除)
+    .参数 MIDIINCAPS, MIDIINCAPS, , $(删除)
+    .参数 MIDIOUTCAPS, MIDIOUTCAPS, , $(删除)
+    .参数 MIDL_STUB_DESC, MIDL_STUB_DESC, , $(删除)
+    .参数 MIDL_STUB_MESSAGE, MIDL_STUB_MESSAGE, , $(删除)
+    .参数 MIXERCAPS, MIXERCAPS, , $(删除)
+    .参数 MIXERCONTROL, MIXERCONTROL, , $(删除)
+    .参数 MIXERCONTROLDETAILS, MIXERCONTROLDETAILS, , $(删除)
+    .参数 MIXERLINE, MIXERLINE, , $(删除)
+    .参数 MIXERLINECONTROLS, MIXERLINECONTROLS, , $(删除)
+    .参数 MMCKINFO, MMCKINFO, , $(删除)
+    .参数 MMIOINFO, MMIOINFO, , $(删除)
+    .参数 MMTIME, MMTIME, , $(删除)
+    .参数 MONITORENUMPROC, MONITORENUMPROC, , $(删除)
+    .参数 MONITORINFO, MONITORINFO, , $(删除)
+    .参数 MOUSEMOVEPOINT, MOUSEMOVEPOINT, , $(删除)
+    .参数 MPR_SERVER_HANDLE, MPR_SERVER_HANDLE, , $(删除)
+    .参数 MQCOLUMNSET, MQCOLUMNSET, , $(删除)
+    .参数 MQMSGPROPS, MQMSGPROPS, , $(删除)
+    .参数 MQQUEUEPROPS, MQQUEUEPROPS, , $(删除)
+    .参数 MQRESTRICTION, MQRESTRICTION, , $(删除)
+    .参数 MQSORTSET, MQSORTSET, , $(删除)
+    .参数 MSG, MSG, , $(删除)
+    .参数 msg1, 未知类型0x41013DF6, , $(删除)
+    .参数 MSGBOXPARAMS, MSGBOXPARAMS, , $(删除)
+    .参数 MSIHANDLE, MSIHANDLE, , $(删除)
+    .参数 MULTI_QI, MULTI_QI, , $(删除)
+    .参数 NDR_CCONTEXT, NDR_CCONTEXT, , $(删除)
+    .参数 NDR_USER_MARSHAL_INFO, NDR_USER_MARSHAL_INFO, , $(删除)
+    .参数 NETCONNECTINFOSTRUCT, NETCONNECTINFOSTRUCT, , $(删除)
+    .参数 NETINFOSTRUCT, NETINFOSTRUCT, , $(删除)
+    .参数 NETRESOURCE, NETRESOURCE, , $(删除)
+    .参数 NETSETUP_JOIN_STATUS, NETSETUP_JOIN_STATUS, , $(删除)
+    .参数 NEWTEXTMETRIC, NEWTEXTMETRIC, , $(删除)
+    .参数 NMHDR, NMHDR, , $(删除)
+    .参数 NOTIFYICONDATA, NOTIFYICONDATA, , $(删除)
+    .参数 NTSTATUS, NTSTATUS, , $(删除)
+    .参数 NUMBERFMT, NUMBERFMT, , $(删除)
+    .参数 NUMPARSE, NUMPARSE, , $(删除)
+    .参数 OCPFIPARAMS, OCPFIPARAMS, , $(删除)
+    .参数 OFSTRUCT, OFSTRUCT, , $(删除)
+    .参数 OLE_COLOR, OLE_COLOR, , $(删除)
+    .参数 OLEOPT_UPDATE, OLEOPT_UPDATE, , $(删除)
+    .参数 OLESERVER, OLESERVER, , $(删除)
+    .参数 OLESERVERDOC, OLESERVERDOC, , $(删除)
+    .参数 OLEUIBUSYA, OLEUIBUSYA, , $(删除)
+    .参数 OLEUICHANGEICONA, OLEUICHANGEICONA, , $(删除)
+    .参数 OLEUICHANGESOURCEA, OLEUICHANGESOURCEA, , $(删除)
+    .参数 OLEUICONVERTA, OLEUICONVERTA, , $(删除)
+    .参数 OLEUIEDITLINKSA, OLEUIEDITLINKSA, , $(删除)
+    .参数 OLEUIINSERTOBJECTA, OLEUIINSERTOBJECTA, , $(删除)
+    .参数 OLEUIOBJECTPROPSA, OLEUIOBJECTPROPSA, , $(删除)
+    .参数 OLEUIPASTESPECIALA, OLEUIPASTESPECIALA, , $(删除)
+    .参数 OPENCARDNAMEA, OPENCARDNAMEA, , $(删除)
+    .参数 OPENCARDNAMEA_EX, OPENCARDNAMEA_EX, , $(删除)
+    .参数 OPENFILENAME, OPENFILENAME, , $(删除)
+    .参数 OPTIONALPMIB_IPFORWARDROW, OPTIONALPMIB_IPFORWARDROW, , $(删除)
+    .参数 OSVERSIONINFO, OSVERSIONINFO, , $(删除)
+    .参数 OSVERSIONINFOEXA, OSVERSIONINFOEXA, , $(删除)
+    .参数 OUT, OUT, , $(删除)
+    .参数 overlapped, overlapped, , $(删除)
+    .参数 OVERLAPPED1, 未知类型0x41013E1C, , $(删除)
+    .参数 PACL, PACL, , $(删除)
+    .参数 pAcl1, 未知类型0x41013E1E, , $(删除)
+    .参数 PADDRESS_RESERVED, PADDRESS_RESERVED, , $(删除)
+    .参数 PADSPROPINITPARAMS, PADSPROPINITPARAMS, , $(删除)
+    .参数 PADSVALUE, PADSVALUE, , $(删除)
+    .参数 PAGESETUPDLG, PAGESETUPDLG, , $(删除)
+    .参数 PAINTSTRUCT, PAINTSTRUCT, , $(删除)
+    .参数 PALETTEENTRY, PALETTEENTRY, , $(删除)
+    .参数 PALTTABINFO, PALTTABINFO, , $(删除)
+    .参数 PANOSE, PANOSE, , $(删除)
+    .参数 PAPCFUNC, PAPCFUNC, , $(删除)
+    .参数 ParseAction, ParseAction, , $(删除)
+    .参数 PAUDIT_EVENT_INFO, PAUDIT_EVENT_INFO, , $(删除)
+    .参数 PAUTHZ_ACCESS_REQUEST, PAUTHZ_ACCESS_REQUEST, , $(删除)
+    .参数 PAUTHZ_CLIENT_CONTEXT_HANDLE, PAUTHZ_CLIENT_CONTEXT_HANDLE, , $(删除)
+    .参数 PAUTHZ_HANDLE, PAUTHZ_HANDLE, , $(删除)
+    .参数 PAUTHZ_RESOURCE_MANAGER_HANDLE, PAUTHZ_RESOURCE_MANAGER_HANDLE, , $(删除)
+    .参数 PBERVAL, PBERVAL, , $(删除)
+    .参数 pBerVal1, 未知类型0x41013E2F, , $(删除)
+    .参数 PBLOB_TABLE, PBLOB_TABLE, , $(删除)
+    .参数 PBMCALLBACKFN, PBMCALLBACKFN, , $(删除)
+    .参数 PCABINFO, PCABINFO, , $(删除)
+    .参数 pccab, pccab, , $(删除)
+    .参数 PCCERT_CHAIN_CONTEXT, PCCERT_CHAIN_CONTEXT, , $(删除)
+    .参数 PCCRL_CONTEXT, PCCRL_CONTEXT, , $(删除)
+    .参数 PCCRYPT_OID_INFO, PCCRYPT_OID_INFO, , $(删除)
+    .参数 PCCTL_CONTEXT, PCCTL_CONTEXT, , $(删除)
+    .参数 PCERT_CHAIN, PCERT_CHAIN, , $(删除)
+    .参数 PCERT_CHAIN_ENGINE_CONFIG, PCERT_CHAIN_ENGINE_CONFIG, , $(删除)
+    .参数 PCERT_CHAIN_PARA, PCERT_CHAIN_PARA, , $(删除)
+    .参数 PCERT_CHAIN_POLICY_PARA, PCERT_CHAIN_POLICY_PARA, , $(删除)
+    .参数 PCERT_CHAIN_POLICY_STATUS, PCERT_CHAIN_POLICY_STATUS, , $(删除)
+    .参数 PCERT_CREATE_CONTEXT_PARA, PCERT_CREATE_CONTEXT_PARA, , $(删除)
+    .参数 PCERT_ENHKEY_USAGE, PCERT_ENHKEY_USAGE, , $(删除)
+    .参数 PCERT_EXTENSIONS, PCERT_EXTENSIONS, , $(删除)
+    .参数 PCERT_INFO, PCERT_INFO, , $(删除)
+    .参数 PCERT_NAME_BLOB, PCERT_NAME_BLOB, , $(删除)
+    .参数 PCERT_NAME_INFO, PCERT_NAME_INFO, , $(删除)
+    .参数 PCERT_PHYSICAL_STORE_INFO, PCERT_PHYSICAL_STORE_INFO, , $(删除)
+    .参数 PCERT_PUBLIC_KEY_INFO, PCERT_PUBLIC_KEY_INFO, , $(删除)
+    .参数 PCERT_RDN, PCERT_RDN, , $(删除)
+    .参数 PCERT_RDN_VALUE_BLOB, PCERT_RDN_VALUE_BLOB, , $(删除)
+    .参数 PCERT_REVOCATION_PARA, PCERT_REVOCATION_PARA, , $(删除)
+    .参数 PCERT_REVOCATION_STATUS, PCERT_REVOCATION_STATUS, , $(删除)
+    .参数 PCERT_SYSTEM_STORE_INFO, PCERT_SYSTEM_STORE_INFO, , $(删除)
+    .参数 PCLUS_RESOURCE_CLASS_INFO, PCLUS_RESOURCE_CLASS_INFO, , $(删除)
+    .参数 PCLUS_WORKER, PCLUS_WORKER, , $(删除)
+    .参数 PCMSG_SIGNED_ENCODE_INFO, PCMSG_SIGNED_ENCODE_INFO, , $(删除)
+    .参数 PCMSG_SIGNER_ENCODE_INFO, PCMSG_SIGNER_ENCODE_INFO, , $(删除)
+    .参数 PCMSG_STREAM_INFO, PCMSG_STREAM_INFO, , $(删除)
+    .参数 PCOLOR, PCOLOR, , $(删除)
+    .参数 PCOLOR_NAME, PCOLOR_NAME, , $(删除)
+    .参数 PCOLORMATCHSETUPA, PCOLORMATCHSETUPA, , $(删除)
+    .参数 PCOMBOBOXINFO, PCOMBOBOXINFO, , $(删除)
+    .参数 PCOMPVARS, PCOMPVARS, , $(删除)
+    .参数 PCredHandle, PCredHandle, , $(删除)
+    .参数 PCRL_ENTRY, PCRL_ENTRY, , $(删除)
+    .参数 PCRL_INFO, PCRL_INFO, , $(删除)
+    .参数 PCRYPT_ALGORITHM_IDENTIFIER, PCRYPT_ALGORITHM_IDENTIFIER, , $(删除)
+    .参数 PCRYPT_CREDENTIALS, PCRYPT_CREDENTIALS, , $(删除)
+    .参数 PCRYPT_DATA_BLOB, PCRYPT_DATA_BLOB, , $(删除)
+    .参数 PCRYPT_DECODE_PARA, PCRYPT_DECODE_PARA, , $(删除)
+    .参数 PCRYPT_DER_BLOB, PCRYPT_DER_BLOB, , $(删除)
+    .参数 PCRYPT_ENCRYPT_MESSAGE_PARA, PCRYPT_ENCRYPT_MESSAGE_PARA, , $(删除)
+    .参数 PCRYPT_HASH_MESSAGE_PARA, PCRYPT_HASH_MESSAGE_PARA, , $(删除)
+    .参数 PCRYPT_INTEGER_BLOB, PCRYPT_INTEGER_BLOB, , $(删除)
+    .参数 PCRYPT_KEY_PROV_INFO, PCRYPT_KEY_PROV_INFO, , $(删除)
+    .参数 PCRYPT_KEY_SIGN_MESSAGE_PARA, PCRYPT_KEY_SIGN_MESSAGE_PARA, , $(删除)
+    .参数 PCRYPT_KEY_VERIFY_MESSAGE_PARA, PCRYPT_KEY_VERIFY_MESSAGE_PARA, , $(删除)
+    .参数 PCRYPT_SIGN_MESSAGE_PARA, PCRYPT_SIGN_MESSAGE_PARA, , $(删除)
+    .参数 PCRYPT_URL_ARRAY, PCRYPT_URL_ARRAY, , $(删除)
+    .参数 PCRYPT_URL_INFO, PCRYPT_URL_INFO, , $(删除)
+    .参数 PCRYPT_VERIFY_MESSAGE_PARA, PCRYPT_VERIFY_MESSAGE_PARA, , $(删除)
+    .参数 PCTL_INFO, PCTL_INFO, , $(删除)
+    .参数 PCTL_USAGE, PCTL_USAGE, , $(删除)
+    .参数 PCTL_VERIFY_USAGE_PARA, PCTL_VERIFY_USAGE_PARA, , $(删除)
+    .参数 PCTL_VERIFY_USAGE_STATUS, PCTL_VERIFY_USAGE_STATUS, , $(删除)
+    .参数 PCURSORINFO, PCURSORINFO, , $(删除)
+    .参数 PDBPROCESS, PDBPROCESS, , $(删除)
+    .参数 PDH_COUNTER_PATH_ELEMENTS_A, PDH_COUNTER_PATH_ELEMENTS_A, , $(删除)
+    .参数 PDISPLAY_DEVICEA, PDISPLAY_DEVICEA, , $(删除)
+    .参数 PDOMAIN_CONTROLLER_INFO, PDOMAIN_CONTROLLER_INFO, , $(删除)
+    .参数 PDS_NAME_RESULTA, PDS_NAME_RESULTA, , $(删除)
+    .参数 PDS_REPSYNCALL_ERRINFOA, PDS_REPSYNCALL_ERRINFOA, , $(删除)
+    .参数 PDS_SCHEMA_GUID_MAPA, PDS_SCHEMA_GUID_MAPA, , $(删除)
+    .参数 PDWORD, PDWORD, , $(删除)
+    .参数 PENCRYPTION_CERTIFICATE, PENCRYPTION_CERTIFICATE, , $(删除)
+    .参数 PENCRYPTION_CERTIFICATE_HASH_LIST, PENCRYPTION_CERTIFICATE_HASH_LIST, , $(删除)
+    .参数 PENCRYPTION_CERTIFICATE_LIST, PENCRYPTION_CERTIFICATE_LIST, , $(删除)
+    .参数 pEntry, pEntry, , $(删除)
+    .参数 PENUMERATION_BUFFER, PENUMERATION_BUFFER, , $(删除)
+    .参数 PENUMLOADED_MODULES_CALLBACK, PENUMLOADED_MODULES_CALLBACK, , $(删除)
+    .参数 PENUMTYPEA, PENUMTYPEA, , $(删除)
+    .参数 perf, perf, , $(删除)
+    .参数 PEXPLICIT_ACCESS_A, PEXPLICIT_ACCESS_A, , $(删除)
+    .参数 PFAX_CONFIGURATIONA, PFAX_CONFIGURATIONA, , $(删除)
+    .参数 PFAX_CONTEXT_INFOA, PFAX_CONTEXT_INFOA, , $(删除)
+    .参数 PFAX_DEVICE_STATUSA, PFAX_DEVICE_STATUSA, , $(删除)
+    .参数 PFAX_GLOBAL_ROUTING_INFOA, PFAX_GLOBAL_ROUTING_INFOA, , $(删除)
+    .参数 PFAX_JOB_ENTRYA, PFAX_JOB_ENTRYA, , $(删除)
+    .参数 PFAX_JOB_PARAMA, PFAX_JOB_PARAMA, , $(删除)
+    .参数 PFAX_LOG_CATEGORYA, PFAX_LOG_CATEGORYA, , $(删除)
+    .参数 PFAX_PORT_INFOA, PFAX_PORT_INFOA, , $(删除)
+    .参数 PFAX_RECIPIENT_CALLBACKA, PFAX_RECIPIENT_CALLBACKA, , $(删除)
+    .参数 PFAX_ROUTING_METHODA, PFAX_ROUTING_METHODA, , $(删除)
+    .参数 PFDICABINETINFO, PFDICABINETINFO, , $(删除)
+    .参数 PFE_EXPORT_FUNC, PFE_EXPORT_FUNC, , $(删除)
+    .参数 PFE_IMPORT_FUNC, PFE_IMPORT_FUNC, , $(删除)
+    .参数 PFIND_DEBUG_FILE_CALLBACK, PFIND_DEBUG_FILE_CALLBACK, , $(删除)
+    .参数 PFIND_EXE_FILE_CALLBACK, PFIND_EXE_FILE_CALLBACK, , $(删除)
+    .参数 PFIXED_INFO, PFIXED_INFO, , $(删除)
+    .参数 PFLASHWINFO, PFLASHWINFO, , $(删除)
+    .参数 PFN_AUTHZ_ACCESS_CHECK, PFN_AUTHZ_ACCESS_CHECK, , $(删除)
+    .参数 PFN_AUTHZ_COMPUTE_DYNAMIC_GROUPS, PFN_AUTHZ_COMPUTE_DYNAMIC_GROUPS, , $(删除)
+    .参数 PFN_AUTHZ_FREE_DYNAMIC_GROUPS, PFN_AUTHZ_FREE_DYNAMIC_GROUPS, , $(删除)
+    .参数 PFN_CERT_ENUM_PHYSICAL_STORE, PFN_CERT_ENUM_PHYSICAL_STORE, , $(删除)
+    .参数 PFN_CERT_ENUM_SYSTEM_STORE, PFN_CERT_ENUM_SYSTEM_STORE, , $(删除)
+    .参数 PFN_CERT_ENUM_SYSTEM_STORE_LOCATION, PFN_CERT_ENUM_SYSTEM_STORE_LOCATION, , $(删除)
+    .参数 PFN_CRYPT_ASYNC_PARAM_FREE_FUNC, PFN_CRYPT_ASYNC_PARAM_FREE_FUNC, , $(删除)
+    .参数 PFN_CRYPT_CANCEL_RETRIEVAL, PFN_CRYPT_CANCEL_RETRIEVAL, , $(删除)
+    .参数 PFN_CRYPT_ENUM_KEYID_PROP, PFN_CRYPT_ENUM_KEYID_PROP, , $(删除)
+    .参数 PFN_CRYPT_ENUM_OID_INFO, PFN_CRYPT_ENUM_OID_INFO, , $(删除)
+    .参数 PFN_OBJECT_MGR_FUNCTS, PFN_OBJECT_MGR_FUNCTS, , $(删除)
+    .参数 pfnalloc, pfnalloc, , $(删除)
+    .参数 pfnclose, pfnclose, , $(删除)
+    .参数 PFNFCIALLOC, PFNFCIALLOC, , $(删除)
+    .参数 PFNFCICLOSE, PFNFCICLOSE, , $(删除)
+    .参数 PFNFCIDELETE, PFNFCIDELETE, , $(删除)
+    .参数 PFNFCIFILEPLACED, PFNFCIFILEPLACED, , $(删除)
+    .参数 PFNFCIFREE, PFNFCIFREE, , $(删除)
+    .参数 PFNFCIGETNEXTCABINET, PFNFCIGETNEXTCABINET, , $(删除)
+    .参数 PFNFCIGETOPENINFO, PFNFCIGETOPENINFO, , $(删除)
+    .参数 PFNFCIGETTEMPFILE, PFNFCIGETTEMPFILE, , $(删除)
+    .参数 PFNFCIOPEN, PFNFCIOPEN, , $(删除)
+    .参数 PFNFCIREAD, PFNFCIREAD, , $(删除)
+    .参数 PFNFCISEEK, PFNFCISEEK, , $(删除)
+    .参数 PFNFCISTATUS, PFNFCISTATUS, , $(删除)
+    .参数 PFNFCIWRITE, PFNFCIWRITE, , $(删除)
+    .参数 PFNFDIDECRYPT, PFNFDIDECRYPT, , $(删除)
+    .参数 PFNFDINOTIFY, PFNFDINOTIFY, , $(删除)
+    .参数 pfnfree, pfnfree, , $(删除)
+    .参数 pfnopen, pfnopen, , $(删除)
+    .参数 pfnread, pfnread, , $(删除)
+    .参数 pfnseek, pfnseek, , $(删除)
+    .参数 pfnwrite, pfnwrite, , $(删除)
+    .参数 PFUNCTION_TABLE_ACCESS_ROUTINE, PFUNCTION_TABLE_ACCESS_ROUTINE, , $(删除)
+    .参数 PGET_MODULE_BASE_ROUTINE, PGET_MODULE_BASE_ROUTINE, , $(删除)
+    .参数 PGROUP_POLICY_OBJECTA, PGROUP_POLICY_OBJECTA, , $(删除)
+    .参数 PGUITHREADINFO, PGUITHREADINFO, , $(删除)
+    .参数 PHCRYPTASYNC, PHCRYPTASYNC, , $(删除)
+    .参数 PHONEBUTTONINFO, PHONEBUTTONINFO, , $(删除)
+    .参数 PHONECAPS, PHONECAPS, , $(删除)
+    .参数 PHONEEXTENSIONID, PHONEEXTENSIONID, , $(删除)
+    .参数 PHONEINITIALIZEEXPARAMS, PHONEINITIALIZEEXPARAMS, , $(删除)
+    .参数 PHONEMESSAGE, PHONEMESSAGE, , $(删除)
+    .参数 PHONESTATUS, PHONESTATUS, , $(删除)
+    .参数 PHPROFILE, PHPROFILE, , $(删除)
+    .参数 PHUSKEY, PHUSKEY, , $(删除)
+    .参数 PICTDESC, PICTDESC, , $(删除)
+    .参数 PIMAGE_DEBUG_INFORMATION, PIMAGE_DEBUG_INFORMATION, , $(删除)
+    .参数 PIMAGE_LOAD_CONFIG_DIRECTORY, PIMAGE_LOAD_CONFIG_DIRECTORY, , $(删除)
+    .参数 PIMAGE_NT_HEADERS, PIMAGE_NT_HEADERS, , $(删除)
+    .参数 PIMAGE_SECTION_HEADER, PIMAGE_SECTION_HEADER, , $(删除)
+    .参数 PIMAGEHLP_CONTEXT, PIMAGEHLP_CONTEXT, , $(删除)
+    .参数 PIMAGEHLP_LINE, PIMAGEHLP_LINE, , $(删除)
+    .参数 PIMAGEHLP_MODULE, PIMAGEHLP_MODULE, , $(删除)
+    .参数 PIMAGEHLP_MODULEW, PIMAGEHLP_MODULEW, , $(删除)
+    .参数 PIMAGEHLP_STACK_FRAME, PIMAGEHLP_STACK_FRAME, , $(删除)
+    .参数 PIMAGEHLP_STATUS_ROUTINE, PIMAGEHLP_STATUS_ROUTINE, , $(删除)
+    .参数 PIMAGEHLP_SYMBOL, PIMAGEHLP_SYMBOL, , $(删除)
+    .参数 PINFCONTEXT, PINFCONTEXT, , $(删除)
+    .参数 PINFCONTEXTfContext, PINFCONTEXTfContext, , $(删除)
+    .参数 PINHERITED_FROMA, PINHERITED_FROMA, , $(删除)
+    .参数 PINHERITED_FROMW, PINHERITED_FROMW, , $(删除)
+    .参数 PIO_COUNTERS, PIO_COUNTERS, , $(删除)
+    .参数 PIP_ADAPTER_INDEX_MAP, PIP_ADAPTER_INDEX_MAP, , $(删除)
+    .参数 PIP_ADAPTER_INFO, PIP_ADAPTER_INFO, , $(删除)
+    .参数 PIP_INTERFACE_INFO, PIP_INTERFACE_INFO, , $(删除)
+    .参数 PIP_OPTION_INFORMATION, PIP_OPTION_INFORMATION, , $(删除)
+    .参数 PIP_PER_ADAPTER_INFO, PIP_PER_ADAPTER_INFO, , $(删除)
+    .参数 PIP_UNIDIRECTIONAL_ADAPTER_ADDRESS, PIP_UNIDIRECTIONAL_ADAPTER_ADDRESS, , $(删除)
+    .参数 PIXELFORMATDESCRIPTOR, PIXELFORMATDESCRIPTOR, , $(删除)
+    .参数 PKSALLOCATOR_FRAMING, PKSALLOCATOR_FRAMING, , $(删除)
+    .参数 PKSCLOCK_CREATE, PKSCLOCK_CREATE, , $(删除)
+    .参数 PKSNODE_CREATE, PKSNODE_CREATE, , $(删除)
+    .参数 PKSPIN_CONNECT, PKSPIN_CONNECT, , $(删除)
+    .参数 PLASTINPUTINFO, PLASTINPUTINFO, , $(删除)
+    .参数 PLDAP, PLDAP, , $(删除)
+    .参数 PLDAP_VERSION_INFO, PLDAP_VERSION_INFO, , $(删除)
+    .参数 PLDAPControlA, PLDAPControlA, , $(删除)
+    .参数 PLDAPMessage, PLDAPMessage, , $(删除)
+    .参数 PLDAPSearch, PLDAPSearch, , $(删除)
+    .参数 PLDAPSortKeyA, PLDAPSortKeyA, , $(删除)
+    .参数 PLOADED_IMAGE, PLOADED_IMAGE, , $(删除)
+    .参数 PLOG_EVENT_ROUTINE, PLOG_EVENT_ROUTINE, , $(删除)
+    .参数 PLSA_HANDLE, PLSA_HANDLE, , $(删除)
+    .参数 PLSA_OBJECT_ATTRIBUTES, PLSA_OBJECT_ATTRIBUTES, , $(删除)
+    .参数 PLSA_OPERATIONAL_MODE, PLSA_OPERATIONAL_MODE, , $(删除)
+    .参数 PLSA_REFERENCED_DOMAIN_LIST, PLSA_REFERENCED_DOMAIN_LIST, , $(删除)
+    .参数 PLSA_STRING, PLSA_STRING, , $(删除)
+    .参数 PLSA_TRANSLATED_NAME, PLSA_TRANSLATED_NAME, , $(删除)
+    .参数 PLSA_TRANSLATED_SID, PLSA_TRANSLATED_SID, , $(删除)
+    .参数 PLSA_UNICODE_STRING, PLSA_UNICODE_STRING, , $(删除)
+    .参数 PMCAST_LEASE_REQUEST, PMCAST_LEASE_REQUEST, , $(删除)
+    .参数 PMCAST_SCOPE_CTX, PMCAST_SCOPE_CTX, , $(删除)
+    .参数 PMENUBARINFO, PMENUBARINFO, , $(删除)
+    .参数 PMIB_ICMP, PMIB_ICMP, , $(删除)
+    .参数 PMIB_IFROW, PMIB_IFROW, , $(删除)
+    .参数 PMIB_IFTABLE, PMIB_IFTABLE, , $(删除)
+    .参数 PMIB_IPADDRTABLE, PMIB_IPADDRTABLE, , $(删除)
+    .参数 PMIB_IPFORWARDROW, PMIB_IPFORWARDROW, , $(删除)
+    .参数 PMIB_IPFORWARDTABLE, PMIB_IPFORWARDTABLE, , $(删除)
+    .参数 PMIB_IPMCAST_MFE, PMIB_IPMCAST_MFE, , $(删除)
+    .参数 PMIB_IPNETROW, PMIB_IPNETROW, , $(删除)
+    .参数 PMIB_IPNETTABLE, PMIB_IPNETTABLE, , $(删除)
+    .参数 PMIB_IPSTATS, PMIB_IPSTATS, , $(删除)
+    .参数 PMIB_TCPROW, PMIB_TCPROW, , $(删除)
+    .参数 PMIB_TCPSTATS, PMIB_TCPSTATS, , $(删除)
+    .参数 PMIB_TCPTABLE, PMIB_TCPTABLE, , $(删除)
+    .参数 PMIB_UDPSTATS, PMIB_UDPSTATS, , $(删除)
+    .参数 PMIB_UDPTABLE, PMIB_UDPTABLE, , $(删除)
+    .参数 PMIDL_TYPE_PICKLING_INFO, PMIDL_TYPE_PICKLING_INFO, , $(删除)
+    .参数 PMPR_IPINIP_INTERFACE_, PMPR_IPINIP_INTERFACE_, , $(删除)
+    .参数 PMQRECEIVECALLBACK, PMQRECEIVECALLBACK, , $(删除)
+    .参数 PMSV, PMSV, , $(删除)
+    .参数 PNAMED_PROFILE_INFO, PNAMED_PROFILE_INFO, , $(删除)
+    .参数 PNDR_PIPE_DESC, PNDR_PIPE_DESC, , $(删除)
+    .参数 PNDR_PIPE_MESSAGE, PNDR_PIPE_MESSAGE, , $(删除)
+    .参数 PNTSTATUS, PNTSTATUS, , $(删除)
+    .参数 POBJECT_TYPE_LIST, POBJECT_TYPE_LIST, , $(删除)
+    .参数 POBJECTS_AND_NAME_A, POBJECTS_AND_NAME_A, , $(删除)
+    .参数 POBJECTS_AND_SID, POBJECTS_AND_SID, , $(删除)
+    .参数 PODBC_VS_ARGS, PODBC_VS_ARGS, , $(删除)
+    .参数 POINT, POINT, , $(删除)
+    .参数 POINTAPI, POINTAPI, , $(删除)
+    .参数 POINTFX, POINTFX, , $(删除)
+    .参数 POINTL, POINTL, , $(删除)
+    .参数 POINTS, POINTS, , $(删除)
+    .参数 POLYTEXT, POLYTEXT, , $(删除)
+    .参数 PPATCH_IGNORE_RANGE, PPATCH_IGNORE_RANGE, , $(删除)
+    .参数 PPATCH_PROGRESS_CALLBACK, PPATCH_PROGRESS_CALLBACK, , $(删除)
+    .参数 PPATCH_RETAIN_RANGE, PPATCH_RETAIN_RANGE, , $(删除)
+    .参数 PPDH_BROWSE_DLG_CONFIG_A, PPDH_BROWSE_DLG_CONFIG_A, , $(删除)
+    .参数 PPDH_COUNTER_INFO_A, PPDH_COUNTER_INFO_A, , $(删除)
+    .参数 PPDH_FMT_COUNTERVALUE, PPDH_FMT_COUNTERVALUE, , $(删除)
+    .参数 PPDH_FMT_COUNTERVALUE_ITEM_A, PPDH_FMT_COUNTERVALUE_ITEM_A, , $(删除)
+    .参数 PPDH_LOG_SERVICE_QUERY_INFO_A, PPDH_LOG_SERVICE_QUERY_INFO_A, , $(删除)
+    .参数 PPDH_RAW_COUNTER, PPDH_RAW_COUNTER, , $(删除)
+    .参数 PPDH_RAW_COUNTER_ITEM_A, PPDH_RAW_COUNTER_ITEM_A, , $(删除)
+    .参数 PPDH_RAW_LOG_RECORD, PPDH_RAW_LOG_RECORD, , $(删除)
+    .参数 PPDH_STATISTICS, PPDH_STATISTICS, , $(删除)
+    .参数 PPDH_TIME_INFO, PPDH_TIME_INFO, , $(删除)
+    .参数 PPERUSERSECTION, PPERUSERSECTION, , $(删除)
+    .参数 PPP_EAP_INFO, PPP_EAP_INFO, , $(删除)
+    .参数 PPROCESS_MEMORY_COUNTERS, PPROCESS_MEMORY_COUNTERS, , $(删除)
+    .参数 PPROFILE, PPROFILE, , $(删除)
+    .参数 PPROFILEHEADER, PPROFILEHEADER, , $(删除)
+    .参数 PPROTECTED_FILE_DATA, PPROTECTED_FILE_DATA, , $(删除)
+    .参数 PPSAPI_WS_WATCH_INFORMATION, PPSAPI_WS_WATCH_INFORMATION, , $(删除)
+    .参数 PQUOTA_LIMITS, PQUOTA_LIMITS, , $(删除)
+    .参数 PRAS_PORT_, PRAS_PORT_, , $(删除)
+    .参数 PRAS_SERVER_, PRAS_SERVER_, , $(删除)
+    .参数 PRAS_USER_, PRAS_USER_, , $(删除)
+    .参数 PREAD_PROCESS_MEMORY_ROUTINE, PREAD_PROCESS_MEMORY_ROUTINE, , $(删除)
+    .参数 PRINTDLG, PRINTDLG, , $(删除)
+    .参数 PRINTDLGEXA, PRINTDLGEXA, , $(删除)
+    .参数 PRINTER_DEFAULTS, PRINTER_DEFAULTS, , $(删除)
+    .参数 PRIVILEGE_SET, PRIVILEGE_SET, , $(删除)
+    .参数 PROCESS_HEAP_ENTRY, PROCESS_HEAP_ENTRY, , $(删除)
+    .参数 PROCESS_INFORMATION, PROCESS_INFORMATION, , $(删除)
+    .参数 PROG_INVOKE_SETTING, PROG_INVOKE_SETTING, , $(删除)
+    .参数 PROGRESS_ROUTINE, PROGRESS_ROUTINE, , $(删除)
+    .参数 PROPSHEETHEADER, PROPSHEETHEADER, , $(删除)
+    .参数 PROPVARIANT, PROPVARIANT, , $(删除)
+    .参数 PROUTING_PROTOCOL_CONFIG, PROUTING_PROTOCOL_CONFIG, , $(删除)
+    .参数 ProxyFileInfo, ProxyFileInfo, , $(删除)
+    .参数 PRPC_ASYNC_STATE, PRPC_ASYNC_STATE, , $(删除)
+    .参数 PRPC_POLICY, PRPC_POLICY, , $(删除)
+    .参数 PRTM_DEST_HANDLE, PRTM_DEST_HANDLE, , $(删除)
+    .参数 PRTM_DEST_INFO, PRTM_DEST_INFO, , $(删除)
+    .参数 PRTM_ENTITY_EXPORT_METHOD, PRTM_ENTITY_EXPORT_METHOD, , $(删除)
+    .参数 PRTM_ENTITY_EXPORT_METHODS, PRTM_ENTITY_EXPORT_METHODS, , $(删除)
+    .参数 PRTM_ENTITY_HANDLE, PRTM_ENTITY_HANDLE, , $(删除)
+    .参数 PRTM_ENTITY_INFO, PRTM_ENTITY_INFO, , $(删除)
+    .参数 PRTM_ENTITY_METHOD_INPUT, PRTM_ENTITY_METHOD_INPUT, , $(删除)
+    .参数 PRTM_ENTITY_METHOD_OUTPUT, PRTM_ENTITY_METHOD_OUTPUT, , $(删除)
+    .参数 PRTM_ENUM_HANDLE, PRTM_ENUM_HANDLE, , $(删除)
+    .参数 PRTM_NET_ADDRESS, PRTM_NET_ADDRESS, , $(删除)
+    .参数 PRTM_NEXTHOP_CHANGE_FLAGS, PRTM_NEXTHOP_CHANGE_FLAGS, , $(删除)
+    .参数 PRTM_NEXTHOP_HANDLE, PRTM_NEXTHOP_HANDLE, , $(删除)
+    .参数 PRTM_NEXTHOP_INFO, PRTM_NEXTHOP_INFO, , $(删除)
+    .参数 PRTM_NOTIFY_HANDLE, PRTM_NOTIFY_HANDLE, , $(删除)
+    .参数 PRTM_REGN_PROFILE, PRTM_REGN_PROFILE, , $(删除)
+    .参数 PRTM_ROUTE_CHANGE_FLAGS, PRTM_ROUTE_CHANGE_FLAGS, , $(删除)
+    .参数 PRTM_ROUTE_HANDLE, PRTM_ROUTE_HANDLE, , $(删除)
+    .参数 PRTM_ROUTE_INFO, PRTM_ROUTE_INFO, , $(删除)
+    .参数 PRTM_ROUTE_LIST_HANDLE, PRTM_ROUTE_LIST_HANDLE, , $(删除)
+    .参数 PRTM_VIEW_SET, PRTM_VIEW_SET, , $(删除)
+    .参数 PSCROLLBARINFO, PSCROLLBARINFO, , $(删除)
+    .参数 PSecBuffer, PSecBuffer, , $(删除)
+    .参数 PSecBufferDesc, PSecBufferDesc, , $(删除)
+    .参数 PSecPkgInfoA, PSecPkgInfoA, , $(删除)
+    .参数 PSP_ALTPLATFORM_INFO, PSP_ALTPLATFORM_INFO, , $(删除)
+    .参数 PSP_BACKUP_QUEUE_PARAMS_A, PSP_BACKUP_QUEUE_PARAMS_A, , $(删除)
+    .参数 PSP_CLASSIMAGELIST_DATA, PSP_CLASSIMAGELIST_DATA, , $(删除)
+    .参数 PSP_CLASSINSTALL_HEADER, PSP_CLASSINSTALL_HEADER, , $(删除)
+    .参数 PSP_DETSIG_CMPPROC, PSP_DETSIG_CMPPROC, , $(删除)
+    .参数 PSP_DEVICE_INTERFACE_DATA, PSP_DEVICE_INTERFACE_DATA, , $(删除)
+    .参数 PSP_DEVICE_INTERFACE_DETAIL_DATA_A, PSP_DEVICE_INTERFACE_DETAIL_DATA_A, , $(删除)
+    .参数 PSP_DEVINFO_DATA, PSP_DEVINFO_DATA, , $(删除)
+    .参数 PSP_DEVINFO_LIST_DETAIL_DATA_A, PSP_DEVINFO_LIST_DETAIL_DATA_A, , $(删除)
+    .参数 PSP_DEVINSTALL_PARAMS_A, PSP_DEVINSTALL_PARAMS_A, , $(删除)
+    .参数 PSP_DRVINFO_DATA_A, PSP_DRVINFO_DATA_A, , $(删除)
+    .参数 PSP_DRVINFO_DETAIL_DATA_A, PSP_DRVINFO_DETAIL_DATA_A, , $(删除)
+    .参数 PSP_DRVINSTALL_PARAMS, PSP_DRVINSTALL_PARAMS, , $(删除)
+    .参数 PSP_FILE_CALLBACK_A, PSP_FILE_CALLBACK_A, , $(删除)
+    .参数 PSP_FILE_COPY_PARAMS_A, PSP_FILE_COPY_PARAMS_A, , $(删除)
+    .参数 PSP_INF_INFORMATION, PSP_INF_INFORMATION, , $(删除)
+    .参数 PSP_INF_INFORMATIONfInformation, PSP_INF_INFORMATIONfInformation, , $(删除)
+    .参数 PSP_INSTALLWIZARD_DATAstallWizardData, PSP_INSTALLWIZARD_DATAstallWizardData, , $(删除)
+    .参数 PSP_ORIGINAL_FILE_INFO_A, PSP_ORIGINAL_FILE_INFO_A, , $(删除)
+    .参数 psuAction, psuAction, , $(删除)
+    .参数 PSYM_ENUMERATESYMBOLS_CALLBACK, PSYM_ENUMERATESYMBOLS_CALLBACK, , $(删除)
+    .参数 PSYM_ENUMMODULES_CALLBACK, PSYM_ENUMMODULES_CALLBACK, , $(删除)
+    .参数 PSYM_ENUMSYMBOLS_CALLBACK, PSYM_ENUMSYMBOLS_CALLBACK, , $(删除)
+    .参数 PSYMBOL_FUNCENTRY_CALLBACK, PSYMBOL_FUNCENTRY_CALLBACK, , $(删除)
+    .参数 PSYMBOL_INFO, PSYMBOL_INFO, , $(删除)
+    .参数 PSYMBOL_REGISTERED_CALLBACK, PSYMBOL_REGISTERED_CALLBACK, , $(删除)
+    .参数 PTAGTYPE, PTAGTYPE, , $(删除)
+    .参数 PTC_GEN_FILTER, PTC_GEN_FILTER, , $(删除)
+    .参数 PTC_GEN_FLOW, PTC_GEN_FLOW, , $(删除)
+    .参数 PTC_IFC_DESCRIPTOR, PTC_IFC_DESCRIPTOR, , $(删除)
+    .参数 PTCI_CLIENT_FUNC_LIST, PTCI_CLIENT_FUNC_LIST, , $(删除)
+    .参数 PTIMERAPCROUTINE, PTIMERAPCROUTINE, , $(删除)
+    .参数 PTimeStamp, PTimeStamp, , $(删除)
+    .参数 PTITLEBARINFO, PTITLEBARINFO, , $(删除)
+    .参数 PTRANSLATE_ADDRESS_ROUTINE, PTRANSLATE_ADDRESS_ROUTINE, , $(删除)
+    .参数 PTRIVERTEX, PTRIVERTEX, , $(删除)
+    .参数 PTRUSTED_DOMAIN_AUTH_INFORMATION, PTRUSTED_DOMAIN_AUTH_INFORMATION, , $(删除)
+    .参数 PTRUSTED_DOMAIN_INFORMATION_EX, PTRUSTED_DOMAIN_INFORMATION_EX, , $(删除)
+    .参数 PTRUSTEE_A, PTRUSTEE_A, , $(删除)
+    .参数 PUBLICKEYSTRUC, PUBLICKEYSTRUC, , $(删除)
+    .参数 PULONG_PTR, PULONG_PTR, , $(删除)
+    .参数 PUSER_ALL_INFORMATION, PUSER_ALL_INFORMATION, , $(删除)
+    .参数 PUT_RECORD, PUT_RECORD, , $(删除)
+    .参数 PWINDOWINFO, PWINDOWINFO, , $(删除)
+    .参数 PWLX_MPR_NOTIFY_INFO, PWLX_MPR_NOTIFY_INFO, , $(删除)
+    .参数 PWORKER_START_ROUTINE, PWORKER_START_ROUTINE, , $(删除)
+    .参数 PWT_EVENT_BINDING, PWT_EVENT_BINDING, , $(删除)
+    .参数 PWT_EVENT_ENTRY, PWT_EVENT_ENTRY, , $(删除)
+    .参数 PWT_TIMER_ENTRY, PWT_TIMER_ENTRY, , $(删除)
+    .参数 PWTS_PROCESS_INFOA, PWTS_PROCESS_INFOA, , $(删除)
+    .参数 PWTS_SERVER_INFOA, PWTS_SERVER_INFOA, , $(删除)
+    .参数 PWTS_SESSION_INFOA, PWTS_SESSION_INFOA, , $(删除)
+    .参数 QOS, QOS, , $(删除)
+    .参数 QUERY_SERVICE_CONFIG, QUERY_SERVICE_CONFIG, , $(删除)
+    .参数 QUERY_SERVICE_LOCK_STATUS, QUERY_SERVICE_LOCK_STATUS, , $(删除)
+    .参数 QUERYCONTEXT, QUERYCONTEXT, , $(删除)
+    .参数 QUERYOPTION, QUERYOPTION, , $(删除)
+    .参数 QUEUEHANDLE, QUEUEHANDLE, , $(删除)
+    .参数 RAS_PARAMETERS, RAS_PARAMETERS, , $(删除)
+    .参数 RAS_PORT_, RAS_PORT_, , $(删除)
+    .参数 RAS_PORT_STATISTICS, RAS_PORT_STATISTICS, , $(删除)
+    .参数 RAS_SECURITY_INFO, RAS_SECURITY_INFO, , $(删除)
+    .参数 RAS_SERVER_HANDLE, RAS_SERVER_HANDLE, , $(删除)
+    .参数 RAS_STATS, RAS_STATS, , $(删除)
+    .参数 RASAUTODIALENTRYA, RASAUTODIALENTRYA, , $(删除)
+    .参数 RASCONN, RASCONN, , $(删除)
+    .参数 RASCONNSTATUS, RASCONNSTATUS, , $(删除)
+    .参数 RASCREDENTIALSA, RASCREDENTIALSA, , $(删除)
+    .参数 RASCTRYINFOA, RASCTRYINFOA, , $(删除)
+    .参数 RASDEVINFOA, RASDEVINFOA, , $(删除)
+    .参数 RASDIALEXTENSIONS, RASDIALEXTENSIONS, , $(删除)
+    .参数 RASDIALPARAMS, RASDIALPARAMS, , $(删除)
+    .参数 RASEAPUSERIDENTITYA, RASEAPUSERIDENTITYA, , $(删除)
+    .参数 RASENTRYA, RASENTRYA, , $(删除)
+    .参数 RASENTRYNAME, RASENTRYNAME, , $(删除)
+    .参数 RASSUBENTRYA, RASSUBENTRYA, , $(删除)
+    .参数 RASTERIZER_STATUS, RASTERIZER_STATUS, , $(删除)
+    .参数 Rect, Rect, , $(删除)
+    .参数 RECT1, 未知类型0x41013F99, , $(删除)
+    .参数 RECTL, RECTL, , $(删除)
+    .参数 REFFMTID, REFFMTID, , $(删除)
+    .参数 REFGPEXTENSIONID, REFGPEXTENSIONID, , $(删除)
+    .参数 RESOURCE_HANDLE, RESOURCE_HANDLE, , $(删除)
+    .参数 RFCDLGPARAMA, RFCDLGPARAMA, , $(删除)
+    .参数 RGBQUAD, RGBQUAD, , $(删除)
+    .参数 RGBTRIPLE, RGBTRIPLE, , $(删除)
+    .参数 RgnData, RgnData, , $(删除)
+    .参数 RGNDATA1, 未知类型0x41013FA2, , $(删除)
+    .参数 RGNDATAHEADER, RGNDATAHEADER, , $(删除)
+    .参数 RPC_ADDRESS_CHANGE_FN, RPC_ADDRESS_CHANGE_FN, , $(删除)
+    .参数 RPC_BINDING_VECTOR, RPC_BINDING_VECTOR, , $(删除)
+    .参数 RPC_IF_CALLBACK_FN, RPC_IF_CALLBACK_FN, , $(删除)
+    .参数 RPC_IF_ID, RPC_IF_ID, , $(删除)
+    .参数 RPC_IF_ID_VECTOR, RPC_IF_ID_VECTOR, , $(删除)
+    .参数 RPC_MESSAGE, RPC_MESSAGE, , $(删除)
+    .参数 RPC_PROTSEQ_VECTORA, RPC_PROTSEQ_VECTORA, , $(删除)
+    .参数 RPC_SECURITY_QOS, RPC_SECURITY_QOS, , $(删除)
+    .参数 RPC_SERVER_INTERFACE, RPC_SERVER_INTERFACE, , $(删除)
+    .参数 RPC_STATS_VECTOR, RPC_STATS_VECTOR, , $(删除)
+    .参数 RPC_TRANSFER_SYNTAX, RPC_TRANSFER_SYNTAX, , $(删除)
+    .参数 RPC_VERSION, RPC_VERSION, , $(删除)
+    .参数 RTM_DEST_HANDLE, RTM_DEST_HANDLE, , $(删除)
+    .参数 RTM_ENTITY_HANDLE, RTM_ENTITY_HANDLE, , $(删除)
+    .参数 RTM_ENUM_FLAGS, RTM_ENUM_FLAGS, , $(删除)
+    .参数 RTM_ENUM_HANDLE, RTM_ENUM_HANDLE, , $(删除)
+    .参数 RTM_EVENT_CALLBACK, RTM_EVENT_CALLBACK, , $(删除)
+    .参数 RTM_MATCH_FLAGS, RTM_MATCH_FLAGS, , $(删除)
+    .参数 RTM_NEXTHOP_HANDLE, RTM_NEXTHOP_HANDLE, , $(删除)
+    .参数 RTM_NOTIFY_FLAGS, RTM_NOTIFY_FLAGS, , $(删除)
+    .参数 RTM_NOTIFY_HANDLE, RTM_NOTIFY_HANDLE, , $(删除)
+    .参数 RTM_ROUTE_HANDLE, RTM_ROUTE_HANDLE, , $(删除)
+    .参数 RTM_ROUTE_LIST_HANDLE, RTM_ROUTE_LIST_HANDLE, , $(删除)
+    .参数 RTM_VIEW_SET, RTM_VIEW_SET, , $(删除)
+    .参数 SAFEARRAY, SAFEARRAY, , $(删除)
+    .参数 SAFEARRAYBOUND, SAFEARRAYBOUND, , $(删除)
+    .参数 SAM_HANDLE, SAM_HANDLE, , $(删除)
+    .参数 SCARD_IO_REQUEST, SCARD_IO_REQUEST, , $(删除)
+    .参数 SCARD_READERSTATEA, SCARD_READERSTATEA, , $(删除)
+    .参数 SCARDCONTEXT, SCARDCONTEXT, , $(删除)
+    .参数 SCARDHANDLE, SCARDHANDLE, , $(删除)
+    .参数 SCRIPT_ANALYSIS, SCRIPT_ANALYSIS, , $(删除)
+    .参数 SCRIPT_CACHE, SCRIPT_CACHE, , $(删除)
+    .参数 SCRIPT_CONTROL, SCRIPT_CONTROL, , $(删除)
+    .参数 SCRIPT_DIGITSUBSTITUTE, SCRIPT_DIGITSUBSTITUTE, , $(删除)
+    .参数 SCRIPT_FONTPROPERTIES, SCRIPT_FONTPROPERTIES, , $(删除)
+    .参数 SCRIPT_ITEM, SCRIPT_ITEM, , $(删除)
+    .参数 SCRIPT_LOGATTR, SCRIPT_LOGATTR, , $(删除)
+    .参数 SCRIPT_STATE, SCRIPT_STATE, , $(删除)
+    .参数 SCRIPT_STRING_ANALYSIS, SCRIPT_STRING_ANALYSIS, , $(删除)
+    .参数 SCRIPT_TABDEF, SCRIPT_TABDEF, , $(删除)
+    .参数 SCRIPT_VISATTR, SCRIPT_VISATTR, , $(删除)
+    .参数 SCROLLINFO, SCROLLINFO, , $(删除)
+    .参数 SE_OBJECT_TYPE, SE_OBJECT_TYPE, , $(删除)
+    .参数 SEC_CHAR, SEC_CHAR, , $(删除)
+    .参数 SEC_GET_KEY_FN, SEC_GET_KEY_FN, , $(删除)
+    .参数 SECURITY_ATTRIBUTES, SECURITY_ATTRIBUTES, , $(删除)
+    .参数 SECURITY_DESCRIPTOR, SECURITY_DESCRIPTOR, , $(删除)
+    .参数 SECURITY_PACKAGE_OPTIONS, SECURITY_PACKAGE_OPTIONS, , $(删除)
+    .参数 SECURITY_QUALITY_OF_SERVICE, SECURITY_QUALITY_OF_SERVICE, , $(删除)
+    .参数 SERVICE_INFO, SERVICE_INFO, , $(删除)
+    .参数 SERVICE_STATUS, SERVICE_STATUS, , $(删除)
+    .参数 SERVICE_TABLE_ENTRY, SERVICE_TABLE_ENTRY, , $(删除)
+    .参数 SHELLEXECUTEINFOA, SHELLEXECUTEINFOA, , $(删除)
+    .参数 SHELLFLAGSTATE, SHELLFLAGSTATE, , $(删除)
+    .参数 SHFILEINFO, SHFILEINFO, , $(删除)
+    .参数 SHFILEOPSTRUCT, SHFILEOPSTRUCT, , $(删除)
+    .参数 SHQUERYRBINFO, SHQUERYRBINFO, , $(删除)
+    .参数 Sid, Sid, , $(删除)
+    .参数 SID1, 未知类型0x41013FDF, , $(删除)
+    .参数 SID_AND_ATTRIBUTES, SID_AND_ATTRIBUTES, , $(删除)
+    .参数 SID_IDENTIFIER_AUTHORITY, SID_IDENTIFIER_AUTHORITY, , $(删除)
+    .参数 Single, Single, , $(删除)
+    .参数 SIP_ADD_NEWPROVIDER, SIP_ADD_NEWPROVIDER, , $(删除)
+    .参数 SIP_INDIRECT_DATA, SIP_INDIRECT_DATA, , $(删除)
+    .参数 SIP_SUBJECTINFO, SIP_SUBJECTINFO, , $(删除)
+    .参数 SIZE, SIZE, , $(删除)
+    .参数 SIZEL, SIZEL, , $(删除)
+    .参数 SMALL_RECT, SMALL_RECT, , $(删除)
+    .参数 smiINT, smiINT, , $(删除)
+    .参数 smiLPCOCTETS, smiLPCOCTETS, , $(删除)
+    .参数 smiLPCOID, smiLPCOID, , $(删除)
+    .参数 smiLPCVALUE, smiLPCVALUE, , $(删除)
+    .参数 smiLPINT, smiLPINT, , $(删除)
+    .参数 smiLPOCTETS, smiLPOCTETS, , $(删除)
+    .参数 smiLPOID, smiLPOID, , $(删除)
+    .参数 smiLPOPAQUE, smiLPOPAQUE, , $(删除)
+    .参数 smiLPTIMETICKS, smiLPTIMETICKS, , $(删除)
+    .参数 smiLPUINT, smiLPUINT, , $(删除)
+    .参数 smiLPVALUE, smiLPVALUE, , $(删除)
+    .参数 smiLPVENDORINFO, smiLPVENDORINFO, , $(删除)
+    .参数 smiTIMETICKS, smiTIMETICKS, , $(删除)
+    .参数 smiUINT, smiUINT, , $(删除)
+    .参数 SNMPAPI_CALLBACK, SNMPAPI_CALLBACK, , $(删除)
+    .参数 SNMPAPI_STATUS, SNMPAPI_STATUS, , $(删除)
+    .参数 SnmpVarBind, SnmpVarBind, , $(删除)
+    .参数 SnmpVarBindList, SnmpVarBindList, , $(删除)
+    .参数 SOCKADDR, SOCKADDR, , $(删除)
+    .参数 sockaddr1, 未知类型0x41013FFC, , $(删除)
+    .参数 SOFTDISTINFO, SOFTDISTINFO, , $(删除)
+    .参数 SOLE_AUTHENTICATION_SERVICE, SOLE_AUTHENTICATION_SERVICE, , $(删除)
+    .参数 SQLHANDLE, SQLHANDLE, , $(删除)
+    .参数 SQLHDESC, SQLHDESC, , $(删除)
+    .参数 SQLLEN, SQLLEN, , $(删除)
+    .参数 SQLROWOFFSET, SQLROWOFFSET, , $(删除)
+    .参数 SQLULEN, SQLULEN, , $(删除)
+    .参数 sstruct, sstruct, , $(删除)
+    .参数 STACKFRAME, STACKFRAME, , $(删除)
+    .参数 STARTUPINFO, STARTUPINFO, , $(删除)
+    .参数 STGMEDIUM, STGMEDIUM, , $(删除)
+    .参数 STGOPTIONS, STGOPTIONS, , $(删除)
+    .参数 String, String, , $(删除)
+    .参数 STRRET, STRRET, , $(删除)
+    .参数 Struct_MembersOf_ASSOCKEY, Struct_MembersOf_ASSOCKEY, , $(删除)
+    .参数 Struct_MembersOf_ASSOCSTR, Struct_MembersOf_ASSOCSTR, , $(删除)
+    .参数 Struct_MembersOf_AUTHZ_CONTEXT_INFORMATION_CLASS, Struct_MembersOf_AUTHZ_CONTEXT_INFORMATION_CLASS, , $(删除)
+    .参数 Struct_MembersOf_BMFORMAT, Struct_MembersOf_BMFORMAT, , $(删除)
+    .参数 Struct_MembersOf_COLORTYPE, Struct_MembersOf_COLORTYPE, , $(删除)
+    .参数 Struct_MembersOf_COMPUTER_NAME_FORMAT, Struct_MembersOf_COMPUTER_NAME_FORMAT, , $(删除)
+    .参数 Struct_MembersOf_CY, Struct_MembersOf_CY, , $(删除)
+    .参数 Struct_MembersOf_DS_KCC_TASKID, Struct_MembersOf_DS_KCC_TASKID, , $(删除)
+    .参数 Struct_MembersOf_DS_NAME_FLAGS, Struct_MembersOf_DS_NAME_FLAGS, , $(删除)
+    .参数 Struct_MembersOf_DS_NAME_FORMAT, Struct_MembersOf_DS_NAME_FORMAT, , $(删除)
+    .参数 Struct_MembersOf_DS_REPL_INFO_TYPE, Struct_MembersOf_DS_REPL_INFO_TYPE, , $(删除)
+    .参数 Struct_MembersOf_DS_SPN_NAME_TYPE, Struct_MembersOf_DS_SPN_NAME_TYPE, , $(删除)
+    .参数 Struct_MembersOf_DS_SPN_WRITE_OP, Struct_MembersOf_DS_SPN_WRITE_OP, , $(删除)
+    .参数 Struct_MembersOf_EXTENDED_NAME_FORMAT, Struct_MembersOf_EXTENDED_NAME_FORMAT, , $(删除)
+    .参数 Struct_MembersOf_FILETIME, Struct_MembersOf_FILETIME, , $(删除)
+    .参数 Struct_MembersOf_FINDEX_INFO_LEVELS, Struct_MembersOf_FINDEX_INFO_LEVELS, , $(删除)
+    .参数 Struct_MembersOf_FINDEX_SEARCH_OPS, Struct_MembersOf_FINDEX_SEARCH_OPS, , $(删除)
+    .参数 Struct_MembersOf_GET_FILEEX_INFO_LEVELS, Struct_MembersOf_GET_FILEEX_INFO_LEVELS, , $(删除)
+    .参数 Struct_MembersOf_IMAGEHLP_TYPES, Struct_MembersOf_IMAGEHLP_TYPES, , $(删除)
+    .参数 Struct_MembersOf_INSTALLSTATE, Struct_MembersOf_INSTALLSTATE, , $(删除)
+    .参数 Struct_MembersOf_INSTALLTYPE, Struct_MembersOf_INSTALLTYPE, , $(删除)
+    .参数 Struct_MembersOf_INSTALLUILEVEL, Struct_MembersOf_INSTALLUILEVEL, , $(删除)
+    .参数 Struct_MembersOf_LARGE_INTEGER, Struct_MembersOf_LARGE_INTEGER, , $(删除)
+    .参数 Struct_MembersOf_MGM_ENUM_TYPES, Struct_MembersOf_MGM_ENUM_TYPES, , $(删除)
+    .参数 Struct_MembersOf_MIDL_ES_ALLOC, Struct_MembersOf_MIDL_ES_ALLOC, , $(删除)
+    .参数 Struct_MembersOf_MIDL_ES_CODE, Struct_MembersOf_MIDL_ES_CODE, , $(删除)
+    .参数 Struct_MembersOf_MIDL_ES_READ, Struct_MembersOf_MIDL_ES_READ, , $(删除)
+    .参数 Struct_MembersOf_MIDL_ES_WRITE, Struct_MembersOf_MIDL_ES_WRITE, , $(删除)
+    .参数 Struct_MembersOf_MSICOLINFO, Struct_MembersOf_MSICOLINFO, , $(删除)
+    .参数 Struct_MembersOf_MSICOSTTREE, Struct_MembersOf_MSICOSTTREE, , $(删除)
+    .参数 Struct_MembersOf_MSIMODIFY, Struct_MembersOf_MSIMODIFY, , $(删除)
+    .参数 Struct_MembersOf_MSIRUNMODE, Struct_MembersOf_MSIRUNMODE, , $(删除)
+    .参数 Struct_MembersOf_NDR_CCONTEXT, Struct_MembersOf_NDR_CCONTEXT, , $(删除)
+    .参数 Struct_MembersOf_NDR_SCONTEXT, Struct_MembersOf_NDR_SCONTEXT, , $(删除)
+    .参数 Struct_MembersOf_NETLOGON_LOGON_INFO_CLASS, Struct_MembersOf_NETLOGON_LOGON_INFO_CLASS, , $(删除)
+    .参数 Struct_MembersOf_NETSETUP_NAME_TYPE, Struct_MembersOf_NETSETUP_NAME_TYPE, , $(删除)
+    .参数 Struct_MembersOf_OLE_SERVER_USE, Struct_MembersOf_OLE_SERVER_USE, , $(删除)
+    .参数 Struct_MembersOf_OLEOPT_RENDER, Struct_MembersOf_OLEOPT_RENDER, , $(删除)
+    .参数 Struct_MembersOf_OLEOPT_UPDATE, Struct_MembersOf_OLEOPT_UPDATE, , $(删除)
+    .参数 Struct_MembersOf_PACL, Struct_MembersOf_PACL, , $(删除)
+    .参数 Struct_MembersOf_PLUID, Struct_MembersOf_PLUID, , $(删除)
+    .参数 Struct_MembersOf_POINT, Struct_MembersOf_POINT, , $(删除)
+    .参数 Struct_MembersOf_POLICY_DOMAIN_INFORMATION_CLASS, Struct_MembersOf_POLICY_DOMAIN_INFORMATION_CLASS, , $(删除)
+    .参数 Struct_MembersOf_POLICY_INFORMATION_CLASS, Struct_MembersOf_POLICY_INFORMATION_CLASS, , $(删除)
+    .参数 Struct_MembersOf_POLICY_NOTIFICATION_INFORMATION_CLASS, Struct_MembersOf_POLICY_NOTIFICATION_INFORMATION_CLASS, , $(删除)
+    .参数 Struct_MembersOf_RASPROJECTION, Struct_MembersOf_RASPROJECTION, , $(删除)
+    .参数 Struct_MembersOf_RECT, Struct_MembersOf_RECT, , $(删除)
+    .参数 Struct_MembersOf_REGKIND, Struct_MembersOf_REGKIND, , $(删除)
+    .参数 Struct_MembersOf_SC_ENUM_TYPE, Struct_MembersOf_SC_ENUM_TYPE, , $(删除)
+    .参数 Struct_MembersOf_SC_STATUS_TYPE, Struct_MembersOf_SC_STATUS_TYPE, , $(删除)
+    .参数 Struct_MembersOf_SECURITY_IMPERSONATION_LEVEL, Struct_MembersOf_SECURITY_IMPERSONATION_LEVEL, , $(删除)
+    .参数 Struct_MembersOf_SECURITY_LOGON_TYPE, Struct_MembersOf_SECURITY_LOGON_TYPE, , $(删除)
+    .参数 Struct_MembersOf_SetupFileLogInfo, Struct_MembersOf_SetupFileLogInfo, , $(删除)
+    .参数 Struct_MembersOf_SHREGDEL_FLAGS, Struct_MembersOf_SHREGDEL_FLAGS, , $(删除)
+    .参数 Struct_MembersOf_SHREGENUM_FLAGS, Struct_MembersOf_SHREGENUM_FLAGS, , $(删除)
+    .参数 Struct_MembersOf_TOKEN_TYPE, Struct_MembersOf_TOKEN_TYPE, , $(删除)
+    .参数 Struct_MembersOf_TRUSTED_INFORMATION_CLASS, Struct_MembersOf_TRUSTED_INFORMATION_CLASS, , $(删除)
+    .参数 Struct_MembersOf_URLIS, Struct_MembersOf_URLIS, , $(删除)
+    .参数 Struct_MembersOf_WSAESETSERVICEOP, Struct_MembersOf_WSAESETSERVICEOP, , $(删除)
+    .参数 Struct_MembersOf_WTS_CONFIG_CLASS, Struct_MembersOf_WTS_CONFIG_CLASS, , $(删除)
+    .参数 Struct_MembersOf_WTS_INFO_CLASS, Struct_MembersOf_WTS_INFO_CLASS, , $(删除)
+    .参数 Struct_MembersOf_WTS_VIRTUAL_CLASS, Struct_MembersOf_WTS_VIRTUAL_CLASS, , $(删除)
+    .参数 Struct_MembersOf_XLAT_SIDE, Struct_MembersOf_XLAT_SIDE, , $(删除)
+    .参数 STYLEBUF, STYLEBUF, , $(删除)
+    .参数 SURROGATE, SURROGATE, , $(删除)
+    .参数 SYSTEM_INFO, SYSTEM_INFO, , $(删除)
+    .参数 SYSTEM_POWER_CAPABILITIES, SYSTEM_POWER_CAPABILITIES, , $(删除)
+    .参数 SYSTEM_POWER_STATUS, SYSTEM_POWER_STATUS, , $(删除)
+    .参数 SYSTEMTIME, SYSTEMTIME, , $(删除)
+    .参数 T_PTR, T_PTR, , $(删除)
+    .参数 TAGTYPE, TAGTYPE, , $(删除)
+    .参数 Target, Target, , $(删除)
+    .参数 TASKENUMPROCEX, TASKENUMPROCEX, , $(删除)
+    .参数 TCOMP, TCOMP, , $(删除)
+    .参数 TERFACEDATA, TERFACEDATA, , $(删除)
+    .参数 TERNET_PORT, TERNET_PORT, , $(删除)
+    .参数 TEXTMETRIC, TEXTMETRIC, , $(删除)
+    .参数 TIME_ZONE_INFORMATION, TIME_ZONE_INFORMATION, , $(删除)
+    .参数 TIMECAPS, TIMECAPS, , $(删除)
+    .参数 TOKEN_GROUPS, TOKEN_GROUPS, , $(删除)
+    .参数 TOKEN_PRIVILEGES, TOKEN_PRIVILEGES, , $(删除)
+    .参数 TOKEN_SOURCE, TOKEN_SOURCE, , $(删除)
+    .参数 TPMPARAMS, TPMPARAMS, , $(删除)
+    .参数 TRACKMOUSEEVENT, TRACKMOUSEEVENT, , $(删除)
+    .参数 TRANSMIT_FILE_BUFFERS, TRANSMIT_FILE_BUFFERS, , $(删除)
+    .参数 TRIVERTEX, TRIVERTEX, , $(删除)
+    .参数 uCLSSPEC, uCLSSPEC, , $(删除)
+    .参数 UDATE, UDATE, , $(删除)
+    .参数 UILANGUAGE_ENUMPROCA, UILANGUAGE_ENUMPROCA, , $(删除)
+    .参数 ULARGE_INTEGER, ULARGE_INTEGER, , $(删除)
+    .参数 ULONG, ULONG, , $(删除)
+    .参数 ULONG_PTR, ULONG_PTR, , $(删除)
+    .参数 URL_COMPONENTSA, URL_COMPONENTSA, , $(删除)
+    .参数 UUID_VECTOR, UUID_VECTOR, , $(删除)
+    .参数 VALENTA, VALENTA, , $(删除)
+    .参数 VARIANT, VARIANT, , $(删除)
+    .参数 Variant1, 未知类型0x4101406B, , $(删除)
+    .参数 VARSTRING, VARSTRING, , $(删除)
+    .参数 VDM_SEGINFO, VDM_SEGINFO, , $(删除)
+    .参数 WAITORTIMERCALLBACK, WAITORTIMERCALLBACK, , $(删除)
+    .参数 WAVEFILTER, WAVEFILTER, , $(删除)
+    .参数 WAVEFORMAT, WAVEFORMAT, , $(删除)
+    .参数 WAVEFORMATEX, WAVEFORMATEX, , $(删除)
+    .参数 WAVEHDR, WAVEHDR, , $(删除)
+    .参数 WAVEINCAPS, WAVEINCAPS, , $(删除)
+    .参数 WAVEOUTCAPS, WAVEOUTCAPS, , $(删除)
+    .参数 WGLSWAP, WGLSWAP, , $(删除)
+    .参数 WIN, WIN, , $(删除)
+    .参数 WINDOWPLACEMENT, WINDOWPLACEMENT, , $(删除)
+    .参数 WINEVENTPROC, WINEVENTPROC, , $(删除)
+    .参数 WNDCLASS, WNDCLASS, , $(删除)
+    .参数 WNDCLASSEX, WNDCLASSEX, , $(删除)
+    .参数 WORKERFUNCTION, WORKERFUNCTION, , $(删除)
+    .参数 WSABUF, WSABUF, , $(删除)
+    .参数 WSADATA, WSADATA, , $(删除)
+    .参数 WSAEVENT, WSAEVENT, , $(删除)
+    .参数 WSANAMESPACE_INFOA, WSANAMESPACE_INFOA, , $(删除)
+    .参数 WSANETWORKEVENTS, WSANETWORKEVENTS, , $(删除)
+    .参数 WSAOVERLAPPED, WSAOVERLAPPED, , $(删除)
+    .参数 WSAOVERLAPPED_COMPLETION_ROUTINE, WSAOVERLAPPED_COMPLETION_ROUTINE, , $(删除)
+    .参数 WSAPROTOCOL_INFOA, WSAPROTOCOL_INFOA, , $(删除)
+    .参数 WSAPROTOCOL_INFOW, WSAPROTOCOL_INFOW, , $(删除)
+    .参数 WSAQUERYSETA, WSAQUERYSETA, , $(删除)
+    .参数 WSASERVICECLASSINFOA, WSASERVICECLASSINFOA, , $(删除)
+    .参数 WSPDATA, WSPDATA, , $(删除)
+    .参数 WSPPROC_TABLE, WSPPROC_TABLE, , $(删除)
+    .参数 WSPUPCALLTABLE, WSPUPCALLTABLE, , $(删除)
+    .参数 XA_SWITCH_FLAGS, XA_SWITCH_FLAGS, , $(删除)
+    .参数 xa_switch_t, xa_switch_t, , $(删除)
+    .参数 XFORM, XFORM, , $(删除)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

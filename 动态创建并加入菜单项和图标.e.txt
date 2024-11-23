@@ -1,0 +1,238 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “近在眼前－空白窗口创建菜单例程”
+    帮助文件名 = “”
+
+
+
+.常量 类型_文本, "0", , 
+.常量 菜单函数_按位置, "1024", , 
+.常量 类型_分隔线, "2048", , Specifies that the menu item is a separator. A menu item separator appears as a horizontal dividing line. The dwTypeData and cch members are ignored. This value is valid only in a drop-down menu, submenu, or shortcut menu.
+.常量 窗口特征_窗口程序, "-4", , 
+.常量 MF_BITMAP, "4", , 
+.常量 LR_LOADFROMFILE, "16", , 
+.常量 SM_CXMENUCHECK, "71", , 
+.常量 SM_CYMENUCHECK, "72", , 
+.常量 TPM_RIGHTBUTTON, "8", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' spec A512548E76954B6E92C21055517615B0 2 1 特殊功能支持库
+ ' eLIB DA19BC3ADD2F4121ABD84AC5FBCAFC71 1 3 ｅＬＩＢ＋＋EX
+
+
+
+
+
+.DLL命令 GetWindowLongA, 子程序指针, "", "GetWindowLongA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 要取的特征, 整数型, , 
+
+.DLL命令 GetMenu, 整数型, "", "GetMenu", , 取指定窗口的菜单条句柄
+    .参数 窗口句柄, 整数型, , 
+
+.DLL命令 GetSubMenu, 整数型, "", "GetSubMenu", , 
+    .参数 菜单句柄, 整数型, , 
+    .参数 位置, 整数型, , 
+
+.DLL命令 InsertMenuA, 逻辑型, "", "InsertMenuA", , 
+    .参数 菜单句柄, 整数型, , 
+    .参数 位置, 整数型, , 
+    .参数 标志, 整数型, , 
+    .参数 ID, 整数型, , 
+    .参数 标题, 文本型, , 
+
+.DLL命令 GetMenuItemID, 整数型, "", "GetMenuItemID", , 
+    .参数 菜单句柄, 整数型, , 
+    .参数 位置, 整数型, , 
+
+.DLL命令 SetMenu, 整数型, "user32", "SetMenu", , 
+    .参数 hwnd, 整数型, , 
+    .参数 hMenu, 整数型, , 
+
+.DLL命令 CreateMenu, 整数型, "user32", "CreateMenu", , 
+
+.DLL命令 CreatePopupMenu, 整数型, "user32", "CreatePopupMenu", , 
+
+.DLL命令 AppendMenu, 整数型, "user32", "AppendMenuA", , 
+    .参数 hMenu, 整数型, , 
+    .参数 wFlags, 整数型, , 
+    .参数 wIDNewItem, 整数型, , 
+    .参数 lpNewItem, 文本型, , 此参数的类型为Any，请按实际应用情况修改。
+
+.DLL命令 GetSystemMenu, 整数型, "", "GetSystemMenu", , 获取系统原始菜单
+    .参数 hWnd, 整数型, , 
+    .参数 bRevert, 逻辑型, , 
+
+.DLL命令 CallWindowProcA, 整数型, "", "CallWindowProcA", , 
+    .参数 程序指针, 子程序指针, , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 消息, 整数型, , 
+    .参数 参数1, 整数型, , 
+    .参数 参数2, 整数型, , 
+
+.DLL命令 SetWindowLongA, 子程序指针, "", "SetWindowLongA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 要置的特征, 整数型, , 
+    .参数 新特征, 子程序指针, , 仅易语言3.0支持
+
+.DLL命令 SetMenuItemBitmaps, 整数型, "", "SetMenuItemBitmaps", , 
+    .参数 hMenu, 整数型, , 
+    .参数 nPosition, 整数型, , 
+    .参数 wFlags, 整数型, , 
+    .参数 hBitmapUnchecked, 整数型, , 
+    .参数 hBitmapChecked, 整数型, , 
+
+.DLL命令 GetSystemMetrics, 整数型, "", "GetSystemMetrics", , 
+    .参数 nIndex, 整数型, , 
+
+.DLL命令 LoadImage, 整数型, "", "LoadImageA", , 
+    .参数 hInst, 整数型, , 
+    .参数 lpsz, 文本型, , 
+    .参数 un1, 整数型, , 
+    .参数 n1, 整数型, , 
+    .参数 n2, 整数型, , 
+    .参数 un2, 整数型, , 
+
+.DLL命令 TrackPopupMenu, 整数型, "user32", "TrackPopupMenu", , 
+    .参数 hMenu, 整数型, , 
+    .参数 wFlags, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 nReserved, 整数型, , 
+    .参数 hwnd, 整数型, , 
+    .参数 lprc, 空白型, , 
+
+.窗口程序集 启动窗口程序集, , , 
+
+.程序集变量 序号, 整数型, , , 
+.程序集变量 系统菜单, 整数型, , , 
+.程序集变量 动态菜单, 整数型, , , 
+.程序集变量 子菜单, 整数型, , , 
+.程序集变量 主菜单, 整数型, , , 
+.程序集变量 弹出菜单, 整数型, , , 
+.程序集变量 菜单条, 整数型, , , 
+.程序集变量 默认窗口, 子程序指针, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+赋值 (默认窗口, SetWindowLongA (取窗口句柄 (), -4, &处理))
+
+.子程序 处理, 整数型, , 不要修改该子程序的返回值及参数的类型！
+.参数 句柄, 整数型, , 
+.参数 消息, 整数型, , 
+.参数 参数1, 整数型, , 
+.参数 参数2, 整数型, , 
+
+.局部变量 idx, 空白型, , , 
+
+.如果真 (并且 (等于 (消息, 273), 等于 (参数2, 0)))
+    调试输出 (消息, 参数1, 未知支持库函数_8 (参数1), 未知支持库函数_7 (参数1), 参数2, 未知支持库函数_8 (参数2), 未知支持库函数_7 (参数2))
+    赋值 (idx, 1024)
+    信息框 (相加 (“你点击了第”, 到文本 (相减 (参数1, idx)), “菜单项”), 0, )
+.如果真结束
+.如果真 (并且 (等于 (消息, 274), 等于 (参数1, 2002)))
+    信息框 (“方圆软件工作室－林炳崇（近在眼前）出品”, #信息图标, “关于程序”)
+    
+.如果真结束
+返回 (CallWindowProcA (默认窗口, 句柄, 消息, 参数1, 参数2))
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 i, 整数型, , , 
+
+赋值 (子菜单, CreateMenu ())
+.计次循环首 (5, i)
+    .如果 (等于 (求余数 (i, 2), 0))
+        赋值 (弹出菜单, CreatePopupMenu ())
+        AppendMenu (子菜单, 16, 弹出菜单, 相加 (“动态菜单  ”, 到文本 (i)))
+        AppendMenu (弹出菜单, 0, 相加 (1024, i), 相加 (“弹出菜单  ”, 到文本 (i)))
+    .否则
+        .如果真 (等于 (i, 1))
+            AppendMenu (子菜单, 16, 弹出菜单, 相加 (“动态菜单  ”, 到文本 (i), 字符 (#Tab键), “Ctrl+h”))
+            到循环尾 ()
+        .如果真结束
+        AppendMenu (子菜单, 0, 相加 (1024, i), 相加 (“动态菜单 sdfsfss ”, 到文本 (i)))
+    .如果结束
+    
+.计次循环尾 ()
+赋值 (主菜单, CreateMenu ())
+AppendMenu (主菜单, 16, 子菜单, 相加 (“近在眼前动态创建的菜单”, “&a”))
+SetMenu (取窗口句柄 (), 主菜单)
+菜单项加图标 (子菜单, “open.bmp”, 0)
+菜单项加图标 (子菜单, “b.bmp”, 2)
+赋值 (.禁止, 真)
+
+.子程序 菜单项加图标, 空白型, , 图片只能为位图,如果图片和模块不在同一目录，请用完整路径
+.参数 子菜单句柄, 整数型, , 菜单所在窗口的名称，不是窗口的标题
+.参数 图标路径, 文本型, 可空, 未复选时的图片路径名称，如果不用，请不要填
+.参数 菜单条目位置, 整数型, , 第一个条目的编号为0
+
+.局部变量 hMenu, 整数型, , , 
+.局部变量 hSubMenu, 整数型, , , 
+.局部变量 hID, 整数型, , , 
+.局部变量 hbitmapn, 整数型, , , 
+.局部变量 hbitmapf, 整数型, , , 
+.局部变量 MenuSize, 整数型, , , 
+
+赋值 (MenuSize, GetSystemMetrics (#SM_CYMENUCHECK))
+赋值 (hbitmapn, LoadImage (0, 图标路径, 0, GetSystemMetrics (#SM_CXMENUCHECK), MenuSize, #LR_LOADFROMFILE))
+赋值 (hbitmapf, 0)
+赋值 (hID, GetMenuItemID (子菜单句柄, 菜单条目位置))
+SetMenuItemBitmaps (子菜单句柄, hID, #MF_BITMAP, hbitmapn, hbitmapf)
+
+.子程序 _按钮4_被单击, 空白型, , 
+TrackPopupMenu (子菜单, 0, 取鼠标水平位置 (), 取鼠标垂直位置 (), 0, 取窗口句柄 (), 0)
+
+.子程序 _按钮5_被单击, 空白型, , 
+.局部变量 系统菜单句柄, 整数型, , , 
+
+赋值 (系统菜单句柄, GetSystemMenu (取窗口句柄 (), 假))
+AppendMenu (系统菜单句柄, 2048, 2001, “”) ' 添加分隔条
+AppendMenu (系统菜单句柄, 0, 2002, “关于本程序(&A)”) ' 添加关于菜单项
+赋值 (.禁止, 真)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

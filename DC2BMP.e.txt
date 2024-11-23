@@ -1,0 +1,223 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 HORZRES, "8", , 
+.常量 VERTRES, "10", , 
+.常量 DIB_RGB_COLORS, "0", , 
+.常量 SRCCOPY, "13369376", , 
+.常量 , , , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' const 9DEDA17547CF40e085B7C8919B1800AF 1 6 常量支持库
+
+
+
+
+数据类型 BITMAPINFO, , 
+    .成员 BITMAPINFOHEADER, BITMAPINFOHEADER, , , 
+    .成员 bmiColors, 空白型, , , RGBQUAD          bmiColors[1]; 
+
+数据类型 BITMAPINFOHEADER, , 
+    .成员 biSize, 空白型, , , 
+    .成员 biWidth, 空白型, , , 
+    .成员 biHeight, 空白型, , , 
+    .成员 biPlanes, 短整数型, , , 
+    .成员 biBitCount, 短整数型, , , 
+    .成员 biCompression, 空白型, , , 
+    .成员 biSizeImage, 空白型, , , 
+    .成员 biXPelsPerMeter, 空白型, , , 
+    .成员 biYPelsPerMeter, 空白型, , , 
+    .成员 biClrUsed, 空白型, , , 
+    .成员 biClrImportant, 空白型, , , 
+
+数据类型 BITMAPFILEHEADER, , 
+    .成员 bfType, 短整数型, , , 
+    .成员 bfSize, 空白型, , , 
+    .成员 bfReserved1, 短整数型, , , 
+    .成员 bfReserved2, 短整数型, , , 
+    .成员 bfOffBits, 空白型, , , 
+
+
+.DLL命令 CopyMemory_BITMAPFILEHEADER, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, BITMAPFILEHEADER, , 
+    .参数 Length, 空白型, , 
+
+.DLL命令 CopyMemory_BITMAPINFOHEADER, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, BITMAPINFOHEADER, , 
+    .参数 Length, 空白型, , 
+
+.DLL命令 BitBlt, 整数型, "", "BitBlt", , 
+    .参数 hdcDest, 空白型, , 
+    .参数 nXDest, 空白型, , 
+    .参数 nYDest, 空白型, , 
+    .参数 nWidth, 空白型, , 
+    .参数 nHeight, 空白型, , 
+    .参数 hdcSrc, 空白型, , 
+    .参数 nXSrc, 空白型, , 
+    .参数 nYSrc, 空白型, , 
+    .参数 dwRop, 空白型, , 
+
+.DLL命令 StretchBlt, 整数型, "", "StretchBlt", , 
+    .参数 hdcDest, 空白型, , 
+    .参数 nXDest, 空白型, , 
+    .参数 nYDest, 空白型, , 
+    .参数 nWidth, 空白型, , 
+    .参数 nHeight, 空白型, , 
+    .参数 hdcSrc, 空白型, , 
+    .参数 nXSrc, 空白型, , 
+    .参数 nYSrc, 空白型, , 
+    .参数 nWidthSrc, 空白型, , 
+    .参数 nHeightSrc, 空白型, , 
+    .参数 dwRop, 空白型, , 
+
+.DLL命令 CreateCompatibleDC, 整数型, "", "CreateCompatibleDC", , 
+    .参数 hdc, 整数型, , 
+
+.DLL命令 GetDeviceCaps, 整数型, "", "", , 
+    .参数 hdc, 空白型, , 
+    .参数 index, 空白型, , 
+
+.DLL命令 SelectObject, 整数型, "", "SelectObject", , 
+    .参数 hdc, 空白型, , 
+    .参数 hgdiobj, 空白型, , 
+
+.DLL命令 CreateDIBSection, 整数型, "", "", , 
+    .参数 hdc, 空白型, , 
+    .参数 pbmi, BITMAPINFO, , 
+    .参数 iusage, 空白型, , 
+    .参数 ppvbits, 空白型, 传址, 
+    .参数 hsection, 空白型, , 
+    .参数 dwoffset, 空白型, , 
+
+.DLL命令 GetDC, 整数型, "", "GetDC", , 
+    .参数 hwnd, 空白型, , 
+
+.DLL命令 ReleaseDC, 整数型, "", "ReleaseDC", , 
+    .参数 hWnd, 整数型, , 
+    .参数 hDC, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 DC2BMP_指定区域, 字节集, , 返回24位BMP数据
+.参数 hDC, 空白型, , 
+.参数 区域左边, 空白型, 可空, 
+.参数 区域顶边, 空白型, 可空, 
+.参数 区域右边, 空白型, , 
+.参数 区域底边, 空白型, , 
+
+.局部变量 e, 逻辑型, , , 
+.局部变量 匿名局部变量_141, 空白型, , , 
+.局部变量 iWidth, 空白型, , , 
+.局部变量 iHeight, 空白型, , , 
+.局部变量 bmpInfo, BITMAPINFO, , , 
+.局部变量 hDCMem, 整数型, , , 
+.局部变量 pData, 整数型, , , 
+.局部变量 hBmp, 整数型, , , 
+.局部变量 hOldObj, 整数型, , , 
+.局部变量 bmInfoHeader, BITMAPINFOHEADER, , , 
+.局部变量 bmFileHeader, BITMAPFILEHEADER, , , 
+.局部变量 匿名局部变量_97, 空白型, , , 
+.局部变量 infoheader, 字节集, , , 
+.局部变量 fileheader, 字节集, , , 
+.局部变量 bitmapdata, 字节集, , , 
+
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+赋值 (iWidth, 相减 (区域右边, 区域左边))
+赋值 (iHeight, 相减 (区域底边, 区域顶边))
+赋值 (bmpInfo.BITMAPINFOHEADER.biSize, 40)
+
+赋值 (bmpInfo.BITMAPINFOHEADER.biWidth, iWidth)
+赋值 (bmpInfo.BITMAPINFOHEADER.biHeight, iHeight)
+赋值 (bmpInfo.BITMAPINFOHEADER.biPlanes, 1)
+赋值 (bmpInfo.BITMAPINFOHEADER.biBitCount, 24)
+
+赋值 (hDCMem, CreateCompatibleDC (hDC))
+
+赋值 (pData, 0)
+赋值 (hBmp, CreateDIBSection (hDCMem, bmpInfo, #, pData, 0, 0))
+赋值 (hOldObj, SelectObject (hDCMem, hBmp))
+StretchBlt (hDCMem, 0, 0, iWidth, iHeight, hDC, 区域左边, 区域顶边, 相加 (iWidth, 1), 相加 (iHeight, 1), #)
+ ' 本源码来自易语言资源网(www.5A5X.com)
+赋值 (bmInfoHeader.biSize, 40)
+赋值 (bmInfoHeader.biWidth, iWidth)
+赋值 (bmInfoHeader.biHeight, iHeight)
+赋值 (bmInfoHeader.biPlanes, 1)
+赋值 (bmInfoHeader.biBitCount, 24)
+
+赋值 (bmFileHeader.bfType, 19778) ' 0x4D42 , bmp
+赋值 (bmFileHeader.bfOffBits, 相加 (14, 40)) ' sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER)
+赋值 (bmFileHeader.bfSize, 相加 (bmFileHeader.bfOffBits, 相乘 (bmInfoHeader.biWidth, bmInfoHeader.biHeight, 3))) ' 3=(24 / 8)
+
+赋值 (infoheader, 取空白字节集 (40))
+赋值 (fileheader, 取空白字节集 (14))
+CopyMemory_BITMAPFILEHEADER (fileheader, bmFileHeader, 14)
+CopyMemory_BITMAPINFOHEADER (infoheader, bmInfoHeader, 40)
+' 本源码来自易语言资源网(www.5A5X.com)
+赋值 (bitmapdata, 相加 (fileheader, infoheader))
+赋值 (bitmapdata, 相加 (bitmapdata, 指针到字节集 (pData, 相乘 (bmInfoHeader.biWidth, bmInfoHeader.biHeight, 3))))
+
+返回 (bitmapdata)
+ ' 回帖是美德！
+
+.子程序 DC2BMP, 字节集, , 
+.参数 hDc, 空白型, , 
+
+返回 (DC2BMP_指定区域 (hDc, , , GetDeviceCaps (hDc, #HORZRES), GetDeviceCaps (hDc, #VERTRES)))
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 hdc, 整数型, , , 
+
+赋值 (hdc, GetDC (取窗口句柄 ()))
+赋值 (.图片, DC2BMP (hdc))
+ReleaseDC (取窗口句柄 (), hdc)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

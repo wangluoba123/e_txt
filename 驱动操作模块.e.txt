@@ -1,0 +1,232 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：sfsff
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.wodesoft.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.wodesoft.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.wodesoft.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 SC_MANAGER_CREATE_SERVICE, "2", , 
+.常量 SERVICE_START, "16", , 
+.常量 SERVICE_ERROR_IGNORE, "0", , 
+.常量 GENERIC_READ, "2147483648", , 
+.常量 GENERIC_WRITE, "1073741824", , 
+.常量 OPEN_EXISTING, "3", , 
+.常量 DELETE, "65536", , 
+.常量 SERVICE_STOP, "32", , 
+.常量 SERVICE_CONTROL_STOP, "1", , 
+.常量 SERVICE_KERNEL_DRIVER, "1", , 
+.常量 SERVICE_DEMAND_START, "3", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 重叠操作_, , OVERLAPPED
+    .成员 内部保留参数, 整数型, , , Internal
+    .成员 内部高位保留参数, 整数型, , , InternalHigh
+    .成员 低32位, 整数型, , , offset
+    .成员 高32位, 整数型, , , offsethigh
+    .成员 事件句柄, 整数型, , , hevent
+
+数据类型 SERVICE_STATUS, , 
+    .成员 dwServiceType, 整数型, , , 
+    .成员 dwCurrentState, 整数型, , , 
+    .成员 dwControlsAccepted, 整数型, , , 
+    .成员 dwWin32ExitCode, 整数型, , , 
+    .成员 dwServiceSpecificExitCode, 整数型, , , 
+    .成员 dwCheckPoint, 整数型, , , 
+    .成员 dwWaitHint, 整数型, , , 
+
+
+.DLL命令 键码转换, 整数型, "", "MapVirtualKeyA", , 返回转换后的代码
+    .参数 wCode, 整数型, , 代码值
+    .参数 wMapType, 整数型, , 0--虚拟键码->扫描码；1--扫描码->虚拟键码；2-虚拟键码->ASCII值（未加Shift组合键）。
+
+.DLL命令 CreateServiceA, 整数型, "advapi32.dll", "CreateServiceA", , 创建服务,创建服务
+    .参数 hSCManager, 整数型, , SCM句柄OpenSCManager返回值
+    .参数 lpServiceName, 文本型, , 指向一个以0字符结尾的表示服务名称的字符串，字符串的最大长度是256个字符字符串的最大长度是256个字符，名称中不允许使用/或者\字符（因为这些字符会和注册表的路径表示方式冲突），这个值和注册表中的键名是相对应的
+    .参数 lpDisplayName, 文本型, , 指向一个以0字符结尾表示服务名称的字符串，这个名称是供用户界面程序识别函数时使用的，同样，它的最大长度也是256个字符。这个值和注册表中的DisplayName键的值是相对应的
+    .参数 dwDesiredAccess, 整数型, , 指定需要访问服务的操作可以有以下取值：SERVICE_ALL_ACCESS--可以进行所有操作SERVICE_START--允许调用StartService函数来启动服SERVICE_STOP--允许调用ControlService函数来停止服务DELETE--允许调用DeleteService函数来删除服务
+    .参数 dwServiceType, 整数型, , 服务的类型我们的教程中只用得到SERVICE_KERNEL_DRIVER，这个值和注册表中的Type键的值是相对应的
+    .参数 dwStartType, 整数型, , 表示在什么时候启动服务，如果我们需要手动启动驱动的话，那么使用SERVICE_DEMAND_START参数，如果驱动程序需要在系统启动的时候就被启动，那么使用SERVICE_AUTO_START参数，这个取值和注册表中的Start键的取值是相对应的
+    .参数 dwErrorControl, 整数型, , 表示当驱动初始化的时候出错该如何处理，取值SERVICE_ERROR_IGNORE表示忽略错误，取值SERVICE_ERROR_NORMAL表示将错误记录到系统日志中去，这个取值和注册表中的ErrorControl键值是相对应的
+    .参数 lpBinaryPathName, 文本型, , 指向以0结尾的表示驱动程序文件名的字符串，这个值和注册表中的ImagePath的键值是相对应的
+    .参数 lpLoadOrderGroup, 整数型, , 指向以0结尾的表示组名称的字符串，表示该驱动属于哪个组，既然我们的例子程序不属于任何组，那么这里就用NULL好了
+    .参数 lpdwTagId, 整数型, , 指向一个32位的缓冲区，用来接收驱动在lpLoadOrderGroup参数指定的组中的唯一的标识，我们的例子中不需要用到这个表示，所以参数指定为NULL
+    .参数 lpDependencies, 整数型, , 对于驱动程序来说，这个参数没什么用途，设置为NULL好了
+    .参数 lpServiceStartName, 整数型, , 指向一个以0结尾的表示帐号名称的字符串，用于指定服务允许在哪个帐号下运行，如果服务类型是SERVICE_KERNEL_DRIVER的话，该帐号就是系统装入服务的模块名称，我们在这里使用NULL，表示由默认的模块装入
+    .参数 lpPassword, 整数型, , 对于驱动程序来说，这个参数没什么用途，设置为NULL好了
+
+.DLL命令 OpenServiceA, 整数型, "advapi32.dll", "OpenServiceA", , 打开服务,
+    .参数 hSCManager, 整数型, , 由CreateServiceA返回的句柄
+    .参数 lpServiceName, 文本型, , 服务名称
+    .参数 dwDesiredAccess, 整数型, , 983551指定需要访问服务的操作
+
+.DLL命令 StartServiceA, 整数型, "advapi32.dll", "StartServiceA", , 开始启动系统服务,开始运行服务
+    .参数 服务句柄, 整数型, , CreateService返回的驱动的句柄
+    .参数 dwNumServiceArgs, 整数型, , 0
+    .参数 lpServiceArgVectors, 整数型, , 0
+
+.DLL命令 CloseServiceHandle, 整数型, "advapi32.dll", "CloseServiceHandle", , 关闭SC服务管理句柄_,
+    .参数 SC对象句柄, 整数型, , 由OpenSCManagerA和CreateServiceA返回的句柄关闭时应关闭两个
+
+.DLL命令 CreateFileA, 整数型, "kernel32.dll", "CreateFileA", , 创建文件_,这是一个全功能的例程可打开和创建文件、管道、邮槽、通信服务、设备以及控制台 ——返回值:如执行成功则返回文件句柄.INVALID_HANDLE_VALUE表示出错会设置GetLastError.即使函数成功但若文件存在且指定了CREATE_ALWAYS 或 OPEN_ALWAYSGetLastError也会设为ERROR_ALREADY_EXISTS 例子：查看例程API程序自杀
+    .参数 打开文件名, 文本型, , lpFileName要打开的文件的名字
+    .参数 访问权限, 整数型, , dwDesiredAccess如果为 GENERIC_READ 表示允许对设备进行读访问;如果为 GENERIC_WRITE 表示允许对设备进行写访问（可组合使用）;如果为零表示只允许获取与一个设备有关的信息
+    .参数 共享方式, 整数型, , dwShareMode
+    .参数 安全特性, 整数型, , lpSecurityAttributes是指向SECURITY_ATTRIBUTES结构的指针，指定了目录的安全属性，但要求文件系统支持如NTFS的格式。Windows 98不支持此属性，在函数调用时应设置为NULL
+    .参数 创建方式, 整数型, , dwCreationDispositiondwCreationDisposition Long下述常数之一:
+    .参数 文件属性, 整数型, , dwFlagsAndAttributesdwFlagsAndAttributes Long一个或多个下述常数
+    .参数 从文件复制文件属性, 整数型, , hTemplateFile如果不为零则指定一个文件句柄.新文件将从这个文件中复制扩展属性
+
+.DLL命令 ControlService, 整数型, "advapi32.dll", "ControlService", , 停止系统服务_,用来停止系统服务
+    .参数 hService, 整数型, , 用 OpenService 返回的句柄
+    .参数 dwControl, 整数型, , 用于驱动程序的时候，这个参数总是设置为NULL
+    .参数 lpServiceStatus, SERVICE_STATUS, 传址, 同上，也为NULL
+
+.DLL命令 OpenSCManagerA, 整数型, "advapi32.dll", "OpenSCManagerA", , 打开SC管理服务_,建立服务首先应用此函数打开然后再用OpenServiceA打开服务获得服务控制管理器数据库的句柄
+    .参数 机器名称, 文本型, , lpMachineName用取本机名取得就是本机的名称指向需要打开的计算机名字符串，字符串以NULL结尾，如果参数指定为NULL，表示连接到本机上的SCM
+    .参数 数据库名, 文本型, , lpDatabaseName指向以NULL结尾的包含SCM数据库名称的字符串，字符串应该指定为"ServicesActive"，如果参数指定为NULL，则默认打开"ServicesActive"
+    .参数 数据库, 整数型, , dwDesiredAccess指定访问SCM的权限，这个参数告诉SCM我们需要进行什么样的操作，常用的取值有三个：SC_MANAGER_CREATE_SERVICESC_MANAGER_CREATE_SERVICESC_MANAGER_ALL_ACCESS
+
+.DLL命令 DeleteService, 整数型, "advapi32.dll", "DeleteService", , 删除服务,成功返回0失败返回非0
+    .参数 hService, 整数型, , OpenSCManager的数据库句柄
+
+.DLL命令 取指针_字节集, 整数型, "", "lstrcpyn", , 
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 DeviceIoControl, 整数型, "kernel32.dll", "DeviceIoControl", , 设备操作_,对设备执行指定的操作
+    .参数 设备句柄, 整数型, , hDevice设备句柄
+    .参数 控制参数, 整数型, , dwIoControlCode带有 FSCTL_ 前缀的常数.参考设备控制选项的部分列表设备控制选项的部分列表——参考DeviceIoControl函数
+    .参数 参数一, 整数型, , lpInBuffer具体取决于dwIoControlCode参数.参考设备控制选项的部分列表
+    .参数 参数二, 整数型, , nInBufferSize输入缓冲区的长度
+    .参数 参数三, 空白型, , lpOutBuffer Anyany型根据实际需要修改 具体取决于dwIoControlCode参数.参考设备控制选项的部分列表
+    .参数 参数四, 整数型, , nOutBufferSize输出缓冲区的长度
+    .参数 缓冲区字节数, 整数型, , lpBytesReturned实际装载到输出缓冲区的字节数量
+    .参数 OVERLAPPED结构地址, 重叠操作_, , lpOverlappedOVERLAPPED这个结构用于重叠操作.针对同步操作请用ByVal As Long传递零值
+
+.DLL命令 取指针_字节, 整数型, "", "lstrcpyn", , 
+    .参数 欲取其指针, 字节型, 传址, 
+    .参数 欲取其指针, 字节型, 传址, 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 CloseHandle, 整数型, "kernel32", "CloseHandle", , 关闭内核对象_,关闭一个内核对象.其中包括文件、文件映射、进程、线程、安全和同步对象等.涉及文件处理时这个函数通常与vb的close命令相似.应尽可能的使用close因为它支持vb的差错控制.注意这个函数使用的文件句柄与vb的文件编号是完全不同的  非零表示成功零表示失败.会设置GetLastError ——注解:除非对内核对象的所有引用都已关闭否则该对象不会实际删除
+    .参数 对象句柄, 整数型, , 欲关闭的一个对象的句柄;
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 本子程序在程序启动后最先执行
+
+
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.程序集 程序集1, , , 
+
+.程序集变量 驱动句柄, 整数型, , , 
+.子程序 加载驱动_, 整数型, 公开, 成功返回驱动句柄,失败返回-1
+.参数 驱动路径, 文本型, , sys驱动程序完整路径
+.参数 服务名, 文本型, , 表示服务名称的字符串,名称中不允许使用"/"或"\"字符
+.参数 显示名, 文本型, , 表示服务名称的字符串,这个名称是供用户界面程序识别函数时使用的
+.参数 驱动名, 文本型, , 欲创建的驱动名,文本"\\.\"加上驱动名
+
+.局部变量 hDevice, 整数型, , , 驱动句柄
+.局部变量 hSCManager, 整数型, , , 控制管理器数据库的句柄
+.局部变量 hService, 整数型, , , 服务句柄
+
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+赋值 (hSCManager, OpenSCManagerA (字符 (0), 字符 (0), #SC_MANAGER_CREATE_SERVICE))
+.如果真 (等于 (hSCManager, 0))
+    返回 (-1)
+.如果真结束
+赋值 (hService, CreateServiceA (hSCManager, 服务名, 显示名, #SERVICE_START, #SERVICE_KERNEL_DRIVER, #SERVICE_DEMAND_START, #SERVICE_ERROR_IGNORE, 驱动路径, 0, 0, 0, 0, 0))
+.如果真 (等于 (hService, 0))
+    赋值 (hService, OpenServiceA (hSCManager, 服务名, #SERVICE_START))
+    .如果真 (等于 (hService, 0)) ' 调用CreateService注册服务失败！
+        CloseServiceHandle (hSCManager)
+        返回 (-1)
+    .如果真结束
+     ' 本源码来自易语言资源网(www.wodesoft.com)
+.如果真结束
+StartServiceA (hService, 0, 0)
+CloseServiceHandle (hService)
+CloseServiceHandle (hSCManager)
+赋值 (hDevice, CreateFileA (驱动名, 相加 (#GENERIC_READ, #GENERIC_WRITE), 0, 0, #OPEN_EXISTING, 0, 0))
+返回 (hDevice) ' 返回驱动句柄
+
+.子程序 卸载驱动_, 逻辑型, 公开, 卸载驱动并删除服务,成功返回真,失败返回假
+.参数 服务名, 文本型, , 表示服务名称的字符串,名称中不允许使用"/"或"\"字符
+.参数 是否删除服务, 逻辑型, 可空, 为真表示删除服务
+
+.局部变量 hService, 整数型, , , 服务句柄
+.局部变量 hSCManager, 整数型, , , 控制管理器数据库的句柄
+.局部变量 匿名局部变量_431, 空白型, , , 
+.局部变量 SERVICE_STATUS, SERVICE_STATUS, , , 
+
+赋值 (hSCManager, OpenSCManagerA (字符 (0), 字符 (0), #SC_MANAGER_CREATE_SERVICE))
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+.如果真 (等于 (hSCManager, 0))
+    返回 (假)
+.如果真结束
+赋值 (hService, OpenServiceA (hSCManager, 服务名, 相加 (#DELETE, #SERVICE_STOP)))
+.如果真 (等于 (hService, 0))
+    CloseServiceHandle (hSCManager)
+    返回 (假)
+.如果真结束
+ControlService (hService, #SERVICE_CONTROL_STOP, SERVICE_STATUS)
+.如果真 (是否删除服务)
+    DeleteService (hService) ' 删除服务后第二次不能正常创建服务,会安装失败??
+.如果真结束
+CloseServiceHandle (hService)
+CloseServiceHandle (hSCManager)
+返回 (真)
+
+
+.子程序 与驱动程序通信_, 整数型, 公开, 操作驱动程序,成功返回1
+.参数 驱动句柄, 整数型, , 加载驱动返回的句柄
+.参数 驱动控制码, 整数型, , 与驱动程序通信的控制码,十进制
+.参数 输入指针, 整数型, , 欲输入数据的指针,无用请写将此参数设置为0
+.参数 输入指针长度, 整数型, , 无用请写将此参数设置为0
+.参数 输出指针, 整数型, , 欲输出数据的指针,无用请写将此参数设置为0
+.参数 输出指针长度, 整数型, , 无用请写将此参数设置为0
+
+.局部变量 返回值, 整数型, , , 
+.局部变量 重叠操作_, 重叠操作_, , , 
+
+赋值 (返回值, DeviceIoControl (驱动句柄, 驱动控制码, 输入指针, 输入指针长度, 输出指针, 输出指针长度, 0, 重叠操作_))
+返回 (返回值)
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

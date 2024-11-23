@@ -1,0 +1,483 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 DFP_GET_VERSION, "475264", , 
+.常量 DFP_SEND_DRIVE_COMMAND, "508036", , 
+.常量 DFP_RECEIVE_DRIVE_DATA, "508040", , 
+.常量 VER_PLATFORM_WIN32S, "0", , 
+.常量 VER_PLATFORM_WIN32_WINDOWS, "1", , 
+.常量 VER_PLATFORM_WIN32_NT, "2", , 
+.常量 CREATE_NEW, "1", , 
+.常量 GENERIC_READ, "2147483648", , 
+.常量 GENERIC_WRITE, "1073741824", , 
+.常量 OPEN_EXISTING, "3", , 
+.常量 FILE_SHARE_READ, "1", , 
+.常量 FILE_SHARE_WRITE, "2", , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.图片 图片1, " ' 已保存到：D:\易语言学习\Data\取硬盘序列号.e\图片1", , 
+.图片 图片2, " ' 已保存到：D:\易语言学习\Data\取硬盘序列号.e\图片2", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 7 系统核心支持库
+
+
+
+
+数据类型 TGETVERSIONOUTPARAMS, , 
+    .成员 bVersion, 字节型, , , 
+    .成员 bRevision, 字节型, , , 
+    .成员 bReserved, 字节型, , , 
+    .成员 bIDEDeviceMap, 字节型, , , 
+    .成员 fCapabilities, 整数型, , , 
+    .成员 dwReserved, 整数型, , "4", 
+
+数据类型 TIDEREGS, , 8个字节型变量
+    .成员 bFeaturesReg, 字节型, , , 
+    .成员 bSectorCountReg, 字节型, , , 
+    .成员 bSectorNumberReg, 字节型, , , 
+    .成员 bCylLowReg, 字节型, , , 
+    .成员 bCylHighReg, 字节型, , , 
+    .成员 bDriveHeadReg, 字节型, , , 
+    .成员 bCommandReg, 字节型, , , 
+    .成员 bReserved, 字节型, , , 
+
+数据类型 TSENDCMDINPARAMS__AA, , 原VB的定义
+    .成员 cBufferSize, 整数型, , , 
+    .成员 irDriveRegs, TIDEREGS, , , 包含8个字节型变量
+    .成员 bDriveNumber, 字节型, , , 
+    .成员 bReserved, 字节型, , "3", 
+    .成员 dwReserved, 整数型, , "4", 
+
+数据类型 TSENDCMDINPARAMS, , 易语言的定义
+    .成员 cBufferSize, 整数型, , , 
+    .成员 irDriveRegs, 字节型, , "8", TIDEREGS用了8个字节型变量，这里改为8个字节数组
+    .成员 bDriveNumber, 字节型, , , 
+    .成员 bReserved, 字节型, , "3", 
+    .成员 dwReserved, 整数型, , "4", 
+
+数据类型 TDRIVERSTATUS, , 合计占用12个字节，在易中用12个字节数组代替
+    .成员 bDriverError, 字节型, , , 占用1个字节
+    .成员 bIDEStatus, 字节型, , , 占用1个字节
+    .成员 bReserved, 字节型, , "2", 两个字节数组，占用2个字节
+    .成员 dwReserved, 整数型, , "2", 两个整数型数组，每个整数型数组占用4个字节，合计占用8个字节
+
+数据类型 TSENDCMDOUTPARAMS__AA, , 原VB的定义
+    .成员 cBufferSize, 整数型, , , 
+    .成员 DRIVERSTATUS, TDRIVERSTATUS, , , 
+    .成员 bBuffer, 字节型, , "512", 
+
+数据类型 TSENDCMDOUTPARAMS, , 
+    .成员 cBufferSize, 整数型, , , 
+    .成员 DRIVERSTATUS, 字节型, , "12", TDRIVERSTATUS占用了12个字节的空间，这里改为12个字节型数组
+    .成员 bBuffer, 字节型, , "512", 
+
+数据类型 TIDSECTOR, , 
+    .成员 wGenConfig, 短整数型, , , 
+    .成员 wNumCyls, 短整数型, , , 
+    .成员 wReserved, 短整数型, , , 
+    .成员 wNumHeads, 短整数型, , , 
+    .成员 wBytesPerTrack, 短整数型, , , 
+    .成员 wBytesPerSector, 短整数型, , , 
+    .成员 wSectorsPerTrack, 短整数型, , , 
+    .成员 wVendorUnique, 短整数型, , "3", 
+    .成员 sSerialNumber, 字节型, , "20", 
+    .成员 wBufferType, 短整数型, , , 
+    .成员 wBufferSize, 短整数型, , , 
+    .成员 wECCSize, 短整数型, , , 
+    .成员 sFirmwareRev, 字节型, , "8", 
+    .成员 sModelNumber, 字节型, , "40", 
+    .成员 wMoreVendorUnique, 短整数型, , , 
+    .成员 wDoubleWordIO, 短整数型, , , 
+    .成员 wCapabilities, 短整数型, , , 
+    .成员 wReserved1, 短整数型, , , 
+    .成员 wPIOTiming, 短整数型, , , 
+    .成员 wDMATiming, 短整数型, , , 
+    .成员 wBS, 短整数型, , , 
+    .成员 wNumCurrentCyls, 短整数型, , , 
+    .成员 wNumCurrentHeads, 短整数型, , , 
+    .成员 wNumCurrentSectorsPerTrack, 短整数型, , , 
+    .成员 ulCurrentSectorCapacity, 字节型, , "4", 
+    .成员 wMultSectorStuff, 短整数型, , , 
+    .成员 ulTotalAddressableSectors, 字节型, , "4", 
+    .成员 wSingleWordDMA, 短整数型, , , 
+    .成员 wMultiWordDMA, 短整数型, , , 
+    .成员 bReserved, 字节型, , "128", 
+
+数据类型 OSVERSIONINFO, , 
+    .成员 dwOSVersionInfoSize, 整数型, , , 
+    .成员 dwMajorVersion, 整数型, , , 
+    .成员 dwMinorVersion, 整数型, , , 
+    .成员 dwBuildNumber, 整数型, , , 
+    .成员 dwPlatformId, 整数型, , , 
+    .成员 szCSDVersion, 文本型, , , VB中初始定义为占用128个字符（128字节），在易中只好在运行中的第一句进行定义
+
+数据类型 OVERLAPPED, , 
+    .成员 Internal, 整数型, , , 
+    .成员 InternalHigh, 整数型, , , 
+    .成员 offset, 整数型, , , 
+    .成员 OffsetHigh, 整数型, , , 
+    .成员 hEvent, 整数型, , , 
+
+
+.DLL命令 GetVersionEx, 整数型, "kernel32", "GetVersionExA", , 
+    .参数 LpVersionInformation, OSVERSIONINFO, , 
+
+.DLL命令 CreateFile, 整数型, "kernel32", "CreateFileA", , 
+    .参数 lpFileName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwShareMode, 整数型, , 
+    .参数 lpSecurityAttributes, 整数型, , 
+    .参数 dwCreationDisposition, 整数型, , 
+    .参数 dwFlagsAndAttributes, 整数型, , 
+    .参数 hTemplateFile, 整数型, , 
+
+.DLL命令 DeviceIoControl1, 整数型, "kernel32", "DeviceIoControl", , 易语言没有any类型的参数接口，只好分别做两个了
+    .参数 hDevice, 整数型, , 
+    .参数 dwIoControlCode, 整数型, , 
+    .参数 lpInBuffer, TSENDCMDINPARAMS, , 原any类型（变形体类型）
+    .参数 nInBufferSize, 整数型, , 
+    .参数 lpOutBuffer, TSENDCMDOUTPARAMS, , 原any类型（变形体类型）
+    .参数 nOutBufferSize, 整数型, , 
+    .参数 lpBytesReturned, 整数型, , 
+    .参数 lpOverlapped, OVERLAPPED, , 
+
+.DLL命令 DeviceIoControl, 整数型, "kernel32", "DeviceIoControl", , 易语言没有any类型的参数接口，只好分别做两个了
+    .参数 hDevice, 整数型, , 
+    .参数 dwIoControlCode, 整数型, , 
+    .参数 lpInBuffer, 整数型, , 原any类型（变形体类型）
+    .参数 nInBufferSize, 整数型, , 
+    .参数 lpOutBuffer, TGETVERSIONOUTPARAMS, 传址, 原any类型（变形体类型）
+    .参数 nOutBufferSize, 整数型, , 
+    .参数 lpBytesReturned, 整数型, , 
+    .参数 lpOverlapped, OVERLAPPED, , 
+
+.DLL命令 CloseHandle, 整数型, "kernel32", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 CopyMemory1, 空白型, "kernel32", "RtlMoveMemory", , 易语言没有any类型的参数接口，只好分别做两个了
+    .参数 hpvDest, 字节型, 传址, 原any类型（变形体类型）
+    .参数 hpvSource, 字节型, 传址, 原any类型（变形体类型）
+    .参数 cbCopy, 整数型, , 
+
+.DLL命令 CopyMemory, 空白型, "kernel32", "RtlMoveMemory", , 易语言没有any类型的参数接口，只好分别做两个了
+    .参数 hpvDest, TIDSECTOR, 传址, 原any类型（变形体类型）
+    .参数 hpvSource, 字节型, 传址, 原any类型（变形体类型）
+    .参数 cbCopy, 整数型, , 
+
+.DLL命令 VarPtr, 整数型, "GetVarPtr.Dll", "VarPtr", , 
+    .参数 数据, 整数型, 传址, 
+
+.程序集 程序集1, , , 
+
+.程序集变量 vers, TGETVERSIONOUTPARAMS, , , 
+.程序集变量 in_data, TSENDCMDINPARAMS, , , 
+.程序集变量 out_data, TSENDCMDOUTPARAMS, , , 
+.程序集变量 h, 整数型, , , 
+.程序集变量 i, 整数型, , , 
+.程序集变量 j, 整数型, , , 
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+.局部变量 B, 文本型, , , 
+
+赋值 (B, 读环境变量 (“windir”))
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+.局部变量 DISKID, 文本型, , , 
+
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+GetHDID (DISKID)
+信息框 (DISKID, 0, )
+
+.子程序 ChangeByteOrder, 空白型, , 
+.参数 szString, 字节型, 数组, 
+.参数 uscStrSize, 整数型, , 
+
+.局部变量 i, 整数型, , , 
+.局部变量 temp, 字节型, , , 
+
+For i = 0 To uscStrSize - 1 Step 2
+.变量循环首 (1, uscStrSize, 2, i)
+    赋值 (temp, szString [i])
+    赋值 (szString [i], szString [相加 (i, 1)])
+    赋值 (szString [相加 (i, 1)], temp)
+.变量循环尾 ()
+
+.子程序 hdid9x, 文本型, , 'We start in 95/98/Me
+.参数 StrHdId, 文本型, , 
+
+.局部变量 olp, OVERLAPPED, , , 
+.局部变量 lRet, 整数型, , , 
+.局部变量 lpIn, 整数型, , , 
+.局部变量 LpRet, 整数型, , , 
+.局部变量 输出数据, 文本型, , , 
+.局部变量 sPreOutStr, 文本型, , , 
+.局部变量 phdinfo, TIDSECTOR, , , 
+.局部变量 s, 字节型, , "41", 
+.局部变量 StrOut, 文本型, , , 
+
+赋值 (h, CreateFile (“\\.\Smartvsd”, 0, 0, 0, #CREATE_NEW, 0, 0))
+.如果真 (等于 (h, 0))
+    返回 (“open smartvsd.vxd failed”)
+.如果真结束
+赋值 (lpIn, 0)
+赋值 (LpRet, i)
+
+赋值 (lRet, DeviceIoControl (h, #DFP_GET_VERSION, VarPtr (lpIn), 0, vers, 24, VarPtr (LpRet), olp)) ' VarPtr：取得变量在内存中的地址
+.如果真 (等于 (lRet, 0))
+    赋值 (输出数据, “DeviceIoControl failed:DFP_GET_VERSION”)
+    CloseHandle (h)
+    返回 (输出数据)
+.如果真结束
+.如果真 (不等于 (位与 (vers.fCapabilities, 1), 1))
+    赋值 (输出数据, “Error: IDE identify command not supported.”)
+    CloseHandle (h)
+    返回 (输出数据)
+.如果真结束
+赋值 (sPreOutStr, DetectIDE (vers.bIDEDeviceMap))
+赋值 (输出数据, sPreOutStr)
+赋值 (j, 0)
+.如果 (等于 (位与 (j, 1), 1))
+    赋值 (in_data.irDriveRegs [6], 176)
+    in_data.irDriveRegs.bDriveHeadReg ＝ 176
+.否则
+    赋值 (in_data.irDriveRegs [6], 160)
+    in_data.irDriveRegs.bDriveHeadReg ＝ 160
+.如果结束
+
+.如果 (等于 (位与 (vers.fCapabilities, 整除 (16, 求次方 (2, j))), 整除 (16, 求次方 (2, j))))
+    赋值 (输出数据, 相加 (“Drive ”, 到文本 (相加 (j, 1)), “ is a ATAPI device, we don't detect it”)) ' hdid9x = "Drive " & CStr(j + 1) & " is a ATAPI device, we don't detect it"
+.否则
+    赋值 (in_data.irDriveRegs [7], 236)
+    赋值 (in_data.bDriveNumber, j)
+    赋值 (in_data.irDriveRegs [2], 1)
+    赋值 (in_data.irDriveRegs [3], 1)
+    赋值 (in_data.cBufferSize, 512)
+    
+    赋值 (LpRet, i)
+    
+    赋值 (lRet, DeviceIoControl1 (h, #DFP_RECEIVE_DRIVE_DATA, in_data, 32, out_data, 528, VarPtr (LpRet), olp))
+    .如果真 (等于 (lRet, 0))
+        赋值 (输出数据, “DeviceIoControl failed:DFP_RECEIVE_DRIVE_DATA”)
+        CloseHandle (h)
+        返回 (输出数据)
+    .如果真结束
+    
+    CopyMemory (phdinfo, out_data.bBuffer [1], 256)
+    CopyMemory1 (s [1], phdinfo.sSerialNumber [1], 21)
+    赋值 (s [21], 0)
+    ChangeByteOrder (s, 21)
+    赋值 (StrHdId, ByteArrToString (s, 21))
+.如果结束
+CloseHandle (h)
+赋值 (StrHdId, 字符处理 (StrHdId))
+返回 (输出数据)
+
+.子程序 hdidnt, 文本型, , 'We start in NT/Win2000
+.参数 StrHdId, 文本型, , 
+
+.局部变量 hd, 文本型, , , 80个空白字符
+.局部变量 phdinfo, TIDSECTOR, , , 
+.局部变量 s, 字节型, , "41", 
+.局部变量 StrOut, 文本型, , , 
+.局部变量 olpv, OVERLAPPED, , , 
+.局部变量 lRet, 空白型, , , 
+.局部变量 lpIn, 空白型, , , 
+.局部变量 LpRet, 空白型, , , 
+.局部变量 输出数据, 文本型, , , 
+.局部变量 olpr, OVERLAPPED, , , 
+.局部变量 匿名局部变量_177, 空白型, , , 
+
+赋值 (hd, 取空白文本 (80))
+赋值 (j, 0)
+赋值 (hd, 相加 (“\\.\PhysicalDrive”, 到文本 (j)))
+赋值 (输出数据, 相加 (输出数据, #换行符, hd))
+赋值 (h, CreateFile (hd, 位或 (#GENERIC_READ, #GENERIC_WRITE), 位或 (#FILE_SHARE_READ, #FILE_SHARE_WRITE), 0, #OPEN_EXISTING, 0, 0))
+赋值 (lpIn, 0)
+赋值 (LpRet, i)
+赋值 (lRet, DeviceIoControl (h, #DFP_GET_VERSION, VarPtr (lpIn), 0, vers, 24, VarPtr (LpRet), olpv))
+.如果 (等于 (lRet, 0))
+    CloseHandle (h)
+.否则
+    .如果真 (不等于 (位与 (vers.fCapabilities, 1), 1))
+        赋值 (输出数据, “Error: IDE identify command not supported.”)
+        CloseHandle (h)
+        返回 (输出数据)
+    .如果真结束
+    .如果 (等于 (位与 (j, 1), 1))
+        赋值 (in_data.irDriveRegs [6], 176)
+        in_data.irDriveRegs.bDriveHeadReg ＝ 176
+    .否则
+        赋值 (in_data.irDriveRegs [6], 160)
+        in_data.irDriveRegs.bDriveHeadReg ＝ 160
+    .如果结束
+    .如果 (不等于 (位与 (vers.fCapabilities, 整除 (16, 求次方 (2, j))), 0))
+        赋值 (输出数据, 相加 (“Drive ”, 到文本 (相加 (j, 1)), “ is a ATAPI device, we don't detect it”))
+    .否则
+        赋值 (in_data.irDriveRegs [7], 236)
+        赋值 (in_data.bDriveNumber, j)
+        赋值 (in_data.irDriveRegs [2], 1)
+        赋值 (in_data.irDriveRegs [3], 1)
+        赋值 (in_data.cBufferSize, 512)
+        
+        赋值 (LpRet, i)
+        赋值 (lRet, DeviceIoControl1 (h, #DFP_RECEIVE_DRIVE_DATA, in_data, 32, out_data, 528, VarPtr (LpRet), olpr))
+        .如果 (小于或等于 (lRet, 0))
+            赋值 (输出数据, “DeviceIoControl failed:DFP_RECEIVE_DRIVE_DATA”)
+            CloseHandle (h)
+        .否则
+            CopyMemory (phdinfo, out_data.bBuffer [1], 256)
+            CopyMemory1 (s [1], phdinfo.sSerialNumber [1], 21)
+            赋值 (s [21], 0)
+            ChangeByteOrder (s, 21)
+            赋值 (StrHdId, ByteArrToString (s, 21))
+            CloseHandle (h)
+        .如果结束
+        
+    .如果结束
+    
+.如果结束
+赋值 (StrHdId, 字符处理 (StrHdId))
+返回 (输出数据)
+
+.子程序 GetHDID, 文本型, 公开, 
+.参数 StrHdId, 文本型, , 
+
+.局部变量 verinfo, OSVERSIONINFO, , , 
+.局部变量 Ret, 空白型, , , 
+.局部变量 系统路径, 文本型, , , 
+
+赋值 (系统路径, 读环境变量 (“windir”))
+.如果真 (等于 (文件是否存在 (相加 (系统路径, “\system\GetVarPtr.dll”)), 假))
+    写到文件 (相加 (系统路径, “\system\GetVarPtr.dll”), #图片1)
+.如果真结束
+.如果真 (等于 (文件是否存在 (相加 (系统路径, “\system\Smartvsd.vxd”)), 假))
+    写到文件 (相加 (系统路径, “\system\Smartvsd.vxd”), #图片2)
+.如果真结束
+.如果真 (等于 (文件是否存在 (相加 (系统路径, “\SYSTEM\IOSUBSYS\Smartvsd.vxd”)), 假))
+    写到文件 (相加 (系统路径, “\SYSTEM\IOSUBSYS\Smartvsd.vxd”), #图片2)
+.如果真结束
+赋值 (verinfo.szCSDVersion, 取空白文本 (128))
+赋值 (verinfo.dwOSVersionInfoSize, 取字节集长度 (相加 (到字节集 (verinfo.dwPlatformId), 到字节集 (verinfo.szCSDVersion), 到字节集 (verinfo.dwBuildNumber), 到字节集 (verinfo.dwMajorVersion), 到字节集 (verinfo.dwMinorVersion), 到字节集 (verinfo.dwOSVersionInfoSize))))
+赋值 (Ret, GetVersionEx (verinfo))
+.判断开始 (等于 (verinfo.dwPlatformId, #VER_PLATFORM_WIN32S))
+    返回 (“Win32s is not supported by this programm.”)
+.判断 (等于 (verinfo.dwPlatformId, #VER_PLATFORM_WIN32_WINDOWS))
+    返回 (hdid9x (StrHdId))
+.判断 (等于 (verinfo.dwPlatformId, #VER_PLATFORM_WIN32_NT))
+    返回 (hdidnt (StrHdId))
+.默认
+    
+.判断结束
+返回 (“”)
+
+.子程序 DetectIDE, 文本型, , 
+.参数 bIDEDeviceMap, 字节型, , 
+
+.局部变量 输出数据, 文本型, , , 
+
+.如果真 (不等于 (位与 (bIDEDeviceMap, 1), 0))
+    .如果 (不等于 (位与 (bIDEDeviceMap, 16), 0))
+        赋值 (输出数据, 相加 (输出数据, “ATAPI device is attached to primary controller, drive 0.”))
+    .否则
+        赋值 (输出数据, 相加 (输出数据, “IDE device is attached to primary controller, drive 0.”))
+    .如果结束
+    
+.如果真结束
+.如果真 (不等于 (位与 (bIDEDeviceMap, 2), 0))
+    .如果 (不等于 (位与 (bIDEDeviceMap, 32), 0))
+        赋值 (输出数据, 相加 (输出数据, “ATAPI device is attached to primary controller, drive 1.”))
+    .否则
+        赋值 (输出数据, 相加 (输出数据, “IDE device is attached to primary controller, drive 1.”))
+    .如果结束
+    
+.如果真结束
+.如果真 (不等于 (位与 (bIDEDeviceMap, 4), 0))
+    .如果 (不等于 (位与 (bIDEDeviceMap, 64), 0))
+        赋值 (输出数据, 相加 (输出数据, “ATAPI device is attached to secondary controller, drive 0.”))
+    .否则
+        赋值 (输出数据, 相加 (输出数据, “IDE device is attached to secondary controller, drive 0.”))
+    .如果结束
+    
+.如果真结束
+.如果真 (不等于 (位与 (bIDEDeviceMap, 8), 0))
+    .如果 (不等于 (位与 (bIDEDeviceMap, 128), 0))
+        赋值 (输出数据, 相加 (输出数据, “ATAPI device is attached to secondary controller, drive 1.”))
+    .否则
+        赋值 (输出数据, 相加 (输出数据, “IDE device is attached to secondary controller, drive 1.”))
+    .如果结束
+    
+.如果真结束
+返回 (输出数据)
+
+.子程序 ByteArrToString, 文本型, , 
+.参数 inByte, 字节型, 数组, 
+.参数 strlen, 短整数型, , 
+
+.局部变量 I, 整数型, , , 
+.局部变量 输出数据, 文本型, , , 
+
+.变量循环首 (1, 相加 (strlen, 2), 1, I)
+    .如果真 (等于 (inByte [I], 0))
+        跳出循环 ()
+    .如果真结束
+    赋值 (输出数据, 相加 (输出数据, 字符 (inByte [I])))
+.变量循环尾 ()
+返回 (输出数据)
+
+.子程序 字符处理, 文本型, , 
+.参数 数据, 文本型, , 
+
+.局部变量 TEMP, 文本型, , , 
+.局部变量 输出数据, 文本型, , , 
+
+.计次循环首 (取文本长度 (数据), i)
+    赋值 (TEMP, 取文本中间 (数据, i, 1))
+    .如果真 (或者 (并且 (大于或等于 (取代码 (TEMP, ), 65), 小于或等于 (取代码 (TEMP, ), 90)), 并且 (大于或等于 (取代码 (TEMP, ), 97), 小于或等于 (取代码 (TEMP, ), 122)), 并且 (大于或等于 (取代码 (TEMP, ), 48), 小于或等于 (取代码 (TEMP, ), 57)), 等于 (取代码 (TEMP, ), 45)))
+        赋值 (输出数据, 相加 (输出数据, TEMP))
+    .如果真结束
+    
+.计次循环尾 ()
+返回 (输出数据)
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 硬盘数据, 文本型, , , 
+.局部变量 ID, 文本型, , , 
+
+赋值 (硬盘数据, GetHDID (ID))
+赋值 (., ID)
+赋值 (., 硬盘数据)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

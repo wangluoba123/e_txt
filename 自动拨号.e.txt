@@ -1,0 +1,77 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 221
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+
+.DLL命令 拨号, 长整数型, "wininet.dll", "InternetAutodial", , 
+    .参数 ByValdwFlags, 整数型, , 
+    .参数 ByValdwReserved, 整数型, , 
+
+.DLL命令 挂断, 整数型, "wininet.dll", "InternetAutodialHangup", , 
+    .参数 dwReserved, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+信息框 (相加 (到文本 (拨号 (2, 0)), “拨号成功！”), 0, )
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+信息框 (相加 (到文本 (挂断 (0)), “已经挂断！”), 0, )
+
+
+.子程序 _按钮3_被单击, 空白型, , 
+.如果真 (写注册项 (#所有用户, “S-1-5-21-2000478354-842925246-1202660629-500\Software\Microsoft\Windows\CurrentVersion\Internet Settings\EnableAutodial”, 1))
+    信息框 (“ok”, 0, )
+.如果真结束
+
+
+.子程序 _按钮4_被单击, 空白型, , 
+.如果真 (写注册项 (#所有用户, “S-1-5-21-2000478354-842925246-1202660629-500\Software\Microsoft\Windows\CurrentVersion\Internet Settings\EnableAutodial”, 0))
+    信息框 (“ok”, 0, )
+.如果真结束
+
+
+
+.子程序 拨号子程序, 空白型, , 
+写注册项 (#所有用户, “S-1-5-21-2000478354-842925246-1202660629-500\Software\Microsoft\Windows\CurrentVersion\Internet Settings\EnableAutodial”, 1)
+拨号 (2, 0)
+写注册项 (#所有用户, “S-1-5-21-2000478354-842925246-1202660629-500\Software\Microsoft\Windows\CurrentVersion\Internet Settings\EnableAutodial”, 0)
+
+.子程序 _按钮5_被单击, 空白型, , 
+拨号子程序 ()
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

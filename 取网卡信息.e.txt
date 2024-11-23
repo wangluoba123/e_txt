@@ -1,0 +1,383 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：22
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “用树型框显示会出问题，所以我用编辑框”
+    帮助文件名 = “”
+
+
+
+.常量 NodeType1, "“Node Type:Broadcast”", , 
+.常量 NodeType2, "“Node Type:Peer to Peer”", , 
+.常量 NodeType4, "“Node Type:Mixed”", , 
+.常量 NodeType8, "“Node Type:Hybrid”", , 
+.常量 NodeType0, "“Unknown Node Type”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 7 系统核心支持库
+
+
+
+
+数据类型 IP_ADAPTER_INFO, , 
+    .成员 Next, 整数型, , , 
+    .成员 ComboIndex, 整数型, , , 
+    .成员 AdapterName, 字节型, , "260", 
+    .成员 Description, 字节型, , "132", 
+    .成员 AddressLength, 整数型, , , 
+    .成员 Address, 字节型, , "8", 
+    .成员 Index, 整数型, , , 
+    .成员 Type, 整数型, , , 
+    .成员 DhcpEnabled, 整数型, , , 
+    .成员 CurrentIpAddress, 整数型, , , 
+    .成员 IpAddressList_Next, 整数型, , , IP_ADDR_STRING.Next
+    .成员 IpAddressList_IpAddress, 字节型, , "16", IP_ADDR_STRING.IpAddress
+    .成员 IpAddressList_IpMask, 字节型, , "16", IP_ADDR_STRING.IpMask
+    .成员 IpAddressList_Context, 整数型, , , IP_ADDR_STRING.Context
+    .成员 GatewayList_Next, 整数型, , , IP_ADDR_STRING.Next
+    .成员 GatewayList_IpAddress, 字节型, , "16", IP_ADDR_STRING.IpAddress
+    .成员 GatewayList_IpMask, 字节型, , "16", IP_ADDR_STRING.IpMask
+    .成员 GatewayList_Context, 整数型, , , IP_ADDR_STRING.Context
+    .成员 DhcpServer_Next, 整数型, , , IP_ADDR_STRING.Next
+    .成员 DhcpServer_IpAddress, 字节型, , "16", IP_ADDR_STRING.IpAddress
+    .成员 DhcpServer_IpMask, 字节型, , "16", IP_ADDR_STRING.IpMask
+    .成员 DhcpServer_Context, 整数型, , , IP_ADDR_STRING.Context
+    .成员 HaveWins, 逻辑型, , , 
+    .成员 PrimaryWinsServer_Next, 整数型, , , IP_ADDR_STRING.Next
+    .成员 PrimaryWinsServer_IpAddress, 字节型, , "16", IP_ADDR_STRING.IpAddress
+    .成员 PrimaryWinsServer_IpMask, 字节型, , "16", IP_ADDR_STRING.IpMask
+    .成员 PrimaryWinsServer_Context, 整数型, , , IP_ADDR_STRING.Context
+    .成员 SecondaryWinsServer_Next, 整数型, , , IP_ADDR_STRING.Next
+    .成员 SecondaryWinsServer_IpAddress, 字节型, , "16", IP_ADDR_STRING.IpAddress
+    .成员 SecondaryWinsServer_IpMask, 字节型, , "16", IP_ADDR_STRING.IpMask
+    .成员 SecondaryWinsServer_Context, 整数型, , , IP_ADDR_STRING.Context
+    .成员 LeaseObtained, 日期时间型, , , 
+    .成员 LeaseExpires, 日期时间型, , , 
+
+数据类型 IP_ADDR_STRING, , 
+    .成员 Next, 整数型, , , IP_ADDR_STRING
+    .成员 IpAddress, 字节型, , "16", 
+    .成员 IpMask, 字节型, , "16", 
+    .成员 Context, 整数型, , , 
+
+数据类型 FIXED_INFO, , 
+    .成员 HostName, 字节型, , "132", 
+    .成员 DomainName, 字节型, , "132", 
+    .成员 CurrentDnsServer, 整数型, , , 
+    .成员 DnsServerList_Next, 整数型, , , IP_ADDR_STRING.Next
+    .成员 DnsServerList_IpAddress, 字节型, , "16", IP_ADDR_STRING.IpAddress
+    .成员 DnsServerList_IpMask, 字节型, , "16", IP_ADDR_STRING.IpMask
+    .成员 DnsServerList_Context, 整数型, , , IP_ADDR_STRING.Context
+    .成员 NodeType, 整数型, , , 
+    .成员 ScopeId, 字节型, , "260", 
+    .成员 EnableRouting, 整数型, , , 
+    .成员 EnableProxy, 整数型, , , 
+    .成员 EnableDns, 整数型, , , 
+
+
+.DLL命令 GetAdaptersInfo1, 整数型, "IPHlpApi.dll", "GetAdaptersInfo", , 
+    .参数 pAdapterInfo, IP_ADAPTER_INFO, , 
+    .参数 pOutBufLen, 整数型, 传址, 
+
+.DLL命令 GetAdaptersInfo, 整数型, "IPHlpApi.dll", "GetAdaptersInfo", , 
+    .参数 pAdapterInfo, 字节集, , 
+    .参数 pOutBufLen, 整数型, 传址, 
+
+.DLL命令 RtlMoveMemory1, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, FIXED_INFO, , 
+    .参数 Source, 字节集, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory6, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory5, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, IP_ADDR_STRING, , 
+    .参数 Source, 整数型, 传址, 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory2, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, IP_ADDR_STRING, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory3, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, IP_ADAPTER_INFO, , 
+    .参数 Source, 字节集, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory4, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, IP_ADAPTER_INFO, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 GetNetworkParams1, 整数型, "IPHlpApi.dll", "GetNetworkParams", , 
+    .参数 pFixedInfo, FIXED_INFO, 传址, 
+    .参数 pOutBufLen, 整数型, 传址, 
+
+.DLL命令 GetNetworkParams, 整数型, "IPHlpApi.dll", "GetNetworkParams", , 
+    .参数 pFixedInfo, 字节集, 传址, 
+    .参数 pOutBufLen, 整数型, 传址, 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+获取网络适配器信息 ()
+子程序1 ()
+
+.子程序 获取网络适配器信息, 空白型, , 
+.局部变量 error, 整数型, , , 
+.局部变量 pAddrStr, 整数型, , , 
+.局部变量 FixedInfoSize, 整数型, , , 
+.局部变量 FixedInfoBuffer, 字节集, , , 
+.局部变量 FixedInfo, FIXED_INFO, , , 
+.局部变量 Buffer1, IP_ADDR_STRING, , , 
+
+赋值 (error, GetNetworkParams1 (FixedInfo, FixedInfoSize))
+.如果真 (不等于 (error, 0))
+    .如果真 (不等于 (error, 111))
+        返回 ()
+    .如果真结束
+    
+.如果真结束
+赋值 (FixedInfoBuffer, 取空白字节集 (FixedInfoSize))
+赋值 (error, GetNetworkParams (FixedInfoBuffer, FixedInfoSize))
+.如果 (等于 (error, 0))
+    RtlMoveMemory1 (FixedInfo, FixedInfoBuffer, FixedInfoSize)
+    “Network Parameters”.加入文本 (#换行符)
+    相加 (“  Host Name:”, 到文本 (FixedInfo.HostName)).加入文本 (#换行符)
+    相加 (“  Domain Name:”, 到文本 (FixedInfo.DomainName)).加入文本 (#换行符)
+    “  DNS Servers:”.加入文本 (#换行符)
+    相加 (“    ”, 到文本 (FixedInfo.DnsServerList_IpAddress)).加入文本 (#换行符)
+    赋值 (pAddrStr, FixedInfo.DnsServerList_Next)
+    .判断循环首 (不等于 (pAddrStr, 0))
+        RtlMoveMemory2 (Buffer1, pAddrStr, 40)
+        相加 (“    ”, 到文本 (Buffer1.IpAddress)).加入文本 (#换行符)
+        赋值 (pAddrStr, Buffer1.Next)
+    .判断循环尾 ()
+    .判断开始 (等于 (FixedInfo.NodeType, 1))
+        相加 (“  ”, #NodeType1).加入文本 (#换行符)
+    .判断 (等于 (FixedInfo.NodeType, 2))
+        相加 (“  ”, #NodeType2).加入文本 (#换行符)
+    .判断 (等于 (FixedInfo.NodeType, 4))
+        相加 (“  ”, #NodeType4).加入文本 (#换行符)
+    .判断 (等于 (FixedInfo.NodeType, 8))
+        相加 (“  ”, #NodeType8).加入文本 (#换行符)
+    .默认
+        相加 (“  ”, #NodeType0).加入文本 (#换行符)
+    .判断结束
+    相加 (“  ”, “NetBIOS Scope ID:”, 到文本 (FixedInfo.ScopeId)).加入文本 (#换行符)
+    .如果 (不等于 (FixedInfo.EnableRouting, 0))
+        相加 (“  ”, “IP Routing Enabled”).加入文本 (#换行符)
+    .否则
+        相加 (“  ”, “IP Routing Disabled”).加入文本 (#换行符)
+    .如果结束
+    .如果 (不等于 (FixedInfo.EnableProxy, 0))
+        相加 (“  ”, “WINS Proxy Enabled”).加入文本 (#换行符)
+    .否则
+        相加 (“  ”, “WINS Proxy Disabled”).加入文本 (#换行符)
+    .如果结束
+    .如果 (不等于 (FixedInfo.EnableDns, 0))
+        相加 (“  ”, “NetBIOS Resolution Uses DNS”).加入文本 (#换行符)
+    .否则
+        相加 (“  ”, “NetBIOS Resolution Does not Uses DNS”).加入文本 (#换行符)
+    .如果结束
+    
+.否则
+    相加 (“  ”, “GetNetworkParams failed with error”, 到文本 (error)).加入文本 (#换行符)
+.如果结束
+#换行符.加入文本 ()
+
+
+.子程序 子程序1, 空白型, , 
+.局部变量 AdapterInfoSize, 整数型, , , 
+.局部变量 AdapterInfoBuffer, 字节集, , , 
+.局部变量 AdapterInfo, IP_ADAPTER_INFO, , , 
+.局部变量 Buffer2, IP_ADAPTER_INFO, , , 
+.局部变量 pAdapt, 整数型, , , 
+.局部变量 error, 整数型, , , 
+.局部变量 PhysicalAddress, 文本型, , , 
+.局部变量 n, 整数型, , , 
+.局部变量 pAddrStr, 整数型, , , 
+.局部变量 Buffer, IP_ADDR_STRING, , , 
+
+赋值 (error, GetAdaptersInfo1 (AdapterInfo, AdapterInfoSize))
+.如果真 (不等于 (error, 0))
+    .如果真 (不等于 (error, 111))
+        返回 ()
+    .如果真结束
+    
+.如果真结束
+赋值 (AdapterInfoBuffer, 取空白字节集 (AdapterInfoSize))
+赋值 (error, GetAdaptersInfo (AdapterInfoBuffer, AdapterInfoSize))
+.如果 (等于 (error, 0))
+    “Actual Adapter Information”.加入文本 (#换行符)
+    RtlMoveMemory3 (AdapterInfo, AdapterInfoBuffer, AdapterInfoSize)
+    .判断开始 (等于 (AdapterInfo.Type, 6))
+        相加 (“  ”, “Adapter Name:Ethernet Adapter”).加入文本 (#换行符)
+    .判断 (等于 (AdapterInfo.Type, 9))
+        相加 (“  ”, “Adapter Name:Token Ring Adapter”).加入文本 (#换行符)
+    .判断 (等于 (AdapterInfo.Type, 15))
+        相加 (“  ”, “Adapter Name: FDDI Adapter”).加入文本 (#换行符)
+    .判断 (等于 (AdapterInfo.Type, 23))
+        相加 (“  ”, “Adapter Name: PPP Adapter”).加入文本 (#换行符)
+    .判断 (等于 (AdapterInfo.Type, 24))
+        相加 (“  ”, “Adapter Name: Loopback Adapter”).加入文本 (#换行符)
+    .判断 (等于 (AdapterInfo.Type, 28))
+        相加 (“  ”, “Adapter Name: Slip Adapter”).加入文本 (#换行符)
+    .默认
+        相加 (“  ”, “Adapter Name: Other Adapter”).加入文本 (#换行符)
+    .判断结束
+    相加 (“  ”, “AdapterDescription:”, 到文本 (AdapterInfo.Description)).加入文本 (#换行符)
+    赋值 (PhysicalAddress, “”)
+    .计次循环首 (AdapterInfo.AddressLength, n)
+        赋值 (PhysicalAddress, 相加 (PhysicalAddress, 到文本 (AdapterInfo.Address [n]), 选择 (小于或等于 (n, 相减 (AdapterInfo.AddressLength, 1)), “-”, “”)))
+    .计次循环尾 ()
+    相加 (“  ”, “Physical Address:”, PhysicalAddress).加入文本 (#换行符)
+    .如果 (等于 (AdapterInfo.DhcpEnabled, 0))
+        相加 (“  ”, “DHCP disabled”).加入文本 (#换行符)
+    .否则
+        相加 (“  ”, “DHCP enabled”).加入文本 (#换行符)
+    .如果结束
+    相加 (“  ”, “IP Address:”, 到文本 (AdapterInfo.IpAddressList_IpAddress)).加入文本 (#换行符)
+    相加 (“  ”, “Subnet Mask:”, 到文本 (AdapterInfo.IpAddressList_IpMask)).加入文本 (#换行符)
+    赋值 (pAddrStr, AdapterInfo.IpAddressList_Next)
+    .判断循环首 (不等于 (pAddrStr, 0))
+        RtlMoveMemory5 (Buffer, AdapterInfo.IpAddressList_Next, 40)
+        相加 (“  ”, “IP Address:”, 到文本 (Buffer.IpAddress)).加入文本 (#换行符)
+        相加 (“  ”, “Subnet Mask:”, 到文本 (Buffer.IpMask)).加入文本 (#换行符)
+        赋值 (pAddrStr, Buffer.Next)
+        .如果真 (不等于 (pAddrStr, 0))
+            RtlMoveMemory6 (AdapterInfo.IpAddressList_Next, pAddrStr, 40)
+        .如果真结束
+        
+    .判断循环尾 ()
+    相加 (“  ”, “Default Gateway:”, 到文本 (AdapterInfo.GatewayList_IpAddress)).加入文本 (#换行符)
+    赋值 (pAddrStr, AdapterInfo.GatewayList_Next)
+    .判断循环首 (不等于 (pAddrStr, 0))
+        RtlMoveMemory5 (Buffer, AdapterInfo.GatewayList_Next, 40)
+        相加 (“  ”, “IP Address:”, 到文本 (Buffer.IpAddress)).加入文本 (#换行符)
+        相加 (“  ”, “Subnet Mask:”, 到文本 (Buffer.IpMask)).加入文本 (#换行符)
+        赋值 (pAddrStr, Buffer.Next)
+        .如果真 (不等于 (pAddrStr, 0))
+            RtlMoveMemory6 (AdapterInfo.IpAddressList_Next, pAddrStr, 40)
+        .如果真结束
+        
+    .判断循环尾 ()
+    相加 (“  ”, “DHCP Server:”, 到文本 (AdapterInfo.DhcpServer_IpAddress)).加入文本 (#换行符)
+    相加 (“  ”, “Primary WINS Server:”, 到文本 (AdapterInfo.PrimaryWinsServer_IpAddress)).加入文本 (#换行符)
+    相加 (“  ”, “Secondary WINS Server:”, 到文本 (AdapterInfo.SecondaryWinsServer_IpAddress)).加入文本 (#换行符)
+    相加 (“  ”, “Lease Obtained:”, 时间到文本 (AdapterInfo.LeaseObtained, )).加入文本 (#换行符)
+    相加 (“  ”, “Lease Expires:”, 时间到文本 (AdapterInfo.LeaseExpires, )).加入文本 (#换行符, #换行符)
+    赋值 (pAdapt, AdapterInfo.Next)
+    .判断循环首 (不等于 (pAdapt, 0))
+        RtlMoveMemory4 (Buffer2, pAdapt, AdapterInfoSize)
+        .判断开始 (等于 (AdapterInfo.Type, 6))
+            相加 (“  ”, “Adapter Name:Ethernet Adapter”).加入文本 (#换行符)
+        .判断 (等于 (AdapterInfo.Type, 9))
+            相加 (“  ”, “Adapter Name:Token Ring Adapter”).加入文本 (#换行符)
+        .判断 (等于 (AdapterInfo.Type, 15))
+            相加 (“  ”, “Adapter Name: FDDI Adapter”).加入文本 (#换行符)
+        .判断 (等于 (AdapterInfo.Type, 23))
+            相加 (“  ”, “Adapter Name: PPP Adapter”).加入文本 (#换行符)
+        .判断 (等于 (AdapterInfo.Type, 24))
+            相加 (“  ”, “Adapter Name: Loopback Adapter”).加入文本 (#换行符)
+        .判断 (等于 (AdapterInfo.Type, 28))
+            相加 (“  ”, “Adapter Name: Slip Adapter”).加入文本 (#换行符)
+        .默认
+            相加 (“  ”, “Adapter Name: Other Adapter”).加入文本 (#换行符)
+        .判断结束
+        相加 (“  ”, “AdapterDescription:”, 到文本 (Buffer2.Description)).加入文本 (#换行符)
+        赋值 (PhysicalAddress, “”)
+        .计次循环首 (Buffer2.AddressLength, n)
+            赋值 (PhysicalAddress, 相加 (PhysicalAddress, 到文本 (Buffer2.Address [n]), 选择 (小于或等于 (n, 相减 (Buffer2.AddressLength, 1)), “-”, “”)))
+        .计次循环尾 ()
+        相加 (“  ”, “Physical Address:”, PhysicalAddress).加入文本 (#换行符)
+        .如果 (等于 (Buffer2.DhcpEnabled, 0))
+            相加 (“  ”, “DHCP disabled”).加入文本 (#换行符)
+        .否则
+            相加 (“  ”, “DHCP enabled”).加入文本 (#换行符)
+        .如果结束
+        相加 (“  ”, “IP Address:”, 到文本 (Buffer2.IpAddressList_IpAddress)).加入文本 (#换行符)
+        相加 (“  ”, “Subnet Mask:”, 到文本 (Buffer2.IpAddressList_IpMask)).加入文本 (#换行符)
+        赋值 (pAddrStr, Buffer2.IpAddressList_Next)
+        .判断循环首 (不等于 (pAddrStr, 0))
+            RtlMoveMemory5 (Buffer, Buffer2.IpAddressList_Next, 40)
+            相加 (“  ”, “IP Address:”, 到文本 (Buffer.IpAddress)).加入文本 (#换行符)
+            相加 (“  ”, “Subnet Mask:”, 到文本 (Buffer.IpMask)).加入文本 (#换行符)
+            赋值 (pAddrStr, Buffer.Next)
+            .如果真 (不等于 (pAddrStr, 0))
+                RtlMoveMemory6 (Buffer2.IpAddressList_Next, pAddrStr, 40)
+            .如果真结束
+            
+        .判断循环尾 ()
+        相加 (“  ”, “Default Gateway:”, 到文本 (Buffer2.GatewayList_IpAddress)).加入文本 (#换行符)
+        赋值 (pAddrStr, Buffer2.GatewayList_Next)
+        .判断循环首 (不等于 (pAddrStr, 0))
+            RtlMoveMemory5 (Buffer, Buffer2.GatewayList_Next, 40)
+            相加 (“  ”, “IP Address:”, 到文本 (Buffer.IpAddress)).加入文本 (#换行符)
+            相加 (“  ”, “Subnet Mask:”, 到文本 (Buffer.IpMask)).加入文本 (#换行符)
+            赋值 (pAddrStr, Buffer.Next)
+            .如果真 (不等于 (pAddrStr, 0))
+                RtlMoveMemory6 (Buffer2.IpAddressList_Next, pAddrStr, 40)
+            .如果真结束
+            
+        .判断循环尾 ()
+        相加 (“  ”, “DHCP Server:”, 到文本 (Buffer2.DhcpServer_IpAddress)).加入文本 (#换行符)
+        相加 (“  ”, “Primary WINS Server:”, 到文本 (Buffer2.PrimaryWinsServer_IpAddress)).加入文本 (#换行符)
+        相加 (“  ”, “Secondary WINS Server:”, 到文本 (Buffer2.SecondaryWinsServer_IpAddress)).加入文本 (#换行符)
+        相加 (“  ”, “Lease Obtained:”, 时间到文本 (Buffer2.LeaseObtained, )).加入文本 (#换行符)
+        相加 (“  ”, “Lease Expires:”, 时间到文本 (Buffer2.LeaseExpires, )).加入文本 (#换行符, #换行符)
+        赋值 (pAdapt, Buffer2.Next)
+    .判断循环尾 ()
+.否则
+    相加 (“  ”, “GetAdaptersInfo failed with error”, 到文本 (error)).加入文本 (#换行符)
+.如果结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

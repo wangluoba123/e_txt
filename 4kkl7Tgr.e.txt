@@ -1,0 +1,197 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：API共享磁盘
+ ' 程序描述：
+ ' 程序作者：蔷薇的羽翼
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：蔷薇的羽翼
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 293
+    高度 = 234
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “磁盘共享 by:蔷薇的羽翼”
+    帮助文件名 = “”
+
+
+
+.常量 STYPE_ALL, "-1", , 
+.常量 STYPE_DISKTREE, "0", , 
+.常量 STYPE_PRINTQ, "1", , 
+.常量 STYPE_DEVICE, "2", , 
+.常量 STYPE_IPC, "3", , 
+.常量 STYPE_SPECIAL, "2147483648", , 
+.常量 ACCESS_READ, "1", , 
+.常量 ACCESS_WRITE, "2", , 
+.常量 ACCESS_CREATE, "4", , 
+.常量 ACCESS_EXEC, "8", , 
+.常量 ACCESS_DELETE, "16", , 
+.常量 ACCESS_ATRIB, "32", , 
+.常量 ACCESS_PERM, "64", , 
+.常量 ACCESS_ALL, "127", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' spec A512548E76954B6E92C21055517615B0 3 0 特殊功能支持库
+ ' sock A6B983789F624b2cBDFD7D671249C097 2 0 网络通讯支持库
+
+
+
+
+数据类型 SHARE_INFO_2, , 
+    .成员 shi2_netname, 整数型, , , 
+    .成员 shi2_type, 整数型, , , 
+    .成员 shi2_remark, 整数型, , , 
+    .成员 shi2_permissions, 整数型, , , 
+    .成员 shi2_max_uses, 整数型, , , 
+    .成员 shi2_current_uses, 整数型, , , 
+    .成员 shi2_path, 整数型, , , 
+    .成员 shi2_passwd, 整数型, , , 
+
+
+.DLL命令 NetShareAdd, 整数型, "netapi32.dll", "NetShareAdd", , 
+    .参数 ServerName, 整数型, , 
+    .参数 level, 整数型, , 
+    .参数 buf, SHARE_INFO_2, , 
+    .参数 parmerr, 整数型, , 
+
+.DLL命令 NetShareDel, 整数型, "netapi32.dll", "NetShareDel", , 
+    .参数 ServerName, 整数型, , 
+    .参数 ShareName, 整数型, , 
+    .参数 dword, 整数型, , 
+
+.DLL命令 MultiByteToWideChar, 整数型, "", "MultiByteToWideChar", , 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpWideCharStr, 字节集, , 
+    .参数 cchWideChar, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+.判断开始 (等于 (取操作系统类别 (), 2))
+    DLL命令调用转向 (“Svrapi.lib”, “NetShareAdd”)
+    DLL命令调用转向 (“Svrapi.lib”, “NetShareDel”)
+.判断 (等于 (取操作系统类别 (), 3))
+    DLL命令调用转向 (“netapi32.dll”, “NetShareAdd”)
+    DLL命令调用转向 (“netapi32.dll”, “NetShareDel”)
+.默认
+     ' 本源码来自易语言资源网(www.wodesoft.com)
+.判断结束
+
+
+.子程序 A2W, 字节集, , 将Ansi转成Unicode
+.参数 欲转换的文本, 文本型, , 
+
+.局部变量 缓冲区, 字节集, , , 
+.局部变量 缓冲区大小, 整数型, , , 
+
+赋值 (缓冲区大小, 相乘 (MultiByteToWideChar (0, 0, 欲转换的文本, -1, {  }, 0), 2))
+赋值 (缓冲区, 取空白字节集 (缓冲区大小))
+MultiByteToWideChar (0, 0, 欲转换的文本, 取文本长度 (欲转换的文本), 缓冲区, 缓冲区大小)
+返回 (缓冲区)
+
+.子程序 ShareAdd, 整数型, , 
+.参数 sServer, 字节集, , 
+.参数 sSharePath, 字节集, , 
+.参数 sShareName, 字节集, , 
+.参数 sShareRemark, 字节集, , 
+.参数 sSharePw, 字节集, , 
+
+.局部变量 lngServer, 整数型, , , 
+.局部变量 lngNetname, 整数型, , , 
+.局部变量 lngPath, 整数型, , , 
+.局部变量 lngRemark, 整数型, , , 
+.局部变量 lngPw, 整数型, , , 
+.局部变量 parmerr, 整数型, , , 
+.局部变量 si2, SHARE_INFO_2, , , 
+
+赋值 (lngServer, 取变量数据地址 (sServer)) ' 转成地址
+赋值 (lngNetname, 取变量数据地址 (sShareName))
+赋值 (lngPath, 取变量数据地址 (sSharePath))
+.如果真 (不等于 (取字节集长度 (sShareRemark), 0))
+    赋值 (lngRemark, 取变量数据地址 (sShareRemark))
+.如果真结束
+.如果真 (不等于 (取字节集长度 (sSharePw), 0))
+    赋值 (lngPw, 取变量数据地址 (sSharePw))
+.如果真结束
+赋值 (si2.shi2_type, #STYPE_DISKTREE)
+赋值 (si2.shi2_path, lngPath)
+赋值 (si2.shi2_remark, lngRemark)
+赋值 (si2.shi2_passwd, lngPw)
+赋值 (si2.shi2_netname, lngNetname)
+赋值 (si2.shi2_max_uses, -1)
+赋值 (si2.shi2_permissions, #ACCESS_ALL)
+返回 (NetShareAdd (lngServer, 2, si2, parmerr))
+
+.子程序 DelShare, 整数型, , 
+.参数 sServer, 字节集, , 
+.参数 sShareName, 字节集, , 
+
+.局部变量 lngServer, 整数型, , , 
+.局部变量 lngNetname, 整数型, , , 
+
+赋值 (lngServer, 取变量数据地址 (sServer)) ' 转成地址
+赋值 (lngNetname, 取变量数据地址 (sShareName))
+返回 (NetShareDel (lngServer, lngNetname, 0))
+
+.子程序 _按钮1_被单击, 空白型, , 
+ShareAdd (A2W (未知支持库函数_16 ()), A2W (“C:\”), A2W (“DOWNLOAD”), A2W (“蔷薇的羽翼”), A2W (“”))
+
+.子程序 _按钮2_被单击, 空白型, , 
+DelShare (A2W (未知支持库函数_16 ()), A2W (“DOWNLOAD”))
+' 本源码来自易语言资源网(www.wodesoft.com)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

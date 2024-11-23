@@ -1,0 +1,138 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：检测是否被调试
+ ' 程序描述：
+ ' 程序作者：afengsoft
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：检测是否被调试
+ ' 版本号：2.0
+ ' 创建号：0.0
+
+
+
+.常量 TH32CS_SNAPALL, "15", , 
+.常量 PROCESS_ALL_ACCESS, "2035711", , 
+.常量 TH32CS_SNAPMODULE, "8", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 PROCESSENTRY32, , 
+    .成员 dwsize, 整数型, , , 
+    .成员 cntusage, 整数型, , , 引用数
+    .成员 th32ProcessID, 整数型, , , 进程ID
+    .成员 th32defaultheapid, 整数型, , , 默认堆ID
+    .成员 th32moduleid, 整数型, , , 模块ID
+    .成员 cntthreads, 整数型, , , 线程数
+    .成员 th32ParentProcessID, 整数型, , , 父进程ID
+    .成员 pcpriclassbase, 整数型, , , 线程基本优先级
+    .成员 dwflags, 整数型, , , 
+    .成员 szExefile, 字节型, , "260", 进程名
+
+数据类型 MODULEENTRY32, , 
+    .成员 dwSize, 整数型, , , 548
+    .成员 th32ModuleID, 整数型, , , 模块ID
+    .成员 th32ProcessID, 整数型, , , 进程ID
+    .成员 GlblcntUsage, 整数型, , , 全局引用数
+    .成员 ProccntUsage, 整数型, , , 引用数
+    .成员 modBaseAddr, 整数型, , , 模块基址
+    .成员 modBaseSize, 整数型, , , 模块大小
+    .成员 hModule, 整数型, , , 模块句柄
+    .成员 szModule, 字节型, , "256", 模块名
+    .成员 szExePath, 字节型, , "260", 模块路径
+
+
+.DLL命令 CreateToolhelp32Snapshot, 整数型, "", "CreateToolhelp32Snapshot", , 
+    .参数 dwFlags, 整数型, , 
+    .参数 th32ProcessID, 整数型, , 
+
+.DLL命令 Process32First, 整数型, "", "Process32First", , 
+    .参数 hSnapshot, 整数型, , 
+    .参数 lppe, PROCESSENTRY32, , 
+
+.DLL命令 Process32Next, 整数型, "", "Process32Next", , 
+    .参数 hSnapshot, 整数型, , 
+    .参数 lppe, PROCESSENTRY32, , 
+
+.DLL命令 OpenProcess, 整数型, "", "OpenProcess", , 将句柄返回给过程对象
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 逻辑型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 Module32First, 整数型, "", "Module32First", , 
+    .参数 hSnapshot, 整数型, , 
+    .参数 lpme, MODULEENTRY32, , 
+
+.DLL命令 TerminateProcess, 空白型, "", "TerminateProcess", , 
+    .参数 hProcess, 整数型, , 
+    .参数 uExitCode, 整数型, , 
+
+.DLL命令 CloseHandle, 空白型, "", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.程序集 检测是否被调试, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+是否被调试 ()
+
+.子程序 是否被调试, 逻辑型, 公开, 
+.局部变量 Pn, PROCESSENTRY32, , , 
+.局部变量 ExplName, 文本型, , , 
+.局部变量 ExeName, 文本型, , , 
+.局部变量 sHandle, 整数型, , , 
+.局部变量 Found, 整数型, , , 
+.局部变量 ParentProc, 整数型, , , 
+.局部变量 H, 整数型, , , 
+.局部变量 ExplProc, 整数型, , , 
+
+赋值 (ExplName, 相加 (字符 (101), 字符 (120), 字符 (112), 字符 (108), 字符 (111), 字符 (114), 字符 (101), 字符 (114), 字符 (46), 字符 (101), 字符 (120), 字符 (101))) ' EXPLORER.EXE
+赋值 (sHandle, CreateToolhelp32Snapshot (#TH32CS_SNAPALL, 0)) ' 得到所有进程的列表快照
+赋值 (Pn.dwsize, 296)
+赋值 (Found, Process32First (sHandle, Pn)) ' 查找进程
+.判断循环首 (不等于 (Found, 0)) ' 遍历所有进程
+    .判断开始 (等于 (取操作系统类别 (), 3))
+        赋值 (ExeName, 取进程文件名 (Pn.th32ProcessID)) ' 2000/xp要从模块那里才能正确取出执行的文件名
+    .默认
+        赋值 (ExeName, 到小写 (到文本 (Pn.szExefile))) ' 98下直接取进程名就可以了，在模块那里没有的，所以反而取不出来，不过这个名字是一个路径，要转换一下
+        赋值 (ExeName, 取文本右边 (ExeName, 相减 (取文本长度 (ExeName), 倒找文本 (ExeName, “\”, , 真))))
+    .判断结束
+    .判断开始 (等于 (ExeName, 到小写 (取执行文件名 ()))) ' 自己的进程
+        赋值 (.) ' 得到父进程的进程ID
+        赋值 () ' 父进程的句柄
+
+.子程序 取进程文件名, 文本型, , 取2000/XP系统进程文件名
+.参数 进程ID, 整数型, , 
+
+.局部变量 Hwnd, 整数型, , , 
+.局部变量 Buffer, MODULEENTRY32, , , 
+.局部变量 ExeName, 文本型, , , 
+
+赋值 (Hwnd, CreateToolhelp32Snapshot (#TH32CS_SNAPMODULE, 进程ID))
+.判断开始 (等于 (Hwnd, -1))
+    返回 (“”)
+.默认
+    
+.判断结束
+赋值 (Buffer.dwSize, 1024)
+Module32First (Hwnd, Buffer)
+赋值 (ExeName, 到小写 (到文本 (Buffer.szModule)))
+CloseHandle (Hwnd)
+返回 (ExeName)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

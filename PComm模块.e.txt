@@ -1,0 +1,626 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：PComm模块
+ ' 程序描述：
+ ' 程序作者：小痞子
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 SIO_OK, "0", 公开, 串口操作成功
+.常量 SIO_BADPORT, "-1", 公开, 串口无效
+.常量 SIO_OUTCONTROL, "-2", 公开, 串口号超出范围
+.常量 SIO_NODATA, "-4", 公开, 串口读_无数据
+.常量 SIO_OPENFAIL, "-5", 公开, 串口被占用
+.常量 SIO_RTS_BY_HW, "-6", 公开, 串口不能设置硬件流控制
+.常量 SIO_BADPARM, "-7", 公开, 参数错误
+.常量 SIO_WIN32FAIL, "-8", 公开, 函数失败
+.常量 SIO_BOARDNOTSUPPORT, "-9", 公开, 串口不支持此函数
+.常量 SIO_ABORT_WRITE, "-11", 公开, 串口写入被锁定，用户放弃写入
+.常量 SIO_WRITETIMEOUT, "-12", 公开, 串口写超时
+.常量 , , , 
+.常量 , , , 打开串口的 模式参数 开始
+.常量 MODE_BIT_5, "0", 公开, 字节中占第0，1位 数据位
+.常量 MODE_BIT_6, "1", 公开, 
+.常量 MODE_BIT_7, "2", 公开, 
+.常量 MODE_BIT_8, "3", 公开, 
+.常量 , , , 
+.常量 MODE_STOP_1, "0", 公开, 字节中站第2位‘ 停止位
+.常量 MODE_STOP_2, "4", 公开, 
+.常量 , , , 
+.常量 MODE_P_NONE, "0", 公开, 字节中占第3，4，5位 ’奇偶位 无
+.常量 MODE_P_EVEN, "24", 公开, 0x18
+.常量 MODE_P_ODD, "8", 公开, 0x8
+.常量 MODE_P_MARK, "40", 公开, 0x28
+.常量 MODE_P_SPC, "56", 公开, 0x38
+.常量 , , , 
+.常量 , , , 打开串口 波特率参数
+.常量 MODE_B50, "0", 公开,  波特率 50
+.常量 MODE_B75, "1", 公开, 
+.常量 MODE_B110, "2", 公开, 
+.常量 MODE_B134, "3", 公开, 
+.常量 MODE_B150, "4", 公开, 
+.常量 MODE_B300, "5", 公开, 
+.常量 MODE_B600, "6", 公开, 
+.常量 MODE_B1200, "7", 公开, 
+.常量 MODE_B1800, "8", 公开, 
+.常量 MODE_B2400, "9", 公开, 
+.常量 MODE_B4800, "10", 公开, 
+.常量 MODE_B7200, "11", 公开, 
+.常量 MODE_B9600, "12", 公开, 
+.常量 MODE_B19200, "13", 公开, 
+.常量 MODE_B38400, "14", 公开, 
+.常量 MODE_B57600, "15", 公开, 
+.常量 MODE_B115200, "16", 公开, 
+.常量 MODE_B230400, "17", 公开, 
+.常量 MODE_B460800, "18", 公开, 
+.常量 MODE_B921600, "19", 公开,  波特率 921600
+.常量 , , , 
+.常量 , , , 
+.常量 MODE_CTS_ON, "1", 公开, 字节第0位 0 OFF 1 ON
+.常量 MODE_CTS_OFF, "0", 公开, Tx hardware flow control (CTS)
+.常量 MODE_RTS_ON, "2", 公开, 字节第1位 0 OFF 1 ON
+.常量 MODE_RTS_OFF, "0", 公开, Rx hardware flow control (RTS)
+.常量 MODE_Tx_ON, "4", 公开, 字节第2位 0 OFF 1 ON
+.常量 MODE_Tx_OFF, "0", 公开, Tx software flow control (Xon/Xoff)
+.常量 MODE_Rx_ON, "8", 公开, 字节第3位 0 OFF 1 ON
+.常量 MODE_Rx_OFF, "0", 公开, Rx software flow control (Xon/Xoff)
+.常量 flush_input_buffer, "0", 公开, 
+.常量 flush_output_buffer, "1", 公开, 
+.常量 flush_input_and_output_buffer, "2", 公开, 
+.常量 , , , 
+.常量 DTR_ON, "1", 公开, 
+.常量 DTR_OFF, "0", 公开, 
+.常量 RTS_ON, "1", 公开, 
+.常量 RTS_OFF, "0", 公开, 
+.常量 , , , 
+.常量 DTR_RTS_ON, "3", 公开, 
+.常量 DTR_RTS_OFF, "0", 公开, 
+.常量 DTR_ON_RTS_OFF, "1", 公开, 
+.常量 DTR_OFF_RTS_ON, "2", 公开, 
+.图片 PComm, " ' 已保存到：D:\易语言学习\Data\PComm模块.e\PComm", , 
+.图片 , , , 
+.图片 load_code, " ' 已保存到：D:\易语言学习\Data\PComm模块.e\load_code", , 
+.图片 free_code, " ' 已保存到：D:\易语言学习\Data\PComm模块.e\free_code", , 
+.图片 getaddr_code, " ' 已保存到：D:\易语言学习\Data\PComm模块.e\getaddr_code", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' spec A512548E76954B6E92C21055517615B0 3 0 特殊功能支持库
+
+
+
+
+
+.程序集 程序集1, , , 
+
+.程序集变量 PComm, 字节集, , , 
+.程序集变量 hModule, 整数型, , , 
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+赋值 (PComm, #PComm)
+赋值 (hModule, LoadMemLibrary (取变量数据地址 (PComm)))
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.子程序 打开串口, 整数型, , =0 成功，<0 失败
+.参数 串口号, 整数型, , 
+
+.局部变量 Open, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Open, GetMemProcAddress (hModule, “sio_open”))
+调用子程序 (Open, , a, 串口号)
+返回 (a)
+
+.子程序 关闭串口, 整数型, , =0 成功，<0 失败
+.参数 串口号, 整数型, , 
+
+.局部变量 Stop, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Stop, GetMemProcAddress (hModule, “sio_close”))
+调用子程序 (Stop, , a, 串口号)
+返回 (a)
+
+.子程序 设置串口, 整数型, , =0 成功，<0 失败
+.参数 串口号, 整数型, , 
+.参数 波特率, 整数型, , 
+.参数 模式, 字节型, , 
+
+.局部变量 Set, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Set, GetMemProcAddress (hModule, “sio_ioctl”))
+调用子程序 (Set, , a, 串口号, 波特率, 模式)
+返回 (a)
+
+.子程序 设置端口流控制, 整数型, , 
+.参数 串口号, 空白型, , 
+.参数 模式, 空白型, , 
+
+.局部变量 Set_flowctrl, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Set_flowctrl, GetMemProcAddress (hModule, “sio_flowctrl”))
+调用子程序 (Set_flowctrl, , a, 串口号, 模式)
+返回 (a)
+
+.子程序 清空缓存区, 整数型, , =0清除成功，<0失败
+.参数 串口号, 整数型, , 
+.参数 缓存, 整数型, , 0:input buffer,1:output buffer,2:input & output buffer
+
+.局部变量 Flush, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Flush, GetMemProcAddress (hModule, “sio_flush”))
+调用子程序 (Flush, , a, 串口号, 缓存)
+返回 (a)
+
+.子程序 设置端口DTR_RTS开关, 整数型, , 
+.参数 串口号, 空白型, , 
+.参数 模式, 空白型, , 
+
+.局部变量 Set_lctrl, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Set_lctrl, GetMemProcAddress (hModule, “sio_lctrl”))
+调用子程序 (Set_lctrl, , a, 串口号, 模式)
+返回 (a)
+
+.子程序 设置端口DTR开关, 整数型, , 
+.参数 串口号, 空白型, , 
+.参数 DTR开关, 空白型, , 
+
+.局部变量 Set_DTR, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Set_DTR, GetMemProcAddress (hModule, “sio_DTR”))
+调用子程序 (Set_DTR, , a, 串口号, DTR开关)
+返回 (a)
+
+.子程序 设置端口RTS开关, 整数型, , 
+.参数 串口号, 空白型, , 
+.参数 RTS开关, 空白型, , 
+
+.局部变量 Set_RTS, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Set_RTS, GetMemProcAddress (hModule, “sio_RTS”))
+调用子程序 (Set_RTS, , a, 串口号, RTS开关)
+返回 (a)
+
+.子程序 设置端口波特率, 整数型, , 
+.参数 串口号, 空白型, , 
+.参数 波特率, 空白型, , 
+
+.局部变量 Set_baud, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Set_baud, GetMemProcAddress (hModule, “sio_baud”))
+调用子程序 (Set_baud, , a, 串口号, 波特率)
+返回 (a)
+
+.子程序 读入一个字符, 整数型, , 返回0—255为字符，<0为无字符，单字节
+.参数 串口号, 整数型, , 
+
+.局部变量 Getch, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Getch, GetMemProcAddress (hModule, “sio_getch”))
+调用子程序 (Getch, , a, 串口号)
+返回 (a)
+
+.子程序 读入字符串, 整数型, , >0 字符长度  =0无字符
+.参数 串口号, 整数型, , 
+.参数 字符缓存, 文本型, 参考, 
+.参数 缓存大小, 空白型, , 255
+
+.局部变量 Read, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (字符缓存, 取空白文本 (255))
+赋值 (Read, GetMemProcAddress (hModule, “sio_read”))
+调用子程序 (Read, , a, 串口号, 字符缓存, 缓存大小)
+返回 (a)
+
+.子程序 设置读入超时, 整数型, , 
+.参数 串口号, 空白型, , 
+.参数 最大超时, 空白型, , 毫秒
+.参数 时间间隔, 空白型, 可空, 一般默认为0
+
+.局部变量 SetR_Timeouts, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (SetR_Timeouts, GetMemProcAddress (hModule, “sio_SetReadTimeouts”))
+调用子程序 (SetR_Timeouts, , a, 串口号, 最大超时, 时间间隔)
+返回 (a)
+
+.子程序 取读入超时, 整数型, , 
+.参数 串口号, 整数型, , 
+.参数 最大超时, 整数型, 参考, 单位：MS
+.参数 时间间隔, 整数型, 参考 可空, 单位：MS，默认为0
+
+.局部变量 GetR_TimeOuts, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (GetR_TimeOuts, GetMemProcAddress (hModule, “sio_GetReadTimeouts”))
+调用子程序 (GetR_TimeOuts, , a, 串口号, 最大超时, 时间间隔)
+返回 (a)
+
+.子程序 取端口是否可读, 整数型, , =0可读,=-1不可读
+.参数 串口号, 整数型, , 
+
+.局部变量 GetR, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (GetR, GetMemProcAddress (hModule, “sio_AbortRead”))
+调用子程序 (GetR, , a, 串口号)
+返回 (a)
+
+.子程序 读入一串字符, 整数型, , 
+.参数 串口号, 整数型, , 
+.参数 字符缓存, 文本型, 参考, 
+.参数 缓存大小, 空白型, , 255
+.参数 term, 空白型, , 
+
+.局部变量 Linput, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (字符缓存, 取空白文本 (255))
+赋值 (Linput, GetMemProcAddress (hModule, “sio_linput”))
+调用子程序 (Linput, , a, 串口号, 字符缓存, 缓存大小, term)
+返回 (a)
+
+.子程序 写出一个字符, 整数型, , >=0写出成功,<0失败
+.参数 串口号, 整数型, , 
+.参数 字符, 字节型, , 
+
+.局部变量 Putch, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Putch, GetMemProcAddress (hModule, “sio_putch”))
+调用子程序 (Putch, , a, 串口号, 字符)
+返回 (a)
+
+.子程序 写出字符串, 整数型, , >=0 写出长度,<0失败
+.参数 串口号, 整数型, , 
+.参数 写出文本, 文本型, , 
+.参数 文本长度, 空白型, , 
+
+.局部变量 Write, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Write, GetMemProcAddress (hModule, “sio_write”))
+调用子程序 (Write, , a, 串口号, 写出文本, 文本长度)
+返回 (a)
+
+.子程序 设置写出超时, 空白型, , 
+.参数 串口号, 整数型, , 
+.参数 超时值, 整数型, 参考 可空, 单位：MS，默认为0
+
+.局部变量 SetW_TimeOuts, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (SetW_TimeOuts, GetMemProcAddress (hModule, “sio_SetWriteTimeouts”))
+调用子程序 (SetW_TimeOuts, , a, 串口号, 超时值)
+返回 (a)
+
+.子程序 取写出超时, 整数型, , 
+.参数 串口号, 整数型, , 
+.参数 超时值, 整数型, 参考 数组, 单位：MS，默认为0
+
+.局部变量 GetW_TimeOuts, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (GetW_TimeOuts, GetMemProcAddress (hModule, “sio_GetWriteTimeouts”))
+调用子程序 (GetW_TimeOuts, , a, 串口号, 超时值)
+返回 (a)
+
+.子程序 取端口是否可写, 整数型, , =0可写,=-1不可写
+.参数 串口号, 整数型, , 
+
+.局部变量 GetW, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (GetW, GetMemProcAddress (hModule, “sio_AbortWrite”))
+调用子程序 (GetW, , a, 串口号)
+返回 (a)
+
+.子程序 写出一串字符, 整数型, , 
+.参数 串口号, 整数型, , 
+.参数 写出文本, 文本型, , 
+.参数 文本长度, 空白型, , 
+.参数 tick, 空白型, , 1tick=55ms
+
+.局部变量 Putb_x, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Putb_x, GetMemProcAddress (hModule, “sio_putb_x”))
+调用子程序 (Putb_x, , a, 串口号, 写出文本, 文本长度, tick)
+返回 (a)
+
+.子程序 写出一串字符_ex, 整数型, , 
+.参数 串口号, 整数型, , 
+.参数 写出文本, 文本型, , 
+.参数 文本长度, 空白型, , 
+.参数 时间间隔, 空白型, , 单位：ms
+
+.局部变量 Putb_x_ex, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Putb_x_ex, GetMemProcAddress (hModule, “sio_putb_x_ex”))
+调用子程序 (Putb_x_ex, , a, 串口号, 写出文本, 文本长度, 时间间隔)
+返回 (a)
+
+.子程序 取端口状态, 整数型, , >= 0 line status Get line status, such as CTS, DSR, DCD, RI
+.参数 串口号, 整数型, , 
+.参数 状态, 空白型, 参考, bit 0 - S_CTS  bit 1 - S_DSR bit 2 - S_RI  bit 3 - S_CD
+
+.局部变量 GetL, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (GetL, GetMemProcAddress (hModule, “sio_lstatus”))
+调用子程序 (GetL, , a, 串口号)
+返回 (a)
+
+.子程序 取输入缓冲区数据长度, 整数型, , 返回数据长度
+.参数 串口号, 整数型, , 
+
+.局部变量 GetI, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (GetI, GetMemProcAddress (hModule, “sio_iqueue”))
+调用子程序 (GetI, , a, 串口号)
+返回 (a)
+
+.子程序 取输出缓冲区数据长度, 整数型, , 返回数据长度
+.参数 串口号, 整数型, , 
+
+.局部变量 GetO, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (GetO, GetMemProcAddress (hModule, “sio_oqueue”))
+调用子程序 (GetO, , a, 串口号)
+返回 (a)
+
+.子程序 取发送失败原因, 整数型, , >=0 |=0 CTS is low|=1 XOFF char received
+.参数 串口号, 整数型, , 
+
+.局部变量 GetTX, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (GetTX, GetMemProcAddress (hModule, “sio_Tx_hold”))
+调用子程序 (GetTX, , a, 串口号)
+返回 (a)
+
+.子程序 取端口波特率, 整数型, , 返回该端口波特率
+.参数 串口号, 整数型, , 
+
+.局部变量 GetB, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (GetB, GetMemProcAddress (hModule, “sio_getbaud”))
+调用子程序 (GetB, , a, 串口号)
+返回 (a)
+
+.子程序 取端口模式, 整数型, , 返回模式整数，和设置端口 模式参数意义一样
+.参数 串口号, 整数型, , 
+
+.局部变量 GetM, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (GetM, GetMemProcAddress (hModule, “sio_getmode”))
+调用子程序 (GetM, , a, 串口号)
+返回 (a)
+
+.子程序 取端口流控状态, 整数型, , 与设置端口流控模式参数意义一样
+.参数 串口号, 整数型, , 
+
+.局部变量 GetF, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (GetF, GetMemProcAddress (hModule, “sio_getflow”))
+调用子程序 (GetF, , a, 串口号)
+返回 (a)
+
+.子程序 取端口错误号, 整数型, , =0 无错误 |=1 奇偶检验错 |=2 帧错误 |=3 超时 |=4超帧错
+.参数 串口号, 整数型, , 
+
+.局部变量 GetD_status, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (GetD_status, GetMemProcAddress (hModule, “sio_data_status”))
+调用子程序 (GetD_status, , a, 串口号)
+返回 (a)
+
+.子程序 设置收到终止字符事件, 整数型, , 
+.参数 串口号, 空白型, , 
+.参数 字符串事件, 子程序指针, , 
+.参数 终止符, 字节型, , 
+
+.局部变量 Set_term_irq, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Set_term_irq, GetMemProcAddress (hModule, “sio_term_irq”))
+调用子程序 (Set_term_irq, , a, 串口号, 字符串事件, 终止符)
+返回 (a)
+
+.子程序 设置数据到达事件, 整数型, , =0成功，<0失败，到达一个字符就触发事件
+.参数 串口号, 整数型, , 
+.参数 到达事件, 子程序指针, , '子程序包含一个整数参数，传递串口号
+
+.局部变量 SetR, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (SetR, GetMemProcAddress (hModule, “sio_cnt_irq”))
+调用子程序 (SetR, , a, 串口号, 到达事件, 1)
+返回 (a)
+
+.子程序 设置流状态被改变事件, 整数型, , 
+.参数 串口号, 空白型, , 
+.参数 被改变事件, 子程序指针, , '子程序包含一个整数参数，传递串口号
+
+.局部变量 Set_modem_irq, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Set_modem_irq, GetMemProcAddress (hModule, “sio_modem_irq”))
+调用子程序 (Set_modem_irq, , a, 串口号, 被改变事件)
+返回 (a)
+
+.子程序 设置收到BERAK信号事件, 整数型, , 
+.参数 串口号, 空白型, , 
+.参数 BREAK信号事件, 子程序指针, , '子程序包含一个整数参数，传递串口号
+
+.局部变量 Set_break_irq, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Set_break_irq, GetMemProcAddress (hModule, “sio_break_irq”))
+调用子程序 (Set_break_irq, , a, 串口号, BREAK信号事件)
+返回 (a)
+
+.子程序 设置发送完毕事件, 整数型, , 输出缓冲区为空时触发此事件，=0成功，<0失败。
+.参数 串口号, 空白型, , 
+.参数 发送完毕事件, 子程序指针, , '子程序包含一个整数参数，传递串口号
+
+.局部变量 Set_Tx_empty_irq, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Set_Tx_empty_irq, GetMemProcAddress (hModule, “sio_Tx_empty_irq”))
+调用子程序 (Set_Tx_empty_irq, , a, 串口号, 发送完毕事件)
+返回 (a)
+
+.子程序 发送BREAK信号, 整数型, , 
+.参数 串口号, 空白型, , 
+.参数 信号时长, 空白型, , 1= 1/18 2 second
+
+.局部变量 Set_break, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Set_break, GetMemProcAddress (hModule, “sio_break”))
+调用子程序 (Set_break, , a, 串口号, 信号时长)
+返回 (a)
+
+.子程序 发送BREAK信号_ex, 整数型, , 
+.参数 串口号, 空白型, , 
+.参数 信号时长, 空白型, , 毫秒
+
+.局部变量 Set_break_ex, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Set_break_ex, GetMemProcAddress (hModule, “sio_break_ex”))
+调用子程序 (Set_break_ex, , a, 串口号, 信号时长)
+返回 (a)
+
+.子程序 设置发送数据尺寸, 整数型, , 
+.参数 串口号, 空白型, , 
+.参数 数据尺寸, 空白型, , 0~255
+
+.局部变量 Set_TxLowWater, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Set_TxLowWater, GetMemProcAddress (hModule, “sio_TxLowWater”))
+调用子程序 (Set_TxLowWater, , a, 串口号, 数据尺寸)
+返回 (a)
+
+.子程序 设置Xon, 整数型, , 
+.参数 串口号, 空白型, , 
+
+.局部变量 Set_ActXon, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Set_ActXon, GetMemProcAddress (hModule, “sio_ActXon”))
+调用子程序 (Set_ActXon, , a, 串口号)
+返回 (a)
+
+.子程序 设置Xoff, 整数型, , 
+.参数 串口号, 空白型, , 
+
+.局部变量 Set_ActXoff, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (Set_ActXoff, GetMemProcAddress (hModule, “sio_ActXoff”))
+调用子程序 (Set_ActXoff, , a, 串口号)
+返回 (a)
+
+.子程序 浏览缓存数据, 整数型, , =0无数据,>0缓冲区的数据长度，不取数据仅浏览(适用于微机多串口通信版)
+.参数 串口号, 整数型, , 
+.参数 缓冲文本, 文本型, 参考, 取空白文本（255）
+
+.局部变量 GetV, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (GetV, GetMemProcAddress (hModule, “sio_view”))
+调用子程序 (GetV, , a, 串口号, 缓冲文本)
+返回 (a)
+
+.子程序 文件_ASCII发送, 整数型, , 使用ASCII协议传送文件。
+.参数 串口号, 整数型, , 
+.参数 文件名, 文本型, , 要发送的文件名
+.参数 回调函数, 子程序指针, , 指明传输的相关状态
+.参数 取消键, 整数型, , 自定义取消快捷键代码
+
+.局部变量 FtASCIITx, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (FtASCIITx, GetMemProcAddress (hModule, “sio_FtASCIITx”))
+调用子程序 (FtASCIITx, , a, 串口号, 文件名, 回调函数, 取消键)
+返回 (a)
+
+.子程序 文件_ASCII接收, 整数型, , 
+.参数 串口号, 整数型, , 
+.参数 文件名, 文本型, , 要接收的文件名
+.参数 回调函数, 子程序指针, , 指明传输的相关状态
+.参数 取消键, 整数型, , 自定义取消快捷键代码
+.参数 超时值, 整数型, , 单位：秒
+
+.局部变量 FtASCIIRx, 空白型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (FtASCIIRx, GetMemProcAddress (hModule, “sio_FtASCIIRx”))
+调用子程序 (FtASCIIRx, , a, 串口号, 文件名, 回调函数, 取消键, 超时值)
+返回 (a)
+
+.子程序 释放DLL, 空白型, , >0成功
+FreeMemLibrary (hModule)
+
+
+.程序集 DLL程序集, , , 
+
+.子程序 LoadMemLibrary, 整数型, , 加载内存DLL
+.参数 pDllData, 整数型, , DLL文件数据地址
+
+.局部变量 hModule, 整数型, , , 
+
+置入代码 (#load_code)
+返回 (hModule)
+
+.子程序 FreeMemLibrary, 空白型, , 释放内存DLL
+.参数 hModule, 整数型, , 
+
+置入代码 (#free_code)
+
+.子程序 GetMemProcAddress, 整数型, , 取DLL导出函数地址
+.参数 hModule, 整数型, , 
+.参数 lpProcName, 文本型, , 
+
+.局部变量 addr, 整数型, , , 
+
+置入代码 (#getaddr_code)
+返回 (addr)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

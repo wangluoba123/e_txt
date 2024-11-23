@@ -1,0 +1,92 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：充值卡余额查询系统
+ ' 程序描述：
+ ' 程序作者：小亮
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 325
+    高度 = 154
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 已保存到：D:\易语言学习\Data\充值卡查询系统.e\_启动窗口_图标.ico
+    背景音乐 =  ' 空
+    标题 = “充值卡余额查询系统”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' eAPI F7FC1AE45C5C4758AF03EF19F18A395D 3 0 应用接口支持库
+
+
+
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮完美_被单击, 空白型, , 
+未知支持库函数_56 (“http://pay.wanmei.com/e/jsp/query/queryUsedCard.jsp”)
+
+.子程序 _按钮QQ币_被单击, 空白型, , 
+未知支持库函数_56 (“http://pay.qq.com/account/account_qqcard_query.shtml”)
+
+.子程序 _按钮盛大_被单击, 空白型, , 
+未知支持库函数_56 (“https://pay.sdo.com/Deposit/CardBalance.aspx”)
+
+.子程序 _按钮网易_被单击, 空白型, , 
+未知支持库函数_56 (“http://pay.163.com/servlet/controller?operation=queryaccount”)
+
+.子程序 _按钮金山_被单击, 空白型, , 
+未知支持库函数_56 (“http://pay.kingsoft.com/fastquery.php”)
+
+.子程序 _按钮搜狐_被单击, 空白型, , 
+未知支持库函数_56 (“http://account.changyou.com/_login.jsp?msg=%C4%FA%BB%B9%C3%BB%D3%D0%B5%C7%C2%BC%BB%F2%B5%C7%C2%BC%D2%D1%BE%AD%B3%AC%CA%B1%C1%CB%A3%AC%C7%EB%D6%D8%D0%C2%B5%C7%C2%BC&url=http%3A%2F%2Fpay.changyou.com%2Fonline%2Findex%2Fpeakquery.jsp”)
+
+.子程序 _按钮征途_被单击, 空白型, , 
+未知支持库函数_56 (“http://pay.ztgame.com.cn:8890/varCard.php”)
+
+.子程序 _按钮骏网_被单击, 空白型, , 
+未知支持库函数_56 (“http://www.jcard.cn/Bill/TradeSearch.aspx”)
+
+.子程序 _按钮联动_被单击, 空白型, , 
+未知支持库函数_56 (“http://info.10010.com/database/card/cardstatus.jsp”)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

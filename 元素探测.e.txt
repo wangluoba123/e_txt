@@ -1,0 +1,308 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 元素探测 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 449
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 真
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “元素探测”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' OLEDispatch 98575E1813814d769C5E4E62BD1E5346 1 1 COM对象操作支持库
+ ' iext2 AF6AD80AA4244A59AFB3D83ECF5173CC 2 0 扩展界面支持库二
+ ' eAPI F7FC1AE45C5C4758AF03EF19F18A395D 3 0 应用接口支持库
+
+
+
+
+数据类型 Point, , 悬浮窗用
+    .成员 x, 空白型, , , 
+    .成员 y, 空白型, , , 
+
+数据类型 RECT, 公开, 悬浮窗用
+    .成员 Left, 整数型, , , 左
+    .成员 Top, 整数型, , , 上
+    .成员 Right, 整数型, , , 右
+    .成员 Bottom, 整数型, , , 下
+
+
+.DLL命令 SetCapture, 整数型, "", "", , 悬浮窗用
+    .参数 hwnd, 整数型, , 要接收输入的窗口句柄
+
+.DLL命令 ReleaseCapture, 整数型, "", "", , 悬浮窗用
+
+.DLL命令 GetCursorPos, 整数型, "", "", , 悬浮窗用
+    .参数 lpPoint, Point, , 
+
+.DLL命令 WindowFromPoint, 整数型, "", "WindowFromPoint", , 悬浮窗用
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+
+.DLL命令 GetWindowRect, 整数型, "", "GetWindowRect", 公开, 悬浮窗用
+    .参数 hwnd, 整数型, , 
+    .参数 lpRect, RECT, , 
+
+.DLL命令 RegisterWindowMessageA, 整数型, "", "", , 悬浮窗用：获取分配给一个字串标识符的消息编号　&C000 到 &FFFF之间的一个消息编号。零意味着出错
+    .参数 lpString, 文本型, , 注册消息的名字;  
+
+.DLL命令 SendMessageTimeoutA, 整数型, "", "", , 悬浮窗用
+    .参数 MSG, 整数型, , 
+    .参数 hwnd, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+    .参数 fuFlags, 整数型, , 
+    .参数 uTimeout, 整数型, , 
+    .参数 lpdwResult, 整数型, 传址, 
+
+.DLL命令 ObjectFromLresult, 整数型, "OLEACC.DLL", "", , 悬浮窗用
+    .参数 lResult, 整数型, , 
+    .参数 riid, 字节集, , 
+    .参数 wParam, 整数型, , 
+    .参数 ppvObject, 对象, , 
+
+.DLL命令 GetClassName, 整数型, "", "GetClassNameA", , 悬浮窗用
+    .参数 hwnd, 空白型, , 
+    .参数 lpClassName, 文本型, , 
+    .参数 nMaxCount, 空白型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 lockMouse, 逻辑型, , , 
+.程序集变量 hanleOfWindow, 整数型, , , 
+.程序集变量 document_dx, 对象, , , 
+.程序集变量 oneTag_dx_hyCom, 未知类型0x20001, , , 黑月com对象
+.程序集变量 highLight_backgroundColor_bt, 变体型, , , 
+.程序集变量 last_backgroundColor_bt, 变体型, , , 变体
+.程序集变量 last_dx_hyCom, 未知类型0x20001, , , 
+.程序集变量 imgURLarray, 文本型, , "0", 
+.程序集变量 tag_dx, 对象, , , 
+.子程序 _瞄准器图片框_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (lockMouse, 真)
+赋值 (.鼠标指针, .图片)
+赋值 (.图片, {  })
+处理事件 ()
+SetCapture (取窗口句柄 ())
+
+.子程序 _瞄准器图片框_鼠标左键被放开, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.如果真 (等于 (lockMouse, 真))
+    赋值 (lockMouse, 假)
+    赋值 (.图片, .鼠标指针)
+    赋值 (.鼠标指针, 到字节集 (0))
+    ReleaseCapture ()
+.如果真结束
+
+
+.子程序 _瞄准器图片框_鼠标位置被移动, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.如果真 (等于 (lockMouse, 真))
+    取网页元素 ()
+    赋值 (.选中, 真)
+    #顶层.调整层次 ()
+.如果真结束
+
+
+.子程序 取网页元素, 空白型, , 
+.局部变量 Pt, Point, , , 
+.局部变量 Rect, RECT, , , 
+.局部变量 x, 整数型, , , 
+.局部变量 y, 整数型, , , 
+
+赋值 (hanleOfWindow, 取光标处句柄 ())
+
+.如果真 (等于 (取窗口类名 (hanleOfWindow), “Internet Explorer_Server”))
+    GetCursorPos (Pt)
+    GetWindowRect (hanleOfWindow, Rect)
+    赋值 (x, 相减 (Pt.x, Rect.Left))
+    赋值 (y, 相减 (Pt.y, Rect.Top))
+    赋值 (document_dx, 取IES对象 (hanleOfWindow))
+     ' document_dx.查看 ()
+    赋值 (.内容, document_dx.读文本属性 (“url”, ))
+    赋值 (tag_dx, document_dx.对象型方法 (“elementFromPoint”, x, y))
+    .如果真 (并且 (等于 (oneTag_dx_hyCom.未知支持库函数_14 (tag_dx), 真), 等于 (oneTag_dx_hyCom.未知支持库函数_2 (), 假)))
+        赋值 (.内容, oneTag_dx_hyCom.未知支持库函数_4 (-2147417084, #文本型, )) ' outHTML  innerHTML:-2147417086
+         ' com_blackMoon ＝ com_blackMoon.取对象属性 (1004, )'body
+        
+        .如果 (小于 (元素探测., 400))
+            赋值 (元素探测., oneTag_dx_hyCom.未知支持库函数_4 (-2147417108, #文本型, )) ' tagName
+        .否则
+            元素探测.标题 ＝ “元素探测-” ＋ oneTag_dx_hyCom.取属性 (-2147417108, #文本型, )
+        .如果结束
+        
+         ' 辅助代码： 高亮选中区
+        赋值 (oneTag_dx_hyCom, oneTag_dx_hyCom.未知支持库函数_9 (-2147417048, )) ' runtimeStyle
+        .如果真 (等于 (oneTag_dx_hyCom.未知支持库函数_2 (), 假))
+            .如果 (等于 (last_dx_hyCom.未知支持库函数_2 (), 真))
+                last_dx_hyCom.未知支持库函数_16 (oneTag_dx_hyCom)
+                赋值 (last_backgroundColor_bt, oneTag_dx_hyCom.未知支持库函数_12 (-501, ))
+                oneTag_dx_hyCom.未知支持库函数_13 (-501, highLight_backgroundColor_bt)
+                
+            .否则
+                
+                last_dx_hyCom.未知支持库函数_13 (-501, last_backgroundColor_bt)
+                last_dx_hyCom.未知支持库函数_16 (oneTag_dx_hyCom)
+                赋值 (last_backgroundColor_bt, oneTag_dx_hyCom.未知支持库函数_12 (-501, ))
+                oneTag_dx_hyCom.未知支持库函数_13 (-501, highLight_backgroundColor_bt)
+            .如果结束
+            
+        .如果真结束
+         ' 调试输出 (Hwnd, document_dx.是否为空 ())
+    .如果真结束
+    未知函数_581 () ' *** 缩略程序块 ***
+    
+     ' COM对象．取变体型属性 （ -501 ）'读backgrondColor
+     ' COM对象．置变体型属性 （ -501 ,属性值）‘写backgrondColor
+     ' -----------------
+     ' 编辑框1.内容 ＝ 到文本 (Hwnd)
+     ' 编辑框2.内容 ＝ Document.读文本属性 (“url”, )
+     ' 编辑框3.内容 ＝ Tag.读文本属性 (“tagName”, )
+     ' 编辑框4.内容 ＝ Tag.读文本属性 (“ID”, )
+     ' 编辑框5.内容 ＝ Tag.读文本属性 (“innerText”, )
+     ' 编辑框6.内容 ＝ Tag.读文本属性 (“outerHTML”, )
+.如果真结束
+
+
+.子程序 _源码单选框_被单击, 空白型, , 
+.如果真 (并且 (等于 (.选中, 真), 等于 (tag_dx.是否为空 (), 假)))
+    赋值 (.内容, tag_dx.读文本属性 (“outerHTML”, )) ' outHTML
+.如果真结束
+#顶层.调整层次 ()
+
+.子程序 _文本单选框_被单击, 空白型, , 
+.如果真 (并且 (等于 (.选中, 真), 等于 (tag_dx.是否为空 (), 假)))
+    赋值 (.内容, tag_dx.读文本属性 (“innerText”, )) ' innerText
+.如果真结束
+#顶层.调整层次 ()
+
+.子程序 读alt子程序, 文本型, , 
+.参数 imgTagCode, 文本型, , 
+
+.局部变量 addr1, 整数型, , , 
+.局部变量 addr2, 整数型, , , 
+.局部变量 oneALT, 文本型, , , 
+
+ ' <IMG alt="图文-[季前赛]老鹰66-99山猫 山猫啦啦队员热舞"  width=100>
+
+赋值 (addr1, 寻找文本 (imgTagCode, 相加 (“alt=”, #引号), , 真))
+.如果 (不等于 (addr1, -1))
+    赋值 (addr2, 寻找文本 (imgTagCode, #引号, 相加 (addr1, 5), 真))
+    赋值 (oneALT, 取文本中间 (imgTagCode, 相加 (addr1, 5), 相减 (addr2, addr1, 5)))
+.否则
+    
+    赋值 (addr1, 寻找文本 (imgTagCode, “alt=”, , 真))
+    赋值 (addr2, 寻找文本 (imgTagCode, “ ”, 相加 (addr1, 4), 真))
+    赋值 (oneALT, 取文本中间 (imgTagCode, 相加 (addr1, 4), 相减 (addr2, addr1, 4)))
+.如果结束
+返回 (oneALT)
+
+.子程序 取光标处句柄, 整数型, , 
+.局部变量 光标位置, Point, , , 
+
+GetCursorPos (光标位置)
+返回 (WindowFromPoint (光标位置.x, 光标位置.y))
+
+.子程序 取IES对象, 对象, , 
+.参数 IES句柄, 整数型, , 
+
+.局部变量 资源编号, 整数型, , , 
+.局部变量 消息值, 整数型, , , 
+.局部变量 对象, 对象, , , 
+
+.如果真 (不等于 (未知支持库函数_77 (IES句柄), “Internet Explorer_Server”))
+    返回 (对象)
+.如果真结束
+赋值 (消息值, RegisterWindowMessageA (“WM_HTML_GETOBJECT”))
+SendMessageTimeoutA (IES句柄, 消息值, 0, 0, 2, 1000, 资源编号)
+ObjectFromLresult (资源编号, { 32, 197, 111, 98, 30, 164, 207, 17, 167, 49, 0, 160, 201, 8, 38, 55 }, 0, 对象)
+返回 (对象)
+
+.子程序 取窗口类名, 文本型, , 
+.参数 Hwnd, 整数型, , 句柄
+
+.局部变量 临时文本, 文本型, , , 
+
+赋值 (临时文本, 取空白文本 (256))
+GetClassName (Hwnd, 临时文本, 255)
+返回 (临时文本)
+
+.子程序 _元素探测_创建完毕, 空白型, , 
+highLight_backgroundColor_bt.置类型 (2) ' 文本型
+highLight_backgroundColor_bt.赋值 (“Red”, )
+
+.子程序 _元素探测_将被销毁, 空白型, , 
+.如果真 (等于 (oneTag_dx_hyCom.未知支持库函数_2 (), 假))
+    oneTag_dx_hyCom.未知支持库函数_1 ()
+.如果真结束
+.如果真 (等于 (last_dx_hyCom.未知支持库函数_2 (), 假))
+    last_dx_hyCom.未知支持库函数_13 (-501, last_backgroundColor_bt)
+    last_dx_hyCom.未知支持库函数_1 ()
+.如果真结束
+
+
+.子程序 _启动子程序, 整数型, , 
+载入 (元素探测, , 真)
+返回 (0)
+
+.子程序 _超级按钮1_被单击, 空白型, , 
+.如果真 (等于 (last_dx_hyCom.未知支持库函数_2 (), 假))
+    last_dx_hyCom.未知支持库函数_13 (-501, last_backgroundColor_bt)
+.如果真结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

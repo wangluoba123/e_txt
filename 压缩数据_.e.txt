@@ -1,0 +1,710 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：压缩数据_
+ ' 程序描述：
+ ' 程序作者： 
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址： 
+ ' 版权声明： 
+ ' 版本号：1.4
+ ' 创建号：2.0
+
+
+
+.常量 IMAGE_DOS_SIGNATURE, "23117", , 
+.常量 IMAGE_NT_SIGNATURE, "17744", , 
+.常量 IMAGE_FILE_DLL, "8192", , 
+.常量 IMAGE_ORDINAL_FLAG32, "2147483648", , 
+.常量 IMAGE_FILE_EXECUTABLE_IMAGE, "2", , 
+.常量 MEM_COMMIT, "4096", , 
+.常量 MEM_RESERVE, "8192", , 
+.常量 MEM_RELEASE, "32768", , 
+.常量 PAGE_NOACCESS, "1", , 
+.常量 PAGE_READONLY, "2", , 
+.常量 PAGE_READWRITE, "4", , 
+.常量 PAGE_WRITECOPY, "8", , 
+.常量 PAGE_EXECUTE, "16", , 
+.常量 PAGE_EXECUTE_READ, "32", , 
+.常量 PAGE_EXECUTE_READWRITE, "64", , 
+.常量 DLL_PROCESS_ATTACH, "1", , 
+.常量 DLL_PROCESS_DETACH, "0", , 
+.图片 zlib, " ' 已保存到：D:\易语言学习\Data\压缩数据_.e\zlib", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 IMAGE_DOS_HEADER, , 
+    .成员 e_magic, 短整数型, , , 
+    .成员 e_cblp, 短整数型, , , 
+    .成员 e_cp, 短整数型, , , 
+    .成员 e_crlc, 短整数型, , , 
+    .成员 e_cparhdr, 短整数型, , , 
+    .成员 e_minalloc, 短整数型, , , 
+    .成员 e_maxalloc, 短整数型, , , 
+    .成员 e_ss, 短整数型, , , 
+    .成员 e_sp, 短整数型, , , 
+    .成员 e_csum, 短整数型, , , 
+    .成员 e_ip, 短整数型, , , 
+    .成员 e_cs, 短整数型, , , 
+    .成员 e_lfarlc, 短整数型, , , 
+    .成员 e_ovno, 短整数型, , , 
+    .成员 e_res, 短整数型, , "4", 
+    .成员 e_oemid, 短整数型, , , 
+    .成员 e_oeminfo, 短整数型, , , 
+    .成员 e_res2, 短整数型, , "10", 
+    .成员 e_lfanew, 整数型, , , 
+
+数据类型 IMAGE_NT_HEADERS, , 
+    .成员 Signature, 整数型, , , 
+    .成员 FileHeader, IMAGE_FILE_HEADER, , , 
+    .成员 OptionalHeader, IMAGE_OPTIONAL_HEADER, , , 
+
+数据类型 IMAGE_FILE_HEADER, , 
+    .成员 Machine, 短整数型, , , 
+    .成员 NumberOfSections, 短整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 PointerToSymbolTable, 整数型, , , 
+    .成员 NumberOfSymbols, 整数型, , , 
+    .成员 SizeOfOptionalHeader, 短整数型, , , 
+    .成员 Characteristics, 短整数型, , , 
+
+数据类型 IMAGE_OPTIONAL_HEADER, , 
+    .成员 Magic, 短整数型, , , 
+    .成员 MajorLinkerVersion, 字节型, , , 
+    .成员 MinorLinkerVersion, 字节型, , , 
+    .成员 SizeOfCode, 整数型, , , 
+    .成员 SizeOfInitializedData, 整数型, , , 
+    .成员 SizeOfUninitializedData, 整数型, , , 
+    .成员 AddressOfEntryPoint, 整数型, , , 
+    .成员 BaseOfCode, 整数型, , , 
+    .成员 BaseOfData, 整数型, , , 
+    .成员 ImageBase, 整数型, , , 
+    .成员 SectionAlignment, 整数型, , , 
+    .成员 FileAlignment, 整数型, , , 
+    .成员 MajorOperatingSystemVersion, 短整数型, , , 
+    .成员 MinorOperatingSystemVersion, 短整数型, , , 
+    .成员 MajorImageVersion, 短整数型, , , 
+    .成员 MinorImageVersion, 短整数型, , , 
+    .成员 MajorSubsystemVersion, 短整数型, , , 
+    .成员 MinorSubsystemVersion, 短整数型, , , 
+    .成员 Win32VersionValue, 整数型, , , 
+    .成员 SizeOfImage, 整数型, , , 
+    .成员 SizeOfHeaders, 整数型, , , 
+    .成员 CheckSum, 整数型, , , 
+    .成员 Subsystem, 短整数型, , , 
+    .成员 DllCharacteristics, 短整数型, , , 
+    .成员 SizeOfStackReserve, 整数型, , , 
+    .成员 SizeOfStackCommit, 整数型, , , 
+    .成员 SizeOfHeapReserve, 整数型, , , 
+    .成员 SizeOfHeapCommit, 整数型, , , 
+    .成员 LoaderFlags, 整数型, , , 
+    .成员 NumberOfRvaAndSizes, 整数型, , , 
+    .成员 DataDirectory, IMAGE_DATA_DIRECTORY, , "16", 
+
+数据类型 IMAGE_DATA_DIRECTORY, , 
+    .成员 VirtualAddress, 整数型, , , 
+    .成员 Size, 整数型, , , 
+
+数据类型 IMAGE_SECTION_HEADER, , 
+    .成员 Name, 字节型, , "8", 
+    .成员 Misc, 整数型, , , 
+    .成员 VirtualAddress, 整数型, , , 
+    .成员 SizeOfRawData, 整数型, , , 
+    .成员 PointerToRawData, 整数型, , , 
+    .成员 PointerToRelocations, 整数型, , , 
+    .成员 PointerToLinenumbers, 整数型, , , 
+    .成员 NumberOfRelocations, 短整数型, , , 
+    .成员 NumberOfLinenumbers, 短整数型, , , 
+    .成员 Characteristics, 整数型, , , 
+
+数据类型 IMAGE_BASE_RELOCATION, , 
+    .成员 VirtualAddress, 整数型, , , 
+    .成员 SizeOfBlock, 整数型, , , 
+
+数据类型 IMAGE_IMPORT_DESCRIPTOR, , 
+    .成员 OriginalFirstThunk, 整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 ForwarderChain, 整数型, , , 
+    .成员 Name, 整数型, , , 
+    .成员 FirstThunk, 整数型, , , 
+
+数据类型 IMAGE_IMPORT_BY_NAME, , 
+    .成员 Hint, 短整数型, , , 
+    .成员 Name, 整数型, , , 
+
+数据类型 IMAGE_EXPORT_DIRECTORY, , 
+    .成员 Characteristics, 整数型, , , 
+    .成员 TimeDateStamp, 整数型, , , 
+    .成员 MajorVersion, 短整数型, , , 
+    .成员 MinorVersion, 短整数型, , , 
+    .成员 Name, 整数型, , , 
+    .成员 Base, 整数型, , , 
+    .成员 NumberOfFunctions, 整数型, , , 
+    .成员 NumberOfNames, 整数型, , , 
+    .成员 AddressOfFunctions, 整数型, , , 
+    .成员 AddressOfNames, 整数型, , , 
+    .成员 AddressOfNameOrdinals, 整数型, , , 
+
+
+.DLL命令 lstrcpyn, 整数型, "", "lstrcpynA", , 
+    .参数 lpString1, 字节集, , 
+    .参数 lpString2, 整数型, , 
+    .参数 iMaxLength, 整数型, , 
+
+.DLL命令 VirtualAlloc, 整数型, "", "", , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+    .参数 flProtect, 整数型, , 
+
+.DLL命令 VirtualFree, 逻辑型, "", "", , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 dwFreeType, 整数型, , 
+
+.DLL命令 VirtualProtect, 逻辑型, "", "", , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flNewProtect, 整数型, , 
+    .参数 lpflOldProtect, 整数型, 传址, 
+
+.DLL命令 GetProcAddress, 整数型, "", "", , 
+    .参数 hModule, 整数型, , 
+    .参数 lpProcName, 整数型, , 
+
+.DLL命令 LoadLibrary, 整数型, "", "LoadLibraryA", , 
+    .参数 lpLibFileName, 整数型, , 
+
+.DLL命令 GetModuleHandle, 整数型, "", "GetModuleHandleA", , 
+    .参数 lpModuleName, 整数型, , 
+
+.DLL命令 RtlMoveMemory, 空白型, "", "", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_整数_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_整数_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 整数型, 传址, 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_字节集_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_字节集_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 字节集, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_数组_整数_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, 数组, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_数组_整数_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 整数型, 数组, 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_短整_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 短整数型, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_短整_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 短整数型, 传址, 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_DOS_HEADER_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_DOS_HEADER, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_DOS_HEADER_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, IMAGE_DOS_HEADER, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_NT_HEADERS_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_NT_HEADERS, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_NT_HEADERS_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, IMAGE_NT_HEADERS, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_SECTION_HEADER_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_SECTION_HEADER, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_SECTION_HEADER_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, IMAGE_SECTION_HEADER, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_BASE_RELOCATION_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_BASE_RELOCATION, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_BASE_RELOCATION_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, IMAGE_BASE_RELOCATION, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_IMPORT_DESCRIPTOR_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_IMPORT_DESCRIPTOR, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_IMPORT_DESCRIPTOR_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, IMAGE_IMPORT_DESCRIPTOR, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_IMPORT_BY_NAME_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_IMPORT_BY_NAME, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_IMPORT_BY_NAME_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, IMAGE_IMPORT_BY_NAME, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_EXPORT_DIRECTORY_1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, IMAGE_EXPORT_DIRECTORY, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_IMAGE_EXPORT_DIRECTORY_2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, IMAGE_EXPORT_DIRECTORY, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 lstrcpyn_字节集, 整数型, "", "lstrcpynA", , 
+    .参数 lpString1, 字节集, , 
+    .参数 lpString2, 字节集, , 
+    .参数 iMaxLength, 整数型, , 
+
+.DLL命令 lstrcpyn_整数, 整数型, "", "lstrcpynA", , 
+    .参数 lpString1, 整数型, 传址, 
+    .参数 lpString2, 整数型, 传址, 
+    .参数 iMaxLength, 整数型, , 
+
+.类模块 PeLoader, , , 
+
+.程序集变量 hLibModule, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+释放 ()
+
+.子程序 加载, 逻辑型, , 成功返回真,失败返回假.
+.参数 PE文件, 字节集, , 
+
+.如果真 (不等于 (hLibModule, 0))
+    释放 ()
+.如果真结束
+
+赋值 (hLibModule, _LoadLibrary (PE文件))
+
+返回 (不等于 (hLibModule, 0))
+
+.子程序 释放, 逻辑型, , 释放已加载的PE文件
+.如果真 (不等于 (hLibModule, 0))
+    赋值 (hLibModule, 选择 (_FreeLibrary (hLibModule), 0, hLibModule))
+.如果真结束
+返回 (等于 (hLibModule, 0))
+
+.子程序 取函数, 整数型, , 返回指定函数指针
+.参数 函数名, 文本型, , 
+
+返回 (_GetProcAddress (hLibModule, 函数名))
+
+.子程序 取入口, 整数型, , 返回入口点
+.局部变量 pDosHeader, IMAGE_DOS_HEADER, , , 
+.局部变量 pNTHeader, IMAGE_NT_HEADERS, , , 
+
+.如果 (等于 (hLibModule, 0))
+    返回 (0)
+.否则
+    RtlMoveMemory_IMAGE_DOS_HEADER_1 (pDosHeader, hLibModule, 64)
+    RtlMoveMemory_IMAGE_NT_HEADERS_1 (pNTHeader, 相加 (hLibModule, pDosHeader.e_lfanew), 248)
+    返回 (相加 (hLibModule, pNTHeader.OptionalHeader.AddressOfEntryPoint))
+.如果结束
+
+
+.子程序 取基址, 整数型, , 返回基址
+返回 (hLibModule)
+
+.程序集 核心程序集, , , 
+
+.子程序 VirAlloc, 整数型, , 
+.参数 lpAddress, 整数型, , 
+.参数 dwSize, 整数型, , 
+
+.局部变量 ret, 整数型, , , 
+
+赋值 (ret, VirtualAlloc (lpAddress, dwSize, 位或 (#MEM_COMMIT, #MEM_RESERVE), #PAGE_EXECUTE_READWRITE))
+.如果 (等于 (ret, 0))
+    返回 (VirtualAlloc (0, dwSize, 位或 (#MEM_COMMIT, #MEM_RESERVE), #PAGE_EXECUTE_READWRITE))
+.否则
+    返回 (ret)
+.如果结束
+
+
+.子程序 VirFree, 逻辑型, , 
+.参数 lpAddress, 整数型, , 
+
+返回 (VirtualFree (lpAddress, 0, #MEM_RELEASE))
+
+.子程序 Call, 整数型, , 
+.参数 函数指针, 整数型, , 
+.参数 参数一, 整数型, 可空, 
+.参数 参数二, 整数型, 可空, 
+.参数 参数三, 整数型, 可空, 
+.参数 参数四, 整数型, 可空, 
+.参数 参数五, 整数型, 可空, 
+.参数 参数六, 整数型, 可空, 
+.参数 参数七, 整数型, 可空, 
+.参数 参数八, 整数型, 可空, 
+.参数 参数九, 整数型, 可空, 
+.参数 参数十, 整数型, 可空, 
+
+返回 (_Call (函数指针, 参数一, 参数二, 参数三, 参数四, 参数五, 参数六, 参数七, 参数八, 参数九, 参数十))
+
+.子程序 _Call, 整数型, , 
+.参数 函数指针, 整数型, , 
+.参数 参数一, 整数型, , 
+.参数 参数二, 整数型, , 
+.参数 参数三, 整数型, , 
+.参数 参数四, 整数型, , 
+.参数 参数五, 整数型, , 
+.参数 参数六, 整数型, , 
+.参数 参数七, 整数型, , 
+.参数 参数八, 整数型, , 
+.参数 参数九, 整数型, , 
+.参数 参数十, 整数型, , 
+
+置入代码 ({ 201, 88, 135, 4, 36, 255, 224 })
+返回 (0)
+
+.子程序 _LoadLibrary, 整数型, , 
+.参数 lpLibData, 字节集, , 
+
+.局部变量 lpFileData, 整数型, , , 
+.局部变量 DataLength, 整数型, , , 
+.局部变量 DosHeader, IMAGE_DOS_HEADER, , , 
+.局部变量 NTHeader, IMAGE_NT_HEADERS, 静态, , 
+.局部变量 SectionHeader, IMAGE_SECTION_HEADER, 静态, "0", 
+.局部变量 hLibModule, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 VirtualSize, 整数型, , , 
+.局部变量 SectionSize, 整数型, , , 
+
+赋值 (lpFileData, lstrcpyn (lpLibData, 0, 0))
+赋值 (DataLength, 取字节集长度 (lpLibData))
+
+.如果真 (小于 (DataLength, 64))
+    返回 (0)
+.如果真结束
+
+RtlMoveMemory_IMAGE_DOS_HEADER_1 (DosHeader, lpFileData, 64)
+.如果真 (不等于 (DosHeader.e_magic, #IMAGE_DOS_SIGNATURE))
+    返回 (0)
+.如果真结束
+
+.如果真 (小于 (DataLength, 相加 (DosHeader.e_lfanew, 248)))
+    返回 (0)
+.如果真结束
+
+RtlMoveMemory_IMAGE_NT_HEADERS_1 (NTHeader, 相加 (lpFileData, DosHeader.e_lfanew), 248)
+.如果真 (不等于 (NTHeader.Signature, #IMAGE_NT_SIGNATURE))
+    返回 (0)
+.如果真结束
+
+.如果真 (等于 (位与 (NTHeader.FileHeader.Characteristics, #IMAGE_FILE_EXECUTABLE_IMAGE), 0))
+    返回 (0)
+.如果真结束
+
+.如果真 (小于 (DataLength, 相加 (DosHeader.e_lfanew, 248, 相乘 (NTHeader.FileHeader.NumberOfSections, 40))))
+    返回 (0)
+.如果真结束
+
+重定义数组 (SectionHeader, 假, NTHeader.FileHeader.NumberOfSections)
+.变量循环首 (0, 相减 (NTHeader.FileHeader.NumberOfSections, 1), 1, i)
+    
+    RtlMoveMemory_IMAGE_SECTION_HEADER_1 (SectionHeader [相加 (i, 1)], 相加 (lpFileData, DosHeader.e_lfanew, 248, 相乘 (i, 40)), 40)
+    赋值 (VirtualSize, 位与 (SectionHeader [相加 (i, 1)].Misc, 65535))
+    赋值 (SectionSize, GetAlignedSize (相加 (SectionHeader [相加 (i, 1)].VirtualAddress, 选择 (大于 (SectionHeader [相加 (i, 1)].SizeOfRawData, VirtualSize), SectionHeader [相加 (i, 1)].SizeOfRawData, VirtualSize)), NTHeader.OptionalHeader.SectionAlignment))
+    赋值 (NTHeader.OptionalHeader.SizeOfImage, 选择 (大于 (SectionSize, NTHeader.OptionalHeader.SizeOfImage), SectionSize, NTHeader.OptionalHeader.SizeOfImage))
+    
+.变量循环尾 ()
+
+.如果真 (等于 (NTHeader.OptionalHeader.SizeOfImage, 0))
+    返回 (0)
+.如果真结束
+
+赋值 (hLibModule, VirAlloc (NTHeader.OptionalHeader.ImageBase, NTHeader.OptionalHeader.SizeOfImage))
+.如果真 (等于 (hLibModule, 0))
+    返回 (0)
+.如果真结束
+
+RtlMoveMemory (hLibModule, lpFileData, 相加 (DosHeader.e_lfanew, 248, 相乘 (NTHeader.FileHeader.NumberOfSections, 40)))
+.计次循环首 (NTHeader.FileHeader.NumberOfSections, i)
+    
+    .如果真 (并且 (大于 (SectionHeader [i], SizeOfRawData, 0), 不等于 (SectionHeader [i], VirtualAddress, 0)))
+        RtlMoveMemory (相加 (hLibModule, SectionHeader [i], VirtualAddress), 相加 (lpFileData, SectionHeader [i], PointerToRawData), SectionHeader [i], SizeOfRawData)
+    .如果真结束
+    
+.计次循环尾 ()
+
+.如果真 (大于 (NTHeader.OptionalHeader.DataDirectory [6].Size, 0))
+    DoRelocation (hLibModule, NTHeader)
+.如果真结束
+
+.如果真 (大于 (NTHeader.OptionalHeader.DataDirectory [2].VirtualAddress, 0))
+    .如果真 (取反 (FillRavAddress (hLibModule, NTHeader)))
+        VirFree (hLibModule)
+        返回 (0)
+    .如果真结束
+    
+.如果真结束
+
+.如果真 (不等于 (位与 (NTHeader.FileHeader.Characteristics, #IMAGE_FILE_DLL), 0))
+    .如果真 (等于 (Call (相加 (hLibModule, NTHeader.OptionalHeader.AddressOfEntryPoint), 0, #DLL_PROCESS_ATTACH, 0), 0))
+        Call (相加 (hLibModule, NTHeader.OptionalHeader.AddressOfEntryPoint), 0, #DLL_PROCESS_DETACH, 0)
+        VirFree (hLibModule)
+        返回 (0)
+    .如果真结束
+    
+.如果真结束
+
+返回 (hLibModule)
+
+.子程序 _FreeLibrary, 逻辑型, , 
+.参数 hLibModule, 整数型, , 
+
+.局部变量 DosHeader, IMAGE_DOS_HEADER, , , 
+.局部变量 NTHeader, IMAGE_NT_HEADERS, , , 
+
+
+RtlMoveMemory_IMAGE_DOS_HEADER_1 (DosHeader, hLibModule, 64)
+.如果真 (等于 (DosHeader.e_magic, #IMAGE_DOS_SIGNATURE))
+    RtlMoveMemory_IMAGE_NT_HEADERS_1 (NTHeader, 相加 (hLibModule, DosHeader.e_lfanew), 248)
+    .如果真 (等于 (NTHeader.Signature, #IMAGE_NT_SIGNATURE))
+        .如果真 (不等于 (位与 (NTHeader.FileHeader.Characteristics, #IMAGE_FILE_DLL), 0))
+            Call (相加 (hLibModule, NTHeader.OptionalHeader.AddressOfEntryPoint), 0, #DLL_PROCESS_DETACH, 0)
+        .如果真结束
+        
+        返回 (VirFree (hLibModule))
+    .如果真结束
+    
+.如果真结束
+
+返回 (假)
+
+.子程序 _GetProcAddress, 整数型, , 
+.参数 hLibModule, 整数型, , 
+.参数 lpProcName, 文本型, , 
+
+.局部变量 DosHeader, IMAGE_DOS_HEADER, , , 
+.局部变量 NTHeader, IMAGE_NT_HEADERS, , , 
+.局部变量 OffsetStart, 整数型, , , 
+.局部变量 ExportDirectory, IMAGE_EXPORT_DIRECTORY, , , 
+.局部变量 AddressOfNames, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 Offset, 整数型, , , 
+.局部变量 Str, 文本型, , , 
+.局部变量 Address, 整数型, , , 
+
+
+RtlMoveMemory_IMAGE_DOS_HEADER_1 (DosHeader, hLibModule, 64)
+.如果真 (等于 (DosHeader.e_magic, #IMAGE_DOS_SIGNATURE))
+    
+    RtlMoveMemory_IMAGE_NT_HEADERS_1 (NTHeader, 相加 (hLibModule, DosHeader.e_lfanew), 248)
+    .如果真 (等于 (NTHeader.Signature, #IMAGE_NT_SIGNATURE))
+        
+        .如果真 (不等于 (NTHeader.OptionalHeader.DataDirectory [1].Size, 0))
+            
+            赋值 (OffsetStart, NTHeader.OptionalHeader.DataDirectory [1].VirtualAddress)
+            
+            RtlMoveMemory_IMAGE_EXPORT_DIRECTORY_1 (ExportDirectory, 相加 (hLibModule, OffsetStart), 40)
+            RtlMoveMemory_整数_1 (AddressOfNames, 相加 (hLibModule, ExportDirectory.AddressOfNames), 4)
+            
+            赋值 (AddressOfNames, 相加 (hLibModule, AddressOfNames))
+            
+            .计次循环首 (ExportDirectory.NumberOfNames, i)
+                
+                赋值 (Str, 指针到文本 (相加 (AddressOfNames, Offset)))
+                
+                .如果真 (等于 (文本比较 (lpProcName, Str, 真), 0))
+                    RtlMoveMemory_整数_1 (Address, 相加 (hLibModule, ExportDirectory.AddressOfFunctions, 相乘 (相减 (i, 1), 4)), 4)
+                    赋值 (Address, 相加 (hLibModule, Address))
+                    跳出循环 ()
+                .如果真结束
+                赋值 (Offset, 相加 (Offset, 取文本长度 (Str), 1))
+            .计次循环尾 ()
+        .如果真结束
+        
+    .如果真结束
+    
+    
+.如果真结束
+
+
+返回 (Address)
+
+.子程序 GetAlignedSize, 整数型, , 
+.参数 Origin, 整数型, , 
+.参数 Alignment, 整数型, , 
+
+返回 (相乘 (取整 (相除 (相减 (相加 (Origin, Alignment), 1), Alignment)), Alignment))
+
+.子程序 DoRelocation, 空白型, , 
+.参数 NewBase, 整数型, , 
+.参数 NTHeader, IMAGE_NT_HEADERS, , 
+
+.局部变量 BaseRelocation, IMAGE_BASE_RELOCATION, , , 
+.局部变量 Delta, 整数型, , , 
+.局部变量 LocData, 短整数型, , , 
+.局部变量 Offset, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 Address, 整数型, , , 
+
+
+赋值 (Delta, 相减 (NewBase, NTHeader.OptionalHeader.ImageBase))
+
+赋值 (Offset, NTHeader.OptionalHeader.DataDirectory [6].VirtualAddress)
+RtlMoveMemory_IMAGE_BASE_RELOCATION_1 (BaseRelocation, 相加 (NewBase, Offset), 8)
+
+.判断循环首 (不等于 (BaseRelocation.VirtualAddress, 0))
+    
+    .计次循环首 (相除 (相减 (BaseRelocation.SizeOfBlock, 8), 2), i)
+        RtlMoveMemory_短整_1 (LocData, 相加 (NewBase, Offset, 8, 相乘 (相减 (i, 1), 2)), 2)
+        .如果真 (等于 (位与 (LocData, 61440), 12288))
+            赋值 (Address, 相加 (NewBase, BaseRelocation.VirtualAddress, 位与 (LocData, 4095)))
+            RtlMoveMemory_整数_2 (Address, 相加 (取字节集数据 (指针到字节集 (Address, 4), #整数型, ), Delta), 4)
+        .如果真结束
+        
+    .计次循环尾 ()
+    赋值 (Offset, 相加 (Offset, BaseRelocation.SizeOfBlock))
+    RtlMoveMemory_IMAGE_BASE_RELOCATION_1 (BaseRelocation, 相加 (NewBase, Offset), 8)
+.判断循环尾 ()
+
+
+.子程序 FillRavAddress, 逻辑型, , 
+.参数 ImageBase, 整数型, , 
+.参数 NTHeader, IMAGE_NT_HEADERS, , 
+
+.局部变量 Offset, 空白型, , , 
+.局部变量 ImportDescriptor, IMAGE_IMPORT_DESCRIPTOR, , , 
+.局部变量 RealIAT, 整数型, , , 
+.局部变量 hDll, 整数型, , , 
+.局部变量 ByName, 整数型, , , 
+.局部变量 Function, 整数型, , , 
+
+
+赋值 (Offset, NTHeader.OptionalHeader.DataDirectory [2].VirtualAddress)
+RtlMoveMemory_IMAGE_IMPORT_DESCRIPTOR_1 (ImportDescriptor, 相加 (ImageBase, Offset), 20)
+
+.判断循环首 (不等于 (ImportDescriptor.FirstThunk, 0))
+    
+    赋值 (hDll, GetModuleHandle (相加 (ImageBase, ImportDescriptor.Name)))
+    
+    .如果真 (等于 (hDll, 0))
+        赋值 (hDll, LoadLibrary (相加 (ImageBase, ImportDescriptor.Name)))
+        .如果真 (等于 (hDll, 0))
+            返回 (假)
+        .如果真结束
+        
+    .如果真结束
+    
+    RtlMoveMemory_整数_1 (RealIAT, 相加 (ImageBase, ImportDescriptor.FirstThunk), 4)
+    
+    .判断循环首 (不等于 (RealIAT, 0))
+        .如果 (等于 (位与 (RealIAT, #IMAGE_ORDINAL_FLAG32), 0))
+            赋值 (ByName, 相加 (ImageBase, RealIAT, 2))
+        .否则
+            赋值 (ByName, 位与 (RealIAT, 65535))
+        .如果结束
+        
+        赋值 (Function, GetProcAddress (hDll, ByName))
+        .如果真 (等于 (Function, 0))
+            返回 (假)
+        .如果真结束
+        
+        RtlMoveMemory_整数_2 (相加 (ImageBase, ImportDescriptor.FirstThunk), Function, 4)
+        
+        赋值 (ImportDescriptor.FirstThunk, 相加 (ImportDescriptor.FirstThunk, 4))
+        RtlMoveMemory_整数_1 (RealIAT, 相加 (ImageBase, ImportDescriptor.FirstThunk), 4)
+    .判断循环尾 ()
+    
+    赋值 (Offset, 相加 (Offset, 20))
+    RtlMoveMemory_IMAGE_IMPORT_DESCRIPTOR_1 (ImportDescriptor, 相加 (ImageBase, Offset), 20)
+.判断循环尾 ()
+
+返回 (真)
+
+.子程序 压缩数据_, 字节集, , 返回 压缩后的数据
+.参数 数据, 字节集, , 欲压缩的数据
+
+.局部变量 pe, 未知类型0x490109B9, , , 
+.局部变量 sourceLen, 整数型, , , 
+.局部变量 dest, 字节集, , , 
+.局部变量 destLen, 整数型, , , 
+.局部变量 compress, 整数型, , , 
+.局部变量 ret, 逻辑型, , , 
+
+.如果真 (等于 (取字节集长度 (数据), 0))
+    返回 ({  })
+.如果真结束
+.如果真 ()
+
+.子程序 解压数据_, 字节集, , 返回 解压缩后的数据
+.参数 数据, 字节集, , 由本模块压缩过的数据.
+
+.局部变量 pe, 未知类型0x490109B9, , , 
+.局部变量 source, 字节集, , , 
+.局部变量 sourceLen, 整数型, , , 
+.局部变量 dest, 字节集, , , 
+.局部变量 destLen, 整数型, , , 
+.局部变量 uncompress, 整数型, , , 
+.局部变量 ret, 逻辑型, , , 
+
+.如果真 (小于或等于 (取字节集长度 (数据), 8))
+    返回 ({  })
+.如果真结束
+.如果真 (或者 (不等于 (数据 [1], 71), 不等于 (数据 [2], 122), 不等于 (数据 [3], 0)))
+    返回 ({  })
+.如果真结束
+.如果真 ()
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 
+返回 (0)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

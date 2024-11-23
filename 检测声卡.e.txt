@@ -1,0 +1,191 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 448
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 WAVE_FORMAT_1M08, "1", , 11.025 kHz, mono, 8-bit
+.常量 WAVE_FORMAT_1M16, "4", , 11.025 kHz, mono, 16-bit
+.常量 WAVE_FORMAT_1S08, "2", , 11.025 kHz, stereo, 8-bit
+.常量 WAVE_FORMAT_1S16, "8", , 11.025 kHz, stereo, 16-bit
+.常量 WAVE_FORMAT_2M08, "16", , 22.05 kHz, mono, 8-bit
+.常量 WAVE_FORMAT_2M16, "64", , 22.05 kHz, mono, 16-bit
+.常量 WAVE_FORMAT_2S08, "32", , 22.05 kHz, stereo, 8-bit
+.常量 WAVE_FORMAT_2S16, "128", , 22.05 kHz, stereo, 16-bit
+.常量 WAVE_FORMAT_4M08, "256", , 44.1 kHz, mono, 8-bit
+.常量 WAVE_FORMAT_4M16, "1024", , 44.1 kHz, mono, 16-bit
+.常量 WAVE_FORMAT_4S08, "512", , 44.1 kHz, stereo, 8-bit
+.常量 WAVE_FORMAT_4S16, "2048", , 44.1 kHz, stereo, 16-bit
+.常量 , , , 
+.常量 WAVECAPS_PITCH, "1", , Supports pitch control
+.常量 WAVECAPS_PLAYBACKRATE, "2", , Supports playback rate control
+.常量 WAVECAPS_VOLUME, "4", , Supports volume control
+.常量 WAVECAPS_LRVOLUME, "8", , Supports separate left and right volume control
+.常量 WAVECAPS_SYNC, "16", , The driver is synchronous and will block while playing a buffer
+.常量 WAVECAPS_SAMPLEACCURATE, "32", , Returns sample-accurate position information
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 7 系统核心支持库
+
+
+
+
+数据类型 WAVEOUTCAPS, , 
+    .成员 wMid, 短整数型, , , 
+    .成员 wPid, 短整数型, , , 
+    .成员 vDriverVersion, 整数型, , , 
+    .成员 szPname, 字节型, , "32", 
+    .成员 dwFormats, 整数型, , , 
+    .成员 wChannels, 字节型, , "2", 
+    .成员 wReserved1, 短整数型, , , 
+    .成员 dwSupport, 整数型, , , 
+
+
+.DLL命令 waveOutGetNumDevs, 整数型, "winmm.dll", "waveOutGetNumDevs", , 
+
+.DLL命令 waveOutGetDevCaps, 整数型, "winmm.dll", "waveOutGetDevCapsA", , 
+    .参数 uDeviceID, 整数型, , 自动设备编号，第一个设备号为0
+    .参数 lpCaps, WAVEOUTCAPS, , 
+    .参数 uSize, 整数型, , lpCaps长度
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 s, WAVEOUTCAPS, , , 
+.子程序 _按钮1_被单击, 空白型, , 
+.如果 (大于 (waveOutGetNumDevs (), 0))
+    赋值 (., “有声卡”)
+.否则
+    赋值 (., “无声卡”)
+.如果结束
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+.局部变量 A, 整数型, , , 
+.局部变量 B, 整数型, , , 
+.局部变量 C, 文本型, , , 
+
+waveOutGetDevCaps (0, s, 52)
+赋值 (., 相加 (“产品名称：”, 取字节集数据 (到字节集 (s.szPname), #文本型)))
+赋值 (., 相加 (“产品ID：”, 到文本 (s.wPid)))
+赋值 (., 相加 (“驱动程序ID：”, 到文本 (s.wMid)))
+赋值 (., 相加 (“驱动程序版本：”, 到文本 (整除 (s.vDriverVersion, 256)), “.”, 到文本 (求余数 (s.vDriverVersion, 256))))
+赋值 (., 相加 (“输出通道：”, 到文本 (取字节集数据 (到字节集 (s.wChannels), #整数型))))
+赋值 (., “支持采样率列表：”)
+.计次循环首 (12, A)
+    赋值 (B, 求次方 (2, 相减 (A, 1)))
+    输出调试文本 (到文本 (B))
+    .如果真 (不等于 (位与 (s.dwFormats, B), 0))
+        赋值 (C, 检测音频支持格式 (B))
+        .如果真 (不等于 (C, “”))
+            赋值 (., 相加 (., #换行符, “---”, C))
+        .如果真结束
+        
+    .如果真结束
+    
+.计次循环尾 ()
+
+赋值 (., “扩展输出功能列表：”)
+.计次循环首 (6, A)
+    赋值 (B, 取整 (求次方 (2, 相减 (A, 1))))
+    .如果真 (不等于 (位与 (s.dwSupport, B), 0))
+        赋值 (C, 检测扩展输出功能 (B))
+        .如果真 (不等于 (C, “”))
+            赋值 (., 相加 (., #换行符, “---”, C))
+        .如果真结束
+        
+    .如果真结束
+    
+.计次循环尾 ()
+
+.子程序 检测音频支持格式, 文本型, , 
+.参数 值, 整数型, , 
+
+.判断开始 (等于 (值, #WAVE_FORMAT_1M08))
+    返回 (“11.025khz, 单声道, 8bit, 11kb/Ps”)
+    
+.判断 (等于 (值, #WAVE_FORMAT_1M16))
+    返回 (“11.025khz, 单声道, 16bit, 22kb/Ps”)
+    
+.判断 (等于 (值, #WAVE_FORMAT_1S08))
+    返回 (“11.025khz, 立体声, 8bit, 22kb/Ps”)
+    
+.判断 (等于 (值, #WAVE_FORMAT_1S16))
+    返回 (“11.025khz,立体声, 16bit, 43kb/Ps”)
+    
+.判断 (等于 (值, #WAVE_FORMAT_2M08))
+    返回 (“22.05khz, 单声道, 8bit, 22kb/Ps”)
+    
+.判断 (等于 (值, #WAVE_FORMAT_2M16))
+    返回 (“22.05khz. 单声道,16bit, 43kb/Ps”)
+    
+.判断 (等于 (值, #WAVE_FORMAT_2S08))
+    返回 (“22.05khz, 立体声, 8bit, 43kb/Ps”)
+    
+.判断 (等于 (值, #WAVE_FORMAT_2S16))
+    返回 (“22.05khz, 立体声, 16bit, 86kb/Ps”)
+    
+.判断 (等于 (值, #WAVE_FORMAT_4M08))
+    返回 (“44.1khz, 单声道, 8bit, 43kb/Ps”)
+    
+.判断 (等于 (值, #WAVE_FORMAT_4M16))
+    返回 (“44.lkhz, 单声道, 16bit, 86KB/Ps”)
+    
+.判断 (等于 (值, #WAVE_FORMAT_4S08))
+    返回 (“44.lkhz, 立体声, 8bit, 86kb/Ps”)
+    
+.判断 (等于 (值, #WAVE_FORMAT_4S16))
+    返回 (“44.lkhz. 立体声, 16bit, 172kb/Ps”)
+.默认
+    
+.判断结束
+返回 (“”)
+
+.子程序 检测扩展输出功能, 文本型, , 
+.参数 值, 整数型, , 
+
+.判断开始 (等于 (值, #WAVECAPS_PITCH))
+    返回 (“音调控制”)
+    
+.判断 (等于 (值, #WAVECAPS_PLAYBACKRATE))
+    返回 (“回放率控制”)
+    
+.判断 (等于 (值, #WAVECAPS_VOLUME))
+    返回 (“音量控制”)
+    
+.判断 (等于 (值, #WAVECAPS_LRVOLUME))
+    返回 (“左右声道平衡”)
+    
+.判断 (等于 (值, #WAVECAPS_SYNC))
+    返回 (“同步操作”)
+    
+.判断 (等于 (值, #WAVECAPS_SAMPLEACCURATE))
+    返回 (“精确采样信息返回”)
+.默认
+    
+.判断结束
+返回 (“”)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

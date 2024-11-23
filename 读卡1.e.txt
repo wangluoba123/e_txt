@@ -1,0 +1,395 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 452
+    高度 = 366
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+.全局变量 hdPort, 整数型, , , 
+.全局变量 hPort, 整数型, , , 
+.全局变量 port, 整数型, , , 
+.全局变量 baudrate, 整数型, , , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 flag, 整数型, , , 
+.程序集变量 cardTimes, 整数型, , , 
+.程序集变量 cardGroup, 整数型, , , 
+.程序集变量 Mark, 字节集, , , 
+.子程序 _按钮1_被单击, 空白型, , 
+Dim strDateTime As String * 30
+子程序8 () ' RefreshClock
+.如果 OpenPort(port, baudrate, ClockNo) Then
+     ' Text5.Text = "[" + CStr(port) + "  号端口 " + CStr(ClockNo) + "  号机 成功打开！"
+    .如果 ReadClockTimeString(hPort, strDateTime) Then
+        Text5.Text = "20" + strDateTime
+    .否则
+        子程序4 () ' ClosePort
+        Text5.Text = "不能联接设备"
+    .如果结束
+    
+.否则
+    Text5.Text = "不能读出设备的时间"
+.如果结束
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+子程序8 () ' RefreshClock
+.如果真 OpenPort(port, baudrate, ClockNo) Then
+    
+.如果真结束
+'AddLog "[" + CStr(port) + "  号端口 " + CStr(ClockNo) + "  号机 成功打开！"
+If SetClockTime(hPort, Now) Then
+Text5.Text = "设置时间成功"
+Else
+Text5.Text = "设置时间失败"
+End If
+ClosePort
+Else
+Text5.Text = "不能联接设备"
+End If
+
+
+.子程序 _按钮3_被单击, 空白型, , 
+RefreshClock
+If OpenPort(port, baudrate, ClockNo) Then
+'AddLog "[" + CStr(port) + "  号端口 " + CStr(ClockNo) + "  号机 成功打开！"
+If SetClockID(hPort, CInt(Text4.Text)) Then
+Text5.Text = "机号修改成功"
+Else
+Text5.Text = "机号修改失败"
+End If
+ClosePort
+Else
+Text5.Text = "不能联接设备"
+End If
+
+
+.子程序 _按钮4_被单击, 空白型, , 
+Dim SerialNo As Long
+RefreshClock
+If OpenPort(port, baudrate, ClockNo) Then
+If ReadICCardSerialNo(hPort, SerialNo, True) Then
+MsgBox (CStr(SerialNo))
+Else
+MsgBox ("不能读卡的序列号")
+End If
+ClosePort
+Else
+MsgBox ("不能联接设备")
+End If
+
+
+.子程序 _按钮5_被单击, 空白型, , 
+Dim flag As Boolean
+Dim K As Long
+Dim nLine As Long
+Dim DataBuff As String * 1100
+Dim strLine As String
+Dim Count As Long
+
+Count = 0
+flag = True
+RefreshClock
+If OpenPort(port, baudrate, ClockNo) Then
+'Text5.Text = "[" + CStr(port) + "  号端口" + CStr(ClockNo) + "  号机 成功打开！"
+Do While flag = True
+nLine = BatchReadRecord(hPort, DataBuff, 1100)
+If nLine = 0 Or nLine = -1 Then flag = Flase
+If nLine > 0 Then
+Open (filename) For Append As #1
+For K = 0 To nLine - 1
+strLine = CStr(ClockNo) + vbTab + Format(Mid(DataBuff, K * 66 + 1, 10), "0000000000") + vbTab + Mid(DataBuff, K * 66 + 21, 14) + vbTab + Mid(DataBuff, K * 66 + 51, 1) + Mid(DataBuff, K * 66 + 52, 1)
+List1.AddItem strLine
+Print #1, strLine
+Count = Count + 1
+Next K
+Close #1
+End If
+Loop
+If Count > 0 Then
+Text5.Text = "下载记录总数" & Count
+Else
+Text5.Text = CStr(ClockNo) & " 号机内没有数据"
+End If
+ClosePort
+Else
+Text5.Text = CStr(ClockNo) + "号机联机失败"
+End If
+
+
+.子程序 _按钮6_被单击, 空白型, , 
+RefreshClock
+If OpenPort(port, baudrate, ClockNo) Then
+'AddLog "[" + CStr(port) + "  号端口 " + CStr(ClockNo) + "  号机 成功打开！"
+If ClearAllReadCard(hPort) Then
+Text5.Text = "[" + CStr(ClockNo) + "]机所有记录已被删除！"
+Else
+Text5.Text = "[" + CStr(ClockNo) + "]机删除记录失败。"
+End If
+ClosePort
+Else
+MsgBox ("不能联接设备")
+End If
+
+
+.子程序 _按钮7_被单击, 空白型, , 
+List1.Clear
+
+
+.子程序 _按钮8_被单击, 空白型, , 
+ShellExecute Me.hwnd, "open", filename, "", "", 5
+
+
+.子程序 _按钮9_被单击, 空白型, , 
+ ' 说明：889D的机型该功能不支持
+Dim CardNo As String
+Dim TimeStr As String
+Dim C As Long
+Dim F As Boolean
+List1.Clear
+RCount = 0
+RefreshClock
+If OpenPort(port, baudrate, ClockNo) Then
+Form2.Show
+AddLog "[" + CStr(port) + "]号端口[" + CStr(ClockNo) + "]号机 成功打开！"
+Open (filename) For Append As #1
+C = ReadAllRecord(hPort, 0, AddressOf DataProcess, 0)
+'Unload Form2
+If C = 0 Then
+AddLog "[" + CStr(ClockNo) + "]机内没有记录"
+ElseIf C > 0 Then
+AddLog "[" + CStr(ClockNo) + "]机总共读取 " & CStr(C) & " 条记录"
+If Check1.Value = 1 Then
+F = ClearAllReadCard(hPort)
+If F Then
+AddLog "[" + CStr(ClockNo) + "]机所有记录已被删除！"
+Else
+AddLog "[" + CStr(ClockNo) + "]机删除记录失败。"
+End If
+End If
+ElseIf (C = -1) Or (C = -2) Then
+AddLog "[" + CStr(ClockNo) + "]机串行通行错误"
+ElseIf C = -3 Then
+AddLog "[" + CStr(ClockNo) + "]机命令字异或校验错误"
+ElseIf C = -4 Then
+AddLog "[" + CStr(ClockNo) + "]机用户中止或接收未完成"
+Else
+AddLog "[" + CStr(ClockNo) + "]机资源分配错误"
+End If
+Close #1
+ClosePort
+'MsgBox CStr(GetRecentErrCode)
+Else
+AddLog CStr(ClockNo) + "号机联机失败"
+End If
+
+
+.子程序 _按钮10_被单击, 空白型, , 
+Unload Form1
+
+
+.子程序 _按钮11_被单击, 空白型, , 
+RefreshClock
+If OpenPort(port, baudrate, ClockNo) Then
+'AddLog "[" + CStr(port) + "  号端口 " + CStr(ClockNo) + "  号机 成功打开！"
+If SetAllowedCard(hPort, Text6.Text, "", "") Then
+Text5.Text = "下载白名单成功"
+Else
+Text5.Text = "下载白名单失败"
+End If
+ClosePort
+Else
+Text5.Text = "不能联接设备"
+End If
+
+
+.子程序 _按钮12_被单击, 空白型, , 
+RefreshClock
+If OpenPort(port, baudrate, ClockNo) Then
+'AddLog "[" + CStr(port) + "  号端口 " + CStr(ClockNo) + "  号机 成功打开！"
+If DeleteAllowedCard(hPort, Text6.Text) Then
+Text5.Text = "删除白名单成功"
+Else
+Text5.Text = "删除白名单失败"
+End If
+ClosePort
+Else
+Text5.Text = "不能联接设备"
+End If
+
+
+.子程序 _按钮13_被单击, 空白型, , 
+RefreshClock
+If OpenPort(port, baudrate, ClockNo) Then
+'AddLog "[" + CStr(port) + "  号端口 " + CStr(ClockNo) + "  号机 成功打开！"
+If SetBlackCard(hPort, Text7.Text) Then
+Text5.Text = "下载黑名单成功"
+Else
+Text5.Text = "下载黑名单失败"
+End If
+ClosePort
+Else
+Text5.Text = "不能联接设备"
+End If
+
+
+.子程序 _按钮14_被单击, 空白型, , 
+RefreshClock
+If OpenPort(port, baudrate, ClockNo) Then
+'AddLog "[" + CStr(port) + "  号端口 " + CStr(ClockNo) + "  号机 成功打开！"
+If DeleteBlackCard(hPort, Text7.Text) Then
+Text5.Text = "删除黑名单成功"
+Else
+Text5.Text = "删除黑名单失败"
+End If
+ClosePort
+Else
+Text5.Text = "不能联接设备"
+End If
+
+
+.子程序 _按钮15_被单击, 空白型, , 
+RefreshClock
+If OpenPort(port, baudrate, ClockNo) Then
+'AddLog "[" + CStr(port) + "  号端口 " + CStr(ClockNo) + "  号机 成功打开！"
+If DeleteAllAllowedCard(hPort) Then
+Text5.Text = "清除所有白名单成功"
+Else
+Text5.Text = "清除所有白名单失败"
+End If
+ClosePort
+Else
+Text5.Text = "不能联接设备"
+End If
+
+
+.子程序 _按钮16_被单击, 空白型, , 
+RefreshClock
+If OpenPort(port, baudrate, ClockNo) Then
+'AddLog "[" + CStr(port) + "  号端口 " + CStr(ClockNo) + "  号机 成功打开！"
+If DeleteAllBlackCard(hPort) Then
+Text5.Text = "清除所有黑名单成功"
+Else
+Text5.Text = "清除所有黑名单失败"
+End If
+ClosePort
+Else
+Text5.Text = "不能联接设备"
+End If
+
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+RCount = 0
+port = 1
+baudrate = 9600
+ClockNo = 11
+filename = App.Path + "\" + Format(Now, "yyyy-mm-dd") + ".txt"
+If Dir(filename) = "" Then
+CreateAfile (filename)
+End If
+
+
+.子程序 子程序1, 空白型, , 
+Private Type TLine
+card As String
+EmpId As String
+TimeStr As String
+
+.子程序 子程序2, 空白型, , 
+Public Sub AddLog(Str As String)
+Text5.Text = Format(Now, "yyyy-mm-dd hh:mm:ss    ") + Str
+End Sub
+
+.子程序 子程序3, 空白型, , 
+Private Function CheckHandle() As Boolean
+If (hPort <> 0) And (hPort <> -1) Then
+CheckHandle = True
+Else
+CheckHandle = False
+End If
+End Function
+
+
+.子程序 子程序4, 空白型, , 
+Private Function ClosePort() As Boolean
+Dim Result
+Result = False
+If CheckHandle Then
+DisConnectClock (hPort)
+Result = True
+hPort = 0
+End If
+ClosePort = Result
+' AddLog "[" + Format(ClockNo, "00") + "]号机端口已关闭"
+End Function
+
+.子程序 子程序5, 空白型, , 
+Sub CreateAfile(fName As String)
+Set fs = CreateObject("Scripting.FileSystemObject")
+Set F = fs.CreateTextFile(fName, True)
+'F.WriteLine ("Add Data blow")
+F.Close
+End Sub
+
+
+.子程序 子程序6, 空白型, , 
+Private Function OpenPort(ByVal port As Long, ByVal baudrate As Long, ByVal ClockNo As Long) As Boolean
+Dim Result As Boolean
+
+If CheckHandle Then
+Result = True
+Else
+hPort = ConnectClock(port, baudrate, ClockNo)
+Result = CheckHandle
+OpenPort = Result
+End If
+End Function
+
+.子程序 子程序7, 空白型, , RefreshClock()
+ClockNo = CInt(Text1.Text)
+port = CInt(Text2.Text)
+baudrate = CInt(Text3.Text)
+
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+Unload Form2
+
+.子程序 子程序8, 空白型, , 
+Private Sub RefreshClock()
+ClockNo = CInt(Text1.Text)
+port = CInt(Text2.Text)
+baudrate = CInt(Text3.Text)
+End Sub
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

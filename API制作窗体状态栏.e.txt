@@ -1,0 +1,304 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 492
+    高度 = 264
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 1
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 真
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “API状态栏”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 英文, , 
+    .成员 文件, 文本型, , , 
+    .成员 欢迎, 文本型, , , 
+    .成员 打开, 文本型, , , 
+    .成员 英文, 文本型, , , 
+    .成员 中文, 文本型, , , 
+    .成员 退出, 文本型, , , 
+
+
+.DLL命令 CreateStatusWindow, 整数型, "comctl32.dll", "", , 
+    .参数 style, 整数型, , 
+    .参数 lpszText, 文本型, , 
+    .参数 hwndParent, 整数型, , 
+    .参数 wID, 整数型, , 
+
+.DLL命令 SendMessage, 整数型, "", "SendMessageA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, 数组, 
+
+.DLL命令 SendMessageA, 整数型, "", "SendMessageA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 文本型, , 
+
+.DLL命令 MoveWindow, 整数型, "", "", , 
+    .参数 hwnd, 整数型, , 
+    .参数 X, 整数型, , 
+    .参数 Y, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+    .参数 bRepaint, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 状态栏句柄, 整数型, , , 
+.程序集变量 栏数组, 整数型, , "255", 
+.程序集变量 修改模式, 逻辑型, , , 
+.子程序 _创建按钮_被单击, 空白型, , 
+赋值 (状态栏句柄, CreateStatusWindow (1342177280, “”, 取窗口句柄 (), 8197))
+.如果 (等于 (状态栏句柄, 0))
+    信息框 (“创建失败！！”, 0, )
+.否则
+    创建栏宽 ()
+    添加文本 ()
+.如果结束
+
+
+.子程序 创建栏宽, 空白型, , 
+.局部变量 栏数, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 a, 整数型, , , 
+.局部变量 b, 整数型, , "255", 
+
+赋值 (a, 取项目数 ())
+.计次循环首 (a, i)
+    赋值 (b [i], 相减 (i, 1).取项目数值 ())
+.计次循环尾 ()
+赋值 (栏数, a)
+复制数组 (栏数组, b)
+赋值 (i, SendMessage (状态栏句柄, 1028, 栏数, b))
+
+.子程序 添加文本, 空白型, , 
+.局部变量 栏数, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 a, 整数型, , , 
+
+赋值 (栏数, 取项目数 ())
+.计次循环首 (栏数, i)
+    赋值 (i, 相减 (i, 1))
+    赋值 (a, SendMessageA (状态栏句柄, 1025, i, i.取项目文本 ()))
+.计次循环尾 ()
+
+.子程序 __启动窗口_尺寸被改变, 空白型, , 
+改变状态栏位置 ()
+
+.子程序 改变状态栏位置, 空白型, , 
+.局部变量 a, 整数型, , , 
+
+.判断开始 (不等于 (状态栏句柄, 0))
+    赋值 (a, MoveWindow (状态栏句柄, 0, 0, 0, 0, 0))
+.默认
+    
+.判断结束
+
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+连续赋值 (真, ., .)
+赋值 (修改模式, 假)
+
+.子程序 _插入按钮_被单击, 空白型, , 
+赋值 (修改模式, 假)
+.判断开始 (等于 (., 真))
+    连续赋值 (假, ., .)
+.默认
+    
+.判断结束
+.加入项目 (., 到数值 (.))
+赋值 (., 取项目数 ())
+获取焦点 ()
+
+.子程序 _删除按钮_被单击, 空白型, , 
+赋值 (修改模式, 假)
+.删除项目 (.)
+赋值 (., .取项目文本 (.))
+赋值 (., 到文本 (.取项目数值 (.)))
+赋值 (., 相减 (., 1))
+
+.子程序 _列表框_列表项被选择, 空白型, , 
+赋值 (., .取项目文本 (.))
+赋值 (., 到文本 (.取项目数值 (.)))
+赋值 (修改模式, 真)
+
+.子程序 _内容文本编辑框_按下某键, 逻辑型, , 
+.参数 键代码, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.判断开始 (等于 (键代码, #回车键))
+    获取焦点 ()
+.默认
+    
+.判断结束
+
+
+.子程序 _内容文本编辑框_内容被改变, 空白型, , 
+.如果真 (修改模式)
+    .置项目文本 (., .)
+.如果真结束
+
+
+.子程序 _栏目数值编辑框_内容被改变, 空白型, , 
+.如果真 (修改模式)
+    .置项目数值 (., 到数值 (.))
+.如果真结束
+
+
+.子程序 _栏目数值编辑框_按下某键, 逻辑型, , 
+.参数 键代码, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.判断开始 (等于 (键代码, #回车键))
+    获取焦点 ()
+.默认
+    
+.判断结束
+
+
+.子程序 _插入按钮_按下某键, 逻辑型, , 
+.参数 键代码, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.判断开始 (等于 (键代码, #回车键))
+    _插入按钮_被单击 ()
+.默认
+    
+.判断结束
+
+
+.程序集 VB代码程序集, , , 
+
+.子程序 这个程序是以下面VB代码创建一个简单的状态栏程序而来的, 空白型, , 
+ ' Dim hWndBar As Long               ;状态栏句柄
+ ' Private Const IDC_STATBAR As Long = &H2005        ’状态栏ID
+ ' Private Sub Command1_Click()
+ ' Dim ret As Boolean
+ ' ret = CreateStatBar(Me.hwnd, IDC_STATBAR, hWndBar)
+ ' If ret = True Then
+ ' MsgBox "创建状态栏成功!"
+ ' Else
+ ' MsgBox "创建状态栏失败:-(!", 48
+ ' End If
+ ' End Sub
+
+ ' Private Sub Command2_Click()
+ ' SetBarText hWndBar, 1, "Create StatusBar Demo:-)!"
+ ' End Sub
+ ' ’移动状态栏
+ ' Private Sub Form_Resize()
+ ' MoveStatWindow hWndBar
+ ' End Sub
+
+ ' 然后添加一个模块，模块里写上代码:
+ ' Private Const WS_CHILD As Long = &H40000000             ’WS_CHILD 和WS_VISIBLE是必需函数
+ ' Private Const WS_VISIBLE As Long = &H10000000
+ ' Private Const WM_USER As Long = &H400
+ ' Private Const SB_SETPARTS As Long = (WM_USER + 4)       ’这两个常数在VB自带的api查询器里没有，需要手工添加
+ ' Private Const SB_SETTEXTA As Long = (WM_USER + 1)
+ ' Private Declare Function CreateStatusWindow Lib "comctl32.dll" (ByVal style As Long, ByVal lpszText As String, ByVal hwndParent As Long, ByVal wID As Long) As Long
+ ' Private Declare Function SendMessage Lib "user32.dll" Alias "SendMessageA" (ByVal hwnd As Long, ByVal wMsg As Long, ByVal wParam As Long, ByRef lParam As Any) As Long
+ ' Private Declare Function MoveWindow Lib "user32.dll" (ByVal hwnd As Long, ByVal x As Long, ByVal y As Long, ByVal nWidth As Long, ByVal nHeight As Long, ByVal bRepaint As Long) As Long
+ ' ’--------------------------------------------------
+ ' ’
+ ' ’                       创建状态栏
+ ' ’函数说明：
+ ' ’ParenthWnd    状态栏所属的句柄
+ ' ’IDC_STATBAR   状态栏的ID号，用于对状态栏的单击之类的操作
+ ' ’hBarWin       函数返回状态栏的句柄
+ ' ’szText        要显示的信息
+ ' ’
+ ' ’---------------------------------------------------
+ ' Function CreateStatBar(ParenthWnd As Long, IDC_STATBAR As Long, hBarWin As Long, Optional szText As String = "Demo") As Boolean
+ ' Dim ret As Long                 ’返回值
+ ' Dim bar(0 To 1) As Long         ’分栏的各项位置
+ ' Dim szbar As Long               ’分栏的数目
+
+ ' ’-------------------------------------------------------
+ ' ’定义数组
+ ' bar(0) = 235                    ’第一栏宽度为245
+ ' bar(1) = -1                     ’-1表示后面的分为一栏
+
+ ' ’-------------------------------------------------------
+ ' ret = CreateStatusWindow(WS_CHILD Or WS_VISIBLE, ByVal szText, arenthWnd, IDC_STATBAR)     ’创建状态栏
+ ' szbar = 2
+ ' If ret = 0 Then                 ’如果创建失败则退出过程
+ ' CreateStatBar = False
+ ' Exit Function
+ ' End If
+ ' hBarWin = ret                   ’返回状态栏的句柄
+ ' If szbar > 1 Then               ’因为默认就是分一栏所以，这里判断为大于1就是分栏
+ ' SendMessage hBarWin, SB_SETPARTS, szbar, bar(0)    ’分栏
+ ' End If
+ ' CreateStatBar = True            ’创建成功返回真值
+ ' End Function
+ ' ’----------------------------
+ ' ’移动状态栏
+ ' ’----------------------------
+ ' Sub MoveStatWindow(hBar As Long)
+ ' If hBar Then                ’如果状态栏句柄不为0则移动
+ ' Call MoveWindow(hBar, 0, 0, 0, 0, True)
+ ' End If
+ ' End Sub
+ ' ’------------------------------
+ ' ’在指定栏上显示信息
+ ' ’hBar 为状态栏的句柄
+ ' ’szbar 指定要在哪一栏显示信息，从0开始计，也就是说，如果分两栏，我们要在第二栏里显示信息，szbar就设置为1
+ ' ’szText 要显示的信息
+ ' ’-------------------------------
+ ' Sub SetBarText(hBar As Long, szbar As Long, strText As String)
+ ' SendMessage hBar, SB_SETTEXTA, szbar, ByVal strText
+ ' End Sub
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

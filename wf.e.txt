@@ -1,0 +1,176 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：Windows防火墙操作
+ ' 程序描述：
+ ' 程序作者：GanKeyu Studio
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 NET_FW_SCOPE_ALL, "0", , 
+.常量 NET_FW_SCOPE_LOCAL_SUBNET, "1", , 
+.常量 NET_FW_IP_VERSION_ANY, "2", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 规则, 公开, 
+    .成员 名称, 文本型, , , 
+    .成员 程序路径, 文本型, , , 
+    .成员 范围, 整数型, , , 默认为0
+    .成员 IP版本, 整数型, , , 默认为2
+    .成员 启用, 逻辑型, , , 
+
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.子程序 取开启状态, 逻辑型, 公开, 
+.局部变量 fwMgr, 对象, , , 
+.局部变量 oProfile, 对象, , , 
+.局部变量 Tmp, 逻辑型, , , 
+
+fwMgr.创建 (“HNetCfg.FwMgr”, )
+赋值 (oProfile, fwMgr.读对象型属性 (“LocalPolicy”, ).读对象型属性 (“CurrentProfile”, ))
+赋值 (Tmp, oProfile.读逻辑属性 (“FirewallEnabled”, ))
+fwMgr.清除 ()
+oProfile.清除 ()
+返回 (Tmp)
+
+.子程序 取提示状态, 逻辑型, 公开, 
+.局部变量 fwMgr, 对象, , , 
+.局部变量 oProfile, 对象, , , 
+.局部变量 Tmp, 逻辑型, , , 
+
+fwMgr.创建 (“HNetCfg.FwMgr”, )
+赋值 (oProfile, fwMgr.读对象型属性 (“LocalPolicy”, ).读对象型属性 (“CurrentProfile”, ))
+赋值 (Tmp, 取反 (oProfile.读逻辑属性 (“NotificationsDisabled”, )))
+fwMgr.清除 ()
+oProfile.清除 ()
+返回 (Tmp)
+
+.子程序 置开启状态, 空白型, 公开, 
+.参数 开启状态, 逻辑型, , 
+
+.局部变量 fwMgr, 对象, , , 
+.局部变量 oProfile, 对象, , , 
+.局部变量 Tmp, 逻辑型, , , 
+
+fwMgr.创建 (“HNetCfg.FwMgr”, )
+赋值 (oProfile, fwMgr.读对象型属性 (“LocalPolicy”, ).读对象型属性 (“CurrentProfile”, ))
+赋值 (Tmp, oProfile.写属性 (“FirewallEnabled”, 开启状态))
+fwMgr.清除 ()
+oProfile.清除 ()
+返回 (Tmp)
+
+.子程序 置提示状态, 逻辑型, 公开, 
+.参数 是否提示, 逻辑型, , 
+
+.局部变量 fwMgr, 对象, , , 
+.局部变量 oProfile, 对象, , , 
+.局部变量 Tmp, 逻辑型, , , 
+
+fwMgr.创建 (“HNetCfg.FwMgr”, )
+赋值 (oProfile, fwMgr.读对象型属性 (“LocalPolicy”, ).读对象型属性 (“CurrentProfile”, ))
+赋值 (Tmp, oProfile.写属性 (“NotificationsDisabled”, 取反 (是否提示)))
+fwMgr.清除 ()
+oProfile.清除 ()
+返回 (Tmp)
+
+.子程序 添加到例外列表, 空白型, 公开, 
+.参数 规则名称, 文本型, , 
+.参数 程序路径, 文本型, , 
+.参数 范围类型, 逻辑型, 可空, 真则为全部地址，假则为本地子网络，默认为真
+.参数 自动应用, 逻辑型, 可空, 如果空，则为真
+.参数 例外列表, 对象, , 
+
+.局部变量 oApplication, 对象, , , 
+
+.如果真 (是否为空 (自动应用))
+    赋值 (自动应用, 真)
+.如果真结束
+.如果真 (是否为空 (范围类型))
+    赋值 (范围类型, 真)
+.如果真结束
+oApplication.创建 (“HNetCfg.FwAuthorizedApplication”, )
+oApplication.写属性 (“Enabled”, 自动应用)
+oApplication.写属性 (“Scope”)
+
+.子程序 新建例外程序列表对象, 对象, 公开, 
+.局部变量 fwMgr, 对象, , , 
+.局部变量 oProfile, 对象, , , 
+
+“HNetCfg.FwMgr”.创建 ()
+赋值 (“LocalPolicy”.读对象型属性 ().读对象型属性 (“CurrentProfile”, ))
+返回 (oProfile.读对象型属性 (“AuthorizedApplications”, ))
+
+.子程序 取例外列表规则数, 整数型, 公开, 
+.参数 例外列表, 对象, , 
+
+返回 (例外列表.读数值属性 (“Count”, ))
+
+.子程序 取例外列表某项, 对象, 公开, 
+.参数 例外列表, 对象, , 
+.参数 程序路径, 文本型, , 
+
+返回 (例外列表.方法 (“Item”, 程序路径))
+
+.子程序 转换到专用数据类型, 未知类型0x41010035, 公开, 
+.参数 SDK对象, 对象, , 
+
+.局部变量 MoApplication, 未知类型0x41010035, , , 
+
+赋值 (MoApplication., SDK对象.读逻辑属性 (“Enabled”, ))
+赋值 (MoApplication., SDK对象.读数值属性 (“Scope”, ))
+赋值 (MoApplication., SDK对象.读数值属性 (“IpVersion”, ))
+赋值 (MoApplication., SDK对象.读文本属性 (“Name”, ))
+赋值 (MoApplication., SDK对象.读文本属性 (“ProcessImageFileName”, ))
+
+.子程序 转换到SDK对象, 对象, 公开, 
+.参数 专用数据类型, 未知类型0x41010035, , 
+
+.局部变量 oApplication, 对象, , , 
+
+oApplication.创建 (“HNetCfg.FwAuthorizedApplication”, )
+oApplication.写属性 (“Enabled”, 专用数据类型.)
+oApplication.写属性 (“Scope”, 专用数据类型.)
+oApplication.写属性 (“IpVersion”, 专用数据类型.)
+oApplication.写属性 (“Name”, 专用数据类型.)
+oApplication.写属性 (“ProcessImageFileName”, 专用数据类型.)
+返回 (oApplication)
+
+.子程序 删除例外列表某项, 空白型, 公开, 
+.参数 例外列表, 对象, , 
+.参数 程序路径, 文本型, , 
+
+例外列表.方法 (“Remove”, 程序路径)
+
+.子程序 加入到例外列表, 空白型, 公开, 
+.参数 例外列表, 对象, , 
+.参数 SDK对象, 对象, , 
+
+例外列表.方法 (“Add”, SDK对象)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

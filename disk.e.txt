@@ -1,0 +1,86 @@
+ ' 文件类型：Windows控制台程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 IOCTL_STORAGE_GET_DEVICE_NUMBER, "2953344", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' const 9DEDA17547CF40e085B7C8919B1800AF 1 6 常量支持库
+
+
+
+
+数据类型 deviceInfo, , 
+    .成员 DeviceType, 整数型, , , 
+    .成员 DeviceNumber, 整数型, , , 
+    .成员 PartitionNumber, 整数型, , , 
+
+
+.DLL命令 CreateFile, 整数型, "kernel32.dll", "CreateFileA", , 
+    .参数 lpFileName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwShareMode, 整数型, , 
+    .参数 lpSecurityAttributes, 整数型, , SECURITY_ATTRIBUTES结构体指针
+    .参数 dwCreationDisposition, 整数型, , 
+    .参数 dwFlagsAndAttributes, 整数型, , 
+    .参数 hTemplateFile, 整数型, , 
+
+.DLL命令 DeviceIoControl, 整数型, "Kernel32", "DeviceIoControl", , 
+    .参数 hDevice, 整数型, , 
+    .参数 dwIoControlCode, 整数型, , 
+    .参数 lpInBuffer, 整数型, , 
+    .参数 nInBufferSize, 整数型, , 
+    .参数 lpOutBuffer, deviceInfo, , 
+    .参数 nOutBufferSize, 整数型, , 
+    .参数 lpBytesReturned, 整数型, 传址, 
+    .参数 lpOverlapped, 整数型, , 
+
+.DLL命令 CloseHandle, 逻辑型, "Kernel32.dll", "CloseHandle", , 
+    .参数 hDevice, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 本子程序在程序启动后最先执行
+.局部变量 t, 文本型, , , 
+
+赋值 (t, 标准输入 (真))
+标准输出 (disk (t))
+标准输入 ()
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 disk, 整数型, , 
+.参数 盘符, 文本型, , 
+
+.局部变量 句柄, 整数型, , , 
+.局部变量 结果, 整数型, , , 
+.局部变量 类型, deviceInfo, , , 
+
+赋值 (句柄, CreateFile (相加 (“\\.\”, 盘符), #, 位异或 (#, #), 0, #, #, 0))
+.如果真 (等于 (句柄, -1))
+    返回 (-1)
+.如果真结束
+赋值 (结果, DeviceIoControl (句柄, #IOCTL_STORAGE_GET_DEVICE_NUMBER, 0, 0, 类型, 16, 0, 0))
+.如果真 (等于 (结果, 0))
+    CloseHandle (句柄)
+    返回 (-1)
+.如果真结束
+CloseHandle (句柄)
+返回 (类型.DeviceNumber)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

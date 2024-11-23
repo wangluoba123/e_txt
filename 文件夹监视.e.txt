@@ -1,0 +1,128 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：监视文件夹
+ ' 程序描述：
+ ' 程序作者：笨笨啊
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 454
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 FILE_NOTIFY_CHANGE_DIR_NAME, "2", , 
+.常量 FILE_NOTIFY_CHANGE_ATTRIBUTES, "4", , 
+.常量 FILE_NOTIFY_CHANGE_CREATION, "64", , 
+.常量 FILE_NOTIFY_CHANGE_FILE_NAME, "1", , 
+.常量 FILE_NOTIFY_CHANGE_LAST_ACCESS, "32", , 
+.常量 FILE_NOTIFY_CHANGE_SECURITY, "256", , 
+.常量 FILE_NOTIFY_CHANGE_SIZE, "8", , 
+.常量 ERROR_INVALID_HANDLE, "6", , 
+.常量 ERROR_INVALID_PARAMETER, "87", , 
+.常量 STATUS_WAIT_0, "0", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' EThread 5F99C1642A2F4e03850721B4F5D7C3F8 1 1 多线程支持库
+
+
+
+
+
+.DLL命令 FindFirstChangeNotification, 整数型, "", "FindFirstChangeNotificationA", , 
+    .参数 lpPathName, 文本型, , 
+    .参数 bWatchSubtree, 整数型, , 是否监视子目录
+    .参数 dwNotifyFilter, 整数型, , 
+
+.DLL命令 FindCloseChangeNotification, 整数型, "", "FindCloseChangeNotification", , 
+    .参数 hChangeHandle, 整数型, , 
+
+.DLL命令 FindNextChangeNotification, 整数型, "", "FindNextChangeNotification", , 
+    .参数 hChangeHandle, 整数型, , 
+
+.DLL命令 GetLastError, 整数型, "", "GetLastError", , 
+
+.DLL命令 ExitProcess, 整数型, "", "ExitProcess", , 
+    .参数 uExitCode, 整数型, , 
+
+.DLL命令 WaitForSingleObjectEx, 整数型, "", "WaitForSingleObjectEx", , 
+    .参数 hHandle, 整数型, , 
+    .参数 dwMilliseconds, 整数型, , 
+    .参数 bAlertable, 整数型, , 
+
+.DLL命令 WaitForSingleObject, 整数型, "", "WaitForSingleObject", , 
+    .参数 hHandle, 整数型, , 
+    .参数 dwMilliseconds, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 句柄, 整数型, , , 
+.程序集变量 信息, 整数型, , , 
+.子程序 监视目录, 空白型, , 
+.参数 目录, 文本型, , 
+.参数 包括子目录, 逻辑型, 可空, 
+.参数 监视的对象, 整数型, 可空, 
+
+.局部变量 i, 整数型, , , 
+
+赋值 (句柄, FindFirstChangeNotification (目录, 选择 (包括子目录, 1, 0), 监视的对象))
+.如果真 (等于 (句柄, #ERROR_INVALID_HANDLE))
+    ExitProcess (GetLastError ())
+.如果真结束
+输出调试文本 (句柄)
+赋值 (i, 1)
+.判断循环首 (等于 (1, i))
+    处理事件 ()
+    赋值 (信息, WaitForSingleObject (句柄, -1))
+     ' 输出调试文本 (信息)
+    .如果真 (等于 (信息, 0))
+        “文件夹内有文件被改变”.加入项目 ()
+        .如果真 (等于 (FindNextChangeNotification (句柄), 0))
+            未知函数_167843356 (未知函数_167843357 ())
+            
+        .如果真结束
+        
+    .如果真结束
+    延时 (100)
+.判断循环尾 ()
+
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+FindCloseChangeNotification (句柄)
+
+
+.子程序 启用停用监视, 空白型, , 
+.如果 (等于 (.标题, “监视”))
+    赋值 (.标题, “停止”)
+    未知支持库函数_0 (&线程, )
+.否则
+    未知函数_167843366 ()
+    赋值 (.标题, “监视”)
+.如果结束
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+启用停用监视 ()
+
+.子程序 线程, 空白型, , 
+监视目录 (.内容, 假, #FILE_NOTIFY_CHANGE_FILE_NAME)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,69 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 IEMenuExt, "“<Script Language="JavaScript">
+	var srcEvent = external.menuArguments.event;
+	var EventElement;
+	
+	if(typeof(srcEvent.clientX) == "undefined")
+		EventElement = external.menuArguments.document.elementFromPoint ( srcEvent.pointerX, srcEvent.pointerY );
+	else
+		EventElement = external.menuArguments.document.elementFromPoint ( srcEvent.clientX, srcEvent.clientY );
+//上面的代码是复制web迅雷的，请大家自行扩展，
+//代码含义主要就是获取当前document坐标处的元素
+	if (typeof(EventElement.href) != "undefined")
+		//下面代码主要是运行程序，并把连接作为参数传递进去，比较笨，
+		new ActiveXObject("WScript.Shell").Run ("路过已错过 " + EventElement.href);
+</Script>”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 
+.局部变量 命令行, 文本型, , "0", 
+
+ ' 基本框架就这些.其他高级些的,大家就自己发挥吧,仅供学习参考!
+ ' BY:路过已错过
+
+
+取命令行 (命令行)
+.如果真 (大于 (取数组成员数 (命令行), 0))
+    信息框 (相加 (“连接地址为:”, #换行符, 命令行 [1]), 0, “IE扩展菜单 BY:路过已错过”)
+    返回 (0)
+.如果真结束
+
+.如果真 (是否为调试版 ())
+    信息框 (“无法在调试状态下运行,请编译程序!”, 0, “IE扩展菜单 BY:路过已错过”)
+    返回 (0)
+.如果真结束
+ ' 使用我的易程序下载(&D)
+ ' 可以自定义，后面这个(&D),是快捷键,可以省略!
+写注册项 (#现行用户, “Software\Microsoft\Internet Explorer\MenuExt\使用我的易程序下载(&D)\”, 相加 (取运行目录 (), “\IEMenuExt.htm”))
+写注册项 (#现行用户, “Software\Microsoft\Internet Explorer\MenuExt\使用我的易程序下载(&D)\Contexts”, 34)
+写到文件 (“IEMenuExt.htm”, 到字节集 (子文本替换 (#IEMenuExt, “路过已错过”, 子文本替换 (相加 (取运行目录 (), “\”, 取执行文件名 ()), “\”, “\\”, , , 真), , , 真)))
+信息框 (相加 (“写入完毕!”, #换行符, “重新启动IE生效!”), 0, “IE扩展菜单 BY:路过已错过”)
+返回 (0)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

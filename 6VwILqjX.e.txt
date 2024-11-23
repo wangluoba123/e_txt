@@ -1,0 +1,91 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 CPUSet, "“Function Getcpuid() 
+Dim cpuSet,cpu
+    Set cpuSet = GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_Processor")
+    For Each cpu In cpuSet
+      getcpuid=cpu.ProcessorId
+      exit for
+    Next
+end Function”", , 
+.常量 HdSet, "“Function gethardid() 
+Dim hdid,hd
+    Set hdid =GetObject("winmgmts:{impersonationLevel=impersonate}").InstancesOf("Win32_PhysicalMedia")
+    for each hd in hdid
+    gethardid = hd.SerialNumber
+    exit for
+    next
+End Function”", , 
+.常量 MACSet, "“Function MACAddress() 
+Dim mc,mo
+    Set mc=GetObject("Winmgmts:").InstancesOf("Win32_NetworkAdapterConfiguration")
+    For Each mo In mc
+        If mo.IPEnabled=True Then
+           MACAddress= mo.MacAddress
+           Exit For
+        End If
+    Next 
+End Function
+”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+输出调试文本 (取CPU序列号 ())
+输出调试文本 (取硬盘序列号 ())
+输出调试文本 (取MAC地址 ())
+
+.子程序 取CPU序列号, 文本型, 公开, 
+.局部变量 VBScript, 对象, , , 
+
+VBScript.创建 (“ScriptControl”, )
+VBScript.写属性 (“Language”, “VBScript”)
+VBScript.数值方法 (“ExecuteStatement”)
+
+.子程序 取硬盘序列号, 文本型, 公开, 
+.局部变量 VBScript, 对象, , , 
+
+VBScript.创建 (“ScriptControl”, )
+VBScript.写属性 (“Language”, “VBScript”)
+VBScript.数值方法 (“ExecuteStatement”, #HdSet)
+返回 (VBScript.通用方法 (“Run”, “Gethardid”, ).取文本 ())
+
+.子程序 取MAC地址, 文本型, 公开, 
+.局部变量 VBScript, 对象, , , 
+
+VBScript.创建 (“ScriptControl”, )
+VBScript.写属性 (“Language”, “VBScript”)
+VBScript.数值方法 (“ExecuteStatement”, #MACSet)
+返回 (VBScript.通用方法 (“Run”, “MACAddress”, ).取文本 ())
+
+
+ ' 不属于任何一个程序集、类模块的函数：

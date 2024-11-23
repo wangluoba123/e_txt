@@ -1,0 +1,1862 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 630
+    高度 = 544
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = 16746496 '  0xFF8800
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “”
+    帮助文件名 = “”
+
+
+
+.常量 物体类型_NULL, "0", , 
+.常量 物体类型_刚体, "1", , 
+.常量 物体类型_活体, "2", , 
+.常量 几何类型_方体, "1", , 
+.常量 几何类型_球体, "2", , 
+.常量 , , , 
+.常量 碰撞反应_完全无效, "0", , 
+.常量 碰撞反应_只碰撞, "1", , 
+.常量 碰撞反应_只反馈, "2", , 
+.常量 碰撞反应_碰撞且反馈, "3", , 
+.常量 , , , 
+.常量 _物体总数常, "3", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' MengXiangEngine.npk {D195745A-BF3E-49BD-8AF6-DCC31AF732C1}#1.0#0 1 0 MengXiangEngine 0,{3D26DED0-B713-4FAF-84F0-4FCB7044942E},MXEngine,{1610809344,1610809345,1610809346,1610809348,1610809351,1610809352,1610809355,1610809356,1610809357,1610809358,1610809359,1610809360,1610809361,1610809362,1610809363,1610809365,1610809367,1610809368,1610809369,1610809370,1610809371,1610809373,1610809374,1610809375,1610809376,},{1073938433,},{}0,{17ADDFF8-A973-40E8-A594-8841E2CC0629},MXInputEngine,{1610809344,1610809345,1610809346,1610809347,},{},{}0,{50F309EF-75A7-40CC-9E10-8E5DFF1281D5},MXMathLib,{1610809344,1610809345,1610809346,},{},{}
+
+
+
+ ' 所需要的模块
+ ' 物理引擎 F:\e43\4[1].23_物理引擎_完好\4.23_物理引擎_完好\capi_to_E物理引擎.ec
+
+
+数据类型 物体数据结构, , 
+    .成员 物体ID号, 空白型, , , 
+    .成员 物体类型, 整数型, , , 0=NULL，1=刚体，2=活体
+    .成员 碰撞类型, 空白型, , , 自定义
+    .成员 尺寸, v3, , , 
+    .成员 角度, v3, , , 
+    .成员 位置, v3, , , 
+    .成员 图片号, 空白型, , , 
+    .成员 图片缩放比, 小数型, , , 
+
+数据类型 容器盒, 公开, 
+    .成员 左框, 空白型, , , 
+    .成员 右框, 空白型, , , 
+    .成员 上框, 空白型, , , 
+    .成员 下框, 空白型, , , 
+    .成员 底板, 空白型, , , 
+    .成员 顶板, 空白型, , , 
+
+数据类型 v4, 公开, 
+    .成员 X, 小数型, , , 
+    .成员 Y, 小数型, , , 
+    .成员 Z, 小数型, , , 
+    .成员 w, 小数型, , , 
+
+数据类型 v3, 公开, 
+    .成员 x, 小数型, , , 
+    .成员 y, 小数型, , , 
+    .成员 z, 小数型, , , 
+
+数据类型 M16, 公开, 
+    .成员 M11, 小数型, , , 
+    .成员 m12, 小数型, , , 
+    .成员 m13, 小数型, , , 
+    .成员 m14, 小数型, , , 
+    .成员 m21, 小数型, , , 
+    .成员 m22, 小数型, , , 
+    .成员 m23, 小数型, , , 
+    .成员 m24, 小数型, , , 
+    .成员 m31, 小数型, , , 
+    .成员 m32, 小数型, , , 
+    .成员 m33, 小数型, , , 
+    .成员 m34, 小数型, , , 
+    .成员 m41, 小数型, , , 
+    .成员 m42, 小数型, , , 
+    .成员 m43, 小数型, , , 
+    .成员 m44, 小数型, , , 
+
+数据类型 neCollisionInfo, 公开, 
+    .成员 bodyA, 整数型, , , 未知类型：NEBYTE。需传址。
+    .成员 bodyB, 整数型, , , 未知类型：NEBYTE。需传址。
+    .成员 typeA, 整数型, , , 未知类型：NEBODYTYPE。
+    .成员 typeB, 整数型, , , 未知类型：NEBODYTYPE。
+    .成员 geometryA, 整数型, , , 未知类型：NEGEOMETRY。需传址。
+    .成员 geometryB, 整数型, , , 未知类型：NEGEOMETRY。需传址。
+    .成员 materialIdA, 整数型, , , 未知类型：S32。
+    .成员 materialIdB, 整数型, , , 未知类型：S32。
+    .成员 bodyContactPointAx, 小数型, , , 未知类型：NEV3。
+    .成员 bodyContactPointAy, 小数型, , , 未知类型：NEV3。
+    .成员 bodyContactPointAz, 小数型, , , 未知类型：NEV3。
+    .成员 bodyContactPointBx, 小数型, , , 未知类型：NEV3。
+    .成员 bodyContactPointBy, 小数型, , , 未知类型：NEV3。
+    .成员 bodyContactPointBz, 小数型, , , 未知类型：NEV3。
+    .成员 worldContactPointAx, 小数型, , , 未知类型：NEV3。
+    .成员 worldContactPointAy, 小数型, , , 未知类型：NEV3。
+    .成员 worldContactPointAz, 小数型, , , 未知类型：NEV3。
+    .成员 worldContactPointBx, 小数型, , , 未知类型：NEV3。
+    .成员 worldContactPointBy, 小数型, , , 未知类型：NEV3。
+    .成员 worldContactPointBz, 小数型, , , 未知类型：NEV3。
+    .成员 relativeVelocitx, 小数型, , , 未知类型：NEV3。
+    .成员 relativeVelocity, 小数型, , , 未知类型：NEV3。
+    .成员 relativeVelocitz, 小数型, , , 未知类型：NEV3。
+    .成员 collisionNormalx, 小数型, , , 未知类型：NEV3。
+    .成员 collisionNormaly, 小数型, , , 未知类型：NEV3。
+    .成员 collisionNormalz, 小数型, , , 未知类型：NEV3。
+
+数据类型 collinfo, 公开, 
+    .成员 bodyA, 整数型, , , 未知类型：NEBYTE。需传址。
+    .成员 bodyB, 整数型, , , 未知类型：NEBYTE。需传址。
+    .成员 typeA, 整数型, , , 未知类型：NEBODYTYPE。
+    .成员 typeB, 整数型, , , 未知类型：NEBODYTYPE。
+    .成员 geometryA, 整数型, , , 未知类型：NEGEOMETRY。需传址。
+    .成员 geometryB, 整数型, , , 未知类型：NEGEOMETRY。需传址。
+    .成员 materialIdA, 整数型, , , 未知类型：S32。
+    .成员 materialIdB, 整数型, , , 未知类型：S32。
+    .成员 bodyContactPointA, v3, , , 未知类型：NEV3。
+    .成员 bodyContactPointB, v3, , , 未知类型：NEV3。
+    .成员 worldContactPointA, v3, , , 未知类型：NEV3。
+    .成员 worldContactPointB, v3, , , 
+    .成员 relativeVelocit, v3, , , 未知类型：NEV3。
+    .成员 collisionNormal, v3, , , 未知类型：NEV3。
+
+.全局变量 run, 逻辑型, , , 
+.全局变量 MX, 未知类型0x20001, , , 
+.全局变量 min, 未知类型0x20002, , , 
+.全局变量 math, 未知类型0x20003, , , 
+.全局变量 fLastElapsed, 小数型, , , 
+.全局变量 collBank, neCollisionInfo, , "10", 
+.全局变量 匿名全局变量_7097, 空白型, , , 
+.全局变量 pic_ball, 空白型, , , 
+.全局变量 pic_rect, 空白型, , , 
+.全局变量 pic_fang, 空白型, , , 
+.全局变量 匿名全局变量_7098, 空白型, , , 
+
+.DLL命令 atan2, 小数型, "emath.dll", "E_atan2", , 
+    .参数 a, 小数型, , 
+    .参数 b, 小数型, , 
+
+.DLL命令 asin, 小数型, "emath.dll", "E_asin", , 
+    .参数 a, 小数型, , 
+
+.DLL命令 TOKSIM_SetCollisionResponseA, 空白型, "TokamakVB.dll", "TOKSIM_SetCollisionResponse", 公开, 
+    .参数 CollisionID1, 整数型, , 
+    .参数 CollisionID2, 整数型, , 
+    .参数 Response, 整数型, , 
+
+.DLL命令 TOKAB_GetRotationMatrixA, 空白型, "TokamakVB.dll", "TOKAB_GetMatrix", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 RetRotMatrix, M16, 传址, 未知类型：R3DMatrix。
+
+.DLL命令 TOKAB_Create, 整数型, "TokamakVB.dll", "TOKAB_Create", 公开, 
+
+.DLL命令 TOKAB_Free, 空白型, "TokamakVB.dll", "TOKAB_Free", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+
+.DLL命令 TOKAB_SetCollisionID, 空白型, "TokamakVB.dll", "TOKAB_SetCollisionID", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+    .参数 ColID, 整数型, , 
+
+.DLL命令 TOKAB_GetCollisionID, 整数型, "TokamakVB.dll", "TOKAB_GetCollisionID", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+
+.DLL命令 TOKAB_CollideConnected, 空白型, "TokamakVB.dll", "TOKAB_CollideConnected", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+    .参数 Collide, 整数型, , 
+
+.DLL命令 TOKAB_GetMatrix, 空白型, "TokamakVB.dll", "TOKAB_GetMatrix", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+    .参数 RetMatrix, 整数型, 传址, 未知类型：R3DMatrix。
+
+.DLL命令 TOKAB_SetMatrix, 空白型, "TokamakVB.dll", "TOKAB_SetMatrix", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+    .参数 m16, M16, 传址, 
+
+.DLL命令 TOKAB_GetPosition, 空白型, "TokamakVB.dll", "TOKAB_GetPosition", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+    .参数 RetVector, v3, , 未知类型：R3DVector3D。
+
+.DLL命令 TOKAB_SetPosition, 空白型, "TokamakVB.dll", "TOKAB_SetPosition", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+    .参数 X, 小数型, , 
+    .参数 Y, 小数型, , 
+    .参数 Z, 小数型, , 
+
+.DLL命令 TOKAB_GetRotationMatrix, 空白型, "TokamakVB.dll", "TOKAB_GetRotationMatrix", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+    .参数 RetRotMatrix, 整数型, 传址, 未知类型：R3DMatrix。
+
+.DLL命令 TOKAB_SetRotationMatrix, 空白型, "TokamakVB.dll", "TOKAB_SetRotationMatrix", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+    .参数 RotationMatrix, 整数型, 传址, 未知类型：R3DMatrix。
+
+.DLL命令 TOKAB_SetRotation, 空白型, "TokamakVB.dll", "TOKAB_SetRotation", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+    .参数 X, 小数型, , 
+    .参数 Y, 小数型, , 
+    .参数 Z, 小数型, , 
+
+.DLL命令 TOKAB_AddBox, 整数型, "TokamakVB.dll", "TOKAB_AddBox", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+    .参数 Width, 小数型, , 
+    .参数 Height, 小数型, , 
+    .参数 Depth, 小数型, , 
+
+.DLL命令 TOKAB_AddSphere, 整数型, "TokamakVB.dll", "TOKAB_AddSphere", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+    .参数 Diameter, 小数型, , 
+
+.DLL命令 TOKAB_AddCylinder, 整数型, "TokamakVB.dll", "TOKAB_AddCylinder", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+    .参数 Diameter, 小数型, , 
+    .参数 Height, 小数型, , 
+
+.DLL命令 TOKAB_UpdateBoundingInfo, 空白型, "TokamakVB.dll", "TOKAB_UpdateBoundingInfo", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+
+.DLL命令 TOKAB_RemoveGeometry, 空白型, "TokamakVB.dll", "TOKAB_RemoveGeometry", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+    .参数 Geom, 整数型, , 
+
+.DLL命令 TOKAB_GetGeometryCount, 整数型, "TokamakVB.dll", "TOKAB_GetGeometryCount", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+
+.DLL命令 TOKAB_BeginIterateGeometry, 空白型, "TokamakVB.dll", "TOKAB_BeginIterateGeometry", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+
+.DLL命令 TOKAB_GetNextGeometry, 整数型, "TokamakVB.dll", "TOKAB_GetNextGeometry", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+
+.DLL命令 TOKAB_SetUserData, 空白型, "TokamakVB.dll", "TOKAB_SetUserData", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+    .参数 UserData, 整数型, , 
+
+.DLL命令 TOKAB_GetUserData, 整数型, "TokamakVB.dll", "TOKAB_GetUserData", 公开, 
+    .参数 AnimatedBody, 整数型, , 
+
+.DLL命令 TOKGEOM_SetPositionAndRotation, 空白型, "TokamakVB.dll", "TOKGEOM_SetPositionAndRotation", 公开, 
+    .参数 Geom, 整数型, , 
+    .参数 XPos, 小数型, , 
+    .参数 YPos, 小数型, , 
+    .参数 ZPos, 小数型, , 
+    .参数 XRot, 小数型, , 
+    .参数 YRot, 小数型, , 
+    .参数 ZRot, 小数型, , 
+
+.DLL命令 TOKGEOM_GetMaterialIndex, 整数型, "TokamakVB.dll", "TOKGEOM_GetMaterialIndex", 公开, 
+    .参数 Geom, 整数型, , 
+
+.DLL命令 TOKGEOM_SetMaterialIndex, 空白型, "TokamakVB.dll", "TOKGEOM_SetMaterialIndex", 公开, 
+    .参数 Geom, 整数型, , 
+    .参数 index, 整数型, , 
+
+.DLL命令 TOKGEOM_SetMatrix, 空白型, "TokamakVB.dll", "TOKGEOM_SetMatrix", 公开, 
+    .参数 Geom, 整数型, , 
+    .参数 m16, M16, 传址, 
+
+.DLL命令 TOKGEOM_SetUserData, 空白型, "TokamakVB.dll", "TOKGEOM_SetUserData", 公开, 
+    .参数 Geom, 整数型, , 
+    .参数 UserData, 整数型, , 
+
+.DLL命令 TOKGEOM_GetUserData, 整数型, "TokamakVB.dll", "TOKGEOM_GetUserData", 公开, 
+    .参数 Geom, 整数型, , 
+
+.DLL命令 TOKJOINT_Create, 整数型, "TokamakVB.dll", "TOKJOINT_Create", 公开, 
+    .参数 ConnectionType, 整数型, , 
+    .参数 BodyA, 整数型, , 
+    .参数 BodyB, 整数型, , 
+
+.DLL命令 TOKJOINT_Free, 空白型, "TokamakVB.dll", "TOKJOINT_Free", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_SetType, 空白型, "TokamakVB.dll", "TOKJOINT_SetType", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 JointType, 整数型, , 
+
+.DLL命令 TOKJOINT_SetPositionWorld, 空白型, "TokamakVB.dll", "TOKJOINT_SetPositionWorld", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 XPos, 小数型, , 
+    .参数 YPos, 小数型, , 
+    .参数 ZPos, 小数型, , 
+    .参数 XRot, 小数型, , 
+    .参数 YRot, 小数型, , 
+    .参数 ZRot, 小数型, , 
+
+.DLL命令 TOKJOINT_SetWorldMatrix, 空白型, "TokamakVB.dll", "TOKJOINT_SetWorldMatrix", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 m16, M16, 传址, 
+
+.DLL命令 TOKJOINT_SetFrameAMatrix, 空白型, "TokamakVB.dll", "TOKJOINT_SetFrameAMatrix", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 m16, M16, 传址, 
+
+.DLL命令 TOKJOINT_SetFrameBMatrix, 空白型, "TokamakVB.dll", "TOKJOINT_SetFrameBMatrix", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 m16, M16, 传址, 
+
+.DLL命令 TOKJOINT_GetJointLength, 小数型, "TokamakVB.dll", "TOKJOINT_GetJointLength", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_SetJointLength, 空白型, "TokamakVB.dll", "TOKJOINT_SetJointLength", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 Length, 小数型, , 
+
+.DLL命令 TOKJOINT_Enable, 空白型, "TokamakVB.dll", "TOKJOINT_Enable", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 Enabled, 整数型, , 
+
+.DLL命令 TOKJOINT_IsEnabled, 整数型, "TokamakVB.dll", "TOKJOINT_IsEnabled", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_SetUpperLimit, 空白型, "TokamakVB.dll", "TOKJOINT_SetUpperLimit", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 Limit, 小数型, , 
+
+.DLL命令 TOKJOINT_SetLowerLimit, 空白型, "TokamakVB.dll", "TOKJOINT_SetLowerLimit", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 Limit, 小数型, , 
+
+.DLL命令 TOKJOINT_SetUpperLimit2, 空白型, "TokamakVB.dll", "TOKJOINT_SetUpperLimit2", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 Limit, 小数型, , 
+
+.DLL命令 TOKJOINT_SetLowerLimit2, 空白型, "TokamakVB.dll", "TOKJOINT_SetLowerLimit2", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 Limit, 小数型, , 
+
+.DLL命令 TOKJOINT_GetUpperLimit, 小数型, "TokamakVB.dll", "TOKJOINT_GetUpperLimit", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_GetLowerLimit, 小数型, "TokamakVB.dll", "TOKJOINT_GetLowerLimit", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_GetUpperLimit2, 小数型, "TokamakVB.dll", "TOKJOINT_GetUpperLimit2", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_GetLowerLimit2, 小数型, "TokamakVB.dll", "TOKJOINT_GetLowerLimit2", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_EnableLimit, 空白型, "TokamakVB.dll", "TOKJOINT_EnableLimit", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 Enabled, 整数型, , 
+
+.DLL命令 TOKJOINT_EnableLimit2, 空白型, "TokamakVB.dll", "TOKJOINT_EnableLimit2", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 Enabled, 整数型, , 
+
+.DLL命令 TOKJOINT_IsLimit2Enabled, 整数型, "TokamakVB.dll", "TOKJOINT_IsLimit2Enabled", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_SetEpsilon, 空白型, "TokamakVB.dll", "TOKJOINT_SetEpsilon", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 Epsilon, 小数型, , 
+
+.DLL命令 TOKJOINT_SetIterations, 空白型, "TokamakVB.dll", "TOKJOINT_SetIterations", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 Iterations, 整数型, , 
+
+.DLL命令 TOKJOINT_GetEpsilon, 小数型, "TokamakVB.dll", "TOKJOINT_GetEpsilon", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_GetIterations, 整数型, "TokamakVB.dll", "TOKJOINT_GetIterations", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_GetFrameAMatrix, 空白型, "TokamakVB.dll", "TOKJOINT_GetFrameAMatrix", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 RetMatrix, 整数型, 传址, 未知类型：R3DMatrix。
+
+.DLL命令 TOKJOINT_GetFrameBMatrix, 空白型, "TokamakVB.dll", "TOKJOINT_GetFrameBMatrix", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 RetMatrix, 整数型, 传址, 未知类型：R3DMatrix。
+
+.DLL命令 TOKJOINT_GetFrameAX, 小数型, "TokamakVB.dll", "TOKJOINT_GetFrameAX", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_GetFrameAY, 小数型, "TokamakVB.dll", "TOKJOINT_GetFrameAY", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_GetFrameAZ, 小数型, "TokamakVB.dll", "TOKJOINT_GetFrameAZ", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_GetFrameBX, 小数型, "TokamakVB.dll", "TOKJOINT_GetFrameBX", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_GetFrameBY, 小数型, "TokamakVB.dll", "TOKJOINT_GetFrameBY", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_GetFrameBZ, 小数型, "TokamakVB.dll", "TOKJOINT_GetFrameBZ", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_SetDampingFactor, 空白型, "TokamakVB.dll", "TOKJOINT_SetDampingFactor", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 Damping, 小数型, , 
+
+.DLL命令 TOKJOINT_GetDampingFactor, 小数型, "TokamakVB.dll", "TOKJOINT_GetDampingFactor", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_EnableMotor, 空白型, "TokamakVB.dll", "TOKJOINT_EnableMotor", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 Enable, 整数型, , 
+
+.DLL命令 TOKJOINT_IsMotorEnabled, 整数型, "TokamakVB.dll", "TOKJOINT_IsMotorEnabled", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_SetMotorSpeed, 空白型, "TokamakVB.dll", "TOKJOINT_SetMotorSpeed", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 DesiredForce, 小数型, , 
+    .参数 MaxForce, 小数型, , 
+
+.DLL命令 TOKJOINT_EnableMotor2, 空白型, "TokamakVB.dll", "TOKJOINT_EnableMotor2", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 Enable, 整数型, , 
+
+.DLL命令 TOKJOINT_IsMotor2Enabled, 整数型, "TokamakVB.dll", "TOKJOINT_IsMotor2Enabled", 公开, 
+    .参数 Joint, 整数型, , 
+
+.DLL命令 TOKJOINT_SetMotor2Speed, 空白型, "TokamakVB.dll", "TOKJOINT_SetMotor2Speed", 公开, 
+    .参数 Joint, 整数型, , 
+    .参数 DesiredForce, 小数型, , 
+    .参数 MaxForce, 小数型, , 
+
+.DLL命令 TOKSENSOR_SetLineSensor, 空白型, "TokamakVB.dll", "TOKSENSOR_SetLineSensor", 公开, 
+    .参数 Sensor, 整数型, , 
+    .参数 Position, v3, 传址, 未知类型：R3DVector3D。
+    .参数 Direction, v3, 传址, 未知类型：R3DVector3D。
+
+.DLL命令 TOKSENSOR_GetDetectDepth, 小数型, "TokamakVB.dll", "TOKSENSOR_GetDetectDepth", 公开, 
+    .参数 Sensor, 整数型, , 
+
+.DLL命令 TOKSENSOR_GetLineVectorX, 小数型, "TokamakVB.dll", "TOKSENSOR_GetLineVectorX", 公开, 
+    .参数 Sensor, 整数型, , 
+
+.DLL命令 TOKSENSOR_GetLineVectorY, 小数型, "TokamakVB.dll", "TOKSENSOR_GetLineVectorY", 公开, 
+    .参数 Sensor, 整数型, , 
+
+.DLL命令 TOKSENSOR_GetLineUnitVectorY, 小数型, "TokamakVB.dll", "TOKSENSOR_GetLineUnitVectorY", 公开, 
+    .参数 Sensor, 整数型, , 
+
+.DLL命令 TOKSENSOR_GetLineUnitVectorZ, 小数型, "TokamakVB.dll", "TOKSENSOR_GetLineUnitVectorZ", 公开, 
+    .参数 Sensor, 整数型, , 
+
+.DLL命令 TOKSENSOR_GetLinePosX, 小数型, "TokamakVB.dll", "TOKSENSOR_GetLinePosX", 公开, 
+    .参数 Sensor, 整数型, , 
+
+.DLL命令 TOKSENSOR_GetLinePosY, 小数型, "TokamakVB.dll", "TOKSENSOR_GetLinePosY", 公开, 
+    .参数 Sensor, 整数型, , 
+
+.DLL命令 TOKSENSOR_GetLinePosZ, 小数型, "TokamakVB.dll", "TOKSENSOR_GetLinePosZ", 公开, 
+    .参数 Sensor, 整数型, , 
+
+.DLL命令 TOKSENSOR_GetDetectNormalY, 小数型, "TokamakVB.dll", "TOKSENSOR_GetDetectNormalY", 公开, 
+    .参数 Sensor, 整数型, , 
+
+.DLL命令 TOKSENSOR_GetDetectNormalZ, 小数型, "TokamakVB.dll", "TOKSENSOR_GetDetectNormalZ", 公开, 
+    .参数 Sensor, 整数型, , 
+
+.DLL命令 TOKSENSOR_GetDetectContactPointX, 小数型, "TokamakVB.dll", "TOKSENSOR_GetDetectContactPointX", 公开, 
+    .参数 Sensor, 整数型, , 
+
+.DLL命令 TOKSENSOR_GetDetectContactPointY, 小数型, "TokamakVB.dll", "TOKSENSOR_GetDetectContactPointY", 公开, 
+    .参数 Sensor, 整数型, , 
+
+.DLL命令 TOKSENSOR_GetDetectContactPointZ, 小数型, "TokamakVB.dll", "TOKSENSOR_GetDetectContactPointZ", 公开, 
+    .参数 Sensor, 整数型, , 
+
+.DLL命令 TOKSENSOR_SetUserData, 空白型, "TokamakVB.dll", "TOKSENSOR_SetUserData", 公开, 
+    .参数 Sensor, 整数型, , 
+    .参数 UserData, 整数型, , 
+
+.DLL命令 TOKSENSOR_GetUserData, 整数型, "TokamakVB.dll", "TOKSENSOR_GetUserData", 公开, 
+    .参数 Sensor, 整数型, , 
+
+.DLL命令 TOKSENSOR_GetDetectRigidBody, 整数型, "TokamakVB.dll", "TOKSENSOR_GetDetectRigidBody", 公开, 
+    .参数 Sensor, 整数型, , 
+
+.DLL命令 TOKSENSOR_GetDetectAnimatedBody, 整数型, "TokamakVB.dll", "TOKSENSOR_GetDetectAnimatedBody", 公开, 
+    .参数 Sensor, 整数型, , 
+
+.DLL命令 TOKSENSOR_GetDetectMaterial, 整数型, "TokamakVB.dll", "TOKSENSOR_GetDetectMaterial", 公开, 
+    .参数 Sensor, 整数型, , 
+
+.DLL命令 TOKPS_ApplyShockwave, 空白型, "TokamakVB.dll", "TOKPS_ApplyShockwave", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 ForceCenter, v3, 传址, 未知类型：R3DVector3D。
+    .参数 Force, 小数型, , 
+
+.DLL命令 TOKSIM_CreateTerrain_8x8, 空白型, "TokamakVB.dll", "TOKSIM_CreateTerrain_8x8", 公开, 
+
+.DLL命令 TOKSIM_CreateSimulator, 整数型, "TokamakVB.dll", "TOKSIM_CreateSimulator", 公开, 
+    .参数 GravityX, 小数型, , 
+    .参数 GravityY, 小数型, , 
+    .参数 GravityZ, 小数型, , 
+
+.DLL命令 TOKSIM_DestroySimulator, 空白型, "TokamakVB.dll", "TOKSIM_DestroySimulator", 公开, 
+
+.DLL命令 TOKSIM_Advance, 空白型, "TokamakVB.dll", "TOKSIM_Advance", 公开, 
+    .参数 Elapsedtime, 小数型, , 
+    .参数 SubSteps, 整数型, , 
+
+.DLL命令 TOKSIM_GetPhysicsTime, 小数型, "TokamakVB.dll", "TOKSIM_GetPhysicsTime", 公开, 
+
+.DLL命令 TOKSIM_SetStaticMesh, 空白型, "TokamakVB.dll", "TOKSIM_SetStaticMesh", 公开, 
+    .参数 Vertices, v3, 传址, 未知类型：R3DVector3D。
+    .参数 VertexCount, 整数型, , 
+    .参数 Triangles, 整数型, , 
+    .参数 TriangleCount, 整数型, , 
+
+.DLL命令 TOKSIM_SetMaterial, 空白型, "TokamakVB.dll", "TOKSIM_SetMaterial", 公开, 
+    .参数 index, 整数型, , 
+    .参数 Friction, 小数型, , 
+    .参数 Restitution, 小数型, , 
+
+.DLL命令 TOKSIM_GetMaterial, 空白型, "TokamakVB.dll", "TOKSIM_GetMaterial", 公开, 
+    .参数 index, 整数型, , 
+    .参数 Friction, 小数型, 传址, 
+    .参数 Restitution, 小数型, 传址, 
+
+.DLL命令 TOKSIM_GetMaterialFriction, 小数型, "TokamakVB.dll", "TOKSIM_GetMaterialFriction", 公开, 
+    .参数 index, 整数型, , 
+
+.DLL命令 TOKSIM_GetMaterialRestitution, 小数型, "TokamakVB.dll", "TOKSIM_GetMaterialRestitution", 公开, 
+    .参数 index, 整数型, , 
+
+.DLL命令 TOKSIM_SetCInfoBank, 空白型, "TokamakVB.dll", "TOKSIM_SetCInfoBank", 公开, 
+    .参数 CInfoBank, neCollisionInfo, 传址, 
+
+.DLL命令 TOKSIM_SetCollisionResponse, 空白型, "TokamakVB.dll", "TOKSIM_SetCollisionResponse", 公开, 
+    .参数 CollisionID1, 整数型, , 
+    .参数 CollisionID2, 整数型, , 
+    .参数 Response, 逻辑型, , 
+
+.DLL命令 TOKSIM_GetCollisionCount, 整数型, "TokamakVB.dll", "TOKSIM_GetCollisionCount", 公开, 
+
+.DLL命令 TOKSIM_SetAnimatedBodiesCount, 空白型, "TokamakVB.dll", "TOKSIM_SetAnimatedBodiesCount", 公开, 
+    .参数 Count, 整数型, , 
+
+.DLL命令 TOKSIM_SetRigidBodiesCount, 空白型, "TokamakVB.dll", "TOKSIM_SetRigidBodiesCount", 公开, 
+    .参数 Count, 整数型, , 
+
+.DLL命令 TOKSIM_SetStaticMeshNodesGrowByCount, 空白型, "TokamakVB.dll", "TOKSIM_SetStaticMeshNodesGrowByCount", 公开, 
+    .参数 Count, 整数型, , 
+
+.DLL命令 TOKSIM_SetStaticMeshNodesStartCount, 空白型, "TokamakVB.dll", "TOKSIM_SetStaticMeshNodesStartCount", 公开, 
+    .参数 Count, 整数型, , 
+
+.DLL命令 TOKSIM_SetSensorsCount, 空白型, "TokamakVB.dll", "TOKSIM_SetSensorsCount", 公开, 
+    .参数 Count, 整数型, , 
+
+.DLL命令 TOKSIM_SetConstraintBufferSize, 空白型, "TokamakVB.dll", "TOKSIM_SetConstraintBufferSize", 公开, 
+    .参数 Count, 整数型, , 
+
+.DLL命令 TOKSIM_SetConstraintSetsCount, 空白型, "TokamakVB.dll", "TOKSIM_SetConstraintSetsCount", 公开, 
+    .参数 Count, 整数型, , 
+
+.DLL命令 TOKSIM_SetGeometriesCount, 空白型, "TokamakVB.dll", "TOKSIM_SetGeometriesCount", 公开, 
+    .参数 Count, 整数型, , 
+
+.DLL命令 TOKSIM_SetOverlappedPairsCount, 空白型, "TokamakVB.dll", "TOKSIM_SetOverlappedPairsCount", 公开, 
+    .参数 Count, 整数型, , 
+
+.DLL命令 TOKSIM_SetControllersCount, 空白型, "TokamakVB.dll", "TOKSIM_SetControllersCount", 公开, 
+    .参数 Count, 整数型, , 
+
+.DLL命令 TOKSIM_SetRigidParticleCount, 空白型, "TokamakVB.dll", "TOKSIM_SetRigidParticleCount", 公开, 
+    .参数 Count, 整数型, , 
+
+.DLL命令 TOKSIM_RemoveStaticMesh2, 空白型, "TokamakVB.dll", "TOKSIM_RemoveStaticMesh2", 公开, 
+
+.DLL命令 TOKSIM_SetTerrainMesh, 空白型, "TokamakVB.dll", "TOKSIM_SetTerrainMesh", 公开, 
+    .参数 Vertices, v3, 传址, 未知类型：R3DVector3D。
+    .参数 VertexCount, 整数型, , 
+    .参数 indices, 整数型, , 
+    .参数 TriangleCount, 整数型, , 
+
+.DLL命令 TOKSIM_SetGravity, 空白型, "TokamakVB.dll", "TOKSIM_SetGravity", 公开, 
+    .参数 X, 小数型, , 
+    .参数 Y, 小数型, , 
+    .参数 Z, 小数型, , 
+
+.DLL命令 TOKSIM_GravityX, 小数型, "TokamakVB.dll", "TOKSIM_GravityX", 公开, 
+
+.DLL命令 TOKSIM_GravityY, 小数型, "TokamakVB.dll", "TOKSIM_GravityY", 公开, 
+
+.DLL命令 TOKSIM_GravityZ, 小数型, "TokamakVB.dll", "TOKSIM_GravityZ", 公开, 
+
+.DLL命令 TOKSIM_UpdateStaticMesh, 空白型, "TokamakVB.dll", "TOKSIM_UpdateStaticMesh", 公开, 
+    .参数 Vertices, v4, 传址, 未知类型：TK_VECTOR4。
+    .参数 VertexCount, 整数型, , 
+    .参数 indices, 整数型, , 
+    .参数 TriangleCount, 整数型, , 
+    .参数 vOffset, 整数型, , 
+    .参数 tOffset, 整数型, , 
+
+.DLL命令 TOKSIM_RemoveStaticMesh, 空白型, "TokamakVB.dll", "TOKSIM_RemoveStaticMesh", 公开, 
+    .参数 VertexCount, 整数型, , 
+    .参数 TriangleCount, 整数型, , 
+    .参数 vOffset, 整数型, , 
+    .参数 tOffset, 整数型, , 
+
+.DLL命令 TOKSIM_AddStaticMesh3, 空白型, "TokamakVB.dll", "TOKSIM_AddStaticMesh3", 公开, 
+    .参数 Vertices, v4, 传址, 未知类型：TK_VECTOR4。
+    .参数 VertexCount, 整数型, , 
+    .参数 indices, 整数型, , 
+    .参数 TriangleCount, 整数型, , 
+    .参数 AddToList, 整数型, , 
+
+.DLL命令 TOKSIM_SetStaticMesh3, 空白型, "TokamakVB.dll", "TOKSIM_SetStaticMesh3", 公开, 
+
+.DLL命令 TOKRB_Create, 整数型, "TokamakVB.dll", "TOKRB_Create", 公开, 
+
+.DLL命令 TOKRB_CreateParticle, 整数型, "TokamakVB.dll", "TOKRB_CreateParticle", 公开, 
+
+.DLL命令 TOKRB_Free, 空白型, "TokamakVB.dll", "TOKRB_Free", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_SetCollisionID, 空白型, "TokamakVB.dll", "TOKRB_SetCollisionID", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 ColID, 整数型, , 
+
+.DLL命令 TOKRB_GetCollisionID, 整数型, "TokamakVB.dll", "TOKRB_GetCollisionID", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_GetMatrix, 空白型, "TokamakVB.dll", "TOKRB_GetMatrix", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 RetMatrix, 整数型, 传址, 未知类型：R3DMatrix。
+
+.DLL命令 TOKRB_SetMatrix, 空白型, "TokamakVB.dll", "TOKRB_SetMatrix", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 m16, M16, 传址, 
+
+.DLL命令 TOKRB_GetPosition, 空白型, "TokamakVB.dll", "TOKRB_GetPosition", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 RetVector, v3, 传址, 
+
+.DLL命令 TOKRB_GetRotationMatrix, 空白型, "TokamakVB.dll", "TOKRB_GetMatrix", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 RetRotMatrix, M16, 传址, 未知类型：R3DMatrix。
+
+.DLL命令 TOKRB_SetRotationMatrix, 空白型, "TokamakVB.dll", "TOKRB_SetRotationMatrix", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 RotationMatrix, 整数型, 传址, 未知类型：R3DMatrix。
+
+.DLL命令 TOKRB_SetRotation, 空白型, "TokamakVB.dll", "TOKRB_SetRotation", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 X, 小数型, , 
+    .参数 Y, 小数型, , 
+    .参数 Z, 小数型, , 
+
+.DLL命令 TOKSIM_SetStaticMesh2, 空白型, "TokamakVB.dll", "TOKSIM_SetStaticMesh2", 公开, 
+    .参数 Vertices, v4, 传址, 未知类型：TK_VECTOR4。
+    .参数 VertexCount, 整数型, , 
+    .参数 indices, 整数型, , 
+    .参数 TriangleCount, 整数型, , 
+
+.DLL命令 TOKRB_SetPosition, 空白型, "TokamakVB.dll", "TOKRB_SetPosition", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 X, 小数型, , 
+    .参数 Y, 小数型, , 
+    .参数 Z, 小数型, , 
+
+.DLL命令 TOKRB_AddBox, 整数型, "TokamakVB.dll", "TOKRB_AddBox", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 Width, 小数型, , 
+    .参数 Height, 小数型, , 
+    .参数 Depth, 小数型, , 
+
+.DLL命令 TOKRB_AddSphere, 整数型, "TokamakVB.dll", "TOKRB_AddSphere", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 Diameter, 小数型, , 
+
+.DLL命令 TOKRB_AddCylinder, 整数型, "TokamakVB.dll", "TOKRB_AddCylinder", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 Diameter, 小数型, , 
+    .参数 Height, 小数型, , 
+
+.DLL命令 TOKRB_UpdateBoundingInfo, 空白型, "TokamakVB.dll", "TOKRB_UpdateBoundingInfo", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_SetBoxInertiaTensor, 空白型, "TokamakVB.dll", "TOKRB_SetBoxInertiaTensor", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 Width, 小数型, , 
+    .参数 Height, 小数型, , 
+    .参数 Depth, 小数型, , 
+    .参数 Mass, 小数型, , 
+
+.DLL命令 TOKRB_SetSphereInertiaTensor, 空白型, "TokamakVB.dll", "TOKRB_SetSphereInertiaTensor", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 Diameter, 小数型, , 
+    .参数 Mass, 小数型, , 
+
+.DLL命令 TOKRB_SetCylinderInertiaTensor, 空白型, "TokamakVB.dll", "TOKRB_SetCylinderInertiaTensor", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 Diameter, 小数型, , 
+    .参数 Height, 小数型, , 
+    .参数 Mass, 小数型, , 
+
+.DLL命令 TOKRB_SetMass, 空白型, "TokamakVB.dll", "TOKRB_SetMass", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 Mass, 小数型, , 
+
+.DLL命令 TOKRB_GetMass, 小数型, "TokamakVB.dll", "TOKRB_GetMass", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_SetLinearDamping, 空白型, "TokamakVB.dll", "TOKRB_SetLinearDamping", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 Damping, 小数型, , 
+
+.DLL命令 TOKRB_SetAngularDamping, 空白型, "TokamakVB.dll", "TOKRB_SetAngularDamping", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 Damping, 小数型, , 
+
+.DLL命令 TOKRB_IsIdle, 短整数型, "TokamakVB.dll", "TOKRB_IsIdle", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_CollideConnected, 空白型, "TokamakVB.dll", "TOKRB_CollideConnected", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 Collide, 逻辑型, , 
+
+.DLL命令 TOKRB_SetSleepingParameter, 空白型, "TokamakVB.dll", "TOKRB_SetSleepingParameter", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 sleepingParam, 小数型, , 
+
+.DLL命令 TOKRB_Active, 空白型, "TokamakVB.dll", "TOKRB_Active", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 Active, 整数型, , 
+
+.DLL命令 TOKRB_IsActive, 整数型, "TokamakVB.dll", "TOKRB_IsActive", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_ApplyImpulse, 空白型, "TokamakVB.dll", "TOKRB_ApplyImpulse", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 X, 小数型, , 
+    .参数 Y, 小数型, , 
+    .参数 Z, 小数型, , 
+
+.DLL命令 TOKRB_ApplyImpulse2, 空白型, "TokamakVB.dll", "TOKRB_ApplyImpulse2", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 X, 小数型, , 
+    .参数 Y, 小数型, , 
+    .参数 Z, 小数型, , 
+    .参数 XPos, 小数型, , 
+    .参数 YPos, 小数型, , 
+    .参数 ZPos, 小数型, , 
+
+.DLL命令 TOKRB_ApplyTwist, 空白型, "TokamakVB.dll", "TOKRB_ApplyTwist", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 X, 小数型, , 
+    .参数 Y, 小数型, , 
+    .参数 Z, 小数型, , 
+
+.DLL命令 TOKRB_GetForce, 空白型, "TokamakVB.dll", "TOKRB_GetForce", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 RetVector, v3, 传址, 未知类型：R3DVector3D。
+
+.DLL命令 TOKRB_SetForce, 空白型, "TokamakVB.dll", "TOKRB_SetForce", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 X, 小数型, , 
+    .参数 Y, 小数型, , 
+    .参数 Z, 小数型, , 
+
+.DLL命令 TOKRB_SetForce2, 空白型, "TokamakVB.dll", "TOKRB_SetForce2", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 X, 小数型, , 
+    .参数 Y, 小数型, , 
+    .参数 Z, 小数型, , 
+    .参数 XPos, 小数型, , 
+    .参数 YPos, 小数型, , 
+    .参数 ZPos, 小数型, , 
+
+.DLL命令 TOKRB_GetTorque, 空白型, "TokamakVB.dll", "TOKRB_GetTorque", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 RetVector, v3, 传址, 未知类型：R3DVector3D。
+
+.DLL命令 TOKRB_SetTorque, 空白型, "TokamakVB.dll", "TOKRB_SetTorque", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 X, 小数型, , 
+    .参数 Y, 小数型, , 
+    .参数 Z, 小数型, , 
+
+.DLL命令 TOKRB_SetVelocity, 空白型, "TokamakVB.dll", "TOKRB_SetVelocity", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 X, 小数型, , 
+    .参数 Y, 小数型, , 
+    .参数 Z, 小数型, , 
+
+.DLL命令 TOKRB_SetAngularMomentum, 空白型, "TokamakVB.dll", "TOKRB_SetAngularMomentum", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 X, 小数型, , 
+    .参数 Y, 小数型, , 
+    .参数 Z, 小数型, , 
+
+.DLL命令 TOKRB_GetAngularVelocityX, 小数型, "TokamakVB.dll", "TOKRB_GetAngularVelocityX", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_GetAngularVelocityY, 小数型, "TokamakVB.dll", "TOKRB_GetAngularVelocityY", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_GetAngularVelocityZ, 小数型, "TokamakVB.dll", "TOKRB_GetAngularVelocityZ", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_GetAngularMomentumX, 小数型, "TokamakVB.dll", "TOKRB_GetAngularMomentumX", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_GetAngularMomentumY, 小数型, "TokamakVB.dll", "TOKRB_GetAngularMomentumY", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_GetAngularMomentumZ, 小数型, "TokamakVB.dll", "TOKRB_GetAngularMomentumZ", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_GetVelocityX, 小数型, "TokamakVB.dll", "TOKRB_GetVelocityX", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_GetVelocityY, 小数型, "TokamakVB.dll", "TOKRB_GetVelocityY", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_GetVelocityZ, 小数型, "TokamakVB.dll", "TOKRB_GetVelocityZ", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_GetVelocityAtPointX, 小数型, "TokamakVB.dll", "TOKRB_GetVelocityAtPointX", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 X, 小数型, , 
+    .参数 Y, 小数型, , 
+    .参数 Z, 小数型, , 
+
+.DLL命令 TOKRB_GetVelocityAtPointY, 小数型, "TokamakVB.dll", "TOKRB_GetVelocityAtPointY", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 X, 小数型, , 
+    .参数 Y, 小数型, , 
+    .参数 Z, 小数型, , 
+
+.DLL命令 TOKRB_GetVelocityAtPointZ, 小数型, "TokamakVB.dll", "TOKRB_GetVelocityAtPointZ", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 X, 小数型, , 
+    .参数 Y, 小数型, , 
+    .参数 Z, 小数型, , 
+
+.DLL命令 TOKRB_RemoveGeometry, 空白型, "TokamakVB.dll", "TOKRB_RemoveGeometry", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 Geom, 整数型, , 
+
+.DLL命令 TOKRB_GetGeometryCount, 整数型, "TokamakVB.dll", "TOKRB_GetGeometryCount", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_BeginIterateGeometry, 空白型, "TokamakVB.dll", "TOKRB_BeginIterateGeometry", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_GetNextGeometry, 整数型, "TokamakVB.dll", "TOKRB_GetNextGeometry", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_AddController, 整数型, "TokamakVB.dll", "TOKRB_AddController", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 Period, 整数型, , 
+
+.DLL命令 TOKRB_RemoveController, 空白型, "TokamakVB.dll", "TOKRB_RemoveController", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 rbController, 整数型, , 
+
+.DLL命令 TOKRB_BeginIterateController, 空白型, "TokamakVB.dll", "TOKRB_BeginIterateController", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_GetNextController, 整数型, "TokamakVB.dll", "TOKRB_GetNextController", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_GravityEnable, 空白型, "TokamakVB.dll", "TOKRB_GravityEnable", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 Enable, 整数型, , 
+
+.DLL命令 TOKRB_IsGravityEnabled, 整数型, "TokamakVB.dll", "TOKRB_IsGravityEnabled", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_AddSensor, 整数型, "TokamakVB.dll", "TOKRB_AddSensor", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 Position, v3, , 未知类型：R3DVector3D。
+    .参数 Direction, v3, , 未知类型：R3DVector3D。
+
+.DLL命令 TOKRB_BeginIterateSensor, 空白型, "TokamakVB.dll", "TOKRB_BeginIterateSensor", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.DLL命令 TOKRB_RemoveSensor, 空白型, "TokamakVB.dll", "TOKRB_RemoveSensor", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 Sensor, 整数型, , 
+
+.DLL命令 TOKRB_SetUserData, 空白型, "TokamakVB.dll", "TOKRB_SetUserData", 公开, 
+    .参数 RigidBody, 整数型, , 
+    .参数 UserData, 整数型, , 
+
+.DLL命令 TOKRB_GetUserData, 整数型, "TokamakVB.dll", "TOKRB_GetUserData", 公开, 
+    .参数 RigidBody, 整数型, , 
+
+.程序集 porA, , , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 引擎, 物理, , , 
+.程序集变量 Mxpos, v3, , , 
+.程序集变量 mxsize, v3, , , 
+.程序集变量 mxrot, 小数型, , , 
+.程序集变量 方块, 空白型, , "100", 
+.程序集变量 地面, 空白型, , , 
+.程序集变量 墙壁1, 空白型, , , 
+.程序集变量 墙壁2, 空白型, , , 
+.程序集变量 墙壁3, 空白型, , , 
+.程序集变量 球体, 空白型, , , 
+.程序集变量 碰撞总数, 空白型, , , 
+.程序集变量 在地, 逻辑型, , , 
+.程序集变量 a, 短整数型, , , 
+.程序集变量 b, 短整数型, , , 
+.程序集变量 box, 容器盒, , , 
+.子程序 __启动窗口_将被销毁, 空白型, , 
+引擎.销毁 ()
+结束 ()
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 i, 整数型, , , 
+.局部变量 _v, v3, , , 
+.局部变量 pp, 整数型, , , 
+.局部变量 pos, v3, , , 
+.局部变量 size, v3, , , 
+.局部变量 rot, 小数型, , , 
+.局部变量 a2, 短整数型, , , 
+.局部变量 b2, 短整数型, , , 
+.局部变量 c, 小数型, , , 
+
+.如果真 (等于 (MX.未知支持库函数_11 (取窗口句柄 ()), 假))
+    销毁 ()
+.如果真结束
+赋值 (MX., “袁进峰|MX20051104”)
+赋值 (MX.未知支持库函数_13 (“redc.bmp”, math.未知支持库函数_56 (255, 0, 255, 0), “y_1”))
+赋值 (MX.未知支持库函数_13 (“ball_B.bmp”, math.未知支持库函数_56 (255, 0, 0, 0), “y_2”))
+赋值 (MX.未知支持库函数_13 (“fang.bmp”, 16711935, “y_3”))
+ ' ----------以下为物理引擎--------------
+赋值 (run, 真)
+init ()
+赋值 (., 真)
+
+.判断循环首 (run)
+    MX.未知支持库函数_18 (真, math.未知支持库函数_56 (255, 255, 250, 250))
+    
+    引擎.更新虚拟世界 () ' 物理引擎刷新
+    
+    赋值 (碰撞总数, 引擎.取碰撞总数 ())
+    赋值 (pp, 0)
+    .如果真 (大于 (碰撞总数, 0))
+        引擎.取碰撞信息_A (1, pp, _v)
+        引擎.help_坐标转换Y (_v.y)
+        
+    .如果真结束
+    .如果 (大于 (pp, 0))
+        赋值 (在地, 真)
+    .否则
+        赋值 (在地, 假)
+    .如果结束
+    
+    
+     ' 引擎.取物体绘画位置EX (球体, Mxpos, mxsize, mxrot)
+     ' MX.DrawEx (pic_ball, Mxpos.x, Mxpos.y, mxsize.x, mxsize.y, 0, 0, 1, mxrot, -1)
+    
+    
+     ' 引擎.取物体绘画位置EX (地面, Mxpos, mxsize, mxrot)
+     ' MX.FillBox (Mxpos.x, Mxpos.y, mxsize.x, mxsize.y, -16777216)
+    
+     ' 引擎.取物体绘画位置EX (墙壁, Mxpos, mxsize, mxrot)
+     ' MX.FillBox (Mxpos.x, Mxpos.y, mxsize.x, mxsize.y, -16777216)
+    
+    
+    .计次循环首 (#_物体总数常, i)
+         ' 引擎.取物体绘画位置EX (方块 [i], Mxpos, mxsize, mxrot)
+         ' MX.DrawEx (pic_ball, Mxpos.x, Mxpos.y, mxsize.x, mxsize.y, 0, 0, 1, mxrot, -1)
+    .计次循环尾 ()
+    
+    
+    引擎.画出所有物体 ()
+    
+    引擎.取物体绘画位置2D (方块 [1], pos, size, rot)
+    赋值 (相加 (相减 (., ), 10))
+    赋值 (b2, 相加 (相减 (pos.y, b), 10))
+    MX.未知支持库函数_22 (a, b, a2, b2, math.未知支持库函数_56 (244, 255, 0, 0))
+    
+    
+    
+    .如果真 (大于 (相加 (相乘 (a2, a2), 相乘 (b2, b2)), 相乘 (60, 60)))
+        引擎.点牵引 (方块 [1], a, b, 0, 0.005)
+    .如果真结束
+    
+    
+    
+    MX.未知支持库函数_32 (相加 (到文本 (MX.未知支持库函数_33 ()), “,”, 到文本 (碰撞总数), “ == ”, 到文本 (pp)), _v.x, 100, math.未知支持库函数_56 (255, 250, 25, 110), 0)
+    MX.未知支持库函数_26 (0)
+    处理事件 ()
+.判断循环尾 ()
+
+.子程序 init, 空白型, , 
+.局部变量 i, 整数型, , , 
+
+引擎.初始化 (100, 10, 110, 1000, 引擎.help_returnV3 (0, 0, -20))
+引擎.置屏幕尺寸 (.宽度, .高度)
+
+ ' 地面 ＝ 引擎.加入活体 (pic_fang, 400 ÷ 128, #几何类型_方体, 引擎.help_returnV3 (400, 50, 400), 引擎.help_returnV3 (300, 0, 0), 0, 1)  ' 下边地面与墙壁使用同一类型:1
+ ' 墙壁1 ＝ 引擎.加入活体 (pic_fang, 600 ÷ 128, #几何类型_方体, 引擎.help_returnV3 (20, 600, 400), 引擎.help_returnV3 (100, 300, -200), 0, 1)  ' 左边
+ ' 墙壁2 ＝ 引擎.加入活体 (pic_fang, 600 ÷ 128, #几何类型_方体, 引擎.help_returnV3 (20, 600, 400), 引擎.help_returnV3 (500, 300, -200), 0, 1)  ' 右边
+ ' 墙壁3 ＝ 引擎.加入活体 (pic_fang, 600 ÷ 128, #几何类型_方体, 引擎.help_returnV3 (400, 600, 40), 引擎.help_returnV3 (300, 200, -50), 0, 1)  ' 底板
+ ' 地面 ＝ 引擎.加入活体 (pic_fang, 500 ÷ 128, #几何类型_方体, 引擎.help_returnV3 (500, 50, 400), 引擎.help_returnV3 (300, 500, 0), 0, 1)  ' 上边
+
+引擎.建立容器盒 (box, 引擎.help_returnV3 (400, 400, 400), 50, 引擎.help_returnV3 (250, 250, 200), 0, 真)
+
+
+
+ ' 方块 [1] ＝ 引擎.加入刚体 (pic_ball, 20 ÷ 51, #几何类型_球体, 引擎.help_returnV3 (20, 20, 10), 引擎.help_returnV3 (250, 200 ＋ i × 10, 0), 0, 0.001, 0.0001, 0.5, 引擎.help_returnV4 (20, 20, 20, 0.2), 2)
+.计次循环首 (#_物体总数常, i)
+    
+    
+    赋值 (方块 [i], 引擎.加入刚体 (相除 (20, 51), #几何类型_球体, 引擎.help_returnV3 (20, 20, 10), 引擎.help_returnV3 (250, 相加 (200, 相乘 (i, 10)), 0), 0, 0.001, 0.0001, 0.5, 引擎.help_returnV4 (20, 20, 20, 0.2), 2))
+.计次循环尾 ()
+ ' 球体 ＝ 引擎.加入刚体 (#几何类型_球体, 引擎.help_returnV3 (20, 20, 10), 引擎.help_returnV3 (200, 200 ＋ i × 10, 0), 0, 0.001, 0.001, 1, 引擎.help_returnV3 (10, 10, 10), 2)
+
+引擎.设碰撞类型 (方块 [1], 3)
+引擎.设碰撞结构 (collBank)
+
+引擎.设碰撞方法 (#碰撞反应_碰撞且反馈, 3, 2) ' 反馈与地面和墙壁的碰撞
+ ' 引擎.设碰撞方法 (#碰撞反应_碰撞且反馈, 3, 1)  ' 反馈与地面和墙壁的碰撞
+
+引擎.设系统速度上下限 (相除 (1, 60), 0.001) ' 设定物理引擎更新的速度
+
+.子程序 _外形框1_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+引擎.点牵引 (方块 [1], 横向位置, 纵向位置, 0, 0.5)
+
+.子程序 __启动窗口_按下某键, 逻辑型, , 
+.参数 键代码, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.局部变量 x, 空白型, , , 
+.局部变量 y, 空白型, , , 
+
+.如果真 (在地)
+    .如果真 (等于 (键代码, #左光标键))
+        赋值 (x, -1)
+    .如果真结束
+    .如果真 (等于 (键代码, #右光标键))
+        赋值 (x, 1)
+    .如果真结束
+    .如果真 (等于 (键代码, #上光标键))
+        赋值 (y, 1)
+    .如果真结束
+    
+    引擎.加速度 (方块 [1], x, y, 100)
+    
+.如果真结束
+
+
+.子程序 _外形框1_鼠标位置被移动, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+赋值 (横向位置)
+赋值 (纵向位置)
+
+.类模块 物理, , , 
+
+.程序集变量 _sim, 空白型, , , 
+.程序集变量 虚拟物体数组, 物体数据结构, , "10", 
+.程序集变量 物体数, 空白型, , , 
+.程序集变量 系统_更新间隔_最大值, 小数型, , , 设定后，系统不会超过此值,一般为1/45
+.程序集变量 系统_更新间隔_最小值, 小数型, , , 设定后，系统不会低于此值,一般为0.008
+.程序集变量 fElapsed, 小数型, , , 
+.程序集变量 lastErr, 文本型, , , 
+.程序集变量 屏幕尺寸, v3, , , 
+.程序集变量 当前ID, 空白型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 初始化, 空白型, , 
+.参数 刚体数量, 空白型, , 如100
+.参数 活体数量, 空白型, , 如100
+.参数 几何体总数, 空白型, , 等于刚体数与活体数之和，如200
+.参数 最大可重叠总数, 空白型, , 基本可按:刚体*（活体-1)/2
+.参数 重力向量, v3, , 
+
+TOKSIM_SetRigidBodiesCount (刚体数量) ' 设置刚体数
+TOKSIM_SetAnimatedBodiesCount (活体数量) ' 设置活体
+TOKSIM_SetGeometriesCount (几何体总数) ' 刚体与活数之和，总数
+重定义数组 (虚拟物体数组, 假, 几何体总数)
+
+TOKSIM_SetOverlappedPairsCount (最大可重叠总数) ' 最大可重叠总数,基本可按:刚体*（活体-1)/2
+赋值 (_sim, TOKSIM_CreateSimulator (重力向量.x, 重力向量.y, 0)) ' 重力向量
+
+
+.子程序 销毁, 空白型, , 
+.局部变量 i, 整数型, , , 
+
+.计次循环首 (物体数, i)
+    .判断开始 (等于 (虚拟物体数组 [i], 物体类型, #物体类型_NULL))
+        到循环尾 () ' 此物体号为空
+    .判断 (等于 (虚拟物体数组 [i], 物体类型, #物体类型_刚体))
+        TOKRB_Free (虚拟物体数组 [i], 物体ID号)
+    .判断 (等于 (虚拟物体数组 [i], 物体类型, #物体类型_活体))
+        TOKAB_Free (虚拟物体数组 [i], 物体ID号)
+        
+    .默认
+        
+    .判断结束
+    
+.计次循环尾 ()
+TOKSIM_DestroySimulator ()
+
+
+.子程序 更新虚拟世界, 空白型, , 
+.局部变量 i, 整数型, , , 
+.局部变量 ttt, 文本型, , , 
+
+赋值 (fElapsed, gettime ())
+
+.如果真 (小于 (fElapsed, 系统_更新间隔_最小值))
+    赋值 (fElapsed, 相加 (系统_更新间隔_最小值, 0.001))
+.如果真结束
+.如果真 (不等于 (fLastElapsed, 0))
+    .如果真 (大于或等于 (fElapsed, 相乘 (fLastElapsed, 1.2)))
+        赋值 (fElapsed, 相乘 (fLastElapsed, 1.2))
+    .如果真结束
+    .如果真 (小于或等于 (fElapsed, 相乘 (fLastElapsed, 0.8)))
+        赋值 (fElapsed, 相乘 (fLastElapsed, 0.8))
+    .如果真结束
+    
+.如果真结束
+.如果真 (大于 (fElapsed, 系统_更新间隔_最大值))
+    赋值 (fElapsed, 系统_更新间隔_最大值)
+.如果真结束
+赋值 (fLastElapsed, fElapsed)
+ ' _启动窗口.标题 ＝ 到文本 (fElapsed)
+
+TOKSIM_Advance (fElapsed, 3) ' 此设一般设为1
+
+ ' MX.FillBox (200 － 200, 400 － 30, 400, 25, -16777216)  ' 图像ID，左顶宽高，目标XY，ALPHA
+
+
+.子程序 画出所有物体, 空白型, 公开, 
+.局部变量 i, 整数型, , , 
+.局部变量 pos, v3, , , 
+.局部变量 size, v3, , , 
+.局部变量 rot, 小数型, , , 
+.局部变量 rot3d, v3, , , 
+
+.计次循环首 (物体数, i)
+    .如果真 (取物体绘画位置2D (i, pos, size, rot))
+        MX.未知支持库函数_21 (虚拟物体数组 [i], 图片号, pos.x, pos.y, 相除 (size.x, 虚拟物体数组 [i], 图片缩放比), 相除 (size.y, 虚拟物体数组 [i], 图片缩放比), 0, 0, 虚拟物体数组 [i], 图片缩放比, rot, -1)
+        
+    .如果真结束
+    
+.计次循环尾 ()
+
+.子程序 设系统速度上下限, 空白型, , 
+.参数 最大值, 小数型, , 最大,可用1/45
+.参数 最小值, 小数型, , 最小,可用0.008
+
+赋值 (系统_更新间隔_最大值, 最大值)
+赋值 (系统_更新间隔_最小值, 最小值)
+
+.子程序 加入活体, 整数型, , 
+.参数 图片号, 空白型, , 
+.参数 图片缩放比, 小数型, , 
+.参数 几何类型, 空白型, , 
+.参数 尺寸, v3, , 当为球体时只有此一个参数
+.参数 位置, v3, , 
+.参数 角度, 小数型, , 
+.参数 碰撞类型, 整数型, 可空, 自定义数字,当为-1时表示使用返回值（序号）作碰撞类型
+
+.局部变量 id, 空白型, , , 
+
+.如果 (大于 (物体数, 取数组成员数 (虚拟物体数组)))
+    赋值 (lastErr, “物理.加入活体() : 物体总数超过数组下标.”)
+    返回 (-1)
+    
+.否则
+    赋值 (物体数, 相加 (物体数, 1))
+    
+.如果结束
+赋值 (id, TOKAB_Create ())
+
+赋值 (虚拟物体数组 [物体数], 物体ID号, id)
+.如果 (等于 (几何类型, #几何类型_方体))
+    TOKAB_AddBox (id, 尺寸.x, 尺寸.y, 尺寸.z) ' 加方体
+.否则
+    TOKAB_AddSphere (id, 尺寸.x) ' 加球体
+.如果结束
+
+TOKAB_SetPosition (id, 位置.x, 位置.y, 0) ' x=100,y=-25,z=100
+TOKAB_SetRotation (id, 0, 0, 角度)
+.如果真 (等于 (是否为空 (碰撞类型), 假))
+    .如果 (等于 (碰撞类型, -1))
+        TOKAB_SetCollisionID (id, 物体数) ' 设 碰撞代号,当为-1时表示使用默认的虚拟数组中的序号
+    .否则
+        TOKAB_SetCollisionID (id, 碰撞类型) ' 设 碰撞代号
+    .如果结束
+    
+.如果真结束
+赋值 (虚拟物体数组 [物体数], 图片缩放比, 图片缩放比)
+赋值 (虚拟物体数组 [物体数], 图片号, 图片号)
+赋值 (虚拟物体数组 [物体数], 尺寸, 尺寸)
+赋值 (虚拟物体数组 [物体数], 角度.z, 角度)
+赋值 (虚拟物体数组 [物体数], 位置, 位置)
+赋值 (虚拟物体数组 [物体数], 物体类型, #物体类型_活体)
+赋值 (虚拟物体数组 [物体数], 碰撞类型, 碰撞类型)
+
+TOKAB_UpdateBoundingInfo (id)
+
+返回 (物体数)
+
+.子程序 加入刚体, 整数型, , 
+.参数 图片号, 空白型, , 
+.参数 图片缩放比, 小数型, , 
+.参数 几何类型, 空白型, , 
+.参数 尺寸, v3, , 当为球体时只有此一个参数
+.参数 位置, v3, , 
+.参数 角度, 小数型, , 
+.参数 线性阻力, 小数型, , 
+.参数 角度动量, 小数型, , 
+.参数 质量, 小数型, , 
+.参数 惯性张量, v4, , 
+.参数 碰撞类型, 整数型, 可空, 自定义数字,当为-1时表示使用返回值（序号）作碰撞类型
+
+.局部变量 id, 空白型, , , 
+
+.如果 (大于 (物体数, 取数组成员数 (虚拟物体数组)))
+    赋值 (lastErr, “物理.加入刚体() : 物体总数超过数组下标.”)
+    返回 (-1)
+    
+.否则
+    赋值 (物体数, 相加 (物体数, 1))
+    
+.如果结束
+赋值 (id, TOKRB_Create ())
+
+赋值 (虚拟物体数组 [物体数], 物体ID号, id)
+.如果 (等于 (几何类型, #几何类型_方体))
+    TOKRB_AddBox (id, 尺寸.x, 尺寸.y, 尺寸.z)
+.否则
+    TOKRB_AddSphere (id, 尺寸.x)
+.如果结束
+
+TOKRB_SetPosition (id, 位置.x, 位置.y, 0) ' x=100,y=-25,z=100
+TOKRB_SetRotation (id, 0, 0, 角度)
+.如果真 (等于 (是否为空 (碰撞类型), 假))
+    .如果 (等于 (碰撞类型, -1))
+        TOKRB_SetCollisionID (id, 物体数) ' 设 碰撞代号,当为-1时表示使用默认的虚拟数组中的序号
+    .否则
+        TOKRB_SetCollisionID (id, 碰撞类型) ' 设 碰撞代号
+    .如果结束
+    
+.如果真结束
+
+
+TOKRB_SetLinearDamping (id, 线性阻力) ' 0.001-------------------------
+TOKRB_SetAngularDamping (id, 角度动量)
+TOKRB_SetMass (id, 质量)
+TOKRB_SetBoxInertiaTensor (id, 惯性张量.X, 惯性张量.Y, 惯性张量.Z, 惯性张量.w) ' 方体重力向量
+ ' TOKRB_SetSphereInertiaTensor (rb, 50, 10)
+TOKRB_UpdateBoundingInfo (id)
+
+赋值 (虚拟物体数组 [物体数], 图片缩放比, 图片缩放比)
+赋值 (虚拟物体数组 [物体数], 图片号, 图片号)
+赋值 (虚拟物体数组 [物体数], 尺寸, 尺寸)
+赋值 (虚拟物体数组 [物体数], 角度.z, 角度)
+赋值 (虚拟物体数组 [物体数], 位置, 位置)
+赋值 (虚拟物体数组 [物体数], 物体类型, #物体类型_刚体)
+赋值 (虚拟物体数组 [物体数], 碰撞类型, 碰撞类型)
+TOKRB_UpdateBoundingInfo (id)
+返回 (物体数)
+
+
+
+.子程序 取物体绘画位置, 逻辑型, , 返回物体所在点及所转角度,失败返回假。全部为2D_注意此函数返回值是绘画位置，以窗口左下角为原点，向上为正值。
+.参数 rid, 空白型, , 物体ID
+.参数 位置, v3, 参考, 位置
+.参数 尺寸, v3, 参考, 
+.参数 角度, 小数型, 参考, 角度
+
+.局部变量 id, 整数型, , , 
+.局部变量 v, v3, , , 
+
+.如果真 (等于 (虚拟物体数组 [rid], 物体类型, #物体类型_NULL))
+    赋值 (lastErr, “物理.取物体位置() : 参数 rid 所查物体不存在.”)
+    返回 (假)
+.如果真结束
+
+赋值 (id, 虚拟物体数组 [rid], 物体ID号)
+处理事件 ()
+.如果 (等于 (虚拟物体数组 [rid], 物体类型, #物体类型_刚体))
+    LimitMotion_RB_2D (id)
+    TOKRB_GetPosition (id, v)
+    赋值 (位置, v)
+     ' 输出调试文本 (v.y)
+    赋值 (角度, getRotation_RB_2D (id))
+    
+.否则
+    LimitMotion_AB_2D (id)
+    TOKAB_GetPosition (id, 位置)
+    赋值 (角度, getRotation_AB_2D (id))
+.如果结束
+ ' MX.DrawEx (picID, Position.x － 5, 400 － (Position.y ＋ 10), MX.GetTextureWidth (picID), MX.GetTextureHeight (picID), 0, 0, 1, temp, math.Alpha (255))  ' 图像ID，左顶宽高，目标XY，ALPHA
+
+赋值 (尺寸, 虚拟物体数组 [rid], 尺寸)
+返回 (真)
+
+
+.子程序 取物体绘画位置2D, 逻辑型, , 返回物体所在点及所转角度,全部为2D_注意此函数返回值是为WIN窗口坐标加工过的。
+.参数 rid, 空白型, , 物体ID
+.参数 位置, v3, 参考, 位置
+.参数 尺寸, v3, 参考, 
+.参数 角度, 小数型, 参考, 角度
+
+.局部变量 id, 整数型, , , 
+
+.如果真 (等于 (虚拟物体数组 [rid], 物体类型, #物体类型_NULL))
+    赋值 (lastErr, “物理.取物体位置EX() : 参数 rid 所查物体不存在.”)
+    返回 (假)
+.如果真结束
+赋值 (id, 虚拟物体数组 [rid], 物体ID号)
+.如果 (等于 (虚拟物体数组 [rid], 物体类型, #物体类型_刚体))
+    LimitMotion_RB_2D (id)
+    TOKRB_GetPosition (id, 位置)
+    赋值 (角度, getRotation_RB_2D (id))
+    
+.否则
+     ' LimitMotion_AB_2D (id)
+    TOKAB_GetPosition (id, 位置)
+    
+    赋值 (角度, getRotation_AB_2D (id))
+    
+.如果结束
+赋值 (位置.x, 相减 (位置.x, 相除 (虚拟物体数组 [rid], 尺寸.x, 2)))
+赋值 (位置.y, 相减 (屏幕尺寸.y, 相加 (位置.y, 相除 (虚拟物体数组 [rid], 尺寸.y, 2))))
+赋值 (尺寸, 虚拟物体数组 [rid], 尺寸)
+ ' MX.DrawEx (picID, Position.x － 5, 400 － (Position.y ＋ 10), MX.GetTextureWidth (picID), MX.GetTextureHeight (picID), 0, 0, 1, temp, mach.Alpha (255))  ' 图像ID，左顶宽高，目标XY，ALPHA
+返回 (真)
+
+
+.子程序 取物体绘画位置3D, 逻辑型, , 返回物体所在点及所转角度,失败返回假。全部为2D_注意此函数返回值是绘画位置，以窗口左下角为原点，向上为正值。
+.参数 rid, 空白型, , 物体ID
+.参数 位置, v3, 参考, 位置
+.参数 尺寸, v3, 参考, 
+.参数 角度, v3, 参考, 角度
+
+.局部变量 id, 整数型, , , 
+.局部变量 mm, M16, , , 
+
+.如果真 (等于 (虚拟物体数组 [rid], 物体类型, #物体类型_NULL))
+    赋值 (lastErr, “物理.取物体位置() : 参数 rid 所查物体不存在.”)
+    返回 (假)
+.如果真结束
+
+赋值 (id, 虚拟物体数组 [rid], 物体ID号)
+处理事件 ()
+.如果 (等于 (虚拟物体数组 [rid], 物体类型, #物体类型_刚体))
+    TOKRB_GetPosition (id, 位置)
+    TOKRB_GetRotationMatrix (id, mm)
+    
+.否则
+    
+    TOKAB_GetPosition (id, 位置)
+    TOKAB_GetRotationMatrixA (id, mm)
+    
+.如果结束
+赋值 (角度.x, mm.m41)
+赋值 (角度.y, mm.m42)
+赋值 (角度.z, mm.m43)
+
+ ' MX.DrawEx (picID, Position.x － 5, 400 － (Position.y ＋ 10), MX.GetTextureWidth (picID), MX.GetTextureHeight (picID), 0, 0, 1, temp, math.Alpha (255))  ' 图像ID，左顶宽高，目标XY，ALPHA
+
+赋值 (位置.x, 相减 (位置.x, 相除 (虚拟物体数组 [rid], 尺寸.x, 2)))
+赋值 (位置.y, 相减 (屏幕尺寸.y, 相加 (位置.y, 相除 (虚拟物体数组 [rid], 尺寸.y, 2))))
+赋值 (尺寸, 虚拟物体数组 [rid], 尺寸)
+
+
+返回 (真)
+
+
+.子程序 改变物体速度, 空白型, , 
+.参数 物体ID号, 空白型, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+
+.局部变量 id, 空白型, , , 
+.局部变量 v, v3, , , 
+
+赋值 (id, 虚拟物体数组 [物体ID号], 物体ID号)
+TOKRB_GetPosition (id, v)
+TOKRB_SetVelocity (id, x, 相减 (屏幕尺寸.y, y), 0)
+ ' TOKRB_SetForce (rb [1], (横向位置 － v.x) × 0.1, (400 － 纵向位置 － v.y) × 0.2, 0)
+TOKAB_UpdateBoundingInfo (id)
+
+
+
+.子程序 置屏幕尺寸, 空白型, , 为与物体尺寸达到一致
+.参数 宽度, 空白型, , 
+.参数 高度, 空白型, , 
+
+赋值 (屏幕尺寸.x, 宽度)
+赋值 (屏幕尺寸.y, 高度)
+
+.子程序 gettime, 小数型, , 
+返回 (相乘 (MX.未知支持库函数_33 (), 0.0004))
+
+.子程序 getRotation_RB_2D, 小数型, , 取得物体2D角度_必须启用TOKAMAK物体引擎后使用
+.参数 rid, 空白型, , 物体ID号
+
+.局部变量 angle, v3, , , 
+.局部变量 ro, v3, , , 
+.局部变量 m3, M16, , , 
+
+TOKRB_GetRotationMatrix (rid, m3)
+
+.如果 (小于 (m3.m13, 1))
+    .如果 (大于 (m3.m13, -1))
+        赋值 (angle.x, atan2 (负 (m3.m23), m3.m33))
+        赋值 (angle.y, asin (m3.m13))
+        赋值 (angle.z, atan2 (负 (m3.m12), m3.M11))
+        
+    .否则
+        赋值 (angle.x, 负 (atan2 (m3.m21, m3.m22)))
+        赋值 (angle.y, 相除 (负 (#pi), 2))
+        赋值 (angle.z, 0)
+        
+    .如果结束
+    
+.否则
+    赋值 (angle.x, atan2 (m3.m21, m3.m22))
+    赋值 (angle.y, 相除 (#pi, 2))
+    赋值 (angle.z, 0)
+    
+.如果结束
+
+
+赋值 (ro.z, 弧角转换 (angle.z))
+
+返回 (负 (angle.z))
+
+
+
+.子程序 getRotation_AB_2D, 小数型, , 取得物体2D角度_必须启用TOKAMAK物体引擎后使用
+.参数 rid, 空白型, , 物体ID号
+
+.局部变量 angle, v3, , , 
+.局部变量 ro, v3, , , 
+.局部变量 m3, M16, , , 
+
+TOKAB_GetRotationMatrixA (rid, m3)
+
+.如果 (小于 (m3.m13, 1))
+    .如果 (大于 (m3.m13, -1))
+        赋值 (angle.x, atan2 (负 (m3.m23), m3.m33))
+        赋值 (angle.y, asin (m3.m13))
+        赋值 (angle.z, atan2 (负 (m3.m12), m3.M11))
+        
+    .否则
+        赋值 (angle.x, 负 (atan2 (m3.m21, m3.m22)))
+        赋值 (angle.y, 相除 (负 (#pi), 2))
+        赋值 (angle.z, 0)
+        
+    .如果结束
+    
+.否则
+    赋值 (angle.x, atan2 (m3.m21, m3.m22))
+    赋值 (angle.y, 相除 (#pi, 2))
+    赋值 (angle.z, 0)
+    
+.如果结束
+
+
+赋值 (ro.z, 弧角转换 (angle.z))
+
+返回 (负 (angle.z))
+
+
+
+.子程序 LimitMotion_RB_2D, 空白型, , 调整为2D物理_须在启用TAKAMAK后使用
+.参数 rid, 空白型, , 物体ID号
+
+.局部变量 mo, v3, , , 
+.局部变量 pos, v3, , , 
+.局部变量 vel, v3, , , 
+
+TOKRB_GetPosition (rid, pos)
+赋值 (pos.z, 0) ' Z
+
+TOKRB_SetPosition (rid, pos.x, pos.y, pos.z) ' // X,Y
+
+赋值 (vel.x, TOKRB_GetVelocityX (rid)) ' // X
+赋值 (vel.y, TOKRB_GetVelocityY (rid)) ' Y
+赋值 (vel.z, 0) ' Z
+TOKRB_SetVelocity (rid, vel.x, vel.y, vel.z) ' X,Y
+
+赋值 (mo.x, 0) ' // X
+赋值 (mo.y, 0) ' // Y
+
+赋值 (mo.z, TOKRB_GetAngularMomentumZ (rid))
+TOKRB_SetAngularMomentum (rid, mo.x, mo.y, mo.z)
+
+返回 ()
+
+.子程序 LimitMotion_AB_2D, 空白型, , 调整为2D物理_须在启用TAKAMAK后使用
+.参数 rid, 空白型, , 物体ID号
+
+.局部变量 mo, v3, , , 
+.局部变量 pos, v3, , , 
+.局部变量 vel, v3, , , 
+
+ ' ' 返回 ()  ' 活体不用调整，因为虚拟世界对之没有影响
+ ' TOKAB_GetPosition (rid, pos)
+
+ ' TOKAB_SetPosition (rid, pos.x, pos.y, pos.z)  ' // X,Y
+
+ ' vel.x ＝ TOKaB_GetVelocityX (rid)  ' // X
+ ' vel.y ＝ TOKaB_GetVelocityY (rid)  ' Y
+ ' vel.z ＝ 0  ' Z
+ ' TOKaB_SetVelocity (rid, vel.x, vel.y, vel.z)  ' X,Y
+
+ ' mo.x ＝ 0  ' // X
+ ' mo.y ＝ 0  ' // Y
+
+ ' mo.z ＝ TOKaB_GetAngularMomentumZ (rid)
+
+ ' TOKaB_SetAngularMomentum (rid, mo.x, mo.y, mo.z)
+
+返回 ()
+
+.子程序 help_returnV3, v3, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 z, 小数型, , 
+
+.局部变量 v, v3, , , 
+
+赋值 (v.x, x)
+赋值 (v.y, y)
+赋值 (v.z, z)
+返回 (v)
+
+.子程序 help_returnV4, v4, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 z, 小数型, , 
+.参数 w, 小数型, , 
+
+.局部变量 v, v4, , , 
+
+赋值 (v.X, x)
+赋值 (v.Y, y)
+赋值 (v.Z, z)
+赋值 (v.w, w)
+返回 (v)
+
+.子程序 help_坐标转换Y, 空白型, , 
+.参数 v, 小数型, 参考, 
+
+ ' v.x ＝ 位置.x
+赋值 (v, 相减 (屏幕尺寸.y, v))
+
+
+.子程序 取碰撞次数, 整数型, , 
+.局部变量 L, 整数型, , , 
+.局部变量 ii, 整数型, 静态, , 
+.局部变量 v, v3, , , 
+.局部变量 a_type, 空白型, , , 
+.局部变量 b_type, 空白型, , , 
+
+ ' TOKRB_AddController ()
+ ' TOKRB_BeginIterateController ()
+ ' TOKAB_CollideConnected ()
+ ' L ＝ TOKSENSOR_GetDetectRigidBody (sen_id [1])
+
+ ' L ＝ TOKSENSOR_GetDetectRigidBody (sen_id)
+
+ ' 输出调试文本 (rb [1], L, TOKSENSOR_GetDetectAnimatedBody (sen_id [1]))
+ ' L ＝ TOKSIM_GetCollisionCount ()
+
+赋值 (L, TOKSIM_GetCollisionCount ())
+返回 (L)
+.如果真 (大于 (L, 0))
+    
+    .如果 (等于 (collBank [1].typeA, 1))
+        TOKAB_GetPosition (collBank [1].bodyA, v) ' 刚体
+        赋值 (a_type, TOKAB_GetCollisionID (collBank [1].bodyA))
+    .否则
+        TOKRB_GetPosition (collBank [1].bodyA, v) ' 活体
+        赋值 (a_type, TOKRB_GetCollisionID (collBank [1].bodyA))
+    .如果结束
+    
+    
+    MX.未知支持库函数_32 (相加 (“碰了”, 到文本 (a_type)), 400, 100, -1, 0)
+    
+    
+     ' .如果真 (等于 (collBank [1].bodyA,  [1]))
+         ' TOKRB_GetPositionA (rb [1], v)
+         ' MX.DrawText (“碰了”, v.x, 300 － v.y, -1, 0)
+         ' 输出调试文本 (到文本 (collBank [1].typeA) ＋ “,” ＋ 到文本 (ii))
+         ' ii ＝ ii ＋ 1
+    .如果真结束
+    
+    
+    
+    
+     ' 输出调试文本 (取字节集数据 (collBank, #整数型, 1 ＋ 0 × 104))
+     ' .如果真 (等于 (取字节集数据 (collBank, #整数型, 相加 (1, 相乘 (0, 104))),  [1]))
+         ' TOKRB_GetPositionA (rb [1], v)
+         ' MX.DrawText (“碰了”, v.x, 300 － v.y, -1, 0)
+         ' 输出调试文本 (ii)
+         ' ii ＝ ii ＋ 1
+    .如果真结束
+    
+     ' TOKRB_GetCollisionID ()
+.如果真结束
+返回 (L)
+
+
+.子程序 设碰撞结构, 空白型, , 
+.参数 碰撞信息体, neCollisionInfo, 参考 数组, 
+
+TOKSIM_SetCInfoBank (碰撞信息体 [1])
+
+.子程序 取碰撞总数, 整数型, , 
+返回 (TOKSIM_GetCollisionCount ())
+
+
+.子程序 取碰撞信息_A, 空白型, , 
+.参数 i, 空白型, , 第几次碰撞？
+.参数 碰撞类型, 空白型, 参考, 原来自定义过的碰撞类型
+.参数 v, v3, 参考, 碰撞位置
+
+.判断开始 (等于 (collBank [i], typeA, #物体类型_活体)) ' 活体
+    TOKAB_GetPosition (collBank [i], bodyA, v)
+    赋值 (碰撞类型, TOKAB_GetCollisionID (collBank [i], bodyA))
+    
+.判断 (等于 (collBank [i], typeA, #物体类型_刚体)) ' 刚体
+    TOKRB_GetPosition (collBank [i], bodyA, v)
+    赋值 (碰撞类型, TOKRB_GetCollisionID (collBank [i], bodyA))
+.默认
+    
+.判断结束
+
+
+
+.子程序 取碰撞信息_B, 空白型, , 
+.参数 i, 空白型, , 第几次碰撞？
+.参数 碰撞类型, 空白型, 参考, 原来自定义过的碰撞类型
+.参数 v, v3, 参考, 碰撞位置
+
+.判断开始 (等于 (collBank [i], typeB, #物体类型_活体)) ' 活体
+    TOKAB_GetPosition (collBank [i], bodyB, v)
+    赋值 (碰撞类型, TOKAB_GetCollisionID (collBank [i], bodyB))
+    
+.判断 (等于 (collBank [i], typeB, #物体类型_刚体)) ' 刚体
+    TOKRB_GetPosition (collBank [i], bodyB, v)
+    赋值 (碰撞类型, TOKRB_GetCollisionID (collBank [i], bodyB))
+.默认
+    
+.判断结束
+
+
+
+.子程序 设碰撞方法, 空白型, , ' Response values:0 =不碰撞且不返回信息;1 = 只碰撞&不返回信息;2 = 只返回信息，不碰撞;3 = 即返回信息，也碰撞
+.参数 反应类型, 空白型, , 
+.参数 A, 空白型, , 
+.参数 B, 空白型, , 
+
+ ' Response values:
+ ' 0 = No impulse or feedback 不碰撞，不返回信息
+ ' 1 = Impulse only 只碰撞，不返回信息
+ ' 2 = Feedback only只返回信息，不碰撞
+ ' 3 = Impulse & Feedback 即返回信息，也碰撞
+ ' Caution: put the 2 possibilities (vice and versa) !
+TOKSIM_SetCollisionResponseA (A, B, 反应类型) ' 请看以上说明
+
+
+.子程序 设碰撞类型, 空白型, , 
+.参数 物体ID号, 空白型, , 
+.参数 碰撞代号, 整数型, , 
+
+.局部变量 id, 空白型, , , 
+
+赋值 (id, 虚拟物体数组 [物体ID号], 物体ID号)
+.如果 (等于 (虚拟物体数组 [物体ID号], 物体类型, #物体类型_刚体))
+    TOKRB_SetCollisionID (id, 碰撞代号)
+    TOKRB_UpdateBoundingInfo (id)
+    
+.否则
+    TOKAB_SetCollisionID (id, 碰撞代号)
+    TOKAB_UpdateBoundingInfo (id)
+.如果结束
+
+
+.子程序 点牵引, 空白型, , 对物体起吸引作用的点
+.参数 物体ID, 空白型, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 z, 小数型, , 
+.参数 引力强度, 小数型, , 
+
+.局部变量 v, v3, , , 
+.局部变量 id, 空白型, , , 
+.局部变量 vx, 小数型, , , 
+.局部变量 vy, 小数型, , , 
+
+赋值 (id, 虚拟物体数组 [物体ID], 物体ID号)
+.如果 (等于 (虚拟物体数组 [物体ID], 物体类型, #物体类型_刚体))
+    TOKRB_GetPosition (id, v)
+    赋值 (vx, TOKRB_GetVelocityX (id))
+    赋值 (vy, TOKRB_GetVelocityY (id))
+    
+    TOKRB_SetVelocity (id, 相加 (相乘 (相减 (x, v.x), 引力强度), vx), 相加 (相乘 (相减 (屏幕尺寸.y, y, v.y), 引力强度), vy), 0)
+     ' TOKRB_SetForce (rb [1], (横向位置 － v.x) × 0.1, (400 － 纵向位置 － v.y) × 0.2, 0)
+    TOKRB_UpdateBoundingInfo (id)
+    
+.否则
+    
+    赋值 (lastErr, “物理.设加速度() : 所设物体为活体，不能设置速度。”)
+     ' TOKAB_GetPosition (id, v)
+     ' TOKaB_SetVelocity (ID, (横向位置 － v.x) × 0.1, (400 － 纵向位置 － v.y) × 0.3, 0)
+     ' ' TOKRB_SetForce (rb [1], (横向位置 － v.x) × 0.1, (400 － 纵向位置 － v.y) × 0.2, 0)
+     ' TOKRB_UpdateBoundingInfo (id)
+    
+    
+.如果结束
+
+
+.子程序 加速度, 空白型, , 对物体起吸引作用的点
+.参数 物体ID, 空白型, , 
+.参数 x, 小数型, , 
+.参数 y, 小数型, , 
+.参数 引力强度, 小数型, , 
+
+.局部变量 v, v3, , , 
+.局部变量 id, 空白型, , , 
+
+赋值 (id, 虚拟物体数组 [物体ID], 物体ID号)
+.如果 (等于 (虚拟物体数组 [物体ID], 物体类型, #物体类型_刚体))
+     ' TOKRB_GetPosition (id, v)
+    赋值 (v.x, TOKRB_GetVelocityX (id))
+    赋值 (v.y, TOKRB_GetVelocityY (id))
+    TOKRB_SetVelocity (id, 相加 (相乘 (x, 引力强度, 0.5), v.x), 相加 (相乘 (y, 引力强度), v.y), 0)
+    TOKRB_UpdateBoundingInfo (id)
+.否则
+    
+    赋值 (lastErr, “物理.设加速度() : 所设物体为活体，不能设置速度。”)
+     ' TOKAB_GetPosition (id, v)
+     ' TOKaB_SetVelocity (ID, (横向位置 － v.x) × 0.1, (400 － 纵向位置 － v.y) × 0.3, 0)
+     ' ' TOKRB_SetForce (rb [1], (横向位置 － v.x) × 0.1, (400 － 纵向位置 － v.y) × 0.2, 0)
+     ' TOKRB_UpdateBoundingInfo (id)
+    
+    
+.如果结束
+
+
+.子程序 建立容器盒, 空白型, 公开, 
+.参数 box, 容器盒, 参考, 
+.参数 尺寸, v3, , 
+.参数 厚度, 空白型, , 
+.参数 位置, v3, , 
+.参数 角度, 小数型, , 
+.参数 是否接受碰撞, 逻辑型, , 
+
+.局部变量 缩放, 小数型, , , 
+.局部变量 碰撞, 空白型, , "6", 
+.局部变量 i, 整数型, , , 
+
+.如果 (大于 (尺寸.x, 尺寸.y))
+    赋值 (缩放, 相除 (尺寸.x, 128))
+.否则
+    赋值 (缩放, 相除 (尺寸.y, 128))
+    
+.如果结束
+
+.计次循环首 (6, i)
+    .如果 (是否接受碰撞)
+        赋值 (碰撞 [i], -1) ' 容器的碰撞代号全部为501开始，以示和用户自定义区别
+    .否则
+        赋值 (碰撞 [i], 0) ' 容器的碰撞代号从501开始，以示和用户自定义区别
+    .如果结束
+    
+.计次循环尾 ()
+
+
+
+赋值 (box.上框, 加入活体 (pic_fang, 缩放, #几何类型_方体, help_returnV3 (尺寸.x, 厚度, 尺寸.z), help_returnV3 (位置.x, 相加 (位置.y, 相除 (尺寸.y, 2)), 位置.z), 角度, 碰撞 [1])) ' 上边
+赋值 (box.下框, 加入活体 (pic_fang, 缩放, #几何类型_方体, help_returnV3 (尺寸.x, 厚度, 尺寸.z), help_returnV3 (位置.x, 相减 (位置.y, 相除 (尺寸.y, 2)), 位置.z), 角度, 碰撞 [2])) ' 下边
+
+
+赋值 (box.左框, 加入活体 (pic_fang, 缩放, #几何类型_方体, help_returnV3 (厚度, 尺寸.y, 尺寸.z), help_returnV3 (相减 (位置.x, 相除 (尺寸.x, 2)), 位置.y, 位置.z), 角度, 碰撞 [3])) ' 左边
+赋值 (box.右框, 加入活体 (pic_fang, 缩放, #几何类型_方体, help_returnV3 (厚度, 尺寸.y, 尺寸.z), help_returnV3 (相加 (位置.x, 相除 (尺寸.x, 2)), 位置.y, 位置.z), 角度, 碰撞 [4])) ' 右边
+
+赋值 (box.底板, 加入活体 (0, 缩放, #几何类型_方体, help_returnV3 (尺寸.x, 尺寸.y, 厚度), help_returnV3 (位置.x, 位置.y, 相减 (位置.z, 相除 (位置.z, 2))), 角度, 碰撞 [5])) ' 底板
+ ' box.顶板 ＝ 加入活体 (pic_fang, 缩放, #几何类型_方体, help_returnV3 (尺寸.x, 尺寸.y, 厚度), help_returnV3 (位置.x, 位置.y, 位置.z ＋ 位置.z ÷ 2), 角度, 碰撞 [6])  ' 顶板
+
+
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 弧角转换, 小数型, , 弧到角
+.参数 A, 小数型, , 
+
+
+
+.子程序 getRotation_2D, 小数型, , 取得物体2D角度_必须启用TOKAMAK物体引擎后使用
+.参数 rid, 整数型, , 物体ID号
+
+
+
+.子程序 LimitMotion2D, 空白型, , 调整为2D物理_须在启用TAKAMAK后使用
+.参数 rid, 整数型, , 物体ID号
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

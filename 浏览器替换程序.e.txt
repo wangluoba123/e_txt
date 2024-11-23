@@ -1,0 +1,121 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 GENERIC_WRITE, "1073741824", , 
+.常量 FILE_SHARE_READ, "1", , 
+.常量 OPEN_EXISTING, "3", , 
+.常量 FILE_ATTRIBUTE_NORMAL, "128", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 PROCESS_BASIC_INFORMATION, , 
+    .成员 ExitStatus, 整数型, , , 
+    .成员 PebBaseAddress, 整数型, , , 
+    .成员 AffinityMask, 整数型, , , 
+    .成员 BasePriority, 整数型, , , 
+    .成员 UniqueProcessId, 整数型, , , 
+    .成员 InheritedFromUniqueProcessId, 整数型, , , 
+
+
+.DLL命令 ZwQueryInformationProcess, 整数型, "NTDLL.DLL", "", , 
+    .参数 ProcessHandle, 整数型, , 
+    .参数 ProcessInformationClass, 整数型, , 
+    .参数 ProcessInformation, PROCESS_BASIC_INFORMATION, , 
+    .参数 ProcessInformationLength, 整数型, , 
+    .参数 ReturnLength, 整数型, 传址, 
+
+.DLL命令 GetModuleFileNameEx, 整数型, "psapi.dll", "GetModuleFileNameExA", , 
+    .参数 hProcess, 整数型, , 
+    .参数 hModule, 整数型, , 
+    .参数 lpFilename, 文本型, , 
+    .参数 nSize, 整数型, , 
+
+.DLL命令 CreateFileA, 整数型, "", "CreateFileA", , 
+    .参数 lpFileName, 文本型, , 
+    .参数 dwDesiredAccess, 空白型, , 
+    .参数 dwShareMode, 空白型, , 
+    .参数 lpSecurityAttributes, 空白型, , 
+    .参数 dwCreationDisposition, 空白型, , 
+    .参数 dwFlagsAndAttributes, 空白型, , 
+    .参数 hTemplateFile, 空白型, , 
+
+.DLL命令 WriteFile, 整数型, "", "WriteFile", , 
+    .参数 hFile, 空白型, , 
+    .参数 lpBuffer, 文本型, , 
+    .参数 nNumberOfBytesToWrite, 空白型, , 
+    .参数 lpNumberOfBytesWritten, 空白型, 传址, 
+    .参数 lpOverlapped, 空白型, , 
+
+.DLL命令 OpenProcess, 整数型, "kernel32.dll", "OpenProcess", , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 整数型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 CloseHandle, 整数型, "", "CloseHandle", , 
+    .参数 hwnd, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 本子程序在程序启动后最先执行
+发送数据 (相加 (取执行文件名 (), “|”, 取父进程 (), “|”, 取网址 ()))
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 发送数据, 空白型, , 
+.参数 tmp, 文本型, , 
+
+.局部变量 hMailslot, 空白型, , , 
+.局部变量 a, 空白型, , , 
+
+赋值 (hMailslot, CreateFileA (“\\.\mailslot\MyShare”, #GENERIC_WRITE, #FILE_SHARE_READ, 0, #OPEN_EXISTING, #FILE_ATTRIBUTE_NORMAL, 0))
+WriteFile (hMailslot, tmp, 相加 (取文本长度 (tmp), 1), a, 0)
+CloseHandle (hMailslot)
+
+.子程序 取父进程, 文本型, , 
+.局部变量 Path, 文本型, , , 
+.局部变量 hProcess, 整数型, , , 
+.局部变量 Info, PROCESS_BASIC_INFORMATION, , , 
+
+ZwQueryInformationProcess (-1, 0, Info, 24, 0)
+赋值 (hProcess, OpenProcess (1040, 0, Info.InheritedFromUniqueProcessId))
+赋值 (Path, 取空白文本 (4096))
+GetModuleFileNameEx (hProcess, 0, Path, 4096)
+CloseHandle (hProcess)
+返回 (Path)
+
+
+.子程序 取网址, 文本型, , 
+.局部变量 网址, 文本型, , "0", 
+.局部变量 ret, 文本型, , , 
+.局部变量 i, 整数型, , , 
+
+取命令行 (网址)
+.如果 (等于 (取数组成员数 (网址), 0))
+    赋值 (ret, “空”)
+.否则
+    .计次循环首 (取数组成员数 (网址), i)
+        赋值 (ret, 相加 (网址 [i], “ ”))
+    .计次循环尾 ()
+.如果结束
+返回 (ret)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

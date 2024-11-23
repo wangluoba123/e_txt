@@ -1,0 +1,427 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 分段长度, "32", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 9 系统核心支持库
+
+
+
+
+数据类型 OVERLAPPED, , 
+    .成员 Internal, 整数型, , , 
+    .成员 InternalHigh, 整数型, , , 
+    .成员 Offset, 整数型, , , 
+    .成员 OffsetHigh, 整数型, , , 
+    .成员 hEvent, 整数型, , , 
+
+数据类型 SENDCMDINPARAMS, , 33-1
+    .成员 cBufferSize, 整数型, , , 
+    .成员 bFeaturesReg, 字节型, , , IDEREGS_Begin
+    .成员 bSectorCountReg, 字节型, , , 
+    .成员 bSectorNumberReg, 字节型, , , 
+    .成员 bCylLowReg, 字节型, , , 
+    .成员 bCylHighReg, 字节型, , , 
+    .成员 bDriveHeadReg, 字节型, , , 
+    .成员 bCommandReg, 字节型, , , 
+    .成员 bReserved1, 字节型, , , IDEREGS_End
+    .成员 bDriveNumber, 字节型, , , 
+    .成员 bReserved, 字节型, , "3", 
+    .成员 dwReserved, 整数型, , "4", 
+    .成员 bBuffer, 字节型, , "1", 
+
+数据类型 GETVERSIONINPARAMS, , 24
+    .成员 bVersion, 字节型, , , 
+    .成员 bRevision, 字节型, , , 
+    .成员 bReserved, 字节型, , , 
+    .成员 bIDEDeviceMap, 字节型, , , 
+    .成员 fCapabilities, 整数型, , , 
+    .成员 dwReserved, 整数型, , "4", 
+
+数据类型 IDSECTOR, , 276
+    .成员 wGenConfig, 短整数型, , , 
+    .成员 wNumCyls, 短整数型, , , 
+    .成员 wReserved, 短整数型, , , 
+    .成员 wNumHeads, 短整数型, , , 
+    .成员 wBytesPerTrack, 短整数型, , , 
+    .成员 wBytesPerSector, 短整数型, , , 
+    .成员 wSectorsPerTrack, 短整数型, , , 
+    .成员 wVendorUnique, 短整数型, , "3", 
+    .成员 sSerialNumber, 字节型, , "20", 
+    .成员 wBufferType, 短整数型, , , 
+    .成员 wBufferSize, 短整数型, , , 
+    .成员 wECCSize, 短整数型, , , 
+    .成员 sFirmwareRev, 字节型, , "8", 
+    .成员 sModelNumber, 字节型, , "40", 
+    .成员 wMoreVendorUnique, 短整数型, , , 
+    .成员 wDoubleWordIO, 短整数型, , , 
+    .成员 wCapabilities, 短整数型, , , 
+    .成员 wReserved1, 短整数型, , , 
+    .成员 wPIOTiming, 短整数型, , , 
+    .成员 wDMATiming, 短整数型, , , 
+    .成员 wBS, 短整数型, , , 
+    .成员 wNumCurrentCyls, 短整数型, , , 
+    .成员 wNumCurrentHeads, 短整数型, , , 
+    .成员 wNumCurrentSectorsPerTrack, 短整数型, , , 
+    .成员 ulCurrentSectorCapacity, 整数型, , , 
+    .成员 wMultSectorStuff, 短整数型, , , 
+    .成员 ulTotalAddressableSectors, 整数型, , , 
+    .成员 wSingleWordDMA, 短整数型, , , 
+    .成员 wMultiWordDMA, 短整数型, , , 
+    .成员 bReserved, 字节型, , "128", 
+
+数据类型 SRB_IO_CONTROL, , 28+33-1
+    .成员 HeaderLength, 整数型, , , 
+    .成员 Signature, 字节型, , "8", 
+    .成员 Timeout, 整数型, , , 
+    .成员 ControlCode, 整数型, , , 
+    .成员 ReturnCode, 整数型, , , 
+    .成员 Length, 整数型, , , 
+    .成员 cBufferSize, 整数型, , , SENDCMDINPARAMS_Begin
+    .成员 bFeaturesReg, 字节型, , , IDEREGS_Begin
+    .成员 bSectorCountReg, 字节型, , , 
+    .成员 bSectorNumberReg, 字节型, , , 
+    .成员 bCylLowReg, 字节型, , , 
+    .成员 bCylHighReg, 字节型, , , 
+    .成员 bDriveHeadReg, 字节型, , , 
+    .成员 bCommandReg, 字节型, , , 
+    .成员 bReserved1, 字节型, , , IDEREGS_End
+    .成员 bDriveNumber, 字节型, , , 
+    .成员 bReserved, 字节型, , "3", 
+    .成员 dwReserved, 整数型, , "4", 
+    .成员 bBuffer, 字节型, , "1", SENDCMDINPARAMS_End
+
+数据类型 OSVERSIONINFO, , 
+    .成员 dwOSVersionInfoSize, 整数型, , , 
+    .成员 dwMajorVersion, 整数型, , , 
+    .成员 dwMinorVersion, 整数型, , , 
+    .成员 dwBuildNumber, 整数型, , , 
+    .成员 dwPlatformId, 整数型, , , 
+    .成员 szCSDVersion, 字节型, , "128", 
+
+
+.DLL命令 CreateFile, 整数型, "Kernel32.dll", "CreateFileA", , 
+    .参数 lpFileName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwShareMode, 整数型, , 
+    .参数 lpSecurityAttributes, 整数型, , SECURITY_ATTRIBUTES。
+    .参数 dwCreationDisposition, 整数型, , 
+    .参数 dwFlagsAndAttributes, 整数型, , 
+    .参数 hTemplateFile, 整数型, , 
+
+.DLL命令 DeviceIoControl1, 逻辑型, "Kernel32.dll", "DeviceIoControl", , 
+    .参数 hDevice, 整数型, , 
+    .参数 dwIoControlCode, 整数型, , 
+    .参数 lpInBuffer, SENDCMDINPARAMS, 传址, 
+    .参数 nInBufferSize, 整数型, , 
+    .参数 lpOutBuffer, 字节集, 传址, 
+    .参数 nOutBufferSize, 整数型, , 
+    .参数 lpBytesReturned, 整数型, 传址, 
+    .参数 lpOverlapped, 整数型, , OVERLAPPED
+
+.DLL命令 DeviceIoControl3, 逻辑型, "Kernel32.dll", "DeviceIoControl", , 
+    .参数 hDevice, 整数型, , 
+    .参数 dwIoControlCode, 整数型, , 
+    .参数 lpInBuffer, SRB_IO_CONTROL, 传址, 
+    .参数 nInBufferSize, 整数型, , 
+    .参数 lpOutBuffer, 字节集, 传址, 
+    .参数 nOutBufferSize, 整数型, , 
+    .参数 lpBytesReturned, 整数型, 传址, 
+    .参数 lpOverlapped, 整数型, , OVERLAPPED
+
+.DLL命令 DeviceIoControl2, 逻辑型, "Kernel32.dll", "DeviceIoControl", , 
+    .参数 hDevice, 整数型, , 
+    .参数 dwIoControlCode, 整数型, , 
+    .参数 lpInBuffer, 整数型, , 
+    .参数 nInBufferSize, 整数型, , 
+    .参数 lpOutBuffer, GETVERSIONINPARAMS, 传址, 
+    .参数 nOutBufferSize, 整数型, , 
+    .参数 lpBytesReturned, 整数型, 传址, 
+    .参数 lpOverlapped, 整数型, , OVERLAPPED
+
+.DLL命令 CloseHandle, 逻辑型, "Kernel32.dll", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 RtlMoveMemory1, 整数型, "Kernel32.dll", "RtlMoveMemory", , 
+    .参数 mb, 字节型, 传址 数组, 
+    .参数 y, 文本型, , 
+    .参数 cd, 整数型, , 
+
+.DLL命令 RtlMoveMemory, 整数型, "Kernel32.dll", "RtlMoveMemory", , 
+    .参数 mb, IDSECTOR, , 
+    .参数 y, 字节集, , 
+    .参数 cd, 整数型, , 
+
+.DLL命令 GetVersionEx, 逻辑型, "kernel32.dll", "GetVersionExA", , 
+    .参数 lpVersionInfo, OSVERSIONINFO, , 
+
+.程序集 程序集1, , , 
+
+.子程序 CTL_CODE, 整数型, , 
+.参数 DeviceType, 整数型, , 7
+.参数 Function, 短整数型, , 0
+.参数 Method, 整数型, , 0
+.参数 Access, 整数型, , 3
+
+.局部变量 ret, 整数型, , , 
+
+赋值 (ret, 位或 (相乘 (DeviceType, 65536), 相乘 (Access, 16384), 相乘 (Function, 4), Method)) ' (DeviceType) << 16) | ((Access) << 14) | ((Function) << 2) | (Method)
+返回 (ret)
+
+.子程序 显示, 空白型, , 
+.参数 IDEData, IDSECTOR, , 
+
+_启动窗口.加入文本 (., 相加 (“Drive Serial Number:”, 删首尾空 (FixString (IDEData.sSerialNumber))), #换行符)
+_启动窗口.加入文本 (., 相加 (“Drive Model Number:”, 删首尾空 (FixString (IDEData.sModelNumber))), #换行符)
+_启动窗口.加入文本 (., 相加 (“Drive Firmware Number:”, 删首尾空 (FixString (IDEData.sFirmwareRev))), #换行符)
+
+.子程序 FixString, 文本型, , 
+.参数 pwDiskData, 字节型, 数组, 
+
+.局部变量 i, 整数型, , , 
+.局部变量 Str, 文本型, , , 
+
+.变量循环首 (1, 取数组成员数 (pwDiskData), 2, i)
+    赋值 (Str, 相加 (Str, 字符 (pwDiskData [相加 (i, 1)]), 字符 (pwDiskData [i])))
+.变量循环尾 ()
+返回 (Str)
+
+.子程序 特征字计算, 整数型, , 
+.参数 Data, IDSECTOR, , 
+
+.局部变量 NewData, 字节集, , , 
+.局部变量 Dword, 字节集, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 Total, 整数型, , , 
+.局部变量 ecx, 整数型, , , 
+.局部变量 edx, 整数型, , , 
+.局部变量 eax, 整数型, , , 
+
+.计次循环首 (40, i)
+    .判断开始 (等于 (求余数 (i, 2), 0))
+        赋值 (Dword, 相加 (Dword, 到字节集 (Data.sModelNumber [i]), { 0, 0 }))
+        赋值 (Total, 相加 (Total, 取字节集数据 (Dword, 3)))
+    .默认
+        赋值 (Dword, 到字节集 (Data.sModelNumber [i]))
+    .判断结束
+    
+.计次循环尾 ()
+.计次循环首 (8, i)
+    .判断开始 (等于 (求余数 (i, 2), 0))
+        赋值 (Dword, 相加 (Dword, 到字节集 (Data.sFirmwareRev [i]), { 0, 0 }))
+        赋值 (Total, 相加 (Total, 取字节集数据 (Dword, 3)))
+    .默认
+        赋值 (Dword, 到字节集 (Data.sFirmwareRev [i]))
+    .判断结束
+    
+.计次循环尾 ()
+.计次循环首 (20, i)
+    .判断开始 (等于 (求余数 (i, 2), 0))
+        赋值 (Dword, 相加 (Dword, 到字节集 (Data.sSerialNumber [i]), { 0, 0 }))
+        赋值 (Total, 相加 (Total, 取字节集数据 (Dword, 3)))
+    .默认
+        赋值 (Dword, 到字节集 (Data.sSerialNumber [i]))
+    .判断结束
+    
+.计次循环尾 ()
+赋值 (Total, 相加 (相乘 (相加 (Data.wBufferSize, Data.wSectorsPerTrack, Data.wNumHeads, Data.wNumCyls), 65536), Total))
+返回 (Total)
+
+.子程序 IDE, 逻辑型, , 
+.参数 iDrive, 整数型, , 
+
+.局部变量 hFile, 整数型, , , 
+.局部变量 OutBuffer1, GETVERSIONINPARAMS, , , 
+.局部变量 OutBuffer2, 字节集, , , 
+.局部变量 InBuffer, SENDCMDINPARAMS, , , 
+.局部变量 BytesRet, 整数型, , , 
+.局部变量 IDEData, IDSECTOR, , , 
+
+赋值 (hFile, CreateFile (相加 (“\\.\PhysicalDrive”, 到文本 (iDrive)), 3221225472, 3, 0, 3, 0, 0))
+.如果真 (不等于 (hFile, -1))
+    DeviceIoControl2 (hFile, 475264, 0, 0, OutBuffer1, 29, BytesRet, 0) ' SMART_GET_VERSION
+    .如果真 (大于 (OutBuffer1.bIDEDeviceMap, 0))
+        赋值 (OutBuffer2, 取空白字节集 (544)) ' sizeof(SENDCMDOUTPARAMS) + IDENTIFY_BUFFER_SIZE
+        赋值 (InBuffer.cBufferSize, 512)
+        赋值 (InBuffer.bSectorCountReg, 1)
+        赋值 (InBuffer.bSectorNumberReg, 1)
+        .如果 (不等于 (位与 (iDrive, 1), 0))
+            赋值 (InBuffer.bDriveHeadReg, 176)
+        .否则
+            赋值 (InBuffer.bDriveHeadReg, 160)
+        .如果结束
+        .如果 (不等于 (iDrive, 0))
+            赋值 (InBuffer.bCommandReg, 相除 (OutBuffer1.bIDEDeviceMap, 位与 (iDrive, 16)))
+        .否则
+            赋值 (InBuffer.bCommandReg, OutBuffer1.bIDEDeviceMap)
+        .如果结束
+        .如果 (等于 (InBuffer.bCommandReg, 0))
+            赋值 (InBuffer.bCommandReg, 161) ' ATAPI_ID_CMD
+        .否则
+            赋值 (InBuffer.bCommandReg, 236) ' ID_CMD
+        .如果结束
+        .如果真 (DeviceIoControl1 (hFile, 508040, InBuffer, 32, OutBuffer2, 544, BytesRet, 0)) ' SMART_RCV_DRIVE_DATA
+            RtlMoveMemory (IDEData, 取字节集中间 (OutBuffer2, 17, 276), 276)
+            显示 (IDEData)
+            _启动窗口.加入文本 (., 相加 (“取硬盘特征字1：”, 到文本 (取硬盘特征字 ())), #换行符)
+            _启动窗口.加入文本 (., 相加 (“取硬盘特征字2：”, 到文本 (特征字计算 (IDEData))), #换行符)
+            CloseHandle (hFile)
+            返回 (真)
+        .如果真结束
+        
+    .如果真结束
+    CloseHandle (hFile)
+.如果真结束
+返回 (假)
+
+.子程序 SCSI, 逻辑型, , 
+.参数 iDrive, 整数型, , 
+
+.局部变量 hFile, 整数型, , , 
+.局部变量 InBuffer, SRB_IO_CONTROL, , , 
+.局部变量 OutBuffer, 字节集, , , 
+.局部变量 ByteRet, 整数型, , , 
+.局部变量 IDEData, IDSECTOR, , , 
+
+赋值 (hFile, CreateFile (相加 (“\\.\Scsi”, 到文本 (iDrive), “:”), 3221225472, 3, 0, 3, 0, 0))
+.如果真 (不等于 (hFile, -1))
+    赋值 (InBuffer.HeaderLength, 28)
+    RtlMoveMemory1 (InBuffer.Signature, “SCSIDISK”, 8)
+    赋值 (InBuffer.Timeout, 2)
+    赋值 (InBuffer.Length, 544)
+    赋值 (InBuffer.ControlCode, 1770753) ' IOCTL_SCSI_MINIPORT_IDENTIFY
+    赋值 (InBuffer.cBufferSize, 512)
+    赋值 (InBuffer.bSectorCountReg, 1)
+    赋值 (InBuffer.bSectorNumberReg, 1)
+    .如果 (不等于 (位与 (iDrive, 1), 0))
+        赋值 (InBuffer.bDriveHeadReg, 176)
+    .否则
+        赋值 (InBuffer.bDriveHeadReg, 160)
+    .如果结束
+    赋值 (InBuffer.bCommandReg, 236) ' ID_CMD
+    赋值 (OutBuffer, 取空白字节集 (572))
+    .如果真 (DeviceIoControl3 (hFile, 315400, InBuffer, 60, OutBuffer, 572, ByteRet, 0)) ' IOCTL_SCSI_MINIPORT
+        RtlMoveMemory (IDEData, 取字节集中间 (OutBuffer, 45, 276), 276)
+        显示 (IDEData)
+        _启动窗口.加入文本 (., 相加 (“取硬盘特征字1：”, 到文本 (取硬盘特征字 ())), #换行符)
+        _启动窗口.加入文本 (., 相加 (“取硬盘特征字2：”, 到文本 (特征字计算 (IDEData))), #换行符)
+        CloseHandle (hFile)
+        返回 (真)
+    .如果真结束
+    CloseHandle (hFile)
+.如果真结束
+返回 (假)
+
+.子程序 Win9x, 逻辑型, , 
+.参数 iDrive, 整数型, , 
+
+.局部变量 hFile, 整数型, , , 
+.局部变量 InBuffer, SENDCMDINPARAMS, , , 
+.局部变量 OutBuffer, 字节集, , , 
+.局部变量 ByteRet, 整数型, , , 
+.局部变量 IDEData, IDSECTOR, , , 
+
+赋值 (hFile, CreateFile (“\\.\SMARTVSD”, 0, 0, 0, 1, 0, 0))
+.如果真 (不等于 (hFile, -1))
+    赋值 (InBuffer.cBufferSize, 512)
+    赋值 (InBuffer.bSectorCountReg, 1)
+    赋值 (InBuffer.bSectorNumberReg, 1)
+    .如果 (不等于 (位与 (iDrive, 1), 0))
+        赋值 (InBuffer.bDriveHeadReg, 176)
+    .否则
+        赋值 (InBuffer.bDriveHeadReg, 160)
+    .如果结束
+    赋值 (InBuffer.bCommandReg, 236)
+    赋值 (OutBuffer, 取空白字节集 (528))
+    .如果真 (DeviceIoControl1 (hFile, 508040, InBuffer, 32, OutBuffer, 528, ByteRet, 0)) ' DFP_RECEIVE_DRIVE_DATA
+        RtlMoveMemory (IDEData, 取字节集中间 (OutBuffer, 17, 276), 259) ' 不知为何,我的机器上只要超过259会出错
+        显示 (IDEData)
+        _启动窗口.加入文本 (., 相加 (“取硬盘特征字1：”, 到文本 (取硬盘特征字 ())), #换行符)
+        _启动窗口.加入文本 (., 相加 (“取硬盘特征字2：”, 到文本 (特征字计算 (IDEData))), #换行符)
+        CloseHandle (hFile)
+        返回 (真)
+    .如果真结束
+    CloseHandle (hFile)
+.如果真结束
+返回 (假)
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 NT, 逻辑型, , , 
+.子程序 _按钮1_被单击, 空白型, , 
+.如果真 (等于 (IDE (0), 假))
+    .如果真 (等于 (SCSI (0), 假))
+        .如果 (等于 (NT, 假))
+            .如果真 (等于 (Win9x (0), 假))
+                信息框 (“Error”, 16, )
+            .如果真结束
+            
+        .否则
+            信息框 (“Error”, 16, )
+        .如果结束
+        
+    .如果真结束
+    
+.如果真结束
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+.如果真 (等于 (SCSI (0), 假))
+    .如果真 (等于 (IDE (0), 假))
+        .如果 (等于 (NT, 假))
+            .如果真 (等于 (Win9x (0), 假))
+                信息框 (“Error”, 16, )
+            .如果真结束
+            
+        .否则
+            信息框 (“Error”, 16, )
+        .如果结束
+        
+    .如果真结束
+    
+.如果真结束
+
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 WinVer, OSVERSIONINFO, , , 
+
+赋值 (WinVer.dwOSVersionInfoSize, 148)
+GetVersionEx (WinVer)
+.如果真 (小于 (WinVer.dwMajorVersion, 4))
+    赋值 (NT, 真)
+.如果真结束
+.如果 (大于或等于 (WinVer.dwMajorVersion, 5))
+    赋值 (NT, 真)
+.否则
+    赋值 (NT, 选择 (等于 (WinVer.dwMinorVersion, 0), 真, 假))
+.如果结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

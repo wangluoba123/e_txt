@@ -1,0 +1,177 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 471
+    高度 = 237
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 1
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “在任务栏在显示”
+    帮助文件名 = “”
+
+
+
+.常量 GWL_EXSTYLE, "-20", , 
+.常量 WS_EX_APPWINDOW, "262144", , 
+.常量 常量1, "“VB的ShowInTaskbar功能分析以及用VC的实现
+在VB中想要显示或隐藏一个窗口在任务栏上的按钮很容易,直接设定一个form的ShowInTabkbar属性即可。但在SDK中却不是一件易事，一个窗口在什么情况下会在任务栏上显示一个按钮，在什么情况下不显示呢？这是有规定的：
+0,无论什么情况,要让一个窗口在任务栏上显示按钮的前提是该窗口是可见的．
+
+1.如果一个窗口是顶级窗口（也就是父窗口为NULL,也就是父窗口为桌面窗口）,那么Windows将为它在任务栏上创建一个按钮．(有例外，见3)
+
+2.如果一个窗口不是顶级窗口，但有WS_EX_APPWINDOW风格,那么Windows将为它在任务栏上创建一个按钮，否则不会有相应的任务栏按钮．
+
+3.如果一个窗口是顶级窗口，但加了WS_EX_TOOLWINDOW,并去掉WS_EX_APPWINDOW风格，那么Windows不会为它在任务栏上创建一个按钮．
+
+4....
+
+　　知道了这些规则,你就能随心所欲的控制你的窗口是否要ShowInTaskbar了，下面给出一个问题和解决方案．
+
+问题：在MFC中一个基于对话框的工程,想要主对话框不在任务栏上显示按钮,该如何做?
+
+解决方案1:
+
+根椐上面的第三条规则，给该对话框加上WS_EX_TOOLWINDOW风格并去掉WS_EX_APPWINDOW风格.
+
+代码:
+
+在对话框类的OnInitDialog函数里加入:
+ ModifyStyleEx(WS_EX_APPWINDOW,WS_EX_TOOLWINDOW,SWP_FRAMECHANGED);
+
+
+备注:这种方法会有一个缺点,你的对话框的标题将会是一个小标题，所以大多数人不会采用这种方法．
+
+解决方案2:
+
+根椐上面的第二条规则，将该对话框变为非顶级窗口并去掉WS_EX_APPWINDOW，在app类的initinstance里的主对话框domodal之前生成一个隐藏的对话框,并将这个窗口的指针保存在CWinApp类的m_pMainWnd成员变量中，以后DoModal的对话框都将是它的子窗口．
+
+
+代码:
+
+在app的initinstance函数中加入以下加注释的代码
+BOOL CTestDlgApp::InitInstance()
+{
+　　...
+　　CFrameWnd mainWnd; //生成一个框架窗口对象
+　　mainWnd.Create(NULL,"aa");//生成窗口,不带ws_visible,也就是说不会显示出来
+
+　　CTestDlgDlg dlg;
+　　m_pMainWnd = &mainWnd;//将这个隐藏窗口设为主窗口
+
+　　int nResponse = dlg.DoModal();
+　　...
+}
+
+在对话框的OnInitDialog里加入 ModifyStyleEx(WS_EX_APPWINDOW,0);以便出掉WS_EX_APPWINDOW。
+
+备注：这种方法较为麻烦，不过很实用，据我观察,C++Builder和Delphi生成的程序都应该有一个隐藏的窗口．
+
+
+解决方案3:
+
+在IE版本为4.0以上的系统中有一个叫ITaskbarList的接口，故名思义，这个接口可用来控制任务栏上的按钮是否显示，你只要给出一个窗口的句柄和是否显示，完全不需考虑上面那此乱七八糟的规则．
+
+代码：
+
+void ShowInTaskbar(HWND m_hWnd,BOOL bshow)
+{
+ //在app的InitInstance中加入::CoInitialize(NULL);
+ HRESULT hr;
+ ITaskbarList *pTaskbarList;
+
+ hr=CoCreateInstance(CLSID_TaskbarList,NULL,CLSCTX_INPROC_SERVER,
+   IID_ITaskbarList,(void**)&pTaskbarList);
+ 
+ pTaskbarList->HrInit();//MSDN中说在使用这个接口的其它方法之前得调用这个方法以便做一些初始化动作,我发现不调用这个方法也可以的.
+ if(bshow){
+  pTaskbarList->AddTab(m_hWnd);
+ }
+ else{
+  pTaskbarList->DeleteTab(m_hWnd);
+ }
+ pTaskbarList->Release();
+ //在app的ExitInstance中加入::CoUninitialize();
+
+}
+
+
+在需要的时候调用这个函数就可以了，第一个参数为窗口的句柄，第二个参数指明是在任务栏上是否显示按钮．
+
+备注:这种方法功能强大,使用也较为简便,不过低版本的windows可能不支持．
+”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+
+.DLL命令 GetWindowLong, 整数型, "user32", "GetWindowLongA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+
+.DLL命令 SetWindowLong, 整数型, "user32", "SetWindowLongA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+    .参数 dwNewLong, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 lStyle, 整数型, , , 
+.子程序 _启动子程序, 整数型, , 
+载入 (窗口, , 真)
+返回 (1)
+
+.子程序 _窗口_创建完毕, 空白型, , 
+SetWindowLong (取窗口句柄 (), -20, #WS_EX_APPWINDOW)
+ ' lStyle ＝ GetWindowLong (hwnd, -20)
+ ' 调试输出 (lStyle)
+ ' lStyle = lStyle And Not WS_EX_APPWINDOW 使窗口在Taskbar不可见
+ ' SetWindowLong (取窗口句柄 (), #GWL_EXSTYLE, lStyle)
+ ' 需要强调一点，你只能在Form_Load中使用这个方法，一旦窗口显示出来之后就没有办法了。
+
+.子程序 _按钮1_被单击, 空白型, , 
+销毁 ()
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,220 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 431
+    高度 = 281
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = 0 '  0x0
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 GdiplusStartupInput, , 
+    .成员 GdiplusVersion, 整数型, , , 
+    .成员 DebugEventCallback, 整数型, , , 
+    .成员 SuppressBackgroundThread, 整数型, , , 
+    .成员 SuppressExternalCodecs, 整数型, , , 
+
+数据类型 POINTF, , 
+    .成员 x, 小数型, , , 
+    .成员 y, 小数型, , , 
+
+
+.DLL命令 GdiplusShutdown, 整数型, "gdiplus", "GdiplusShutdown", , 
+    .参数 token, 整数型, , 
+
+.DLL命令 GdiplusStartup, 整数型, "gdiplus", "GdiplusStartup", , 
+    .参数 token, 整数型, 传址, 
+    .参数 inputbuf, GdiplusStartupInput, , 
+    .参数 outputbuf, 整数型, , 
+
+.DLL命令 GdipCreateFromHWND, 整数型, "gdiplus", "GdipCreateFromHWND", , 
+    .参数 hWnd, 空白型, , 
+    .参数 graphics, 空白型, 传址, 
+
+.DLL命令 GdipDeleteGraphics, 整数型, "gdiplus", "GdipDeleteGraphics", , 
+    .参数 graphics, 空白型, , 
+
+.DLL命令 GdipCreatePen1, 整数型, "gdiplus", "GdipCreatePen1", , ARGB color, REAL width, GpUnit unit, GpPen **pen
+    .参数 color, 空白型, , 
+    .参数 width, 小数型, , 
+    .参数 unit, 空白型, , 
+    .参数 pen, 空白型, 传址, 
+
+.DLL命令 GdipDeletePen, 整数型, "gdiplus", "GdipDeletePen", , GdipDeletePen(GpPen *pen);
+    .参数 pen, 空白型, , 
+
+.DLL命令 GdipDrawCurve3, 整数型, "gdiplus", "GdipDrawCurve3", , 
+    .参数 graphics, 空白型, , 
+    .参数 pen, 空白型, , 
+    .参数 points, POINTF, 数组, 
+    .参数 count, 空白型, , 
+    .参数 offset, 空白型, , 
+    .参数 numberOfSegments, 空白型, , 
+    .参数 tension, 小数型, , 
+
+.DLL命令 GdipDrawLines, 整数型, "gdiplus", "GdipDrawLines", , 
+    .参数 graphics, 空白型, , 
+    .参数 pen, 空白型, , 
+    .参数 points, POINTF, 数组, 
+    .参数 count, 空白型, , 
+
+.DLL命令 GdipSetSmoothingMode, 空白型, "gdiplus", "GdipSetSmoothingMode", , 
+    .参数 graphics, 空白型, , 
+    .参数 n, 空白型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 token, 整数型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+GdiPlus初始化 ()
+
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+GdiPlus销毁 ()
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+.局部变量 pt, POINTF, , "6", 
+
+
+赋值 (pt [1].x, 27)
+赋值 (pt [1].y, 143)
+赋值 (pt [2].x, 137)
+赋值 (pt [2].y, 222)
+赋值 (pt [3].x, 217)
+赋值 (pt [3].y, 130)
+赋值 (pt [4].x, 279)
+赋值 (pt [4].y, 230)
+赋值 (pt [5].x, 365)
+赋值 (pt [5].y, 123)
+赋值 (pt [6].x, 270)
+赋值 (pt [6].y, 27)
+
+画直线组 (_启动窗口.取窗口句柄 (), #红色, 1, pt)
+画平滑曲线 (_启动窗口.取窗口句柄 (), #黄色, 2, pt, 0, 相减 (取数组成员数 (pt), 1), 0.5)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.子程序 画平滑曲线, 空白型, , 使用指定的张力绘制经过一组指定的 Point 结构的基数样条。
+.参数 窗口句柄, 整数型, , 
+.参数 曲线颜色, 整数型, , 
+.参数 曲线宽度, 整数型, , 
+.参数 各点数组, POINTF, 数组, 各点数组中必须至少包含四个点。必须预先分配好成员数;不能是成员数为0的动态数组,不要对数组进行 加入成员等 的操作
+.参数 曲线起点, 整数型, , 曲线起点 在 各点数组 中的位置,从0开始;指定数组中要跳过的元素数。被跳过元素后面的第一个元素表示曲线的起始点。
+.参数 曲线段数, 整数型, , 指定要从起始点开始在曲线中绘制的段数。参数的值必须最小为 1。曲线起点 与 曲线段数 之和必须小于 各点数组 中的元素数。
+.参数 曲线张力, 小数型, , 大于或等于 0.0F 的值，该值指定曲线的张力。确定样条的形状。如果 曲线张力 为 0.0，则此方法绘制直线段以连接这些点。通常，曲线张力小于或等于 1.0。超过 1.0 的值会产生异常结果。
+
+.局部变量 graphics, 整数型, , , 
+.局部变量 pen, 整数型, , , 
+.局部变量 Color, 字节集, , , 
+
+
+GdipCreateFromHWND (窗口句柄, graphics)
+
+赋值 (Color, 到字节集 (曲线颜色))
+赋值 (曲线颜色, 位或 (相加 (Color [3], 相乘 (Color [2], 256), 相乘 (Color [1], 65536)), 左移 (255, 24))) ' 转换成GDI+的颜色值
+GdipCreatePen1 (曲线颜色, 曲线宽度, 0, pen)
+
+GdipSetSmoothingMode (graphics, 4)
+GdipDrawCurve3 (graphics, pen, 各点数组, 取数组成员数 (各点数组), 曲线起点, 曲线段数, 曲线张力)
+
+GdipDeletePen (pen)
+GdipDeleteGraphics (graphics)
+
+
+.子程序 画直线组, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 线条颜色, 整数型, , 
+.参数 线条宽度, 整数型, , 
+.参数 各点数组, POINTF, 数组, 
+
+.局部变量 graphics, 整数型, , , 
+.局部变量 pen, 整数型, , , 
+.局部变量 Color, 字节集, , , 
+
+
+GdipCreateFromHWND (窗口句柄, graphics)
+
+赋值 (Color, 到字节集 (线条颜色))
+赋值 (线条颜色, 位或 (相加 (Color [3], 相乘 (Color [2], 256), 相乘 (Color [1], 65536)), 左移 (255, 24))) ' 转换成GDI+的颜色值
+GdipCreatePen1 (线条颜色, 线条宽度, 0, pen)
+
+GdipSetSmoothingMode (graphics, 4)
+GdipDrawLines (graphics, pen, 各点数组, 取数组成员数 (各点数组))
+
+GdipDeletePen (pen)
+GdipDeleteGraphics (graphics)
+
+
+.子程序 GdiPlus初始化, 空白型, , 
+.局部变量 GpInput, GdiplusStartupInput, , , 
+
+赋值 (GpInput.GdiplusVersion, 1)
+GdiplusStartup (token, GpInput, 0)
+
+
+.子程序 GdiPlus销毁, 空白型, , 
+GdiplusShutdown (token)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

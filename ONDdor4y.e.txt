@@ -1,0 +1,407 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 PROCESS_VM_READ, "16", , 
+.常量 PROCESS_VM_OPERATION, "8", , 
+.常量 MEM_COMMIT, "4096", , 
+.常量 PAGE_READWRITE, "4", , 
+.常量 LVM_GETITEMPOSITION, "4112", , 
+.常量 MEM_RELEASE, "32768", , 
+.常量 LVFI_STRING, "2", , 
+.常量 LVM_FINDITEM, "4109", , 
+.常量 LVM_GETITEMTEXT, "4141", , 
+.常量 PROCESS_VM_WRITE, "32", , 
+.常量 LVM_HITTEST, "4114", , 
+.常量 LVM_SETITEMPOSITION, "4111", , 
+.常量 , , , 
+.常量 SM_CXSCREEN, "0", , 
+.常量 SM_CYSCREEN, "1", , 
+.常量 , , , 
+.常量 WH_MOUSE_LL, "14", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 5 系统核心支持库
+
+
+
+
+数据类型 Point, , 
+    .成员 x, 整数型, , , 
+    .成员 y, 整数型, , , 
+
+数据类型 MSLLHOOKSTRUCT, , 
+    .成员 x, 空白型, , , 
+    .成员 y, 空白型, , , 
+    .成员 mouseData, 空白型, , , 
+    .成员 flags, 空白型, , , 
+    .成员 time, 空白型, , , 
+    .成员 dwExtraInfo, 空白型, , , 
+
+数据类型 LVHITTESTINFO, , 
+    .成员 x, 空白型, , , 
+    .成员 y, 空白型, , , 
+    .成员 flags, 空白型, , , 
+    .成员 iItem, 空白型, , , 
+    .成员 iSubItem, 空白型, , , 
+
+数据类型 Rect, , 
+    .成员 x1, 空白型, , , 
+    .成员 y1, 空白型, , , 
+    .成员 x2, 空白型, , , 
+    .成员 y2, 空白型, , , 
+
+数据类型 MSG, , 消息结构
+    .成员 hwnd, 整数型, , , 检索消息的窗口句柄
+    .成员 message, 整数型, , , 代表一个消息的消息质
+    .成员 wParam, 整数型, , , 消息附加信息的字参数
+    .成员 lParam, 整数型, , , 消息附加信息的长字参数
+    .成员 time, 整数型, , , 消息入队时间
+    .成员 x, 整数型, , , 消息发送时鼠标的位置 point.x
+    .成员 y, 整数型, , , 消息发送时鼠标的位置 point.y
+
+
+.DLL命令 SetWindowsHookExA, 整数型, "user32.dll", "SetWindowsHookExA", , 
+    .参数 ihook, 整数型, , 
+    .参数 lpfunc, 子程序指针, , 
+    .参数 hin, 整数型, , 
+    .参数 threadid, 整数型, , 
+
+.DLL命令 GetModuleHandleA, 整数型, "kernel32.dll", "GetModuleHandleA", , 
+    .参数 M, 整数型, , 
+
+.DLL命令 UnhookWindowsHookEx, 整数型, "user32.dll", "UnhookWindowsHookEx", , 
+    .参数 hook, 整数型, , 
+
+.DLL命令 CallNextHookEx, 整数型, "user32.dll", "CallNextHookEx", , 
+    .参数 hook, 整数型, , 
+    .参数 icode, 整数型, , 
+    .参数 wparam, 整数型, , 
+    .参数 lparam, 整数型, , 
+
+.DLL命令 CopyMemory, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, MSLLHOOKSTRUCT, , 
+    .参数 Source, 整数型, , 
+    .参数 cbCopy, 整数型, , 
+
+.DLL命令 CloseHandle, 整数型, "kernel32.dll", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 SendMessageA, 整数型, "user32.dll", "SendMessageA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 Msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 VirtualFreeEx, 整数型, "kernel32.dll", "VirtualFreeEx", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 dwFreeType, 整数型, , 
+
+.DLL命令 VirtualAllocEx, 整数型, "kernel32.dll", "VirtualAllocEx", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+    .参数 flProtect, 整数型, , 
+
+.DLL命令 OpenProcess, 整数型, "kernel32.dll", "OpenProcess", , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 整数型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 GetWindowThreadProcessId, 整数型, "user32.dll", "GetWindowThreadProcessId", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpdwProcessId, 整数型, 传址, 
+
+.DLL命令 ReadProcessMemory_Point, 整数型, "kernel32.dll", "ReadProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, Point, 传址, 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesRead, 整数型, , 
+
+.DLL命令 FindWindowA, 整数型, "user32.dll", "FindWindowA", , 
+    .参数 lpClassName, 文本型, , 
+    .参数 lpWindowName, 文本型, , 
+
+.DLL命令 FindWindowExA, 整数型, "user32.dll", "FindWindowExA", , 
+    .参数 hwndParent, 整数型, , 
+    .参数 hwndChildAfter, 整数型, , 
+    .参数 lpszClass, 文本型, , 
+    .参数 lpszWindow, 整数型, , 
+
+.DLL命令 WindowFromPoint, 整数型, "user32.dll", "WindowFromPoint", , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+
+.DLL命令 GetCursorPos, 整数型, "user32.dll", "GetCursorPos", , 
+    .参数 Point, Point, 传址, 
+
+.DLL命令 SendMessageA_LVHITTESTINFO, 整数型, "user32.dll", "SendMessageA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 Msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, LVHITTESTINFO, , 
+
+.DLL命令 ReadProcessMemory_LVHITTESTINFO, 整数型, "kernel32.dll", "ReadProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, LVHITTESTINFO, 传址, 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesRead, 整数型, , 
+
+.DLL命令 WriteProcessMemory, 整数型, "kernel32.dll", "WriteProcessMemory", , 
+    .参数 hProcess, 空白型, , 
+    .参数 lpBaseAddress, 空白型, , 
+    .参数 lpBuffer, 空白型, 传址, 
+    .参数 nSize, 空白型, , 
+    .参数 lpNumberOfBytesWritten, 空白型, , 
+
+.DLL命令 TextOutA, 整数型, "user32.dll", "TextOutA", , 
+    .参数 hdc, 整数型, , 
+    .参数 nXStart, 整数型, , 
+    .参数 nYStart, 整数型, , 
+    .参数 lpString, 文本型, , 
+    .参数 cbString, 整数型, , 
+
+.DLL命令 GetDC, 整数型, "user32.dll", "GetDC", , 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 DrawTextA, 整数型, "user32.dll", "DrawTextA", , 
+    .参数 hdc, 整数型, , 
+    .参数 lpStr, 文本型, , 
+    .参数 nCount, 整数型, , 
+    .参数 lpRect, Rect, , 
+    .参数 wFormat, 整数型, , 
+
+.DLL命令 GetClientRect, 整数型, "user32.dll", "GetClientRect", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpRect, Rect, 传址, 
+
+.DLL命令 GetTickCount, 整数型, "kernel32.dll", "GetTickCount", , 
+
+.DLL命令 GetCurrentThread, 整数型, "kernel32.dll", "GetCurrentThread", , 
+
+.DLL命令 SuspendThread, 整数型, "kernel32.dll", "SuspendThread", , 
+    .参数 hThread, 整数型, , 线程句柄
+
+.DLL命令 GetSystemMetrics, 整数型, "user32.dll", "GetSystemMetrics", , 
+    .参数 nIndex, 整数型, , 
+
+.DLL命令 GetMessageA, 整数型, "user32.dll", "GetMessageA", , 
+    .参数 lpMsg, MSG, 传址, 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsgFilterMin, 整数型, , 
+    .参数 wMsgFilterMax, 整数型, , 
+
+.DLL命令 MessageBoxA, 整数型, "user32.dll", "MessageBoxA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpText, 文本型, , 
+    .参数 lpCaption, 文本型, , 
+    .参数 uType, 整数型, , 
+
+.DLL命令 PostQuitMessage, 空白型, "user32.dll", "PostQuitMessage", , 
+    .参数 nExitCode, 整数型, , 
+
+.DLL命令 LineDDA, 逻辑型, "", "", , 
+    .参数 nXStart, 整数型, , 
+    .参数 nYStart, 整数型, , 
+    .参数 nXEnd, 整数型, , 
+    .参数 nYEnd, 整数型, , 
+    .参数 lpLineFunc, 整数型, , 
+    .参数 lpData, 整数型, , 
+
+.程序集 主程序集, , , 
+
+.程序集变量 窗口句柄, 整数型, , , 
+.程序集变量 钩子句柄, 整数型, , , 
+.程序集变量 Point, Point, , , 
+.程序集变量 图标索引, 整数型, , , 
+.程序集变量 屏幕宽度, 整数型, , , 
+.程序集变量 屏幕高度, 整数型, , , 
+.程序集变量 设备句柄, 整数型, , , 
+.程序集变量 点_数组, Point, , "0", 
+.子程序 _启动子程序, 整数型, , 
+.局部变量 tmp, MSG, , , 
+
+初始化程序 ()
+.判断循环首 (不等于 (GetMessageA (tmp, 0, 0, 0), 0))
+    
+.判断循环尾 ()
+MessageBoxA (0, “程序即将退出^_^”, “程序作者：凌晨孤星”, 相加 (0, #信息图标))
+close ()
+返回 (0)
+
+
+.子程序 初始化程序, 空白型, , 
+.局部变量 id, 整数型, , , 
+
+赋值 (窗口句柄, FindWindowA (“Progman”, “Program Manager”))
+赋值 (窗口句柄, FindWindowExA (窗口句柄, 0, “SHELLDLL_DefView”, 0))
+赋值 (窗口句柄, FindWindowExA (窗口句柄, 0, “SysListView32”, 0))
+GetWindowThreadProcessId (窗口句柄, id)
+赋值 (钩子句柄, SetWindowsHookExA (#WH_MOUSE_LL, &LowLevelMouseProc, GetModuleHandleA (0), 0))
+初始化 (窗口句柄)
+赋值 (屏幕宽度, GetSystemMetrics (#SM_CXSCREEN))
+赋值 (屏幕高度, GetSystemMetrics (#SM_CYSCREEN))
+ ' 设备句柄 ＝ GetDC (窗口句柄)
+
+.子程序 LowLevelMouseProc, 整数型, , 
+.参数 nCode, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.判断开始 (等于 (wParam, 513))
+    GetCursorPos (Point)
+    .如果真 (等于 (WindowFromPoint (Point.x, Point.y), 窗口句柄))
+        赋值 (图标索引, 根据坐标取项目 (Point.x, Point.y))
+        移动图标 ()
+         ' 返回 (1)
+    .如果真结束
+    
+.判断 (等于 (wParam, 515))
+    GetCursorPos (Point)
+    .如果真 (等于 (WindowFromPoint (Point.x, Point.y), 窗口句柄))
+        返回 (1)
+    .如果真结束
+    
+.判断 (等于 (wParam, 516))
+    GetCursorPos (Point)
+    .如果真 (并且 (等于 (Point.x, 相减 (屏幕宽度, 1)), 等于 (Point.y, 相减 (屏幕高度, 1))))
+        PostQuitMessage (0)
+    .如果真结束
+    
+.默认
+    
+.判断结束
+返回 (CallNextHookEx (钩子句柄, nCode, wParam, lParam))
+
+.子程序 移动图标, 空白型, , 
+.局部变量 p1, Point, 静态, , 
+.局部变量 p2, Point, , , 
+.局部变量 xx, 整数型, , , 
+.局部变量 yy, 整数型, , , 
+.局部变量 n, 整数型, , , 
+
+取超级列表框坐标 (图标索引, p1)
+赋值 (p2.x, 取随机数_ (0, 相减 (屏幕宽度, 48)))
+赋值 (p2.y, 取随机数_ (0, 相减 (屏幕高度, 100)))
+ ' TextOutA (设备句柄, 取鼠标水平位置 () ＋ 32, 取鼠标垂直位置 () ＋ 32, “嘿嘿，你捉不到我”, 16)
+重定义数组 (点_数组, 假, 0)
+LineDDA (p1.x, p1.y, p2.x, p2.y, 到整数 (&LineDDAProc), 0)
+
+.变量循环首 (1, 取数组成员数 (点_数组), 20, n)
+    SendMessageA (窗口句柄, #LVM_SETITEMPOSITION, 图标索引, 相加 (点_数组 [n], x, 相乘 (65536, 点_数组 [n], y)))
+    赋值 (n, 相加 (n, 20))
+.变量循环尾 ()
+
+
+.子程序 close, 空白型, 公开, 
+UnhookWindowsHookEx (钩子句柄)
+释放资源 ()
+ ' 结束 ()
+
+
+.子程序 LineDDAProc, 空白型, , 
+.参数 X, 整数型, , 
+.参数 Y, 整数型, , 
+.参数 lpData, 整数型, , 
+
+.局部变量 p, Point, , , 
+
+赋值 (p.x, X)
+赋值 (p.y, Y)
+加入成员 (点_数组, p)
+
+
+.程序集 列表操作_程序集, , , 
+
+.程序集变量 hProcess, 整数型, , , 
+.程序集变量 列表句柄, 空白型, , , 
+.程序集变量 pv, 整数型, , , 
+.程序集变量 pv2, 整数型, , , 
+.子程序 初始化, 整数型, , 
+.参数 超级列表框句柄, 整数型, , 
+
+.局部变量 dwProcessId, 整数型, , , 
+
+GetWindowThreadProcessId (超级列表框句柄, dwProcessId)
+赋值 (hProcess, OpenProcess (位或 (#PROCESS_VM_READ, #PROCESS_VM_OPERATION, #PROCESS_VM_WRITE), 0, dwProcessId))
+.如果真 (不等于 (hProcess, 0))
+    赋值 (列表句柄, 超级列表框句柄)
+    赋值 (pv, VirtualAllocEx (hProcess, 0, 8, #MEM_COMMIT, #PAGE_READWRITE))
+    赋值 (pv2, VirtualAllocEx (hProcess, 0, 20, #MEM_COMMIT, #PAGE_READWRITE))
+    返回 (1)
+.如果真结束
+返回 (0)
+
+.子程序 取超级列表框坐标, 整数型, 公开, 
+.参数 索引, 整数型, , 
+.参数 pt, Point, 参考, 
+
+.局部变量 ret, 整数型, , , 
+
+赋值 (ret, SendMessageA (列表句柄, #LVM_GETITEMPOSITION, 索引, pv))
+.如果真 (等于 (ret, 0))
+    返回 (0)
+.如果真结束
+ReadProcessMemory_Point (hProcess, pv, pt, 8, 0)
+返回 (1)
+
+.子程序 根据坐标取项目, 整数型, , 
+.参数 x, 整数型, , 
+.参数 y, 整数型, , 
+
+.局部变量 ret, 整数型, , , 
+.局部变量 tmp, LVHITTESTINFO, , , 
+
+WriteProcessMemory (hProcess, pv2, x, 4, 0)
+WriteProcessMemory (hProcess, 相加 (pv2, 4), y, 4, 0)
+赋值 (ret, SendMessageA (列表句柄, #LVM_HITTEST, 0, pv2))
+ReadProcessMemory_LVHITTESTINFO (hProcess, pv2, tmp, 20, 0)
+返回 (ret)
+
+.子程序 释放资源, 空白型, , 
+VirtualFreeEx (hProcess, pv, 0, #MEM_RELEASE)
+VirtualFreeEx (hProcess, pv2, 0, #MEM_RELEASE)
+CloseHandle (hProcess)
+
+.程序集 取随机数_程序集, , , 
+
+.子程序 取随机数_, 整数型, 公开, 
+.参数 最小值, 整数型, , 
+.参数 最大值, 整数型, , 
+
+.如果真 (大于 (最小值, 最大值))
+    返回 (0)
+.如果真结束
+返回 (相加 (取余数_ (相加 (相乘 (GetTickCount (), 23), 7), 相加 (相减 (最大值, 最小值), 1)), 最小值))
+
+
+.子程序 取余数_, 整数型, , 
+.参数 被除数, 整数型, , 
+.参数 除数, 整数型, , 
+
+.局部变量 商, 整数型, , , 
+
+赋值 (商, 相除 (被除数, 除数))
+返回 (相减 (被除数, 相乘 (商, 除数)))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

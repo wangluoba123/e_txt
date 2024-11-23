@@ -1,0 +1,354 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 259
+    高度 = 119
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “势力战打BOSS专用抢石头”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+.全局变量 进程ID, 整数型, , , 
+.全局变量 进程标识, 整数型, , , 
+.全局变量 窗口句柄, 整数型, , , 
+.全局变量 进程PID, 整数型, , , 
+
+.DLL命令 GetWindowText, 整数型, "user32.dll", "GetWindowTextA", , 
+    .参数 句柄, 整数型, , 
+    .参数 文本, 文本型, , 
+    .参数 文本长度, 整数型, , 
+
+.DLL命令 GetClassName, 整数型, "user32.dll", "GetClassNameA", , 
+    .参数 句柄, 整数型, , 
+    .参数 文本, 文本型, , 
+    .参数 文本长度, 整数型, , 
+
+.DLL命令 小烦取父窗口, 整数型, "user32", "GetParent", 公开, 判断指定窗口的父窗口  父窗口的句柄。如窗口没有父，或遇到错误，则返回零。会设置GetLastError
+    .参数 窗口句柄, 整数型, , 欲测试的窗口的句柄;
+
+.DLL命令 FindWindowExA, 整数型, "user32", "FindWindowExA", , 寻找子窗口_
+    .参数 窗口句柄1, 整数型, , 在其中查找子的父窗口。如设为零，表示使用桌面窗口（通常说的顶级窗口都被认为是桌面的子窗口，所以也会对它们进行查找）
+    .参数 窗口句柄2, 整数型, , 从这个窗口后开始查找。这样便可利用对FindWindowEx的多次调用找到符合条件的所有子窗口。如设为零，表示从第一个子窗口开始搜索
+    .参数 欲搜索的类名1, 文本型, , 欲搜索的类名。“”表示忽略
+    .参数 欲搜索的类名2, 文本型, , 欲搜索的类名。“”表示忽略;
+
+.DLL命令 模拟键盘行动_, 整数型, "user32.dll", "keybd_event", , 这个函数模拟了键盘行动
+    .参数 键代码, 整数型, , bVk,欲模拟的虚拟键码
+    .参数 键扫描码, 整数型, , bScan,键的OEM扫描码
+    .参数 标志值, 整数型, , dwFlags,标志常数
+    .参数 特定值, 整数型, , dwExtraInfo,通常不用的一个值
+
+.DLL命令 _发送消息, 整数型, "", "SendMessageA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 标识, 整数型, , 
+    .参数 消息1, 整数型, , 
+    .参数 消息2, 文本型, , 
+
+.DLL命令 发送消息, 空白型, "", "PostMessageA", , 向指定窗口句柄发送消息
+    .参数 h, 空白型, , 
+    .参数 m, 空白型, , 
+    .参数 p, 空白型, , 
+    .参数 p, 空白型, , 
+
+.DLL命令 小烦取当前窗口, 整数型, "user32", "GetForegroundWindow", 公开, 返回前台窗口句柄
+
+.DLL命令 API_寻找顶级窗口, 整数型, "user32", "FindWindowA", , 寻找窗口列表中第一个符合指定条件的顶级窗口（在vb里使用：FindWindow最常见的一个用途是获得ThunderRTMain类的隐藏窗口的句柄；该类是所有运行中vb执行程序的一部分。获得句柄后，可用api函数GetWindowText取得这个窗口的名称；该名也是应用程序的标题）　找到窗口的句柄。如未找到相符窗口，则返回零。会设置GetLastError
+    .参数 窗口类名, 整数型, , 指向包含了窗口类名的空中止（C语言）字串的指针；或设为零，表示接收任何类
+    .参数 窗口文本, 文本型, , 指向包含了窗口文本（或标签）的空中止（C语言）字串的指针；或设为零，表示接收任何窗口标题  示例Dim hw&, cnt&Dim rttitle As  * 256hw& = FindWindow("ThunderRT5Main", vbNullString) ' ThunderRTMain under VB4cnt = GetWindowText(hw&, rttitle, 255)MsgBox Left, 0, "RTMain title";
+
+.DLL命令 取内容, 整数型, "", "SendMessageA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 msg, 整数型, , 
+    .参数 wparam, 整数型, , 
+    .参数 lparam, 文本型, , 
+
+.DLL命令 取鼠标位置句柄, 整数型, "user32.dll", "WindowFromPoint", , 
+    .参数 X轴光标, 整数型, , 
+    .参数 Y轴光标, 整数型, , 
+
+.DLL命令 控制鼠标, 空白型, "user32", "mouse_event", , 
+    .参数 dwFlags, 整数型, , 
+    .参数 dx, 整数型, , 
+    .参数 dy, 整数型, , 
+    .参数 cButtons, 整数型, , 
+    .参数 dwExtraInfo, 整数型, , 
+
+.DLL命令 移动鼠标, 空白型, "user32", "SetCursorPos", , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+
+.DLL命令 CreateWaitableTimerA, 整数型, "", "CreateWaitableTimerA", , 
+    .参数 lpTimerAttributes, 整数型, , 
+    .参数 bManualReset, 逻辑型, , 
+    .参数 lpTimerName, 整数型, , 
+
+.DLL命令 CloseHandle, 逻辑型, "", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 取设备场景_, 整数型, "", "GetDC", , 获取指定窗口的设备场景　指定窗口的设备场景句柄，出错则为0
+    .参数 hwnd, 整数型, , 将获取其设备场景的窗口的句柄。若为0，则要获取整个屏幕的DC; 
+
+.DLL命令 TextOut_, 整数型, "gdi32", "TextOutA", , 文本绘图函数。也请参考SetTextAlign　非零表示成功，零表示失败。会设置GetLastError
+    .参数 hdc, 整数型, , 设备场景的句柄
+    .参数 x, 整数型, , 绘图的起点，采用逻辑坐标
+    .参数 y, 整数型, , 同上
+    .参数 lpString, 文本型, , 欲描绘的字串
+    .参数 nCount, 整数型, , 字串中要描绘的字符数量;  
+
+.DLL命令 释放设备场景_, 整数型, "user32", "ReleaseDC", , 释放由调用GetDC或GetWindowDC函数获取的指定设备场景。它对类或私有设备场景无效（但这样的调用不会造成损害）　执行成功为1，否则为0
+    .参数 窗口句柄, 整数型, , 要释放的设备场景相关的窗口句柄
+    .参数 设备场景, 整数型, , 要释放的设备场景句柄;  
+
+.DLL命令 删除对象_, 整数型, "gdi32", "DeleteObject", , 用这个函数删除GDI对象，比如画笔、刷子、字体、位图、区域以及调色板等等。对象使用的所有系统资源都会被释放　非零表示成功，零表示失败
+    .参数 对象句柄, 整数型, , 一个GDI对象的句柄;  
+
+.DLL命令 选入设备场景_, 整数型, "gdi32", "SelectObject", , 每个设备场景都可能有选入其中的图形对象。其中包括位图、刷子、字体、画笔以及区域等等。一次选入设备场景的只能有一个对象。选定的对象会在设备场景的绘图操作中使用。例如，当前选定的画笔决定了在设备场景中描绘的线段颜色及样式　与以前选入设备场景的相同hObject类型的一个对象的句柄，零表示出错。如选定的对象是一个区域（Region），结果就是下列常数之一：SIMPLEREGION， ;    COMPLEXREGION 或 NULLREGION 对区域进行描述， GDI_ERROR 表示出错
+    .参数 设备场景句柄, 整数型, , 一个设备场景的句柄
+    .参数 对象句柄, 整数型, , 一个画笔、位图、刷子、字体或区域的句柄;  
+
+.DLL命令 SetBkColor_, 整数型, "gdi32", "SetBkColor", , 为指定的设备场景设置背景颜色。背景颜色用于填充阴影刷子、虚线画笔以及字符（如背景模式为OPAQUE）中的空隙。也在位图颜色转换期间使用。参考SetBkMode　前一个背景色，CLR_INVALID表示出错
+    .参数 hdc, 整数型, , 设备场景的句柄
+    .参数 crColor, 整数型, , 新背景颜色的RGB颜色值;  
+
+.DLL命令 SetBkMode_, 整数型, "gdi32", "SetBkMode", , 指定阴影刷子、虚线画笔以及字符中的空隙的填充方式　前一个背景模式的值
+    .参数 hdc, 整数型, , 设备场景的句柄
+    .参数 nBkMode, 整数型, , 下述常数之一：;OPAQUE：用当前的背景色填充虚线画笔、阴影刷子以及字符的空隙;TRANSPARENT：透明处理，即不作上述填充;  
+
+.DLL命令 设置前景色_, 整数型, "gdi32", "SetTextColor", , 设置当前文本颜色。这种颜色也称为“前景色”　文本色的前一个RGB颜色设定。CLR_INVALID表示失败。会设置GetLastError
+    .参数 设备场景, 整数型, , 设备场景的句柄
+    .参数 颜色, 整数型, , 新的文本色在VB里使用如改变了这个设置，注意恢复VB窗体或控件原始的文本颜色;
+
+.DLL命令 GetPixel, 整数型, "", "GetPixel", , 取坐标颜色
+    .参数 hdc, 整数型, , 场景句柄
+    .参数 X, 整数型, , X坐标
+    .参数 Y, 整数型, , Y坐标
+
+.DLL命令 MsgWaitForMultipleObjects, 整数型, "", "MsgWaitForMultipleObjects", , 
+    .参数 nCount, 整数型, , 
+    .参数 pHandles, 整数型, 传址, 
+    .参数 fWaitAll, 逻辑型, , 
+    .参数 dwMilliseconds, 整数型, , 
+    .参数 dwWakeMask, 整数型, , 
+
+.DLL命令 API_设置窗口标题, 整数型, "user32", "SetWindowTextA", , 设置窗口的标题文字或控件的内容（在vb里使用：针对vb窗体，应使用caption或text属性）　非零表示成功，零表示失败。会设置GetLastError
+    .参数 窗口句柄, 整数型, , 要设置文字的窗口的句柄
+    .参数 窗口标题, 文本型, , 要设到hwnd窗口中的文字;
+
+.DLL命令 取窗口进程ID, 整数型, "user32", "GetWindowThreadProcessId", , 获取与指定窗口关联在一起的一个进程和线程标识符 拥有窗口的线程的标识符
+    .参数 hwnd, 整数型, , 指定窗口句柄;
+    .参数 lpdwProcessId, 整数型, 传址, 指定一个变量，用于装载拥有那个窗口的一个进程的标识符
+
+.DLL命令 _窗口句柄是否有效, 整数型, "user32", "IsWindow", , 判断一个窗口句柄是否有效(非零表示成功，零表示失败)
+    .参数 hwnd, 整数型, , 待检查窗口的句柄
+
+.DLL命令 API_判断窗口可见性, 整数型, "", "IsWindowVisible", , 判断窗口是否可见  如窗口可见则返回TRUE（非零）
+    .参数 窗口句柄, 整数型, , 要测试的那个窗口的句柄
+
+.DLL命令 小烦控制窗口状态, 整数型, "", "ShowWindow", 公开, 控制窗口的状态（在vb里使用：针对vb窗体及控件，请使用对应的vb属性） 成功:返回TRUE（非零），失败:返回FALSE（零）
+    .参数 hwnd, 整数型, , 窗口句柄，要向这个窗口应用由命令
+    .参数 nCmdShow, 整数型, , 为窗口指定的一个命令。请用下述任何一个常数:0 隐藏取消激活 1 最小化取消激活 2 还原激活 3 显示激活 4 最大化激活 5 最小化激活 6 最小化 7 显示 8 最近状态显示 9 还原
+
+.DLL命令 创建快照, 整数型, "", "CreateToolhelp32Snapshot", , 
+    .参数 falg, 整数型, , 
+    .参数 id, 整数型, , 
+
+.DLL命令 打开令牌, 整数型, "advapi32.dll", "OpenProcessToken", , 
+    .参数 ProcessHandle, 整数型, , 
+    .参数 DesiredAccess, 整数型, , 
+    .参数 TokenHandle, 整数型, 传址, 
+
+.DLL命令 恢复权限, 逻辑型, "advapi32.dll", "LookupPrivilegeValueA", , 
+
+.DLL命令 获取线程, 整数型, "kernel32.dll", "GetCurrentProcess", , 
+
+.DLL命令 OpenProcess, 整数型, "", "", , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 整数型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 ReadProcessMemory, 整数型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 字节集, 传址, 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, , 
+
+.DLL命令 读内存整数, 整数型, "", "ReadProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 整数型, 传址, 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, , 
+
+.DLL命令 GetWindowThreadProcessId, 整数型, "user32.dll", "GetWindowThreadProcessId", , GetWindowThreadProcessId，获取与指定窗口关联在一起的一个线程和进程标识符
+    .参数 窗口句柄, 整数型, , hwnd，指定窗口句柄
+    .参数 进程标识符, 整数型, 传址, lpdwProcessId，指定一个变量，用于装载拥有那个窗口的一个进程的标识符
+
+.DLL命令 查找窗口, 整数型, "user32.dll", "FindWindowA", , 找到窗口的句柄。如未找到相符窗口，则返回零。会设置GetLastError
+    .参数 lpClassName, 整数型, , 指向包含了窗口类名的空中止（C语言）字串的指针；或设为零，表示接收任何类
+    .参数 lpWindowName, 文本型, , 指向包含了窗口文本（或标签）的空中止（C语言）字串的指针；或设为零，表示接收任何窗口标题  示例Dim hw&, cnt&Dim rttitle As  * 256hw& = FindWindow("ThunderRT5Main", vbNullString) ' ThunderRTMain under VB4cnt = GetWindowText(hw&, rttitle, 255)MsgBox Left$(rttitle, cnt), 0, "RTMain title"
+
+.DLL命令 投递消息1, 整数型, "user32.dll", "PostMessageA", , 如消息投递成功，则返回TRUE（非零）。会设置GetLastError
+    .参数 hwnd, 整数型, , 接收消息的那个窗口的句柄。如设为HWND_BROADCAST，表示投递给系统中的所有顶级窗口。如设为零，表示投递一条线程消息（参考PostThreadMessage）
+    .参数 wMsg, 整数型, , 消息标识符
+    .参数 wParam, 整数型, , 具体由消息决定
+    .参数 lParam, 整数型, , 具体由消息决定
+
+.DLL命令 打开进程, 整数型, "", "OpenProcess", , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 逻辑型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 得到进程ID, 整数型, "", "GetWindowThreadProcessId", , 
+    .参数 WindowHandle, 整数型, , 
+    .参数 ProcessId, 字节集, , 
+
+.DLL命令 关闭进程, 空白型, "", "CloseHandle", , 
+    .参数 ProcessHandle, 整数型, , 
+
+.DLL命令 读入内存, 整数型, "", "ReadProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 字节集, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesRead, 整数型, , 
+
+.DLL命令 写入内存, 整数型, "", "WriteProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 字节集, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesRead, 整数型, , 
+
+.DLL命令 关闭程序, 整数型, "", "TerminateProcess", , 
+    .参数 进程ID, 整数型, , 
+    .参数 退出代码, 整数型, , 
+
+.DLL命令 显示窗口_API, 整数型, "user32", "ShowWindow", , ShowWindow
+    .参数 窗口句柄, 整数型, , hwnd，欲接收ShowWindow命令的窗口
+    .参数 可视性类型, 整数型, , nCmdShow，0:hide,5:show
+
+.DLL命令 设置窗口标题, 整数型, "user32", "SetWindowTextA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 窗口标题, 文本型, , 
+
+.DLL命令 分配内存虚拟页, 整数型, "kernel32.dll", "VirtualAllocEx", , 保留虚拟页
+    .参数 目标对象句柄, 整数型, , hProcess
+    .参数 分配文本地址, 整数型, , lpAddress
+    .参数 分配大小, 整数型, , dwSize
+    .参数 分配类型, 整数型, , flAllocationType
+    .参数 内存保护标志, 整数型, , flProtect
+
+.DLL命令 远程创建线程, 整数型, "", "CreateRemoteThread", , 
+    .参数 目标对象句柄, 整数型, , hProcess
+    .参数 线程安全描述字, 整数型, , lpThreadAttributes
+    .参数 线程栈大小, 整数型, , dwStackSize
+    .参数 指向在远程进程中执行的函数地址, 整数型, , lpStartAddress
+    .参数 传入参数, 整数型, , lpParameter
+    .参数 创建线程的其它标志, 整数型, , dwCreationFlags
+    .参数 线程身份标志, 整数型, , lpThreadId
+
+.DLL命令 运行线程, 空白型, "", "ResumeThread", , 
+    .参数 线程句柄, 整数型, , 
+
+.DLL命令 WaitForSingleObject, 空白型, "", "WaitForSingleObject", , 
+    .参数 a, 整数型, , 
+    .参数 a, 整数型, , 
+
+.DLL命令 VirtualFreeEx, 空白型, "", "VirtualFreeEx", , 
+    .参数 a, 整数型, , 
+    .参数 b, 整数型, , 
+    .参数 c, 整数型, , 
+    .参数 d, 整数型, , 
+
+.DLL命令 CreateThread, 整数型, "", "CreateThread", , 
+    .参数 结构, 整数型, , 
+    .参数 堆栈大小, 整数型, , 
+    .参数 地址, 子程序指针, , 
+    .参数 参数, 整数型, , 
+    .参数 创建标志, 整数型, , 
+    .参数 返回ID, 整数型, , 
+
+.DLL命令 WriteBytes, 整数型, "kernel32.dll", "WriteProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 pBaseAddress, 整数型, , 内存地址
+    .参数 lpBuffer, 字节集, 传址, 数据指针
+    .参数 nSize, 整数型, , 长度
+    .参数 lpNumberOfBytesWritten, 整数型, , 实际写出长度
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+赋值 (窗口句柄, API_寻找顶级窗口 (0, “YB_OnlineClient”))
+GetWindowThreadProcessId (窗口句柄, 进程标识)
+写内存字节集 (4421801, { 233, 34, 135, 255, 3 })
+写内存字节集 (71499728, { 96, 139, 215, 129, 234, 132, 0, 0, 0, 139, 18, 62, 139, 12, 149, 228, 40, 46, 1, 139, 1, 106, 0, 106, 0, 104, 1, 4, 0, 0, 255, 80, 4, 97, 195, 144 })
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+赋值 (窗口句柄, API_寻找顶级窗口 (0, “YB_OnlineClient”))
+GetWindowThreadProcessId (窗口句柄, 进程标识)
+写内存字节集 (4421801, { 195 })
+
+
+.程序集 程序集1, , , 
+
+.子程序 写内存字节集, 空白型, , 
+.参数 地址, 整数型, , 
+.参数 变量, 字节集, , 
+
+赋值 (进程ID, OpenProcess (2035711, 0, 进程标识))
+WriteBytes (进程ID, 地址, 变量, 取字节集长度 (变量), 0)
+CloseHandle (进程ID)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

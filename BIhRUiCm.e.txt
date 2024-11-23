@@ -1,0 +1,273 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：区域和语言选项
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 LOCALE_INVARIANT, "", , Locale
+.常量 系统类型_SYSTEM_DEFAULT, "0", 公开, Locale
+.常量 系统类型_USER_DEFAULT, "1024", 公开, Locale
+.常量 , , , 
+.常量 系统类型_CUSTOM_DEFAULT, "3072", 公开, Locale Windows Vista and later
+.常量 系统类型_CUSTOM_UI_DEFAULT, "5120", 公开, Locale Windows Vista and later
+.常量 系统类型_CUSTOM_UNSPECIFIED, "4096", 公开, Locale Windows Vista and later
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 , , , 
+.常量 LOCALE_ILANGUAGE, "1", 公开, LANGID in hexadecimal digits
+.常量 LOCALE_SLANGUAGE, "2", 公开, Full localized name of the language
+.常量 LOCALE_SENGLANGUAGE, "4097", 公开, Full English U.S. name of the language ISO Standard 639
+.常量 LOCALE_SABBREVLANGNAME, "3", 公开, Abbreviated name of the language, ISO Standard 639
+.常量 LOCALE_SNATIVELANGNAME, "4", 公开, Native name of the language
+.常量 LOCALE_ICOUNTRY, "5", 公开, Country code, based on international phone codes
+.常量 LOCALE_SCOUNTRY, "6", 公开, The full localized name of the country.
+.常量 LOCALE_SENGCOUNTRY, "4098", 公开, The full English U.S. name of the country.
+.常量 LOCALE_SABBREVCTRYNAME, "7", 公开, Abbreviated name of the country ISO Standard 3166.
+.常量 LOCALE_SNATIVECTRYNAME, "8", 公开, Native name of the country.
+.常量 LOCALE_IDEFAULTLANGUAGE, "9", 公开, LANGID for the principal language spoken in this locale.
+.常量 LOCALE_IDEFAULTCOUNTRY, "10", 公开, Country code for the principal country in this locale.
+.常量 LOCALE_IDEFAULTCODEPAGE, "11", 公开, OEM code page associated with the country.
+.常量 LOCALE_SLIST, "12", 公开, Characters used to separate list items.
+.常量 LOCALE_IMEASURE, "13", 公开, 0 for metric system (S.I.) and 1 for the U.S.
+.常量 LOCALE_SDECIMAL, "14", 公开, decimal separator
+.常量 LOCALE_STHOUSAND, "15", 公开, thousand separator
+.常量 LOCALE_SGROUPING, "16", 公开, Sizes for each group of digits to the left of the decimal.
+.常量 LOCALE_IDIGITS, "17", 公开, number of fractional digits
+.常量 LOCALE_ILZERO, "18", 公开, 0 means use no leading zeros; 1 means use leading zeros.
+.常量 LOCALE_SNATIVEDIGITS, "19", 公开, Ten characters equivalent of the ASCII 0-9.
+.常量 LOCALE_SCURRENCY, "20", 公开, local monetary symbol
+.常量 LOCALE_SINTLSYMBOL, "21", 公开, International monetary symbol ISO 4217.
+.常量 LOCALE_SMONDECIMALSEP, "22", 公开, monetary decimal separator
+.常量 LOCALE_SMONTHOUSANDSEP, "23", 公开, monetary thousand separator
+.常量 LOCALE_SMONGROUPING, "24", 公开, monetary grouping
+.常量 LOCALE_ICURRDIGITS, "25", 公开, # local monetary digits
+.常量 LOCALE_IINTLCURRDIGITS, "26", 公开, # intl monetary digits
+.常量 LOCALE_ICURRENCY, "27", 公开, positive currency mode
+.常量 LOCALE_INEGCURR, "28", 公开, negative currency mode
+.常量 LOCALE_SDATE, "29", 公开, date separator
+.常量 LOCALE_STIME, "30", 公开, time separator
+.常量 LOCALE_SSHORTDATE, "31", 公开, short date format string
+.常量 LOCALE_SLONGDATE, "32", 公开, long date format string
+.常量 LOCALE_STIMEFORMAT, "4099", 公开, time format string
+.常量 LOCALE_IDATE, "33", 公开, short date format, 0 M–D–Y,1 D–M–Yr,2 Y–M–D
+.常量 LOCALE_ILDATE, "34", 公开, long date format, 0 M–D–Y,1 D–M–Y,2 Y–M–D
+.常量 LOCALE_ITIME, "35", 公开, time format, 0 AM/PM 12-hr format, 1 24-hr format
+.常量 LOCALE_ICENTURY, "36", 公开, Use full 4-digit century, 0 Two digit.1 Full century
+.常量 LOCALE_ITLZERO, "37", 公开, leading zeros in time field, 0 No , 1 yes
+.常量 LOCALE_IDAYLZERO, "38", 公开, leading zeros in day field, 0 No , 1 yes
+.常量 LOCALE_IMONLZERO, "39", 公开, leading zeros in month field, 0 No , 1 yes
+.常量 LOCALE_S1159, "40", 公开, AM designator
+.常量 LOCALE_S2359, "41", 公开, PM designator
+.常量 LOCALE_SDAYNAME1, "42", 公开, long name for Monday
+.常量 LOCALE_SDAYNAME2, "43", 公开, long name for Tuesday
+.常量 LOCALE_SDAYNAME3, "44", 公开, long name for Wednesday
+.常量 LOCALE_SDAYNAME4, "45", 公开, long name for Thursday
+.常量 LOCALE_SDAYNAME5, "46", 公开, long name for Friday
+.常量 LOCALE_SDAYNAME6, "47", 公开, long name for Saturday
+.常量 LOCALE_SDAYNAME7, "48", 公开, long name for Sunday
+.常量 LOCALE_SABBREVDAYNAME1, "49", 公开, abbreviated name for Monday
+.常量 LOCALE_SABBREVDAYNAME2, "51", 公开, abbreviated name for Tuesday
+.常量 LOCALE_SABBREVDAYNAME3, "52", 公开, abbreviated name for Wednesday
+.常量 LOCALE_SABBREVDAYNAME4, "53", 公开, abbreviated name for Thursday
+.常量 LOCALE_SABBREVDAYNAME5, "54", 公开, abbreviated name for Friday
+.常量 LOCALE_SABBREVDAYNAME6, "55", 公开, abbreviated name for Saturday
+.常量 LOCALE_SABBREVDAYNAME7, "56", 公开, abbreviated name for Sunday
+.常量 LOCALE_SMONTHNAME1, "57", 公开, long name for January
+.常量 LOCALE_SMONTHNAME2, "58", 公开, long name for February
+.常量 LOCALE_SMONTHNAME3, "59", 公开, long name for March
+.常量 LOCALE_SMONTHNAME4, "60", 公开, long name for April
+.常量 LOCALE_SMONTHNAME5, "61", 公开, long name for May
+.常量 LOCALE_SMONTHNAME6, "62", 公开, long name for June
+.常量 LOCALE_SMONTHNAME7, "63", 公开, long name for July
+.常量 LOCALE_SMONTHNAME8, "64", 公开, long name for August
+.常量 LOCALE_SMONTHNAME9, "65", 公开, long name for September
+.常量 LOCALE_SMONTHNAME10, "66", 公开, long name for October
+.常量 LOCALE_SMONTHNAME11, "67", 公开, long name for November
+.常量 LOCALE_SMONTHNAME12, "68", 公开, long name for December
+.常量 LOCALE_SABBREVMONTHNAME1, "69", 公开, abbreviated name for January
+.常量 LOCALE_SABBREVMONTHNAME2, "70", 公开, abbreviated name for February
+.常量 LOCALE_SABBREVMONTHNAME3, "71", 公开, abbreviated name for March
+.常量 LOCALE_SABBREVMONTHNAME4, "72", 公开, abbreviated name for April
+.常量 LOCALE_SABBREVMONTHNAME5, "73", 公开, abbreviated name for May
+.常量 LOCALE_SABBREVMONTHNAME6, "74", 公开, abbreviated name for June
+.常量 LOCALE_SABBREVMONTHNAME7, "75", 公开, abbreviated name for July
+.常量 LOCALE_SABBREVMONTHNAME8, "76", 公开, abbreviated name for August
+.常量 LOCALE_SABBREVMONTHNAME9, "77", 公开, abbreviated name for September
+.常量 LOCALE_SABBREVMONTHNAME10, "78", 公开, abbreviated name for October
+.常量 LOCALE_SABBREVMONTHNAME11, "79", 公开, abbreviated name for November
+.常量 LOCALE_SABBREVMONTHNAME12, "80", 公开, abbreviated name for December
+.常量 LOCALE_SABBREVMONTHNAME13, "4111", 公开, Native abbreviated name for 13th month, if it
+.常量 , , , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+
+.DLL命令 SetLocaleInfoA, 逻辑型, "Kernel32.dll", "SetLocaleInfoA", , 
+    .参数 LCID, 短整数型, , locale identifier  
+    .参数 LCTYPE, 短整数型, , 
+    .参数 LPCTSTR, 文本型, , 
+
+.DLL命令 GetLocaleInfoA, 整数型, "Kernel32.dll", "GetLocaleInfoA", , 
+    .参数 LCID, 短整数型, , locale identifier 
+    .参数 LCTYPE, 短整数型, , 
+    .参数 LPCTSTR, 文本型, 传址, 
+    .参数 int, 整数型, , 
+
+.DLL命令 GetSystemDefaultLCID, 整数型, "Kernel32.dll", "GetSystemDefaultLCID", , locale identifier 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置动态链接库初始化代码
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+返回 (0) ' 返回值被忽略。
+
+ ' /*-----------------
+ ' SetLocaleInfo
+ ' Sets an item of information in the user override portion of the current locale. This function does not set the system defaults.
+
+ ' Note: When an application calls this function for an international change to system parameters, it should broadcast the WM_SETTINGCHANGE message to inform other applications. If this is not done, SetLocaleInfo can make unexpected changes to system settings.
+
+ ' BOOL SetLocaleInfo(
+ ' LCID Locale,
+ ' LCTYPE LCType,
+ ' LPCTSTR lpLCData
+ ' );
+ ' -----------------*/
+
+
+ ' /*-----------------
+ ' GetLocaleInfo
+ ' Retrieves information about a locale specified by identifier.
+
+ ' Note: This function retrieves information only about a locale specified by identifier. Additional locales, features, and RFC 4646 names are supported by the GetLocaleInfoEx function.
+
+ ' int GetLocaleInfo(
+ ' LCID Locale,
+ ' LCTYPE LCType,
+ ' LPTSTR lpLCData,
+ ' int cchData
+ ' );
+ ' -----------------*/
+ ' Sorting IDs
+ ' #define SORT_DEFAULT                     0x0     // sorting default
+
+ ' #define SORT_INVARIANT_MATH              0x1     // Invariant (Mathematical Symbols)
+
+ ' #define SORT_JAPANESE_XJIS               0x0     // Japanese XJIS order
+ ' #define SORT_JAPANESE_UNICODE            0x1     // Japanese Unicode order (no longer supported)
+ ' #define SORT_JAPANESE_RADICALSTROKE      0x4     // Japanese radical/stroke order
+
+ ' #define SORT_CHINESE_BIG5                0x0     // Chinese BIG5 order
+ ' #define SORT_CHINESE_PRCP                0x0     // PRC Chinese Phonetic order
+ ' #define SORT_CHINESE_UNICODE             0x1     // Chinese Unicode order (no longer supported)
+ ' #define SORT_CHINESE_PRC                 0x2     // PRC Chinese Stroke Count order
+ ' #define SORT_CHINESE_BOPOMOFO            0x3     // Traditional Chinese Bopomofo order
+
+ ' #define SORT_KOREAN_KSC                  0x0     // Korean KSC order
+ ' #define SORT_KOREAN_UNICODE              0x1     // Korean Unicode order (no longer supported)
+
+ ' #define SORT_GERMAN_PHONE_BOOK           0x1     // German Phone Book order
+
+ ' #define SORT_HUNGARIAN_DEFAULT           0x0     // Hungarian Default order
+ ' #define SORT_HUNGARIAN_TECHNICAL         0x1     // Hungarian Technical order
+
+ ' #define SORT_GEORGIAN_TRADITIONAL        0x0     // Georgian Traditional order
+ ' #define SORT_GEORGIAN_MODERN             0x1     // Georgian Modern order
+
+
+
+
+
+
+
+
+
+
+
+.子程序 系统_取区域和语言选项, 逻辑型, 公开, 
+.参数 选项类型, 短整数型, , #LOCALE_ 开头的常量
+.参数 选项数据, 文本型, 参考, 返回数据
+
+.局部变量 lcid, 空白型, , , 
+
+赋值 (lcid, GetSystemDefaultLCID ())
+赋值 (选项数据, 取空白文本 (256))
+.如果 (等于 (GetLocaleInfoA (lcid, 选项类型, 选项数据, 255), 0))
+    返回 (假)
+.否则
+    返回 (真)
+.如果结束
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 系统_置区域和语言选项, 逻辑型, 公开, 
+.参数 系统类型, 短整数型, 可空, #系统类型_开头的常量,默认:系统类型_SYSTEM_DEFAULT
+.参数 选项类型, 短整数型, , #LOCALE_ 开头的常量
+.参数 选项数据, 文本型, , 欲修改的数据
+
+返回 (SetLocaleInfoA (系统类型, 选项类型, 选项数据))
+
+.子程序 系统_取系统语言, 逻辑型, , 
+.参数 文本数据, 文本型, 参考, 
+
+.局部变量 lcid, 空白型, , , 
+
+赋值 (lcid, GetSystemDefaultLCID ())
+赋值 (文本数据, 取空白文本 (256))
+.如果 (等于 (GetLocaleInfoA (lcid, #LOCALE_SNATIVELANGNAME, 文本数据, 255), 0))
+    返回 (假)
+.否则
+    返回 (真)
+.如果结束
+' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 系统_取短时间格式, 逻辑型, , 
+.参数 文本数据, 文本型, 参考, 
+
+.局部变量 lcid, 空白型, , , 
+
+赋值 (lcid, GetSystemDefaultLCID ())
+赋值 (文本数据, 取空白文本 (256))
+.如果 (等于 (GetLocaleInfoA (lcid, #LOCALE_SSHORTDATE, 文本数据, 255), 0))
+    返回 (假)
+.否则
+    返回 (真)
+.如果结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

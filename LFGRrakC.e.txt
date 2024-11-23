@@ -1,0 +1,6117 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.wodesoft.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.wodesoft.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.wodesoft.com  =============--
+ ' 版本号：1.2
+ ' 创建号：0.0
+
+窗口 窗口化模板
+    左边 = 10
+    顶边 = 10
+    宽度 = 175
+    高度 = 24
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 假
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 0
+    可否移动 = 真
+    背景音乐播放次数 = 2
+    回车下移焦点 = 真
+    Esc键关闭 = 假
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 假
+    随意移动 = 真
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 真
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “淡淡网络窗口化”
+    帮助文件名 = “”
+
+窗口 剪贴板监视
+    左边 = 50
+    顶边 = 50
+    宽度 = 139
+    高度 = 22
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 假
+    禁止 = 假
+    边框 = 4
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 假
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 假
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 假
+    随意移动 = 真
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 真
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “剪贴板监视”
+    帮助文件名 = “”
+
+
+
+.常量 SysDbgWriteVirtualMemory, "9", , 
+.常量 system_handle_infomation, "16", , 
+.常量 STATUS_INFO_LENGTH_MISMATCH, "-1073741820", , 
+.常量 SE_BACKUP_PRIVILEGE, "17", , 
+.常量 SE_RESTORE_PRIVILEGE, "18", , 
+.常量 SE_SHUTDOWN_PRIVILEGE, "19", , 
+.常量 SE_DEBUG_PRIVILEGE, "20", , 
+.常量 打开进程失败, "“-1|OpenProcess|Error in opening process.”", 公开, 
+.常量 分配内存失败, "“-2|DistributeMem|Error in distributing memory.”", 公开, 
+.常量 写内存失败, "“-4|WriteMem|Error in writing memory.”", 公开, 
+.常量 取函数地址失败, "“-8|GetProcAddr|Error in getting proc address.”", 公开, 
+.常量 卸载DLL失败, "“0|UnHookFail|Error in unhook Dll.”+#换行符+"Abort?”", 公开, 
+.常量 SysDbgReadVirtualMemory, "8", , 
+.常量 , , , 
+.常量 PROCESS_ALL_ACCESS, "2035711", 公开, 
+.常量 STATUS_SUCCESS, "0", 公开, 
+.常量 PROCESS_QUERY_INFORMATION, "1024", 公开, 
+.常量 STATUS_INVALID_PARAMETER, "-1073741811", 公开, 
+.常量 OBJ_INHERIT, "2", 公开, 
+.常量 DUPLICATE_CLOSE_SOURCE, "1", 公开, 
+.常量 DUPLICATE_SAME_ACCESS, "2", 公开, 
+.常量 DUPLICATE_SAME_ATTRIBUTES, "4", 公开, 
+.常量 OB_TYPE_PROCESS, "5", 公开, 
+.常量 ZwGetCurrentProcess, "-1", 公开, 
+.常量 PROCESS_DUP_HANDLE, "64", 公开, 
+.常量 JOB_OBJECT_ALL_ACCESS, "2031647", 公开, 
+.图片 HTTP自动更新, " ' 已保存到：D:\易语言学习\Data\LFGRrakC.e\HTTP自动更新", , 
+.图片 FTP自动更新, " ' 已保存到：D:\易语言学习\Data\LFGRrakC.e\FTP自动更新", , 
+.图片 系统变速驱动, " ' 已保存到：D:\易语言学习\Data\LFGRrakC.e\系统变速驱动", , 
+.图片 变速DLL, " ' 已保存到：D:\易语言学习\Data\LFGRrakC.e\变速DLL", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' eAPI F7FC1AE45C5C4758AF03EF19F18A395D 3 0 应用接口支持库
+
+
+
+
+数据类型 线程结构, , 
+    .成员 长度, 整数型, , , 28
+    .成员 保留, 整数型, , , 请传0
+    .成员 线程ID, 整数型, , , 
+    .成员 进程ID, 整数型, , , 
+    .成员 进程优先级, 整数型, , , 
+    .成员 保留, 整数型, , , 
+    .成员 保留, 整数型, , , 
+
+数据类型 RGB, 公开, 
+    .成员 红色, 整数型, , , 返回细分后的红色值(R)
+    .成员 绿色, 整数型, , , 返回细分后的绿色值(G)
+    .成员 蓝色, 整数型, , , 返回细分后的蓝色值(B)
+
+数据类型 窗口化结构, , 
+    .成员 窗口化, 窗口, , , 
+    .成员 游戏窗口, 整数型, , , 
+    .成员 菜单高度, 整数型, , , 
+    .成员 时钟标识, 整数型, , , 
+
+数据类型 消息, 公开, 长度28字节
+    .成员 窗口句柄, 整数型, , , 
+    .成员 消息标识, 整数型, , , 
+    .成员 消息值1, 整数型, , , 
+    .成员 消息值2, 整数型, , , 
+    .成员 消息时间, 整数型, , , 
+    .成员 坐标横, 整数型, , , 
+    .成员 坐标纵, 整数型, , , 
+
+数据类型 处理机, , 
+    .成员 窗口句柄, 整数型, , , 
+    .成员 原消息处理, 子程序指针, , , 
+    .成员 现消息处理, 子程序指针, , , 
+
+数据类型 坐标, 公开, 
+    .成员 横, 整数型, , , 
+    .成员 纵, 整数型, , , 
+
+数据类型 矩形, 公开, 
+    .成员 左边, 整数型, , , 
+    .成员 顶边, 整数型, , , 
+    .成员 宽度, 整数型, , , 
+    .成员 高度, 整数型, , , 
+
+数据类型 虚拟保护信息, , MEMORY_BASIC_INFORMATION
+    .成员 区域地址, 整数型, , , BaseAddress
+    .成员 分配地址, 整数型, , , AllocationBase
+    .成员 初始保护, 整数型, , , AllocationProtect
+    .成员 区域长度, 整数型, , , RegionSize
+    .成员 保留值, 整数型, , , 已提交值,保留值,自由值State
+    .成员 当前保护, 整数型, , , Protect
+    .成员 页类型, 整数型, , , lType
+
+数据类型 APIHOOK, , 
+    .成员 函数入口, 整数型, , , 被HOOK的函数入口
+    .成员 原函数头, 字节集, , , 保存原先函数头
+    .成员 新函数头, 字节集, , , 新的跳转函数头
+
+数据类型 IATHOOK, , 
+    .成员 HOOK地址, 整数型, , , 存放API入口指针的内存地址
+    .成员 原指针, 整数型, , , 原API函数的入口指针
+    .成员 新指针, 整数型, , , 新的函数的入口指针
+
+数据类型 IAT模块表, , PIMAGE_IMPORT_DESCRIPTOR
+    .成员 Characteristics, 整数型, , , DWORD
+    .成员 TimeDateStamp, 整数型, , , DWORD
+    .成员 ForwarderChain, 整数型, , , DWORD
+    .成员 Name, 整数型, , , DWORD
+    .成员 FirstThunk, 整数型, , , PIMAGE_THUNK_DATA
+
+数据类型 进程信息, , 
+    .成员 数据类型长度, 整数型, , , 本数据类型共用内存长度＝296
+    .成员 进程引用计数, 整数型, , , 此进程的引用计数
+    .成员 进程ID, 整数型, , , 进程ID
+    .成员 进程默认堆ID, 整数型, , , 进程默认堆ID
+    .成员 进程模块ID, 整数型, , , 进程模块ID
+    .成员 线程计数, 整数型, , , 此进程开启的线程计数
+    .成员 父进程ID, 整数型, , , 父进程ID
+    .成员 线程优先权, 整数型, , , 线程优先权
+    .成员 保留, 整数型, , , 保留
+    .成员 进程文件名, 字节型, , "256", 进程全名
+
+数据类型 模块信息, , 
+    .成员 占用字节, 整数型, , , 本数据类型共用内存长度＝1024
+    .成员 mid, 整数型, , , 
+    .成员 pid, 整数型, , , 
+    .成员 gusage, 整数型, , , 
+    .成员 pusage, 整数型, , , 
+    .成员 起始地址, 整数型, , , 
+    .成员 内存长度, 整数型, , , 
+    .成员 模块句柄, 整数型, , , 
+    .成员 模块名称, 字节型, , "256", 
+    .成员 模块路径, 字节型, , "256", 
+
+数据类型 LUID, , 进程令牌
+    .成员 LowPart, 整数型, , , 
+    .成员 HighPart, 整数型, , , 
+
+数据类型 进程权限, , 
+    .成员 PrivilegeCount, 整数型, , , 
+    .成员 LowPart, 整数型, , , 
+    .成员 HighPart, 整数型, , , 
+    .成员 Attributes, 整数型, , , 
+
+数据类型 模块函数表, , PIMAGE_THUNK_DATA
+    .成员 ForwarderString, 整数型, , , PBYTE
+    .成员 Function, 整数型, , , PDWORD
+    .成员 Ordinal, 整数型, , , DWORD函数入口
+    .成员 AddressOfData, 整数型, , , PIMAGE_IMPORT_BY_NAME
+
+数据类型 HTTP更新, , 765
+    .成员 进程ID, 整数型, , , 4
+    .成员 程序名, 字节型, , "255", 259
+    .成员 版本验证, 字节型, , "40", 299
+    .成员 更新列表, 字节型, , "181", 480
+    .成员 窗口标题, 字节型, , "30", 510
+    .成员 端口, 整数型, , , 514
+    .成员 配置文件, 字节型, , "251", 765
+
+数据类型 FTP更新, , 共805
+    .成员 进程ID, 整数型, , , 4
+    .成员 程序名, 字节型, , "255", 259
+    .成员 版本验证, 字节型, , "40", 299
+    .成员 更新列表, 字节型, , "181", 480
+    .成员 窗口标题, 字节型, , "30", 510
+    .成员 FTP帐号, 字节型, , "20", 530
+    .成员 FTP密码, 字节型, , "20", 550
+    .成员 端口, 整数型, , , 554
+    .成员 配置文件, 字节型, , "251", 805
+
+数据类型 窗口状态结构, , 窗口放置;窗口放置;
+    .成员 结构长度, 整数型, , , 数据结构长度=44
+    .成员 标志, 整数型, , , 
+    .成员 显示状态, 整数型, , , 1=正常，2=最小化，3=最大化
+    .成员 坐标横, 整数型, , , 最小化时有效
+    .成员 坐标纵, 整数型, , , 最小化时有效
+    .成员 坐标横1, 整数型, , , 
+    .成员 坐标纵1, 整数型, , , 
+    .成员 左边, 整数型, , , 正常时有效
+    .成员 顶边, 整数型, , , 正常时有效
+    .成员 宽度, 整数型, , , 正常时有效
+    .成员 高度, 整数型, , , 正常时有效
+
+数据类型 窗口吸附结构, , 
+    .成员 窗口句柄, 整数型, , , 
+    .成员 窗口, 窗口, , , 
+    .成员 自动销毁, 逻辑型, , , 
+    .成员 左边, 整数型, , , 
+    .成员 顶边, 整数型, , , 
+    .成员 时钟标识, 整数型, , , 
+    .成员 是否启动, 逻辑型, , , 
+
+数据类型 启动信息, , 
+    .成员 cb, 整数型, , , 
+    .成员 lpReserved, 文本型, , , 
+    .成员 lpDesktop, 文本型, , , 
+    .成员 lpTitle, 文本型, , , 
+    .成员 左边, 整数型, , , 
+    .成员 顶边, 整数型, , , 
+    .成员 宽度, 整数型, , , 
+    .成员 高度, 整数型, , , 
+    .成员 dwXCountChars, 整数型, , , 
+    .成员 dwYCountChars, 整数型, , , 
+    .成员 dwFillAttribute, 整数型, , , 
+    .成员 隐藏窗口, 逻辑型, , , 真＝隐藏，假＝显示
+    .成员 wShowWindow, 短整数型, , , 
+    .成员 cbReserved2, 短整数型, , , 
+    .成员 lpReserved2, 整数型, , , 
+    .成员 hStdInput, 整数型, , , 
+    .成员 hStdOutput, 整数型, , , 
+    .成员 hStdError, 整数型, , , 
+
+数据类型 进程线程信息, , 
+    .成员 进程句柄, 整数型, , , 
+    .成员 线程句柄, 整数型, , , 
+    .成员 进程ID, 整数型, , , 
+    .成员 线程ID, 整数型, , , 
+
+数据类型 网络重定向, , 
+    .成员 原IP, 整数型, , , 
+    .成员 原端口, 短整数型, , , 
+    .成员 新IP, 整数型, , , 
+    .成员 新端口, 短整数型, , , 
+
+数据类型 虚拟保护, , MEMORY_BASIC_INFORMATION
+    .成员 区域地址, 整数型, , , BaseAddress
+    .成员 分配地址, 整数型, , , AllocationBase
+    .成员 初始保护, 整数型, , , AllocationProtect
+    .成员 区域长度, 整数型, , , RegionSize
+    .成员 保留值, 整数型, , , 已提交值,保留值,自由值State
+    .成员 当前保护, 整数型, , , Protect
+    .成员 页类型, 整数型, , , lType
+
+数据类型 SYSTEM_HANDLE_INFORMATION, , 16byte
+    .成员 ProcessId, 整数型, , , 进程标识符
+    .成员 ObjectTypeNumber, 字节型, , , 打开的对象的类型
+    .成员 Flags, 字节型, , , 句柄属性标志
+    .成员 Handle, 短整数型, , , 句柄数值,在进程打开的句柄中唯一标识某个句柄
+    .成员 Object, 整数型, , , 这个就是句柄对应的EPROCESS的地址
+    .成员 GrantedAccess, 整数型, , , 句柄对象的访问权限
+
+数据类型 TOKEN_PRIVILEGES, , 
+    .成员 PrivilegeCount, 整数型, , , 
+    .成员 lowpart, 整数型, , , 
+    .成员 highpart, 整数型, , , 
+    .成员 Attributes, 整数型, , , 
+
+数据类型 SECURITY_ATTRIBUTES, , 安全性结构;
+    .成员 nLength, 整数型, , , 
+    .成员 lpSecurityDescriptor, 整数型, , , 
+    .成员 bInheritHandle, 整数型, , , 
+
+数据类型 CLIENT_ID, 公开, 
+    .成员 UniqueProcess, 整数型, , , 
+    .成员 UniqueThread, 整数型, , , 
+
+数据类型 OBJECT_ATTRIBUTES, 公开, 
+    .成员 Length, 整数型, , , 
+    .成员 RootDirectory, 整数型, , , 
+    .成员 ObjectName, 整数型, , , 
+    .成员 Attributes, 整数型, , , 
+    .成员 SecurityDescriptor, 整数型, , , 
+    .成员 SecurityQualityOfService, 整数型, , , 
+
+数据类型 PROCESS_BASIC_INFORMATION, 公开, 
+    .成员 ExitStatus, 整数型, , , 
+    .成员 PebBaseAddress, 整数型, , , 
+    .成员 AffinityMask, 整数型, , , 
+    .成员 BasePriority, 整数型, , , 
+    .成员 UniqueProcessId, 整数型, , , 
+    .成员 InheritedFromUniqueProcessId, 整数型, , , 
+
+数据类型 MEMORY_BASIC_INFORMATION, 公开, 
+    .成员 BaseAddress, 整数型, , , 
+    .成员 AllocationBase, 整数型, , , 
+    .成员 AllocattionProtect, 整数型, , , 
+    .成员 RegionSize, 整数型, , , 
+    .成员 State, 整数型, , , 
+    .成员 Protect, 整数型, , , 
+    .成员 Type, 整数型, , , 
+
+数据类型 SYSTEM_HANDLE_TABLE_ENTRY_INFO, 公开, 
+    .成员 UniqueProcessId, 短整数型, , , ""
+    .成员 CreatorBackTraceIndex, 短整数型, , , ""
+    .成员 ObjectTypeIndex, 字节型, , , ""
+    .成员 HandleAttributes, 字节型, , , ""
+    .成员 HandleValue, 短整数型, , , ""
+    .成员 pObject, 整数型, , , ""
+    .成员 GrantedAccess, 整数型, , , ""
+
+.全局变量 对象, 对象, , , 
+.全局变量 自进程句柄, 整数型, , , 
+.全局变量 系统频率, 长整数型, , , 
+.全局变量 RegisterHandle, 整数型, , , 
+.全局变量 DLL加注次数, 空白型, 公开, , 
+.全局变量 空, 文本型, , , 
+
+.DLL命令 取进程优先级_, 整数型, "kernel32.dll", "GetPriorityClass", , 获取特定进程的优先级别  进程的优先级，零表示失败。会设置GetLastError
+    .参数 进程句柄, 整数型, , 进程句柄
+
+.DLL命令 置进程优先级_, 整数型, "kernel32.dll", "SetPriorityClass", , 设置一个进程的优先级别  进程的优先级，零表示失败。会设置GetLastError
+    .参数 进程句柄, 整数型, , 
+    .参数 级别, 整数型, , 
+
+.DLL命令 置窗口结构信息1, 整数型, "user32.dll", "SetWindowLongA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 索引, 整数型, , 
+    .参数 处理函数入口, 整数型, , 
+
+.DLL命令 置窗口结构信息, 子程序指针, "user32.dll", "SetWindowLongA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 索引, 整数型, , 
+    .参数 处理函数入口, 子程序指针, , 
+
+.DLL命令 修改属性表, 逻辑型, "user32.dll", "SetPropA", , 增加或修改属性列项
+    .参数 窗口句柄, 整数型, , 
+    .参数 属性名, 文本型, , 
+    .参数 数据, 整数型, , 
+
+.DLL命令 取窗口结构信息, 整数型, "user32.dll", "GetWindowLongA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 属性索引, 整数型, , Long，欲取回的信息，可以是下述任何一个常数： 
+GWL_EXSTYLE 扩展窗口样式 
+GWL_STYLE 窗口样式 
+GWL_WNDPROC 该窗口的窗口函数的地址 
+GWL_HINSTANCE 拥有窗口的实例的句柄 
+GWL_HWNDPARENT 该窗口之父的句柄。不要用SetWindowWord来改变这个值 
+GWL_ID 对话框中一个子窗口的标识符 
+GWL_USERDATA 含义由应用程序规定 
+DWL_DLGPROC 这个窗口的对话框函数地址 
+DWL_MSGRESULT 在对话框函数中处理的一条消息返回的值 
+DWL_USER 含义由应用程序规定
+
+.DLL命令 取属性表地址, 整数型, "user32.dll", "GetPropA", , 从窗口属性表列中返回数据句柄
+    .参数 窗口句柄, 整数型, , 
+    .参数 属性名, 文本型, , 
+
+.DLL命令 删属性列入口, 整数型, "user32.dll", "RemovePropA", , 删除属性列入口
+    .参数 窗口句柄, 整数型, , 
+    .参数 属性名, 文本型, , 
+
+.DLL命令 安装钩子1, 整数型, "user32.dll", "SetWindowsHookExA", , 
+    .参数 钩子类型, 整数型, , 
+    .参数 处理函数入口, 子程序指针, , 
+    .参数 函数所在模块, 整数型, , 
+    .参数 目标线程ID, 整数型, , 
+
+.DLL命令 安装钩子, 整数型, "user32.dll", "SetWindowsHookExA", , 
+    .参数 钩子类型, 整数型, , 
+    .参数 处理函数入口, 整数型, , 
+    .参数 函数所在模块, 整数型, , 
+    .参数 目标线程ID, 整数型, , 
+
+.DLL命令 传递钩子_, 整数型, "user32.dll", "CallNextHookEx", , 
+    .参数 钩子句柄, 整数型, , 
+    .参数 钩子类型, 整数型, , 
+    .参数 消息一, 整数型, , 
+    .参数 消息二, 整数型, , 
+
+.DLL命令 卸载钩子_, 逻辑型, "user32.dll", "UnhookWindowsHookEx", , 
+    .参数 钩子标识, 整数型, , 
+
+.DLL命令 安装钩子线程_, 整数型, "user32.dll", "SetWindowsHookA", , 安装钩子过程
+    .参数 钩子标识, 整数型, , 
+    .参数 钩子接口, 子程序指针, , 
+
+.DLL命令 卸载钩子线程_, 整数型, "user32", "UnhookWindowsHook", , 删除筛选函数
+    .参数 钩子类型, 整数型, , 
+    .参数 钩子接口, 子程序指针, , 
+
+.DLL命令 发送系统消息, 逻辑型, "user32.dll", "PostMessageA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 消息标识, 整数型, , 
+    .参数 消息一, 整数型, , 
+    .参数 消息二, 整数型, , 
+
+.DLL命令 取控件内容_, 整数型, "user32.dll", "SendMessageA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 消息标识, 整数型, , 
+    .参数 消息一, 整数型, , 
+    .参数 消息二, 文本型, 传址, 接收文本内容
+
+.DLL命令 发送文本消息, 整数型, "user32.dll", "SendMessageA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 消息标识, 整数型, , 
+    .参数 消息一, 整数型, , 
+    .参数 消息二, 文本型, 传址, 
+
+.DLL命令 发送消息, 整数型, "user32.dll", "SendMessageA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 消息标识, 整数型, , 
+    .参数 消息一, 整数型, , 
+    .参数 消息二, 整数型, , 
+
+.DLL命令 句柄是否有效, 逻辑型, "user32.dll", "IsWindow", 公开, 判断一个窗口句柄是否还存在
+    .参数 窗口句柄, 整数型, , 
+
+.DLL命令 窗口恢复, 整数型, "user32.dll", "OpenIcon", , 
+    .参数 窗口句柄, 整数型, , 
+
+.DLL命令 寻找子窗口, 整数型, "user32.dll", "FindWindowExA", , 
+    .参数 父句柄, 整数型, , 
+    .参数 起始句柄, 整数型, , 
+    .参数 类名, 文本型, , 
+    .参数 标题, 文本型, , 
+
+.DLL命令 取父窗口, 整数型, "user32.dll", "GetParent", 公开, 返回指定句柄的上级父句柄,0=屏幕句柄
+    .参数 窗口句柄, 整数型, , 可以是窗口句柄或控件句柄
+
+.DLL命令 取类名, 整数型, "user32.dll", "GetClassNameA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 类名, 文本型, 传址, 
+    .参数 类名长度, 整数型, , 
+
+.DLL命令 取标题, 整数型, "user32.dll", "GetWindowTextA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 标题保存变量, 文本型, , 
+    .参数 变量长度, 整数型, , 标题长度+1
+
+.DLL命令 取标题长度, 整数型, "user32.dll", "GetWindowTextLengthA", , 
+    .参数 窗口句柄, 整数型, , 
+
+.DLL命令 取坐标窗口句柄, 整数型, "user32.dll", "WindowFromPoint", , 
+    .参数 横坐标, 整数型, , 
+    .参数 纵坐标, 整数型, , 
+
+.DLL命令 取前台窗口句柄, 整数型, "user32.dll", "GetForegroundWindow", , 返回前台窗口句柄
+
+.DLL命令 取特定窗口句柄, 整数型, "user32.dll", "FindWindowA", , 
+    .参数 类, 文本型, , 
+    .参数 窗口标题, 文本型, , 
+
+.DLL命令 取自进程ID, 整数型, "kernel32.dll", "GetCurrentProcessId", 公开, 
+
+.DLL命令 创建线程_, 整数型, "kernel32.dll", "CreateThread", , 
+    .参数 安全结构, 整数型, , 传入0
+    .参数 线程堆栈大小, 整数型, , 传入0
+    .参数 函数入口地址, 子程序指针, , 启动一个子程序
+    .参数 函数参数地址, 整数型, , 参数结构所在的指针
+    .参数 是否执行, 整数型, , 0=执行，4=挂起
+    .参数 分配线程ID, 整数型, 传址, 
+
+.DLL命令 取线程句柄_, 整数型, "kernel32.dll", "GetCurrentThread", , 
+
+.DLL命令 取自线程ID_, 整数型, "kernel32.dll", "GetCurrentThreadId", , 
+    .参数 匿名参数_3065, 空白型, , 
+
+.DLL命令 取模块句柄, 整数型, "kernel32.dll", "GetModuleHandleA", 公开, 成功返回指定模块的模块句柄
+    .参数 模块名, 文本型, 传址, 可以是DLL文件名或EXE文件名等
+
+.DLL命令 取窗口进程, 整数型, "user32.dll", "GetWindowThreadProcessId", , 线程ID
+    .参数 窗口句柄, 整数型, , 
+    .参数 进程ID, 整数型, 传址, 返回进程ID
+
+.DLL命令 载入DLL, 整数型, "kernel32.dll", "LoadLibraryA", 公开, 成功返回该DLL模块句柄
+    .参数 DLL文件名, 文本型, 传址, 可以是DLL文件的全路径
+
+.DLL命令 释放DLL, 逻辑型, "kernel32.dll", "FreeLibrary", 公开, 成功返回真
+    .参数 模块句柄, 整数型, , DLL载入时所返回的值(模块句柄)
+
+.DLL命令 取函数入口, 整数型, "kernel32.dll", "GetProcAddress", 公开, 成功返回指定模块内指定函数的内存入口指针，失败返回0
+    .参数 模块句柄, 整数型, , 用取模块句柄或载入DLL时所返回的值
+    .参数 函数名, 文本型, 传址, DLL中的API函数名
+
+.DLL命令 取函数入口1_, 整数型, "kernel32.dll", "GetProcAddress", , 
+    .参数 模块句柄, 整数型, , 
+    .参数 函数名, 整数型, , 
+
+.DLL命令 注册热键_, 逻辑型, "user32.dll", "RegisterHotKey", , 成功返回1，失败返回0
+    .参数 窗口句柄, 整数型, , 程序主窗口句柄
+    .参数 热键标识, 子程序指针, , 自定义热键消息标识
+    .参数 功能键, 整数型, , 无=0，Alt=1，Ctrl=2，Shift=4
+    .参数 主热键, 整数型, , 键虚拟码
+
+.DLL命令 卸载热键, 逻辑型, "user32.dll", "UnregisterHotKey", 公开, 卸载原注册过的一个热键
+    .参数 窗口句柄, 整数型, , 与热键关联的那个窗口的窗口句柄
+    .参数 热键ID, 整数型, , 曾经注册热键时返回的热键ID
+
+.DLL命令 系统变速NT, 空白型, "PortTalk.dll", "SpeedNT", , 
+    .参数 值, 整数型, , 原速11941减少加速,增加减速
+
+.DLL命令 系统变速9X, 空白型, "PortTalk.dll", "Speed9X", , 
+    .参数 值, 整数型, , 原5954减少加速,增加减速
+
+.DLL命令 召唤函数, 整数型, "user32.dll", "CallWindowProcA", , 
+    .参数 函数入口, 子程序指针, , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 消息标识, 整数型, , 
+    .参数 消息一, 整数型, , 
+    .参数 消息二, 整数型, , 
+
+.DLL命令 子程序NT, 整数型, "user32.dll", "CallWindowProcA", , 
+    .参数 函数入口, 子程序指针, , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 消息标识, 整数型, , 
+    .参数 消息一, 整数型, , 
+    .参数 消息二, 整数型, , 
+
+.DLL命令 子程序9X, 整数型, "user32.dll", "CallWindowProcA", , 
+    .参数 函数入口, 子程序指针, , 
+
+.DLL命令 复制内存字节集1, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目标地址, 整数型, , 
+    .参数 源地址, 字节集, 传址, 
+    .参数 复制长度, 整数型, , 
+
+.DLL命令 复制内存字节集, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目标地址, 字节集, 传址, 
+    .参数 源地址, 整数型, , 
+    .参数 复制长度, 整数型, , 
+
+.DLL命令 复制内存文本, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目标地址, 文本型, 传址, 
+    .参数 源地址, 整数型, , 
+    .参数 复制长度, 整数型, , 
+
+.DLL命令 复制内存文本1, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目标地址, 整数型, , 
+    .参数 源地址, 文本型, 传址, 
+    .参数 复制长度, 整数型, , 
+
+.DLL命令 复制内存整数, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目标地址, 整数型, 传址, 
+    .参数 源地址, 整数型, , 
+    .参数 复制长度, 整数型, , 
+
+.DLL命令 复制内存整数1, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目标地址, 整数型, , 
+    .参数 源地址, 整数型, 传址, 
+    .参数 复制长度, 整数型, , 
+
+.DLL命令 复制内存消息, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目标地址, 消息, , 
+    .参数 源地址, 整数型, , 
+    .参数 复制长度, 整数型, , 
+
+.DLL命令 读内存字节集, 逻辑型, "kernel32.dll", "ReadProcessMemory", , 地址1048576
+    .参数 进程操作句柄, 整数型, , 被读内存的进程句柄
+    .参数 开始读取地址, 整数型, , 开始读的地址
+    .参数 保存数值变量, 字节集, 传址, 用于放数据的缓存地址
+    .参数 读取长度, 整数型, , 读取的字节数
+    .参数 实际读取长度, 整数型, 传址, 从文件中实际读入的字符数0
+
+.DLL命令 写内存字节集, 逻辑型, "kernel32.dll", "WriteProcessMemory", , 
+    .参数 进程操作句柄, 整数型, , 
+    .参数 开始写入进址, 整数型, , 内存地址
+    .参数 写入数值数据, 字节集, 传址, 数据指针
+    .参数 写入长度, 整数型, , 长度
+    .参数 实际写入长度, 整数型, , 实际写出长度0
+
+.DLL命令 读内存数据1, 整数型, "kernel32.dll", "ReadProcessMemory", , 地址1048576
+    .参数 进程操作句柄, 整数型, , 被读内存的进程句柄
+    .参数 开始读取地址, 整数型, , 开始读的地址
+    .参数 保存数值变量, 整数型, , 用于放数据的缓存地址
+    .参数 读取长度, 整数型, , 读取的字节数
+    .参数 实际读取长度, 整数型, , 从文件中实际读入的字符数0
+
+.DLL命令 读整型内存_, 逻辑型, "kernel32.dll", "ReadProcessMemory", , 地址1048576
+    .参数 进程操作句柄, 整数型, , 被读内存的进程句柄
+    .参数 开始读取地址, 整数型, , 开始读的地址
+    .参数 保存数值变量, 整数型, 传址, 用于放数据的缓存地址
+    .参数 读取长度, 整数型, , 读取的字节数4
+    .参数 实际读取长度, 整数型, 传址, 从文件中实际读入的字符数0
+
+.DLL命令 读内存文本, 整数型, "kernel32.dll", "ReadProcessMemory", , 
+    .参数 进程句柄, 整数型, , 
+    .参数 开始读取地址, 整数型, , 内存地址
+    .参数 接收保存变量名, 文本型, 传址, 数据指针
+    .参数 读取长度, 整数型, , 
+    .参数 实际读取长度, 整数型, , 0
+
+.DLL命令 写内存文本, 整数型, "kernel32.dll", "WriteProcessMemory", , 
+    .参数 进程操作句柄, 整数型, , 
+    .参数 开始写入地址, 整数型, , 内存地址
+    .参数 写入文本数据, 文本型, 传址, 数据指针
+    .参数 写入长度, 整数型, , 长度
+    .参数 实际写入长度, 整数型, , 实际写出长度0
+
+.DLL命令 写内存数据1, 整数型, "kernel32.dll", "WriteProcessMemory", , 
+    .参数 进程操作句柄, 整数型, , 
+    .参数 开始写入进址, 整数型, , 内存地址
+    .参数 写入数值数据, 整数型, , 数据指针
+    .参数 写入长度, 整数型, , 长度
+    .参数 实际写入长度, 整数型, , 实际写出长度0
+
+.DLL命令 写整型内存_, 逻辑型, "kernel32.dll", "WriteProcessMemory", , 
+    .参数 进程操作句柄, 整数型, , 
+    .参数 开始写入进址, 整数型, , 内存地址
+    .参数 写入数值数据, 整数型, 传址, 数据指针
+    .参数 写入长度, 整数型, , 长度4
+    .参数 实际写入长度, 整数型, 传址, 实际写出长度0
+
+.DLL命令 取虚拟保护扩展, 整数型, "kernel32.dll", "VirtualQueryEx", , 
+    .参数 进程操作句柄, 整数型, , 
+    .参数 起始地址, 整数型, , 
+    .参数 虚拟保护信息, 虚拟保护信息, 传址, 
+    .参数 缓冲长度, 整数型, , 28字节
+
+.DLL命令 置虚拟保护, 整数型, "kernel32.dll", "VirtualProtect", , 成功返回非0，失败返回0
+    .参数 起始地址, 整数型, , lpAddress
+    .参数 长度, 整数型, , dwSize
+    .参数 新保护权限, 整数型, , 可读写权限(PAGE_READWRITE)=4
+    .参数 旧保护权限, 整数型, 传址, 保存旧属性的结构变量地址
+
+.DLL命令 置虚拟保护扩展, 整数型, "kernel32.dll", "VirtualProtectEx", , 成功返回非0，失败返回0
+    .参数 进程操作句柄, 整数型, , 
+    .参数 起始地址, 整数型, , lpAddress
+    .参数 长度, 整数型, , dwSize
+    .参数 新保护权限, 整数型, , 可读写权限(PAGE_READWRITE)=4
+    .参数 旧保护权限, 整数型, 传址, 保存旧属性的结构变量地址
+
+.DLL命令 关闭对象, 整数型, "kernel32.dll", "CloseHandle", , 
+    .参数 对象句柄, 整数型, , 
+
+.DLL命令 打开对象, 整数型, "kernel32.dll", "OpenFileMappingA", , 
+    .参数 访问方式, 整数型, , 可读写＝983071
+    .参数 关系继承, 整数型, , 默认为0
+    .参数 对象名称, 文本型, , 
+
+.DLL命令 创建对象, 整数型, "kernel32.dll", "CreateFileMappingA", , 返回对象句柄，失败返回0
+    .参数 文件句柄, 整数型, , 内存＝FFFFFFFF＝4294967295
+    .参数 安全结构, 整数型, , 默认结构＝0
+    .参数 访问级别, 整数型, , 读写＝4
+    .参数 最大长度, 整数型, , 高32位，默认为0
+    .参数 最小长度, 整数型, , 低32位，默认为0　FFFF＝65535
+    .参数 对象名称, 文本型, , 
+
+.DLL命令 对象到文件, 整数型, "kernel32.dll", "MapViewOfFile", , 
+    .参数 映射对象句柄, 整数型, , 
+    .参数 访问方式, 整数型, , 可读写＝983071
+    .参数 高地址, 整数型, , 文件中映射起点的高32位地址
+    .参数 低地址, 整数型, , 文件中映射起点的低32位地址
+    .参数 映射字节数, 整数型, , 全部＝0
+
+.DLL命令 解除对象文件, 整数型, "kernel32.dll", "UnmapViewOfFile", , 非零表示成功，零表示失败
+    .参数 起始地址, 整数型, , 映射对象到程序的返回值
+
+.DLL命令 取IAT基址, 整数型, "imagehlp.dll", "ImageDirectoryEntryToData", , 
+    .参数 模块句柄, 整数型, , GetModuleHandle获得
+    .参数 传入1值, 整数型, , 传入1值
+    .参数 传入1值, 整数型, , IMAGE_DIRECTORY_ENTRY_IMPORT=1
+    .参数 IAT结构长度, 整数型, 传址, 长度除以20再减1得到DLL名称数
+
+.DLL命令 创建系统快照, 整数型, "kernel32.dll", "CreateToolhelp32Snapshot", , 返回快照后的句柄
+    .参数 快照标志, 整数型, , 进程＝15，线程=4，DLL＝8，堆=
+    .参数 参数, 整数型, , 
+
+.DLL命令 关闭系统快照, 整数型, "kernel32.dll", "CloseHandle", , 
+    .参数 快照句柄, 整数型, , 
+
+.DLL命令 取进程信息, 整数型, "kernel32.dll", "Process32First", , 取进程快照第一个进程信息返回内存指针
+    .参数 快照句柄, 整数型, , 
+    .参数 进程信息, 进程信息, , 
+
+.DLL命令 取下个进程信息, 整数型, "kernel32.dll", "Process32Next", , 
+    .参数 快照句柄, 整数型, , 
+    .参数 进程信息, 进程信息, , 
+
+.DLL命令 取下个模块信息, 整数型, "kernel32.dll", "Module32Next", , 
+    .参数 进程句柄, 整数型, , 
+    .参数 模块信息, 模块信息, , 
+
+.DLL命令 取模块信息, 整数型, "kernel32.dll", "Module32First", , 
+    .参数 进程句柄, 整数型, , 
+    .参数 模块信息, 模块信息, , 
+
+.DLL命令 取线程信息, 逻辑型, "kernel32.dll", "Thread32First", , 
+    .参数 进程ID, 整数型, , 
+    .参数 线程结构, 线程结构, 传址, 
+
+.DLL命令 取下个线程信息, 逻辑型, "kernel32.dll", "Thread32Next", , 
+    .参数 进程ID, 整数型, , 
+    .参数 线程结构, 线程结构, 传址, 
+
+.DLL命令 取堆信息, 整数型, "kernel32.dll", "Heap32ListFirst", , 
+
+.DLL命令 取下个堆信息, 空白型, "kernel32.dll", "Heap32ListNext", , 
+
+.DLL命令 取块信息, 整数型, "kernel32.dll", "Heap32First", , 
+
+.DLL命令 取下个块信息, 整数型, "kernel32.dll", "Heap32Next", , 
+
+.DLL命令 send, 整数型, "ws2_32.dll", "send", 公开, 已发送长度
+    .参数 套接字, 整数型, , 
+    .参数 封包指针, 整数型, , 
+    .参数 封包长度, 整数型, , 
+    .参数 标志, 整数型, , 值=0
+
+.DLL命令 sendto, 整数型, "ws2_32.dll", "sendto", 公开, 已发送长度
+    .参数 套接字, 整数型, , 
+    .参数 封包指针, 整数型, , 
+    .参数 封包长度, 整数型, , 
+    .参数 标志, 整数型, , 
+    .参数 目地址指针, 整数型, , 
+    .参数 目地址长度, 整数型, , 
+
+.DLL命令 WSASend, 整数型, "ws2_32.dll", "WSASend", , 
+    .参数 套接字, 整数型, , 
+    .参数 WSA结构, 整数型, , 
+    .参数 WSA结构数, 整数型, , 
+    .参数 发送封包长度, 整数型, , 
+    .参数 标志位, 整数型, , 
+    .参数 WSAOVERLAPPED结构的指针, 整数型, , 
+    .参数 发送后调用子程, 整数型, , 
+
+.DLL命令 WSASendTo, 整数型, "ws2_32.dll", "WSASendTo", , 
+    .参数 套接字, 整数型, , 
+    .参数 WSABUF结构指针, 整数型, , 
+    .参数 WSABUF结构数目, 整数型, , 
+    .参数 实发长度, 整数型, 传址, 
+    .参数 标志位, 整数型, , 
+    .参数 目地址指针, 整数型, , 
+    .参数 目地址长度, 整数型, , 
+    .参数 WSAOVERLAPPED结构的指针, 整数型, , 
+    .参数 发送后调用子程, 整数型, , 
+
+.DLL命令 recv, 整数型, "ws2_32.dll", "recv", 公开, 已取回长度
+    .参数 套接字, 整数型, , 
+    .参数 封包指针, 整数型, , 接收封包的变量地址
+    .参数 缓冲长度, 整数型, , 
+    .参数 标志, 整数型, , 值=0
+
+.DLL命令 recvfrom, 整数型, "ws2_32.dll", "recvfrom", 公开, 已取回长度
+    .参数 套接字, 整数型, , 
+    .参数 封包指针, 整数型, , 
+    .参数 封包长度, 整数型, , 缓冲区的长度
+    .参数 标志, 整数型, , 
+    .参数 源地址指针, 整数型, , 
+    .参数 源地址长度, 整数型, , 源地址处的长度
+
+.DLL命令 WSARecv, 整数型, "ws2_32.dll", "WSARecv", , 返回已接收长度
+    .参数 套接字, 整数型, , 
+    .参数 WSA结构, 整数型, , 
+    .参数 WSA结构数, 整数型, , 
+    .参数 收到封包长度, 整数型, 传址, 
+    .参数 标志位, 整数型, , 
+    .参数 WSAOVERLAPPED结构的指针, 整数型, , 
+    .参数 结束后调用的例程的指针, 整数型, , 
+
+.DLL命令 WSARecvFrom, 整数型, "ws2_32.dll", "WSARecvFrom", , 
+    .参数 套接字, 整数型, , 
+    .参数 WSA结构, 整数型, , 
+    .参数 WSA结构数, 整数型, , 
+    .参数 实收长度, 整数型, 传址, 
+    .参数 标志位, 整数型, , 
+    .参数 源地址指针, 整数型, , 
+    .参数 源地址长度, 整数型, , 
+    .参数 WSAOVERLAPPED结构的指针, 整数型, , 
+    .参数 结束后调用的例程的指针, 整数型, , 
+
+.DLL命令 取设备, 整数型, "user32.dll", "GetDC", , 
+    .参数 窗口句柄, 整数型, , 
+
+.DLL命令 释放设备, 整数型, "user32.dll", "ReleaseDC", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 设备句柄, 整数型, , 
+
+.DLL命令 屏幕坐标到窗口, 整数型, "user32.dll", "ScreenToClient", 公开, 换算坐标,失败返回0
+    .参数 窗口句柄, 整数型, , 屏幕到该控件的客户区
+    .参数 坐标, 坐标, 传址, 坐标
+
+.DLL命令 窗口坐标到屏幕, 整数型, "user32.dll", "ClientToScreen", 公开, 换算坐标,失败返回0
+    .参数 窗口句柄, 整数型, , 该控件到屏幕的起始点
+    .参数 鼠标坐标, 坐标, 传址, 坐标
+
+.DLL命令 取坐标颜色_, 整数型, "gdi32.dll", "GetPixel", , 
+    .参数 设备句柄, 整数型, , 
+    .参数 横坐标, 整数型, , 
+    .参数 纵坐标, 整数型, , 
+
+.DLL命令 置鼠标坐标, 整数型, "user32.dll", "SetCursorPos", , 
+    .参数 横坐标, 整数型, , 
+    .参数 纵坐标, 整数型, , 
+
+.DLL命令 取鼠标坐标, 整数型, "user32.dll", "GetCursorPos", , 
+    .参数 坐标, 坐标, 传址, 
+
+.DLL命令 鼠标事件, 整数型, "user32.dll", "mouse_event", , 
+    .参数 设置标识, 整数型, , 1=移动鼠标
+    .参数 横坐标, 整数型, , 
+    .参数 纵坐标, 整数型, , 
+    .参数 滚轮变化大小, 整数型, , 
+    .参数 扩展信息, 整数型, , 
+
+.DLL命令 键盘事件, 整数型, "user32.dll", "keybd_event", , 
+    .参数 虚拟键代码, 整数型, , 
+    .参数 扫描码, 整数型, , 
+    .参数 操作标识, 整数型, , 
+    .参数 扩展信息, 整数型, , 
+
+.DLL命令 取虚拟键状态, 整数型, "user32.dll", "GetAsyncKeyState", 公开, 返回该键的当前状态
+    .参数 虚拟键码, 字节型, , 虚拟键码,左键=1,右键=2
+
+.DLL命令 置键盘状态_, 整数型, "user32.dll", "SetKeyboardState", , 非零表示成功，零表示失败。会设置GetLastError
+    .参数 键盘扫描码, 字节型, 传址, 共256个项目中的第一个项目
+
+.DLL命令 键盘快照, 整数型, "user32.dll", "GetKeyboardState", , 非零表示成功，零表示失败。会设置GetLastError
+    .参数 键代码, 字节型, 传址, 共256个项目中的第一个项目
+
+.DLL命令 打开剪帖板, 整数型, "user32.dll", "OpenClipboard", , 
+    .参数 窗口句柄, 整数型, , 
+
+.DLL命令 清空剪贴板, 整数型, "user32.dll", "EmptyClipboard", , 清空剪贴板并释放数据句柄
+
+.DLL命令 置剪帖板文本_, 整数型, "user32.dll", "SetClipboardData", , 
+    .参数 数据格式, 整数型, , 文本＝1
+    .参数 内存指针, 文本型, 传址, 
+
+.DLL命令 关闭剪帖板, 整数型, "user32.dll", "CloseClipboard", , 
+
+.DLL命令 内存置零, 空白型, "kernel32.dll", "RtlZeroMemory", 公开, 把一块内存数据段内容置为 0
+    .参数 起始地址, 整数型, , 内存起始地址
+    .参数 置零长度, 整数型, , 从起始地址起欲置为0的内存长度
+
+.DLL命令 窗口更新, 整数型, "user32.dll", "UpdateWindow", , 
+    .参数 窗口句柄, 整数型, , 
+
+.DLL命令 分配堆内存, 整数型, "kernel32.dll", "GlobalAlloc", , HeapAlloc
+    .参数 标志, 整数型, , 
+    .参数 分配长度, 整数型, , 
+
+.DLL命令 锁定内存对象, 整数型, "kernel32.dll", "GlobalLock", , 并返回一个指针
+    .参数 内存对象, 整数型, , hMem
+
+.DLL命令 开锁全局内存块, 整数型, "kernel32.dll", "GlobalUnlock", , 
+    .参数 内存对象, 整数型, , hMem
+
+.DLL命令 取键名_, 整数型, "user32.dll", "GetKeyNameTextA", , 
+    .参数 扫描码, 整数型, , 
+    .参数 缓冲区, 文本型, 传址, 缓冲区长度+1
+    .参数 缓冲区长度, 整数型, , 
+
+.DLL命令 键码转换, 整数型, "user32.dll", "MapVirtualKeyA", , 
+    .参数 键码或扫描码, 整数型, , 
+    .参数 参数一类型, 整数型, , 0—— wCode是个虚拟键码。函数返回相应的扫描码
+1—— wCode是个扫描码。函数返回相应的虚拟键码
+2—— wCode是个虚拟键码。函数返回相应的ASCII值（未加Shift组合键）
+
+.DLL命令 运行程序, 整数型, "kernel32.dll", "WinExec", , 
+    .参数 运行命令, 文本型, , 
+    .参数 运行方式, 整数型, , 
+
+.DLL命令 结束进程, 整数型, "kernel32.dll", "TerminateProcess", , 成功返回非零
+    .参数 进程ID, 整数型, , 
+    .参数 退出代码, 整数型, , 传入0
+
+.DLL命令 创建定时器_, 整数型, "user32.dll", "SetTimer", , 创建系统定时器
+    .参数 窗口句柄, 整数型, , 
+    .参数 定时器标志, 整数型, , 
+    .参数 时钟周期, 整数型, , 
+    .参数 触发子程序, 子程序指针, , 
+
+.DLL命令 销毁定时器_, 逻辑型, "user32.dll", "KillTimer", , 中止定时器
+    .参数 窗口句柄, 整数型, , 
+    .参数 定时器标志, 整数型, , 
+
+.DLL命令 开始线程, 整数型, "kernel32.dll", "ResumeThread", 公开, 开始暂停的线程
+    .参数 线程句柄, 整数型, , 
+
+.DLL命令 暂停线程, 整数型, "kernel32.dll", "SuspendThread", 公开, 暂停一个处于运行的线程
+    .参数 线程句柄, 整数型, , 
+
+.DLL命令 中止线程_, 整数型, "kernel32.dll", "TerminateThread", , 中止线程
+    .参数 线程标识, 整数型, , 
+    .参数 退出代码, 整数型, , 传入0值
+
+.DLL命令 查找窗口_, 整数型, "user32.dll", "GetWindow", , 获得一个窗口的句柄，该窗口与某源窗口有特定的关系
+    .参数 源窗口, 整数型, , 源窗口
+    .参数 关系, 整数型, , 指定结果窗口与源窗口的关系，它们建立在下述常数基础上：
+GW_CHILD = 5：寻找源窗口的第一个子窗口
+GW_HWNDFIRST = 0：为一个源子窗口寻找第一个兄弟（同级）窗口，或寻找第一个顶级窗口
+GW_HWNDLAST = 1：为一个源子窗口寻找最后一个兄弟（同级）窗口，或寻找最后一个顶级窗口
+GW_HWNDNEXT = 2：为源窗口寻找下一个兄弟窗口
+GW_HWNDPREV = 3：为源窗口寻找前一个兄弟窗口
+GW_OWNER = 4：寻找窗口的所有者
+
+.DLL命令 修改窗口位置, 整数型, "user32.dll", "SetWindowPos", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 序列, 整数型, , 
+    .参数 横, 整数型, , 
+    .参数 纵, 整数型, , 
+    .参数 新宽, 整数型, , 
+    .参数 新高, 整数型, , 
+    .参数 显示方式, 整数型, , Long，包含了旗标的一个整数 
+SWP_DRAWFRAME 围绕窗口画一个框 
+SWP_HIDEWINDOW 隐藏窗口 
+SWP_NOACTIVATE 不激活窗口 
+SWP_NOMOVE 保持当前位置（x和y设定将被忽略） 
+SWP_NOREDRAW 窗口不自动重画 
+SWP_NOSIZE 保持当前大小（cx和cy会被忽略） 
+SWP_NOZORDER 保持窗口在列表的当前位置（hWndInsertAfter将被忽略） 
+SWP_SHOWWINDOW 显示窗口 
+SWP_FRAMECHANGED 强迫一条WM_NCCALCSIZE消息进入窗口，即使窗口的大小没有改变
+
+.DLL命令 屏幕句柄, 整数型, "user32.dll", "GetDesktopWindow", 公开, 
+
+.DLL命令 拷贝变量_, 整数型, "kernel32.dll", "lstrcpynA", , 成功返回保存变量指针,失败返回0
+    .参数 保存变量, 字节集, 传址, 保存的变量
+    .参数 待拷变量, 字节集, 传址, 拷与的变量或数据
+    .参数 拷贝长度, 整数型, , 拷贝长度可用0
+
+.DLL命令 取文本指针_, 整数型, "kernel32.dll", "lstrcpynA", , 成功返回保存变量指针,失败返回0
+    .参数 保存变量, 文本型, 传址, 保存的变量
+    .参数 待拷变量, 文本型, 传址, 拷与的变量或数据
+    .参数 拷贝长度, 整数型, , 拷贝长度可用0
+
+.DLL命令 取字节集指针_, 整数型, "kernel32.dll", "lstrcpynA", , 成功返回保存变量指针,失败返回0
+    .参数 保存变量, 字节集, 传址, 保存的变量
+    .参数 待拷变量, 字节集, 传址, 拷与的变量或数据
+    .参数 拷贝长度, 整数型, , 拷贝长度可用0
+
+.DLL命令 取整型指针_, 整数型, "kernel32.dll", "lstrcpynA", , 成功返回保存变量指针,失败返回0
+    .参数 保存变量, 整数型, 传址, 保存的变量
+    .参数 待拷变量, 整数型, 传址, 拷与的变量或数据
+    .参数 拷贝长度, 整数型, , 拷贝长度可用0
+
+.DLL命令 取窗口外矩形, 整数型, "user32.dll", "GetWindowRect", 公开, 成功返回非零
+    .参数 窗口句柄, 整数型, , 
+    .参数 矩形, 矩形, 传址, 
+
+.DLL命令 取窗口内矩形, 整数型, "user32.dll", "GetClientRect", 公开, 
+    .参数 窗口句柄, 整数型, , 
+    .参数 矩形, 矩形, 传址, 
+
+.DLL命令 取窗口状态, 整数型, "user32.dll", "GetWindowPlacement", , 成功返回非0
+    .参数 窗口句柄, 整数型, , 
+    .参数 窗口状态, 窗口状态结构, 传址, 
+
+.DLL命令 置父窗口, 整数型, "user32.dll", "SetParent", 公开, 成功返回原父句柄
+    .参数 窗口句柄, 整数型, , 将被改变的窗口或控件的句柄
+    .参数 新父句柄, 整数型, , 把上面的窗口或控件更新为本窗口的子控件
+
+.DLL命令 移动窗口_, 整数型, "user32.dll", "MoveWindow", , 成功返回非0
+    .参数 窗口句柄, 整数型, , 
+    .参数 横, 整数型, , 
+    .参数 纵, 整数型, , 
+    .参数 宽, 整数型, , 
+    .参数 高, 整数型, , 
+    .参数 刷新, 逻辑型, , 
+
+.DLL命令 置窗口标题, 整数型, "user32.dll", "SetWindowTextA", 公开, 修改一个窗口的标题用,不要用于其它控件
+    .参数 窗口句柄, 整数型, , 
+    .参数 标题文本, 文本型, 传址, 
+
+.DLL命令 信息框_, 整数型, "user32.dll", "MessageBoxA", , 建立消息框窗体
+    .参数 父句柄, 整数型, , 
+    .参数 信息文本, 文本型, , 
+    .参数 窗口标题, 文本型, , 
+    .参数 标志组合, 整数型, , 可以使用易语言中的信息框标志组合方式
+
+.DLL命令 信息框Ex_, 整数型, "user32", "MessageBoxExA", , 建立消息框窗体
+    .参数 hwnd, 整数型, , 
+    .参数 lpText, 文本型, , 
+    .参数 lpCaption, 文本型, , 
+    .参数 uType, 整数型, , 
+    .参数 wLanguageId, 整数型, , 
+
+.DLL命令 置分辨率_, 整数型, "", "ChangeDisplaySettingsA", , 
+    .参数 lpDevMode, 短整数型, 传址, 
+    .参数 dwFlags, 整数型, , 2=重启,4=退出还原,0=保存设置
+
+.DLL命令 取分辨率_, 整数型, "", "EnumDisplaySettingsA", , 
+    .参数 lpszDeviceName, 整数型, , 
+    .参数 iModeNum, 整数型, , 
+    .参数 lpDevMode, 短整数型, 传址, 
+
+.DLL命令 设置窗口, 整数型, "user32.dll", "SetWindowPos", , 成功返回非0
+    .参数 窗口句柄, 整数型, , 
+    .参数 序列, 整数型, , Long，窗口句柄。在窗口列表中，窗口hwnd会置于这个窗口句柄的后面。也可能选用下述值之一： 
+HWND_BOTTOM 将窗口置于窗口列表底部 
+HWND_TOP 将窗口置于Z序列的顶部；Z序列代表在分级结构中，窗口针对一个给定级别的窗口显示的顺序 
+HWND_TOPMOST 将窗口置于列表顶部，并位于任何最顶部窗口的前面 
+HWND_NOTOPMOST 将窗口置于列表顶部，并位于任何最顶部窗口的后面
+    .参数 横, 整数型, , Long，窗口新的x坐标。如hwnd是一个子窗口，则x用父窗口的客户区坐标表示
+    .参数 纵, 整数型, , Long，窗口新的y坐标。如hwnd是一个子窗口，则y用父窗口的客户区坐标表示
+    .参数 新宽, 整数型, , Long，指定新的窗口宽度
+    .参数 新高, 整数型, , Long，指定新的窗口高度
+    .参数 刷新方式, 整数型, , SWP_DRAWFRAME 围绕窗口画一个框 
+SWP_HIDEWINDOW 隐藏窗口 
+SWP_NOACTIVATE 不激活窗口 
+SWP_NOMOVE 保持当前位置（x和y设定将被忽略） 
+SWP_NOREDRAW 窗口不自动重画 
+SWP_NOSIZE 保持当前大小（cx和cy会被忽略） 
+SWP_NOZORDER 保持窗口在列表的当前位置（hWndInsertAfter将被忽略） 
+SWP_SHOWWINDOW 显示窗口 
+SWP_FRAMECHANGED 强迫一条WM_NCCALCSIZE消息进入窗口，即使窗口的大小没有改变
+
+.DLL命令 取窗口菜单, 整数型, "user32.dll", "GetMenu", 公开, 成功返回菜单句柄，失败返回0
+    .参数 窗口句柄, 整数型, , 
+
+.DLL命令 取菜单项目数, 整数型, "user32.dll", "GetMenuItemCount", 公开, 失败返回-1，成功返回该菜单上的项目数
+    .参数 菜单句柄, 整数型, , 菜单句柄
+
+.DLL命令 取子菜单句柄, 整数型, "user32.dll", "GetSubMenu", 公开, 成功返回子菜单句柄，失败返回0
+    .参数 菜单句柄, 整数型, , 一个菜单的句柄
+    .参数 项目索引, 整数型, , 子菜单索引值，(从0开始)
+
+.DLL命令 取菜单项目句柄_, 整数型, "user32.dll", "GetMenuItemID", , 
+    .参数 菜单句柄, 整数型, , 
+    .参数 项目索引, 整数型, , 
+
+.DLL命令 取菜单项目标题_, 整数型, "user32.dll", "GetMenuStringA", , 
+    .参数 菜单句柄, 整数型, , 
+    .参数 项目索引, 整数型, , 
+    .参数 菜单标题, 文本型, 传址, 
+    .参数 标题长度, 整数型, , +1
+    .参数 操作标志, 整数型, , 1024=取菜单名
+
+.DLL命令 选中菜单_, 整数型, "user32.dll", "CheckMenuItem", , 8=原复选状态 0=未选中状态
+    .参数 菜单句柄, 整数型, , 
+    .参数 项目索引, 整数型, , 
+    .参数 操作标志, 整数型, , 1024 + 0=未选 OR 8=选中
+
+.DLL命令 置菜单属性_, 整数型, "user32.dll", "EnableMenuItem", , 
+    .参数 菜单句柄, 整数型, , 
+    .参数 事件按钮索引, 整数型, , 
+    .参数 操作标志, 整数型, , 1024=属性设置 0=可用 1=禁止 2=禁止(不变灰)
+
+.DLL命令 取坐标窗口_, 整数型, "user32.dll", "ChildWindowFromPointEx", , 
+    .参数 父句柄, 整数型, , 
+    .参数 横, 整数型, , 
+    .参数 纵, 整数型, , 
+    .参数 标志, 整数型, , 忽略 1=不可见控件 2=禁用控件 4=透明窗口
+
+.DLL命令 激活窗口, 逻辑型, "user32.dll", "EnableWindow", 公开, 可以用来激活或禁止一个控件或窗口
+    .参数 句柄, 整数型, , 可以是一个窗口句柄也可以是一个控件句柄
+    .参数 激活, 逻辑型, , 真＝激活，假＝禁止
+
+.DLL命令 置窗口状态, 整数型, "user32.dll", "ShowWindow", 公开, 调整设置一个窗口的显示状态
+    .参数 窗口句柄, 整数型, , 
+    .参数 新状态, 整数型, , 0=隐藏窗口,3=最大化窗口,5=恢复窗口,6=最小化窗口
+
+.DLL命令 取经过频率_, 整数型, "kernel32", "QueryPerformanceCounter", , 获取计数值
+    .参数 lpPerformanceCount, 长整数型, 传址, 
+
+.DLL命令 取系统频率_, 整数型, "kernel32", "QueryPerformanceFrequency", , 返回计数频率
+    .参数 lpFrequency, 长整数型, 传址, 
+
+.DLL命令 十六转十_, 整数型, "shlwapi.dll", "StrToInt64ExA", , 64-bit integer
+    .参数 十六进制, 文本型, , 
+    .参数 转换标志, 整数型, , 传入1
+    .参数 十进制, 长整数型, 传址, 
+
+.DLL命令 连接输入共享, 整数型, "user32.dll", "AttachThreadInput", 公开, 
+    .参数 线程ID1, 整数型, , 
+    .参数 线程ID2, 整数型, , 
+    .参数 连接, 逻辑型, , 
+
+.DLL命令 取焦点控件_, 整数型, "user32.dll", "GetFocus", , 
+
+.DLL命令 connect, 整数型, "ws2_32.dll", "connect", , 连接成功返回0
+    .参数 套接字, 整数型, , 
+    .参数 name, 字节集, , 
+    .参数 namelen, 整数型, , 16
+
+.DLL命令 WSAConnect, 整数型, "ws2_32.dll", "WSAConnect", , 连接成功返回0
+    .参数 套接字, 整数型, , 
+    .参数 name, 字节集, , 
+    .参数 namelen, 整数型, , 
+    .参数 lpCallerData, 整数型, , 指向用户数据的指针
+    .参数 lpCalleeData, 整数型, , 指向用户数据的指针
+    .参数 lpSQOS, 整数型, , 指向套接口s流描述的指针
+    .参数 lpGQOS, 整数型, , 指向套接口组流描述的指针
+
+.DLL命令 对方网络名, 整数型, "ws2_32.dll", "getpeername", , 
+    .参数 套接口, 整数型, , 
+    .参数 name, 字节集, 传址, 
+    .参数 namelen, 整数型, 传址, 
+
+.DLL命令 当前网络名, 整数型, "ws2_32.dll", "getsockname", , 
+    .参数 套接口, 整数型, , 
+    .参数 name, 字节集, 传址, 
+    .参数 namelen, 整数型, 传址, 
+
+.DLL命令 文本IP到整型_, 整数型, "ws2_32.dll", "inet_addr", , 失败返回-1，成功返回整型IP地址
+    .参数 文本型IP, 文本型, , 
+
+.DLL命令 整型IP到文本_, 整数型, "ws2_32.dll", "inet_ntoa", , 
+    .参数 整数型IP, 整数型, , 
+
+.DLL命令 取进程启动信息, 整数型, "kernel32.dll", "GetStartupInfoA", , 
+    .参数 启动信息, 启动信息, 传址, 
+
+.DLL命令 创建进程_, 逻辑型, "kernel32", "CreateProcessA", , 
+    .参数 程序名, 文本型, 传址, 
+    .参数 启动参数, 文本型, 传址, 
+    .参数 进程安全结构, 整数型, , 传入0
+    .参数 线程安全结构, 整数型, , 传入0
+    .参数 继承进程句柄, 逻辑型, , 默认＝假
+    .参数 运行参数, 整数型, , 4=挂起
+    .参数 环境指针, 整数型, , 
+    .参数 新进程指定目录, 文本型, 传址, 空＝当前目录
+    .参数 进程启动信息, 启动信息, , 
+    .参数 进程线程信息, 进程线程信息, 传址, 
+
+.DLL命令 钩子安装_, 整数型, "user32.dll", "SetWindowsHookA", , 安装钩子过程
+    .参数 钩子标识, 整数型, , 
+    .参数 钩子接口, 整数型, , 
+
+.DLL命令 取模块完整路径, 整数型, "kernel32.dll", "GetModuleFileNameA", , 
+    .参数 模块句柄, 整数型, , 
+    .参数 保存路径, 文本型, 传址, 
+    .参数 缓存长度, 整数型, , 256
+
+.DLL命令 网络是否连接_, 逻辑型, "wininet.dll", "InternetGetConnectedState", , 
+    .参数 lpdwFlags, 整数型, 传址, 
+    .参数 dwReserved, 整数型, , 
+
+.DLL命令 取键码状态_, 空白型, "user32.dll", "GetKeyboardState", , 
+    .参数 字节型, 字节型, 传址, 256个
+
+.DLL命令 打开令牌对象, 逻辑型, "advapi32.dll", "OpenProcessToken", , 打开过程令牌对象
+    .参数 进程句柄, 整数型, , 
+    .参数 权限, 整数型, , 
+    .参数 令牌句柄, 整数型, 传址, 
+
+.DLL命令 置进程权限, 逻辑型, "advapi32.dll", "AdjustTokenPrivileges", , 使能/取消令牌特权
+    .参数 令牌句柄, 整数型, , 
+    .参数 DisableAllPrivileges, 逻辑型, , 
+    .参数 NewState, 进程权限, 传址, 
+    .参数 BufferLength, 整数型, , 
+    .参数 PreviousState, 整数型, , 
+    .参数 ReturnLength, 整数型, , 
+
+.DLL命令 取权限令牌, 整数型, "advapi32.dll", "LookupPrivilegeValueA", , 返回特权名LUID
+    .参数 系统服务名, 整数型, , lpSystemName
+    .参数 权限名, 文本型, 传址, 
+    .参数 权限结构, LUID, 传址, 
+
+.DLL命令 消息队列检查, 整数型, "user32.dll", "PeekMessageA", , 
+    .参数 消息结构, 消息, 传址, 
+    .参数 句柄, 文本型, 传址, 
+    .参数 第一个消息, 整数型, , 
+    .参数 最后一个消息, 整数型, , 
+    .参数 移除消息, 整数型, , 1为移除
+
+.DLL命令 消息等待, 整数型, "user32.dll", "WaitMessage", , 
+
+.DLL命令 发送线程消息_, 整数型, "user32.dll", "PostThreadMessageA", , 
+    .参数 线程句柄, 整数型, , 
+    .参数 消息标识, 整数型, , 
+    .参数 消息1, 整数型, , 
+    .参数 消息2, 整数型, , 
+
+.DLL命令 取回消息, 整数型, "user32", "GetMessageA", , 从线索消息队列中返回一条消息
+    .参数 消息, 消息, 传址, 
+    .参数 窗口句柄, 整数型, , 传入空值
+    .参数 消息1, 整数型, , 传入0
+    .参数 消息2, 整数型, , 传入0
+
+.DLL命令 投递窗口消息, 整数型, "user32.dll", "DispatchMessageA", , 向窗口发送消息  把一段消息发送给窗口
+    .参数 消息, 消息, , 消息
+
+.DLL命令 文件下载_, 整数型, "URLMON.DLL", "URLDownloadToFileA", , 成功返回0，失败返回非0
+    .参数 AX控件, 整数型, , 传入0
+    .参数 源地址, 文本型, , 网络上的文件
+    .参数 保存地址, 文本型, , 保存到本地
+    .参数 传0, 整数型, , 传入0
+    .参数 TLPBINDSTATUSCALLBACK, 整数型, , 传入0
+
+.DLL命令 安装剪贴板链, 整数型, "user32.dll", "SetClipboardViewer", , 返回原一个通告窗口句柄
+    .参数 窗口句柄, 整数型, , 
+
+.DLL命令 删除剪贴板链, 逻辑型, "user32.dll", "ChangeClipboardChain", , 从剪贴板查看窗口上删除一个窗口
+    .参数 窗口句柄, 整数型, , 
+    .参数 下个窗口, 整数型, , 
+
+.DLL命令 判断剪贴板格式, 逻辑型, "user32.dll", "IsClipboardFormatAvailable", , 确定格式是否可用
+    .参数 数据格式, 整数型, , 1＝文本型
+
+.DLL命令 取启动参数, 文本型, "kernel32", "GetCommandLineA", , 返回程序全路径与启动参数
+
+.DLL命令 转换消息, 整数型, "user32.dll", "TranslateMessage", , 转换虚拟关键字消息
+    .参数 消息, 消息, 传址, 
+
+.DLL命令 IsWindow, 逻辑型, "", "IsWindow", , 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 VirtualProtect, 整数型, "kernel32.dll", "VirtualProtect", , 成功返回非0，失败返回0
+    .参数 起始地址, 整数型, , lpAddress
+    .参数 长度, 整数型, , dwSize
+    .参数 新保护权限, 整数型, , 可读写权限(PAGE_READWRITE)=4
+    .参数 旧保护权限, 整数型, 传址, 保存旧属性的结构变量地址
+
+.DLL命令 VirtualQuery, 整数型, "kernel32.dll", "VirtualQuery", , 返回虚拟信息  成功返回0，失败返回非0
+    .参数 起始地址, 整数型, , 
+    .参数 虚拟保护信息, 虚拟保护, 传址, 
+    .参数 缓冲长度, 整数型, , 长度28
+
+.DLL命令 gethostname, 整数型, "ws2_32.dll", "gethostname", , 
+    .参数 name, 文本型, , 
+    .参数 namelen, 整数型, , 
+
+.DLL命令 读配置文本_, 整数型, "kernel32.dll", "GetPrivateProfileStringA", , 
+    .参数 节名称, 文本型, , 就是用中括号括起来的内容
+    .参数 项名称, 文本型, , 就是等号前边的内容
+    .参数 默认值, 文本型, , 可以为“”
+    .参数 缓冲容器, 字节集, , 一般将容器的大小设定为255
+    .参数 缓冲容积, 整数型, , 应与缓冲容器的大小相等255
+    .参数 配置文件名, 文本型, , 
+
+.DLL命令 写配置文件_, 整数型, "kernel32.dll", "WritePrivateProfileStringA", , 如果配置文件不存在则将被创建
+    .参数 节名称, 文本型, , 就是用中括号括起来的内容
+    .参数 项名称, 文本型, , 就是等号前边的内容
+    .参数 项值, 文本型, , 就是等号后面的内容
+    .参数 文件名, 文本型, , 就是你要写入的配置文件
+
+.DLL命令 删配置文件_项, 整数型, "kernel32.dll", "WritePrivateProfileStringA", , 
+    .参数 节名称, 文本型, , 就是用中括号括起来的内容
+    .参数 项名称, 文本型, , 就是等号前边的内容
+    .参数 项值, 整数型, , 就是等号后面的内容
+    .参数 文件名, 文本型, , 就是你要写入的配置文件
+
+.DLL命令 删配置文件_节, 整数型, "kernel32.dll", "WritePrivateProfileStringA", , 
+    .参数 节名称, 文本型, , 就是用中括号括起来的内容
+    .参数 项名称, 整数型, , 就是等号前边的内容
+    .参数 项值, 整数型, , 就是等号后面的内容
+    .参数 文件名, 文本型, , 就是你要写入的配置文件
+
+.DLL命令 GetPrivateProfileSection, 整数型, "kernel32", "GetPrivateProfileSectionA", , 获取指定小节所有项名和值的一个列表  装载到lpReturnedString缓冲区的字符数量。如缓冲区的容量不够大，不能容下所有信息，就返回nSize-2
+    .参数 lpAppName, 文本型, , 欲获取的小节。注意这个字串不区分大小写
+    .参数 lpReturnedString, 字节集, , 项和值字串的列表。每个字串都由一个NULL字符分隔，最后一个字串后面用两个NULL字符中止
+    .参数 nSize, 整数型, , lpReturned缓冲区的大小。在windows系统中最大值为32767
+    .参数 lpFileName, 文本型, , 初始化文件的名字。如没有指定完整路径名，windows就在Windows目录中查找文件;
+
+.DLL命令 GetPrivateProfileSectionNames, 整数型, "kernel32.dll", "GetPrivateProfileSectionNamesA", , 
+    .参数 lpszReturnBuffer, 字节集, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpFileName, 文本型, , 
+
+.DLL命令 GetPrivateProfileString, 整数型, "kernel32.dll", "GetPrivateProfileStringA", , 为初始化文件中指定的条目取得字串
+    .参数 节名称, 文本型, , 
+    .参数 项名称, 整数型, , 0
+    .参数 默认值, 文本型, , 
+    .参数 缓冲容器, 字节集, , 
+    .参数 缓冲容积, 整数型, , 
+    .参数 配置文件名, 文本型, , 
+
+.DLL命令 NtSystemDebugControl, 整数型, "ntdll.dll", "NtSystemDebugControl", , 
+    .参数 Command, 整数型, , 8
+    .参数 InputBuffer, 字节集, , 
+    .参数 InputBufferLength, 整数型, , 
+    .参数 OutputBuffer, 整数型, , 
+    .参数 OutputBufferLength, 整数型, , 
+    .参数 ReturnLength, 整数型, 传址, 
+
+.DLL命令 SetProcessWorkingSetSize, 整数型, "", "SetProcessWorkingSetSize", , 
+    .参数 hProcess, 空白型, , 
+    .参数 dwMinimumWorkingSetSize, 空白型, , 
+    .参数 dwMaximumWorkingSetSize, 空白型, , 
+
+.DLL命令 ZwQuerySystemInformation, 整数型, "ntdll.dll", "ZwQuerySystemInformation", , 
+    .参数 SystemInformationClass, 整数型, , 未知类型：SYSTEM_INFORMATION_CLASS。
+    .参数 SystemInformation, 字节集, , any
+    .参数 SystemInformationLength, 整数型, , 
+    .参数 ReturnLength, 整数型, 传址, 
+
+.DLL命令 RtlMoveMemory2, 整数型, "", "RtlMoveMemory", , 
+    .参数 dest, SYSTEM_HANDLE_INFORMATION, , 
+    .参数 Source, 整数型, , 
+    .参数 len, 空白型, , 284
+
+.DLL命令 StrToInt64ExA, 整数型, "shlwapi.dll", "StrToInt64ExA", , 64-bit integer
+    .参数 pszString, 文本型, , 
+    .参数 dwFlags, 整数型, , 1为16进制，0为10进制
+    .参数 piRet, 长整数型, 传址, 
+
+.DLL命令 RtlAdjustPrivilege, 整数型, "ntdll.dll", "RtlAdjustPrivilege", , 
+    .参数 Privilege, 整数型, , 
+    .参数 Enable, 逻辑型, , 
+    .参数 CurrentThread, 逻辑型, , 
+    .参数 Enabled, 整数型, 传址, 
+
+.DLL命令 OpenProcess, 整数型, "kernel32", "OpenProcess", , 将句柄返回给过程对象
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 整数型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 VirtualAllocEx, 整数型, "kernel32.dll", "VirtualAllocEx", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+    .参数 flProtect, 整数型, , 
+
+.DLL命令 CloseHandle, 整数型, "", "", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 WriteProcessMemory, 整数型, "", "WriteProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 字节集, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, 传址, 
+
+.DLL命令 VirtualFreeEx, 整数型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBuf, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 dwFreeType, 整数型, , 
+
+.DLL命令 GetModuleHandle, 整数型, "kernel32", "GetModuleHandleA", , 获取一个应用程序或动态链接库的模块句柄  如执行成功成功，则返回模块句柄。零表示失败。会设置GetLastError
+    .参数 lpModuleName, 文本型, , 指定模块名，这通常是与模块的文件名相同的一个名字。例如，NOTEPAD.EXE程序的模块文件名就叫作NOTEPAD;
+
+.DLL命令 GetProcAddress, 整数型, "kernel32", "GetProcAddress", , 返回函数地址
+    .参数 hModule, 整数型, , 
+    .参数 lpProcName, 文本型, , 
+
+.DLL命令 CreateRemoteThread, 整数型, "kernel32", "CreateRemoteThread", , 在另一进程中建立线索
+    .参数 hProcess, 整数型, , 
+    .参数 lpThreadAttributes, SECURITY_ATTRIBUTES, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 整数型, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, 传址, 
+
+.DLL命令 WaitForSingleObject, 整数型, "", "", , 
+    .参数 hHandle, 整数型, , 
+    .参数 dwMilliseconds, 整数型, , 
+
+.DLL命令 GetExitCodeThread, 整数型, "", "", , 
+    .参数 Handle, 整数型, , 
+    .参数 ret, 整数型, 传址, 
+
+.DLL命令 LoadLibraryEx, 整数型, "kernel32.dll", "LoadLibraryExA", , 
+    .参数 lpLibFileName, 文本型, 传址, 
+    .参数 hFile, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+
+.DLL命令 FreeLibrary, 整数型, "kernel32.dll", "", , 
+    .参数 hModule, 整数型, , 
+
+.DLL命令 取指针_字节集, 整数型, "", "lstrcpyn", 公开, 常规API
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 RtlMoveMemory3, 整数型, "", "RtlMoveMemory", 公开, 常规API,从地址读一个整数
+    .参数 dest, 整数型, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 len, 空白型, , 4
+
+.DLL命令 ZwOpenProcess, 整数型, "ntdll.dll", "ZwOpenProcess", 公开, 
+    .参数 hProcess, 整数型, 传址, 
+    .参数 DesiredAccess, 整数型, , 
+    .参数 ObjectAttributes, OBJECT_ATTRIBUTES, , 
+    .参数 ClientId, CLIENT_ID, , 
+
+.DLL命令 RtlMoveMemory1, 整数型, "", "RtlMoveMemory", , 常规API
+    .参数 dest, SYSTEM_HANDLE_TABLE_ENTRY_INFO, , 
+    .参数 Source, 整数型, , 
+    .参数 len, 空白型, , 284
+
+.DLL命令 ZwQueryInformationProcess, 整数型, "ntdll.dll", "ZwQueryInformationProcess", , 
+    .参数 SystemInformationClass, 整数型, , 未知类型：SYSTEM_INFORMATION_CLASS。
+    .参数 dd, 整数型, , 
+    .参数 SystemInformation, PROCESS_BASIC_INFORMATION, , any
+    .参数 SystemInformationLength, 整数型, , 
+    .参数 ReturnLength, 整数型, 传址, 
+
+.DLL命令 ZwDuplicateObject, 整数型, "ntdll.dll", "", 公开, 
+    .参数 SourceProcessHandle, 整数型, , 
+    .参数 SourceHandle, 整数型, , 
+    .参数 TargetProcessHandle, 整数型, , 
+    .参数 TargetHandle, 整数型, 传址, 
+    .参数 DesiredAccess, 整数型, , 
+    .参数 HandleAttributes, 整数型, , 
+    .参数 Options, 整数型, , 
+
+.DLL命令 ZwCreateJobObject, 整数型, "ntdll.dll", "", 公开, 
+    .参数 JobHandle, 整数型, 传址, 
+    .参数 DesiredAccess, 整数型, , 
+    .参数 ObjectAttributes, OBJECT_ATTRIBUTES, , 
+
+.DLL命令 ZwAssignProcessToJobObject, 整数型, "ntdll.dll", "", 公开, 
+    .参数 JobHandle, 整数型, , 
+    .参数 ProcessHandle, 整数型, , 
+
+.DLL命令 ZwTerminateJobObject, 整数型, "ntdll.dll", "", 公开, 
+    .参数 JobHandle, 整数型, , 
+    .参数 ExitStatus, 整数型, , 
+
+.DLL命令 ZwTerminateProcess, 整数型, "ntdll.dll", "", 公开, 
+    .参数 ProcessHandle, 整数型, , 
+    .参数 ExitStatus, 整数型, , 
+
+.DLL命令 ZwClose, 整数型, "ntdll.dll", "ZwClose", 公开, 
+    .参数 hnd, 空白型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+置随机数种子 ()
+赋值 (自进程句柄, 用保护型打开进程 (2035711, 真, 取自进程ID ()))
+初始COM ()
+写核心库路径_ ()
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+
+.程序集 钩子功能, , , 
+
+.程序集变量 呼出的键码, 字节型, , , 
+.程序集变量 呼出的窗口, 窗口, , , 
+.程序集变量 键盘处理, 逻辑型, , , 
+.子程序 安装全局钩子, 整数型, 公开, 返回安装成功后的全局钩子句柄
+.参数 钩子处理DLL, 文本型, , 需要在该子程中公开一个名为 DLL处理接口 的子程序
+
+.局部变量 模块句柄, 整数型, , , 
+.局部变量 接口, 整数型, , , 
+.局部变量 钩子句柄, 整数型, , , 
+.局部变量 对象名, 文本型, , , 
+
+.如果真 (等于 (-1, 倒找文本 (钩子处理DLL, “\”, , 假)))
+    赋值 (钩子处理DLL, 相加 (取运行目录 (), “\”, 钩子处理DLL))
+.如果真结束
+赋值 (模块句柄, 载入DLL (钩子处理DLL))
+.如果真 (等于 (0, 模块句柄))
+    返回 (0)
+.如果真结束
+赋值 (接口, 取函数入口 (模块句柄, “DLL接口”))
+.如果真 (等于 (0, 接口))
+    返回 (0)
+.如果真结束
+.如果真 (等于 (0, 取函数入口1_ (模块句柄, 2)))
+    赋值 (钩子句柄, 安装钩子 (3, 接口, 模块句柄, 0))
+.如果真结束
+释放DLL (模块句柄)
+返回 (钩子句柄)
+
+.子程序 安装线程钩子, 整数型, 公开, 返回安装成功后的线程钩子句柄
+.参数 窗口句柄, 整数型, , 
+.参数 钩子处理DLL, 文本型, , 
+
+.局部变量 模块句柄, 整数型, , , 
+.局部变量 接口, 整数型, , , 
+.局部变量 线程句柄, 整数型, , , 
+.局部变量 钩子句柄, 整数型, , , 
+.局部变量 对象名, 文本型, , , 
+
+.如果真 (等于 (0, 窗口句柄))
+    返回 (0)
+.如果真结束
+.如果真 (句柄是否有效 (窗口句柄))
+    .如果真 (等于 (-1, 倒找文本 (钩子处理DLL, “\”, , 假)))
+        赋值 (钩子处理DLL, 相加 (取运行目录 (), “\”, 钩子处理DLL))
+    .如果真结束
+    赋值 (模块句柄, 载入DLL (钩子处理DLL))
+    .如果真 (等于 (0, 模块句柄))
+        返回 (0)
+    .如果真结束
+    赋值 (接口, 取函数入口 (模块句柄, “DLL接口”))
+    .如果真 (等于 (0, 接口))
+        返回 (0)
+    .如果真结束
+    赋值 (线程句柄, 取窗口进程 (窗口句柄, 0))
+    .如果真 (等于 (0, 取函数入口1_ (模块句柄, 2)))
+        赋值 (钩子句柄, 安装钩子 (3, 接口, 模块句柄, 线程句柄))
+    .如果真结束
+    发送线程消息_ (线程句柄, 42724, 钩子句柄, 0)
+    释放DLL (模块句柄)
+.如果真结束
+返回 (钩子句柄)
+
+.子程序 DLL初始化, 整数型, 公开, 
+.参数 一, 整数型, , 
+.参数 二, 整数型, , 
+.参数 三, 整数型, , 
+.参数 初始处理, 子程序指针, , 无参数无返回值的一个子程序,用来初始化DLL中
+.参数 退出处理, 子程序指针, , 无参数无返回值的一个子程序,用来DLL退出时卸载各类HOOK用
+
+.局部变量 初始化, 逻辑型, 静态, , 
+.局部变量 钩子句柄, 整数型, 静态, , 
+.局部变量 消息, 消息, , , 
+.局部变量 临时, 字节集, , , 
+.局部变量 返回, 整数型, , , 
+.局部变量 对象名, 文本型, , , 
+
+复制内存消息 (消息, 三, 28)
+.如果真 (等于 (消息.消息标识, 42724))
+    .判断开始 (等于 (消息.消息值2, 0))
+        .如果真 (不等于 (0, 钩子句柄))
+            卸载钩子_ (消息.消息值1)
+            返回 (1)
+        .如果真结束
+        赋值 (钩子句柄, 消息.消息值1)
+    .判断 (等于 (消息.消息值2, 1))
+        .如果 (大于或等于 (取操作系统类别 (), 3))
+            子程序NT (退出处理, 0, 0, 0, 0)
+        .否则
+            子程序9X (退出处理)
+        .如果结束
+        卸载钩子_ (钩子句柄)
+        返回 (0)
+    .默认
+        
+    .判断结束
+     ' 本源码来自易语言资源网(www.wodesoft.com)
+.如果真结束
+.如果真 (初始化)
+    .如果真 (小于 (一, 0))
+        返回 (传递钩子_ (0, 一, 二, 三))
+    .如果真结束
+    .如果真 (等于 (消息.消息标识, 18))
+        .如果 (大于或等于 (取操作系统类别 (), 3))
+            子程序NT (退出处理, 0, 0, 0, 0)
+        .否则
+            子程序9X (退出处理)
+        .如果结束
+        .如果真 (不等于 (0, 钩子句柄))
+            卸载钩子_ (钩子句柄)
+        .如果真结束
+         ' 处理事件 ()
+        .如果真 (不等于 (到小写 (取执行文件名 ()), “explorer.exe”))
+            结束进程 (打开进程 (取自进程ID ()), 1)
+        .如果真结束
+        
+    .如果真结束
+    返回 (传递钩子_ (0, 一, 二, 三))
+.如果真结束
+赋值 (初始化, 真)
+赋值 (返回, 传递钩子_ (0, 一, 二, 三))
+.如果真 (等于 (消息.窗口句柄, 0))
+    .如果 (大于或等于 (取操作系统类别 (), 3))
+        子程序NT (初始处理, 0, 0, 0, 0)
+    .否则
+        子程序9X (初始处理)
+    .如果结束
+    
+.如果真结束
+返回 (返回)
+
+.子程序 键盘钩子安装, 空白型, 公开, 在当前进程中安装一个键盘动作拦截钩子
+.参数 呼出窗口, 窗口, 可空, 想要在游戏中被呼出的 窗口 控件名，与参数三组合使用
+.参数 呼出键码, 字节型, 可空, 设置当用户按下某键时呼出 参数四 的窗口
+.参数 钩子处理程序, 子程序指针, 可空, 该程序有两个参数及返回整型值,若吃掉钩子返回1
+
+.如果真 (不等于 (0, 呼出键码))
+    赋值 (呼出的键码, 呼出键码)
+    赋值 (呼出的窗口, 呼出窗口)
+.如果真结束
+.如果真 (等于 (假, 是否为空 (钩子处理程序)))
+    置跳转 (取子程指针 (&键盘处理_, 真), 取子程指针 (钩子处理程序, 真))
+    赋值 (键盘处理, 真)
+.如果真结束
+安装钩子线程_ (2, &键盘钩子处理_)
+
+.子程序 键盘钩子处理_, 整数型, , 
+.参数 钩子类型, 整数型, , 
+.参数 消息一, 整数型, , 
+.参数 消息二, 整数型, , 
+
+.局部变量 返回, 整数型, , , 
+
+.如果真 (小于 (钩子类型, 0))
+    返回 (传递钩子_ (0, 钩子类型, 消息一, 消息二))
+.如果真结束
+
+.如果真 (不等于 (0, 呼出的键码))
+    .如果真 (等于 (取虚拟键状态 (呼出的键码), -32767))
+        .如果 (是否已创建 (呼出的窗口))
+            .如果 (呼出的窗口.可视)
+                赋值 (呼出的窗口.可视, 假)
+            .否则
+                赋值 (呼出的窗口.可视, 真)
+            .如果结束
+            
+        .否则
+            载入 (呼出的窗口, , 假)
+        .如果结束
+        ' 本源码来自易语言资源网(www.wodesoft.com)
+    .如果真结束
+    
+.如果真结束
+
+.判断开始 (键盘处理)
+    赋值 (返回, 键盘处理_ (消息一, 消息二))
+    .如果 (等于 (0, 返回))
+        返回 (传递钩子_ (0, 钩子类型, 消息一, 消息二))
+    .否则
+        返回 (返回)
+    .如果结束
+    
+.默认
+    返回 (传递钩子_ (0, 钩子类型, 消息一, 消息二))
+.判断结束
+
+
+.子程序 键盘处理_, 整数型, , 
+.参数 参数一, 整数型, , 
+.参数 参数二, 整数型, , 
+
+返回 (0)
+
+.子程序 鼠标钩子安装, 空白型, 公开, 在当前进程中安装一个鼠标动作拦截钩子
+.参数 钩子处理程序, 子程序指针, , 该程序有两个参数及返回整型值,若吃掉钩子返回1
+
+置跳转 (取子程指针 (&鼠标处理_, 真), 取子程指针 (钩子处理程序, 真))
+安装钩子线程_ (7, &鼠标钩子处理_)
+
+.子程序 鼠标钩子处理_, 整数型, , 
+.参数 钩子类型, 整数型, , 
+.参数 消息一, 整数型, , 
+.参数 消息二, 整数型, , 
+
+.局部变量 返回, 整数型, , , 
+
+.如果真 (小于 (钩子类型, 0))
+    返回 (传递钩子_ (0, 钩子类型, 消息一, 消息二))
+.如果真结束
+赋值 (返回, 鼠标处理_ (消息一, 消息二))
+.如果真 (不等于 (0, 返回))
+    返回 (返回)
+.如果真结束
+返回 (传递钩子_ (0, 钩子类型, 消息一, 消息二))
+
+.子程序 鼠标处理_, 整数型, , 
+.参数 参数一, 整数型, , 
+.参数 参数二, 整数型, , 
+
+返回 (0)
+
+.子程序 卸载钩子, 空白型, 公开, 卸载全局钩子，线程钩子，键盘钩子及鼠标钩子用,在DLL退出子程序调用这个
+.参数 钩子句柄, 整数型, , 1＝键盘钩子，2＝鼠标钩子，或全局与线程钩子安装后的返回值
+
+.判断开始 (等于 (1, 钩子句柄))
+    .如果真 (是否已创建 (呼出的窗口))
+        呼出的窗口.销毁 ()
+    .如果真结束
+    卸载钩子线程_ (2, &键盘钩子处理_)
+    赋值 (键盘处理, 假)
+    赋值 (呼出的键码, 0)
+.判断 (等于 (2, 钩子句柄))
+    卸载钩子线程_ (7, &鼠标钩子处理_)
+.默认
+    卸载钩子_ (钩子句柄)
+.判断结束
+
+
+.程序集 消息处理, , , 
+
+.程序集变量 处理机, 处理机, , "0", 
+.子程序 注册热键, 整数型, 公开, 成功返回热键ID，失败返回0
+.参数 窗口句柄, 整数型, , 与热键关联的那个窗口的窗口句柄
+.参数 功能键, 整数型, , 无=0,Alt=1,Ctrl=2,Shift=4,可以组合使用
+.参数 主热键, 整数型, , 键盘虚拟键码,也可以是易语言常量表的键码
+.参数 响应子程序, 子程序指针, , 与处理相应热键关联的无参数子程序指针
+
+.局部变量 返回, 整数型, , , 
+
+.如果真 (不等于 (0, 窗口句柄))
+    .如果真 (注册热键_ (窗口句柄, 响应子程序, 功能键, 主热键))
+        消息处理机 (窗口句柄, 取字节集数据 (到字节集 (0), #子程序指针型))
+        返回 (取字节集数据 (到字节集 (响应子程序), #整数型))
+    .如果真结束
+     ' 本源码来自易语言资源网(www.wodesoft.com)
+.如果真结束
+返回 (0)
+
+.子程序 消息处理机, 整数型, 公开, 安装成功返回处理机序号，可以用这个序号卸载处理机
+.参数 窗口句柄, 整数型, , 传入一个程序的主窗口
+.参数 处理接口, 子程序指针, , 截获处理消息的子程序入口指针
+
+.局部变量 计次, 整数型, , , 
+.局部变量 临时, 处理机, , , 
+
+.如果真 (等于 (0, 窗口句柄))
+    返回 (0)
+.如果真结束
+.如果真 (句柄是否有效 (窗口句柄))
+    .计次循环首 (取数组成员数 (处理机), 计次)
+        .如果真 (等于 (处理机 [计次], 窗口句柄, 窗口句柄))
+            .如果 (不等于 (取字节集数据 (到字节集 (处理接口), #整数型), 0))
+                赋值 (处理机 [计次], 现消息处理, 处理接口)
+                返回 (计次)
+            .否则
+                返回 (计次)
+            .如果结束
+            
+        .如果真结束
+         ' 本源码来自易语言资源网(www.wodesoft.com)
+    .计次循环尾 ()
+    赋值 (临时.窗口句柄, 窗口句柄)
+    赋值 (临时.原消息处理, 置窗口结构信息 (窗口句柄, -4, &消息处理机_))
+    赋值 (临时.现消息处理, 处理接口)
+    加入成员 (处理机, 临时)
+    返回 (取数组成员数 (处理机))
+.如果真结束
+返回 (0)
+
+.子程序 卸载处理机, 空白型, 公开, 卸载消息处理机
+.参数 处理机序号, 整数型, , 安装消息处理机时所返回的序号
+
+.如果真 (并且 (不等于 (0, 处理机序号), 小于或等于 (处理机序号, 取数组成员数 (处理机))))
+    删除成员 (处理机, 处理机序号, 1)
+.如果真结束
+
+
+.子程序 消息处理机_, 整数型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 消息标识, 整数型, , 
+.参数 消息1, 整数型, , 
+.参数 消息2, 整数型, , 
+
+.局部变量 计次, 整数型, , , 
+.局部变量 返回, 整数型, , , 
+
+.判断开始 (等于 (786, 消息标识))
+    调用入口 (消息1)
+.默认
+    .计次循环首 (取数组成员数 (处理机), 计次)
+        .如果真 (等于 (处理机 [计次], 窗口句柄, 窗口句柄))
+            .如果真 (不等于 (取字节集数据 (到字节集 (处理机 [计次], 现消息处理), #整数型), 0))
+                赋值 (返回, 召唤函数 (处理机 [计次], 现消息处理, 窗口句柄, 消息标识, 消息1, 消息2))
+                .如果真 (不等于 (0, 返回))
+                    返回 (返回)
+                .如果真结束
+                ' 本源码来自易语言资源网(www.wodesoft.com)
+            .如果真结束
+            返回 (召唤函数 (处理机 [计次], 原消息处理, 窗口句柄, 消息标识, 消息1, 消息2))
+        .如果真结束
+        
+    .计次循环尾 ()
+.判断结束
+返回 (0)
+
+.子程序 投递消息, 整数型, 公开, WIN消息发送
+.参数 窗口句柄, 整数型, , 接收消息的窗口
+.参数 消息标识, 整数型, , 消息标识
+.参数 参数一, 整数型, , 消息值一
+.参数 参数二, 整数型, , 消息值二
+.参数 等待返回, 逻辑型, 可空, 是否等待消息处理后的返回值
+
+.如果 (等待返回)
+    返回 (发送消息 (窗口句柄, 消息标识, 参数一, 参数二))
+.否则
+    发送系统消息 (窗口句柄, 消息标识, 参数一, 参数二)
+    返回 (1)
+.如果结束
+
+
+.程序集 内存读写, , , 
+
+.子程序 创建窗口互斥体, 空白型, 公开, 成功创建互斥体返回程序，失败结束程序
+.参数 窗体句柄, 整数型, , 关联互斥体的程序主窗口句柄
+.参数 互斥体名, 文本型, , 互斥体名称,该互斥体对象可以用读写共享内存来操作
+
+.局部变量 对象句柄, 整数型, , , 
+.局部变量 文件指针, 整数型, , , 
+.局部变量 窗口句柄, 整数型, , , 
+
+赋值 (对象句柄, 打开对象 (983071, 0, 互斥体名))
+.如果真 (等于 (0, 对象句柄))
+    赋值 (对象句柄, 创建对象 (4294967295, 0, 4, 0, 65535, 互斥体名))
+    .如果真 (等于 (0, 对象句柄))
+        结束 ()
+    .如果真结束
+    赋值 (文件指针, 对象到文件 (对象句柄, 983071, 0, 0, 0))
+    写整型内存 (文件指针, 窗体句柄)
+    赋值 (文件指针, 相加 (文件指针, 4))
+    返回 ()
+.如果真结束
+赋值 (文件指针, 对象到文件 (对象句柄, 983071, 0, 0, 0))
+赋值 (窗口句柄, 读整型内存 (文件指针))
+.如果真 (句柄是否有效 (窗口句柄))
+    窗口恢复 (窗口句柄)
+    结束 ()
+.如果真结束
+写整型内存 (文件指针, 窗体句柄)
+赋值 (文件指针, 相加 (文件指针, 4))
+返回 ()
+
+.子程序 创建内存对象, 逻辑型, 公开, 创建内存对象成功返回真，失败返回假
+.参数 互斥体名, 文本型, , 互斥体名称,该互斥体对象可以用读写共享内存来操作
+
+.局部变量 对象句柄, 整数型, , , 
+.局部变量 文件指针, 整数型, , , 
+
+赋值 (对象句柄, 打开对象 (983071, 0, 互斥体名))
+.如果真 (等于 (0, 对象句柄))
+    赋值 (对象句柄, 创建对象 (4294967295, 0, 4, 0, 65535, 互斥体名))
+    .如果真 (等于 (0, 对象句柄))
+        返回 (假)
+    .如果真结束
+    赋值 (文件指针, 相加 (对象到文件 (对象句柄, 983071, 0, 0, 0), 4))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+.子程序 读共享内存, 逻辑型, 公开, 读取成功返回真，失败返回假
+.参数 共享内存地址, 整数型, , 共享内存开始地址为 0
+.参数 保存数据变量, 字节集, 参考, 用于保存数据的变量
+.参数 读取长度, 整数型, , 读取共享内存数据长度
+.参数 互斥体名, 文本型, , 一个已经成功创建的互斥体名
+
+.局部变量 对象句柄, 整数型, , , 
+.局部变量 文件指针, 整数型, , , 
+.局部变量 返回, 逻辑型, , , 
+
+赋值 (对象句柄, 打开对象 (983071, 0, 互斥体名))
+.如果真 (等于 (0, 对象句柄))
+    返回 (假)
+.如果真结束
+赋值 (保存数据变量, 取空白字节集 (读取长度))
+赋值 (文件指针, 相加 (对象到文件 (对象句柄, 983071, 0, 0, 0), 4))
+赋值 (返回, 读字节集内存 (相加 (文件指针, 共享内存地址), 保存数据变量, 读取长度))
+关闭对象 (对象句柄)
+返回 (返回)
+
+.子程序 写共享内存, 逻辑型, 公开, 写入成功返回真，失败返回假
+.参数 共享内存地址, 整数型, , 共享内存开始地址为 0
+.参数 写出数据变量, 字节集, 参考, 欲将写出数据的变量
+.参数 互斥体名, 文本型, , 一个已经成功创建的互斥体名
+
+.局部变量 对象句柄, 整数型, , , 
+.局部变量 文件指针, 整数型, , , 
+.局部变量 返回, 逻辑型, , , 
+
+赋值 (对象句柄, 打开对象 (983071, 0, 互斥体名))
+.如果真 (等于 (0, 对象句柄))
+    返回 (假)
+.如果真结束
+赋值 (文件指针, 相加 (对象到文件 (对象句柄, 983071, 0, 0, 0), 4))
+赋值 (返回, 写字节集内存 (相加 (文件指针, 共享内存地址), 写出数据变量))
+关闭对象 (对象句柄)
+返回 (返回)
+
+.子程序 读整型内存, 整数型, 公开, 返回读出的内存整型数据,失败返回-1
+.参数 进程ID, 整数型, 可空, 对其它进程操作时使用，指定的进程ID
+.参数 读取地址, 整数型, , 内存处的一个地址
+
+.局部变量 进程句柄, 整数型, , , 
+.局部变量 整型, 整数型, , , 
+
+.如果真 (等于 (0, 进程ID))
+    赋值 (进程ID, 取自进程ID ())
+.如果真结束
+赋值 (进程句柄, 用保护型打开进程 (2035711, 真, 进程ID))
+.如果真 (等于 (0, 进程句柄))
+    返回 (-1)
+.如果真结束
+.如果 (读整型内存_ (进程句柄, 读取地址, 整型, 4, 0))
+    关闭对象 (进程句柄)
+    返回 (整型)
+.否则
+    关闭对象 (进程句柄)
+    返回 (-1)
+.如果结束
+' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 写整型内存, 逻辑型, 公开, 无返回值
+.参数 进程ID, 整数型, 可空, 对其它进程操作时使用，指定的进程ID
+.参数 写入地址, 整数型, , 内存处的一个地址
+.参数 写入整数, 整数型, 参考, 将被写入的一个整型数值
+
+.局部变量 进程句柄, 整数型, , , 
+.局部变量 返回, 逻辑型, , , 
+
+.如果真 (等于 (0, 进程ID))
+    赋值 (进程ID, 取自进程ID ())
+.如果真结束
+赋值 (进程句柄, 用保护型打开进程 (2035711, 真, 进程ID))
+.如果真 (等于 (0, 进程句柄))
+    返回 (假)
+.如果真结束
+赋值 (返回, 写整型内存_ (进程句柄, 写入地址, 写入整数, 4, 0))
+关闭对象 (进程句柄)
+返回 (返回)
+
+.子程序 读字节集内存, 逻辑型, 公开, 成功返回真，失败返回假
+.参数 进程ID, 整数型, 可空, 对其它进程操作时使用，指定的进程ID
+.参数 读取地址, 整数型, , 内存处的一个地址
+.参数 保存变量, 字节集, 参考, 用来保存读出的数据
+.参数 读取长度, 整数型, , 要读取的内存字节集长度
+
+.局部变量 进程句柄, 整数型, , , 
+
+赋值 (保存变量, 取空白字节集 (读取长度))
+.如果真 (等于 (0, 进程ID))
+    赋值 (进程ID, 取自进程ID ())
+.如果真结束
+赋值 (进程句柄, 用保护型打开进程 (2035711, 真, 进程ID))
+.如果真 (等于 (0, 进程句柄))
+    返回 (假)
+.如果真结束
+.如果 (读内存字节集 (进程句柄, 读取地址, 保存变量, 读取长度, 0))
+    关闭对象 (进程句柄)
+    返回 (真)
+.否则
+    关闭对象 (进程句柄)
+    返回 (假)
+.如果结束
+返回 (假)
+
+.子程序 写字节集内存, 逻辑型, 公开, 成功返回真，失败返回假
+.参数 进程ID, 整数型, 可空, 指定的进程ID
+.参数 写入地址, 整数型, , 内存处的一个地址
+.参数 写入字节集, 字节集, 参考, 将被写入的一组字节集数据
+
+.局部变量 进程句柄, 整数型, , , 
+
+.如果真 (等于 (0, 进程ID))
+    赋值 (进程ID, 取自进程ID ())
+.如果真结束
+赋值 (进程句柄, 用保护型打开进程 (2035711, 真, 进程ID))
+.如果真 (等于 (0, 进程句柄))
+    返回 (假)
+.如果真结束
+.如果 (写内存字节集 (进程句柄, 写入地址, 写入字节集, 取字节集长度 (写入字节集), 0))
+    关闭对象 (进程句柄)
+    返回 (真)
+.否则
+    关闭对象 (进程句柄)
+    返回 (假)
+.如果结束
+返回 (假)
+
+.子程序 内存搜索, 逻辑型, 公开, 有搜索到才会返回真,其它情况都返回假,该功能只搜索&H400000-&H7F000000区域
+.参数 进程ID, 整数型, 可空, 若空为自身进程,需要进行搜索内存的一个进程ID
+.参数 搜索字节集, 字节集, , 搜索与本参数相同的字节集数据所在的内存地址
+.参数 保存指针, 整数型, 参考 数组, 提供一个整数型数组变量保存搜到的内存地址
+
+.局部变量 进程句柄, 整数型, , , 
+.局部变量 取保护返回, 整数型, , , 成功返回28，失败返回0
+.局部变量 虚拟保护, 虚拟保护信息, , , 28字节
+.局部变量 内存指针, 整数型, , , lpAddress = &H400000 \'以 400000 作为起点
+.局部变量 临时字节集, 字节集, , , 
+.局部变量 临时指针, 整数型, , , 
+
+.如果真 (等于 (0, 进程ID))
+    赋值 (进程ID, 取自进程ID ())
+.如果真结束
+赋值 (进程句柄, 用保护型打开进程 (2035711, 真, 进程ID))
+.如果真 (等于 (0, 进程句柄))
+    返回 (假)
+.如果真结束
+赋值 (内存指针, 4194304)
+赋值 (取保护返回, 取虚拟保护扩展 (进程句柄, 内存指针, 虚拟保护, 28))
+.判断循环首 (并且 (不等于 (0, 取保护返回), 小于 (内存指针, 2130706432)))
+    .如果真 (并且 (等于 (虚拟保护.当前保护, 4), 等于 (虚拟保护.保留值, 4096)))
+        赋值 (临时字节集, 取空白字节集 (虚拟保护.区域长度))
+        读内存字节集 (进程句柄, 虚拟保护.区域地址, 临时字节集, 虚拟保护.区域长度, 0)
+        赋值 (临时指针, 寻找字节集 (临时字节集, 搜索字节集, 临时指针))
+        .判断循环首 (不等于 (-1, 临时指针))
+            加入成员 (保存指针, 相减 (相加 (虚拟保护.区域地址, 临时指针), 1))
+            赋值 (临时指针, 相加 (临时指针, 1))
+            赋值 (临时指针, 寻找字节集 (临时字节集, 搜索字节集, 临时指针))
+        .判断循环尾 ()
+    .如果真结束
+    赋值 (内存指针, 相加 (虚拟保护.区域地址, 虚拟保护.区域长度, 100))
+    赋值 (取保护返回, 取虚拟保护扩展 (进程句柄, 内存指针, 虚拟保护, 28))
+.判断循环尾 ()
+关闭对象 (进程句柄)
+.如果真 (不等于 (0, 取数组成员数 (保存指针)))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+.子程序 区域内存搜索, 逻辑型, 公开, 有搜索到才会返回真,其它情况都返回假,该功能可自定义需要搜索的区域
+.参数 进程ID, 整数型, 可空, 若空为自身进程,需要进行搜索内存的一个进程ID
+.参数 起始地址, 整数型, , 从该地址开始往下搜索内存中的值
+.参数 终止地址, 整数型, , 当搜索到该地址处时返回,终止地址必需大于起始地址
+.参数 搜索字节集, 字节集, , 搜索与本参数相同的字节集数据所在的内存地址
+.参数 保存指针, 整数型, 参考 数组, 提供一个整数型数组变量保存搜到的内存地址
+
+.局部变量 进程句柄, 整数型, , , 
+.局部变量 取保护返回, 整数型, , , 成功返回28，失败返回0
+.局部变量 虚拟保护, 虚拟保护信息, , , 28字节
+.局部变量 临时字节集, 字节集, , , 
+.局部变量 临时指针, 整数型, , , 
+
+.如果真 (等于 (0, 进程ID))
+    赋值 (进程ID, 取自进程ID ())
+.如果真结束
+赋值 (进程句柄, 用保护型打开进程 (2035711, 真, 进程ID))
+.如果真 (等于 (0, 进程句柄))
+    返回 (假)
+.如果真结束
+赋值 (取保护返回, 取虚拟保护扩展 (进程句柄, 起始地址, 虚拟保护, 28))
+.判断循环首 (并且 (不等于 (0, 取保护返回), 小于 (起始地址, 终止地址)))
+    .如果真 (并且 (等于 (虚拟保护.当前保护, 4), 等于 (虚拟保护.保留值, 4096)))
+        赋值 (临时字节集, 取空白字节集 (虚拟保护.区域长度))
+        读内存字节集 (进程句柄, 虚拟保护.区域地址, 临时字节集, 虚拟保护.区域长度, 0)
+        赋值 (临时指针, 寻找字节集 (临时字节集, 搜索字节集, 临时指针))
+        .判断循环首 (不等于 (-1, 临时指针))
+            加入成员 (保存指针, 相减 (相加 (虚拟保护.区域地址, 临时指针), 1))
+            赋值 (临时指针, 相加 (临时指针, 1))
+            赋值 (临时指针, 寻找字节集 (临时字节集, 搜索字节集, 临时指针))
+        .判断循环尾 ()
+    .如果真结束
+    赋值 (起始地址, 相加 (虚拟保护.区域地址, 虚拟保护.区域长度, 100))
+    赋值 (取保护返回, 取虚拟保护扩展 (进程句柄, 起始地址, 虚拟保护, 28))
+.判断循环尾 ()
+关闭对象 (进程句柄)
+.如果真 (不等于 (0, 取数组成员数 (保存指针)))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+.子程序 模块内存搜索, 逻辑型, 公开, 有搜索到才会返回真,其它情况都返回假,该功能只搜索指定模块内存的区域
+.参数 进程ID, 整数型, 可空, 若空为自身进程,需要进行搜索内存的一个进程ID
+.参数 模块名称, 文本型, , 模块名即是DLL文件名或EXE文件名,包括后缀名
+.参数 搜索字节集, 字节集, , 搜索与本参数相同的字节集数据所在的内存地址
+.参数 保存指针, 整数型, 参考 数组, 提供一个整数型数组变量保存搜到的内存地址
+
+.局部变量 起始地址, 整数型, , , 从该地址开始往下搜索内存中的值
+.局部变量 终止地址, 整数型, , , 当搜索到该地址处时返回,终止地址必需大于起始地址
+.局部变量 进程句柄, 整数型, , , 
+.局部变量 取保护返回, 整数型, , , 成功返回28，失败返回0
+.局部变量 虚拟保护, 虚拟保护信息, , , 28字节
+.局部变量 临时字节集, 字节集, , , 
+.局部变量 临时指针, 整数型, , , 
+
+.如果真 (等于 (0, 进程ID))
+    赋值 (进程ID, 取自进程ID ())
+.如果真结束
+赋值 (进程句柄, 用保护型打开进程 (2035711, 真, 进程ID))
+.如果真 (等于 (0, 进程句柄))
+    返回 (假)
+.如果真结束
+.如果真 (模块内存地址_ (进程ID, 模块名称, 起始地址, 终止地址))
+    赋值 (取保护返回, 取虚拟保护扩展 (进程句柄, 起始地址, 虚拟保护, 28))
+    .判断循环首 (并且 (不等于 (0, 取保护返回), 小于 (起始地址, 终止地址)))
+        .如果真 (等于 (虚拟保护.保留值, 4096)) ' 虚拟保护.当前保护 ＝ 4 且
+            赋值 (临时字节集, 取空白字节集 (虚拟保护.区域长度))
+            读内存字节集 (进程句柄, 虚拟保护.区域地址, 临时字节集, 虚拟保护.区域长度, 0)
+            赋值 (临时指针, 寻找字节集 (临时字节集, 搜索字节集, 临时指针))
+            .判断循环首 (不等于 (-1, 临时指针))
+                加入成员 (保存指针, 相减 (相加 (虚拟保护.区域地址, 临时指针), 1))
+                赋值 (临时指针, 相加 (临时指针, 1))
+                赋值 (临时指针, 寻找字节集 (临时字节集, 搜索字节集, 临时指针))
+            .判断循环尾 ()
+        .如果真结束
+        赋值 (起始地址, 相加 (虚拟保护.区域地址, 虚拟保护.区域长度, 100))
+        赋值 (取保护返回, 取虚拟保护扩展 (进程句柄, 起始地址, 虚拟保护, 28))
+    .判断循环尾 ()
+    关闭对象 (进程句柄)
+.如果真结束
+.如果真 (不等于 (0, 取数组成员数 (保存指针)))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+.子程序 指针组内存搜索, 逻辑型, 公开, 有搜索到才会返回真,其它情况都返回假,该功能只搜索指定模块内存的区域
+.参数 进程ID, 整数型, 可空, 若空为自身进程,需要进行搜索内存的一个进程ID
+.参数 内存指针数组, 整数型, 数组, 提供一组内存指针,再在这组指针处搜索符合的要求的指针
+.参数 搜索字节集, 字节集, , 搜索与本参数相同的字节集数据所在的内存地址
+.参数 保存指针, 整数型, 参考 数组, 提供一个整数型数组变量保存搜到的内存地址
+
+.局部变量 计次, 整数型, , , 
+.局部变量 长度, 整数型, , , 
+.局部变量 进程句柄, 整数型, , , 
+.局部变量 取保护返回, 整数型, , , 成功返回28，失败返回0
+.局部变量 虚拟保护, 虚拟保护信息, , , 28字节
+.局部变量 临时字节集, 字节集, , , 
+
+.如果真 (等于 (0, 进程ID))
+    赋值 (进程ID, 取自进程ID ())
+.如果真结束
+赋值 (进程句柄, 用保护型打开进程 (2035711, 真, 进程ID))
+.如果真 (等于 (0, 取数组成员数 (内存指针数组)))
+    返回 (假)
+.如果真结束
+.如果真 (等于 (0, 进程句柄))
+    返回 (假)
+.如果真结束
+赋值 (计次, 1)
+赋值 (长度, 取字节集长度 (搜索字节集))
+赋值 (取保护返回, 取虚拟保护扩展 (进程句柄, 内存指针数组 [计次], 虚拟保护, 28))
+.判断循环首 (不等于 (0, 取保护返回))
+    .如果真 (等于 (虚拟保护.保留值, 4096))
+        赋值 (临时字节集, 取空白字节集 (长度))
+        读内存字节集 (进程句柄, 内存指针数组 [计次], 临时字节集, 长度, 0)
+        .如果真 (等于 (临时字节集, 搜索字节集))
+            加入成员 (保存指针, 内存指针数组 [计次])
+        .如果真结束
+        
+    .如果真结束
+    赋值 (计次, 相加 (计次, 1))
+    .如果真 (大于 (计次, 取数组成员数 (内存指针数组)))
+        跳出循环 ()
+    .如果真结束
+    赋值 (取保护返回, 取虚拟保护扩展 (进程句柄, 内存指针数组 [计次], 虚拟保护, 28))
+.判断循环尾 ()
+关闭对象 (进程句柄)
+.如果真 (不等于 (0, 取数组成员数 (保存指针)))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+.子程序 取子程指针, 整数型, 公开, 目前该函数不支持取带有文本型参数的子程序内部指针
+.参数 子程序, 子程序指针, , 一个子程序指针型数据，例如 &子程序1
+.参数 内部指针, 逻辑型, 可空, 真为内部指针，假为外部指针，默认为外部指针
+
+.局部变量 整数, 整数型, , , 
+.局部变量 字节集, 字节集, , , 
+.局部变量 位置, 整数型, , , 
+
+.如果真 (内部指针)
+    读字节集内存 (取字节集数据 (到字节集 (子程序), #整数型), 字节集, 100)
+    .如果真 (等于 (取字节集中间 (字节集, 9, 4), { 91, 95, 94, 195 }))
+        赋值 (整数, 取字节集数据 (取字节集中间 (字节集, 5, 4), #整数型))
+        返回 (相加 (取字节集数据 (到字节集 (子程序), #整数型), 8, 整数))
+    .如果真结束
+    赋值 (位置, 寻找字节集 (字节集, { 91, 95, 94, 194 }, ))
+    .如果真 (不等于 (0, 位置))
+        赋值 (整数, 读整型内存 (相减 (相加 (取字节集数据 (到字节集 (子程序), #整数型), 位置), 5)))
+        返回 (相加 (相减 (相加 (取字节集数据 (到字节集 (子程序), #整数型), 位置), 1), 整数))
+    .如果真结束
+    
+.如果真结束
+返回 (取字节集数据 (到字节集 (子程序), #整数型))
+
+.子程序 取整型指针, 整数型, 公开, 返回一个整数型变量的内存指针
+.参数 整数型变量, 整数型, 参考, 
+
+返回 (取整型指针_ (整数型变量, 整数型变量, 0))
+
+.子程序 取文本指针, 整数型, 公开, 返回一个文本型变量的内存指针
+.参数 文本型变量, 文本型, 参考, 
+
+返回 (取文本指针_ (文本型变量, “”, 0))
+
+.子程序 取字节集指针, 整数型, 公开, 返回一个字节集型变量的内存指针
+.参数 字节集变量, 字节集, 参考, 
+
+返回 (取字节集指针_ (字节集变量, {  }, 0))
+
+.子程序 申请内存, 整数型, 公开, 测试函数，请慎用。返回申请到的内存地址指针
+.参数 申请长度, 整数型, , 如没有必要请尽少使用该函数，危险函数，会不断的增加内存占用
+.参数 初始数据, 字节集, 参考 可空, 模块还没有对应的 释放内存() 函数，使用前请三思
+
+.局部变量 内存对象句柄, 整数型, , , 
+.局部变量 内存对象指针, 整数型, , , 
+
+赋值 (内存对象句柄, 分配堆内存 (8192, 申请长度))
+.如果真 (等于 (0, 内存对象句柄))
+    返回 (0)
+.如果真结束
+赋值 (内存对象指针, 锁定内存对象 (内存对象句柄))
+.如果真 (等于 (0, 内存对象指针))
+    返回 (0)
+.如果真结束
+
+.如果 (是否为空 (初始数据))
+    内存置零 (内存对象指针, 申请长度)
+.否则
+    写字节集内存 (内存对象指针, 初始数据)
+.如果结束
+开锁全局内存块 (内存对象指针)
+返回 (内存对象指针)
+
+.程序集 APIHOOK, , , 
+
+.程序集变量 HOOK信息, APIHOOK, , "0", 
+.程序集变量 IAT信息, IATHOOK, , "0", 
+.子程序 安装APIHOOK, 整数型, 公开, 安装HOOK失败返回0，成功返回HOOK序号
+.参数 DLL名, 文本型, , 要HOOK的函数所在的DLL文件名
+.参数 原函数, 文本型, , 要HOOK的函数名
+.参数 现函数, 子程序指针, , 处理HOOK的新子程序,参数与返回值要和被HOOK的函数一致
+
+.局部变量 DLL句柄, 整数型, , , 
+.局部变量 APIHOOK, APIHOOK, , , 
+.局部变量 现函数指针, 字节集, , , 
+.局部变量 虚拟保护, 虚拟保护信息, , , 
+.局部变量 返回, 整数型, , , 
+
+赋值 (DLL句柄, 取模块句柄 (DLL名))
+赋值 (APIHOOK.函数入口, 取函数入口 (DLL句柄, 原函数))
+.如果真 (等于 (0, APIHOOK.函数入口))
+    返回 (0)
+.如果真结束
+赋值 (APIHOOK.新函数头, 取空白字节集 (8))
+赋值 (APIHOOK.原函数头, 取空白字节集 (8))
+赋值 (APIHOOK.新函数头 [1], 184)
+赋值 (APIHOOK.新函数头 [6], 255)
+赋值 (APIHOOK.新函数头 [7], 224)
+赋值 (APIHOOK.新函数头 [8], 0)
+赋值 (现函数指针, 到字节集 (现函数))
+赋值 (APIHOOK.新函数头, 字节集替换 (APIHOOK.新函数头, 2, 4, 现函数指针))
+读字节集内存 (APIHOOK.函数入口, APIHOOK.原函数头, 8)
+.如果 (写字节集内存 (APIHOOK.函数入口, APIHOOK.新函数头))
+    加入成员 (HOOK信息, APIHOOK)
+    返回 (取数组成员数 (HOOK信息))
+.否则
+    返回 (0)
+.如果结束
+返回 (0)
+
+.子程序 加载APIHOOK, 空白型, 公开, 
+.参数 HOOK序号, 整数型, , 安装APIHOOK时所返回的非0序号
+
+.局部变量 返回, 整数型, , , 
+
+.如果真 (等于 (0, HOOK序号))
+    返回 ()
+.如果真结束
+写字节集内存 (HOOK信息 [HOOK序号], 函数入口, HOOK信息 [HOOK序号], 新函数头)
+
+.子程序 恢复APIHOOK, 空白型, 公开, 
+.参数 HOOK序号, 整数型, , 安装APIHOOK时所返回的非0序号
+
+.局部变量 返回, 整数型, , , 
+
+.如果真 (等于 (0, HOOK序号))
+    返回 ()
+.如果真结束
+写字节集内存 (HOOK信息 [HOOK序号], 函数入口, HOOK信息 [HOOK序号], 原函数头)
+
+.子程序 安装IATHOOK, 整数型, 公开, 安装HOOK失败返回0，成功返回HOOK序号
+.参数 程序模块名, 文本型, 可空, 若空将HOOK到当前进程中的EXE模块的IAT中
+.参数 DLL名, 文本型, , 要HOOK的函数所在的DLL文件名
+.参数 原函数, 文本型, , 要HOOK的函数名
+.参数 现函数, 子程序指针, , 处理HOOK的新子程序,参数与返回值要和被HOOK的函数一致
+
+.局部变量 IATHOOK, IATHOOK, , , 
+.局部变量 模块句柄, 整数型, , , 
+.局部变量 IAT基址, 整数型, , , 
+.局部变量 文件名, 文本型, , , 
+.局部变量 文件名指针, 整数型, , , 
+.局部变量 模块函数表基址, 整数型, , , 
+.局部变量 模块函数表偏移, 整数型, , , 
+.局部变量 原函数入口, 整数型, , , 
+.局部变量 虚拟保护, 虚拟保护信息, , , 
+.局部变量 返回, 逻辑型, , , 
+
+赋值 (DLL名, 到大写 (DLL名))
+赋值 (IATHOOK.原指针, 取函数入口 (取模块句柄 (DLL名), 原函数))
+.如果真 (等于 (0, IATHOOK.原指针))
+    返回 (0) ' 找不到要被HOOK的函数
+.如果真结束
+赋值 (IATHOOK.新指针, 取字节集数据 (到字节集 (现函数), #整数型))
+.如果真 (等于 (0, IATHOOK.新指针))
+    返回 (0) ' 替换的现处理函数有误
+.如果真结束
+赋值 (模块句柄, 取模块句柄 (程序模块名))
+赋值 (文件名, 取空白文本 (25))
+赋值 (IAT基址, 取IAT基址 (模块句柄, 1, 1, 0))
+.如果真 (大于 (1, IAT基址))
+    返回 (0) ' 无法获取IAT表基址
+.如果真结束
+.判断循环首 (真) ' 进入模块名检测
+    复制内存整数 (文件名指针, 相加 (IAT基址, 12), 4)
+    .如果真 (等于 (0, 文件名指针))
+        返回 (0) ' 无法获取文件名所保存的内存地址
+    .如果真结束
+    复制内存文本 (文件名, 相加 (模块句柄, 文件名指针), 24)
+    .如果真 (等于 (文本比较 (文件名, DLL名, 假), 0))
+        复制内存整数 (模块函数表偏移, 相加 (IAT基址, 16), 4)
+        赋值 (模块函数表基址, 相加 (模块句柄, 模块函数表偏移))
+        .判断循环首 (真) ' 进入函数入口检测
+            复制内存整数 (原函数入口, 相加 (模块函数表基址, 4), 4)
+            .如果真 (等于 (0, 原函数入口))
+                跳出循环 () ' 如果原函数入口=0则跳出这个函数入口检测循环
+            .如果真结束
+            
+            .如果真 (不等于 (原函数入口, IATHOOK.原指针))
+                赋值 (模块函数表基址, 相加 (模块函数表基址, 16))
+                到循环尾 () ' 与要HOOK的函数指针不同跳到循环尾继续检测
+            .如果真结束
+            
+            取虚拟保护扩展 (自进程句柄, 相加 (模块函数表基址, 4), 虚拟保护, 28)
+            置虚拟保护 (虚拟保护.区域地址, 虚拟保护.区域长度, 4, 虚拟保护.当前保护)
+            赋值 (返回, 写整型内存_ (自进程句柄, 相加 (模块函数表基址, 4), IATHOOK.新指针, 4, 0))
+            置虚拟保护 (虚拟保护.区域地址, 虚拟保护.区域长度, 虚拟保护.当前保护, 虚拟保护.当前保护)
+            .如果 (返回)
+                赋值 (IATHOOK.HOOK地址, 相加 (模块函数表基址, 4))
+                加入成员 (IAT信息, IATHOOK) ' 保存IAT信息
+                返回 (取数组成员数 (IAT信息)) ' 返回IATHOOK序号
+            .否则
+                返回 (0) ' 修改IAT入口失败
+            .如果结束
+            ' 本源码来自易语言资源网(www.wodesoft.com)
+        .判断循环尾 ()
+    .如果真结束
+    赋值 (IAT基址, 相加 (IAT基址, 20)) ' 继续循环检测模块名
+.判断循环尾 ()
+返回 (0) ' 找不到与要HOOK的函数指针相同的IAT数据
+
+.子程序 恢复IATHOOK, 空白型, 公开, 
+.参数 HOOK序号, 整数型, , 安装IATHOOK时所返回的HOOK序号
+
+.局部变量 虚拟保护, 虚拟保护信息, , , 
+.局部变量 返回, 逻辑型, , , 
+
+.如果真 (或者 (等于 (0, HOOK序号), 大于 (HOOK序号, 取数组成员数 (IAT信息))))
+    返回 () ' 0序号或序号超过实现HOOK数组数返回
+.如果真结束
+取虚拟保护扩展 (自进程句柄, IAT信息 [HOOK序号], HOOK地址, 虚拟保护, 28)
+置虚拟保护 (虚拟保护.区域地址, 虚拟保护.区域长度, 4, 虚拟保护.当前保护)
+写整型内存_ (自进程句柄, IAT信息 [HOOK序号], HOOK地址, IAT信息 [HOOK序号], 原指针, 4, 0)
+置虚拟保护 (虚拟保护.区域地址, 虚拟保护.区域长度, 虚拟保护.当前保护, 虚拟保护.当前保护)
+
+.子程序 置跳转, 字节集, 公开, 改变程序的执行流程用，失败返回空字节集，成功返回被修改处的 6字节 原数据，可以用来恢复流程用
+.参数 修改地址, 整数型, , 修改代码的内存起始地址
+.参数 跳到地址, 整数型, , 要跳转到的一个入口地址
+
+.局部变量 跳转头, 字节集, , , 
+.局部变量 虚拟保护, 虚拟保护信息, , , 
+.局部变量 返回, 字节集, , , 
+
+赋值 (返回, 取空白字节集 (8))
+赋值 (跳转头, 生成跳转头_ (跳到地址))
+读字节集内存 (修改地址, 返回, 8)
+取虚拟保护扩展 (自进程句柄, 修改地址, 虚拟保护, 28)
+置虚拟保护 (虚拟保护.区域地址, 虚拟保护.区域长度, 4, 虚拟保护.当前保护)
+.如果真 (写字节集内存 (修改地址, 跳转头))
+    返回 (返回)
+.如果真结束
+返回 ({  })
+
+.子程序 调用子程序, 空白型, 公开, 执行一个子程序指针处程序
+.参数 子程序指针, 子程序指针, , 该子程序不含任何参数与返回值的，如需要参数或返回值见技术教材
+
+.局部变量 跳转头, 字节集, , , 
+
+赋值 (跳转头, 生成跳转头_ (取子程指针 (子程序指针, 假)))
+写字节集内存 (取子程指针 (&执行, 真), 跳转头)
+执行 ()
+
+.子程序 调用入口, 空白型, 公开, 执行一个入口处程序
+.参数 程序入口, 整数型, , 该入口程序不含任何参数与返回值的，如需要参数或返回值见技术教材
+
+.局部变量 跳转头, 字节集, , , 
+
+赋值 (跳转头, 生成跳转头_ (程序入口))
+写字节集内存 (取子程指针 (&执行, 真), 跳转头)
+执行 ()
+
+.子程序 执行, 空白型, , 
+返回 ()
+
+.程序集 封包拦截, , , 
+
+.程序集变量 send序号, 整数型, , , 
+.程序集变量 recv序号1, 整数型, , , 
+.程序集变量 recv序号2, 整数型, , , 
+.程序集变量 WSASend序号, 整数型, , , 
+.程序集变量 WSARecv序号, 整数型, , , 
+.程序集变量 sendto序号, 整数型, , , 
+.程序集变量 recvfrom序号1, 整数型, , , 
+.程序集变量 recvfrom序号2, 整数型, , , 
+.程序集变量 WSASendTo序号, 整数型, , , 
+.程序集变量 WSARecvFrom序号, 整数型, , , 
+.程序集变量 connect序号, 整数型, , , 
+.程序集变量 WSAConnect序号, 整数型, , , 
+.程序集变量 网络重定向, 网络重定向, , "0", 
+.子程序 安装send, 空白型, 公开, TCP封包拦截类功能
+.参数 封包处理, 子程序指针, , 该子程序有三个整型参数与一个整型返回值
+
+载入网络DLL_ ()
+.如果真 (等于 (0, send序号))
+    置跳转 (取子程指针 (&send处理_, 真), 取子程指针 (封包处理, 真))
+    赋值 (send序号, 安装APIHOOK (“WS2_32.DLL”, “send”, &send接口_))
+.如果真结束
+' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 卸载send, 空白型, 公开, 
+.如果真 (不等于 (0, send序号))
+    恢复APIHOOK (send序号)
+    赋值 (send序号, 0)
+.如果真结束
+
+
+.子程序 send接口_, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 封包指针, 整数型, , 待发送的数据在内存中的地址
+.参数 封包长度, 整数型, , 待发送的数据长度
+.参数 类型, 整数型, , 值=0
+
+.局部变量 返回, 整数型, , , 
+
+赋值 (返回, send处理_ (套接字, 封包指针, 封包长度))
+.如果真 (等于 (-1, 返回))
+    返回 (封包长度)
+.如果真结束
+.如果真 (等于 (0, 返回))
+    恢复APIHOOK (send序号)
+    赋值 (返回, send (套接字, 封包指针, 封包长度, 类型))
+    加载APIHOOK (send序号)
+    返回 (返回)
+.如果真结束
+恢复APIHOOK (send序号)
+赋值 (返回, send (套接字, 封包指针, 返回, 类型))
+加载APIHOOK (send序号)
+返回 (返回)
+
+.子程序 send处理_, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 封包指针, 整数型, , 
+.参数 封包长度, 整数型, , 
+
+返回 (0)
+
+.子程序 安装recv, 空白型, 公开, TCP封包拦截类功能
+.参数 封包处理, 子程序指针, , 该子程序有三个整型参数与一个整型返回值
+
+载入网络DLL_ ()
+.如果真 (等于 (0, recv序号1))
+    置跳转 (取子程指针 (&recv处理_, 真), 取子程指针 (封包处理, 真))
+    赋值 (recv序号1, 安装APIHOOK (“wsock32.dll”, “recv”, &recv接口_))
+.如果真结束
+
+.如果真 (等于 (0, recv序号2))
+    置跳转 (取子程指针 (&recv处理_, 真), 取子程指针 (封包处理, 真))
+    赋值 (recv序号2, 安装APIHOOK (“WS2_32.DLL”, “recv”, &recv接口_))
+.如果真结束
+
+
+.子程序 卸载recv, 空白型, 公开, 
+.如果真 (不等于 (0, recv序号1))
+    恢复APIHOOK (recv序号1)
+    赋值 (recv序号1, 0)
+.如果真结束
+.如果真 (不等于 (0, recv序号2))
+    恢复APIHOOK (recv序号2)
+    赋值 (recv序号2, 0)
+.如果真结束
+
+
+.子程序 recv接口_, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 封包指针, 整数型, , 
+.参数 缓冲长度, 整数型, , 
+.参数 类型, 整数型, , 
+
+.局部变量 封包长度, 整数型, , , 
+.局部变量 返回, 整数型, , , 
+
+恢复APIHOOK (recv序号2) ' 恢复APIHOOK (recv序号1)
+赋值 (封包长度, recv (套接字, 封包指针, 缓冲长度, 类型))
+加载APIHOOK (recv序号2) ' 加载APIHOOK (recv序号1)
+.如果真 (大于 (1, 封包长度))
+    返回 (封包长度)
+.如果真结束
+赋值 (返回, recv处理_ (套接字, 封包指针, 封包长度))
+.如果真 (等于 (-1, 返回))
+    返回 (-1)
+.如果真结束
+.如果真 (等于 (0, 返回))
+    返回 (封包长度)
+.如果真结束
+返回 (返回)
+
+.子程序 recv处理_, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 封包指针, 整数型, , 
+.参数 封包长度, 整数型, , 
+
+返回 (0)
+
+.子程序 安装WSASend, 空白型, 公开, TCP封包拦截类功能
+.参数 封包处理, 子程序指针, , 该子程序有三个整型参数与一个整型返回值
+
+载入网络DLL_ ()
+.如果真 (等于 (0, WSASend序号))
+    置跳转 (取子程指针 (&WSASend处理_, 真), 取子程指针 (封包处理, 真))
+    赋值 (WSASend序号, 安装APIHOOK (“WS2_32.DLL”, “WSASend”, &WSASend接口_))
+.如果真结束
+
+
+.子程序 卸载WSASend, 空白型, 公开, 
+.如果真 (不等于 (0, WSASend序号))
+    恢复APIHOOK (WSASend序号)
+    赋值 (WSASend序号, 0)
+.如果真结束
+
+
+.子程序 WSASend接口_, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 封包指针, 整数型, , 
+.参数 数组数, 整数型, , 
+.参数 封包长度, 整数型, , 
+.参数 标志, 整数型, , 
+.参数 结构指针, 整数型, , 
+.参数 加载子程, 整数型, , 
+
+.局部变量 返回, 整数型, , , 
+
+赋值 (返回, WSASend处理_ (套接字, 读整型内存 (相加 (封包指针, 4)), 读整型内存 (封包指针)))
+.如果真 (等于 (-1, 返回))
+    返回 (读整型内存 (封包指针))
+.如果真结束
+.如果真 (等于 (0, 返回))
+    恢复APIHOOK (WSASend序号)
+    赋值 (返回, WSASend (套接字, 封包指针, 数组数, 封包长度, 标志, 结构指针, 加载子程))
+    加载APIHOOK (WSASend序号)
+    返回 (返回)
+.如果真结束
+写整型内存 (封包指针, 返回)
+恢复APIHOOK (WSASend序号)
+赋值 (返回, WSASend (套接字, 封包指针, 数组数, 封包长度, 标志, 结构指针, 加载子程))
+加载APIHOOK (WSASend序号)
+返回 (返回)
+
+.子程序 WSASend处理_, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 封包指针, 整数型, , 
+.参数 封包长度, 整数型, , 
+
+返回 (0)
+
+.子程序 安装WSARecv, 空白型, 公开, TCP封包拦截类功能
+.参数 封包处理, 子程序指针, , 该子程序有三个整型参数与一个整型返回值
+
+载入网络DLL_ ()
+.如果真 (等于 (0, WSARecv序号))
+    置跳转 (取子程指针 (&WSARecv处理_, 真), 取子程指针 (封包处理, 真))
+    赋值 (WSARecv序号, 安装APIHOOK (“WS2_32.DLL”, “WSARecv”, &WSARecv接口_))
+.如果真结束
+
+
+.子程序 卸载WSARecv, 空白型, 公开, 
+.如果真 (不等于 (0, WSARecv序号))
+    恢复APIHOOK (WSARecv序号)
+    赋值 (WSARecv序号, 0)
+.如果真结束
+
+
+.子程序 WSARecv接口_, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 封包指针, 整数型, , 
+.参数 数组数, 整数型, , 
+.参数 收到长度, 整数型, 参考, 
+.参数 标志, 整数型, , 
+.参数 结构指针, 整数型, , 
+.参数 调用子程, 整数型, , 
+
+.局部变量 封包长度, 整数型, , , 
+.局部变量 返回, 整数型, , , 
+
+恢复APIHOOK (WSARecv序号)
+赋值 (返回, WSARecv (套接字, 封包指针, 数组数, 收到长度, 标志, 结构指针, 调用子程))
+加载APIHOOK (WSARecv序号)
+.如果真 (等于 (-1, 返回))
+    返回 (-1)
+.如果真结束
+赋值 (封包长度, WSARecv处理_ (套接字, 读整型内存 (相加 (封包指针, 4)), 收到长度))
+.如果真 (等于 (-1, 封包长度))
+    返回 (-1)
+.如果真结束
+.如果真 (等于 (0, 封包长度))
+    返回 (0)
+.如果真结束
+赋值 (收到长度, 封包长度)
+返回 (0)
+
+.子程序 WSARecv处理_, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 封包指针, 整数型, , 
+.参数 封包长度, 整数型, , 
+
+返回 (0)
+
+.子程序 安装sendto, 空白型, 公开, UDP封包拦截类功能
+.参数 封包处理, 子程序指针, , 该子程序有三个整型参数与一个整型返回值
+
+载入网络DLL_ ()
+.如果真 (等于 (0, sendto序号))
+    置跳转 (取子程指针 (&sendto处理_, 真), 取子程指针 (封包处理, 真))
+    赋值 (sendto序号, 安装APIHOOK (“WS2_32.DLL”, “sendto”, &sendto接口_))
+.如果真结束
+
+
+.子程序 卸载sendto, 空白型, 公开, 
+.如果真 (不等于 (0, sendto序号))
+    恢复APIHOOK (sendto序号)
+    赋值 (sendto序号, 0)
+.如果真结束
+
+
+.子程序 sendto接口_, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 封包指针, 整数型, , 
+.参数 封包长度, 整数型, , 
+.参数 调用标志, 整数型, , 
+.参数 目地址指针, 整数型, , 
+.参数 目地址长度, 整数型, , 
+
+.局部变量 返回, 整数型, , , 
+
+赋值 (返回, sendto处理_ (套接字, 封包指针, 封包长度))
+.如果真 (等于 (-1, 返回))
+    返回 (封包长度)
+.如果真结束
+.如果真 (等于 (0, 返回))
+    恢复APIHOOK (sendto序号)
+    赋值 (返回, sendto (套接字, 封包指针, 封包长度, 调用标志, 目地址指针, 目地址长度))
+    加载APIHOOK (sendto序号)
+    返回 (返回)
+.如果真结束
+恢复APIHOOK (sendto序号)
+赋值 (返回, sendto (套接字, 封包指针, 返回, 调用标志, 目地址指针, 目地址长度))
+加载APIHOOK (sendto序号)
+返回 (返回)
+
+.子程序 sendto处理_, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 封包指针, 整数型, , 
+.参数 封包长度, 整数型, , 
+
+返回 (0)
+
+.子程序 安装recvfrom, 空白型, 公开, UDP封包拦截类功能
+.参数 封包处理, 子程序指针, , 该子程序有三个整型参数与一个整型返回值
+
+载入网络DLL_ ()
+.如果真 (等于 (0, recvfrom序号1))
+    置跳转 (取子程指针 (&recvfrom处理_, 真), 取子程指针 (封包处理, 真))
+    赋值 (recvfrom序号1, 安装APIHOOK (“wsock32.dll”, “recvfrom”, &recvfrom接口_))
+.如果真结束
+.如果真 (等于 (0, recvfrom序号2))
+    置跳转 (取子程指针 (&recvfrom处理_, 真), 取子程指针 (封包处理, 真))
+    赋值 (recvfrom序号2, 安装APIHOOK (“WS2_32.DLL”, “recvfrom”, &recvfrom接口_))
+.如果真结束
+
+
+.子程序 卸载recvfrom, 空白型, 公开, 
+.如果真 (不等于 (0, recvfrom序号1))
+    恢复APIHOOK (recvfrom序号1)
+    赋值 (recvfrom序号1, 0)
+.如果真结束
+.如果真 (不等于 (0, recvfrom序号2))
+    恢复APIHOOK (recvfrom序号2)
+    赋值 (recvfrom序号2, 0)
+.如果真结束
+
+
+.子程序 recvfrom接口_, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 封包指针, 整数型, , 
+.参数 缓冲长度, 整数型, , 缓冲区的长度
+.参数 调用操作方式, 整数型, , 
+.参数 源地址指针, 整数型, , 
+.参数 源地址长度, 整数型, , 源地址处的长度
+
+.局部变量 长度, 整数型, , , 
+.局部变量 返回, 整数型, , , 
+
+恢复APIHOOK (recvfrom序号2) ' 恢复APIHOOK (recvfrom序号1)
+赋值 (返回, recvfrom (套接字, 封包指针, 缓冲长度, 调用操作方式, 源地址指针, 源地址长度))
+加载APIHOOK (recvfrom序号2) ' 加载APIHOOK (recvfrom序号1)
+.如果真 (等于 (-1, 返回))
+    返回 (-1)
+.如果真结束
+赋值 (长度, recvfrom处理_ (套接字, 封包指针, 返回))
+.如果真 (等于 (-1, 长度))
+    返回 (-1)
+.如果真结束
+.如果真 (等于 (0, 长度))
+    返回 (返回)
+.如果真结束
+返回 (长度)
+
+.子程序 recvfrom处理_, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 封包指针, 整数型, , 
+.参数 封包长度, 整数型, , 
+
+返回 (0)
+
+.子程序 安装WSASendTo, 空白型, 公开, UDP封包拦截类功能
+.参数 封包处理, 子程序指针, , 该子程序有三个整型参数与一个整型返回值
+
+载入网络DLL_ ()
+.如果真 (等于 (0, WSASendTo序号))
+    置跳转 (取子程指针 (&WSASendTo处理_, 真), 取子程指针 (封包处理, 真))
+    赋值 (WSASendTo序号, 安装APIHOOK (“WS2_32.DLL”, “WSASendTo”, &WSASendTo接口_))
+.如果真结束
+
+
+.子程序 卸载WSASendTo, 空白型, 公开, 
+.如果真 (不等于 (0, WSASendTo序号))
+    恢复APIHOOK (WSASendTo序号)
+    赋值 (WSASendTo序号, 0)
+.如果真结束
+
+
+.子程序 WSASendTo接口_, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 WSA结构, 整数型, , 
+.参数 WSA结构数, 整数型, , 
+.参数 发送封包长度, 整数型, , 
+.参数 标志位, 整数型, , 
+.参数 目地址指针, 整数型, , 
+.参数 目地址长度, 整数型, , 
+.参数 WSAOVERLAPPED结构的指针, 整数型, , 
+.参数 发送后调用子程, 整数型, , 
+
+.局部变量 返回, 整数型, , , 
+
+赋值 (返回, WSASendTo处理_ (套接字, WSA结构, WSA结构))
+.判断开始 (等于 (-1, 返回))
+    返回 (-1)
+.判断 (等于 (0, 返回))
+    返回 (WSASendTo (套接字, WSA结构, WSA结构数, 发送封包长度, 标志位, 目地址指针, 目地址长度, WSAOVERLAPPED结构的指针, 发送后调用子程))
+.默认
+    赋值 (WSA结构, 返回)
+    返回 (WSASendTo (套接字, WSA结构, WSA结构数, 发送封包长度, 标志位, 目地址指针, 目地址长度, WSAOVERLAPPED结构的指针, 发送后调用子程))
+.判断结束
+
+
+.子程序 WSASendTo处理_, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 封包指针, 整数型, , 
+.参数 封包长度, 整数型, , 
+
+返回 (0)
+
+.子程序 安装WSARecvFrom, 空白型, 公开, UDP封包拦截类功能
+.参数 封包处理, 子程序指针, , 该子程序有三个整型参数与一个整型返回值
+
+载入网络DLL_ ()
+.如果真 (等于 (0, WSARecvFrom序号))
+    置跳转 (取子程指针 (&WSARecvFrom处理_, 真), 取子程指针 (封包处理, 真))
+    赋值 (WSASendTo序号, 安装APIHOOK (“WS2_32.DLL”, “WSARecvFrom”, &WSARecvFrom接口_))
+.如果真结束
+
+
+.子程序 卸载WSARecvFrom, 空白型, 公开, 
+.如果真 (不等于 (0, WSARecvFrom序号))
+    恢复APIHOOK (WSARecvFrom序号)
+    赋值 (WSARecvFrom序号, 0)
+.如果真结束
+
+
+.子程序 WSARecvFrom接口_, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 WSA结构, 整数型, , 
+.参数 WSA结构数, 整数型, , 
+.参数 实收长度, 整数型, 参考, 
+.参数 标志位, 整数型, , 
+.参数 源地址指针, 整数型, , 
+.参数 源地址长度, 整数型, , 
+.参数 子程结构指针, 整数型, , 
+.参数 调用子程, 整数型, , 
+
+.局部变量 封包长度, 整数型, , , 
+.局部变量 返回, 整数型, , , 
+
+赋值 (返回, WSARecvFrom (套接字, WSA结构, WSA结构数, 实收长度, 标志位, 源地址指针, 源地址长度, 子程结构指针, 调用子程))
+.如果真 (等于 (-1, 返回))
+    返回 (-1)
+.如果真结束
+赋值 (封包长度, WSARecvFrom处理_ (套接字, WSA结构, 实收长度))
+.判断开始 (等于 (-1, 封包长度))
+    返回 (-1)
+.判断 (等于 (0, 封包长度))
+    返回 (返回)
+.默认
+    赋值 (实收长度, 封包长度)
+    返回 (返回)
+.判断结束
+
+
+.子程序 WSARecvFrom处理_, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 封包指针, 整数型, , 
+.参数 封包长度, 整数型, , 
+
+返回 (0)
+
+.子程序 安装网络重定向, 空白型, 公开, 设置多组欲拦截的网络连接,且改为其连接
+.参数 原IP地址, 文本型, 可空, 要截获的连接IP,可选其一
+.参数 原连接端口, 短整数型, 可空, 要截获的连接端口,可选其一
+.参数 新IP地址, 文本型, , 重定向连接到一个新的IP地址
+.参数 新连接端口, 短整数型, 可空, 得定向连接到一个新的端口
+
+.局部变量 采集, 网络重定向, , , 
+
+载入网络DLL_ ()
+.如果真 (等于 (假, 是否为空 (原IP地址)))
+    赋值 (采集.原IP, 文本IP到整型_ (原IP地址))
+.如果真结束
+.如果真 (等于 (假, 是否为空 (原连接端口)))
+    赋值 (采集.原端口, 原连接端口)
+.如果真结束
+.如果真 (等于 (假, 是否为空 (新连接端口)))
+    赋值 (采集.新端口, 新连接端口)
+.如果真结束
+赋值 (采集.新IP, 文本IP到整型_ (新IP地址))
+加入成员 (网络重定向, 采集)
+.如果真 (等于 (0, connect序号))
+    赋值 (connect序号, 安装APIHOOK (“ws2_32.dll”, “connect”, &connect接口))
+.如果真结束
+.如果真 (等于 (0, WSAConnect序号))
+    赋值 (WSAConnect序号, 安装APIHOOK (“ws2_32.dll”, “WSAConnect”, &WSAConnect接口))
+.如果真结束
+
+
+.子程序 卸截网络重定向, 空白型, 公开, 卸截网络重定向功能
+.如果真 (不等于 (0, connect序号))
+    恢复APIHOOK (connect序号)
+    赋值 (connect序号, 0)
+.如果真结束
+.如果真 (不等于 (0, WSAConnect序号))
+    恢复APIHOOK (WSAConnect序号)
+    赋值 (WSAConnect序号, 0)
+.如果真结束
+清除数组 (网络重定向)
+
+.子程序 connect接口, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 name, 整数型, , 
+.参数 namelen, 整数型, , 16
+
+.局部变量 字节集, 字节集, , , 
+.局部变量 端口, 短整数型, , , 
+.局部变量 IP, 整数型, , , 
+.局部变量 计次, 整数型, , , 
+.局部变量 返回, 整数型, , , 
+
+赋值 (字节集, 指针到字节集 (name, 16))
+赋值 (端口, 相加 (相乘 (字节集 [3], 256), 字节集 [4]))
+赋值 (IP, 取字节集数据 (取字节集中间 (字节集, 5, 4), #整数型))
+.如果真 (小于 (0, 取数组成员数 (网络重定向)))
+    赋值 (计次, 1)
+    .判断循环首 (小于或等于 (计次, 取数组成员数 (网络重定向)))
+        .判断开始 (等于 (IP, 网络重定向 [计次], 原IP))
+            .如果真 (不等于 (0, 网络重定向 [计次], 原端口))
+                .如果真 (不等于 (端口, 网络重定向 [计次], 原端口))
+                    赋值 (计次, 相加 (计次, 1))
+                    到循环尾 ()
+                .如果真结束
+                
+            .如果真结束
+            .如果真 (不等于 (0, 网络重定向 [计次], 新端口))
+                赋值 (字节集 [3], 整除 (网络重定向 [计次], 新端口, 256))
+                赋值 (字节集 [4], 求余数 (网络重定向 [计次], 新端口, 256))
+            .如果真结束
+            赋值 (字节集, 字节集替换 (字节集, 5, 4, 到字节集 (网络重定向 [计次], 新IP)))
+             ' 信息框 (字节集到十进制 (字节集))
+            跳出循环 ()
+        .判断 (等于 (端口, 网络重定向 [计次], 原端口))
+            .如果真 (不等于 (0, 网络重定向 [计次], 新端口))
+                赋值 (字节集 [3], 整除 (网络重定向 [计次], 新端口, 256))
+                赋值 (字节集 [4], 求余数 (网络重定向 [计次], 新端口, 256))
+            .如果真结束
+            赋值 (字节集, 字节集替换 (字节集, 5, 4, 到字节集 (网络重定向 [计次], 新IP)))
+             ' 信息框 (字节集到十进制 (字节集))
+            跳出循环 ()
+        .默认
+            
+        .判断结束
+        赋值 (计次, 相加 (计次, 1))
+    .判断循环尾 ()
+.如果真结束
+恢复APIHOOK (connect序号)
+赋值 (返回, connect (套接字, 字节集, namelen))
+加载APIHOOK (connect序号)
+返回 (返回)
+
+.子程序 WSAConnect接口, 整数型, , 
+.参数 套接字, 整数型, , 
+.参数 name, 整数型, , 
+.参数 namelen, 整数型, , 
+.参数 lpCallerData, 整数型, , 指向用户数据的指针
+.参数 lpCalleeData, 整数型, , 指向用户数据的指针
+.参数 lpSQOS, 整数型, , 指向套接口s流描述的指针
+.参数 lpGQOS, 整数型, , 指向套接口组流描述的指针
+
+.局部变量 字节集, 字节集, , , 
+.局部变量 端口, 短整数型, , , 
+.局部变量 IP, 整数型, , , 
+.局部变量 计次, 整数型, , , 
+.局部变量 返回, 整数型, , , 
+
+赋值 (字节集, 指针到字节集 (name, 16))
+赋值 (端口, 相加 (相乘 (字节集 [3], 256), 字节集 [4]))
+赋值 (IP, 取字节集数据 (取字节集中间 (字节集, 5, 4), #整数型))
+ ' 信息框 (指针到文本 (整型IP到文本_ (IP)) ＋ #换行符 ＋ 到文本 (端口), 0, )
+.如果真 (小于 (0, 取数组成员数 (网络重定向)))
+    赋值 (计次, 1)
+    .判断循环首 (小于或等于 (计次, 取数组成员数 (网络重定向)))
+        .如果真 (等于 (IP, 网络重定向 [计次], 原IP))
+            .如果真 (不等于 (0, 网络重定向 [计次], 原端口))
+                .如果真 (不等于 (端口, 网络重定向 [计次], 原端口))
+                    赋值 (计次, 相加 (计次, 1))
+                    到循环尾 ()
+                .如果真结束
+                
+            .如果真结束
+            .如果真 (不等于 (0, 网络重定向 [计次], 新端口))
+                赋值 (字节集 [3], 整除 (网络重定向 [计次], 新端口, 256))
+                赋值 (字节集 [4], 求余数 (网络重定向 [计次], 新端口, 256))
+            .如果真结束
+            赋值 (字节集, 字节集替换 (字节集, 5, 4, 到字节集 (网络重定向 [计次], 新IP)))
+             ' 信息框 (字节集到十进制 (字节集))
+            跳出循环 ()
+        .如果真结束
+        .如果真 (等于 (端口, 网络重定向 [计次], 原端口))
+            .如果真 (不等于 (0, 网络重定向 [计次], 新端口))
+                赋值 (字节集 [3], 整除 (网络重定向 [计次], 新端口, 256))
+                赋值 (字节集 [4], 求余数 (网络重定向 [计次], 新端口, 256))
+            .如果真结束
+            赋值 (字节集, 字节集替换 (字节集, 5, 4, 到字节集 (网络重定向 [计次], 新IP)))
+             ' 信息框 (字节集到十进制 (字节集))
+            跳出循环 ()
+        .如果真结束
+        赋值 (计次, 相加 (计次, 1))
+    .判断循环尾 ()
+.如果真结束
+恢复APIHOOK (WSAConnect序号)
+赋值 (返回, WSAConnect (套接字, 字节集, namelen, lpCallerData, lpCalleeData, lpSQOS, lpGQOS))
+加载APIHOOK (WSAConnect序号)
+返回 (返回)
+
+.子程序 取网络连接, 文本型, 公开, 根据一个网络套接字取出指定方的IP与端口,成功 ip:端口 格式文本
+.参数 套接字, 整数型, , 一个网络套接字，只支持TCP的套接字
+.参数 取远程, 逻辑型, , 真＝取远程IP与端口，假＝取本机IP与端口
+.参数 IP地址, 文本型, 参考 可空, 取出的连接IP保存在这个变量里
+.参数 端口, 整数型, 参考 可空, 取出的连接端口保存在这个变量里
+
+.局部变量 字节集, 字节集, , , 
+
+赋值 (字节集, 取空白字节集 (16))
+.如果真 (取远程)
+    .如果真 (等于 (-1, 对方网络名 (套接字, 字节集, 16)))
+        返回 (“”)
+    .如果真结束
+    赋值 (端口, 相加 (相乘 (字节集 [3], 256), 字节集 [4]))
+    赋值 (IP地址, 相加 (到文本 (字节集 [5]), “.”, 到文本 (字节集 [6]), “.”, 到文本 (字节集 [7]), “.”, 到文本 (字节集 [8])))
+    返回 (相加 (IP地址, “:”, 到文本 (端口)))
+.如果真结束
+
+.如果真 (等于 (-1, 当前网络名 (套接字, 字节集, 16)))
+    返回 (“”)
+.如果真结束
+赋值 (端口, 相加 (相乘 (字节集 [3], 256), 字节集 [4]))
+赋值 (IP地址, 相加 (到文本 (字节集 [5]), “.”, 到文本 (字节集 [6]), “.”, 到文本 (字节集 [7]), “.”, 到文本 (字节集 [8])))
+返回 (相加 (IP地址, “:”, 到文本 (端口)))
+
+.子程序 网络是否连接, 逻辑型, 公开, 如果当前机算机已连接网络则返回真，否则返回假
+返回 (网络是否连接_ (0, 0))
+
+.程序集 进程线程, , , 
+
+.子程序 创建进程, 整数型, 公开, 成功返回线程句柄,可以使用开始线程,暂停线程进行控制,失败返回0
+.参数 执行程序, 文本型, , 一个可执行程序的全路径文件名
+.参数 启动参数, 文本型, 可空, 程序启动参数
+.参数 运行目录, 文本型, 可空, 设置新进程以该目录为运行目录
+.参数 窗口隐藏, 逻辑型, 可空, 默认为显示窗口，真＝隐藏窗口，假＝显示窗口
+.参数 自动挂起, 逻辑型, 可空, 默认为运行进程，真＝挂起进程，假＝运行进程
+.参数 钩子处理DLL, 文本型, 可空, 挂起进程=假 时才会有效，在创建该进程时同时再插入一个线程钩子DLL
+.参数 进程ID, 整数型, 参考 可空, 可提供一个变量用来保存新进程的ID,可供搜索内存或终止进程用
+
+.局部变量 启动信息, 启动信息, , , 
+.局部变量 进程线程信息, 进程线程信息, , , 
+.局部变量 返回, 逻辑型, , , 
+
+取进程启动信息 (启动信息)
+赋值 (启动信息.隐藏窗口, 窗口隐藏)
+.如果 (自动挂起)
+    赋值 (返回, 创建进程_ (执行程序, 启动参数, 0, 0, 假, 4, 0, 运行目录, 启动信息, 进程线程信息))
+    .如果真 (返回)
+        .如果真 (等于 (假, 是否为空 (进程ID)))
+            赋值 (进程ID, 进程线程信息.进程ID)
+        .如果真结束
+        返回 (进程线程信息.线程句柄)
+    .如果真结束
+    
+.否则
+    赋值 (返回, 创建进程_ (执行程序, 启动参数, 0, 0, 假, 0, 0, 运行目录, 启动信息, 进程线程信息))
+    .如果真 (返回)
+        .如果真 (等于 (假, 是否为空 (进程ID)))
+            赋值 (进程ID, 进程线程信息.进程ID)
+        .如果真结束
+        .如果真 (不等于 (钩子处理DLL, “”))
+            延时 (200)
+            线程钩子 (进程线程信息.线程ID, 钩子处理DLL)
+        .如果真结束
+        返回 (进程线程信息.线程句柄)
+    .如果真结束
+    
+.如果结束
+返回 (0)
+
+.子程序 取窗口进程ID, 整数型, 公开, 返回指定进程的ID号，如果参数一与参数二为空返回自身进程ID
+.参数 窗口句柄, 整数型, 可空, 一个程序的主窗口句柄
+
+.局部变量 窗口进程ID, 整数型, , , 
+
+.判断开始 (不等于 (0, 窗口句柄))
+    取窗口进程 (窗口句柄, 窗口进程ID) ' 以窗口句柄得到该窗口所在的进程ID号
+    返回 (窗口进程ID)
+.默认
+    返回 (取自进程ID ()) ' 自身进程ID
+.判断结束
+
+
+.子程序 取程序进程ID, 整数型, 公开, 成功返回进程ID，失败返回 0
+.参数 起始进程ID, 整数型, 可空, 从此ID开始往下查找，若空将从第一个ID开始往下查找
+.参数 程序名, 文本型, 可空, 程序文件名(如：淡淡网络.exe)，若空为自进程
+
+.局部变量 ID, 整数型, , "0", 
+.局部变量 文件, 文本型, , "0", 
+.局部变量 计次, 整数型, , , 
+.局部变量 开关, 逻辑型, , , 
+
+.如果真 (是否为空 (程序名))
+    返回 (取自进程ID ())
+.如果真结束
+赋值 (程序名, 到小写 (程序名))
+枚举进程 (ID, 文件)
+赋值 (计次, 1)
+.判断循环首 (小于或等于 (计次, 取数组成员数 (ID)))
+    .如果真 (不等于 (倒找文本 (文件 [计次], “\”, , 假), -1))
+        赋值 (文件 [计次], 取文本右边 (文件 [计次], 相减 (取文本长度 (文件 [计次]), 倒找文本 (文件 [计次], “\”, , 假))))
+    .如果真结束
+    赋值 (文件 [计次], 到小写 (文件 [计次]))
+    .如果真 (等于 (程序名, 文件 [计次])) ' 检测该进程ID对应的程序名
+        .如果真 (等于 (0, 起始进程ID))
+            返回 (ID [计次]) ' 返回指定的程序名所对应的进程ID
+        .如果真结束
+        
+        .如果真 (等于 (起始进程ID, ID [计次]))
+            赋值 (起始进程ID, 0)
+        .如果真结束
+        
+    .如果真结束
+    赋值 (计次, 相加 (计次, 1))
+.判断循环尾 ()
+返回 (0) ' 查无与指定程序名相应的进程ID，返回 0
+
+.子程序 枚举进程, 逻辑型, 公开, 成功返回1，失败返回0
+.参数 进程ID, 整数型, 参考 数组, 保存进程ID
+.参数 程序名, 文本型, 参考 数组, 保存执行程序名
+
+.局部变量 进程列表, 进程信息, , , 
+.局部变量 进程快照句柄, 整数型, , , 
+.局部变量 进程信息指针, 整数型, , , 
+.局部变量 进程文件名, 文本型, , , 
+
+赋值 (进程快照句柄, 创建系统快照 (15, 0))
+.如果真 (等于 (0, 进程快照句柄))
+    返回 (假)
+.如果真结束
+赋值 (进程列表.数据类型长度, 296)
+赋值 (进程信息指针, 取进程信息 (进程快照句柄, 进程列表))
+.判断循环首 (不等于 (进程信息指针, 0))
+    赋值 (进程文件名, 到文本 (进程列表.进程文件名))
+    .如果真 (并且 (不等于 (进程文件名, “”), 不等于 (进程列表.进程ID, 0)))
+        加入成员 (进程ID, 进程列表.进程ID)
+        加入成员 (程序名, 到文本 (进程列表.进程文件名))
+    .如果真结束
+    赋值 (进程信息指针, 取下个进程信息 (进程快照句柄, 进程列表))
+.判断循环尾 ()
+关闭系统快照 (进程快照句柄)
+返回 (真)
+
+.子程序 打开进程, 整数型, 公开, 返回指定进程的一个可读写权限的进程句柄,该返回值可赋于内存操作时用
+.参数 进程ID, 整数型, 可空, 要打开的一个进程ID，若为空则打开自身进程
+
+.如果真 (等于 (0, 进程ID))
+    赋值 (进程ID, 取自进程ID ())
+.如果真结束
+返回 (用保护型打开进程 (2035711, 真, 进程ID))
+
+.子程序 枚举线程, 整数型, 公开, 失败返回-1，成功返回线程数
+.参数 进程ID, 整数型, 可空, 
+.参数 线程ID, 整数型, 参考 数组, 
+
+.局部变量 线程结构, 线程结构, , , 
+.局部变量 快照句柄, 整数型, , , 
+.局部变量 枚举结果, 逻辑型, , , 
+
+.如果真 (等于 (0, 进程ID))
+    赋值 (进程ID, 取自进程ID ())
+.如果真结束
+数组清零 (线程ID)
+赋值 (快照句柄, 创建系统快照 (4, 进程ID))
+赋值 (线程结构.长度, 28)
+赋值 (枚举结果, 取线程信息 (快照句柄, 线程结构))
+.判断循环首 (枚举结果)
+    .如果真 (等于 (线程结构.进程ID, 进程ID))
+        加入成员 (线程ID, 线程结构.线程ID)
+    .如果真结束
+    赋值 (枚举结果, 取下个线程信息 (快照句柄, 线程结构))
+.判断循环尾 ()
+关闭系统快照 (快照句柄)
+返回 (取数组成员数 (线程ID))
+
+.子程序 提升进程权限, 逻辑型, 公开, 成功返回真，把一个进程的权限提升到调试级权限
+.参数 进程ID, 整数型, 可空, 欲提升权限的进程ID，若空为自进程，可以协助跨进程内存读写搜索时使用
+
+.局部变量 进程句柄, 整数型, , , 
+.局部变量 令牌句柄, 整数型, , , 
+.局部变量 destLuid, LUID, , , 
+.局部变量 进程权限, 进程权限, , , 
+.局部变量 返回, 逻辑型, , , 
+
+.如果真 (等于 (0, 进程ID))
+    赋值 (进程ID, 取自进程ID ())
+.如果真结束
+赋值 (进程句柄, 用保护型打开进程 (2035711, 真, 进程ID))
+打开令牌对象 (进程句柄, 983551, 令牌句柄)
+取权限令牌 (0, “SeDebugPrivilege”, destLuid)
+赋值 (进程权限.PrivilegeCount, 1)
+赋值 (进程权限.Attributes, 2)
+赋值 (进程权限.LowPart, destLuid.LowPart)
+赋值 (进程权限.HighPart, destLuid.HighPart)
+赋值 (返回, 置进程权限 (令牌句柄, 假, 进程权限, 0, 0, 0))
+关闭对象 (进程句柄)
+返回 (返回)
+
+.子程序 终止进程, 整数型, 公开, 成功返回非0,如果目标程序有窗口句柄的话建议使用 结束程序
+.参数 进程ID, 整数型, , 结束一个进程的运行
+
+.局部变量 进程句柄, 整数型, , , 
+
+赋值 (进程句柄, 用保护型打开进程 (2035711, 真, 进程ID))
+返回 (结束进程 (进程句柄, 0))
+
+.子程序 创建线程, 整数型, 公开, 成功返回线程句柄，失败返回0，若对多线程不是很了解的话，请慎用
+.参数 子程序, 子程序指针, , 将把该子程序以多线程方式启动
+.参数 子程参数一, 整数型, 可空, 可以给多线程创建的子程序传递一个整数值参数
+.参数 挂起线程, 逻辑型, 可空, 若空参数为马上执行，若参数=真则创建一个被挂起的线程
+
+.如果 (挂起线程)
+    返回 (创建线程_ (0, 0, 子程序, 子程参数一, 4, 0))
+.否则
+    返回 (创建线程_ (0, 0, 子程序, 子程参数一, 0, 0))
+.如果结束
+
+
+.子程序 终止线程, 空白型, 公开, 
+.参数 线程标识, 整数型, , 
+
+中止线程_ (线程标识, 0)
+
+.子程序 创建定时器, 整数型, 公开, 返回成功创建定时器的标志
+.参数 窗口句柄, 整数型, 可空, 如果为空则为系统级定时器
+.参数 定时器标志, 整数型, , 除 0 之外任何整数型数值都可以
+.参数 时钟周期, 整数型, , 以毫秒计 1秒=1000毫秒
+.参数 定时器事件处理, 子程序指针, , 定时器触发事件
+
+返回 (创建定时器_ (窗口句柄, 定时器标志, 时钟周期, 定时器事件处理))
+
+.子程序 销毁定时器, 空白型, 公开, 销毁一个前期创建的定时器事件，成功返回 真
+.参数 窗口句柄, 整数型, 可空, 如果为空则为系统级定时器
+.参数 定时器标志, 整数型, , 传入创建定时器时的返回值
+
+销毁定时器_ (窗口句柄, 定时器标志)
+
+.子程序 枚举模块, 整数型, 公开, 返回枚举到的模块数,失败返回0,枚举一个进程内所有已加载的模块句柄与文件名
+.参数 进程ID, 整数型, , 指定一个进程ID
+.参数 模块句柄, 整数型, 参考 数组, 保存进程内所有的模块句柄
+.参数 模块文件, 文本型, 参考 数组, 保存进程内所有的模块文件名
+
+.局部变量 模块快照句柄, 整数型, , , 
+.局部变量 模块信息指针, 整数型, , , 
+.局部变量 模块信息, 模块信息, , , 
+
+赋值 (模块快照句柄, 创建系统快照 (8, 进程ID))
+.如果真 (等于 (模块快照句柄, -1))
+    返回 (0)
+.如果真结束
+赋值 (模块信息.占用字节, 1024)
+赋值 (模块信息指针, 取模块信息 (模块快照句柄, 模块信息))
+.判断循环首 (不等于 (0, 模块信息指针))
+    加入成员 (模块句柄, 模块信息.模块句柄)
+    加入成员 (模块文件, 到文本 (模块信息.模块名称))
+    赋值 (模块信息指针, 取下个模块信息 (模块快照句柄, 模块信息))
+.判断循环尾 ()
+关闭系统快照 (模块快照句柄)
+返回 (取数组成员数 (模块句柄))
+
+.子程序 取模块路径, 文本型, 公开, 返回指定模块的全路径，如返回　"C:\WINDOWS\system32"
+.参数 进程ID, 整数型, 可空, 取指定进程空间内的模块，若空则取当前进程空间内的模块
+.参数 文件名, 文本型, 可空, 取指定文件模块的全路径，若空则取该进程内的主模块EXE全路径
+
+.局部变量 模块快照句柄, 整数型, , , 
+.局部变量 模块信息指针, 整数型, , , 
+.局部变量 程序名, 文本型, , , 
+.局部变量 模块信息, 模块信息, , , 
+.局部变量 路径, 文本型, , , 
+
+.如果真 (等于 (0, 进程ID))
+    赋值 (进程ID, 取自进程ID ())
+.如果真结束
+赋值 (模块快照句柄, 创建系统快照 (8, 进程ID))
+.如果真 (等于 (模块快照句柄, -1))
+    返回 (“”)
+.如果真结束
+.如果真 (等于 (“”, 文件名))
+    赋值 (文件名, 取执行文件名 ())
+.如果真结束
+赋值 (文件名, 到大写 (文件名))
+赋值 (模块信息.占用字节, 1024)
+赋值 (模块信息指针, 取模块信息 (模块快照句柄, 模块信息))
+.判断循环首 (不等于 (0, 模块信息指针))
+    赋值 (程序名, 到大写 (到文本 (模块信息.模块名称)))
+    .如果真 (等于 (文件名, 程序名))
+        关闭系统快照 (模块快照句柄)
+        赋值 (路径, 到文本 (模块信息.模块路径))
+        赋值 (路径, 取文本左边 (路径, 相减 (取文本长度 (路径), 取文本长度 (文件名), 1)))
+        返回 (路径)
+    .如果真结束
+    赋值 (模块信息指针, 取下个模块信息 (模块快照句柄, 模块信息))
+.判断循环尾 ()
+关闭系统快照 (模块快照句柄)
+返回 (“”)
+
+.程序集 窗体控件, , , 
+
+.程序集变量 窗口吸附, 窗口吸附结构, , , 
+.子程序 查找窗口, 整数型, 公开, 成功返回查找到的窗口或控件的句柄，失败返回 0 
+.参数 父句柄, 整数型, 可空, 父窗口句柄，若为空将以屏幕为父句柄
+.参数 起始句柄, 整数型, 可空, 以该句柄开始往下查找，若空以父句柄起，若为-1查找下一个
+.参数 类名, 文本型, 可空, 以窗口或控件的类名进行查找，可组合标题
+.参数 标题, 文本型, 可空, 以窗口或控件的标题或内容查找，可组合类名
+.参数 Z序列, 整数型, 可空, 当前版本暂不支持该功能方式查找
+
+.局部变量 句柄, 整数型, 静态, , 
+
+.如果真 (等于 (-1, 起始句柄))
+    赋值 (句柄, 寻找子窗口 (父句柄, 句柄, 类名, 标题))
+    返回 (句柄)
+.如果真结束
+赋值 (句柄, 寻找子窗口 (父句柄, 起始句柄, 类名, 标题))
+返回 (句柄)
+
+.子程序 取窗口句柄, 整数型, 公开, 返回窗口句柄，若参数一与参数二为空将返回前台激活的窗口句柄
+.参数 类名, 文本型, 可空, 以类名返回窗口句柄，可以组合标题使用
+.参数 窗口标题, 文本型, 可空, 以窗口标题名返回窗口句柄，可以组合类名使用
+
+.如果 (并且 (等于 (“”, 窗口标题), 等于 (“”, 类名)))
+    返回 (取前台窗口句柄 ())
+.否则
+    返回 (取特定窗口句柄 (类名, 窗口标题))
+.如果结束
+
+
+.子程序 取坐标窗口, 整数型, 公开, 返回指定坐标处的控件句柄
+.参数 窗口句柄, 整数型, 可空, 提供本参数,可取禁止状态的控件句柄,横纵坐标在窗口外将返回0
+.参数 横坐标, 整数型, , 指定横坐标，若有提供参数一,则相对于参数一的窗口
+.参数 纵坐标, 整数型, , 指定纵坐标，若有提供参数一,则相对于参数一的窗口
+
+.局部变量 坐标, 坐标, , , 
+
+.如果 (等于 (0, 窗口句柄))
+    返回 (取坐标窗口句柄 (横坐标, 纵坐标))
+.否则
+    返回 (取坐标窗口_ (窗口句柄, 横坐标, 纵坐标, 1))
+.如果结束
+
+
+.子程序 取进程主窗口, 整数型, 公开, 返回指定进程的顶级窗口句柄
+.参数 进程ID, 整数型, , 进程ID
+
+.局部变量 句柄, 整数型, , , 
+
+.判断循环首 (真)
+    赋值 (句柄, 查找窗口 (0, 句柄, , , ))
+    .如果真 (等于 (0, 句柄))
+        跳出循环 ()
+    .如果真结束
+    
+    .如果真 (等于 (进程ID, 取窗口进程ID (句柄)))
+        .判断循环首 (真)
+            赋值 (进程ID, 取父窗口 (句柄))
+            .如果真 (等于 (0, 进程ID))
+                返回 (句柄)
+            .如果真结束
+            赋值 (句柄, 进程ID)
+        .判断循环尾 ()
+    .如果真结束
+    
+.判断循环尾 ()
+返回 (0)
+
+.子程序 取焦点控件, 整数型, 公开, 获取当前正拥用输入焦点的控件句柄,失败返回0
+.参数 窗口句柄, 整数型, 可空, 提供一个窗口句柄,将只取该窗口同一进程内的焦点控件
+.参数 包含自窗, 逻辑型, 可空, 默认为排除自身窗口进程,真＝排除自身,假=包含自身
+
+.局部变量 焦点控件, 整数型, , , 
+.局部变量 自线程ID, 整数型, , , 
+.局部变量 他线程ID, 整数型, , , 
+.局部变量 当前线程, 空白型, , , 
+
+.如果真 (等于 (0, 窗口句柄))
+    赋值 (窗口句柄, 取窗口句柄 ())
+.如果真结束
+赋值 (自线程ID, 取自线程ID_ ())
+赋值 (他线程ID, 取窗口进程 (窗口句柄, 0))
+赋值 (当前线程, 取窗口进程 (取窗口句柄 (), 0))
+.判断开始 (包含自窗)
+    连接输入共享 (他线程ID, 自线程ID, 真)
+.判断 (等于 (自线程ID, 当前线程))
+    返回 (0)
+.默认
+    连接输入共享 (他线程ID, 自线程ID, 真)
+.判断结束
+赋值 (焦点控件, 取焦点控件_ ())
+ ' 连接输入共享_ (他线程ID, 自线程ID, 假)
+返回 (焦点控件)
+
+.子程序 结束窗口程序, 空白型, 公开, 成功返回真，失败返回假
+.参数 窗口句柄, 整数型, , 某个进程所拥有的窗口或其它控件的句柄
+
+发送系统消息 (窗口句柄, 18, 0, 0)
+ ' 2＝窗口销毁　　16＝窗口销毁　17＝结束对话框　18＝结束程序　3＝移动窗口　5＝改变大小　6＝激活窗口　7＝获取焦点　8＝失去焦点
+
+.子程序 取窗口类名, 文本型, 公开, 返回一个窗口的标题或控件的类名
+.参数 窗口句柄, 整数型, , 欲取其标题或内容的窗口或控件的句柄
+
+.局部变量 类名, 文本型, , , 
+
+赋值 (类名, 取空白文本 (255))
+取类名 (窗口句柄, 类名, 254)
+返回 (类名)
+
+.子程序 取窗口标题, 文本型, 公开, 返回一个窗口的标题或控件的内容
+.参数 窗口句柄, 整数型, , 欲取其标题或内容的窗口或控件的句柄
+
+.局部变量 标题, 文本型, , , 
+
+赋值 (标题, 取空白文本 (取标题长度 (窗口句柄)))
+取标题 (窗口句柄, 标题, 相加 (取标题长度 (窗口句柄), 1))
+返回 (标题)
+
+.子程序 取控件内容, 文本型, 公开, 返回一个拥有文本内容的控件中的内容
+.参数 控件句柄, 整数型, , 控件句柄
+
+.局部变量 文本, 文本型, , , 
+.局部变量 长度, 整数型, , , 
+
+赋值 (长度, 发送消息 (控件句柄, 14, 0, 0))
+赋值 (文本, 取空白文本 (相加 (长度, 2)))
+取控件内容_ (控件句柄, 13, 相加 (长度, 1), 文本)
+返回 (文本)
+
+.子程序 置控件内容, 空白型, 公开, 修改一个据有EDIT属性的控件内容
+.参数 控件句柄, 整数型, , 
+.参数 内容文本, 文本型, 参考, 
+
+发送消息 (控件句柄, 177, 0, -1)
+发送文本消息 (控件句柄, 194, 1, 内容文本)
+
+.子程序 激活窗口, 空白型, 公开, 激活指定的一个窗口,使其得到焦点
+.参数 窗口句柄, 整数型, , 欲被激活的窗口句柄
+
+修改窗口位置 (窗口句柄, 0, 0, 0, 0, 0, 相加 (4, 2, 1, 64, 32))
+
+.子程序 移动窗口, 空白型, 公开, 把一个窗口所处的屏幕上的位置进行移动
+.参数 窗口句柄, 整数型, , 要被移动的窗口句柄
+.参数 横坐标, 整数型, , 移到屏幕上的某横坐标点位
+.参数 纵坐标, 整数型, , 移到屏幕上的某纵坐标点位
+
+.局部变量 矩形, 矩形, , , 
+
+取窗口外矩形 (窗口句柄, 矩形)
+移动窗口_ (窗口句柄, 横坐标, 纵坐标, 相减 (矩形.宽度, 矩形.左边), 相减 (矩形.高度, 矩形.顶边), 真)
+
+.子程序 信息框, 整数型, 公开, 弹出一个信息框，用法与易里的信息框一样
+.参数 信息文本, 文本型, 参考, 要提示的信息文本内容
+.参数 标志组合, 整数型, 可空, 与易语言里的标志组合相同
+.参数 标题, 文本型, 参考 可空, 默认为 友情提示：
+.参数 父句柄, 整数型, 可空, 默认为0,不挂起线程
+
+.如果真 (是否为空 (标题))
+    赋值 (标题, “友情提示：”)
+.如果真结束
+返回 (相减 (信息框_ (父句柄, 信息文本, 标题, 标志组合), 1))
+
+.子程序 通用窗口化, 空白型, 公开, 通用的窗口化功能，非全屏的窗口游戏切勿使用
+.参数 窗口句柄, 整数型, , 窗口化那种全屏并且没有标题栏的游戏程序
+.参数 窗口化标题, 文本型, 可空, 设置一个新的窗口标题
+.参数 显示标题栏, 逻辑型, , 决定窗口化后的游戏窗口是否有显示菜单条
+.参数 调整分变率, 逻辑型, 可空, 把窗口设置为800*600把显示器分变率设置为1024*786
+
+.局部变量 矩形1, 矩形, , , 菜单高度=22
+
+.如果真 (不等于 (0, 窗口句柄))
+    .如果真 (句柄是否有效 (窗口句柄))
+        .如果真 (显示标题栏)
+            置窗口结构信息1 (窗口句柄, -16, 348913664)
+            置窗口结构信息1 (窗口句柄, -20, 262400)
+        .如果真结束
+        .如果真 (不等于 (“”, 窗口化标题))
+            置窗口标题 (窗口句柄, 窗口化标题)
+        .如果真结束
+        .如果 (调整分变率)
+            置显示分辨率 (1024, 768, , 75, 真)
+            设置窗口 (窗口句柄, 1, 0, 0, 800, 600, 相加 (4, 64, 32))
+        .否则
+            设置窗口 (窗口句柄, 1, 0, 0, 0, 0, 相加 (2, 1, 4, 64, 32))
+        .如果结束
+        
+    .如果真结束
+    
+.如果真结束
+
+
+.子程序 窗口侧边跟随, 空白型, 公开, 把自已的一个窗口吸在目标窗口的侧边位置
+.参数 窗口句柄, 整数型, , 目标窗口的句柄
+.参数 窗口, 窗口, , 自已的窗口
+.参数 自动销毁, 逻辑型, 可空, 真=当目前窗口销毁时，自已也销毁
+.参数 左边, 整数型, 可空, 
+.参数 顶边, 整数型, 可空, 
+
+.如果真 (不等于 (0, 窗口句柄))
+    .如果真 (等于 (0, 窗口吸附.时钟标识))
+        赋值 (窗口吸附.窗口句柄, 窗口句柄)
+        赋值 (窗口吸附.窗口, 窗口)
+        赋值 (窗口吸附.自动销毁, 自动销毁)
+        赋值 (窗口吸附.左边, 左边)
+        赋值 (窗口吸附.顶边, 顶边)
+        赋值 (窗口吸附.是否启动, 真)
+        赋值 (窗口吸附.时钟标识, 创建定时器 (-887, 20, &吸附))
+    .如果真结束
+    
+.如果真结束
+
+
+.子程序 取消侧边跟随, 空白型, 公开, 取消吸在目标窗口侧边的功能
+.如果真 (不等于 (0, 窗口吸附.时钟标识))
+    销毁定时器 (窗口吸附.时钟标识)
+    赋值 (窗口吸附.时钟标识, 0)
+.如果真结束
+赋值 (窗口吸附.是否启动, 假)
+
+.子程序 吸附, 空白型, , 
+.局部变量 窗口状态, 窗口状态结构, , , 
+.局部变量 矩形, 矩形, , , 
+
+.如果真 (等于 (假, 句柄是否有效 (窗口吸附.窗口句柄)))
+    销毁定时器 (窗口吸附.时钟标识)
+    赋值 (窗口吸附.时钟标识, 0)
+    .如果真 (窗口吸附.自动销毁)
+        .如果真 (是否已创建 (窗口吸附.窗口))
+            窗口吸附.销毁 (.窗口)
+        .如果真结束
+        
+    .如果真结束
+    返回 ()
+.如果真结束
+.如果真 (等于 (0, 取窗口状态 (窗口吸附.窗口句柄, 窗口状态)))
+    返回 ()
+.如果真结束
+取窗口外矩形 (窗口吸附.窗口句柄, 矩形)
+.如果真 (并且 (等于 (1, 窗口状态.显示状态), 窗口吸附.是否启动))
+    赋值 (窗口吸附.窗口.左边, 相加 (窗口状态.宽度, 窗口吸附.左边))
+    赋值 (窗口吸附.窗口.顶边, 相加 (窗口状态.顶边, 窗口吸附.顶边))
+    .如果真 (取反 (是否已创建 (窗口吸附.窗口)))
+        载入 (窗口吸附.窗口, , 假)
+    .如果真结束
+    赋值 (窗口吸附.窗口.可视, 真)
+    返回 ()
+.如果真结束
+.如果真 (等于 (2, 窗口状态.显示状态))
+    赋值 (窗口吸附.窗口.可视, 假)
+.如果真结束
+
+
+.程序集 动作模拟, , , 
+
+.子程序 取鼠标, 空白型, 公开, 无返回值，得到当前鼠标所在的横纵轴点位
+.参数 窗口句柄, 整数型, 可空, 返回的坐标相对于这个参数所提供的控件距离
+.参数 坐标横, 整数型, 参考, 接收鼠标 横坐标 值的变量
+.参数 坐标纵, 整数型, 参考, 接收鼠标 纵坐标 值的变量
+
+.局部变量 坐标, 坐标, , , 
+
+取鼠标坐标 (坐标)
+.如果真 (不等于 (0, 窗口句柄))
+    屏幕坐标到窗口 (窗口句柄, 坐标)
+.如果真结束
+赋值 (坐标横, 坐标.横)
+赋值 (坐标纵, 坐标.纵)
+
+.子程序 置鼠标, 空白型, 公开, 无返回值，把鼠标移动一个横纵轴交错的点位
+.参数 窗口句柄, 整数型, 可空, 空＝整个屏幕坐标,非空＝窗口客户区坐标
+.参数 横坐标, 整数型, , 欲置到相对于参数一的 横 坐标
+.参数 纵坐标, 整数型, , 欲置到相对于参数一的 纵 坐标
+
+.局部变量 坐标, 坐标, , , 
+
+.如果 (不等于 (0, 窗口句柄))
+    赋值 (坐标.横, 横坐标)
+    赋值 (坐标.纵, 纵坐标)
+    窗口坐标到屏幕 (窗口句柄, 坐标)
+    置鼠标坐标 (坐标.横, 坐标.纵)
+     ' 鼠标事件 (1, 坐标1.横 － 坐标.横, 坐标1.纵 － 坐标.纵, 0, 0)'移动鼠标
+.否则
+    置鼠标坐标 (横坐标, 纵坐标)
+     ' 鼠标事件 (1, 坐标1.横 － 纵坐标, 坐标1.纵 － 纵坐标, 0, 0)'移动鼠标
+.如果结束
+
+
+.子程序 左键按下, 空白型, 公开, 无返回值 260 261 系统键模拟
+.参数 控件句柄, 整数型, 可空, 空＝整个屏幕坐标,非空＝窗口客户区坐标
+.参数 横坐标, 整数型, , 相对于参数一控件的左边起
+.参数 纵坐标, 整数型, , 相对于参数一控件的顶边起
+.参数 消息模拟, 逻辑型, , 真＝使用消息模拟方式,假＝全屏模拟方式
+.参数 移动鼠标, 逻辑型, 可空, 真＝移动鼠标到指定点后再按下
+
+.局部变量 坐标, 坐标, , , 
+.局部变量 坐标1, 坐标, , , 
+
+.如果真 (移动鼠标)
+    取鼠标坐标 (坐标1)
+    .如果 (不等于 (0, 控件句柄))
+        赋值 (坐标.横, 横坐标)
+        赋值 (坐标.纵, 纵坐标)
+        窗口坐标到屏幕 (控件句柄, 坐标)
+        鼠标事件 (1, 相减 (坐标1.横, 坐标.横), 相减 (坐标1.纵, 坐标.纵), 0, 0)
+    .否则
+        鼠标事件 (1, 相减 (坐标1.横, 纵坐标), 相减 (坐标1.纵, 纵坐标), 0, 0)
+    .如果结束
+    
+.如果真结束
+
+.如果 (消息模拟)
+    发送系统消息 (控件句柄, 513, 0, 相加 (相乘 (纵坐标, 65536), 横坐标))
+.否则
+    鼠标事件 (2, 横坐标, 纵坐标, 0, 0) ' 鼠标左键按下＝2
+.如果结束
+
+
+.子程序 左键弹起, 空白型, 公开, 无返回值 
+.参数 控件句柄, 整数型, 可空, 若空为整个屏幕
+
+.如果 (等于 (0, 控件句柄))
+    鼠标事件 (4, 0, 0, 0, 0) ' 鼠标左键放开＝4
+.否则
+    发送系统消息 (控件句柄, 514, 0, 0)
+.如果结束
+
+
+.子程序 左键单击, 空白型, 公开, 无返回值 
+.参数 控件句柄, 整数型, 可空, 若空为整个屏幕
+.参数 横坐标, 整数型, , 相对于参数一控件的左边起
+.参数 纵坐标, 整数型, , 相对于参数一控件的顶边起
+.参数 消息模拟, 逻辑型, , 真＝使用消息模拟方式,假＝全屏模拟方式
+.参数 移动鼠标, 逻辑型, 可空, 真＝移动鼠标到指定点后再按下
+
+.局部变量 坐标, 坐标, , , 
+.局部变量 坐标1, 坐标, , , 
+
+.如果真 (移动鼠标)
+    取鼠标坐标 (坐标1)
+    .如果 (不等于 (0, 控件句柄))
+        赋值 (坐标.横, 横坐标)
+        赋值 (坐标.纵, 纵坐标)
+        窗口坐标到屏幕 (控件句柄, 坐标)
+        鼠标事件 (1, 相减 (坐标1.横, 坐标.横), 相减 (坐标1.纵, 坐标.纵), 0, 0)
+    .否则
+        鼠标事件 (1, 相减 (坐标1.横, 纵坐标), 相减 (坐标1.纵, 纵坐标), 0, 0)
+    .如果结束
+    
+.如果真结束
+
+.如果 (消息模拟)
+    发送系统消息 (控件句柄, 513, 0, 相加 (相乘 (纵坐标, 65536), 横坐标))
+    发送系统消息 (控件句柄, 514, 0, 相加 (相乘 (纵坐标, 65536), 横坐标))
+.否则
+    鼠标事件 (2, 横坐标, 纵坐标, 0, 0) ' 鼠标左键按下＝2
+    鼠标事件 (4, 横坐标, 纵坐标, 0, 0) ' 鼠标左键放开＝4
+.如果结束
+
+
+.子程序 右键按下, 空白型, 公开, 无返回值 
+.参数 控件句柄, 整数型, 可空, 若空为整个屏幕
+.参数 横坐标, 整数型, , 相对于参数一控件的左边起
+.参数 纵坐标, 整数型, , 相对于参数一控件的顶边起
+.参数 消息模拟, 逻辑型, , 真＝使用消息模拟方式,假＝全屏模拟方式
+.参数 移动鼠标, 逻辑型, 可空, 真＝移动鼠标到指定点后再按下
+
+.局部变量 坐标, 坐标, , , 
+.局部变量 坐标1, 坐标, , , 
+
+.如果真 (移动鼠标)
+    取鼠标坐标 (坐标1)
+    .如果 (不等于 (0, 控件句柄))
+        赋值 (坐标.横, 横坐标)
+        赋值 (坐标.纵, 纵坐标)
+        窗口坐标到屏幕 (控件句柄, 坐标)
+        鼠标事件 (1, 相减 (坐标1.横, 坐标.横), 相减 (坐标1.纵, 坐标.纵), 0, 0)
+    .否则
+        鼠标事件 (1, 相减 (坐标1.横, 纵坐标), 相减 (坐标1.纵, 纵坐标), 0, 0)
+    .如果结束
+    
+.如果真结束
+
+.如果 (消息模拟)
+    发送系统消息 (控件句柄, 516, 0, 相加 (相乘 (纵坐标, 65536), 横坐标))
+.否则
+    鼠标事件 (8, 横坐标, 纵坐标, 0, 0) ' 右键按下
+.如果结束
+
+
+.子程序 右键弹起, 空白型, 公开, 无返回值 
+.参数 控件句柄, 整数型, 可空, 若空为整个屏幕
+
+.如果 (等于 (0, 控件句柄))
+    鼠标事件 (16, 0, 0, 0, 0) ' 右键弹起
+.否则
+    发送系统消息 (控件句柄, 517, 0, 0)
+.如果结束
+
+
+.子程序 右键单击, 空白型, 公开, 无返回值 
+.参数 控件句柄, 整数型, 可空, 若空为整个屏幕
+.参数 横坐标, 整数型, , 相对于参数一控件的左边起
+.参数 纵坐标, 整数型, , 相对于参数一控件的顶边起
+.参数 消息模拟, 逻辑型, , 真＝使用消息模拟方式,假＝全屏模拟方式
+.参数 移动鼠标, 逻辑型, 可空, 真＝移动鼠标到指定点后再按下
+
+.局部变量 坐标, 坐标, , , 
+.局部变量 坐标1, 坐标, , , 
+
+.如果真 (移动鼠标)
+    取鼠标坐标 (坐标1)
+    .如果 (不等于 (0, 控件句柄))
+        赋值 (坐标.横, 横坐标)
+        赋值 (坐标.纵, 纵坐标)
+        窗口坐标到屏幕 (控件句柄, 坐标)
+        鼠标事件 (1, 相减 (坐标1.横, 坐标.横), 相减 (坐标1.纵, 坐标.纵), 0, 0)
+    .否则
+        鼠标事件 (1, 相减 (坐标1.横, 纵坐标), 相减 (坐标1.纵, 纵坐标), 0, 0)
+    .如果结束
+    
+.如果真结束
+
+.如果 (消息模拟)
+    发送系统消息 (控件句柄, 516, 0, 相加 (相乘 (纵坐标, 65536), 横坐标))
+    发送系统消息 (控件句柄, 517, 0, 相加 (相乘 (纵坐标, 65536), 横坐标))
+.否则
+    鼠标事件 (8, 横坐标, 纵坐标, 0, 0) ' 右键按下
+    鼠标事件 (16, 横坐标, 纵坐标, 0, 0) ' 右键弹起
+.如果结束
+
+
+.子程序 键盘按下, 空白型, 公开, 无返回值，若提供控件句柄将无法模拟组合键并且无须弹起
+.参数 控件句柄, 整数型, 可空, 若空为整个屏幕
+.参数 虚拟键码, 整数型, , 键盘虚拟键码
+
+.如果 (等于 (0, 控件句柄))
+    键盘事件 (虚拟键码, 键码转换 (虚拟键码, 0), 0, 0) ' 参数三　键盘按下　＝　0
+.否则
+    发送系统消息 (控件句柄, 256, 虚拟键码, 键码转换 (虚拟键码, 0)) ' 消息方式无法模拟组合键，并且无须弹起
+.如果结束
+
+
+.子程序 键盘弹起, 空白型, 公开, 无返回值，若提供控件句柄将无法模拟组合键并且无须弹起
+.参数 控件句柄, 整数型, 可空, 若空为整个屏幕
+.参数 虚拟键码, 整数型, , 键盘虚拟键码
+
+.如果 (等于 (0, 控件句柄))
+    键盘事件 (虚拟键码, 键码转换 (虚拟键码, 0), 2, 0) ' 参数三　键盘弹起　＝　2
+.否则
+    发送系统消息 (控件句柄, 257, 虚拟键码, 键码转换 (虚拟键码, 0)) ' 消息方式无法模拟组合键，并且无须弹起
+.如果结束
+
+
+.子程序 粘贴文本, 空白型, 公开, 把一段文本粘贴到指定的控件内容中
+.参数 控件句柄, 整数型, 可空, 接收文本的控件,若空参数文本将被输出到当前拥有焦点的控件
+.参数 文本内容, 文本型, , 欲贴出的文本，若参数一为空以[Shift+ins]组合键方式,反之用消息方式
+
+置剪辑板文本 (文本内容)
+.如果 (等于 (0, 控件句柄))
+    对象.方法 (“SendKeys”, “+{INSERT}”)
+.否则
+    发送系统消息 (控件句柄, 177, 0, -1)
+    发送系统消息 (控件句柄, 770, 0, 0)
+.如果结束
+
+
+.子程序 输出文本, 空白型, 公开, 若参数一为空,文本将被输出到当前拥有输入焦点的控件内
+.参数 控件句柄, 整数型, 可空, 某个可接收输入文本的控件句柄
+.参数 文本内容, 文本型, 参考, 若参数一控件句柄为空,本功能将不支持输出中文
+
+.局部变量 输出, 字节集, , , 
+.局部变量 计次, 整数型, , , 
+
+.如果 (不等于 (0, 控件句柄))
+    赋值 (输出, 到字节集 (文本内容))
+    赋值 (计次, 1)
+    .判断循环首 (小于或等于 (计次, 取字节集长度 (输出)))
+        投递消息 (控件句柄, 258, 输出 [计次], 0)
+        赋值 (计次, 相加 (计次, 1))
+    .判断循环尾 ()
+.否则
+    对象.方法 (“SendKeys”, 文本内容)
+.如果结束
+
+
+.子程序 取坐标颜色, 整数型, 公开, 返回指定坐标点上的颜色值
+.参数 控件句柄, 整数型, 可空, 
+.参数 横坐标, 整数型, , 参数可以为空，若空参数则取当前鼠标点颜色值
+.参数 纵坐标, 整数型, , 参数可以为空，若空参数则取当前鼠标点颜色值
+.参数 RGB, RGB, 参考 可空, 返回细分后的三色原值
+
+.局部变量 坐标, 坐标, , , 
+.局部变量 设备句柄, 整数型, , , 
+.局部变量 返回, 整数型, , , 
+
+赋值 (设备句柄, 取设备 (控件句柄))
+赋值 (返回, 取坐标颜色_ (设备句柄, 横坐标, 纵坐标))
+释放设备 (控件句柄, 设备句柄)
+.如果真 (等于 (假, 是否为空 (RGB)))
+    赋值 (RGB.红色, 位与 (返回, 255))
+    赋值 (RGB.绿色, 相除 (位与 (返回, 65280), 256))
+    赋值 (RGB.蓝色, 相除 (位与 (返回, 16711680), 65536))
+.如果真结束
+返回 (返回)
+
+.子程序 取键符, 文本型, 公开, 返回当前按键字符,区分大小写
+.参数 虚拟码, 整数型, , 传入键盘钩子参数一
+.参数 扫描码, 整数型, 可空, 传入键盘钩子参数二,若空不返回功能键名
+
+.局部变量 键码快照, 字节型, , "256", 
+.局部变量 标志, 逻辑型, , , 
+.局部变量 返回, 文本型, , , 
+.局部变量 组合键, 文本型, , , 
+
+.判断开始 (不等于 (取虚拟键状态 (虚拟码), -32767))
+    返回 (“”)
+.判断 (并且 (小于 (15, 虚拟码), 大于 (19, 虚拟码)))
+    返回 (“”)
+.默认
+    键盘快照 (键码快照 [1])
+.判断结束
+
+.判断开始 (并且 (大于 (虚拟码, 64), 小于 (虚拟码, 91)))
+    .如果真 (等于 (1, 键码快照 [21])) ' 检测大小写开关
+        赋值 (标志, 真)
+    .如果真结束
+    
+    .如果真 (小于 (127, 键码快照 [17])) ' 检测 上档键 开关
+        赋值 (标志, 取反 (标志))
+    .如果真结束
+    
+    .如果 (标志)
+        赋值 (返回, 到大写 (字符 (虚拟码)))
+    .否则
+        赋值 (返回, 到小写 (字符 (虚拟码)))
+    .如果结束
+    
+.判断 (等于 (48, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “)”)
+    .否则
+        赋值 (返回, “0”)
+    .如果结束
+    
+.判断 (等于 (49, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “!”)
+    .否则
+        赋值 (返回, “1”)
+    .如果结束
+    
+.判断 (等于 (50, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “@”)
+    .否则
+        赋值 (返回, “2”)
+    .如果结束
+    
+.判断 (等于 (51, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “#”)
+    .否则
+        赋值 (返回, “3”)
+    .如果结束
+    
+.判断 (等于 (52, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “$”)
+    .否则
+        赋值 (返回, “4”)
+    .如果结束
+    
+.判断 (等于 (53, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “%”)
+    .否则
+        赋值 (返回, “5”)
+    .如果结束
+    
+.判断 (等于 (54, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “^”)
+    .否则
+        赋值 (返回, “6”)
+    .如果结束
+    
+.判断 (等于 (55, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “&”)
+    .否则
+        赋值 (返回, “7”)
+    .如果结束
+    
+.判断 (等于 (56, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “*”)
+    .否则
+        赋值 (返回, “8”)
+    .如果结束
+    
+.判断 (等于 (57, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “(”)
+    .否则
+        赋值 (返回, “9”)
+    .如果结束
+    
+.判断 (等于 (192, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “~”)
+    .否则
+        赋值 (返回, “`”)
+    .如果结束
+    
+.判断 (等于 (189, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “_”)
+    .否则
+        赋值 (返回, “-”)
+    .如果结束
+    
+.判断 (等于 (187, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “+”)
+    .否则
+        赋值 (返回, “=”)
+    .如果结束
+    
+.判断 (等于 (220, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “|”)
+    .否则
+        赋值 (返回, “\”)
+    .如果结束
+    
+.判断 (等于 (188, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “<”)
+    .否则
+        赋值 (返回, “,”)
+    .如果结束
+    
+.判断 (等于 (190, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “>”)
+    .否则
+        赋值 (返回, “.”)
+    .如果结束
+    
+.判断 (等于 (191, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “?”)
+    .否则
+        赋值 (返回, “/”)
+    .如果结束
+    
+.判断 (等于 (186, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “:”)
+    .否则
+        赋值 (返回, “;”)
+    .如果结束
+    
+.判断 (等于 (222, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, 字符 (34))
+    .否则
+        赋值 (返回, “'”)
+    .如果结束
+    
+.判断 (等于 (219, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “{”)
+    .否则
+        赋值 (返回, “[”)
+    .如果结束
+    
+.判断 (等于 (221, 虚拟码))
+    .如果 (小于 (127, 键码快照 [17]))
+        赋值 (返回, “}”)
+    .否则
+        赋值 (返回, “]”)
+    .如果结束
+    
+.判断 (等于 (96, 虚拟码))
+    赋值 (返回, “0”)
+.判断 (等于 (97, 虚拟码))
+    赋值 (返回, “1”)
+.判断 (等于 (98, 虚拟码))
+    赋值 (返回, “2”)
+.判断 (等于 (99, 虚拟码))
+    赋值 (返回, “3”)
+.判断 (等于 (100, 虚拟码))
+    赋值 (返回, “4”)
+.判断 (等于 (101, 虚拟码))
+    赋值 (返回, “5”)
+.判断 (等于 (102, 虚拟码))
+    赋值 (返回, “6”)
+.判断 (等于 (103, 虚拟码))
+    赋值 (返回, “7”)
+.判断 (等于 (104, 虚拟码))
+    赋值 (返回, “8”)
+.判断 (等于 (105, 虚拟码))
+    赋值 (返回, “9”)
+.判断 (等于 (37, 虚拟码))
+    赋值 (返回, “←”)
+.判断 (等于 (39, 虚拟码))
+    赋值 (返回, “→”)
+.判断 (等于 (38, 虚拟码))
+    赋值 (返回, “↑”)
+.判断 (等于 (40, 虚拟码))
+    赋值 (返回, “↓”)
+.判断 (等于 (36, 虚拟码))
+    赋值 (返回, “↖”)
+.判断 (等于 (33, 虚拟码))
+    赋值 (返回, “↗”)
+.判断 (等于 (35, 虚拟码))
+    赋值 (返回, “↙”)
+.判断 (等于 (34, 虚拟码))
+    赋值 (返回, “↘”)
+.默认
+    
+.判断结束
+
+.如果真 (小于 (127, 键码快照 [18]))
+    赋值 (组合键, “〖 Ctrl + ”)
+.如果真结束
+
+.如果真 (小于 (127, 键码快照 [19]))
+    .如果 (等于 (“”, 组合键))
+        赋值 (组合键, “〖 Alt + ”)
+    .否则
+        赋值 (组合键, 相加 (组合键, “Alt + ”))
+    .如果结束
+    
+.如果真结束
+
+.如果真 (是否为空 (扫描码))
+    .判断开始 (等于 (“”, 返回))
+        .判断开始 (等于 (8, 虚拟码))
+            返回 (相加 (“〖 ”, “退格键”, “ 〗”))
+        .判断 (等于 (13, 虚拟码))
+            返回 (相加 (“〖 ”, “回车键”, “ 〗”))
+        .判断 (等于 (9, 虚拟码))
+            返回 (相加 (“〖 ”, “Tab”, “ 〗”))
+        .判断 (等于 (32, 虚拟码))
+            返回 (相加 (“〖 ”, “空格键”, “ 〗”))
+        .默认
+            返回 (“”)
+        .判断结束
+        
+    .判断 (等于 (“”, 组合键))
+        返回 (返回)
+    .判断 (小于 (127, 键码快照 [17]))
+        赋值 (组合键, 相加 (组合键, “Shift + ”))
+    .默认
+        
+    .判断结束
+    返回 (相加 (组合键, 到大写 (返回), “ 〗”))
+.如果真结束
+
+.判断开始 (不等于 (“”, 返回))
+    .如果真 (不等于 (“”, 组合键))
+        .如果真 (小于 (127, 键码快照 [17]))
+            赋值 (组合键, 相加 (组合键, “Shift + ”))
+        .如果真结束
+        赋值 (返回, 相加 (组合键, 到大写 (返回), “〗”))
+        返回 (返回)
+    .如果真结束
+    返回 (返回)
+.判断 (等于 (8, 虚拟码))
+    返回 (相加 (“〖 ”, “退格键”, “ 〗”))
+.判断 (等于 (13, 虚拟码))
+    返回 (相加 (“〖 ”, “回车键”, “ 〗”))
+.判断 (等于 (9, 虚拟码))
+    返回 (相加 (“〖 ”, “Tab”, “ 〗”))
+.判断 (等于 (32, 虚拟码))
+    返回 (相加 (“〖 ”, “空格键”, “ 〗”))
+.默认
+    赋值 (返回, 取空白文本 (31))
+    取键名_ (扫描码, 返回, 29)
+.判断结束
+
+.如果真 (小于 (127, 键码快照 [17]))
+    .如果 (等于 (“”, 组合键))
+        赋值 (组合键, “〖 Shift + ”)
+    .否则
+        赋值 (组合键, 相加 (组合键, “Shift + ”))
+    .如果结束
+    
+.如果真结束
+
+.如果真 (等于 (“”, 组合键))
+    返回 (相加 (“【”, 返回, “】”))
+.如果真结束
+返回 (相加 (组合键, 到大写 (返回), “ 〗”))
+
+.程序集 菜单控制, , , 
+
+.子程序 取菜单标题, 文本型, 公开, 返回一个菜单标题或一个按钮项目的标题
+.参数 菜单句柄, 整数型, , 一个菜单的句柄
+.参数 项目索引, 整数型, , 该菜单下的某个项目的索引值，(从0开始)
+
+.局部变量 文本, 文本型, , , 
+.局部变量 返回, 整数型, , , 
+
+赋值 (文本, 取空白文本 (128))
+.如果真 (等于 (0, 取菜单项目标题_ (菜单句柄, 项目索引, 文本, 129, 1024)))
+    返回 (“”)
+.如果真结束
+返回 (文本)
+
+.子程序 单击菜单项目, 空白型, 公开, 模拟执行一次菜单上某事件按钮项目的一次单击事件
+.参数 窗口句柄, 整数型, , 菜单所在的窗口句柄
+.参数 菜单句柄, 整数型, , 要按下的那个事件按钮所在菜单句柄
+.参数 事件按钮索引, 整数型, , 该事件按钮在菜单上的索引值，(从0开始)
+
+.局部变量 项目句柄, 整数型, , , 
+
+赋值 (项目句柄, 取菜单项目句柄_ (菜单句柄, 事件按钮索引))
+.如果真 (或者 (等于 (-1, 项目句柄), 等于 (0, 项目句柄)))
+    返回 ()
+.如果真结束
+发送消息 (窗口句柄, 273, 项目句柄, 0)
+
+.子程序 选中菜单项目, 空白型, 公开, 供为那种可以进行选中或取消选中的菜单项目使用
+.参数 窗口句柄, 整数型, , 菜单所在的窗口句柄
+.参数 菜单句柄, 整数型, , 要按下的那个事件按钮所在菜单句柄
+.参数 事件按钮索引, 整数型, , 该事件按钮在菜单上的索引值，(从0开始)
+.参数 选中, 逻辑型, , 真=选中菜单项目，假=取消选中
+
+.局部变量 项目句柄, 整数型, , , 
+
+赋值 (项目句柄, 取菜单项目句柄_ (菜单句柄, 事件按钮索引))
+.如果真 (或者 (等于 (-1, 项目句柄), 等于 (0, 项目句柄)))
+    返回 ()
+.如果真结束
+.如果真 (选中)
+    .如果真 (等于 (0, 选中菜单_ (菜单句柄, 事件按钮索引, 相加 (1024, 8))))
+        发送消息 (窗口句柄, 273, 项目句柄, 0)
+        选中菜单_ (菜单句柄, 事件按钮索引, 相加 (1024, 8))
+    .如果真结束
+    返回 ()
+.如果真结束
+.如果真 (等于 (8, 选中菜单_ (菜单句柄, 事件按钮索引, 1024)))
+    发送消息 (窗口句柄, 273, 项目句柄, 0)
+    选中菜单_ (菜单句柄, 事件按钮索引, 1024)
+.如果真结束
+返回 ()
+
+.子程序 激活菜单, 空白型, 公开, 设置一个菜单项目是否为禁止
+.参数 菜单句柄, 整数型, , 一个菜单的句柄
+.参数 事件按钮索引, 整数型, , 该菜单下的某个项目的索引值，(从0开始)
+.参数 禁止, 逻辑型, , 默认激活菜单,假=激活菜单，真＝禁止菜单
+.参数 灰色, 逻辑型, 可空, 禁止一个菜单条目时,是否使用禁止色(即.灰色)
+
+.如果真 (禁止)
+    .如果真 (灰色)
+        置菜单属性_ (菜单句柄, 事件按钮索引, 1025)
+        返回 ()
+    .如果真结束
+    置菜单属性_ (菜单句柄, 事件按钮索引, 1026)
+    返回 ()
+.如果真结束
+置菜单属性_ (菜单句柄, 事件按钮索引, 1024)
+
+.程序集 进制转换, , , 
+
+.子程序 到十进制, 长整数型, 公开, 成功返回转换后的十进制数值数据，失败返回 -1
+.参数 十六文本, 文本型, 参考, 传入十六进制文本型数据，支持大小写文本
+
+.局部变量 十进制, 长整数型, , , 转换后的十进制数值。
+
+十六转十_ (相加 (“0x”, 十六文本), 1, 十进制)
+返回 (十进制)
+
+.子程序 到十六进制, 文本型, 公开, 返回转换后的十六进制文本
+.参数 十进制数据, 整数型, , 传入十进制整型数据
+
+.局部变量 结果, 文本型, , , 
+
+赋值 (结果, 取十六进制文本 (十进制数据))
+.如果真 (等于 (求余数 (取文本长度 (结果), 2), 1))
+    返回 (相加 (“0”, 结果))
+.如果真结束
+返回 (结果)
+
+.子程序 二到十进制, 整数型, 公开, 返回十进制数值数据
+.参数 二进制文本, 文本型, , 二进制格式文本
+
+.局部变量 计次, 整数型, , , 
+.局部变量 结果, 整数型, , , 
+.局部变量 值, 文本型, , , 
+
+.判断循环首 (小于 (计次, 取文本长度 (二进制文本)))
+    赋值 (计次, 相加 (计次, 1))
+    赋值 (值, 取文本中间 (二进制文本, 计次, 1))
+    赋值 (结果, 相加 (结果, 相乘 (到数值 (值), 求次方 (2, 相减 (取文本长度 (二进制文本), 计次)))))
+.判断循环尾 ()
+返回 (结果)
+
+.子程序 十到二进制, 文本型, 公开, 返回二进制格式文本
+.参数 十进制数值, 整数型, , 十进制数值数据
+.参数 数据位数, 整数型, 可空, 1字节8位，2字节16位，4字节32位，若空不进行补0
+
+.局部变量 输出结果, 文本型, , , 
+.局部变量 商, 整数型, , , 
+
+赋值 (输出结果, 到文本 (求余数 (十进制数值, 2)))
+赋值 (商, 整除 (十进制数值, 2))
+.判断循环首 (不等于 (商, 0))
+    赋值 (输出结果, 相加 (到文本 (求余数 (商, 2)), 输出结果))
+    赋值 (商, 整除 (商, 2))
+.判断循环尾 ()
+.如果真 (大于 (数据位数, 取文本长度 (输出结果)))
+    赋值 (输出结果, 相加 (取重复文本 (相减 (数据位数, 取文本长度 (输出结果)), “0”), 输出结果))
+.如果真结束
+返回 (输出结果)
+
+.子程序 字节集到十进制, 文本型, 公开, 若参数一不为空,将返回空文本
+.参数 文本变量, 文本型, 参考 可空, 保存转换后的十进制文本.若空,以返回值返回结果
+.参数 字节集数据, 字节集, 参考, 
+.参数 分隔符号, 文本型, 可空, 默认分隔符号为 “,”
+
+.局部变量 计次, 整数型, , , 
+
+.如果真 (是否为空 (分隔符号))
+    赋值 (分隔符号, “,”)
+.如果真结束
+' 本源码来自易语言资源网(www.wodesoft.com)
+.如果真 (等于 (0, 取字节集长度 (字节集数据)))
+    返回 (“”)
+.如果真结束
+赋值 (文本变量, “”)
+赋值 (计次, 1)
+.判断循环首 (不等于 (计次, 取字节集长度 (字节集数据)))
+    赋值 (文本变量, 相加 (文本变量, 到文本 (字节集数据 [计次]), 分隔符号))
+    赋值 (计次, 相加 (计次, 1))
+.判断循环尾 ()
+赋值 (文本变量, 相加 (文本变量, 到文本 (字节集数据 [计次])))
+.如果真 (是否为空 (文本变量))
+    返回 (文本变量)
+.如果真结束
+返回 (“”)
+
+.子程序 十进制到字节集, 字节集, 公开, 若参数一不为空,将返回空字节集
+.参数 字节集变量, 字节集, 参考 可空, 保存转换后的字节集数据.若空,以返回值返回结果
+.参数 文本数据, 文本型, 参考, 
+.参数 分隔符号, 文本型, 可空, 默认分隔符号为 “,”
+
+.局部变量 计次, 整数型, , , 
+.局部变量 文本, 文本型, , "0", 
+
+.如果真 (是否为空 (分隔符号))
+    赋值 (分隔符号, “,”)
+.如果真结束
+赋值 (文本, 分割文本 (文本数据, 分隔符号, ))
+.如果真 (等于 (0, 取数组成员数 (文本)))
+    返回 ({  })
+.如果真结束
+赋值 (字节集变量, 取空白字节集 (取数组成员数 (文本)))
+赋值 (计次, 1)
+.判断循环首 (小于或等于 (计次, 取数组成员数 (文本)))
+    赋值 (字节集变量 [计次], 到数值 (文本 [计次]))
+    赋值 (计次, 相加 (计次, 1))
+.判断循环尾 ()
+.如果真 (是否为空 (字节集变量))
+    返回 (字节集变量)
+.如果真结束
+返回 ({  })
+
+.子程序 字节集到十六进制, 文本型, 公开, 若参数一不为空,将返回空文本
+.参数 文本变量, 文本型, 参考 可空, 保存转换后的十六进制.若空,以返回值返回结果
+.参数 字节集数据, 字节集, 参考, 
+.参数 分隔符号, 文本型, 可空, 默认分隔符号为 “,”
+
+.局部变量 计次, 整数型, , , 
+
+.如果真 (是否为空 (分隔符号))
+    赋值 (分隔符号, “,”)
+.如果真结束
+
+.如果真 (等于 (0, 取字节集长度 (字节集数据)))
+    返回 (“”)
+.如果真结束
+赋值 (文本变量, “”)
+赋值 (计次, 1)
+.判断循环首 (不等于 (计次, 取字节集长度 (字节集数据)))
+    赋值 (文本变量, 相加 (文本变量, 到十六进制 (字节集数据 [计次]), 分隔符号))
+    赋值 (计次, 相加 (计次, 1))
+.判断循环尾 ()
+赋值 (文本变量, 相加 (文本变量, 到十六进制 (字节集数据 [计次])))
+.如果真 (是否为空 (文本变量))
+    返回 (文本变量)
+.如果真结束
+返回 (“”)
+
+.子程序 十六进制到字节集, 字节集, 公开, 若参数一不为空,将返回空字节集
+.参数 字节集变量, 字节集, 参考 可空, 用来保存转换后的字节集数据.若空,以返回值返回结果
+.参数 十六进制文本, 文本型, 参考, 
+.参数 分隔符号, 文本型, 可空, 默认分隔符号为 “,”
+
+.局部变量 计次, 整数型, , , 
+.局部变量 文本, 文本型, , "0", 
+
+.如果真 (是否为空 (分隔符号))
+    赋值 (分隔符号, “,”)
+.如果真结束
+赋值 (文本, 分割文本 (十六进制文本, 分隔符号, ))
+.如果真 (等于 (0, 取数组成员数 (文本)))
+    返回 ({  })
+.如果真结束
+赋值 (字节集变量, 取空白字节集 (取数组成员数 (文本)))
+赋值 (计次, 1)
+.判断循环首 (小于或等于 (计次, 取数组成员数 (文本)))
+    赋值 (字节集变量 [计次], 到十进制 (文本 [计次]))
+    赋值 (计次, 相加 (计次, 1))
+.判断循环尾 ()
+.如果真 (是否为空 (字节集变量))
+    返回 (字节集变量)
+.如果真结束
+返回 ({  })
+
+.子程序 文本到十进制, 文本型, 公开, 若参数一不为空,将返回空文本
+.参数 文本变量, 文本型, 参考 可空, 保存转换后的十进制文本.若空,以返回值返回结果
+.参数 十六进制文本, 文本型, 参考, 原十六进制文本
+.参数 分隔符号, 文本型, 可空, 默认分隔符号为 “,”
+
+.局部变量 计次, 整数型, , , 
+.局部变量 文本, 文本型, , "0", 
+
+.如果真 (是否为空 (分隔符号))
+    赋值 (分隔符号, “,”)
+.如果真结束
+赋值 (文本, 分割文本 (十六进制文本, 分隔符号, ))
+.如果真 (等于 (0, 取数组成员数 (文本)))
+    返回 (“”)
+.如果真结束
+赋值 (文本变量, “”)
+赋值 (计次, 1)
+.判断循环首 (不等于 (计次, 取数组成员数 (文本)))
+    赋值 (文本变量, 相加 (文本变量, 到文本 (到十进制 (文本 [计次])), 分隔符号))
+    赋值 (计次, 相加 (计次, 1))
+.判断循环尾 ()
+赋值 (文本变量, 相加 (文本变量, 到文本 (到十进制 (文本 [计次]))))
+.如果真 (是否已创建 (文本变量))
+    返回 (文本变量)
+.如果真结束
+返回 (“”)
+
+.子程序 文本到十六进制, 文本型, 公开, 若参数一不为空,将返回空文本
+.参数 文本变量, 文本型, 参考 可空, 用来保存转换为十六进制后的文本
+.参数 十进制文本, 文本型, 参考, 原十进制文本
+.参数 分隔符号, 文本型, 可空, 默认分隔符号为 “,”
+
+.局部变量 计次, 整数型, , , 
+.局部变量 文本, 文本型, , "0", 
+
+.如果真 (是否为空 (分隔符号))
+    赋值 (分隔符号, “,”)
+.如果真结束
+赋值 (文本, 分割文本 (十进制文本, 分隔符号, ))
+.如果真 (等于 (0, 取数组成员数 (文本)))
+    返回 (“”)
+.如果真结束
+赋值 (文本变量, “”)
+赋值 (计次, 1)
+.判断循环首 (不等于 (计次, 取数组成员数 (文本)))
+    赋值 (文本变量, 相加 (文本变量, 到十六进制 (到数值 (文本 [计次])), 分隔符号))
+    赋值 (计次, 相加 (计次, 1))
+.判断循环尾 ()
+赋值 (文本变量, 相加 (文本变量, 到十六进制 (到数值 (文本 [计次]))))
+.如果真 (是否为空 (文本变量))
+    返回 (文本变量)
+.如果真结束
+返回 (“”)
+
+.程序集 网络相关, , , 
+
+.子程序 HTTP更新, 空白型, 公开, 建议使用 易语言4.6 以上版本来调用该功能
+.参数 版本验证, 文本型, , 小于40字节，列表的第一行文本
+.参数 窗口标题, 文本型, , 小于30字节，自动更新对话框的标题
+.参数 更新列表, 文本型, , 小于181字节，网址全路径
+.参数 网站端口, 整数型, 可空, 默认为: 80
+.参数 写出版本号, 文本型, 可空, 一个INI配置文件的全路径,更新完毕后将把新版本号写进去
+
+.局部变量 自身ID, 整数型, , , 
+.局部变量 路径名, 文本型, , , 
+
+赋值 (自身ID, 取自进程ID ())
+赋值 (路径名, 取模块目录_ ())
+创建内存对象 (“自动更新”)
+.如果真 (写共享内存 (0, 到字节集 (自身ID), “自动更新”))
+    写共享内存 (259, 相加 (到字节集 (版本验证), { 0 }), “自动更新”)
+    写共享内存 (299, 相加 (到字节集 (更新列表), { 0 }), “自动更新”)
+    写共享内存 (480, 相加 (到字节集 (窗口标题), { 0 }), “自动更新”)
+    写共享内存 (4, 相加 (到字节集 (相加 (路径名, “\”, 取执行文件名 ())), { 0 }), “自动更新”)
+    .如果 (等于 (0, 网站端口))
+        写共享内存 (510, 到字节集 (80), “自动更新”)
+    .否则
+        写共享内存 (510, 到字节集 (网站端口), “自动更新”)
+    .如果结束
+    写共享内存 (514, 相加 (到字节集 (写出版本号), { 0 }), “自动更新”)
+    赋值 (路径名, 取模块目录_ (“krnln.fne”))
+    .如果真 (等于 (“”, 路径名))
+        赋值 (路径名, 取模块目录_ (“krnln.fnr”))
+    .如果真结束
+    赋值 (路径名, 相加 (路径名, “\update.exe”))
+    写到文件 (路径名, #HTTP自动更新)
+    运行程序 (路径名, 8)
+.如果真结束
+
+
+.子程序 FTP更新, 空白型, 公开, 建议使用 易语言4.6 以上版本来调用该功能
+.参数 版本验证, 文本型, , 小于40字节，列表的第一行文本
+.参数 窗口标题, 文本型, , 小于30字节，自动更新对话框的标题
+.参数 更新列表, 文本型, , 小于181字节，FTP列表文件全路径
+.参数 FTP端口, 整数型, 可空, 若空端口为 21
+.参数 FTP帐号, 文本型, 可空, 若空则为匿名方式登陆
+.参数 FTP密码, 文本型, 可空, 若空则为匿名方式登陆
+.参数 写出版本号, 文本型, 可空, 一个INI配置文件的全路径,更新完毕后将把新版本号写进去
+
+.局部变量 自身ID, 整数型, , , 
+.局部变量 路径名, 文本型, , , 
+
+赋值 (自身ID, 取自进程ID ())
+赋值 (路径名, 取模块目录_ ())
+创建内存对象 (“自动更新”)
+.如果真 (写共享内存 (0, 到字节集 (自身ID), “自动更新”))
+    写共享内存 (259, 相加 (到字节集 (版本验证), { 0 }), “自动更新”)
+    写共享内存 (299, 相加 (到字节集 (更新列表), { 0 }), “自动更新”)
+    写共享内存 (480, 相加 (到字节集 (窗口标题), { 0 }), “自动更新”)
+    写共享内存 (4, 相加 (到字节集 (相加 (路径名, “\”, 取执行文件名 ())), { 0 }), “自动更新”)
+    .如果真 (是否为空 (FTP端口))
+        赋值 (FTP端口, 21)
+    .如果真结束
+    写共享内存 (550, 到字节集 (FTP端口), “自动更新”)
+    .如果真 (是否为空 (FTP帐号))
+        赋值 (FTP帐号, “anonymous”)
+    .如果真结束
+    写共享内存 (510, 到字节集 (FTP帐号), “自动更新”)
+    .如果真 (是否为空 (FTP密码))
+        赋值 (FTP密码, “IEUser@”)
+    .如果真结束
+    写共享内存 (530, 到字节集 (FTP密码), “自动更新”)
+    写共享内存 (554, 相加 (到字节集 (写出版本号), { 0 }), “自动更新”)
+    赋值 (路径名, 取模块目录_ (“krnln.fne”))
+    .如果真 (等于 (“”, 路径名))
+        赋值 (路径名, 取模块目录_ (“krnln.fnr”))
+    .如果真结束
+    赋值 (路径名, 相加 (路径名, “\update.exe”))
+    写到文件 (路径名, #FTP自动更新)
+    运行程序 (路径名, 8)
+.如果真结束
+
+
+.子程序 打开网页, 空白型, 公开, 打开一个网页显示指定的一个网站
+.参数 网站地址, 文本型, , 
+
+运行 (相加 (“rundll32.exe url.dll,FileProtocolHandler ”, 网站地址), 假, )
+
+.子程序 文件下载, 逻辑型, 公开, 成功返回真，失败返回假
+.参数 网络文件, 文本型, , 网络上的一个文件全路径名
+.参数 本地文件, 文本型, , 下载后保存到本地硬盘上的文件全路径名
+
+返回 (等于 (0, 文件下载_ (0, 网络文件, 本地文件, 0, 0)))
+
+.程序集 变速齿轮, , , 
+
+.子程序 系统变速, 空白型, 公开, 测试函数，NT,2000,XP系统原速 =11941，ME,98系统原速=5954，XP.SP2=1200其它操作系统无效
+.参数 新速值, 整数型, , 值小加速，值大减速，需PortTalk.dll与PORTTALK.sys文件
+
+.如果真 (文件是否存在 (相加 (取运行目录 (), “\PortTalk.dll”)))
+    写到文件 (相加 (取运行目录 (), “\PortTalk.dll”), #变速DLL)
+.如果真结束
+.如果真 (文件是否存在 (相加 (取运行目录 (), “\PortTalk.sys”)))
+    写到文件 (相加 (取运行目录 (), “\PortTalk.sys”), #系统变速驱动)
+.如果真结束
+.判断开始 (等于 (3, 取操作系统类别 ()))
+    系统变速NT (新速值)
+.判断 (等于 (2, 取操作系统类别 ()))
+    系统变速9X (新速值)
+.默认
+    
+.判断结束
+
+
+.子程序 颜色值扫描, 逻辑型, 公开, 扫描到指定颜色值是返回真,未扫描到返回假
+.参数 窗口句柄, 整数型, , 要进行扫描的窗口句柄,0=扫描全屏幕
+.参数 颜色值, 整数型, , 要进行扫描的指定颜色值
+.参数 X, 整数型, , 矩形点 X
+.参数 Y, 整数型, , 矩形点 Y
+.参数 X1, 整数型, , 矩形点 X1
+.参数 Y1, 整数型, , 矩形点 Y1
+.参数 跨度, 整数型, , 行向跨度
+.参数 步长, 整数型, , 横向步长
+.参数 扫描方向, 整数型, , 使用某方式的扫描方向(1-10)
+.参数 置鼠标, 逻辑型, , 扫描到颜色值所在时,把鼠标移动到该处
+.参数 横坐标, 整数型, 参考, 返回最先扫描到的颜色所在 横坐标
+.参数 纵坐标, 整数型, 参考, 返回最先扫描到的颜色所在 纵坐标
+
+.局部变量 设备句柄, 整数型, , , 
+.局部变量 返回, 逻辑型, , , 
+
+赋值 (设备句柄, 取设备 (窗口句柄))
+.判断开始 (等于 (1, 扫描方向))
+    赋值 (返回, 扫描_由上至下 (设备句柄, 颜色值, X, Y, X1, Y1, 跨度, 步长, 横坐标, 纵坐标))
+.判断 (等于 (2, 扫描方向))
+    赋值 (返回, 扫描_由下至上 (设备句柄, 颜色值, X, Y, X1, Y1, 跨度, 步长, 横坐标, 纵坐标))
+.判断 (等于 (3, 扫描方向))
+    赋值 (返回, 扫描_右上至下 (设备句柄, 颜色值, X, Y, X1, Y1, 跨度, 步长, 横坐标, 纵坐标))
+.判断 (等于 (4, 扫描方向))
+    赋值 (返回, 扫描_左下至上 (设备句柄, 颜色值, X, Y, X1, Y1, 跨度, 步长, 横坐标, 纵坐标))
+.判断 (等于 (5, 扫描方向))
+    赋值 (返回, 扫描_左上右下 (设备句柄, 颜色值, X, Y, X1, Y1, 跨度, 步长, 横坐标, 纵坐标))
+.判断 (等于 (6, 扫描方向))
+    赋值 (返回, 扫描_右上左下 (设备句柄, 颜色值, X, Y, X1, Y1, 跨度, 步长, 横坐标, 纵坐标))
+.判断 (等于 (7, 扫描方向))
+    赋值 (返回, 扫描_右下左上 (设备句柄, 颜色值, X, Y, X1, Y1, 跨度, 步长, 横坐标, 纵坐标))
+.判断 (等于 (8, 扫描方向))
+    赋值 (返回, 扫描_左下右上 (设备句柄, 颜色值, X, Y, X1, Y1, 跨度, 步长, 横坐标, 纵坐标))
+.判断 (等于 (9, 扫描方向))
+    赋值 (返回, 扫描_从外到内 (设备句柄, 颜色值, X, Y, X1, Y1, 跨度, 步长, 横坐标, 纵坐标))
+.判断 (等于 (9, 扫描方向))
+    赋值 (返回, 扫描_从内到外 (设备句柄, 颜色值, X, Y, X1, Y1, 跨度, 步长, 横坐标, 纵坐标))
+.默认
+    
+.判断结束
+释放设备 (窗口句柄, 设备句柄)
+.如果真 (并且 (返回, 置鼠标))
+    置鼠标 (窗口句柄, 横坐标, 纵坐标)
+.如果真结束
+返回 (返回)
+
+.子程序 扫描_由上至下, 逻辑型, , 
+.参数 设备句柄, 整数型, , 
+.参数 颜色值, 整数型, , 
+.参数 X, 整数型, , 
+.参数 Y, 整数型, , 
+.参数 X1, 整数型, , 
+.参数 Y1, 整数型, , 
+.参数 跨度, 整数型, , 
+.参数 步长, 整数型, , 
+.参数 回横, 整数型, 参考, 
+.参数 回纵, 整数型, 参考, 
+
+.局部变量 横, 整数型, , , 
+
+赋值 (横, X)
+.判断循环首 (小于 (Y, Y1))
+    .如果真 (等于 (取坐标颜色_ (设备句柄, 横, Y), 颜色值))
+        赋值 (回横, 横)
+        赋值 (回纵, Y)
+        返回 (真)
+    .如果真结束
+    .如果 (大于或等于 (横, X1))
+        赋值 (横, X)
+        赋值 (Y, 相加 (Y, 跨度))
+    .否则
+        赋值 (横, 相加 (横, 步长))
+    .如果结束
+    
+.判断循环尾 ()
+返回 (假)
+
+.子程序 扫描_由下至上, 逻辑型, , 
+.参数 设备句柄, 整数型, , 
+.参数 颜色值, 整数型, , 
+.参数 X, 整数型, , 
+.参数 Y, 整数型, , 
+.参数 X1, 整数型, , 
+.参数 Y1, 整数型, , 
+.参数 跨度, 整数型, , 
+.参数 步长, 整数型, , 
+.参数 回横, 整数型, 参考, 
+.参数 回纵, 整数型, 参考, 
+
+.局部变量 横, 整数型, , , 
+
+赋值 (横, X1)
+.判断循环首 (小于 (Y, Y1))
+    .如果真 (等于 (取坐标颜色_ (设备句柄, 横, Y1), 颜色值))
+        赋值 (回横, 横)
+        赋值 (回纵, Y1)
+        返回 (真)
+    .如果真结束
+    .如果 (小于或等于 (横, X))
+        赋值 (横, X1)
+        赋值 (Y1, 相减 (Y1, 跨度))
+    .否则
+        赋值 (横, 相减 (横, 步长))
+    .如果结束
+    
+.判断循环尾 ()
+返回 (假)
+
+.子程序 扫描_右上至下, 逻辑型, , 
+.参数 设备句柄, 整数型, , 
+.参数 颜色值, 整数型, , 
+.参数 X, 整数型, , 
+.参数 Y, 整数型, , 
+.参数 X1, 整数型, , 
+.参数 Y1, 整数型, , 
+.参数 跨度, 整数型, , 
+.参数 步长, 整数型, , 
+.参数 回横, 整数型, 参考, 
+.参数 回纵, 整数型, 参考, 
+
+.局部变量 纵, 整数型, , , 
+
+赋值 (纵, Y)
+.判断循环首 (小于 (X, X1))
+    .如果真 (等于 (取坐标颜色_ (设备句柄, X1, 纵), 颜色值))
+        赋值 (回横, X1)
+        赋值 (回纵, 纵)
+        返回 (真)
+    .如果真结束
+    .如果 (大于 (纵, Y1))
+        赋值 (纵, Y)
+        赋值 (X1, 相减 (X1, 跨度))
+    .否则
+        赋值 (纵, 相加 (纵, 步长))
+    .如果结束
+    
+.判断循环尾 ()
+返回 (假)
+
+.子程序 扫描_左下至上, 逻辑型, , 
+.参数 设备句柄, 整数型, , 
+.参数 颜色值, 整数型, , 
+.参数 X, 整数型, , 
+.参数 Y, 整数型, , 
+.参数 X1, 整数型, , 
+.参数 Y1, 整数型, , 
+.参数 跨度, 整数型, , 
+.参数 步长, 整数型, , 
+.参数 回横, 整数型, 参考, 
+.参数 回纵, 整数型, 参考, 
+
+.局部变量 纵, 整数型, , , 
+
+赋值 (纵, Y1)
+.判断循环首 (小于 (X, X1))
+    .如果真 (等于 (取坐标颜色_ (设备句柄, X, 纵), 颜色值))
+        赋值 (回横, X)
+        赋值 (回纵, 纵)
+        返回 (真)
+    .如果真结束
+    .如果 (小于或等于 (纵, Y))
+        赋值 (纵, Y1)
+        赋值 (X, 相加 (X, 跨度))
+    .否则
+        赋值 (纵, 相减 (纵, 步长))
+    .如果结束
+    
+.判断循环尾 ()
+返回 (假)
+
+.子程序 扫描_左上右下, 逻辑型, , 
+.参数 设备句柄, 整数型, , 
+.参数 颜色值, 整数型, , 
+.参数 X, 整数型, , 
+.参数 Y, 整数型, , 
+.参数 X1, 整数型, , 
+.参数 Y1, 整数型, , 
+.参数 跨度, 整数型, , 
+.参数 步长, 整数型, , 
+.参数 回横, 整数型, 参考, 
+.参数 回纵, 整数型, 参考, 
+
+.局部变量 横, 整数型, , , 
+.局部变量 纵, 整数型, , , 
+.局部变量 坐标, 坐标, , , 
+
+赋值 (坐标.横, X)
+赋值 (坐标.纵, Y)
+.判断循环首 (真)
+    赋值 (横, X)
+    赋值 (纵, 坐标.纵)
+    .判断循环首 (真)
+        .如果真 (小于或等于 (坐标.横, 相加 (横, 步长)))
+            跳出循环 ()
+        .如果真结束
+        .如果真 (小于 (相减 (纵, 步长), Y))
+            跳出循环 ()
+        .如果真结束
+        赋值 (纵, 相减 (纵, 步长))
+        .如果真 (等于 (颜色值, 取坐标颜色_ (设备句柄, 横, 纵)))
+            赋值 (回横, 横)
+            赋值 (回纵, 纵)
+            返回 (真)
+        .如果真结束
+        赋值 (横, 相加 (横, 步长))
+    .判断循环尾 ()
+    .如果真 (大于或等于 (X, X1))
+        返回 (假)
+    .如果真结束
+    .如果真 (大于 (X1, 坐标.横))
+        赋值 (坐标.横, 相加 (跨度, 坐标.横))
+    .如果真结束
+    .如果 (大于 (Y1, 坐标.纵))
+        赋值 (坐标.纵, 相加 (坐标.纵, 跨度))
+    .否则
+        赋值 (X, 相加 (X, 跨度))
+    .如果结束
+    
+.判断循环尾 ()
+返回 (假)
+
+.子程序 扫描_右上左下, 逻辑型, , 
+.参数 设备句柄, 整数型, , 
+.参数 颜色值, 整数型, , 
+.参数 X, 整数型, , 
+.参数 Y, 整数型, , 
+.参数 X1, 整数型, , 
+.参数 Y1, 整数型, , 
+.参数 跨度, 整数型, , 
+.参数 步长, 整数型, , 
+.参数 回横, 整数型, 参考, 
+.参数 回纵, 整数型, 参考, 
+
+.局部变量 横, 整数型, , , 
+.局部变量 纵, 整数型, , , 
+.局部变量 坐标, 坐标, , , 
+
+赋值 (坐标.横, X1)
+赋值 (坐标.纵, Y)
+.判断循环首 (真)
+    赋值 (横, 坐标.横)
+    赋值 (纵, Y)
+    .判断循环首 (真)
+        .如果真 (小于 (X1, 相加 (横, 步长)))
+            跳出循环 ()
+        .如果真结束
+        .如果真 (大于 (相加 (纵, 步长), Y1))
+            跳出循环 ()
+        .如果真结束
+        赋值 (横, 相加 (横, 步长))
+        .如果真 (等于 (颜色值, 取坐标颜色_ (设备句柄, 横, 纵)))
+            赋值 (回横, 横)
+            赋值 (回纵, 纵)
+            返回 (真)
+        .如果真结束
+        赋值 (纵, 相加 (纵, 步长))
+    .判断循环尾 ()
+    .如果真 (大于或等于 (Y, Y1))
+        返回 (假)
+    .如果真结束
+    .如果真 (大于 (Y1, 坐标.纵))
+        赋值 (坐标.纵, 相加 (坐标.纵, 跨度))
+    .如果真结束
+    .如果 (小于 (X, 坐标.横))
+        赋值 (坐标.横, 相减 (坐标.横, 跨度))
+    .否则
+        赋值 (Y, 相加 (Y, 跨度))
+    .如果结束
+    
+.判断循环尾 ()
+返回 (假)
+
+.子程序 扫描_右下左上, 逻辑型, , 
+.参数 设备句柄, 整数型, , 
+.参数 颜色值, 整数型, , 
+.参数 X, 整数型, , 
+.参数 Y, 整数型, , 
+.参数 X1, 整数型, , 
+.参数 Y1, 整数型, , 
+.参数 跨度, 整数型, , 
+.参数 步长, 整数型, , 
+.参数 回横, 整数型, 参考, 
+.参数 回纵, 整数型, 参考, 
+
+.局部变量 横, 整数型, , , 
+.局部变量 纵, 整数型, , , 
+.局部变量 坐标, 坐标, , , 
+
+赋值 (坐标.横, X1)
+赋值 (坐标.纵, Y1)
+.判断循环首 (真)
+    赋值 (横, X1)
+    赋值 (纵, 坐标.纵)
+    .判断循环首 (真)
+        .如果真 (大于 (坐标.横, 相减 (横, 步长)))
+            跳出循环 ()
+        .如果真结束
+        .如果真 (大于 (相加 (纵, 步长), Y1))
+            跳出循环 ()
+        .如果真结束
+        赋值 (纵, 相加 (纵, 步长))
+        .如果真 (等于 (颜色值, 取坐标颜色_ (设备句柄, 横, 纵)))
+            赋值 (回横, 横)
+            赋值 (回纵, 纵)
+            返回 (真)
+        .如果真结束
+        赋值 (横, 相减 (横, 步长))
+    .判断循环尾 ()
+    .如果真 (大于或等于 (X, X1))
+        返回 (假)
+    .如果真结束
+    .如果真 (小于 (X, 坐标.横))
+        赋值 (坐标.横, 相减 (坐标.横, 跨度))
+    .如果真结束
+    .如果 (小于 (Y, 坐标.纵))
+        赋值 (坐标.纵, 相减 (坐标.纵, 跨度))
+    .否则
+        赋值 (X1, 相减 (X1, 跨度))
+    .如果结束
+    
+.判断循环尾 ()
+返回 (假)
+
+.子程序 扫描_左下右上, 逻辑型, , 
+.参数 设备句柄, 整数型, , 
+.参数 颜色值, 整数型, , 
+.参数 X, 整数型, , 
+.参数 Y, 整数型, , 
+.参数 X1, 整数型, , 
+.参数 Y1, 整数型, , 
+.参数 跨度, 整数型, , 
+.参数 步长, 整数型, , 
+.参数 回横, 整数型, 参考, 
+.参数 回纵, 整数型, 参考, 
+
+.局部变量 横, 整数型, , , 
+.局部变量 纵, 整数型, , , 
+.局部变量 坐标, 坐标, , , 
+
+赋值 (坐标.横, X)
+赋值 (坐标.纵, Y1)
+.判断循环首 (真)
+    赋值 (横, 坐标.横)
+    赋值 (纵, Y1)
+    .判断循环首 (真)
+        .如果真 (大于 (X, 相减 (横, 步长)))
+            跳出循环 ()
+        .如果真结束
+        .如果真 (大于 (坐标.纵, 相减 (纵, 步长)))
+            跳出循环 ()
+        .如果真结束
+        赋值 (横, 相减 (横, 步长))
+        .如果真 (等于 (颜色值, 取坐标颜色_ (设备句柄, 横, 纵)))
+            赋值 (回横, 横)
+            赋值 (回纵, 纵)
+            返回 (真)
+        .如果真结束
+        赋值 (纵, 相减 (纵, 步长))
+    .判断循环尾 ()
+    .如果真 (大于或等于 (Y, Y1))
+        返回 (假)
+    .如果真结束
+    .如果真 (小于 (Y, 坐标.纵))
+        赋值 (坐标.纵, 相减 (坐标.纵, 跨度))
+    .如果真结束
+    .如果 (大于 (X1, 坐标.横))
+        赋值 (坐标.横, 相加 (坐标.横, 跨度))
+    .否则
+        赋值 (Y1, 相减 (Y1, 跨度))
+    .如果结束
+    
+.判断循环尾 ()
+返回 (假)
+
+.子程序 扫描_从外到内, 逻辑型, , 
+.参数 设备句柄, 整数型, , 
+.参数 颜色值, 整数型, , 
+.参数 X, 整数型, , 
+.参数 Y, 整数型, , 
+.参数 X1, 整数型, , 
+.参数 Y1, 整数型, , 
+.参数 跨度, 整数型, , 
+.参数 步长, 整数型, , 
+.参数 回横, 整数型, 参考, 
+.参数 回纵, 整数型, 参考, 
+
+.局部变量 横, 整数型, , , 
+.局部变量 纵, 整数型, , , 
+
+.判断循环首 (真)
+    赋值 (横, X)
+    .判断循环首 (小于 (横, X1))
+        .如果真 (等于 (颜色值, 取坐标颜色_ (设备句柄, 横, Y)))
+            赋值 (回横, 横)
+            赋值 (回纵, Y)
+            返回 (真)
+        .如果真结束
+        赋值 (横, 相加 (横, 步长))
+    .判断循环尾 ()
+    赋值 (纵, Y)
+    .判断循环首 (小于 (纵, Y1))
+        .如果真 (等于 (颜色值, 取坐标颜色_ (设备句柄, X1, 纵)))
+            赋值 (回横, X1)
+            赋值 (回纵, 纵)
+            返回 (真)
+        .如果真结束
+        赋值 (纵, 相加 (纵, 步长))
+    .判断循环尾 ()
+    赋值 (横, X1)
+    .判断循环首 (大于 (横, X))
+        .如果真 (等于 (颜色值, 取坐标颜色_ (设备句柄, 横, Y1)))
+            赋值 (回横, 横)
+            赋值 (回纵, Y1)
+            返回 (真)
+        .如果真结束
+        赋值 (横, 相减 (横, 步长))
+    .判断循环尾 ()
+    赋值 (纵, Y1)
+    .判断循环首 (大于 (纵, Y))
+        .如果真 (等于 (颜色值, 取坐标颜色_ (设备句柄, X, 纵)))
+            赋值 (回横, X)
+            赋值 (回纵, 纵)
+            返回 (真)
+        .如果真结束
+        赋值 (纵, 相减 (纵, 步长))
+    .判断循环尾 ()
+    .如果真 (小于 (X, X1))
+        赋值 (X, 相加 (X, 跨度))
+        赋值 (X1, 相减 (X1, 跨度))
+    .如果真结束
+    .如果真 (小于 (Y, Y1))
+        赋值 (Y, 相加 (Y, 跨度))
+        赋值 (Y1, 相减 (Y1, 跨度))
+    .如果真结束
+    .如果真 (并且 (小于或等于 (X1, X), 小于或等于 (Y1, Y)))
+        返回 (假)
+    .如果真结束
+    
+.判断循环尾 ()
+返回 (假)
+
+.子程序 扫描_从内到外, 逻辑型, , 
+.参数 设备句柄, 整数型, , 
+.参数 颜色值, 整数型, , 
+.参数 X, 整数型, , 
+.参数 Y, 整数型, , 
+.参数 X1, 整数型, , 
+.参数 Y1, 整数型, , 
+.参数 跨度, 整数型, , 
+.参数 步长, 整数型, , 
+.参数 回横, 整数型, 参考, 
+.参数 回纵, 整数型, 参考, 
+
+.局部变量 横, 整数型, , , 
+.局部变量 纵, 整数型, , , 
+.局部变量 坐标, 坐标, , , 
+.局部变量 坐标1, 坐标, , , 
+
+赋值 (坐标.横, 相加 (相除 (相减 (X1, X), 2), X))
+赋值 (坐标.纵, 相加 (相除 (相减 (Y1, Y), 2), Y))
+赋值 (坐标1.横, 坐标.横)
+赋值 (坐标1.纵, 坐标.纵)
+.判断循环首 (真)
+    赋值 (横, 坐标.横)
+    .判断循环首 (小于或等于 (横, 坐标1.横))
+        .如果真 (等于 (颜色值, 取坐标颜色_ (设备句柄, 横, 坐标.纵)))
+            赋值 (回横, 横)
+            赋值 (回纵, 坐标.纵)
+            返回 (真)
+        .如果真结束
+        赋值 (横, 相加 (横, 步长))
+    .判断循环尾 ()
+    赋值 (纵, 坐标.纵)
+    .判断循环首 (小于 (纵, 坐标1.纵))
+        .如果真 (等于 (颜色值, 取坐标颜色_ (设备句柄, 坐标.横, 纵)))
+            赋值 (回横, 坐标.横)
+            赋值 (回纵, 纵)
+            返回 (真)
+        .如果真结束
+        赋值 (纵, 相加 (纵, 步长))
+    .判断循环尾 ()
+    赋值 (横, 坐标1.横)
+    .判断循环首 (大于或等于 (横, 坐标.横))
+        .如果真 (等于 (颜色值, 取坐标颜色_ (设备句柄, 横, 坐标1.纵)))
+            赋值 (回横, 横)
+            赋值 (回纵, 坐标1.纵)
+            返回 (真)
+        .如果真结束
+        赋值 (横, 相减 (横, 步长))
+    .判断循环尾 ()
+    赋值 (纵, 坐标1.纵)
+    .判断循环首 (大于 (纵, 坐标.纵))
+        .如果真 (等于 (颜色值, 取坐标颜色_ (设备句柄, 坐标1.横, 纵)))
+            赋值 (回横, 坐标1.横)
+            赋值 (回纵, 纵)
+            返回 (真)
+        .如果真结束
+        赋值 (纵, 相减 (纵, 步长))
+    .判断循环尾 ()
+    .如果真 (大于 (坐标.横, X))
+        赋值 (坐标.横, 相减 (坐标.横, 跨度))
+        赋值 (坐标1.横, 相加 (坐标1.横, 跨度))
+    .如果真结束
+    .如果真 (大于 (坐标.纵, Y))
+        赋值 (坐标.纵, 相减 (坐标.纵, 跨度))
+        赋值 (坐标1.纵, 相加 (坐标1.纵, 跨度))
+    .如果真结束
+    .如果真 (并且 (小于或等于 (坐标.横, X), 小于或等于 (坐标.纵, Y)))
+        返回 (假)
+    .如果真结束
+    
+.判断循环尾 ()
+返回 (假)
+
+.子程序 置显示分辨率, 空白型, 公开, 设置调整当前显示器的当前分辨率信息
+.参数 屏幕宽度, 短整数型, , 640*480  800*600  1024*768  1152*864
+.参数 屏幕高度, 短整数型, 可空, 若空自动取上面*符号后相应的值
+.参数 颜色质量, 短整数型, 可空, 若空保持原设置 8位,16位,24位,32位
+.参数 刷新频率, 短整数型, 可空, 若空保持原设置 60，75，85，100
+.参数 自动恢复, 逻辑型, 可空, 真=当前程序在退出后自动恢复原显示分辨率
+
+.局部变量 分辨率, 短整数型, , "61", 
+
+取分辨率_ (0, -1, 分辨率 [1])
+赋值 (分辨率 [55], 屏幕宽度)
+.如果真 (是否为空 (屏幕高度))
+    .判断开始 (等于 (640, 屏幕宽度))
+        赋值 (屏幕高度, 480)
+    .判断 (等于 (720, 屏幕宽度))
+        赋值 (屏幕高度, 576)
+    .判断 (等于 (800, 屏幕宽度))
+        赋值 (屏幕高度, 600)
+    .判断 (等于 (848, 屏幕宽度))
+        赋值 (屏幕高度, 480)
+    .判断 (等于 (1024, 屏幕宽度))
+        赋值 (屏幕高度, 768)
+    .判断 (等于 (1152, 屏幕宽度))
+        赋值 (屏幕高度, 864)
+    .判断 (等于 (1280, 屏幕宽度))
+        赋值 (屏幕高度, 1024)
+    .默认
+        
+    .判断结束
+    
+.如果真结束
+赋值 (分辨率 [57], 屏幕高度)
+.如果真 (等于 (假, 是否为空 (颜色质量)))
+    赋值 (分辨率 [53], 颜色质量) ' 色深，取值：8,16,24,32
+.如果真结束
+.如果真 (等于 (假, 是否为空 (刷新频率)))
+    赋值 (分辨率 [61], 刷新频率) ' 一般为60，75，85，100
+.如果真结束
+赋值 (分辨率 [22], 92) ' 设置分辨率标志
+.如果 (自动恢复)
+    置分辨率_ (分辨率 [1], 4)
+.否则
+    置分辨率_ (分辨率 [1], 0)
+.如果结束
+
+
+.子程序 取显示分辨率, 整数型, 公开, 获取显示器的当前分辨率信息，返回分辨率中的屏幕宽度
+.参数 屏幕宽度, 短整数型, 参考 可空, 640*480  800*600  1024*768  1152*864
+.参数 屏幕高度, 短整数型, 参考 可空, 若空不返回该设置值,可以参考上面的值
+.参数 颜色质量, 短整数型, 参考 可空, 若空不返回该设置值 8位,16位,24位,32位
+.参数 刷新频率, 短整数型, 参考 可空, 若空不返回该设置值 60，75，85，100
+
+.局部变量 分辨率, 短整数型, , "61", 
+
+取分辨率_ (0, -1, 分辨率 [1])
+赋值 (屏幕宽度, 分辨率 [55])
+.如果真 (等于 (假, 是否为空 (屏幕高度)))
+    赋值 (屏幕高度, 分辨率 [57])
+.如果真结束
+.如果真 (等于 (假, 是否为空 (颜色质量)))
+    赋值 (颜色质量, 分辨率 [53])
+.如果真结束
+.如果真 (等于 (假, 是否为空 (刷新频率)))
+    赋值 (刷新频率, 分辨率 [61])
+.如果真结束
+返回 (屏幕宽度)
+
+.子程序 取进程优先级, 整数型, 公开, 256＝实时,128＝高,32＝标准,64=低，失败返回0
+.参数 进程ID, 整数型, , 进程ID
+
+.局部变量 进程句柄, 整数型, , , 
+.局部变量 返回, 整数型, , , 
+
+赋值 (进程句柄, 用保护型打开进程 (2035711, 真, 进程ID))
+.如果真 (不等于 (0, 进程句柄))
+    赋值 (返回, 取进程优先级_ (进程句柄))
+    关闭对象 (进程句柄)
+.如果真结束
+返回 (返回)
+
+.子程序 置进程优先级, 逻辑型, 公开, 成功返回真，失败返回假
+.参数 进程ID, 整数型, 可空, 进程ID
+.参数 优先级, 整数型, , 256＝实时,128＝高,32＝标准,64=低
+
+.局部变量 进程句柄, 整数型, , , 
+.局部变量 返回, 整数型, , , 
+
+.如果真 (等于 (0, 进程ID))
+    赋值 (进程ID, 取自进程ID ())
+.如果真结束
+赋值 (进程句柄, 用保护型打开进程 (2035711, 真, 进程ID))
+.如果真 (不等于 (0, 进程句柄))
+    赋值 (返回, 置进程优先级_ (进程句柄, 优先级))
+    关闭对象 (进程句柄)
+.如果真结束
+返回 (不等于 (0, 返回))
+
+.程序集 COM接口, , , 
+
+.子程序 运行程序, 空白型, 公开, 运行一个指定的应用程序,可以传递启动参数给它
+.参数 执行程序, 文本型, , 一个欲被执行的程序全路径名或执行程序名
+.参数 启动参数, 文本型, 可空, 可以传递程序的启动参数,但要注意参数间隔符不能少
+.参数 窗口显示, 整数型, 可空, 默认为激活窗口,0=隐藏窗口,1=激活窗口,7=最小化,3=最大化
+.参数 等待返回, 逻辑型, 可空, 是否需要等持被运行的程序运行结束后
+
+.如果真 (是否为空 (窗口显示))
+    赋值 (窗口显示, 1)
+.如果真结束
+对象.方法 (“Run”, 相加 (执行程序, 启动参数), 窗口显示, 等待返回)
+
+.子程序 创建程序快捷方式, 空白型, 公开, 创建当前运行程序快捷方式到桌面
+.参数 快捷方式名, 文本型, 参考, 
+.参数 备注, 文本型, 参考 可空, 
+.参数 启动文件夹, 逻辑型, 可空, 默认保存到桌面,假=桌面,真=启动
+
+.局部变量 快捷方式, 对象, , , 
+.局部变量 桌面, 文本型, , , 
+.局部变量 程序路径, 文本型, , , 
+
+.如果真 (是否为空 (备注))
+    赋值 (备注, 取执行文件名 ())
+.如果真结束
+.如果 (启动文件夹)
+    赋值 (桌面, 取系统目录 (“Programs”))
+    赋值 (桌面, 相加 (桌面, “\启动”))
+.否则
+    赋值 (桌面, 取系统目录 (“Desktop”))
+.如果结束
+赋值 (程序路径, 取模块目录_ (取执行文件名 ()))
+赋值 (快捷方式名, 相加 (“\”, 快捷方式名, “.lnk”))
+赋值 (快捷方式, 对象.读对象型属性 (“CreateShortcut”, 相加 (桌面, 快捷方式名)))
+快捷方式.写属性 (“TargetPath”, 相加 (程序路径, “\”, 取执行文件名 ()))
+快捷方式.写属性 (“Description”, 备注) ' 备注
+快捷方式.写属性 (“WorkingDirectory”, 程序路径) ' 起始位置
+快捷方式.数值方法 (“Save”, )
+快捷方式.清除 ()
+ ' 对象1.写属性 (“IconLocation”, “notepad.exe, 0”)  ' 图标
+
+.子程序 创建网页快捷方式, 空白型, 公开, 创建一个网页的快捷方式到桌面
+.参数 快捷方式名, 文本型, 参考, 
+.参数 网页地址, 文本型, 参考, 
+.参数 网络收藏夹, 逻辑型, 可空, 默保存在桌面，假＝桌面,真＝收藏夹
+
+.局部变量 快捷方式, 对象, , , 
+.局部变量 桌面, 文本型, , , 
+
+.如果 (网络收藏夹)
+    赋值 (桌面, 取系统目录 (“Favorites”))
+.否则
+    赋值 (桌面, 取系统目录 (“Desktop”))
+.如果结束
+赋值 (快捷方式名, 相加 (“\”, 快捷方式名, “.url”))
+赋值 (快捷方式, 对象.读对象型属性 (“CreateShortcut”, 相加 (桌面, 快捷方式名)))
+快捷方式.写属性 (“TargetPath”, 网页地址)
+快捷方式.数值方法 (“Save”, )
+快捷方式.清除 ()
+
+.子程序 取系统目录, 文本型, , 返回指定索引所对应的系统文件夹全路径
+.参数 系统目录名, 文本型, , 当前用户桌面=“Desktop”,收藏夹=“Favorites”,程序=“Programs”
+
+.局部变量 取系统目录, 对象, , , 
+.局部变量 文本, 文本型, , , 
+
+赋值 (取系统目录, 对象.读对象型属性 (“SpecialFolders”, ))
+赋值 (文本, 取系统目录.文本方法 (“Item”, 系统目录名))
+取系统目录.清除 ()
+返回 (文本)
+
+.子程序 初始COM, 空白型, , 
+对象.创建 (“WScript.Shell”, )
+
+.程序集 调用过程, , , 
+
+.程序集变量 频率1, 长整数型, , , 
+.程序集变量 频率2, 长整数型, , , 
+.子程序 写核心库路径_, 空白型, , 把核心支持库与在的路径写入注册表,让DLL可以去调用
+.局部变量 模块句柄, 整数型, , , 
+.局部变量 路径, 文本型, , , 
+
+赋值 (路径, 取模块目录_ (“krnln.fnr”))
+.如果真 (不等于 (“”, 路径))
+    赋值 (路径, 相加 (路径, “\”))
+    写注册项 (3, “Software\FlySky\E\Install\Path”, 路径)
+    复制文件 (相加 (路径, “krnln.fnr”), 相加 (路径, “krnln.fne”))
+    返回 ()
+.如果真结束
+赋值 (路径, 取模块目录_ (“krnln.fne”))
+.如果真 (不等于 (“”, 路径))
+    赋值 (路径, 相加 (路径, “\”))
+    写注册项 (3, “Software\FlySky\E\Install\Path”, 路径)
+.如果真结束
+' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 取模块目录_, 文本型, , 
+.参数 模块名, 文本型, 可空, 
+
+.局部变量 模块句柄, 整数型, , , 
+.局部变量 目录, 文本型, , , 
+
+赋值 (目录, 取空白文本 (256))
+.如果真 (是否为空 (模块名))
+    赋值 (模块名, 取执行文件名 ())
+.如果真结束
+赋值 (模块句柄, 取模块句柄 (模块名))
+.如果真 (不等于 (模块句柄, 0))
+    取模块完整路径 (模块句柄, 目录, 255)
+    返回 (取文本左边 (目录, 相减 (取文本长度 (目录), 取文本长度 (模块名), 1)))
+.如果真结束
+返回 (“”)
+
+.子程序 载入网络DLL_, 空白型, , 载入wsock32.dll与WS2_32.DLL
+载入DLL (“wsock32.dll”)
+载入DLL (“WS2_32.DLL”)
+
+.子程序 模块内存地址_, 逻辑型, , 
+.参数 进程ID, 整数型, , 
+.参数 模块名称, 文本型, , 
+.参数 起始地址, 整数型, 参考, 
+.参数 终止地址, 整数型, 参考, 
+
+.局部变量 快照句柄, 整数型, , , 
+.局部变量 模块信息指针, 整数型, , , 
+.局部变量 模块信息, 模块信息, , , 
+
+赋值 (快照句柄, 创建系统快照 (8, 进程ID))
+赋值 (模块名称, 到大写 (模块名称))
+.如果真 (等于 (快照句柄, -1))
+    返回 (假)
+.如果真结束
+赋值 (模块信息.占用字节, 1024)
+赋值 (模块信息指针, 取模块信息 (快照句柄, 模块信息))
+.判断循环首 (不等于 (0, 模块信息指针))
+    .如果真 (等于 (模块名称, 到大写 (到文本 (模块信息.模块名称))))
+        关闭系统快照 (快照句柄)
+        赋值 (起始地址, 模块信息.起始地址)
+        赋值 (终止地址, 相加 (起始地址, 模块信息.内存长度))
+        返回 (真)
+    .如果真结束
+    赋值 (模块信息指针, 取下个模块信息 (快照句柄, 模块信息))
+.判断循环尾 ()
+关闭系统快照 (快照句柄)
+返回 (假)
+
+.子程序 生成跳转头_, 字节集, , 返回一个由汇编代码组成的跳转功能结构数据，共8个字节
+.参数 程序入口, 整数型, , 一个子程序函数的入口地址
+
+.局部变量 跳转命令, 字节集, , , 
+
+赋值 (跳转命令, 取空白字节集 (8))
+赋值 (跳转命令 [1], 184)
+赋值 (跳转命令 [6], 255)
+赋值 (跳转命令 [7], 224)
+赋值 (跳转命令 [8], 0)
+赋值 (跳转命令, 字节集替换 (跳转命令, 2, 4, 到字节集 (程序入口)))
+返回 (跳转命令)
+
+.子程序 取线程ID, 整数型, , 
+.参数 窗口句柄, 整数型, , 
+
+返回 (取窗口进程 (窗口句柄, 0))
+
+.子程序 线程钩子, 空白型, , 返回安装成功后的线程钩子句柄
+.参数 线程句柄, 整数型, , 
+.参数 钩子处理DLL, 文本型, , 
+
+.局部变量 钩子句柄, 整数型, , , 
+.局部变量 模块句柄, 整数型, , , 
+.局部变量 接口, 整数型, , , 
+.局部变量 对象名, 文本型, , , 
+
+.如果真 (不等于 (0, 线程句柄))
+    .如果真 (等于 (-1, 倒找文本 (钩子处理DLL, “\”, , 假)))
+        赋值 (钩子处理DLL, 相加 (取运行目录 (), “\”, 钩子处理DLL))
+    .如果真结束
+    赋值 (模块句柄, 载入DLL (钩子处理DLL))
+    .如果真 (不等于 (0, 模块句柄))
+        赋值 (接口, 取函数入口 (模块句柄, “DLL接口”))
+        .如果真 (不等于 (0, 接口))
+            .如果真 (等于 (0, 取函数入口1_ (模块句柄, 2)))
+                赋值 (钩子句柄, 安装钩子 (3, 接口, 模块句柄, 线程句柄))
+            .如果真结束
+            发送线程消息_ (线程句柄, 42724, 钩子句柄, 0)
+            释放DLL (模块句柄)
+        .如果真结束
+        
+    .如果真结束
+    
+.如果真结束
+
+
+.子程序 取经过时间, 双精度小数型, , 以毫秒为单位
+.参数 经过对比, 逻辑型, 可空, 为假返回开机以来经过的毫秒数
+
+.如果 (经过对比)
+    取经过频率_ (频率2)
+    返回 (相除 (相减 (频率2, 频率1), 系统频率))
+.否则
+    取经过频率_ (频率1)
+    返回 (相除 (频率1, 系统频率))
+.如果结束
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 窗口化, 窗口化结构, , , 
+.程序集变量 窗口化标题, 文本型, , , 
+.子程序 游戏窗口化, 空白型, 公开, 游戏窗口化方式
+.参数 窗口句柄, 整数型, , 欲被窗口化的游戏窗口句柄
+.参数 窗口标题, 文本型, 可空, 被窗口化后的标题，若空为原窗口标题
+.参数 菜单条高度, 整数型, 可空, 通常为22
+
+.如果真 (并且 (句柄是否有效 (窗口句柄), 不等于 (0, 窗口句柄)))
+    .如果真 (是否已创建 (窗口化.窗口化))
+        返回 ()
+    .如果真结束
+    .如果真 (是否为空 (窗口标题))
+        赋值 (窗口标题, 取窗口标题 (窗口句柄))
+    .如果真结束
+    赋值 (窗口化.窗口化, 窗口化模板)
+    赋值 (窗口化标题, 窗口标题)
+    赋值 (窗口化.游戏窗口, 窗口句柄)
+    赋值 (窗口化.菜单高度, 菜单条高度)
+    赋值 (窗口化.时钟标识, 创建定时器 (8886, 50, &窗口化时钟))
+.如果真结束
+
+
+.子程序 窗口化时钟, 空白型, , 
+.局部变量 矩形, 矩形, , , 
+.局部变量 矩形1, 矩形, , , 
+.局部变量 窗口样式, 整数型, , , 
+
+.如果真 (等于 (假, 句柄是否有效 (窗口化.游戏窗口)))
+    销毁定时器 (窗口化.时钟标识)
+    .如果真 (是否已创建 (窗口化.窗口化))
+        窗口化.销毁 (.窗口化)
+    .如果真结束
+    赋值 (窗口化.游戏窗口, 0)
+    赋值 (窗口化.时钟标识, 0)
+    返回 ()
+.如果真结束
+.如果真 (是否已创建 (窗口化.窗口化))
+    销毁定时器 (窗口化.时钟标识)
+    返回 ()
+.如果真结束
+.如果真 (等于 (取前台窗口句柄 (), 窗口化.游戏窗口))
+    销毁定时器 (窗口化.时钟标识)
+    .如果真 (等于 (0, 取窗口外矩形 (窗口化.游戏窗口, 矩形)))
+        返回 ()
+    .如果真结束
+    .如果真 (等于 (0, 取窗口内矩形 (窗口化.游戏窗口, 矩形1)))
+        返回 ()
+    .如果真结束
+    赋值 (窗口化.窗口化.可视, 真)
+    赋值 (窗口化.窗口化.左边, 矩形.左边)
+    赋值 (窗口化.窗口化.顶边, 矩形.顶边)
+    赋值 (窗口化.窗口化.宽度, 相加 (矩形1.宽度, 6)) ' － 矩形.左边
+    赋值 (窗口化.窗口化.高度, 相减 (相加 (矩形1.高度, 25, 窗口化.菜单高度), 2)) ' － 矩形.顶边
+    载入 (窗口化.窗口化, , 假)
+    延时 (1000)
+    置父窗口 (窗口化.游戏窗口, 窗口化.取窗口句柄 (.窗口化))
+    设置窗口 (窗口化.游戏窗口, 窗口化.取窗口句柄 (.窗口化), 相除 (相减 (矩形1.宽度, 相减 (矩形.宽度, 矩形.左边)), 2), 相加 (相减 (矩形1.高度, 相减 (矩形.高度, 矩形.顶边)), 窗口化.菜单高度), 0, 0, 相加 (1, 64, 32))
+    移动窗口_ (窗口化.游戏窗口, 相除 (相减 (矩形1.宽度, 相减 (矩形.宽度, 矩形.左边)), 2), 相加 (相减 (矩形1.高度, 相减 (矩形.高度, 矩形.顶边)), 窗口化.菜单高度), 相减 (矩形.宽度, 矩形.左边), 相减 (矩形.高度, 矩形.顶边), 真)
+    赋值 (窗口化.窗口化.标题, 窗口化标题)
+.如果真结束
+
+
+.子程序 _窗口化模板_将被销毁, 空白型, , 
+发送系统消息 (窗口化.游戏窗口, 18, 0, 0)
+赋值 (窗口化.游戏窗口, 0)
+
+
+.窗口程序集 窗口程序集2, , , 
+
+.程序集变量 下层句柄, 整数型, , , 
+.程序集变量 处理机序号, 整数型, , , 
+.程序集变量 剪贴板处理, 子程序指针, , , 
+.子程序 监视剪贴板, 空白型, 公开, 
+.参数 处理接口, 子程序指针, , 一个无参数无返回值的子程序
+
+载入 (剪贴板监视, , 假)
+赋值 (剪贴板处理, 处理接口)
+赋值 (处理机序号, 消息处理机 (剪贴板监视.取窗口句柄 (), &剪贴板处理_))
+.如果真 (不等于 (0, 处理机序号))
+    赋值 (下层句柄, 安装剪贴板链 (剪贴板监视.取窗口句柄 ()))
+.如果真结束
+' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 剪贴板处理_, 整数型, , 
+.参数 句柄, 整数型, , 
+.参数 消息标识, 整数型, , 
+.参数 消息1, 整数型, , 
+.参数 消息2, 整数型, , 
+
+.局部变量 格式, 整数型, , , 
+
+.判断开始 (等于 (消息标识, 776))
+    .如果真 (判断剪贴板格式 (1))
+        调用子程序 (剪贴板处理)
+    .如果真结束
+    返回 (发送消息 (下层句柄, 消息标识, 消息1, 消息2))
+.判断 (等于 (消息标识, 781))
+    .如果真 (等于 (下层句柄, 消息1))
+        赋值 (下层句柄, 消息2)
+    .如果真结束
+    返回 (发送消息 (下层句柄, 消息标识, 消息1, 消息2))
+.默认
+    
+.判断结束
+返回 (0)
+
+.子程序 _剪贴板监视_将被销毁, 空白型, , 
+卸载处理机 (处理机序号)
+删除剪贴板链 (剪贴板监视.取窗口句柄 (), 下层句柄)
+
+.程序集 汇编保护, , , 
+
+.子程序 文件处理, 字节集, 公开, 文件处理模块（加解密采用独创算法）
+.参数 欲处理工程, 字节集, , 这里写你要处理的工程（文件）
+
+.局部变量 因子, 字节集, , , 
+.局部变量 因子位置, 整数型, , , 
+.局部变量 封包位置, 整数型, , , 
+.局部变量 长度, 整数型, , , 
+.局部变量 因子长度, 整数型, , , 
+
+赋值 (因子, { 121, 71, 47, 77, 75, 45, 75, 45, 45, 7, 47, 71, 47, 77, 75, 45, 71, 47, 77, 75, 45 })
+赋值 (因子长度, 取字节集长度 (因子))
+赋值 (因子位置, 0)
+赋值 (长度, 取字节集长度 (欲处理工程))
+.变量循环首 (1, 长度, 1, 封包位置)
+    .如果真 (大于或等于 (因子位置, 因子长度))
+        赋值 (因子位置, 0)
+    .如果真结束
+    赋值 (因子位置, 相加 (因子位置, 1))
+    赋值 (欲处理工程 [封包位置], 位异或 (欲处理工程 [封包位置], 因子 [因子位置]))
+.变量循环尾 ()
+返回 (欲处理工程)
+
+.子程序 取八位十六进制文本, 文本型, 公开, 
+.参数 欲转换数值, 整数型, , 
+
+.局部变量 返回数据, 文本型, , , 
+.局部变量 数据长度, 整数型, , , 
+
+赋值 (返回数据, 到大写 (取十六进制文本 (欲转换数值)))
+赋值 (数据长度, 取文本长度 (返回数据))
+.如果真 (小于 (数据长度, 8))
+    赋值 (返回数据, 相加 (取重复文本 (相减 (8, 数据长度), “0”), 返回数据))
+.如果真结束
+返回 (返回数据)
+
+.子程序 取映像基地址, 整数型, 公开, 
+.局部变量 基地址, 整数型, , , 
+.局部变量 指向数据, 文本型, , , 
+.局部变量 部首偏移, 整数型, , , 
+.局部变量 循环步长, 整数型, , , 
+
+ ' 4294901760 == FFFF0000h
+ ' 60 == 3Ch
+ ' 512 == 200h
+ ' 65536 == 10000h
+.如果真 (等于 (是否为调试版 (), 假))
+    赋值 (基地址, 取字节集数据 (到字节集 (&取映像基地址), #整数型))
+    赋值 (基地址, 位与 (基地址, 4294901760))
+    赋值 (循环步长, 65536)
+    .循环判断首 ()
+        赋值 (指向数据, 到文本 (指针到字节集 (基地址, 2)))
+        .如果真 (等于 (指向数据, “MZ”))
+            赋值 (部首偏移, 取字节集数据 (指针到字节集 (相加 (基地址, 60), 4), #整数型))
+            .如果真 (小于或等于 (部首偏移, 512))
+                赋值 (指向数据, 到文本 (指针到字节集 (相加 (基地址, 部首偏移), 2)))
+                .如果真 (等于 (指向数据, “PE”))
+                    返回 (基地址)
+                .如果真结束
+                
+            .如果真结束
+            
+        .如果真结束
+        赋值 (基地址, 相减 (基地址, 循环步长))
+    .循环判断尾 (大于或等于 (基地址, 循环步长))
+.如果真结束
+返回 (0)
+
+.子程序 是否与外壳建立通讯, 逻辑型, 公开, 
+返回 (IsWindow (RegisterHandle))
+
+.子程序 置虚拟保护, 整数型, 公开, 
+.参数 进程ID, 整数型, 可空, 允许接收空参数数据。
+.参数 内存地址, 整数型, , 
+.参数 设置保护, 整数型, , 2 = 只读; 4 = 可读写
+
+.局部变量 虚拟保护, 虚拟保护, , , 
+.局部变量 原保护, 整数型, , , 
+.局部变量 返回, 整数型, , , 
+
+.如果真 (不等于 (VirtualQuery (内存地址, 虚拟保护, 28), 0))
+    赋值 (返回, VirtualProtect (虚拟保护.区域地址, 虚拟保护.区域长度, 设置保护, 原保护))
+.如果真结束
+返回 (返回)
+
+.子程序 取机器名, 文本型, 公开, 
+.局部变量 本机名, 文本型, , , 
+
+赋值 (本机名, 取空白文本 (128))
+gethostname (本机名, 128)
+返回 (本机名)
+
+.子程序 协议处理, 字节集, 公开, 龙腾配套协议模块（可用于商业协议处理，加解密采用独创算法）22
+.参数 欲处理工程, 字节集, , 这里写你要处理的工程（协议）22
+
+.局部变量 因子, 字节集, , , 
+.局部变量 因子位置, 整数型, , , 
+.局部变量 封包位置, 整数型, , , 
+.局部变量 长度, 整数型, , , 
+.局部变量 因子长度, 整数型, , , 
+
+赋值 (因子, { 51, 52, 53, 54, 55, 56, 57, 89, 57, 57, 94, 75, 95 })
+赋值 (因子长度, 取字节集长度 (因子))
+赋值 (因子位置, 0)
+赋值 (长度, 取字节集长度 (欲处理工程))
+.变量循环首 (1, 长度, 1, 封包位置)
+    .如果真 (大于或等于 (因子位置, 因子长度))
+        赋值 (因子位置, 0)
+    .如果真结束
+    赋值 (因子位置, 相加 (因子位置, 1))
+    赋值 (欲处理工程 [封包位置], 位异或 (欲处理工程 [封包位置], 因子 [因子位置]))
+.变量循环尾 ()
+返回 (欲处理工程)
+
+.子程序 提升进程权限debug, 空白型, 公开, 提升自身权限
+RtlAdjustPrivilege (#SE_DEBUG_PRIVILEGE, 真, 假, 0)
+
+.程序集 配置项操作, , , 
+
+.子程序 高级取配置项名, 整数型, 公开, 取出配置项节名
+.参数 配置文件名, 文本型, , 
+.参数 节名, 文本型, , 
+.参数 项名数组, 文本型, 参考 数组, 
+
+.局部变量 缓冲区, 字节集, , , 
+.局部变量 rlen, 整数型, , , 
+.局部变量 节名字节集数组, 字节集, , "0", 
+.局部变量 i, 整数型, , , 
+
+清除数组 (项名数组)
+赋值 (缓冲区, 取空白字节集 (32767))
+赋值 (rlen, GetPrivateProfileString (节名, 0, “”, 缓冲区, 32767, 配置文件名))
+赋值 (缓冲区, 取字节集左边 (缓冲区, rlen))
+赋值 (节名字节集数组, 分割字节集 (缓冲区, { 0 }, ))
+.计次循环首 (取数组成员数 (节名字节集数组), i)
+    加入成员 (项名数组, 到文本 (节名字节集数组 [i]))
+.计次循环尾 ()
+返回 (rlen)
+
+.子程序 高级读配置项, 文本型, 公开, 读配置项
+.参数 配置文件名, 文本型, , 
+.参数 节名, 文本型, , 
+.参数 项名, 文本型, , 
+.参数 默认值, 文本型, 可空, 
+
+.局部变量 缓冲区, 字节集, , , 
+.局部变量 rlen, 整数型, , , 
+
+赋值 (缓冲区, 取空白字节集 (32767))
+赋值 (rlen, 读配置文本_ (节名, 项名, 默认值, 缓冲区, 32767, 配置文件名))
+赋值 (缓冲区, 取字节集左边 (缓冲区, rlen))
+返回 (到文本 (缓冲区))
+
+.子程序 高级写配置项, 整数型, 公开, 
+.参数 配置文件名, 文本型, , 
+.参数 节名, 文本型, , 
+.参数 项名, 文本型, , 
+.参数 项值, 文本型, , 
+
+返回 (删配置文件_节 (节名, 项名, 项值, 配置文件名))
+
+.子程序 高级删配置项, 整数型, 公开, 
+.参数 配置文件名, 文本型, , 
+.参数 节名, 文本型, , 
+.参数 项名, 文本型, , 
+
+返回 (删配置文件_项 (节名, 项名, 0, 配置文件名))
+
+
+.子程序 高级删配置节, 整数型, 公开, 
+.参数 配置文件名, 文本型, , 
+.参数 节名, 文本型, , 
+
+返回 (删配置文件_节 (节名, 0, 0, 配置文件名))
+
+
+.子程序 高级读配置节, 整数型, 公开, 
+.参数 配置文件名, 文本型, , 
+.参数 节名称, 文本型, , 
+.参数 项名及值, 文本型, 参考 数组, 
+
+.局部变量 缓冲区, 字节集, , , 
+.局部变量 rlen, 整数型, , , 
+.局部变量 项名及值字节集数组, 字节集, , "0", 
+.局部变量 i, 整数型, , , 
+
+清除数组 (项名及值)
+赋值 (缓冲区, 取空白字节集 (32767))
+赋值 (rlen, GetPrivateProfileSection (节名称, 缓冲区, 32767, 配置文件名))
+赋值 (缓冲区, 取字节集左边 (缓冲区, rlen))
+赋值 (项名及值字节集数组, 分割字节集 (缓冲区, { 0 }, ))
+.计次循环首 (取数组成员数 (项名及值字节集数组), i)
+    加入成员 (项名及值, 到文本 (项名及值字节集数组 [i]))
+.计次循环尾 ()
+返回 (rlen)
+
+
+.子程序 高级取配置节名, 整数型, 公开, 
+.参数 配置文件名, 文本型, , 
+.参数 节名数组, 文本型, 参考 数组, 
+
+.局部变量 缓冲区, 字节集, , , 
+.局部变量 rlen, 整数型, , , 
+.局部变量 节名字节集数组, 字节集, , "0", 
+.局部变量 i, 整数型, , , 
+
+清除数组 (节名数组)
+赋值 (缓冲区, 取空白字节集 (32767))
+赋值 (rlen, GetPrivateProfileSectionNames (缓冲区, 32767, 配置文件名))
+赋值 (缓冲区, 取字节集左边 (缓冲区, rlen))
+赋值 (节名字节集数组, 分割字节集 (缓冲区, { 0 }, ))
+
+.计次循环首 (取数组成员数 (节名字节集数组), i)
+    加入成员 (节名数组, 到文本 (节名字节集数组 [i]))
+     ' 输出调试文本 (到文本 (节名字节集数组 [i]))
+.计次循环尾 ()
+返回 (rlen)
+
+.程序集 进程操作, , , 
+
+.子程序 读物理内存, 字节集, , 失败返回{}，成功返回相应数据
+.参数 地址, 长整数型, , 
+.参数 长度, 整数型, , <=4096
+
+.局部变量 MEMORY_CHUNKS, 字节集, , , 
+.局部变量 ret, 字节集, , , 
+.局部变量 retlen, 整数型, , , 
+
+赋值 (ret, 取空白字节集 (长度))
+赋值 (MEMORY_CHUNKS, 相加 (取字节集左边 (到字节集 (地址), 4), 到字节集 (取字节集指针_ (ret, ret, 0)), 到字节集 (长度)))
+NtSystemDebugControl (#SysDbgReadVirtualMemory, MEMORY_CHUNKS, 12, 0, 0, retlen) ' 12为MEMORY_CHUNKS的长度
+.如果真 (小于或等于 (retlen, 0))
+    赋值 (ret, {  })
+.如果真结束
+返回 (ret)
+
+.子程序 内存线程优化, 空白型, 公开, 内存优化（其实就是将实际内存转移至虚拟内存，周期200）
+SetProcessWorkingSetSize (-1, -1, -1)
+ ' 高精度等待 (200000)
+ ' 内存线程优化 ()
+
+.子程序 隐藏进程, 逻辑型, 公开, 隐藏自身进程（XP，XP2）
+.参数 pid, 整数型, 可空, 空为隐藏本进程，可输入其它进程PID
+
+.局部变量 eprocess, 长整数型, , , 
+.局部变量 hand, 整数型, , , 
+.局部变量 temp, 字节集, , , 
+.局部变量 fw_, 长整数型, , , 
+.局部变量 bw_, 长整数型, , , 
+.局部变量 fw, 字节集, , , 
+.局部变量 bw, 字节集, , , 
+
+提升进程权限 ()
+.如果 (是否为空 (pid))
+    赋值 (hand, 用保护型打开进程 (2075311, 真, 取自进程ID ()))
+    赋值 (eprocess, 取进程EProcess (取自进程ID ()))
+    关闭系统快照 (hand)
+    
+.否则
+    赋值 (eprocess, 取进程EProcess (pid))
+.如果结束
+.如果真 (等于 (eprocess, 0))
+    返回 (假)
+.如果真结束
+' 本源码来自易语言资源网(www.wodesoft.com)
+赋值 (temp, 读物理内存 (相加 (eprocess, 136), 4))
+.如果真 (等于 (temp, {  }))
+    返回 (假)
+.如果真结束
+赋值 (fw_, 取字节集数据 (temp, #长整数型, ))
+赋值 (fw, temp)
+
+
+赋值 (temp, 读物理内存 (相加 (eprocess, 140), 4))
+.如果真 (等于 (temp, {  }))
+    返回 (假)
+.如果真结束
+赋值 (bw_, 取字节集数据 (temp, #长整数型, ))
+赋值 (bw, temp)
+
+
+.如果真 (等于 (写物理内存 (相加 (fw_, 4), bw), -1))
+    返回 (假)
+.如果真结束
+
+.如果真 (等于 (写物理内存 (bw_, fw), -1))
+    返回 (假)
+.如果真结束
+返回 (真)
+
+.子程序 写物理内存, 整数型, , 失败返回-1，成功返回0
+.参数 地址, 长整数型, , 
+.参数 数据, 字节集, , <=4096
+
+.局部变量 MEMORY_CHUNKS, 字节集, , , 
+.局部变量 ret, 整数型, , , 
+.局部变量 retlen, 整数型, , , 
+.局部变量 len, 整数型, , , 
+
+赋值 (len, 取字节集长度 (数据))
+赋值 (MEMORY_CHUNKS, 相加 (取字节集左边 (到字节集 (地址), 4), 到字节集 (取字节集指针_ (数据, 数据, 0)), 到字节集 (len)))
+NtSystemDebugControl (#SysDbgWriteVirtualMemory, MEMORY_CHUNKS, 12, 0, 0, retlen) ' 12为MEMORY_CHUNKS的长度
+.如果真 (小于或等于 (retlen, 0))
+    赋值 (ret, -1)
+.如果真结束
+返回 (ret)
+
+
+.子程序 修改窗口标题, 逻辑型, 公开, 修改指定窗口的窗口标题,成功返回真,否则返回假
+.参数 原窗口标题, 文本型, , 可为窗口标题的一部分
+.参数 新标题, 文本型, , 
+
+.局部变量 句柄, 整数型, , , 
+.局部变量 标题, 文本型, , , 
+
+赋值 (句柄, 取前台窗口句柄 ())
+.判断循环首 (不等于 (句柄, 0))
+    赋值 (标题, 未知支持库函数_76 (句柄))
+    .如果真 (大于 (寻找文本 (标题, 原窗口标题, , 假), 0))
+        跳出循环 ()
+    .如果真结束
+    赋值 (句柄, 查找窗口_ (句柄, 2))
+.判断循环尾 ()
+.如果 (不等于 (句柄, 0))
+    .如果 (不等于 (置窗口标题 (句柄, 新标题), 0))
+        返回 (真)
+    .否则
+        返回 (假)
+    .如果结束
+    
+.否则
+    返回 (假)
+.如果结束
+
+
+.子程序 取进程EProcess, 长整数型, , 0为失败
+.参数 pid, 整数型, , 
+
+.局部变量 ret, 空白型, , , 
+.局部变量 信息块, 字节集, , , 
+.局部变量 retlen, 空白型, , , 
+.局部变量 temp, SYSTEM_HANDLE_INFORMATION, , , 
+.局部变量 信息块指针偏移, 空白型, , , 
+.局部变量 number, 空白型, , , 
+.局部变量 结果, 长整数型, , , 
+
+赋值 (retlen, 1)
+.循环判断首 ()
+    赋值 (信息块, 取空白字节集 (retlen))
+    赋值 (ret, ZwQuerySystemInformation (#system_handle_infomation, 信息块, retlen, 0))
+    .如果 (等于 (ret, #STATUS_INFO_LENGTH_MISMATCH))
+        赋值 (retlen, 相乘 (retlen, 2))
+        赋值 (信息块, 取空白字节集 (retlen))
+    .否则
+        跳出循环 ()
+    .如果结束
+    
+.循环判断尾 (等于 (ret, #STATUS_INFO_LENGTH_MISMATCH))
+
+赋值 (信息块指针偏移, 取字节集指针_ (信息块, 信息块, 0))
+复制内存整数 (number, 信息块指针偏移, 4)
+赋值 (信息块指针偏移, 相加 (信息块指针偏移, 4))
+.计次循环首 (number, )
+    RtlMoveMemory2 (temp, 信息块指针偏移, 16)
+    .如果真 (并且 (等于 (pid, temp.ProcessId), 等于 (temp.ObjectTypeNumber, 5)))
+        返回 (十六文本至长整数 (取十六进制文本 (temp.Object)))
+    .如果真结束
+    赋值 (信息块指针偏移, 相加 (信息块指针偏移, 16))
+.计次循环尾 ()
+返回 (0)
+
+.子程序 十六文本至长整数, 长整数型, , 
+.参数 x, 文本型, , 要转换的十六进制文本
+
+.局部变量 ret, 长整数型, , , 
+
+StrToInt64ExA (相加 (“0x”, x), 1, ret)
+返回 (ret)
+
+.程序集 注入操作, , , 
+
+.子程序 注入DLL, 整数型, 公开, 成功返回0,失败返回负值.
+.参数 目标进程ID, 整数型, , 即PID
+.参数 DLL文件全名, 文本型, , 不含路径,含扩展名,如:MyDLL.dll
+.参数 DLL装载路径, 文本型, , 不含名称,如:C:\WINDOWS\SYSTEM32\
+.参数 DLL函数名, 文本型, , 子程序的实际名称即可,文本型,区分大小写
+.参数 隐藏错误信息, 逻辑型, 可空, 是否在出错时自动调用错误信息框
+
+.局部变量 TrueAddress, 整数型, , , 
+.局部变量 Code, 字节集, , , 
+.局部变量 pHandle, 整数型, , , 
+.局部变量 dwSize, 整数型, , , 
+.局部变量 DLLName, 文本型, , , 
+.局部变量 lpbuf, 整数型, , , 
+.局部变量 Ret, 整数型, , , 
+.局部变量 Handle, 整数型, , , 
+.局部变量 hThread, 整数型, , , 
+.局部变量 SECURITY, SECURITY_ATTRIBUTES, , , 
+.局部变量 dwRet, 整数型, , , 
+.局部变量 RemotBaseadDr, 整数型, , , 
+.局部变量 LocalbaseadDr, 整数型, , , 
+.局部变量 Path, 文本型, , , 
+
+赋值 (pHandle, OpenProcess (2035711, 0, 目标进程ID))
+.如果真 (等于 (pHandle, 0))
+    .如果真 (取反 (隐藏错误信息))
+        信息框 (提取错误信息 (#打开进程失败), #错误图标, 提取错误标题 (#打开进程失败))
+    .如果真结束
+    返回 (提取错误代码 (#打开进程失败))
+.如果真结束
+赋值 (DLLName, DLL文件全名)
+赋值 (Path, 相加 (选择 (等于 (取文本右边 (DLL装载路径, 1), “\”), DLL装载路径, 相加 (DLL装载路径, “\”)), DLLName))
+赋值 (dwSize, 相加 (取文本长度 (Path), 1))
+赋值 (lpbuf, VirtualAllocEx (pHandle, 0, dwSize, 4096, 64))
+.如果真 (等于 (lpbuf, 0))
+    .如果真 (取反 (隐藏错误信息))
+        信息框 (提取错误信息 (#分配内存失败), #错误图标, 提取错误标题 (#分配内存失败))
+    .如果真结束
+    CloseHandle (pHandle)
+    返回 (提取错误代码 (#分配内存失败))
+.如果真结束
+赋值 (Ret, WriteProcessMemory (pHandle, lpbuf, 相加 (到字节集 (Path), { 0 }), dwSize, 0))
+.如果真 (等于 (Ret, 0))
+    .如果真 (取反 (隐藏错误信息))
+        信息框 (提取错误信息 (#写内存失败), #错误图标, 提取错误标题 (#写内存失败))
+    .如果真结束
+    VirtualFreeEx (pHandle, lpbuf, dwSize, 16384)
+    返回 (提取错误代码 (#写内存失败))
+.如果真结束
+赋值 (Handle, GetModuleHandle (“kernel32.dll”))
+赋值 (Handle, GetProcAddress (Handle, “LoadLibraryA”))
+赋值 (hThread, CreateRemoteThread (pHandle, SECURITY, 0, Handle, lpbuf, 0, 0))
+WaitForSingleObject (hThread, -1)
+GetExitCodeThread (hThread, dwRet)
+赋值 (RemotBaseadDr, dwRet)
+VirtualFreeEx (pHandle, lpbuf, dwSize, 16384)
+CloseHandle (hThread)
+赋值 (LocalbaseadDr, LoadLibraryEx (Path, 0, 0))
+赋值 (Handle, GetProcAddress (LocalbaseadDr, DLL函数名))
+.如果真 (等于 (Handle, 0))
+    .如果真 (取反 (隐藏错误信息))
+        信息框 (提取错误信息 (#取函数地址失败), #错误图标, 提取错误标题 (#取函数地址失败))
+    .如果真结束
+    FreeLibrary (LocalbaseadDr)
+    CloseHandle (pHandle)
+    返回 (提取错误代码 (#取函数地址失败))
+.如果真结束
+赋值 (TrueAddress, 相减 (相加 (RemotBaseadDr, Handle), LocalbaseadDr))
+FreeLibrary (LocalbaseadDr)
+赋值 (lpbuf, VirtualAllocEx (pHandle, 0, 5, 4096, 64))
+.如果真 (等于 (lpbuf, 0))
+    .如果真 (取反 (隐藏错误信息))
+        信息框 (提取错误信息 (#分配内存失败), #错误图标, 提取错误标题 (#分配内存失败))
+    .如果真结束
+    CloseHandle (pHandle)
+    返回 (提取错误代码 (#分配内存失败))
+.如果真结束
+赋值 (Code, 相加 ({ 233 }, 到字节集 (到整数 (相减 (TrueAddress, lpbuf, 5)))))
+赋值 (Ret, WriteProcessMemory (pHandle, lpbuf, Code, 5, 0))
+.如果真 (等于 (Ret, 0))
+    .如果真 (取反 (隐藏错误信息))
+        信息框 (提取错误信息 (#写内存失败), #错误图标, 提取错误标题 (#写内存失败))
+    .如果真结束
+    VirtualFreeEx (pHandle, lpbuf, 5, 16384)
+    返回 (提取错误代码 (#写内存失败))
+.如果真结束
+赋值 (hThread, CreateRemoteThread (pHandle, SECURITY, 0, lpbuf, 0, 0, 0))
+WaitForSingleObject (hThread, -1)
+VirtualFreeEx (pHandle, lpbuf, 5, 16384)
+CloseHandle (hThread)
+CloseHandle (pHandle)
+赋值 (DLL加注次数, 相加 (DLL加注次数, 1))
+返回 (0)
+
+.子程序 卸载DLL, 整数型, 公开, Uninst-DLL,成功返回0,失败返回负值
+.参数 目标进程ID, 整数型, , 即PID
+.参数 DLL文件全名, 文本型, , 不含路径,含扩展名,如:MyDLL.dll
+.参数 DLL装载路径, 文本型, , 不含名称,如:C:\WINDOWS\SYSTEM32\
+.参数 隐藏错误信息, 逻辑型, 可空, 是否在出错时自动调用错误信息框,若为真则不调用
+
+.局部变量 执行结果, 空白型, , , 
+
+.计次循环首 (DLL加注次数, )
+    赋值 (执行结果, UnHookDLL (目标进程ID, DLL文件全名, DLL装载路径, 假))
+    .如果真 (并且 (不等于 (执行结果, 0), 取反 (隐藏错误信息)))
+        .如果真 (等于 (信息框 (提取错误信息 (#卸载DLL失败), 相加 (#取消是否钮, #默认按钮二), 提取错误标题 (#卸载DLL失败)), #是钮))
+            跳出循环 ()
+        .如果真结束
+        
+    .如果真结束
+    
+.计次循环尾 ()
+返回 (执行结果)
+
+.程序集 注入模块, , , 
+
+.子程序 提取错误标题, 文本型, , 
+.参数 错误内容, 文本型, , 
+
+.局部变量 结果数组, 文本型, , "0", 
+
+赋值 (结果数组, 分割文本 (错误内容, “|”, ))
+返回 (结果数组 [2])
+
+.子程序 提取错误信息, 文本型, , 
+.参数 错误内容, 文本型, , 
+
+.局部变量 结果数组, 文本型, , "0", 
+
+赋值 (结果数组, 分割文本 (错误内容, “|”, ))
+返回 (结果数组 [3])
+
+.子程序 提取错误代码, 整数型, , 
+.参数 错误内容, 文本型, , 
+
+.局部变量 结果数组, 文本型, , "0", 
+
+赋值 (结果数组, 分割文本 (错误内容, “|”, ))
+返回 (到整数 (结果数组 [1]))
+
+.子程序 UnHookDLL, 整数型, 公开, Uninst-DLL,成功返回0,失败返回负值
+.参数 目标进程ID, 整数型, , 即PID
+.参数 DLL文件全名, 文本型, , 不含路径,含扩展名,如:MyDLL.dll
+.参数 DLL装载路径, 文本型, , 不含名称,如:C:\WINDOWS\SYSTEM32\
+.参数 隐藏错误信息, 逻辑型, 可空, 是否在出错时自动调用错误信息框
+
+.局部变量 pHandle, 整数型, , , 
+.局部变量 dwSize, 整数型, , , 
+.局部变量 DLLName, 文本型, , , 
+.局部变量 lpbuf, 整数型, , , 
+.局部变量 Ret, 整数型, , , 
+.局部变量 Handle, 整数型, , , 
+.局部变量 hThread, 整数型, , , 
+.局部变量 SECURITY, SECURITY_ATTRIBUTES, , , 
+.局部变量 dwRet, 整数型, , , 
+.局部变量 hModel, 空白型, , , 
+
+赋值 (pHandle, OpenProcess (2035711, 0, 目标进程ID))
+.如果真 (等于 (pHandle, 0))
+    .如果真 (取反 (隐藏错误信息))
+        信息框 (提取错误信息 (#打开进程失败), #错误图标, 提取错误标题 (#打开进程失败))
+    .如果真结束
+    返回 (提取错误代码 (#打开进程失败))
+.如果真结束
+赋值 (DLLName, 相加 (选择 (等于 (取文本右边 (DLL装载路径, 1), “\”), DLL装载路径, 相加 (DLL装载路径, “\”)), DLL文件全名))
+赋值 (dwSize, 相加 (取文本长度 (DLLName), 1))
+赋值 (lpbuf, VirtualAllocEx (pHandle, 0, dwSize, 4096, 64))
+.如果真 (等于 (lpbuf, 0))
+    .如果真 (取反 (隐藏错误信息))
+        信息框 (提取错误信息 (#分配内存失败), #错误图标, 提取错误标题 (#分配内存失败))
+    .如果真结束
+    CloseHandle (pHandle)
+    返回 (提取错误代码 (#分配内存失败))
+.如果真结束
+赋值 (Ret, WriteProcessMemory (pHandle, lpbuf, 相加 (到字节集 (DLLName), { 0 }), dwSize, 0))
+.如果真 (等于 (Ret, 0))
+    .如果真 (取反 (隐藏错误信息))
+        信息框 (提取错误信息 (#写内存失败), #错误图标, 提取错误标题 (#写内存失败))
+    .如果真结束
+    VirtualFreeEx (pHandle, lpbuf, dwSize, 16384)
+    返回 (提取错误代码 (#写内存失败))
+.如果真结束
+赋值 (Handle, GetModuleHandle (“kernel32.dll”))
+赋值 (Handle, GetProcAddress (Handle, “GetModuleHandleA”))
+赋值 (hThread, CreateRemoteThread (pHandle, SECURITY, 0, Handle, lpbuf, 0, 0))
+WaitForSingleObject (hThread, -1)
+GetExitCodeThread (hThread, dwRet)
+赋值 (hModel, dwRet)
+VirtualFreeEx (pHandle, lpbuf, dwSize, 16384)
+CloseHandle (hThread)
+赋值 (Handle, GetModuleHandle (“kernel32.dll”))
+赋值 (Handle, GetProcAddress (Handle, “FreeLibrary”))
+赋值 (hThread, CreateRemoteThread (pHandle, SECURITY, 0, Handle, hModel, 0, 0))
+WaitForSingleObject (hThread, -1)
+CloseHandle (hThread)
+CloseHandle (pHandle)
+返回 (0)
+
+
+.程序集 新进线程, , , 
+
+.子程序 用保护型打开进程, 整数型, , 
+.参数 dwDesiredAccess, 整数型, , 
+.参数 bInhert, 逻辑型, , 
+.参数 ProcessId, 整数型, , 
+
+.局部变量 st, 整数型, , , 
+.局部变量 cid, CLIENT_ID, , , 
+.局部变量 oa, OBJECT_ATTRIBUTES, , , 
+.局部变量 NumOfHandle, 整数型, , , 
+.局部变量 pbi, PROCESS_BASIC_INFORMATION, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 hProcessToDup, 整数型, , , 
+.局部变量 hProcessCur, 整数型, , , 
+.局部变量 hProcessToRet, 整数型, , , 
+.局部变量 匿名局部变量_4142, 空白型, , , 
+.局部变量 h_info, SYSTEM_HANDLE_TABLE_ENTRY_INFO, , , 
+.局部变量 匿名局部变量_4144, 空白型, , , 
+.局部变量 retlen, 整数型, , , 
+.局部变量 a, 字节集, , , 
+.局部变量 b, 整数型, , , 
+.局部变量 c, 字节集, , , 
+.局部变量 匿名局部变量_4149, 空白型, , , 
+.局部变量 ret, 整数型, , , 
+
+赋值 (oa.Length, 24)
+.如果真 (bInhert)
+    赋值 (oa.Attributes, 位或 (oa.Attributes, #OBJ_INHERIT))
+.如果真结束
+赋值 (cid.UniqueProcess, 相加 (ProcessId, 1))
+赋值 (st, ZwOpenProcess (hProcessToRet, dwDesiredAccess, oa, cid))
+.如果真 (大于或等于 (st, 0))
+    赋值 (ret, hProcessToRet)
+    返回 (ret)
+.如果真结束
+赋值 (retlen, 1)
+.循环判断首 ()
+    赋值 (a, 取空白字节集 (retlen))
+    赋值 (ret, ZwQuerySystemInformation (16, a, retlen, 0))
+    .如果 (等于 (ret, #STATUS_INFO_LENGTH_MISMATCH))
+        赋值 (retlen, 相乘 (retlen, 2))
+        赋值 (a, 取空白字节集 (retlen))
+    .否则
+        跳出循环 ()
+    .如果结束
+    
+.循环判断尾 (等于 (ret, #STATUS_INFO_LENGTH_MISMATCH))
+赋值 (b, 取指针_字节集 (a, a, 0))
+RtlMoveMemory3 (NumOfHandle, b, 4)
+赋值 (b, 相加 (b, 4))
+.计次循环首 (NumOfHandle, i)
+    RtlMoveMemory1 (h_info, b, 16)
+    .如果真 (等于 (h_info.ObjectTypeIndex, #OB_TYPE_PROCESS))
+        赋值 (cid.UniqueProcess, h_info.UniqueProcessId)
+        赋值 (st, ZwOpenProcess (hProcessToDup, #PROCESS_DUP_HANDLE, oa, cid))
+        .如果真 (大于或等于 (st, 0))
+            赋值 (st, ZwDuplicateObject (hProcessToDup, h_info.HandleValue, #ZwGetCurrentProcess, hProcessCur, #PROCESS_ALL_ACCESS, 0, #DUPLICATE_SAME_ATTRIBUTES))
+            .如果真 (大于或等于 (st, 0))
+                赋值 (st, ZwQueryInformationProcess (hProcessCur, 0, pbi, 24, 0))
+                .如果真 (大于或等于 (st, 0))
+                    .如果真 (等于 (pbi.UniqueProcessId, ProcessId))
+                        赋值 (st, ZwDuplicateObject (hProcessToDup, h_info.HandleValue, #ZwGetCurrentProcess, hProcessToRet, dwDesiredAccess, #OBJ_INHERIT, #DUPLICATE_SAME_ATTRIBUTES))
+                        .如果真 (大于或等于 (st, 0))
+                            赋值 (ret, hProcessToRet)
+                        .如果真结束
+                        
+                    .如果真结束
+                    
+                .如果真结束
+                
+            .如果真结束
+            赋值 (st, ZwClose (hProcessCur))
+        .如果真结束
+        赋值 (st, ZwClose (hProcessToDup))
+    .如果真结束
+    赋值 (b, 相加 (b, 16))
+.计次循环尾 ()
+返回 (ret)
+
+.子程序 用保护型结束进程, 逻辑型, , 
+.参数 hProcess, 整数型, , 
+.参数 ExitStatus, 整数型, , 0
+
+.局部变量 st, 整数型, , , 
+.局部变量 hJob, 整数型, , , 
+.局部变量 oa, OBJECT_ATTRIBUTES, , , 
+.局部变量 ret, 逻辑型, , , 
+
+赋值 (ret, 假)
+赋值 (oa.Length, 24)
+赋值 (st, ZwCreateJobObject (hJob, #JOB_OBJECT_ALL_ACCESS, oa))
+.如果真 (大于或等于 (st, 0))
+    赋值 (st, ZwAssignProcessToJobObject (hJob, hProcess))
+    .如果真 (大于或等于 (st, 0))
+        赋值 (st, ZwTerminateJobObject (hJob, ExitStatus))
+        .如果真 (大于或等于 (st, 0))
+            赋值 (ret, 真)
+        .如果真结束
+        
+    .如果真结束
+    ZwClose (hJob)
+.如果真结束
+.如果真 (等于 (ret, 假))
+    赋值 (st, ZwTerminateProcess (hProcess, ExitStatus))
+    .如果真 (大于或等于 (st, 0))
+        赋值 (ret, 真)
+    .如果真结束
+    
+.如果真结束
+返回 (ret)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

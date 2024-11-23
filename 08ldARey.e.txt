@@ -1,0 +1,214 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 锁屏幕
+    左边 = 0
+    顶边 = 0
+    宽度 = 301
+    高度 = 183
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 0
+    底图方式 = 3
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 假
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 假
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 假
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 真
+    保持标题栏激活 = 假
+    底图 =  ' 已保存到：D:\易语言学习\Data\08ldARey.e\_启动窗口_底图
+    图标 =  ' 已保存到：D:\易语言学习\Data\08ldARey.e\_启动窗口_图标.ico
+    背景音乐 =  ' 空
+    标题 = “锁屏幕”
+    帮助文件名 = “”
+
+
+
+.常量 KEYEVENTF_KEYUP, "2", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 2 0 扩展界面支持库一
+
+
+
+
+数据类型 按键信息, , 
+    .成员 虚拟码, 整数型, , , 
+    .成员 扫描码, 整数型, , , 
+    .成员 标记, 整数型, , , 
+    .成员 时间, 整数型, , , 
+    .成员 额外信息, 整数型, , , 
+
+数据类型 rect, 公开, 11
+    .成员 Left, 整数型, , , 
+    .成员 Top, 整数型, , , 
+    .成员 Right, 整数型, , , 
+    .成员 Bottom, 整数型, , , 
+
+
+.DLL命令 GetModuleHandleA, 整数型, "", "GetModuleHandleA", , 
+    .参数 lpModuleName, 整数型, , 
+
+.DLL命令 卸载钩子, 整数型, "", "UnhookWindowsHookEx", , 
+    .参数 hHook, 整数型, , 
+
+.DLL命令 下一个钩子, 整数型, "", "CallNextHookEx", , 
+    .参数 hHook, 整数型, , 
+    .参数 icode, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 安装钩子, 整数型, "", "SetWindowsHookExA", , 
+    .参数 ihook, 整数型, , 
+    .参数 lpfunc, 子程序指针, , 
+    .参数 hin, 整数型, , 
+    .参数 threadid, 整数型, , 
+
+.DLL命令 CopyMemory, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 按键信息, , 
+    .参数 Source, 整数型, , 
+    .参数 cbCopy, 整数型, , 
+
+.DLL命令 限制移动, 整数型, "user32", "ClipCursor", , 11
+    .参数 lpRect, rect, , 
+
+.DLL命令 取窗口大小, 空白型, "", "GetWindowRect", , 11
+    .参数 hwnd, 整数型, , 
+    .参数 lpRect, rect, , 
+
+.DLL命令 限制键盘, 空白型, "", "keybd_event", , 11
+    .参数 AAAAAA, 空白型, , 
+    .参数 VVVVV, 空白型, , 
+    .参数 BBBBB, 空白型, , 
+    .参数 CCCCCC, 空白型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 钩子句柄, 整数型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+_按钮1_被单击 ()
+赋值 (., 假)
+赋值 (钩子句柄, 安装钩子 (13, &钩子函数, GetModuleHandleA (0), 0))
+屏蔽任务管理器 ()
+屏蔽任务管理器9X ()
+
+
+.子程序 屏蔽任务管理器, 空白型, , 即:禁止CTRL+ALT+DEL启动任务管理器,不用重启,仅对WINNT系统有效.
+
+写注册项 (#根类, “Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableTaskMgr”, 1)
+写注册项 (#现行设置, “Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableTaskMgr”, 1)
+写注册项 (#现行用户, “Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableTaskMgr”, 1)
+
+
+.子程序 屏蔽任务管理器9X, 空白型, 公开, 即:禁止CTRL+ALT+DEL启动任务管理器,不用重启,仅对WIN9X系统有效.
+写注册项 (#根类, “Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableTaskMgr”, 1)
+写注册项 (#现行设置, “Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableTaskMgr”, 1)
+写注册项 (#现行用户, “Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableTaskMgr”, 1)
+
+
+.子程序 钩子函数, 整数型, , 
+.参数 icode, 整数型, , 
+.参数 wparam, 整数型, , 
+.参数 lparam, 整数型, , 
+
+.局部变量 按键信息, 按键信息, , , 
+
+CopyMemory (按键信息, lparam, 28)
+.如果真 (等于 (icode, 0))
+    .如果真 (或者 (等于 (按键信息.虚拟码, #Alt键), 等于 (按键信息.虚拟码, #Tab键), 等于 (按键信息.虚拟码, #F4键)))
+        返回 (1)
+    .如果真结束
+    .如果真 (或者 (等于 (按键信息.虚拟码, #Esc键), 等于 (按键信息.虚拟码, #Ctrl键), 等于 (按键信息.虚拟码, 91), 等于 (按键信息.虚拟码, 92)))
+        返回 (1)
+    .如果真结束
+    返回 (0)
+.如果真结束
+返回 (下一个钩子 (钩子句柄, icode, wparam, lparam))
+
+
+.子程序 恢复任务管理器, 空白型, , 即:恢复被禁止的CTRL+ALT+DEL启动任务管理器
+写注册项 (#根类, “Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableTaskMgr”, 0)
+写注册项 (#现行设置, “Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableTaskMgr”, 0)
+写注册项 (#现行用户, “Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableTaskMgr”, 0)
+
+.子程序 恢复任务管理器9X, 空白型, , 即:禁止CTRL+ALT+DEL启动任务管理器,不用重启,仅对WIN9X系统有效.
+写注册项 (#根类, “Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableTaskMgr”, 0)
+写注册项 (#现行设置, “Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableTaskMgr”, 0)
+写注册项 (#现行用户, “Software\Microsoft\Windows\CurrentVersion\Policies\System\DisableTaskMgr”, 0)
+
+.子程序 _锁机按钮_被单击, 空白型, , 
+
+.如果真 (等于 (.标题, “锁机”))
+    赋值 (.标题, “解锁”)
+    赋值 (.禁止, 真)
+    赋值 (.可视, 真)
+    赋值 (., 取反 (.))
+    赋值 (., “输入解锁密码”)
+    _按钮1_被单击 ()
+    返回 ()
+.如果真结束
+.如果真 (等于 (.标题, “解锁”))
+    .如果真 (等于 (.内容, .内容))
+        卸载钩子 (_启动窗口.)
+        恢复任务管理器 ()
+        恢复任务管理器9X ()
+        结束 ()
+        返回 ()
+    .如果真结束
+    
+.如果真结束
+
+
+.子程序 设置组件位置, 空白型, , 
+赋值 (_启动窗口., 取屏幕宽度 ())
+赋值 (_启动窗口., 取屏幕高度 ())
+赋值 (_启动窗口., 0)
+赋值 (_启动窗口., 0)
+赋值 (., 取屏幕宽度 ())
+赋值 (., 取屏幕高度 ())
+
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 窗口大小, rect, , , 
+.局部变量 空值, 整数型, , , 
+.局部变量 窗口ID, 整数型, , , 
+
+赋值 (窗口ID, 取窗口句柄 ())
+取窗口大小 (窗口ID, 窗口大小)
+赋值 (窗口大小.Top, 相加 (窗口大小.Top, 1))
+限制移动 (窗口大小)
+
+.子程序 _时钟1_周期事件, 空白型, , 
+_按钮1_被单击 ()
+限制键盘 (#Alt键, 0, #KEYEVENTF_KEYUP, 0)
+限制键盘 (#Tab键, 0, #KEYEVENTF_KEYUP, 0)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

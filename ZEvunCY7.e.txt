@@ -1,0 +1,2982 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.wodesoft.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.wodesoft.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.wodesoft.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 660
+    高度 = 560
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 1
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “3L  --By:YHan”
+    帮助文件名 = “”
+
+窗口 窗口_添加启动
+    左边 = 50
+    顶边 = 50
+    宽度 = 220
+    高度 = 183
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 假
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 假
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “添加启动项”
+    帮助文件名 = “”
+
+窗口 窗口_查看服务属性
+    左边 = 50
+    顶边 = 50
+    宽度 = 393
+    高度 = 380
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “属性”
+    帮助文件名 = “”
+
+
+
+.常量 HKLM, "2147483650", , 
+.常量 HKCU, "2147483649", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 2 0 扩展界面支持库一
+
+
+
+
+数据类型 SHfileInfo, , 
+    .成员 hIcon, 空白型, , , 
+    .成员 iIcon, 空白型, , , 
+    .成员 dwAttributes, 空白型, , , 
+    .成员 szDisplayName, 字节型, , "256", 
+    .成员 szTypeName, 字节型, , "80", 
+
+数据类型 ShellEXECuteInfo, , 设定执行文件信息_
+    .成员 结构大小, 整数型, , , cbSize
+    .成员 标志, 整数型, , , fMask
+    .成员 窗口句柄, 整数型, , , hwnd
+    .成员 操作命令, 文本型, , , lpVerb
+    .成员 文件名, 文本型, , , lpFile
+    .成员 应用程序参数, 文本型, , , lpParameters
+    .成员 目录, 文本型, , , lpDirectory
+    .成员 显示标志, 整数型, , , nShow
+    .成员 实例句柄, 整数型, , , hInstApp
+    .成员 项目标识符列表结构指针, 整数型, , , lpIDList
+    .成员 文件类别, 文本型, , , lpClass
+    .成员 热键句柄, 整数型, , , hkeyClass
+    .成员 热键, 整数型, , , dwHotKey
+    .成员 图标句柄, 整数型, , , hIcon
+    .成员 进程句柄, 整数型, , , hProcess
+
+数据类型 TBBUTTON, , 工具栏按钮
+    .成员 iBitmap, 整数型, , , 按钮位图索引
+    .成员 idCommand, 整数型, , , 按钮命令ID
+    .成员 fsState, 字节型, , , TBSTATE_
+    .成员 fsStyle, 字节型, , , TBSTYLE_
+    .成员 bReserved1, 字节型, , , 
+    .成员 bReserved2, 字节型, , , 
+    .成员 dwData, 整数型, , , 应用程序定义的数据
+    .成员 iString, 整数型, , , 按钮帮助文本字符串索引
+
+数据类型 PROCESSENTRY32, , 
+    .成员 dwSize, 整数型, , , 
+    .成员 cntUsage, 整数型, , , 
+    .成员 th32ProcessID, 整数型, , , 
+    .成员 th32DefaultHeapID, 整数型, , , 
+    .成员 th32ModuleID, 整数型, , , 
+    .成员 cntThreads, 整数型, , , 
+    .成员 th32ParentProcessID, 整数型, , , 
+    .成员 pcPriClassBase, 整数型, , , 
+    .成员 dwFlags, 整数型, , , 
+    .成员 szExeFile, 字节型, , "256", 如果写成文本型,此处将会被放置一个指针,很显然会出错.
+
+数据类型 MIB_TCPEXTABLE, , 
+    .成员 dwNumEntries, 整数型, , , 
+    .成员 table, MIB_TCPEXROW, , "1", 
+
+数据类型 MIB_TCPEXROW, , 
+    .成员 dwState, 整数型, , , 
+    .成员 dwLocalAddr, 整数型, , , 
+    .成员 dwLocalPort, 整数型, , , 
+    .成员 dwRemoteAddr, 整数型, , , 
+    .成员 dwRemotePort, 整数型, , , 
+    .成员 dwProcessPID, 整数型, , , 
+
+数据类型 MIB_UDPEXTABLE, , 
+    .成员 dwNumEntries, 整数型, , , 
+    .成员 table, MIB_UDPEXROW, , "1", 
+
+数据类型 MIB_UDPEXROW, , 
+    .成员 dwLocalAddr, 整数型, , , 
+    .成员 dwLocalPort, 整数型, , , 
+    .成员 dwProcessPId, 整数型, , , 
+
+数据类型 MIB_TCPROW, , 
+    .成员 dwState, 整数型, , , 
+    .成员 dwLocalAddr, 整数型, , , 
+    .成员 dwLocalPort, 整数型, , , 
+    .成员 dwRemoteAddr, 整数型, , , 
+    .成员 dwRemotePort, 整数型, , , 
+
+数据类型 MIB_TCPTABLE, , 
+    .成员 dwNumEntries, 整数型, , , 
+    .成员 table, MIB_TCPROW, , "100", 
+
+数据类型 Service_Status, , 
+    .成员 dwServiceType, 整数型, , , 
+    .成员 dwCurrentState, 整数型, , , 
+    .成员 dwControlsAccepted, 整数型, , , 
+    .成员 dwWin32ExitCode, 整数型, , , 
+    .成员 dwServiceSpecificExitCode, 整数型, , , 
+    .成员 dwCheckPoint, 整数型, , , 
+    .成员 dwWaitHint, 整数型, , , 
+
+数据类型 Enum_Service_Status_Process, , 
+    .成员 lpServiceName, 文本型, , , 
+    .成员 lpDisplayName, 文本型, , , 
+    .成员 dwServiceType, 整数型, , , SERVICE_STATUS_PROCESS
+    .成员 dwCurrentState, 整数型, , , 
+    .成员 dwControlsAccepted, 整数型, , , 
+    .成员 dwWin32ExitCode, 整数型, , , 
+    .成员 dwServiceSpecificExitCode, 整数型, , , 
+    .成员 dwCheckPoint, 整数型, , , 
+    .成员 dwWaitHint, 整数型, , , 
+    .成员 dwProcessId, 整数型, , , 
+    .成员 dwServiceFlags, 整数型, , , 
+
+数据类型 Process_Memory_Counters, , 进程内存统计_
+    .成员 结构大小, 整数型, , , cb
+    .成员 页错误数量, 整数型, , , PageFaultCount
+    .成员 最高工作设置大小, 整数型, , , PeakWorkingSetSize
+    .成员 当前工作设置大小, 整数型, , , WorkingSetSize
+    .成员 最高页使用, 整数型, , , QuotaPeakPagedPoolUsage
+    .成员 当前页使用, 整数型, , , QuotaPagedPoolUsage
+    .成员 最高非页使用, 整数型, , , QuotaPeakNonPagedPoolUsage
+    .成员 当前非页使用, 整数型, , , QuotaPeakNonPagedPoolUsage
+    .成员 页文件使用, 整数型, , , PagefileUsage
+    .成员 最高页文件使用, 整数型, , , PeakPagefileUsage
+
+数据类型 UNICODE_STRING, , 84+13*8
+    .成员 Length, 短整数型, , , 
+    .成员 MaximumLength, 短整数型, , , 
+    .成员 Buffer, 文本型, , , 
+
+数据类型 SYSTEM_PROCESS_INFORMATION, , 
+    .成员 dwNextEntryOffset, 整数型, , , 
+    .成员 dwNumberOfThreads, 整数型, , , 
+    .成员 qSpareLi1, 长整数型, , , 
+    .成员 qSpareLi2, 长整数型, , , 
+    .成员 qSpareLi3, 长整数型, , , 
+    .成员 qCreateTime, 长整数型, , , 
+    .成员 qUserTime, 长整数型, , , 
+    .成员 qKernelTime, 长整数型, , , 
+    .成员 ImageName, UNICODE_STRING, , , 
+    .成员 nBasePriority, 整数型, , , 
+    .成员 dwProcessId, 整数型, , , 
+    .成员 dwInheritedFromUniqueProcessId, 整数型, , , 
+    .成员 dwHandleCount, 整数型, , , 
+    .成员 dwSessionId, 整数型, , , 
+    .成员 dwSpareUl3, 长整数型, , , 
+    .成员 tPeakVirtualSize, 整数型, , , 
+    .成员 tVirtualSize, 整数型, , , 
+    .成员 dwPageFaultCount, 整数型, , , 
+    .成员 dwPeakWorkingSetSize, 整数型, , , 
+    .成员 dwWorkingSetSize, 整数型, , , 
+    .成员 tQuotaPeakPagedPoolUsage, 整数型, , , 
+    .成员 tQuotaPagedPoolUsage, 整数型, , , 
+    .成员 tQuotaPeakNonPagedPoolUsage, 整数型, , , 
+    .成员 tQuotaNonPagedPoolUsage, 整数型, , , 
+    .成员 tPagefileUsage, 整数型, , , 
+    .成员 tPeakPagefileUsage, 整数型, , , 
+    .成员 tPrivatePageCount, 整数型, , , 
+    .成员 qReadOperationCount, 长整数型, , , 
+    .成员 qWriteOperationCount, 长整数型, , , 
+    .成员 qOtherOperationCount, 长整数型, , , 
+    .成员 qReadTransferCount, 长整数型, , , 
+    .成员 qWriteTransferCount, 长整数型, , , 
+    .成员 qOtherTransferCount, 长整数型, , , 
+
+数据类型 模块信息, , 
+    .成员 size, 整数型, , , 占用字节,本数据类型共用内存长度＝1024
+    .成员 mid, 整数型, , , 
+    .成员 pid, 整数型, , , 
+    .成员 gusage, 整数型, , , 
+    .成员 pusage, 整数型, , , 
+    .成员 base, 整数型, , , 起始地址
+    .成员 bsize, 整数型, , , 内存长度
+    .成员 hmodule, 整数型, , , 模块句柄
+    .成员 szname, 字节型, , "256", 模块名称
+    .成员 szpath, 字节型, , "260", 模块路径
+
+数据类型 TRAYDATA, , 
+    .成员 hwnd, 整数型, , , 
+    .成员 uID, 整数型, , , 
+    .成员 uCallbackMessage, 整数型, , , 
+    .成员 Reserved1, 整数型, , , 
+    .成员 Reserved2, 整数型, , , 
+    .成员 hIcon, 整数型, , , 
+
+数据类型 SYSTEM_PROCESSES, , 
+    .成员 NextEntryDelta, 整数型, , , 
+    .成员 ThreadCount, 整数型, , , 
+    .成员 Reserved1, 整数型, , "6", 
+    .成员 CreateTime, 长整数型, , , 
+    .成员 UserTime, 长整数型, , , 
+    .成员 KernelTime, 长整数型, , , 
+    .成员 ProcessName, UNICODE_STRING, , , 
+    .成员 BasePriority, 整数型, , , 
+    .成员 ProcessID, 整数型, , , 
+    .成员 InheritedFromProcessId, 整数型, , , 
+    .成员 HandleCount, 整数型, , , 
+    .成员 Reserved2, 整数型, , "2", 
+    .成员 VmCounters, VM_COUNTERS, , , 
+    .成员 IoCounters, IO_COUNTERSEX, , , 
+    .成员 Threads, SYSTEM_THREADS, , "255", 
+
+数据类型 VM_COUNTERS, , 
+    .成员 PeakVirtualSize, 整数型, , , 
+    .成员 VirtualSize, 整数型, , , 
+    .成员 PageFaultCount, 整数型, , , 
+    .成员 PeakWorkingSetSize, 整数型, , , 
+    .成员 WorkingSetSize, 整数型, , , 
+    .成员 QuotaPeakPagedPoolUsage, 整数型, , , 
+    .成员 QuotaPagedPoolUsage, 整数型, , , 
+    .成员 QuotaPeakNonPagedPoolUsage, 整数型, , , 
+    .成员 QuotaNonPagedPoolUsage, 整数型, , , 
+    .成员 PagefileUsage, 整数型, , , 
+    .成员 PeakPagefileUsage, 整数型, , , 
+
+数据类型 IO_COUNTERSEX, , 
+    .成员 ReadOperationCount, 长整数型, , , 
+    .成员 WriteOperationCount, 长整数型, , , 
+    .成员 OtherOperationCount, 长整数型, , , 
+    .成员 ReadTransferCount, 长整数型, , , 
+    .成员 WriteTransferCount, 长整数型, , , 
+    .成员 OtherTransferCount, 长整数型, , , 
+
+数据类型 SYSTEM_THREADS, , 
+    .成员 KernelTime, 长整数型, , , 
+    .成员 UserTime, 长整数型, , , 
+    .成员 CreateTime, 长整数型, , , 
+    .成员 WaitTime, 长整数型, , , 
+    .成员 StartAddress, 整数型, , , 
+    .成员 ClientId, CLIENT_ID, , , 
+    .成员 Priority, 整数型, , , 
+    .成员 BasePriority, 整数型, , , 
+    .成员 ContextSwitchCount, 整数型, , , ' ...
+    .成员 State, 整数型, , , 
+    .成员 WaitReason, 整数型, , , 
+
+数据类型 CLIENT_ID, , 
+    .成员 UniqueProcess, 整数型, , , 
+    .成员 UniqueThread, 整数型, , , 
+
+数据类型 SYSTEMTIME, , 
+    .成员 wYear, 短整数型, , , 
+    .成员 wMonth, 短整数型, , , 
+    .成员 wDayOfWeek, 短整数型, , , 
+    .成员 wDay, 短整数型, , , 
+    .成员 wHour, 短整数型, , , 
+    .成员 wMinute, 短整数型, , , 
+    .成员 wSecond, 短整数型, , , 
+    .成员 wMilliseconds, 短整数型, , , 
+
+数据类型 FILETIME, , 
+    .成员 dwLowDateTime, 整数型, , , 
+    .成员 dwHighDateTime, 整数型, , , 
+
+
+.DLL命令 LoadLibrary, 整数型, "kernel32.dll", "LoadLibraryA", , 
+    .参数 FileName, 文本型, , 
+
+.DLL命令 GetProcAddress, 整数型, "kernel32.dll", "GetProcAddress", , 
+    .参数 hModule, 整数型, , 
+    .参数 ProName, 文本型, , 
+
+.DLL命令 FreeLibrary, 整数型, "kernel32", "FreeLibrary", , 
+    .参数 hModule, 整数型, , 
+
+.DLL命令 loadDll, 逻辑型, "", "loadDll", , 
+    .参数 依赖句柄, 整数型, , 
+    .参数 宽度, 整数型, , 
+    .参数 高度, 整数型, , 
+    .参数 文本1, 文本型, , 
+    .参数 文本2, 文本型, , 
+    .参数 文本3, 文本型, , 
+    .参数 数值1, 整数型, , 
+    .参数 数值2, 整数型, , 
+    .参数 数值3, 整数型, , 
+
+.DLL命令 GetActiveWindow, 整数型, "user32", "GetActiveWindow", , 
+
+.DLL命令 GetCurrentProcessId, 整数型, "kernel32.dll", "GetCurrentProcessId", , 
+
+.DLL命令 SendMessageA, 整数型, "", "SendMessageA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 信息值, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 ImageList_Destroy, 整数型, "comctl32.dll", "ImageList_Destroy", , 
+    .参数 himl, 整数型, , 
+
+.DLL命令 ImageList_Create, 整数型, "comctl32.dll", "ImageList_Create", , 
+    .参数 cx, 整数型, , 宽度
+    .参数 cy, 整数型, , 高度
+    .参数 flags, 整数型, , 位深 ILC_
+    .参数 cInitial, 整数型, , 初始数量
+    .参数 cGrow, 整数型, , 是否手动销毁
+
+.DLL命令 ImageList_AddIcon, 整数型, "comctl32.dll", "ImageList_AddIcon", , 
+    .参数 himl, 整数型, , 
+    .参数 hicon, 整数型, , 
+
+.DLL命令 ImageList_SetBkColor, 整数型, "comctl32.dll", "ImageList_SetBkColor", , 
+    .参数 himl, 整数型, , 
+    .参数 clrBk, 整数型, , 
+
+.DLL命令 SHGetFileInfo, 整数型, "shell32.dll", "SHGetFileInfoA", , 
+    .参数 pszPath, 文本型, , 
+    .参数 dwFileAttributes, 整数型, , 
+    .参数 psfi, SHfileInfo, , 
+    .参数 cbFileInfo, 整数型, , 
+    .参数 uFlags, 整数型, , 
+
+.DLL命令 RegOpenKey, 整数型, "advapi32.dll", "RegOpenKeyA", , 
+    .参数 hKey, 整数型, , 
+    .参数 lpSubKey, 文本型, 传址, 要打开的项名
+    .参数 phkResult, 整数型, 传址, 指定一个变量，用于装载（保存）打开注册表项的一个句柄
+
+.DLL命令 RegEnumValue, 整数型, "advapi32.dll", "RegEnumValueA", , 枚举指定项的值
+    .参数 标准项名或句柄, 整数型, , 
+    .参数 项索引, 整数型, , 
+    .参数 值名称, 文本型, 传址, 
+    .参数 值名称长度, 整数型, 传址, 
+    .参数 保留参数, 整数型, , 
+    .参数 类型, 整数型, 传址, 
+    .参数 数据缓冲区, 字节集, 传址, 
+    .参数 数据缓冲区长度, 整数型, 传址, 
+
+.DLL命令 RegQueryValueEx, 整数型, "advapi32.dll", "RegQueryValueExA", , 
+    .参数 hKey, 整数型, , 
+    .参数 lpValueName, 文本型, , 要获取值的名字
+    .参数 lpReserved, 整数型, , 未用，设为零
+    .参数 lpType, 整数型, 传址, 用于装载取回数据类型的一个变量
+    .参数 lpData, 字节集, 传址, 用于装载指定值的一个缓冲区
+    .参数 lpcbData, 整数型, 传址, 用于装载lpData缓冲区长度的一个变量。一旦返回，它会设为实际装载到缓冲区的字节数;
+
+.DLL命令 RegCloseKey, 整数型, "advapi32.dll", "RegCloseKey", , 
+    .参数 hKey, 整数型, , 
+
+.DLL命令 取特定目录_, 空白型, "", "SHGetSpecialFolderPathA", , 
+    .参数 a, 空白型, , 
+    .参数 b, 文本型, , 
+    .参数 c, 空白型, , 
+    .参数 d, 空白型, , 
+
+.DLL命令 GetFileVersionInfoSize, 整数型, "VERSION.DLL", "GetFileVersionInfoSizeA", , 
+    .参数 文件名称, 文本型, , 
+    .参数 文件句柄, 整数型, , 添入0
+
+.DLL命令 GetFileVersionInfo, 整数型, "VERSION.DLL", "GetFileVersionInfoA", , 
+    .参数 文件名称, 文本型, , 
+    .参数 指定句柄, 整数型, , win32中未用
+    .参数 缓冲变量长度, 整数型, , 
+    .参数 装载缓冲变量, 字节集, 传址, 
+
+.DLL命令 VerQueryValue, 整数型, "VERSION.DLL", "VerQueryValueA", , 
+    .参数 内存块首区域位置, 字节集, 传址, 
+    .参数 版本信息相对路径, 文本型, 传址, 
+    .参数 装载缓冲变量, 整数型, 传址, 
+    .参数 缓冲变量长度, 整数型, 传址, 
+
+.DLL命令 RtlMoveMemory_字节集, 空白型, "", "RtlMoveMemory", , 
+    .参数 目标数据, 字节集, 传址, 
+    .参数 源数据, 整数型, , 
+    .参数 内存长度, 整数型, , 
+
+.DLL命令 ShellExecute, 整数型, "", "ShellExecuteA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpOperation, 文本型, , 
+    .参数 lpFile, 文本型, , 
+    .参数 lpParameters, 文本型, , 
+    .参数 lpDirectory, 文本型, , 
+    .参数 nShowCmd, 整数型, , 
+
+.DLL命令 ShellExecuteEx, 整数型, "shell32.dll", "ShellExecuteEx", , 
+    .参数 SEI, ShellEXECuteInfo, , 
+
+.DLL命令 FindWindow, 整数型, "user32", "FindWindowA", , 
+    .参数 lpClassName, 文本型, , 
+    .参数 lpWindowName, 整数型, , 
+
+.DLL命令 FindWindowEx, 整数型, "user32", "FindWindowExA", , 
+    .参数 hWnd1, 整数型, , 
+    .参数 hWnd2, 整数型, , 
+    .参数 lpsz1, 文本型, , 
+    .参数 lpsz2, 整数型, , 
+
+.DLL命令 PostMessageA, 整数型, "user32", "PostMessageA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 字节型, , 
+
+.DLL命令 取路径文件名_, 整数型, "shlwapi.dll", "PathFindFileNameA", , 成功返回路径文本指针地址
+    .参数 pszPath, 文本型, , 
+
+.DLL命令 删除扩展名_, 空白型, "shlwapi.dll", "PathRemoveExtensionA", , ,
+    .参数 pszPath, 文本型, , 
+
+.DLL命令 PathFindExtension, 整数型, "shlwapi.dll", "PathFindExtensionA", , 无扩展名返回空
+    .参数 pszPath, 文本型, , 
+
+.DLL命令 GetWindowThreadProcessId, 整数型, "user32.dll", "GetWindowThreadProcessId", , 
+    .参数 hwnd, 整数型, , 
+    .参数 pid, 整数型, 传址, 
+
+.DLL命令 CloseHandle, 整数型, "", "CloseHandle", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 OpenProcess, 整数型, "kernel32.dll", "OpenProcess", , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 逻辑型, , 是否继承
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 VirtualAllocEx, 整数型, "kernel32.dll", "VirtualAllocEx", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+    .参数 flProtect, 整数型, , 
+
+.DLL命令 ReadProcessMemory_字节集, 整数型, "", "ReadProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 字节集, 传址, 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, , 
+
+.DLL命令 ReadProcessMemory_文本, 逻辑型, "", "ReadProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 文本型, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesRead, 整数型, 传址, 
+
+.DLL命令 RtlMoveMemory_图标, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目标内容, TBBUTTON, 传址, 
+    .参数 源数据, 字节集, , 
+    .参数 尺寸, 整数型, , 
+
+.DLL命令 CreateRemoteThread, 整数型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 整数型, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, 传址, 
+
+.DLL命令 WaitForSingleObject, 整数型, "", "", , 
+    .参数 hHandle, 整数型, , 
+    .参数 dwMilliseconds, 整数型, , 
+
+.DLL命令 GetExitCodeThread, 整数型, "", "", , 
+    .参数 hThread, 整数型, , 
+    .参数 lpExitCode, 整数型, 传址, 
+
+.DLL命令 LoadLibraryA, 整数型, "", "", , 
+    .参数 lpFileName, 文本型, , ;
+
+.DLL命令 WideCharToMultiByte, 整数型, "", "", , 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpWideCharStr, 字节集, , 
+    .参数 cchWideChar, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, 传址, 
+    .参数 cbMultiByte, 整数型, , 
+    .参数 lpDefaultChar, 文本型, , 
+    .参数 lpUsedDefaultChar, 逻辑型, , 
+
+.DLL命令 VirtualFreeEx, 逻辑型, "", "", 公开, 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+
+.DLL命令 CreateToolhelp32Snapshot, 整数型, "", "CreateToolhelp32Snapshot", , 
+    .参数 dwFlags, 整数型, , 
+    .参数 th32ProcessID, 整数型, , 
+
+.DLL命令 Process32First, 整数型, "", "Process32First", , 
+    .参数 hSnapshot, 整数型, , 
+    .参数 lppe, PROCESSENTRY32, , 
+
+.DLL命令 GetModuleFileNameExA, 整数型, "psapi.dll", "GetModuleFileNameExA", , ,取模块文件名扩展_
+    .参数 hProcess, 整数型, , 
+    .参数 hModule, 整数型, , 
+    .参数 lpFilename, 文本型, , 
+    .参数 nSize, 整数型, , 
+
+.DLL命令 Process32Next, 整数型, "", "Process32Next", , 
+    .参数 hSnapshot, 整数型, , 
+    .参数 lppe, PROCESSENTRY32, , 
+
+.DLL命令 EnumWindows, 整数型, "user32.dll", "EnumWindows", , 
+    .参数 函数指针, 子程序指针, , 
+    .参数 自定义数值, 整数型, , 
+
+.DLL命令 GetParent, 逻辑型, "", "GetParent", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 GetWindowText, 整数型, "user32", "GetWindowTextA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 缓冲区, 文本型, , 
+    .参数 缓冲尺寸, 整数型, , 
+
+.DLL命令 AllocateAndGetTcpExTableFromStack, 整数型, "Iphlpapi.dll", "", , 
+    .参数 ppUDPTable, 整数型, 传址, 
+    .参数 bOrder, 逻辑型, , 
+    .参数 hHeap, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 dwFamily, 整数型, , 
+
+.DLL命令 AllocateAndGetUdpExTableFromStack, 整数型, "Iphlpapi.dll", "", , 
+    .参数 ppUDPTable, 整数型, 传址, 
+    .参数 bOrder, 逻辑型, , 
+    .参数 hHeap, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 dwFamily, 整数型, , 
+
+.DLL命令 RtlMoveMemory_Tcp, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, MIB_TCPEXROW, 传址 数组, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_UDP, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, MIB_UDPEXROW, 传址 数组, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 GetProcessHeap, 整数型, "", "", , 
+
+.DLL命令 GetTcpTable, 整数型, "IPHLPAPI.DLL", "GetTcpTable", , 　
+    .参数 pTcpTable, MIB_TCPTABLE, 传址, 
+    .参数 pdwSize, 整数型, 传址, 
+    .参数 border, 整数型, , 
+
+.DLL命令 LocalSize, 整数型, "kernel32", "LocalSize", , 返回本地内存块大小　
+    .参数 hMem, MIB_TCPTABLE, , 
+
+.DLL命令 ntohs, 整数型, "ws2_32.dll", "ntohs", , 　
+    .参数 netshort, 短整数型, , 
+
+.DLL命令 SetTcpEntry, 整数型, "IPHLPAPI.DLL", "SetTcpEntry", , 　
+    .参数 pTcpRow, MIB_TCPROW, , 
+
+.DLL命令 lstrlen, 整数型, "kernel32", "lstrlenA", , 返回字符串中字符数　
+    .参数 lpString, 整数型, , 
+
+.DLL命令 inet_ntoa, 整数型, "ws2_32.dll", "inet_ntoa", , 
+    .参数 IP, 空白型, , 
+
+.DLL命令 RtlMoveMemory_文本, 空白型, "kernel32", "RtlMoveMemory", , 　
+    .参数 pDest, 文本型, , 
+    .参数 pSrc, 整数型, , 
+    .参数 ByteLen, 整数型, , 
+
+.DLL命令 OpenSCManager, 整数型, "advapi32.dll", "OpenSCManagerA", , 连接服务控件管理器
+    .参数 lpMachineName, 整数型, , 
+    .参数 lpDatabaseName, 整数型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+
+.DLL命令 EnumServicesStatusEx, 整数型, "ADVAPI32.DLL", "EnumServicesStatusExA", , 
+    .参数 hSCManager, 整数型, , 
+    .参数 InfoLevel, 整数型, , 
+    .参数 dwServiceType, 整数型, , 
+    .参数 dwServiceState, 整数型, , 
+    .参数 lpServices, 字节集, 传址, 
+    .参数 cbBufSize, 整数型, , 
+    .参数 pcbBytesNeeded, 整数型, 传址, 
+    .参数 lpServicesReturned, 整数型, 传址, 
+    .参数 lpResumeHandle, 整数型, , 
+    .参数 pszGroupName, 整数型, , 
+
+.DLL命令 RtlMoveMemory_服务, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, Enum_Service_Status_Process, , 
+    .参数 Source, 字节集, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 OpenService, 整数型, "Advapi32.dll", "OpenServiceA", , 
+    .参数 hSCManager, 整数型, , 
+    .参数 lpServiceName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+
+.DLL命令 ControlService, 整数型, "advapi32.dll", "ControlService", , 向服务器发送控件
+    .参数 hService, 整数型, , 
+    .参数 dwControl, 整数型, , 
+    .参数 lpServiceStatus, Service_Status, 传址, 
+
+.DLL命令 DeleteService, 逻辑型, "advapi32.dll", "DeleteService", , 从SCMANAGER数据库中删除服务　
+    .参数 hService, 整数型, , 
+
+.DLL命令 CloseServiceHandle, 整数型, "advapi32.dll", "CloseServiceHandle", , 关闭ServiceControlManager对象　
+    .参数 hSCObject, 整数型, , 
+
+.DLL命令 QueryServiceStatus, 整数型, "advapi32.dll", "QueryServiceStatus", , 获取服务状态
+    .参数 hService, 整数型, , 
+    .参数 lpServiceStatus, Service_Status, 传址, 
+
+.DLL命令 QueryServiceStatusEx, 整数型, "ADVAPI32.DLL", "QueryServiceStatusEx", , 
+    .参数 hService, 整数型, , 
+    .参数 InfoLevel, 整数型, , 
+    .参数 lpBuffer, 字节集, , 
+    .参数 cbBufSize, 整数型, , 
+    .参数 pcbBytesNeeded, 整数型, 传址, 
+
+.DLL命令 GetWindow, 整数型, "user32", "GetWindow", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wCmd, 整数型, , 
+
+.DLL命令 RtlAdjustPrivilege, 整数型, "ntdll.dll", "", , 提升进程权限
+    .参数 se_, 整数型, , 
+    .参数 true_, 逻辑型, , 
+    .参数 hprocess, 整数型, , 
+    .参数 ret, 整数型, 传址, 
+
+.DLL命令 IsWindowVisible, 逻辑型, "user32", "IsWindowVisible", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 GetProcessMemoryInfo, 整数型, "psapi.dll", "GetProcessMemoryInfo", , 取进程内存信息_
+    .参数 进程句柄, 整数型, , 
+    .参数 进程内存结构, Process_Memory_Counters, , 
+    .参数 结构大小, 整数型, , 
+
+.DLL命令 OpenProcessToken, 逻辑型, "Advapi32.dll", "OpenProcessToken", , 
+    .参数 ProcessHandle, 整数型, , 
+    .参数 DesiredAccess, 整数型, , 
+    .参数 TokenHandle, 整数型, 传址, 
+
+.DLL命令 GetTokenInformation, 逻辑型, "Advapi32.dll", "GetTokenInformation", , 
+    .参数 TokenHandle, 整数型, , 
+    .参数 TokenInformationClass, 整数型, , 
+    .参数 TokenInformation, 字节集, 传址, 
+    .参数 TokenInformationLength, 整数型, , 
+    .参数 ReturnLength, 整数型, 传址, 
+
+.DLL命令 LookupAccountSid, 逻辑型, "Advapi32.dll", "LookupAccountSidA", , 
+    .参数 lpSystemName, 文本型, , 
+    .参数 lpSid, 字节集, , 
+    .参数 lpName, 文本型, , 
+    .参数 cchName, 整数型, 传址, 
+    .参数 lpReferencedDomainName, 文本型, , 
+    .参数 cchReferencedDomainName, 整数型, 传址, 
+    .参数 peUse, 整数型, 传址, 
+
+.DLL命令 LookupAccountSidA, 逻辑型, "Advapi32.dll", "", , 
+    .参数 lpSystemName, 文本型, , 
+    .参数 lpSid, 整数型, , 
+    .参数 lpName, 文本型, , 
+    .参数 cchName, 整数型, 传址, 
+    .参数 lpReferencedDomainName, 文本型, , 
+    .参数 cchReferencedDomainName, 整数型, 传址, 
+    .参数 peUse, 整数型, 传址, 
+
+.DLL命令 LocalFree, 整数型, "kernel32", "LocalFree", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 LocalAlloc, 整数型, "kernel32", "LocalAlloc", , 
+    .参数 wFlags, 整数型, , 
+    .参数 wBytes, 整数型, , 
+
+.DLL命令 NtQuerySystemInformation, 整数型, "ntdll.dll", "", , 
+    .参数 SystemInformationClass, 整数型, , 
+    .参数 SystemInformation, 整数型, , 
+    .参数 SystemInformationLength, 整数型, , 
+    .参数 ReturnLength, 整数型, 传址, 
+
+.DLL命令 RtlMoveMemory_SYSTEM_PROCESSES, 空白型, "kernel32", "RtlMoveMemory", , 
+    .参数 Destination, SYSTEM_PROCESS_INFORMATION, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 WinStationGetProcessSid, 整数型, "Winsta.dll", "WinStationGetProcessSid", , 
+    .参数 hServer, 整数型, , 
+    .参数 ProcessId, 整数型, , 
+    .参数 ProcessStartTime, 长整数型, , 
+    .参数 pProcessUserSid, 字节集, 传址, 
+    .参数 dwSidSize, 整数型, 传址, 
+
+.DLL命令 GetProcessTimes, 整数型, "kernel32", "GetProcessTimes", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpCreationTime, FILETIME, 传址, 
+    .参数 lpExitTime, 长整数型, 传址, 
+    .参数 lpKernelTime, FILETIME, 传址, 
+    .参数 lpUserTime, FILETIME, 传址, 
+
+.DLL命令 GetLogicalDriveStringsA, 整数型, "kernel32.dll", "GetLogicalDriveStringsA", , 
+    .参数 nBufferLength, 整数型, , 
+    .参数 lpBuffer, 字节集, , 
+
+.DLL命令 QueryDosDeviceA, 整数型, "kernel32.dll", "QueryDosDeviceA", , 
+    .参数 lpDeviceName, 文本型, , 
+    .参数 lpTargetPath, 文本型, , 
+    .参数 ucchMax, 整数型, , 
+
+.DLL命令 GetProcessImageFileNameA, 整数型, "psapi.dll", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpImageFileName, 文本型, , 
+    .参数 nSize, 整数型, , 
+
+.DLL命令 MoveFileEx, 逻辑型, "Kernel32.dll", "MoveFileExA", , 
+    .参数 lpExistingFileName, 文本型, , 
+    .参数 lpNewFileName, 文本型, , 
+    .参数 dwFlags, 整数型, , 
+
+.DLL命令 GetModuleHandleA, 整数型, "", "", , 
+    .参数 lpModuleName, 文本型, , 
+
+.DLL命令 GetPriorityClass, 整数型, "kernel32", "GetPriorityClass", , 
+    .参数 进程句柄, 整数型, , ;
+
+.DLL命令 Module32First, 整数型, "kernel32.dll", "Module32First", , 取模块信息
+    .参数 hSnapshot, 整数型, , 
+    .参数 模块信息, 模块信息, , 
+
+.DLL命令 Module32Next, 整数型, "kernel32.dll", "", , 
+    .参数 hSnapshot, 整数型, , 
+    .参数 模块信息, 模块信息, , 
+
+.DLL命令 CreateFileMapping, 整数型, "kernel32.dll", "CreateFileMappingA", , 创建一个新的文件映射对象
+    .参数 hFile, 整数型, , 
+    .参数 lpFileMappigAttributes, 整数型, , 
+    .参数 flProtect, 整数型, , 
+    .参数 dwMaximumSizeHigh, 整数型, , 
+    .参数 dwMaximumSizeLow, 整数型, , 
+    .参数 lpName, 整数型, , 
+
+.DLL命令 MapViewOfFile, 整数型, "kernel32.dll", "MapViewOfFile", , 将一个文件映射对象映射到当前应用程序的地址空间
+    .参数 hFileMappingObject, 整数型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwFileOffsetHigh, 整数型, , 
+    .参数 dwFileOffsetLow, 整数型, , 
+    .参数 dwNumberOfBytesToMap, 整数型, , 
+
+.DLL命令 UnmapViewOfFile, 整数型, "kernel32.dll", "UnmapViewOfFile", , 在当前应用程序的内存地址空间解除对一个文件映射对象的映射
+    .参数 lpBaseAddress, 整数型, , 
+
+.DLL命令 RtlMoveMemory_TRAYDATA, 空白型, "kernel32.dll", "RtlMoveMemory", , 拷贝内存
+    .参数 目标内容, TRAYDATA, 传址, 
+    .参数 源数据, 字节集, , 
+    .参数 尺寸, 整数型, , 
+
+.DLL命令 CopyMemory_SYSTEM_PROCESSES, 空白型, "kernel32", "RtlMoveMemory", , 
+    .参数 Destination, SYSTEM_PROCESSES, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 GetModuleFileNameEx, 整数型, "psapi.dll", "GetModuleFileNameExA", , ,
+    .参数 进程句柄, 整数型, , hProcess
+    .参数 模块句柄, 整数型, , hModule
+    .参数 文件名缓冲区, 文本型, , lpFilename
+    .参数 缓冲区大小, 整数型, , nSize
+
+.DLL命令 GetMappedFileName, 整数型, "Psapi.dll", "GetMappedFileNameA", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpv, 整数型, , 
+    .参数 lpFilename, 文本型, , 
+    .参数 nSize, 整数型, , 
+
+.DLL命令 ZwQueryInformationThread_, 整数型, "ntdll.dll", "ZwQueryInformationThread", , 
+    .参数 ThreadHandle, 整数型, , 
+    .参数 ThreadInformationClass, 整数型, , 
+    .参数 ThreadInformation, 整数型, 传址, 
+    .参数 ThreadInformationLength, 整数型, , 
+    .参数 ReturnLength, 整数型, 传址, 
+
+.DLL命令 OpenThread, 整数型, "kernel32.dll", "OpenThread", , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 整数型, , 
+    .参数 dwThreadId, 整数型, , 
+
+.DLL命令 GetInputState, 整数型, "user32", "GetInputState", , 
+
+.DLL命令 FileTimeToSystemTime, 逻辑型, "Kernel32.dll", "", , 
+    .参数 lpFileTime, FILETIME, , 
+    .参数 lpSystemTime, SYSTEMTIME, 传址, 
+
+.DLL命令 FileTimeToLocalFileTime, 逻辑型, "Kernel32.dll", "", , 
+    .参数 lpFileTime, FILETIME, , 
+    .参数 lpLocalFileTime, FILETIME, 传址, 
+
+.窗口程序集 程序集_启动窗口, , , 
+
+.程序集变量 h_list, 整数型, , , 
+.程序集变量 hFileInfo, SHfileInfo, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 a, 文本型, , , 
+
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+RtlAdjustPrivilege (20, 真, 0, 0)
+ ' a ＝ 取运行目录 () ＋ “\yhan.exe”
+
+ ' 如果真 (MoveFileEx (取运行目录 () ＋ “\” ＋ 取执行文件名 (), a, 1))
+ ' 如果真 (复制文件 (a, 取运行目录 () ＋ “\” ＋ 取执行文件名 ()))
+ ' 运行 (取运行目录 () ＋ “\” ＋ 取执行文件名 (), 假, )
+ ' 结束 ()
+
+ ' 启动信息 ()
+
+.子程序 __启动窗口_尺寸被改变, 空白型, , 
+赋值 (.宽度, 相减 (., 8))
+赋值 (.高度, 相减 (., 28))
+
+连续赋值 (相减 (.宽度, 5), ., ., ., ., ., .宽度, .宽度)
+
+连续赋值 (相减 (.高度, 25), ., ., ., ., .高度)
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+赋值 (., 取整 (相乘 (.高度, 0.61)))
+赋值 (.顶边, 相加 (., 22))
+赋值 (.高度, 相减 (.高度, ., 25))
+连续赋值 (相减 (.宽度, 5), ., ., ., ., ., .)
+连续赋值 (相减 (.高度, 25), ., ., ., ., ., .)
+
+ ' loadDll_Fuc (取运行目录 () ＋ “\test.dll”, 标签1.取窗口句柄 (), 标签1.宽度, 标签1.高度)
+
+.子程序 __启动窗口_可否被关闭, 逻辑型, , 
+.如果真 (等于 (信息框 (“确认退出程序？”, 相加 (#系统等待, #信息图标, #确认取消钮), ), #确认钮))
+    返回 (真)
+.如果真结束
+返回 (假)
+
+
+.子程序 _选择夹1_子夹被改变, 空白型, , 
+.局部变量 i, 整数型, , , 
+
+赋值 (i, .现行子夹)
+.判断开始 (等于 (i, 0))
+    启动信息 ()
+.判断 (等于 (i, 1))
+    任务信息 ()
+.判断 (等于 (i, 2))
+    进程信息 ()
+.判断 (等于 (i, 3))
+    网络连接 ()
+.判断 (等于 (i, 4))
+    系统服务 ()
+.判断 (等于 (i, 5))
+    
+.默认
+    
+.判断结束
+
+
+.子程序 启动信息, 空白型, , 
+.局部变量 temp, 文本型, , "2", 
+.局部变量 Buf, 文本型, , "0", 
+.局部变量 Buf_, 文本型, , "0", 
+.局部变量 temp_, 文本型, , , 
+.局部变量 匿名局部变量_531, 空白型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 ii, 整数型, , , 
+.局部变量 索引, 整数型, , , 
+.局部变量 匿名局部变量_535, 空白型, , , 
+.局部变量 hImageList, 整数型, , , 
+.局部变量 文件信息, SHfileInfo, , , 
+
+全部删除 ()
+
+ImageList_Destroy (hImageList)
+赋值 (hImageList, ImageList_Create (16, 16, 24, 0, 0))
+4099.发送信息 (1, hImageList)
+ImageList_SetBkColor (hImageList, .)
+
+赋值 (temp [1], “SOFTWARE\Microsoft\Windows\CurrentVersion\Run”)
+赋值 (temp [2], “SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce”)
+.计次循环首 (2, i)
+    .如果真 (不等于 (枚举注册表键名 (#HKLM, temp [i], Buf), -1))
+        .如果真 (大于 (取数组成员数 (Buf), 0))
+            赋值 (索引, .插入表项 (“注册表_本地机器”, , , , ))
+            索引.置标题 (4, 相加 (读环境变量 (“windir”), “\regedit.exe”))
+            SHGetFileInfo (相加 (读环境变量 (“windir”), “\regedit.exe”), 128, 文件信息, 348, 257)
+            索引.置图片 (ImageList_AddIcon (hImageList, 文件信息.hIcon))
+            .计次循环首 (取数组成员数 (Buf), ii)
+                处理事件_ ()
+                赋值 (temp_, 取文本注册项 (#本地机器, 相加 (temp [i], “\”, Buf [ii]), ))
+                .如果真 (取反 (文件是否存在 (temp_)))
+                    赋值 (temp_, 格式化路径 (temp_))
+                .如果真结束
+                SHGetFileInfo (temp_, 128, 文件信息, 348, 257)
+                
+                赋值 (索引, .插入表项 (Buf [ii], ImageList_AddIcon (hImageList, 文件信息.hIcon), , 1, 1))
+                索引.置标题 (2, temp_)
+                索引.置标题 (4, temp_)
+                
+                索引.置标题 (3, 取公司名称 (temp_))
+                
+                .如果真 (进程是否运行 (temp_))
+                    索引.置标题 (1, “运行中”)
+                .如果真结束
+                
+                索引.置标题 (5, temp [i])
+            .计次循环尾 ()
+        .如果真结束
+        
+    .如果真结束
+    
+.计次循环尾 ()
+赋值 (i, 0)
+赋值 (ii, 0)
+重定义数组 (Buf, 假, 0)
+赋值 (temp [1], “SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce”)
+赋值 (temp [2], “SOFTWARE\Microsoft\Windows\CurrentVersion\Run”)
+.计次循环首 (2, i)
+    .如果真 (不等于 (枚举注册表键名 (#HKCU, temp [i], Buf), -1))
+        .如果真 (大于 (取数组成员数 (Buf), 0))
+            赋值 (索引, .插入表项 (“注册表_现行用户”, , , , ))
+            索引.置标题 (4, 相加 (读环境变量 (“windir”), “\regedit.exe”))
+            SHGetFileInfo (相加 (读环境变量 (“windir”), “\regedit.exe”), 128, 文件信息, 348, 257)
+            索引.置图片 (ImageList_AddIcon (hImageList, 文件信息.hIcon))
+            .计次循环首 (取数组成员数 (Buf), ii)
+                处理事件_ ()
+                赋值 (temp_, 取文本注册项 (#现行用户, 相加 (temp [i], “\”, Buf [ii]), ))
+                .如果真 (取反 (文件是否存在 (temp_)))
+                    赋值 (temp_, 格式化路径 (temp_))
+                .如果真结束
+                SHGetFileInfo (temp_, 128, 文件信息, 348, 257)
+                
+                赋值 (索引, .插入表项 (Buf [ii], ImageList_AddIcon (hImageList, 文件信息.hIcon), , 1, 2))
+                索引.置标题 (2, temp_)
+                索引.置标题 (3, 取公司名称 (temp_))
+                索引.置标题 (4, temp_)
+                
+                .如果真 (进程是否运行 (temp_))
+                    索引.置标题 (1, “运行中”)
+                .如果真结束
+                
+                索引.置标题 (5, temp [i])
+            .计次循环尾 ()
+        .如果真结束
+        
+    .如果真结束
+    
+.计次循环尾 ()
+
+重定义数组 (Buf, 假, 0)
+重定义数组 (Buf_, 假, 0)
+赋值 (temp_, 取系统特定目录 (7))
+.如果真 (大于 (寻找文件_ (temp_, Buf, Buf_), 0))
+    赋值 (索引, .插入表项 (“文件夹_现行用户”, , , , ))
+    索引.置标题 (4, temp_)
+    
+    SHGetFileInfo (temp_, 128, 文件信息, 348, 257)
+    索引.置图片 (ImageList_AddIcon (hImageList, 文件信息.hIcon))
+    .计次循环首 (取数组成员数 (Buf), ii)
+        处理事件_ ()
+        赋值 (索引, .插入表项 (Buf [ii], , , 1, 3))
+        索引.置标题 (5, Buf_ [ii])
+        赋值 (Buf_ [ii], 查询快捷方式 (Buf_ [ii]))
+        .如果真 (进程是否运行 (Buf_ [ii]))
+            索引.置标题 (1, “运行中”)
+        .如果真结束
+        索引.置标题 (2, Buf_ [ii])
+        索引.置标题 (3, 取公司名称 (Buf_ [ii]))
+        索引.置标题 (4, Buf_ [ii])
+        SHGetFileInfo (Buf_ [ii], 128, 文件信息, 348, 257)
+        索引.置图片 (ImageList_AddIcon (hImageList, 文件信息.hIcon))
+    .计次循环尾 ()
+.如果真结束
+
+重定义数组 (Buf, 假, 0)
+重定义数组 (Buf_, 假, 0)
+赋值 (temp_, 取系统特定目录 (24))
+.如果真 (大于 (寻找文件_ (temp_, Buf, Buf_), 0))
+    赋值 (索引, .插入表项 (“文件夹_所有用户”, , , , ))
+    索引.置标题 (4, temp_)
+    SHGetFileInfo (temp_, 128, 文件信息, 348, 257)
+    索引.置图片 (ImageList_AddIcon (hImageList, 文件信息.hIcon))
+    .计次循环首 (取数组成员数 (Buf), ii)
+        处理事件_ ()
+        赋值 (索引, .插入表项 (Buf [ii], , , 1, 4))
+        索引.置标题 (5, Buf_ [ii])
+        赋值 (Buf_ [ii], 查询快捷方式 (Buf_ [ii]))
+        .如果真 (进程是否运行 (Buf_ [ii]))
+            索引.置标题 (1, “运行中”)
+        .如果真结束
+        索引.置标题 (2, Buf_ [ii])
+        索引.置标题 (3, 取公司名称 (Buf_ [ii]))
+        索引.置标题 (4, Buf_ [ii])
+        SHGetFileInfo (Buf_ [ii], 128, 文件信息, 348, 257)
+        索引.置图片 (ImageList_AddIcon (hImageList, 文件信息.hIcon))
+    .计次循环尾 ()
+.如果真结束
+
+重定义数组 (Buf, 假, 0)
+重定义数组 (Buf_, 假, 0)
+赋值 (temp_, 相加 (读环境变量 (“windir”), “\Tasks”))
+.如果真 (大于 (寻找文件_ (temp_, Buf, Buf_, “*.job”), 0))
+    赋值 (索引, .插入表项 (“文件夹_计划任务”, , , , ))
+    索引.置标题 (4, 取文本左边 (temp_, 相减 (取文本长度 (temp_), 1)))
+    SHGetFileInfo (temp_, 128, 文件信息, 348, 257)
+    索引.置图片 (ImageList_AddIcon (hImageList, 文件信息.hIcon))
+    .计次循环首 (取数组成员数 (Buf), ii)
+        处理事件_ ()
+        赋值 (索引, .插入表项 (Buf [ii], , , 1, 4))
+        .如果真 (进程是否运行 (Buf_ [ii]))
+            索引.置标题 (1, “运行中”)
+        .如果真结束
+        索引.置标题 (2, Buf_ [ii])
+         ' 列表框_启动.置标题 (索引, 3, 取公司名称 (Buf_ [ii]))
+        索引.置标题 (4, Buf_ [ii])
+        索引.置标题 (5, Buf_ [ii])
+        .如果真 (等于 (SHGetFileInfo (Buf_ [ii], 128, 文件信息, 348, 257), 0))
+            SHGetFileInfo (Buf_ [ii], 128, 文件信息, 348, 273)
+        .如果真结束
+        索引.置图片 (ImageList_AddIcon (hImageList, 文件信息.hIcon))
+    .计次循环尾 ()
+.如果真结束
+
+ ' EnumIco (列表框_启动, 4, 假, )
+
+.子程序 _列表框_启动_右键单击表项, 空白型, , 
+.局部变量 i, 整数型, , , 
+
+赋值 (i, .取表项数值 (.))
+.如果 (或者 (等于 (., -1), 等于 (i, 0)))
+    连续赋值 (真, .禁止, .禁止, .禁止, .禁止)
+.否则
+    连续赋值 (假, .禁止, .禁止, .禁止, .禁止)
+    .如果真 (或者 (等于 (i, 3), 等于 (i, 4)))
+        赋值 (.禁止, 假)
+        赋值 (.禁止, 真)
+    .如果真结束
+    
+.如果结束
+弹出菜单 ()
+
+.子程序 _列表框_启动_被双击, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.局部变量 i, 整数型, , , 
+
+赋值 (i, .取表项数值 (.))
+.如果真 (或者 (等于 (., -1), 等于 (i, 0)))
+    返回 ()
+.如果真结束
+定位文件 (.取标题 (., 4))
+
+.子程序 _刷新启动_被选择, 空白型, , 
+启动信息 ()
+
+.子程序 _添加启动_被选择, 空白型, , 
+载入 (窗口_添加启动, _启动窗口, 真)
+
+.子程序 _删除启动_被选择, 空白型, , 
+.如果真 (等于 (信息框 (相加 (“确认删除 ”, .取标题 (., ), “ ？”), 相加 (#询问图标, #确认取消钮), ), #确认钮))
+    .判断开始 (等于 (.取表项数值 (.), 1))
+        .如果真 (删除注册项 (#本地机器, 相加 (.取标题 (., 5), “\”, .取标题 (., ))))
+            .删除表项 (.)
+        .如果真结束
+        
+    .判断 (等于 (.取表项数值 (.), 2))
+        .如果真 (删除注册项 (#现行用户, 相加 (.取标题 (., 5), “\”, .取标题 (., ))))
+            .删除表项 (.)
+        .如果真结束
+        
+    .默认
+        
+        .如果真 (删除文件 (.取标题 (., 5)))
+            .删除表项 (.)
+        .如果真结束
+        
+    .判断结束
+    
+.如果真结束
+
+
+.子程序 _定位注册表_被选择, 空白型, , 
+.局部变量 hwnd, 整数型, , , 
+.局部变量 hndRegEdit, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 lngVK, 整数型, , , 
+.局部变量 文本, 文本型, , , 
+.局部变量 strTmp, 文本型, , , 
+
+赋值 (文本, .取标题 (., 5))
+.判断开始 (等于 (.取表项数值 (.), 1))
+    赋值 (文本, 相加 (“HKEY_LOCAL_MACHINE\”, 文本))
+.判断 (等于 (.取表项数值 (.), 2))
+    赋值 (文本, 相加 (“HKEY_CURRENT_USER\”, 文本))
+.默认
+    返回 ()
+.判断结束
+运行 (“regedit”, 假, )
+.判断循环首 (等于 (hwnd, 0))
+    赋值 (hndRegEdit, FindWindow (“RegEdit_RegEdit”, 0))
+    .如果真 (不等于 (hndRegEdit, 0))
+        赋值 (hwnd, FindWindowEx (hndRegEdit, 0, “SysTreeView32”, 0))
+    .如果真结束
+    处理事件 ()
+.判断循环尾 ()
+.变量循环首 (1, 取文本长度 (文本), 1, i)
+    赋值 (strTmp, 取文本中间 (文本, i, 1))
+    .如果 (等于 (strTmp, “\”))
+        SendMessageA (hwnd, 256, 39, 0) ' 展开
+    .否则
+        赋值 (lngVK, 取代码 (到大写 (strTmp), ))
+        SendMessageA (hwnd, 258, lngVK, 0)
+    .如果结束
+    
+.变量循环尾 ()
+
+.子程序 _定位文件启动_被选择, 空白型, , 
+定位文件 (.取标题 (., 4))
+
+.子程序 _属性启动_被选择, 空白型, , 
+查看属性 (.取标题 (., 4))
+
+.子程序 _列表框_任务_左键单击表项, 空白型, , 
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 _列表框_任务_右键单击表项, 空白型, , 
+.局部变量 i, 整数型, , , 
+
+赋值 (i, .取表项数值 (.))
+.如果 (或者 (等于 (., -1), 等于 (i, 1), 等于 (i, 3)))
+    连续赋值 (真, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止)
+.否则
+    连续赋值 (假, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止)
+    .如果 (等于 (i, 2))
+        赋值 (.禁止, 假)
+    .否则
+        赋值 (.禁止, 真)
+    .如果结束
+    
+.如果结束
+弹出菜单 ()
+
+.子程序 _刷新任务_被选择, 空白型, , 
+任务信息 ()
+
+.子程序 _结束进程任务_被选择, 空白型, , 
+
+
+.子程序 _查找窗口_被选择, 空白型, , 
+
+
+.子程序 _隐藏图标_被选择, 空白型, , 
+
+
+.子程序 _显示图标_被选择, 空白型, , 
+
+
+.子程序 _删除图标_被选择, 空白型, , 
+
+
+.子程序 _定位文件任务_被选择, 空白型, , 
+定位文件 (.取标题 (., 6))
+
+.子程序 _属性任务_被选择, 空白型, , 
+查看属性 (.取标题 (., 6))
+
+.子程序 任务信息, 空白型, , 
+全部删除 ()
+ImageList_Destroy (h_list)
+赋值 (h_list, ImageList_Create (16, 16, 24, 0, 0))
+4099.发送信息 (1, h_list)
+刷新任务栏 ()
+ ' 验证任务栏 ()
+刷新托盘 ()
+
+
+.子程序 验证任务栏, 空白型, , 
+EnumWindows (&验证过程, 0)
+
+.子程序 验证过程, 逻辑型, , 
+.参数 hwnd, 整数型, , 
+
+.局部变量 i, 整数型, , , 
+
+.如果真 (大于 (hwnd, 0))
+    .如果真 (不等于 (GetWindow (hwnd, 4), 0)) ' GW_OWNER 4
+        返回 (真)
+    .如果真结束
+    .如果真 (取反 (IsWindowVisible (hwnd)))
+        返回 (真)
+    .如果真结束
+    .如果真 (并且 (等于 (GetParent (hwnd), 假), 不等于 (取窗口标题_ (hwnd), “Program Manager”)))
+        .计次循环首 (相减 (取表项数 (), 1), i)
+            .如果真 (不等于 (寻找文本 (取窗口标题_ (hwnd), i.取标题 (1), , 假), -1))
+                i.置标题 (2, “√”)
+                跳出循环 ()
+            .如果真结束
+            
+        .计次循环尾 ()
+    .如果真结束
+    返回 (真)
+.如果真结束
+返回 (假)
+
+.子程序 刷新任务栏, 空白型, , 
+.局部变量 hToolbar, 整数型, , , 
+.局部变量 hProcess, 整数型, , , 
+.局部变量 pid, 整数型, , , 
+.局部变量 num, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 ptb, 整数型, , , 
+.局部变量 tb_, TBBUTTON, , , 
+.局部变量 buf, 字节集, , , 
+.局部变量 string, 文本型, , , 
+.局部变量 hWnd, 整数型, , , 
+.局部变量 索引, 整数型, , , 
+.局部变量 路径, 文本型, , , 
+.局部变量 进程名, 文本型, , , 
+
+赋值 (hToolbar, 取托盘区句柄_ (假))
+GetWindowThreadProcessId (hToolbar, pid)
+赋值 (hProcess, OpenProcess (1082, 假, pid))
+赋值 (num, SendMessageA (hToolbar, 1048, 0, 0)) ' 1048 = TB_BUTTONCOUNT
+
+SHGetFileInfo (相加 (读环境变量 (“windir”), “\explorer.exe”), 128, hFileInfo, 348, 257)
+赋值 (索引, .插入表项 (“任务栏”, ImageList_AddIcon (h_list, hFileInfo.hIcon), , , 3))
+.变量循环首 (2, num, 2, i)
+    赋值 (ptb, VirtualAllocEx (hProcess, 0, 20, 4096, 64))
+    .如果真 (等于 (ptb, 0))
+        到循环尾 ()
+    .如果真结束
+    SendMessageA (hToolbar, 1047, 相减 (i, 1), ptb) ' 1047 = TB_GETBUTTON
+    
+    赋值 (buf, 取空白字节集 (20))
+    ReadProcessMemory_字节集 (hProcess, ptb, buf, 取字节集长度 (buf), 0)
+    RtlMoveMemory_图标 (tb_, buf, 20)
+    
+    赋值 (num, CreateProcessThread (hProcess, GetProcAddress (LoadLibraryA (“kernel32.dll”), “lstrlenW”), tb_.iString))
+    赋值 (buf, 取空白字节集 (相加 (相乘 (num, 2), 2)))
+    ReadProcessMemory_字节集 (hProcess, tb_.iString, buf, 取字节集长度 (buf), 0)
+    赋值 (string, W2A (buf))
+     ' string字符串
+    
+    赋值 (buf, 取空白字节集 (4))
+    ReadProcessMemory_字节集 (hProcess, tb_.dwData, buf, 取字节集长度 (buf), 0)
+    赋值 (hWnd, 取字节集数据 (buf, #整数型, ))
+    GetWindowThreadProcessId (hWnd, pid)
+    
+    VirtualFreeEx (hProcess, ptb, 0, 32768)
+     ' 释放远程TBBUTTON结构内存
+    
+    赋值 (路径, PID取进程名和路径 (pid, 进程名))
+    
+    .如果真 (等于 (SHGetFileInfo (路径, 128, hFileInfo, 348, 257), 0))
+        SHGetFileInfo (路径, 128, hFileInfo, 348, 273)
+    .如果真结束
+    
+    赋值 (索引, .插入表项 (到文本 (i), ImageList_AddIcon (h_list, hFileInfo.hIcon), , 1, 4))
+    索引.置标题 (1, string)
+    索引.置标题 (2, “√”) ' ×
+    索引.置标题 (3, 到文本 (pid))
+    索引.置标题 (4, 进程名)
+    索引.置标题 (5, 取公司名称 (路径))
+    索引.置标题 (6, 路径)
+.变量循环尾 ()
+CloseHandle (hProcess)
+
+.子程序 刷新托盘, 空白型, , 
+.局部变量 hToolbar, 整数型, , , 
+.局部变量 hProcess, 整数型, , , 
+.局部变量 pid, 整数型, , , 
+.局部变量 num, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 ptb, 整数型, , , 
+.局部变量 tb_, TBBUTTON, , , 
+.局部变量 buf, 字节集, , , 
+.局部变量 string, 文本型, , , 
+.局部变量 hWnd, 整数型, , , 
+.局部变量 索引, 整数型, , , 
+.局部变量 路径, 文本型, , , 
+.局部变量 进程名, 文本型, , , 
+.局部变量 TRAYDATA, TRAYDATA, , , 
+
+赋值 (hToolbar, 取托盘区句柄_ (真))
+GetWindowThreadProcessId (hToolbar, pid)
+赋值 (hProcess, OpenProcess (1082, 假, pid))
+赋值 (num, SendMessageA (hToolbar, 1048, 0, 0)) ' 1048 = TB_BUTTONCOUNT
+
+SHGetFileInfo (相加 (读环境变量 (“windir”), “\explorer.exe”), 128, hFileInfo, 348, 257)
+赋值 (索引, .插入表项 (“托盘”, ImageList_AddIcon (h_list, hFileInfo.hIcon), , , 3))
+.计次循环首 (num, i)
+    赋值 (ptb, VirtualAllocEx (hProcess, 0, 20, 4096, 64))
+    .如果真 (等于 (ptb, 0))
+        到循环尾 ()
+    .如果真结束
+    SendMessageA (hToolbar, 1047, 相减 (i, 1), ptb) ' 1047 = TB_GETBUTTON
+    
+    赋值 (buf, 取空白字节集 (18))
+    ReadProcessMemory_字节集 (hProcess, ptb, buf, 18, 0)
+    RtlMoveMemory_图标 (tb_, buf, 18)
+    
+    赋值 (buf, 取空白字节集 (24))
+    ReadProcessMemory_字节集 (hProcess, tb_.dwData, buf, 24, 0)
+    RtlMoveMemory_TRAYDATA (TRAYDATA, buf, 24)
+     ' TRAYDATA.hIcon 图标句柄
+    
+    赋值 (buf, 取空白字节集 (20))
+    ReadProcessMemory_字节集 (hProcess, ptb, buf, 取字节集长度 (buf), 0)
+    RtlMoveMemory_图标 (tb_, buf, 20)
+    
+    赋值 (num, CreateProcessThread (hProcess, GetProcAddress (LoadLibraryA (“kernel32.dll”), “lstrlenW”), tb_.iString))
+    赋值 (buf, 取空白字节集 (相加 (相乘 (num, 2), 2)))
+    ReadProcessMemory_字节集 (hProcess, tb_.iString, buf, 取字节集长度 (buf), 0)
+    赋值 (string, W2A (buf))
+     ' string字符串
+    
+    赋值 (buf, 取空白字节集 (4))
+    ReadProcessMemory_字节集 (hProcess, tb_.dwData, buf, 取字节集长度 (buf), 0)
+    赋值 (hWnd, 取字节集数据 (buf, #整数型, ))
+    GetWindowThreadProcessId (hWnd, pid)
+    
+    VirtualFreeEx (hProcess, ptb, 0, 32768)
+     ' 释放远程TBBUTTON结构内存
+    
+    赋值 (索引, .插入表项 (到文本 (i), ImageList_AddIcon (h_list, TRAYDATA.hIcon), , 1, 4))
+    索引.置标题 (1, string)
+    索引.置标题 (2, “√”) ' ×
+    赋值 (路径, PID取进程名和路径 (pid, 进程名))
+    索引.置标题 (3, 到文本 (pid))
+    索引.置标题 (4, 进程名)
+    索引.置标题 (5, 取公司名称 (路径))
+    索引.置标题 (6, 路径)
+.计次循环尾 ()
+CloseHandle (hProcess)
+
+.子程序 进程信息, 空白型, , 
+.局部变量 hSnapShot, 整数型, , , 
+.局部变量 End, 整数型, , , 
+.局部变量 buffer, PROCESSENTRY32, , , 
+.局部变量 索引, 整数型, , , 
+
+全部删除 ()
+赋值 (hSnapShot, CreateToolhelp32Snapshot (2, 0))
+赋值 (buffer.dwSize, 296)
+赋值 (End, Process32First (hSnapShot, buffer))
+.判断循环首 (不等于 (End, 0))
+    赋值 (索引, .插入表项 (到文本 (buffer.szExeFile), , , , ))
+    索引.置标题 (1, 到文本 (buffer.th32ProcessID))
+    索引.置标题 (2, 到文本 (buffer.cntThreads))
+    索引.置标题 (6, 到文本 (buffer.th32ParentProcessID))
+    
+    赋值 (End, Process32Next (hSnapShot, buffer))
+.判断循环尾 ()
+CloseHandle (hSnapShot)
+处理事件 ()
+EnumPro ()
+
+.子程序 EnumPro, 空白型, , 
+.局部变量 CreationTime, FILETIME, , , 
+.局部变量 ExitTime, 长整数型, , , 
+.局部变量 KernelTime, FILETIME, , , 
+.局部变量 UserTime, FILETIME, , , 
+.局部变量 匿名局部变量_2613, 空白型, , , 
+.局部变量 hbuf, 整数型, , "255", 
+.局部变量 匿名局部变量_2590, 空白型, , , 
+.局部变量 Mem, Process_Memory_Counters, , , 
+.局部变量 匿名局部变量_2573, 空白型, , , 
+.局部变量 hToken, 整数型, , , 
+.局部变量 匿名局部变量_2575, 空白型, , , 
+.局部变量 cbBuf, 整数型, , , 
+.局部变量 ptiUser, 字节集, , , 
+.局部变量 pSid, 整数型, , , 
+.局部变量 UserSize, 整数型, , , 
+.局部变量 DomainSize, 整数型, , , 
+.局部变量 User, 文本型, , , 
+.局部变量 Domain, 文本型, , , 
+.局部变量 匿名局部变量_2583, 空白型, , , 
+.局部变量 hImageList, 整数型, , , 
+.局部变量 文件信息, SHfileInfo, , , 
+.局部变量 hProcess, 整数型, , , 
+.局部变量 pid, 整数型, , , 
+.局部变量 exe, 文本型, , , 
+.局部变量 路径, 文本型, , , 
+.局部变量 匿名局部变量_2627, 空白型, , , 
+.局部变量 索引, 整数型, , , 
+
+ImageList_Destroy (hImageList)
+赋值 (hImageList, ImageList_Create (16, 16, 24, 0, 0))
+4099.发送信息 (1, hImageList)
+ImageList_SetBkColor (hImageList, .)
+
+.变量循环首 (4, 65535, 4, pid)
+    赋值 (hProcess, OpenProcess (1024, 假, pid))
+    .如果真 (不等于 (hProcess, 0))
+        GetProcessTimes (hProcess, CreationTime, ExitTime, KernelTime, UserTime)
+        .如果真 (等于 (ExitTime, 0))
+            处理事件_ ()
+            赋值 (exe, 取空白文本 (255))
+            GetProcessImageFileNameA (hProcess, exe, 255)
+            赋值 (路径, DOS路径转换_ (exe))
+            赋值 (exe, 取文本右边 (路径, 相减 (取文本长度 (路径), 倒找文本 (路径, “\”, , 假))))
+            
+            赋值 (索引, 到文本 (pid).查找表项 (真, 1)) ' 对比PID
+            .如果 (等于 (索引, -1))
+                赋值 (索引, .插入表项 (到文本 (exe), , , , ))
+                索引.置标题 (1, 到文本 (pid))
+                索引.置标题 (2, “”)
+                索引.置标题 (5, “√”)
+            .否则
+                索引.置标题 (5, “-”)
+            .如果结束
+            
+             ' '''''''MemoryInfo
+            .如果真 (不等于 (GetProcessMemoryInfo (hProcess, Mem, 40), 0))
+                .如果真 (不等于 (相加 (数值到格式文本 (相除 (Mem.当前工作设置大小, 1024), 0, 真), “ K”), 索引.取标题 (3)))
+                    索引.置标题 (3, 相加 (数值到格式文本 (相除 (Mem.当前工作设置大小, 1024), 0, 真), “ K”))
+                .如果真结束
+                
+            .如果真结束
+            
+             ' '''''''GetProUser
+            .如果 (OpenProcessToken (hProcess, 8, hToken))
+                GetTokenInformation (hToken, 1, {  }, 0, cbBuf)
+                赋值 (ptiUser, 取空白字节集 (cbBuf))
+                .如果真 (GetTokenInformation (hToken, 1, ptiUser, cbBuf, 0))
+                    赋值 (pSid, 取字节集数据 (ptiUser, #整数型, ))
+                    CloseHandle (hToken)
+                    LookupAccountSidA (字符 (0), pSid, 字符 (0), UserSize, 字符 (0), DomainSize, 0)
+                    .如果真 (大于 (UserSize, 0))
+                        赋值 (User, 取空白文本 (UserSize))
+                        赋值 (Domain, 取空白文本 (DomainSize))
+                        .如果 (LookupAccountSidA (字符 (0), pSid, User, UserSize, Domain, DomainSize, 0))
+                            索引.置标题 (4, User)
+                        .否则
+                            索引.置标题 (4, GetUser_WTS (pid))
+                        .如果结束
+                        
+                    .如果真结束
+                    
+                .如果真结束
+                
+            .否则
+                索引.置标题 (4, GetUser_WTS (pid))
+            .如果结束
+            
+            索引.置标题 (7, 取公司名称 (路径))
+            索引.置标题 (8, 路径)
+            
+            索引.置标题 (9, 数值到时间 (CreationTime))
+            索引.置标题 (10, GetCommandLine (pid, 路径))
+            
+            .如果真 (等于 (SHGetFileInfo (路径, 128, 文件信息, 348, 257), 0))
+                SHGetFileInfo (路径, 128, 文件信息, 348, 273)
+            .如果真结束
+            
+            索引.置图片 (ImageList_AddIcon (hImageList, 文件信息.hIcon))
+        .如果真结束
+        CloseHandle (hProcess)
+    .如果真结束
+    
+.变量循环尾 ()
+
+.子程序 _列表框_进程_右键单击表项, 空白型, , 
+弹出菜单 ()
+
+.子程序 _列表框_进程_当前表项被改变, 空白型, , 
+处理事件 ()
+_选择夹2_子夹被改变 ()
+
+.子程序 _选择夹2_子夹被改变, 空白型, , 
+.局部变量 i, 整数型, , , 
+.局部变量 Pid, 整数型, , , 
+
+赋值 (i, .现行子夹)
+赋值 (Pid, 到数值 (.取标题 (., 1)))
+.判断开始 (等于 (i, 0))
+    全部删除 ()
+    ProInfo ()
+.判断 (等于 (i, 1))
+    全部删除 ()
+    EnumMod (Pid)
+.判断 (等于 (i, 2))
+    全部删除 ()
+    ThdInfo (Pid)
+.判断 (等于 (i, 0))
+    
+.判断 (等于 (i, 0))
+    
+.判断 (等于 (i, 0))
+    
+.判断 (等于 (i, 0))
+    
+.默认
+    
+.判断结束
+
+
+.子程序 ProInfo, 空白型, , 
+.局部变量 索引, 整数型, , , 
+
+0.插入表项 (“1”, 0, , , )
+0.置标题 (1, “进程:”)
+0.置标题 (2, 相加 (.取标题 (., ), “ [ PID:”, .取标题 (., 1), “ ]”))
+
+赋值 (索引, .取标题 (., 6).查找表项 (真, 1))
+1.插入表项 (“2”, 0, , , )
+1.置标题 (1, “父进程:”)
+1.置标题 (2, 相加 (索引.取标题 (), “ [ PID:”, .取标题 (., 6), “ ]”))
+
+2.插入表项 (“3”, 0, , , )
+2.置标题 (1, “优先级:”)
+2.置标题 (2, 取进程优先级别 (到数值 (.取标题 (., 1))))
+
+3.插入表项 (“4”, 0, , , )
+3.置标题 (1, “启动参数:”)
+3.置标题 (2, .取标题 (., 10))
+
+4.插入表项 (“5”, 0, , , )
+4.置标题 (1, “创建时间:”)
+4.置标题 (2, .取标题 (., 9))
+
+5.插入表项 (“6”, 0, , , )
+5.置标题 (1, “文件描述:”)
+5.置标题 (2, 取公司名称 (.取标题 (., 8), 2))
+
+6.插入表项 (“7”, 0, , , )
+6.置标题 (1, “文件产商:”)
+6.置标题 (2, .取标题 (., 7))
+
+7.插入表项 (“8”, 0, , , )
+7.置标题 (1, “文件大小:”)
+7.置标题 (2, 相加 (数值到格式文本 (相除 (取文件尺寸 (.取标题 (., 8)), 1024), 0, 真), “ K”))
+
+.子程序 EnumMod, 空白型, , 
+.参数 Pid, 整数型, , 
+
+.局部变量 索引, 整数型, , , 
+.局部变量 hSnapshot, 整数型, , , 
+.局部变量 Mod, 模块信息, , , 
+.局部变量 pFound, 整数型, , , 
+.局部变量 hImageList, 整数型, , , 
+.局部变量 文件信息, SHfileInfo, , , 
+
+ImageList_Destroy (hImageList)
+赋值 (hImageList, ImageList_Create (16, 16, 24, 0, 0))
+4099.发送信息 (1, hImageList)
+ImageList_SetBkColor (hImageList, .)
+
+置等待鼠标 ()
+赋值 (hSnapshot, CreateToolhelp32Snapshot (8, Pid)) ' TH32CS_SNAPMODULE
+赋值 (Mod.size, 1024)
+赋值 (pFound, Module32First (hSnapshot, Mod))
+.判断循环首 (不等于 (pFound, 0))
+    .如果真 (等于 (Mod.pid, Pid))
+        .如果真 (.选中)
+            .如果真 (不等于 (寻找文本 (取公司名称 (到文本 (Mod.szpath)), “Microsoft Corporation”, , 真), -1))
+                赋值 (pFound, Module32Next (hSnapshot, Mod))
+                到循环尾 ()
+            .如果真结束
+            
+        .如果真结束
+        
+        .如果真 (等于 (SHGetFileInfo (到文本 (Mod.szpath), 128, 文件信息, 348, 257), 0))
+            SHGetFileInfo (到文本 (Mod.szpath), 128, 文件信息, 348, 273)
+        .如果真结束
+        
+        赋值 (索引, .插入表项 (到文本 (Mod.szpath), ImageList_AddIcon (hImageList, 文件信息.hIcon), , , ))
+        索引.置标题 (1, 相加 (数值到格式文本 (相除 (Mod.bsize, 1024), 0, 真), “ K”))
+        索引.置标题 (2, 到文本 (Mod.base))
+        索引.置标题 (3, 取公司名称 (到文本 (Mod.szpath)))
+    .如果真结束
+    赋值 (pFound, Module32Next (hSnapshot, Mod))
+.判断循环尾 ()
+恢复鼠标 ()
+
+.子程序 ThdInfo, 空白型, , 
+.参数 Pid, 整数型, , 
+
+.局部变量 ret, 整数型, , , 
+.局部变量 buf, 整数型, , , 
+.局部变量 size, 整数型, , , 
+.局部变量 memaddr, 整数型, , , 
+.局部变量 Str, 整数型, , , 
+.局部变量 temp, SYSTEM_PROCESSES, , , 
+.局部变量 temper, SYSTEM_PROCESSES, , , 
+.局部变量 Hwnd, 整数型, , , 
+.局部变量 modname, 文本型, , , 
+.局部变量 startaddr, 整数型, , , 
+.局部变量 tHwnd, 整数型, , , 
+.局部变量 status, 整数型, , , 
+.局部变量 add, 整数型, , , 
+.局部变量 state, 文本型, , "8", 
+.局部变量 ii, 整数型, , , 
+.局部变量 索引, 整数型, , , 
+.局部变量 hImageList, 整数型, , , 
+.局部变量 文件信息, SHfileInfo, , , 
+
+ImageList_Destroy (hImageList)
+赋值 (hImageList, ImageList_Create (16, 16, 24, 0, 0))
+4099.发送信息 (1, hImageList) ' 为超级列表框设置图片组,1小图标,0大图标
+ImageList_SetBkColor (hImageList, .)
+
+赋值 (state, { “初始化”, “准备就绪”, “正在运行”, “休眠”, “已终止”, “等待”, “状态转换”, “未知” })
+
+NtQuerySystemInformation (5, buf, 0, size) ' SystemProcessesAndThreadsInformation
+赋值 (memaddr, LocalAlloc (0, size))
+赋值 (buf, memaddr)
+赋值 (ret, NtQuerySystemInformation (5, buf, size, 0))
+.如果真 (等于 (ret, 0))
+    CopyMemory_SYSTEM_PROCESSES (temp, buf, 244)
+    CopyMemory_SYSTEM_PROCESSES (temper, buf, 相加 (180, 相乘 (64, temp.ThreadCount)))
+    .判断循环首 (不等于 (temper.NextEntryDelta, 0))
+        .如果真 (等于 (temper.ProcessID, Pid))
+            .计次循环首 (temper.ThreadCount, ii)
+                赋值 (索引, .插入表项 (到文本 (temper.Threads [ii], ClientId.UniqueThread), , , , ))
+                索引.置标题 (1, 到文本 (temper.Threads [ii], Priority))
+                索引.置标题 (2, 到文本 (temper.Threads [ii], ContextSwitchCount))
+                
+                .如果 (并且 (大于 (temper.Threads [ii], State, 0), 小于 (temper.Threads [ii], State, 9)))
+                    索引.置标题 (3, state [相加 (temper.Threads [ii], State, 1)])
+                .否则
+                    索引.置标题 (3, “未知”)
+                .如果结束
+                
+                赋值 (tHwnd, OpenThread (2032639, 0, temper.Threads [ii], ClientId.UniqueThread))
+                
+                .如果真 (大于 (tHwnd, 0))
+                    .如果真 (大于或等于 (ZwQueryInformationThread_ (tHwnd, 9, startaddr, 4, 0), 0))
+                        赋值 (Hwnd, OpenProcess (2035711, 假, temper.Threads [ii], ClientId.UniqueProcess))
+                        .如果真 (不等于 (Hwnd, 0))
+                            赋值 (modname, 取空白文本 (255))
+                            GetModuleFileNameEx (Hwnd, 0, modname, 256)
+                            GetMappedFileName (Hwnd, startaddr, modname, 256)
+                            赋值 (modname, DOS路径转换_ (modname))
+                            索引.置标题 (4, modname)
+                            
+                            .如果真 (等于 (SHGetFileInfo (modname, 128, 文件信息, 348, 257), 0))
+                                .如果真 (等于 (SHGetFileInfo (modname, 128, 文件信息, 348, 273), 0))
+                                    赋值 (add, PathFindExtension (modname))
+                                    赋值 (modname, 指针到文本 (add))
+                                    SHGetFileInfo (modname, 128, 文件信息, 348, 272)
+                                .如果真结束
+                                
+                            .如果真结束
+                            
+                            索引.置图片 (ImageList_AddIcon (hImageList, 文件信息.hIcon))
+                            CloseHandle (Hwnd)
+                        .如果真结束
+                        
+                    .如果真结束
+                    CloseHandle (tHwnd)
+                .如果真结束
+                
+            .计次循环尾 ()
+            跳出循环 ()
+        .如果真结束
+        赋值 (buf, 相加 (buf, temper.NextEntryDelta))
+        CopyMemory_SYSTEM_PROCESSES (temp, buf, 244)
+        CopyMemory_SYSTEM_PROCESSES (temper, buf, 相加 (180, 相乘 (64, temp.ThreadCount)))
+    .判断循环尾 ()
+.如果真结束
+LocalFree (memaddr)
+
+.子程序 取进程优先级别, 文本型, , 
+.参数 PID, 整数型, , 
+
+.局部变量 hwnd, 整数型, , , 
+.局部变量 ASD, 整数型, , , 
+
+赋值 (hwnd, OpenProcess (1040, 假, PID))
+赋值 (ASD, GetPriorityClass (hwnd))
+CloseHandle (hwnd)
+连续赋值 (假, .选中, .选中, .选中, .选中, .选中)
+
+.判断开始 (等于 (ASD, 256))
+    赋值 (.选中, 真)
+    返回 (“实时”)
+.判断 (等于 (ASD, 128))
+    赋值 (.选中, 真)
+    返回 (“高”)
+.判断 (等于 (ASD, 32768))
+    赋值 (.选中, 真)
+    返回 (“高于标准”)
+.判断 (等于 (ASD, 32))
+    赋值 (.选中, 真)
+    返回 (“标准”)
+.判断 (等于 (ASD, 16384))
+    赋值 (.选中, 真)
+    返回 (“低于标准”)
+.判断 (等于 (ASD, 64))
+    赋值 (.选中, 真)
+    返回 (“低”)
+.默认
+    返回 (“未知”)
+.判断结束
+
+
+.子程序 _刷新进程_被选择, 空白型, , 
+进程信息 ()
+
+.子程序 网络连接, 空白型, , 
+.局部变量 hImageList, 整数型, , , 
+.局部变量 文件信息, SHfileInfo, , , 
+.局部变量 TCPExTable, MIB_TCPEXTABLE, , , 
+.局部变量 UDPExTable, MIB_UDPEXTABLE, , , 
+.局部变量 状态信息, 文本型, , "12", 
+.局部变量 pvoid, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 Ip_Buf, 字节集, , , 
+.局部变量 本地, 文本型, , , 
+.局部变量 tPort, 整数型, , , 
+.局部变量 远程, 文本型, , , 
+.局部变量 pid, 整数型, , , 
+.局部变量 路径_, 文本型, , , 
+.局部变量 进程名, 文本型, , , 
+.局部变量 索引, 整数型, , , 
+.局部变量 状态, 文本型, , , 
+
+全部删除 ()
+ImageList_Destroy (hImageList)
+赋值 (hImageList, ImageList_Create (16, 16, 24, 0, 0)) ' 定义每张图片大小为16*16的图片组,色彩为24位真彩色
+4099.发送信息 (1, hImageList) ' 为超级列表框设置图片组
+ImageList_SetBkColor (hImageList, .)
+
+赋值 (状态信息, { “已关闭”, “正在监听”, “同步发送”, “同步接收”, “已建立”, “FIN_WAIT1”, “FIN_WAIT2”, “关闭等待”, “正在关闭”, “最后确认”, “延时等待”, “删除” })
+' 本源码来自易语言资源网(www.wodesoft.com)
+AllocateAndGetTcpExTableFromStack (pvoid, 真, GetProcessHeap (), 2, 2)
+赋值 (TCPExTable.dwNumEntries, 取字节集数据 (指针到字节集 (pvoid, 4), #整数型, ))
+重定义数组 (TCPExTable.table, 假, TCPExTable.dwNumEntries)
+RtlMoveMemory_Tcp (TCPExTable.table, 相加 (pvoid, 4), 相乘 (TCPExTable.dwNumEntries, 24))
+.计次循环首 (TCPExTable.dwNumEntries, i)
+    处理事件_ ()
+    赋值 (Ip_Buf, 到字节集 (TCPExTable.table [i], dwLocalAddr))
+    赋值 (本地, 相加 (到文本 (Ip_Buf [1]), “.”, 到文本 (Ip_Buf [2]), “.”, 到文本 (Ip_Buf [3]), “.”, 到文本 (Ip_Buf [4])))
+    赋值 (tPort, 相加 (相除 (TCPExTable.table [i], dwLocalPort, 256), 相乘 (求余数 (TCPExTable.table [i], dwLocalPort, 256), 256)))
+    赋值 (本地, 相加 (本地, “:”, 到文本 (tPort)))
+    赋值 (Ip_Buf, 到字节集 (TCPExTable.table [i], dwRemoteAddr))
+    赋值 (远程, 相加 (到文本 (Ip_Buf [1]), “.”, 到文本 (Ip_Buf [2]), “.”, 到文本 (Ip_Buf [3]), “.”, 到文本 (Ip_Buf [4])))
+    赋值 (tPort, 相加 (相除 (TCPExTable.table [i], dwRemotePort, 256), 相乘 (求余数 (TCPExTable.table [i], dwRemotePort, 256), 256)))
+    赋值 (远程, 相加 (远程, “:”, 到文本 (tPort)))
+    赋值 (pid, TCPExTable.table [i], dwProcessPID)
+    赋值 (路径_, PID取进程名和路径 (pid, 进程名))
+    
+    .如果真 (等于 (SHGetFileInfo (路径_, 128, 文件信息, 348, 257), 0))
+        SHGetFileInfo (路径_, 128, 文件信息, 348, 273)
+    .如果真结束
+    
+    .如果真 (.选中)
+        .如果真 (或者 (等于 (pid, 0), 等于 (pid, 4), 等于 (取文本左边 (本地, 9), “127.0.0.1”), 等于 (取文本左边 (本地, 7), “0.0.0.0”)))
+            到循环尾 ()
+        .如果真结束
+        
+    .如果真结束
+    赋值 (索引, .插入表项 (“TCP”, ImageList_AddIcon (hImageList, 文件信息.hIcon), , , ))
+    索引.置标题 (1, 相加 (进程名, “:”, 到文本 (pid)))
+    索引.置标题 (2, 本地)
+    索引.置标题 (3, 远程)
+    .如果 (或者 (大于 (TCPExTable.table [i], dwState, 12), 小于 (TCPExTable.table [i], dwState, 1)))
+        赋值 (状态, “未知”)
+    .否则
+        赋值 (状态, 状态信息 [TCPExTable].table [i], dwState)
+    .如果结束
+    索引.置标题 (4, 状态)
+    索引.置标题 (5, 取公司名称 (路径_))
+    索引.置标题 (6, 路径_)
+.计次循环尾 ()
+赋值 (pvoid, 0)
+赋值 (i, 0)
+AllocateAndGetUdpExTableFromStack (pvoid, 真, GetProcessHeap (), 2, 2)
+赋值 (UDPExTable.dwNumEntries, 取字节集数据 (指针到字节集 (pvoid, 4), #整数型, ))
+重定义数组 (UDPExTable.table, 假, UDPExTable.dwNumEntries)
+RtlMoveMemory_UDP (UDPExTable.table, 相加 (pvoid, 4), 相乘 (UDPExTable.dwNumEntries, 12))
+.计次循环首 (UDPExTable.dwNumEntries, i)
+    处理事件_ ()
+    赋值 (Ip_Buf, 到字节集 (UDPExTable.table [i], dwLocalAddr))
+    赋值 (本地, 相加 (到文本 (Ip_Buf [1]), “.”, 到文本 (Ip_Buf [2]), “.”, 到文本 (Ip_Buf [3]), “.”, 到文本 (Ip_Buf [4])))
+    赋值 (tPort, 相加 (相除 (UDPExTable.table [i], dwLocalPort, 256), 相乘 (求余数 (UDPExTable.table [i], dwLocalPort, 256), 256)))
+    赋值 (本地, 相加 (本地, “:”, 到文本 (tPort)))
+    赋值 (pid, UDPExTable.table [i], dwProcessPId)
+    赋值 (路径_, PID取进程名和路径 (pid, 进程名))
+    
+    .如果真 (等于 (SHGetFileInfo (路径_, 128, 文件信息, 348, 257), 0))
+        SHGetFileInfo (路径_, 128, 文件信息, 348, 273)
+    .如果真结束
+    
+    .如果真 (.选中)
+        .如果真 (或者 (等于 (pid, 0), 等于 (pid, 4), 等于 (取文本左边 (本地, 9), “127.0.0.1”), 等于 (取文本左边 (本地, 7), “0.0.0.0”)))
+            到循环尾 ()
+        .如果真结束
+        
+    .如果真结束
+    赋值 (索引, .插入表项 (“UDP”, ImageList_AddIcon (hImageList, 文件信息.hIcon), , , ))
+    索引.置标题 (1, 相加 (进程名, “:”, 到文本 (pid)))
+    索引.置标题 (2, 本地)
+    索引.置标题 (3, “0.0.0.0”)
+    索引.置标题 (5, 取公司名称 (路径_))
+    索引.置标题 (6, 路径_)
+.计次循环尾 ()
+
+.子程序 _列表框_连接_右键单击表项, 空白型, , 
+.如果 (等于 (., -1))
+    连续赋值 (真, .禁止, .禁止, .禁止, .禁止)
+.否则
+    连续赋值 (假, .禁止, .禁止, .禁止, .禁止)
+.如果结束
+弹出菜单 ()
+
+.子程序 _刷新网络_被选择, 空白型, , 
+网络连接 ()
+
+.子程序 _关闭连接_被选择, 空白型, , 
+关闭指定连接 (.取标题 (., 2), .取标题 (., 3))
+
+.子程序 _结束进程网络_被选择, 空白型, , 
+
+
+.子程序 _隐藏本地连接_被选择, 空白型, , 
+.如果 (.选中)
+    赋值 (.选中, 假)
+.否则
+    赋值 (.选中, 真)
+.如果结束
+网络连接 ()
+
+.子程序 _定位文件网络_被选择, 空白型, , 
+定位文件 (.取标题 (., 6))
+
+.子程序 _属性网络_被选择, 空白型, , 
+查看属性 (.取标题 (., 6))
+
+.子程序 系统服务, 空白型, , 
+.局部变量 Status, 字节集, , , 
+.局部变量 StatusSize, 整数型, , , 
+.局部变量 num, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 Service, Enum_Service_Status_Process, , , 
+.局部变量 索引, 整数型, , , 
+.局部变量 SC_hwnd, 整数型, , , 
+.局部变量 状态数组, 文本型, , "7", 
+.局部变量 匿名局部变量_1773, 空白型, , , 
+.局部变量 描述, 文本型, , , 
+.局部变量 状态, 整数型, , , 
+.局部变量 登入方式, 文本型, , , 
+.局部变量 命令行, 文本型, , , 
+.局部变量 路径, 文本型, , , 
+.局部变量 hImageList, 整数型, , , 
+.局部变量 文件信息, SHfileInfo, , , 
+.局部变量 add, 整数型, , , 
+
+全部删除 ()
+赋值 (SC_hwnd, OpenSCManager (0, 0, 4)) ' 4 SC_MANAGER_ENUMERATE_SERVICE
+.如果真 (等于 (SC_hwnd, 0))
+    信息框 (“查看服务失败”, 相加 (#系统等待, #错误图标), )
+    返回 ()
+.如果真结束
+EnumServicesStatusEx (SC_hwnd, 0, 48, 3, Status, 0, StatusSize, num, 0, 0)
+ ' 48 SERVICE_WIN32 , 3 SERVICE_STATE_ALL
+赋值 (Status, 取空白字节集 (StatusSize))
+赋值 (状态数组, { “已停止”, “已启动”, “已停止”, “已启动”, “已启动”, “已暂停”, “已暂停” })
+.如果真 (等于 (EnumServicesStatusEx (SC_hwnd, 0, 48, 3, Status, StatusSize, StatusSize, num, 0, 0), 0))
+    CloseServiceHandle (SC_hwnd)
+    信息框 (“查看服务失败”, 相加 (#系统等待, #错误图标), )
+    返回 ()
+.如果真结束
+
+ImageList_Destroy (hImageList)
+赋值 (hImageList, ImageList_Create (16, 16, 24, 0, 0))
+4099.发送信息 (1, hImageList) ' 为超级列表框设置图片组,1小图标,0大图标
+ImageList_SetBkColor (hImageList, .)
+.计次循环首 (num, i)
+    处理事件_ ()
+    RtlMoveMemory_服务 (Service, 取字节集中间 (Status, 相减 (相乘 (i, 44), 43), 44), 44)
+    赋值 (命令行, 取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\Parameters\ServiceDll”), ))
+    .如果真 (等于 (命令行, “”))
+        赋值 (命令行, 取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\ImagePath”), ))
+    .如果真结束
+    
+    赋值 (路径, 格式化路径 (命令行))
+    赋值 (描述, 取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\Description”), ))
+    赋值 (状态, 取数值注册项 (#本地机器, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\Start”), ))
+    赋值 (登入方式, 取文本注册项 (#本地机器, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\ObjectName”), ))
+    .如果真 (不等于 (寻找文本 (登入方式, “\”, , 假), -1))
+        赋值 (登入方式, 取文本右边 (登入方式, 相减 (取文本长度 (登入方式), 倒找文本 (登入方式, “\”, , 假))))
+    .如果真结束
+    
+    .如果真 (.选中)
+        .如果真 (不等于 (寻找文本 (取公司名称 (路径), “Microsoft Corporation”, , 真), -1))
+            到循环尾 ()
+        .如果真结束
+        
+    .如果真结束
+    
+    .如果真 (等于 (SHGetFileInfo (路径, 128, 文件信息, 348, 257), 0))
+        .如果真 (等于 (SHGetFileInfo (路径, 128, 文件信息, 348, 273), 0))
+            赋值 (add, PathFindExtension (路径))
+            赋值 (路径, 指针到文本 (add))
+            SHGetFileInfo (路径, 128, 文件信息, 348, 272)
+        .如果真结束
+        
+    .如果真结束
+    
+    赋值 (索引, .插入表项 (Service.lpDisplayName, ImageList_AddIcon (hImageList, 文件信息.hIcon), , , ))
+    索引.置标题 (1, 描述)
+    .如果 (并且 (大于 (Service.dwCurrentState, 0), 小于 (Service.dwCurrentState, 8)))
+        .如果 (等于 (Service.dwCurrentState, 1))
+            索引.置标题 (2, “”)
+        .否则
+            索引.置标题 (2, 状态数组 [Service].dwCurrentState)
+        .如果结束
+        
+    .否则
+        索引.置标题 (2, “未知状态”)
+    .如果结束
+    
+    .判断开始 (等于 (状态, 2))
+        索引.置标题 (3, “自动”)
+    .判断 (等于 (状态, 3))
+        索引.置标题 (3, “手动”)
+    .默认
+        索引.置标题 (3, “已禁用”)
+    .判断结束
+    
+    索引.置标题 (4, 登入方式)
+    索引.置标题 (5, 取公司名称 (路径))
+    索引.置标题 (6, 取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\ImagePath”), ))
+    索引.置标题 (7, 路径)
+    索引.置标题 (8, Service.lpServiceName)
+.计次循环尾 ()
+CloseServiceHandle (SC_hwnd)
+ ' EnumIco (列表框_服务, 7, 假, )
+
+.子程序 _列表框_服务_右键单击表项, 空白型, , 
+.局部变量 x, 整数型, , , 
+
+赋值 (x, .)
+.如果 (等于 (x, -1))
+    连续赋值 (真, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止)
+.否则
+    连续赋值 (假, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止, .禁止)
+    .如果 (或者 (等于 (x.取标题 (2), “”), 等于 (x.取标题 (2), “已停止”)))
+        .如果 (等于 (x.取标题 (3), “已禁用”))
+            连续赋值 (真, .禁止, .禁止, .禁止)
+        .否则
+            连续赋值 (假, .禁止, .禁止, .禁止)
+        .如果结束
+        
+    .否则
+        赋值 (.禁止, 真)
+    .如果结束
+    
+.如果结束
+弹出菜单 ()
+
+.子程序 _列表框_服务_被双击, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+_服务属性_被选择 ()
+
+.子程序 _启动服务_被选择, 空白型, , 
+.如果真 (运行 (相加 (“sc start ”, .取标题 (., 8)), 真, 1))
+    .置标题 (., 2, “已启动”)
+.如果真结束
+
+
+.子程序 _停止服务_被选择, 空白型, , 
+.如果真 (运行 (相加 (“sc stop ”, .取标题 (., 8)), 真, 1))
+    .置标题 (., 2, “已停止”)
+.如果真结束
+
+
+.子程序 _删除服务_被选择, 空白型, , 
+.局部变量 hSCM, 整数型, , , 
+.局部变量 hService, 整数型, , , 
+.局部变量 STATUS, Service_Status, , , 
+
+.如果真 (等于 (信息框 (“确认删除该服务？”, 相加 (#系统等待, #信息图标, #确认取消钮), ), #确认钮))
+    赋值 (hSCM, OpenSCManager (0, 0, 983103))
+    .如果真 (不等于 (hSCM, 0))
+        赋值 (hService, OpenService (hSCM, .取标题 (., 8), 983551))
+        .如果真 (不等于 (hService, 0))
+            ControlService (hService, 1, STATUS)
+            DeleteService (hService)
+            CloseServiceHandle (hService)
+            CloseServiceHandle (hSCM)
+            .删除表项 (.)
+            返回 ()
+        .如果真结束
+        
+    .如果真结束
+    信息框 (“删除失败！”, 相加 (#系统等待, #错误图标), )
+.如果真结束
+
+
+.子程序 _隐藏系统服务_被选择, 空白型, , 
+.如果 (.选中)
+    赋值 (.选中, 假)
+.否则
+    赋值 (.选中, 真)
+.如果结束
+系统服务 ()
+
+.子程序 _自动服务_被选择, 空白型, , 
+.如果真 (运行 (相加 (“sc config ”, .取标题 (., 8), “ start= auto”), 真, 1))
+    .置标题 (., 3, “自动”)
+.如果真结束
+
+
+.子程序 _手动服务_被选择, 空白型, , 
+.如果真 (运行 (相加 (“sc config ”, .取标题 (., 8), “ start= demand”), 真, 1))
+    .置标题 (., 3, “手动”)
+.如果真结束
+
+
+.子程序 _禁用服务_被选择, 空白型, , 
+.如果真 (运行 (相加 (“sc stop ”, .取标题 (., 8)), 真, 1))
+    .如果真 (运行 (相加 (“sc config ”, .取标题 (., 8), “ start= disabled”), 真, 1))
+        .置标题 (., 2, “”)
+        .置标题 (., 3, “已禁用”)
+    .如果真结束
+    
+.如果真结束
+
+
+.子程序 _刷新服务_被选择, 空白型, , 
+系统服务 ()
+
+.子程序 _定位文件服务_被选择, 空白型, , 
+定位文件 (.取标题 (., 7))
+
+.子程序 _服务属性_文件_被选择, 空白型, , 
+查看属性 (.取标题 (., 7))
+
+.子程序 _服务属性_被选择, 空白型, , 
+载入 (窗口_查看服务属性, _启动窗口, 真)
+
+.程序集 程序集_功能, , , 
+
+.子程序 loadDll_Fuc, 空白型, , 
+.参数 FileName, 文本型, , 
+.参数 依赖句柄, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+.参数 文本1, 文本型, 可空, 
+.参数 文本2, 文本型, 可空, 
+.参数 文本3, 文本型, 可空, 
+.参数 数值1, 整数型, 可空, 
+.参数 数值2, 整数型, 可空, 
+.参数 数值3, 整数型, 可空, 
+
+.局部变量 adress, 整数型, , , 
+.局部变量 Proadress, 整数型, , , 
+
+赋值 (adress, LoadLibrary (FileName))
+.如果真 (等于 (adress, 0))
+    返回 ()
+.如果真结束
+赋值 (Proadress, GetProcAddress (adress, “loadDll”))
+.如果真 (等于 (Proadress, 0))
+    FreeLibrary (adress)
+    返回 ()
+.如果真结束
+FreeLibrary (adress)
+DLL命令调用转向 (FileName, “loadDll”)
+loadDll (依赖句柄, 宽度, 高度, 文本1, 文本2, 文本3, 数值1, 数值2, 数值3)
+DLL命令调用转向 ()
+
+.子程序 EnumIco, 空白型, , 
+.参数 列表框_, 超级列表框, , 
+.参数 列_地址, 整数型, , 
+.参数 是否格式化路径, 逻辑型, , 
+.参数 目录, 文本型, 可空, 
+
+.局部变量 文件信息, SHfileInfo, , , 
+.局部变量 hImageList, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 路径, 文本型, , , 
+.局部变量 add, 整数型, , , 
+
+ImageList_Destroy (hImageList)
+赋值 (hImageList, ImageList_Create (16, 16, 24, 0, 0))
+列表框_.发送信息 (4099, 1, hImageList) ' 为超级列表框设置图片组,1小图标,0大图标
+ImageList_SetBkColor (hImageList, 列表框_.)
+.计次循环首 (列表框_.取表项数 (), i)
+    赋值 (i, 相减 (i, 1))
+    .如果 (是否为空 (目录))
+        赋值 (路径, 列表框_.取标题 (i, 列_地址))
+    .否则
+        赋值 (路径, 相加 (目录, “\”, 列表框_.取标题 (i, 列_地址)))
+    .如果结束
+    
+    .如果真 (是否格式化路径)
+        赋值 (路径, 格式化路径 (列表框_.取标题 (i, 列_地址)))
+    .如果真结束
+    
+    .如果真 (等于 (SHGetFileInfo (路径, 128, 文件信息, 348, 257), 0))
+        .如果真 (等于 (SHGetFileInfo (路径, 128, 文件信息, 348, 273), 0))
+            赋值 (add, PathFindExtension (路径))
+            赋值 (路径, 指针到文本 (add))
+            SHGetFileInfo (路径, 128, 文件信息, 348, 272)
+        .如果真结束
+        
+    .如果真结束
+    列表框_.置图片 (i, , ImageList_AddIcon (hImageList, 文件信息.hIcon))
+    处理事件 ()
+.计次循环尾 ()
+
+.子程序 格式化路径, 文本型, , 
+.参数 文本, 文本型, , 
+
+.局部变量 盘符, 整数型, , , 
+.局部变量 具体路径, 文本型, , , 
+.局部变量 exe, 整数型, , , 
+.局部变量 dll, 整数型, , , 
+.局部变量 temp, 文本型, , , 
+
+赋值 (temp, 文本)
+.如果真 (等于 (取文本左边 (temp, 4), “\??\”))
+    赋值 (temp, 取文本右边 (temp, 相减 (取文本长度 (temp), 4)))
+    .如果真 (文件是否存在 (temp))
+        返回 (temp)
+    .如果真结束
+    
+.如果真结束
+.如果真 (等于 (寻找文本 (temp, “.”, , 假), -1))
+    赋值 (temp, 相加 (temp, “.exe”))
+.如果真结束
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+赋值 (盘符, 寻找文本 (temp, “:”, , 假))
+.如果真 (等于 (盘符, -1))
+    .如果 (不等于 (寻找文本 (temp, “.dll”, , 假), -1))
+        赋值 (temp, 取文本左边 (temp, 相加 (寻找文本 (temp, “.dll”, , 假), 3)))
+        赋值 (具体路径, 相加 (取系统特定目录 (36), temp))
+        .如果真 (等于 (文件是否存在 (具体路径), 假))
+            赋值 (具体路径, 相加 (取系统特定目录 (37), temp))
+            .如果真 (等于 (文件是否存在 (具体路径), 假))
+                返回 (文本)
+            .如果真结束
+            
+        .如果真结束
+        
+    .否则
+        赋值 (temp, 取文本左边 (temp, 相加 (寻找文本 (temp, “.exe”, , 假), 3)))
+        赋值 (具体路径, 相加 (取系统特定目录 (36), temp))
+        .如果真 (等于 (文件是否存在 (具体路径), 假))
+            赋值 (具体路径, 相加 (取系统特定目录 (37), temp))
+            .如果真 (等于 (文件是否存在 (具体路径), 假))
+                返回 (文本)
+            .如果真结束
+            
+        .如果真结束
+        
+    .如果结束
+    返回 (具体路径)
+.如果真结束
+
+赋值 (exe, 寻找文本 (temp, “.exe”, 盘符, 真))
+赋值 (dll, 寻找文本 (temp, “.dll”, 盘符, 真))
+.如果真 (并且 (不等于 (exe, -1), 等于 (dll, -1)))
+    赋值 (具体路径, 取文本中间 (temp, 相减 (盘符, 1), 相加 (相减 (相加 (exe, 3), 盘符), 2)))
+    .如果真 (文件是否存在 (具体路径))
+        返回 (具体路径)
+    .如果真结束
+    
+.如果真结束
+
+.如果真 (并且 (等于 (exe, -1), 不等于 (dll, -1)))
+    赋值 (具体路径, 取文本中间 (temp, 相减 (盘符, 1), 相加 (相减 (相加 (dll, 3), 盘符), 2)))
+    .如果真 (文件是否存在 (具体路径))
+        返回 (具体路径)
+    .如果真结束
+    
+.如果真结束
+
+.如果真 (并且 (不等于 (exe, -1), 不等于 (dll, -1)))
+    赋值 (具体路径, 取文本中间 (temp, 相减 (盘符, 1), 相加 (相减 (相加 (exe, 3), 盘符), 2)))
+    .如果真 (文件是否存在 (具体路径))
+        返回 (具体路径)
+    .如果真结束
+    赋值 (具体路径, 取文本中间 (temp, 相减 (盘符, 1), 相加 (相减 (相加 (dll, 3), 盘符), 2)))
+    .如果真 (文件是否存在 (具体路径))
+        返回 (具体路径)
+    .如果真结束
+    
+.如果真结束
+
+赋值 (具体路径, 相加 (取系统特定目录 (36), temp))
+.如果真 (文件是否存在 (具体路径))
+    返回 (具体路径)
+.如果真结束
+赋值 (具体路径, 相加 (取系统特定目录 (37), temp))
+.如果真 (文件是否存在 (具体路径))
+    返回 (具体路径)
+.如果真结束
+
+返回 (文本)
+
+.子程序 枚举注册表键名, 整数型, , 返回-1表示失败
+.参数 hkey, 整数型, , 
+.参数 路径, 文本型, , 
+.参数 键名数组, 文本型, 数组, 
+
+.局部变量 i, 整数型, , , 
+.局部变量 键名, 文本型, , , 
+.局部变量 结果, 空白型, , , 
+.局部变量 hkey_, 空白型, , , 
+.局部变量 类型, 空白型, , , 
+.局部变量 内容, 字节集, , , 
+.局部变量 内容长度, 空白型, , , 
+
+清除数组 (键名数组)
+RegOpenKey (hkey, 路径, hkey_)
+.如果真 (等于 (hkey_, 0)) ' 打开失败
+    返回 (-1)
+.如果真结束
+赋值 (键名, 取空白文本 (255))
+赋值 (内容, 取空白字节集 (0))
+赋值 (结果, RegEnumValue (hkey_, i, 键名, 取文本长度 (键名), 0, 类型, 内容, 内容长度))
+.判断循环首 (等于 (结果, 0))
+    赋值 (内容, 取空白字节集 (内容长度))
+    RegQueryValueEx (hkey_, 键名, 0, 类型, 内容, 取字节集长度 (内容))
+    加入成员 (键名数组, 键名)
+    赋值 (i, 相加 (i, 1))
+    赋值 (键名, 取空白文本 (255))
+    赋值 (内容, 取空白字节集 (0))
+    赋值 (结果, RegEnumValue (hkey_, i, 键名, 取文本长度 (键名), 0, 类型, 内容, 内容长度))
+.判断循环尾 ()
+RegCloseKey (hkey_)
+返回 (取数组成员数 (键名数组))
+
+.子程序 寻找文件_, 整数型, , 
+.参数 目录, 文本型, , 
+.参数 name, 文本型, 数组, 
+.参数 parth, 文本型, 数组, 
+.参数 类型, 文本型, 可空, 
+
+.局部变量 文件名, 文本型, 静态, , 
+.局部变量 文件数, 整数型, , , 
+
+.如果真 (不等于 (取文本右边 (目录, 1), “\”))
+    赋值 (目录, 相加 (目录, “\”))
+.如果真结束
+.如果 (是否为空 (类型))
+    赋值 (文件名, 寻找文件 (相加 (目录, “*.*”), ))
+.否则
+    赋值 (文件名, 寻找文件 (相加 (目录, 类型), ))
+.如果结束
+赋值 (文件数, 0)
+.判断循环首 (不等于 (文件名, “”))
+    .如果真 (并且 (不等于 (文件名, “.”), 不等于 (文件名, “..”), 不等于 (文件名, “desktop.ini”)))
+        加入成员 (name, 文件名)
+        加入成员 (parth, 相加 (目录, 文件名))
+    .如果真结束
+    赋值 (文件数, 相加 (文件数, 1))
+    赋值 (文件名, 寻找文件 ())
+.判断循环尾 ()
+返回 (取数组成员数 (parth))
+
+.子程序 取系统特定目录, 文本型, , 
+.参数 ID, 整数型, , 0/16-桌面；2-开始菜单/程序；5-我的文档；7-启动菜单；11-开始菜单；20-字体；23-程序[ALL]；24-启动[ALL]；25-桌面[ALL]；36-Windows；37-Windows32；33-COOKIES
+
+.局部变量 路径, 文本型, , , 
+
+赋值 (路径, 取空白文本 (255))
+取特定目录_ (0, 路径, ID, 0)
+.如果真 (不等于 (取文本右边 (路径, 1), “\”))
+    赋值 (路径, 相加 (路径, “\”))
+.如果真结束
+返回 (路径)
+
+.子程序 进程是否运行, 逻辑型, , 。
+.参数 路径, 文本型, , 
+
+.局部变量 文件号, 整数型, , , 
+
+.如果真 (等于 (文件是否存在 (路径), 假))
+    返回 (假)
+.如果真结束
+赋值 (文件号, 打开文件 (路径, , ))
+.如果真 (不等于 (文件号, 0))
+    关闭文件 (文件号)
+    返回 (假)
+.如果真结束
+返回 (真)
+
+.子程序 取公司名称, 文本型, , 
+.参数 parth, 文本型, , 
+.参数 类型, 整数型, 可空, 1,公司名 2描述
+
+.局部变量 temp1, 文本型, , , 
+.局部变量 temp2, 文本型, , , 
+.局部变量 buf, 字节集, , , 
+.局部变量 vsize, 整数型, , , 
+.局部变量 nsize, 整数型, , , 
+.局部变量 temp4, 整数型, , , 
+.局部变量 nbuf, 文本型, , , 
+.局部变量 temp3, 字节集, , , 
+.局部变量 buff, 文本型, , , 
+.局部变量 txt, 文本型, , "2", 
+
+赋值 (vsize, GetFileVersionInfoSize (parth, 0))
+.如果真 (大于 (vsize, 0))
+    赋值 (buf, 取空白字节集 (vsize))
+    GetFileVersionInfo (parth, 0, vsize, buf)
+    .如果真 (等于 (VerQueryValue (buf, “\VarFileInfo\Translation”, temp4, nsize), 0))
+        返回 (“”)
+    .如果真结束
+    赋值 (temp3, 取空白字节集 (nsize))
+    RtlMoveMemory_字节集 (temp3, temp4, nsize)
+    赋值 (nbuf, 相加 (取重复文本 (相减 (8, 取文本长度 (取十六进制文本 (取字节集数据 (temp3, 3, )))), “0”), 取十六进制文本 (取字节集数据 (temp3, 3, ))))
+    赋值 (nbuf, 相加 (取文本右边 (nbuf, 4), 取文本左边 (nbuf, 4)))
+    赋值 (txt, { “\CompanyName”, “\FileDescription” })
+    
+    .如果真 (是否为空 (类型))
+        赋值 (类型, 1)
+    .如果真结束
+    
+    .如果真 (不等于 (VerQueryValue (buf, 相加 (“\StringFileInfo\”, nbuf, txt [类型]), temp4, nsize), 0))
+        赋值 (temp3, 取空白字节集 (nsize))
+        RtlMoveMemory_字节集 (temp3, temp4, nsize)
+        赋值 (temp1, 取字节集数据 (temp3, #文本型, ))
+    .如果真结束
+    
+.如果真结束
+返回 (temp1)
+ ' “Comments”, “CompanyName”, “FileDescription”, “FileVersion”, “InternalName”, “LegalCopyright”, “LegalTrademarks”, “OriginalFilename”, “PrivateBuild”, “ProductName”, “ProductVersion”, “SpecialBuild”
+ ' “备注”, “公司名”, “描述”, “文件版本”, “内部名称”, “版权”, “合法商标”, “原文件名”, “个人用编译版说明”, “产品名称”, “产品版本”, “特殊编译版说明”
+
+.子程序 定位文件, 空白型, , 
+.参数 地址, 文本型, , 
+
+ShellExecute (0, “open”, “explorer.exe”, 相加 (“/select,”, 地址), “”, 10)
+
+.子程序 查看属性, 整数型, , 
+.参数 文件名, 文本型, , 
+
+.局部变量 info, ShellEXECuteInfo, , , 
+.局部变量 文件信息, 整数型, , , 
+.局部变量 返回值, 整数型, , , 
+
+赋值 (info.结构大小, 60)
+赋值 (info.标志, 1100)
+赋值 (info.窗口句柄, _启动窗口.取窗口句柄 ())
+赋值 (info.操作命令, “properties”)
+赋值 (info.文件名, 文件名)
+赋值 (info.应用程序参数, “”)
+赋值 (info.目录, “”)
+赋值 (info.显示标志, 0)
+赋值 (info.实例句柄, 0)
+赋值 (info.项目标识符列表结构指针, 0)
+赋值 (文件信息, ShellExecuteEx (info))
+返回 (info.实例句柄)
+
+.子程序 延时_, 空白型, , 
+.参数 延迟时间, 整数型, , 毫秒
+
+.局部变量 a, 整数型, , , 
+
+赋值 (a, 取启动时间 ())
+.判断循环首 (小于 (相减 (取启动时间 (), a), 延迟时间))
+    处理事件 ()
+.判断循环尾 ()
+
+.子程序 创建快捷方式, 逻辑型, , 
+.参数 lnk名称, 文本型, , 
+.参数 工作目录, 文本型, 可空, 
+.参数 指向目标, 文本型, , 
+.参数 图标文件, 文本型, 可空, 
+.参数 运行方式, 整数型, 可空, 1,常规方式，3,最大化，7,最小化
+.参数 备注, 文本型, 可空, 
+.参数 参数文本, 文本型, 可空, 
+.参数 快捷键, 文本型, 可空, 
+
+.局部变量 a, 对象, , , 
+.局部变量 b, 对象, , , 
+
+.如果真 (a.创建 (“WshShell”, “wshom.ocx”))
+    赋值 (a, a.对象型方法 (“CreateShortcut”, lnk名称))
+    .如果真 (a.是否为空 ())
+        返回 (假)
+    .如果真结束
+    .如果真 (a.写属性 (“TargetPath”, 指向目标))
+        a.写属性 (“WorkingDirectory”, 工作目录)
+        a.写属性 (“IconLocation”, 选择 (是否为空 (图标文件), 相加 (指向目标, “,0”), 图标文件))
+        a.写属性 (“WindowStyle”, 运行方式)
+        a.写属性 (“Description”, 备注)
+        a.写属性 (“Arguments”, 参数文本)
+        a.写属性 (“Hotkey”, 快捷键)
+        赋值 (a, a.对象型方法 (“Save”, ))
+        返回 (真)
+    .如果真结束
+    
+.如果真结束
+返回 (假)
+
+.子程序 查询快捷方式, 文本型, , 
+.参数 路径, 文本型, , 
+
+.局部变量 a, 对象, , , 
+
+.如果真 (a.创建 (“WshShell”, “wshom.ocx”))
+    赋值 (a, a.对象型方法 (“CreateShortcut”, 路径))
+    .如果真 (a.是否为空 ())
+        返回 (路径)
+    .如果真结束
+    返回 (a.读文本属性 (“TargetPath”, ))
+.如果真结束
+返回 (路径)
+
+.子程序 取托盘区句柄_, 整数型, , 
+.参数 是否托盘, 逻辑型, , 可空为真.托盘区句柄，假.任务栏区句柄。
+
+.局部变量 系统句柄, 整数型, , , SysPager
+.局部变量 句柄, 整数型, , , 
+.局部变量 托盘句柄, 整数型, , , 
+
+.如果 (是否托盘)
+    赋值 (句柄, FindWindow (“Shell_TrayWnd”, 0))
+    赋值 (句柄, FindWindowEx (句柄, 0, “TrayNotifyWnd”, 0))
+    赋值 (系统句柄, FindWindowEx (句柄, 0, “SysPager”, 0))
+.否则
+    赋值 (句柄, FindWindow (“Shell_TrayWnd”, 0))
+    赋值 (句柄, FindWindowEx (句柄, 0, “ReBarWindow32”, 0))
+    赋值 (句柄, FindWindowEx (句柄, 0, “MSTaskSwWClass”, 0))
+    赋值 (系统句柄, FindWindowEx (句柄, 0, “ToolbarWindow32”, 0))
+.如果结束
+.如果真 (不等于 (系统句柄, 0))
+    赋值 (句柄, 系统句柄)
+.如果真结束
+赋值 (托盘句柄, FindWindowEx (句柄, 0, “ToolbarWindow32”, 0))
+.如果真 (等于 (托盘句柄, 0))
+    赋值 (托盘句柄, 句柄)
+.如果真结束
+返回 (托盘句柄)
+
+.子程序 CreateProcessThread, 整数型, , 
+.参数 hProcess, 整数型, , 
+.参数 lpStartAddress, 整数型, , 
+.参数 lpParameter, 整数型, 可空, 
+
+.局部变量 hThread, 整数型, , , 
+.局部变量 lpExitCode, 整数型, , , 
+
+赋值 (hThread, CreateRemoteThread (hProcess, 0, 0, lpStartAddress, lpParameter, 0, 0)) ' 创建远程线程
+WaitForSingleObject (hThread, -1) ' 等待线程执行完毕
+GetExitCodeThread (hThread, lpExitCode) ' 获取返回值
+CloseHandle (hThread) ' 关闭线程内核对象
+返回 (lpExitCode)
+
+.子程序 W2A, 文本型, , 
+.参数 CharStr, 字节集, , 
+
+.局部变量 len, 整数型, , , 
+.局部变量 Returned, 文本型, , , 
+
+赋值 (len, WideCharToMultiByte (1, 0, CharStr, -1, 字符 (0), 0, 字符 (0), 假))
+赋值 (Returned, 取空白文本 (len))
+WideCharToMultiByte (1, 0, CharStr, -1, Returned, 取文本长度 (Returned), 字符 (0), 假)
+返回 (Returned)
+
+.子程序 PID取进程名和路径, 文本型, , 
+.参数 pid, 整数型, , 
+.参数 进程名, 文本型, 参考 可空, 
+
+.局部变量 hSnapShot, 整数型, , , 
+.局部变量 End, 整数型, , , 
+.局部变量 buffer, PROCESSENTRY32, , , 
+.局部变量 buf, 文本型, , , 
+.局部变量 hProcess, 整数型, , , 
+.局部变量 hbuf, 整数型, , "255", 
+
+赋值 (hSnapShot, CreateToolhelp32Snapshot (2, 0))
+赋值 (buffer.dwSize, 296)
+赋值 (End, Process32First (hSnapShot, buffer))
+.判断循环首 (不等于 (End, 0))
+    .如果真 (等于 (pid, buffer.th32ProcessID))
+        赋值 (进程名, 到文本 (buffer.szExeFile))
+        跳出循环 ()
+    .如果真结束
+    赋值 (End, Process32Next (hSnapShot, buffer))
+.判断循环尾 ()
+CloseHandle (hSnapShot)
+赋值 (hProcess, OpenProcess (位或 (16, 1024), 假, pid))
+赋值 (buf, 取空白文本 (255))
+GetProcessImageFileNameA (hProcess, buf, 255)
+赋值 (buf, DOS路径转换_ (buf))
+CloseHandle (hProcess)
+返回 (buf)
+
+.子程序 取窗口标题_, 文本型, , 
+.参数 hwnd, 整数型, , 
+
+.局部变量 buf, 文本型, , , 
+
+赋值 (buf, 取空白文本 (256))
+GetWindowText (hwnd, buf, 256)
+返回 (buf)
+
+.子程序 关闭指定连接, 空白型, , 
+.参数 Vlist, 超级列表框, , 
+.参数 Local_Info, 文本型, , '本地IP与端口
+.参数 Remo_Info, 文本型, , 
+
+.局部变量 TCP, MIB_TCPTABLE, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 Ip_Buf, 字节型, , , 
+
+GetTcpTable (TCP, LocalSize (TCP), 1)
+.计次循环首 (TCP.dwNumEntries, i)
+    .如果真 (并且 (等于 (相加 (GetAscIP (TCP.table [i], dwLocalAddr), “:”, 到文本 (ntohs (TCP.table [i], dwLocalPort))), Local_Info), 等于 (相加 (GetAscIP (TCP.table [i], dwRemoteAddr), “:”, 到文本 (ntohs (TCP.table [i], dwRemotePort))), Remo_Info)))
+        赋值 (TCP.table [i], dwState, 12)
+        .如果 (等于 (SetTcpEntry (TCP.table [i]), 0))
+            Vlist.删除表项 (Vlist.)
+            信息框 (“关闭链接成功！”, #系统等待, )
+        .否则
+            信息框 (“关闭链接失败！”, 相加 (#错误图标, #系统等待), )
+        .如果结束
+        跳出循环 ()
+    .如果真结束
+    
+.计次循环尾 ()
+
+.子程序 GetAscIP, 文本型, , 
+.参数 inn, 整数型, , 
+
+.局部变量 nStr, 整数型, , , 
+.局部变量 lpStr, 整数型, , , 
+.局部变量 retString, 文本型, , , 
+
+赋值 (retString, 取空白文本 (32))
+赋值 (lpStr, inet_ntoa (inn))
+.如果 (不等于 (lpStr, 0))
+    赋值 (nStr, lstrlen (lpStr))
+    .如果真 (大于 (nStr, 32))
+        赋值 (nStr, 32)
+    .如果真结束
+    RtlMoveMemory_文本 (retString, lpStr, nStr)
+    赋值 (retString, 取文本左边 (retString, nStr))
+    返回 (retString)
+.否则
+    返回 (“无法获取IP”)
+.如果结束
+
+
+.子程序 GetUser_WTS, 文本型, , 
+.参数 dwpid, 整数型, , 
+
+.局部变量 pbuf, 整数型, , , 
+.局部变量 dwSize, 整数型, , , 
+.局部变量 lRetVal, 整数型, , , 
+.局部变量 memaddr, 整数型, , , 
+.局部变量 pCurProcInfo, SYSTEM_PROCESS_INFORMATION, , , 
+.局部变量 ftStartTime, 长整数型, , , 
+.局部变量 cRetVal, 整数型, , , 
+.局部变量 pSid, 字节集, , , 
+.局部变量 strDomain, 文本型, , , 
+.局部变量 DomainSize, 整数型, , , 
+.局部变量 strUserName, 文本型, , , 
+.局部变量 n, 整数型, , , 
+
+赋值 (dwSize, 相乘 (1024, 1024))
+赋值 (memaddr, LocalAlloc (0, dwSize))
+赋值 (pbuf, memaddr)
+赋值 (lRetVal, NtQuerySystemInformation (5, pbuf, dwSize, 0)) ' #SystemProcessInformation
+.如果真 (等于 (lRetVal, 0))
+    RtlMoveMemory_SYSTEM_PROCESSES (pCurProcInfo, pbuf, 188)
+    .判断循环首 (不等于 (pCurProcInfo.dwNextEntryOffset, 0))
+        .如果真 (等于 (pCurProcInfo.dwProcessId, dwpid))
+            赋值 (ftStartTime, pCurProcInfo.qCreateTime)
+            WinStationGetProcessSid (0, dwpid, ftStartTime, {  }, n)
+            赋值 (pSid, 取空白字节集 (n))
+            .如果真 (等于 (WinStationGetProcessSid (0, dwpid, ftStartTime, pSid, n), 0))
+                LocalFree (memaddr)
+                返回 (“服务关闭”)
+            .如果真结束
+            LookupAccountSid (字符 (0), pSid, 字符 (0), n, 字符 (0), DomainSize, 0)
+            赋值 (strUserName, 取空白文本 (255))
+            赋值 (strDomain, 取空白文本 (255))
+            .如果真 (LookupAccountSid (字符 (0), pSid, strUserName, n, strDomain, DomainSize, 0))
+                LocalFree (memaddr)
+                返回 (strUserName)
+            .如果真结束
+            ' 本源码来自易语言资源网(www.wodesoft.com)
+        .如果真结束
+        赋值 (pbuf, 相加 (pbuf, pCurProcInfo.dwNextEntryOffset))
+        RtlMoveMemory_SYSTEM_PROCESSES (pCurProcInfo, pbuf, 188)
+    .判断循环尾 ()
+.如果真结束
+LocalFree (memaddr)
+返回 (“”)
+
+
+.子程序 DOS路径转换_, 文本型, , 
+.参数 txt, 文本型, , 
+
+.局部变量 buf_, 文本型, , , 
+.局部变量 buf, 字节集, , , 
+.局部变量 size, 整数型, , , 
+.局部变量 数组, 字节集, , "0", 
+.局部变量 驱动器数目, 整数型, , , 
+.局部变量 n, 整数型, , , 
+.局部变量 逻辑驱动器, 文本型, , "0", 
+.局部变量 DOS设备, 文本型, , "0", 
+
+赋值 (size, GetLogicalDriveStringsA (0, {  }))
+赋值 (buf, 取空白字节集 (size))
+GetLogicalDriveStringsA (size, buf) ' 获取逻辑驱动器文本
+赋值 (数组, 分割字节集 (buf, { 0 }, ))
+赋值 (驱动器数目, 相减 (取数组成员数 (数组), 1))
+.如果真 (大于 (驱动器数目, 0))
+    重定义数组 (逻辑驱动器, 假, 驱动器数目)
+    重定义数组 (DOS设备, 假, 驱动器数目)
+    .计次循环首 (驱动器数目, n)
+        赋值 (buf, 数组 [n])
+        赋值 (buf [取字节集长度 (buf)], 0)
+        赋值 (逻辑驱动器 [n], 到文本 (buf))
+        
+        赋值 (buf_, 取空白文本 (260))
+        QueryDosDeviceA (逻辑驱动器 [n], buf_, 260)
+        赋值 (DOS设备 [n], buf_)
+    .计次循环尾 ()
+    赋值 (n, 0)
+    .计次循环首 (驱动器数目, n)
+        .如果真 (不等于 (寻找文本 (txt, DOS设备 [n], , 真), -1))
+             ' 把路径中类似于 \Device\HarddiskVolume1 的部分用 C:、D:等对应代替
+            赋值 (txt, 子文本替换 (txt, DOS设备 [n], 逻辑驱动器 [n], 0, 1, 假))
+            返回 (txt)
+            跳出循环 ()
+        .如果真结束
+        
+    .计次循环尾 ()
+.如果真结束
+返回 (txt)
+
+.子程序 GetCommandLine, 文本型, , 
+.参数 dwProcessId, 整数型, , 
+.参数 parth, 文本型, , 
+
+.局部变量 m_hProcess, 整数型, , , 
+.局部变量 Addr, 整数型, , , 
+.局部变量 hRemoteThread, 整数型, , , 
+.局部变量 lptstr, 整数型, , , 远程进程的映像路径及命令行参数的基址
+.局部变量 lstrlenA_addr, 整数型, , , 
+.局部变量 strlen, 整数型, , , 
+.局部变量 Temp, 文本型, , , 
+
+赋值 (m_hProcess, OpenProcess (位或 (16, 64, 8, 2, 1024), 假, dwProcessId))
+ ' #PROCESS_VM_READ, #PROCESS_DUP_HANDLE, #PROCESS_VM_OPERATION, #PROCESS_CREATE_THREAD, #PROCESS_QUERY_INFORMATION
+.如果真 (不等于 (m_hProcess, 0))
+    赋值 (Addr, GetProcAddress (GetModuleHandleA (“Kernel32.dll”), “GetCommandLineA”))
+    赋值 (hRemoteThread, CreateRemoteThread (m_hProcess, 0, 0, Addr, 0, 0, 0))
+    .如果真 (不等于 (hRemoteThread, 0))
+        WaitForSingleObject (hRemoteThread, -1)
+        GetExitCodeThread (hRemoteThread, lptstr)
+        CloseHandle (hRemoteThread)
+        
+        赋值 (lstrlenA_addr, GetProcAddress (GetModuleHandleA (“Kernel32.dll”), “lstrlenA”))
+        赋值 (hRemoteThread, CreateRemoteThread (m_hProcess, 0, 0, lstrlenA_addr, lptstr, 0, 0))
+        
+        .如果真 (不等于 (hRemoteThread, 0))
+            WaitForSingleObject (hRemoteThread, -1)
+            GetExitCodeThread (hRemoteThread, strlen)
+            CloseHandle (hRemoteThread)
+            
+            赋值 (Temp, 取空白文本 (strlen))
+            ReadProcessMemory_文本 (m_hProcess, lptstr, Temp, strlen, 0)
+            返回 (Temp)
+        .如果真结束
+        
+    .如果真结束
+    
+.如果真结束
+返回 (parth)
+
+
+.子程序 处理事件_, 空白型, , 
+.如果真 (不等于 (GetInputState (), 0))
+    处理事件 ()
+.如果真结束
+
+
+.子程序 数值到时间, 文本型, , 
+.参数 filetime, FILETIME, , 
+
+.局部变量 Systime, SYSTEMTIME, , , 
+.局部变量 temp, FILETIME, , , 
+
+.如果真 (FileTimeToLocalFileTime (filetime, temp))
+    .如果真 (FileTimeToSystemTime (temp, Systime))
+        返回 (相加 (到文本 (Systime.wYear), “年”, 到文本 (Systime.wMonth), “月”, 到文本 (Systime.wDay), “日 / ”, 到文本 (Systime.wHour), “:”, 到文本 (Systime.wMinute), “:”, 到文本 (Systime.wSecond), “ / [星期”, 到文本 (Systime.wDayOfWeek), “]”))
+    .如果真结束
+    
+.如果真结束
+返回 (“”)
+
+.窗口程序集 程序集_添加启动, , , 
+
+.子程序 _按钮_取消_被单击, 空白型, , 
+销毁 ()
+
+.子程序 _按钮_添加_被单击, 空白型, , 
+.如果真 (或者 (等于 (.内容, “”), 等于 (.内容, “”)))
+    信息框 (“内容不能为空”, 相加 (#系统等待, #错误图标), )
+    返回 ()
+.如果真结束
+
+.判断开始 (等于 (.现行选中项, 0))
+    .如果真 (取反 (创建快捷方式 (相加 (取系统特定目录 (24), “\”, .内容, “.lnk”), , .内容, , , , , )))
+        信息框 (“创建快捷方式失败”, 相加 (#系统等待, #错误图标), )
+        返回 ()
+    .如果真结束
+    
+.判断 (等于 (.现行选中项, 1))
+    .如果真 (取反 (创建快捷方式 (相加 (取系统特定目录 (7), “\”, .内容, “.lnk”), , .内容, , , , , )))
+        信息框 (“创建快捷方式失败”, 相加 (#系统等待, #错误图标), )
+        返回 ()
+    .如果真结束
+    ' 本源码来自易语言资源网(www.wodesoft.com)
+.判断 (等于 (.现行选中项, 2))
+    .如果真 (取反 (写注册项 (#本地机器, 相加 (“SOFTWARE\Microsoft\Windows\CurrentVersion\Run\”, .内容), .内容)))
+        信息框 (“写注册表失败”, 相加 (#系统等待, #错误图标), )
+        返回 ()
+    .如果真结束
+    
+.判断 (等于 (.现行选中项, 3))
+    .如果真 (取反 (写注册项 (#现行用户, 相加 (“SOFTWARE\Microsoft\Windows\CurrentVersion\Run\”, .内容), .内容)))
+        信息框 (“写注册表失败”, 相加 (#系统等待, #错误图标), )
+        返回 ()
+    .如果真结束
+    
+.默认
+    
+.判断结束
+启动信息 ()
+销毁 ()
+
+.子程序 _按钮_寻找_被单击, 空白型, , 
+.局部变量 i, 文本型, , , 
+
+赋值 (_启动窗口..类型, 0)
+.如果真 (_启动窗口.打开 (.))
+    赋值 (.内容, _启动窗口..文件名)
+    赋值 (i, .内容)
+    赋值 (i, 指针到文本 (取路径文件名_ (i)))
+    删除扩展名_ (i)
+    赋值 (.内容, i)
+.如果真结束
+
+
+.窗口程序集 程序集_查看服务属性, , , 
+
+.程序集变量 禁止_, 逻辑型, , , 
+.程序集变量 temp, 文本型, , , 
+.子程序 _窗口_查看服务属性_创建完毕, 空白型, , 
+赋值 (.内容, _启动窗口.取标题 (., _启动窗口.., 8))
+赋值 (.内容, _启动窗口.取标题 (., _启动窗口.., ))
+赋值 (.内容, _启动窗口.取标题 (., _启动窗口.., 1))
+赋值 (.内容, _启动窗口.取标题 (., _启动窗口.., 6))
+赋值 (temp, _启动窗口.取标题 (., _启动窗口.., 3))
+.判断开始 (等于 (temp, “自动”))
+    赋值 (.现行选中项, 0)
+    赋值 (禁止_, 假)
+.判断 (等于 (temp, “手动”))
+    赋值 (禁止_, 假)
+    赋值 (.现行选中项, 1)
+.默认
+    赋值 (.现行选中项, 2)
+    连续赋值 (真, .禁止, .禁止, 禁止_)
+.判断结束
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 _time_周期事件, 空白型, , 
+.局部变量 状态, Service_Status, , , 
+.局部变量 hSC, 整数型, , , 
+.局部变量 buf, 字节集, , , 
+.局部变量 SC句柄, 整数型, , , 
+.局部变量 状态_, 文本型, , "7", 
+
+赋值 (SC句柄, OpenSCManager (0, 0, 4)) ' #SC_MANAGER_ENUMERATE_SERVICE 4
+赋值 (hSC, OpenService (SC句柄, .内容, 4)) ' 4同上
+QueryServiceStatus (hSC, 状态)
+赋值 (状态_, { “已停止”, “已启动”, “已停止”, “已启动”, “已启动”, “已暂停”, “已暂停” })
+.如果 (并且 (大于 (状态.dwCurrentState, 0), 小于 (状态.dwCurrentState, 8)))
+    赋值 (.内容, 状态_ [状态].dwCurrentState)
+.否则
+    赋值 (.内容, “未知状态”)
+.如果结束
+
+.判断开始 (禁止_)
+    .判断开始 (等于 (状态.dwCurrentState, 4))
+        赋值 (.禁止, 真)
+        赋值 (.禁止, 假)
+    .判断 (等于 (状态.dwCurrentState, 1))
+        赋值 (.禁止, 真)
+        赋值 (.禁止, 真)
+    .默认
+        返回 ()
+    .判断结束
+    
+.判断 (等于 (状态.dwCurrentState, 1))
+    赋值 (.禁止, 假)
+    赋值 (.禁止, 真)
+.判断 (或者 (等于 (状态.dwCurrentState, 2), 等于 (状态.dwCurrentState, 3)))
+    赋值 (.禁止, 真)
+    赋值 (.禁止, 真)
+.判断 (等于 (状态.dwCurrentState, 4))
+    赋值 (buf, 取空白字节集 (36))
+     ' QueryServiceStatusEx (hSC, 0, buf, 36, 36)
+    赋值 (.内容, 相加 (状态_ [状态].dwCurrentState, “   PID:”, 到文本 (取字节集数据 (取字节集中间 (buf, 29, 32), 3, ))))
+    赋值 (.禁止, 真)
+    赋值 (.禁止, 假)
+.判断 (等于 (状态.dwCurrentState, 7))
+    赋值 (.禁止, 真)
+    赋值 (.禁止, 真)
+.默认
+    
+.判断结束
+
+
+.子程序 _start_被单击, 空白型, , 
+_启动服务_被选择 ()
+
+.子程序 _stop_被单击, 空白型, , 
+_停止服务_被选择 ()
+
+.子程序 _ok_被单击, 空白型, , 
+.如果真 (不等于 (temp, .内容))
+    .判断开始 (等于 (.现行选中项, 0))
+        _自动服务_被选择 ()
+    .判断 (等于 (.现行选中项, 1))
+        _手动服务_被选择 ()
+    .默认
+        _禁用服务_被选择 ()
+    .判断结束
+    ' 本源码来自易语言资源网(www.wodesoft.com)
+.如果真结束
+销毁 ()
+
+.子程序 _exit_被单击, 空白型, , 
+销毁 ()
+
+.子程序 _to_被单击, 空白型, , 
+_定位文件服务_被选择 ()
+
+.子程序 _组合框_类型_列表项被选择, 空白型, , 
+赋值 (.禁止, 假)
+
+.子程序 _按钮_应用_被单击, 空白型, , 
+.判断开始 (等于 (.现行选中项, 0))
+    _自动服务_被选择 ()
+    赋值 (禁止_, 假)
+.判断 (等于 (.现行选中项, 1))
+    _手动服务_被选择 ()
+    赋值 (禁止_, 假)
+.默认
+    _禁用服务_被选择 ()
+    赋值 (禁止_, 真)
+.判断结束
+赋值 (.禁止, 真)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,643 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “wangzexi - GDI实现窗口特效”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+ ' 所需要的模块
+ ' Gdi+画板 C:\Documents and Settings\Administrator\桌面\Gdip画板.ec
+
+
+数据类型 RECT, 公开, 
+    .成员 left, 整数型, , , 
+    .成员 top, 整数型, , , 
+    .成员 right, 整数型, , , 
+    .成员 bottom, 整数型, , , 
+
+数据类型 矩形区域, 公开, 
+    .成员 左边, 整数型, , , 
+    .成员 顶边, 整数型, , , 
+    .成员 右边, 整数型, , , 
+    .成员 底边, 整数型, , , 
+
+数据类型 BITMAP, , 
+    .成员 bmType, 整数型, , , 
+    .成员 bmWidth, 整数型, , , 
+    .成员 bmHeight, 整数型, , , 
+    .成员 bmWidthBytes, 整数型, , , 
+    .成员 bmPlanes, 短整数型, , , 
+    .成员 bmBitsPixel, 短整数型, , , 
+    .成员 bmBits, 整数型, 传址, , 
+
+数据类型 BITMAPINFOHEADER, , 
+    .成员 biSize, 整数型, , , 
+    .成员 biWidth, 整数型, , , 
+    .成员 biHeight, 整数型, , , 
+    .成员 biPlanes, 短整数型, , , 
+    .成员 biBitCount, 短整数型, , , 
+    .成员 biCompression, 整数型, , , 
+    .成员 biSizeImage, 整数型, , , 
+    .成员 biXPelsPerMeter, 整数型, , , 
+    .成员 biYPelsPerMeter, 整数型, , , 
+    .成员 biClrUsed, 整数型, , , 
+    .成员 biClrImportant, 整数型, , , 
+
+数据类型 BITMAPINFO, , 
+    .成员 BITMAPINFOHEADER, BITMAPINFOHEADER, , , 
+    .成员 bmiColors, 整数型, , , 
+
+数据类型 GdiplusStartupInput, , 
+    .成员 GdiplusVersion, 整数型, , , 
+    .成员 DebugEventCallback, 整数型, , , 
+    .成员 SuppressBackgroundThread, 整数型, , , 
+    .成员 SuppressExternalCodecs, 整数型, , , 
+
+数据类型 BITMAPFILEHEADER, , 
+    .成员 bfType, 短整数型, , , 
+    .成员 bfSize, 整数型, , , 
+    .成员 bfReserved1, 短整数型, , , 
+    .成员 bfReserved2, 短整数型, , , 
+    .成员 bfOffBits, 整数型, , , 
+
+
+.DLL命令 GetDeviceCaps, 整数型, "gdi32", "GetDeviceCaps", , 
+    .参数 设备描述句柄, 整数型, , 
+    .参数 nIndex, 整数型, , 
+
+.DLL命令 DeleteDC, 整数型, "gdi32", "DeleteDC", , 
+    .参数 设备描述句柄, 整数型, , 
+
+.DLL命令 GetDC, 整数型, "", "GetDC", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 CreateCompatibleBitmap, 整数型, "", "CreateCompatibleBitmap", , 
+    .参数 hdc, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+
+.DLL命令 SelectObject, 整数型, "", "SelectObject", , 
+    .参数 hdc, 整数型, , 
+    .参数 hgdiobj, 整数型, , 
+
+.DLL命令 BitBlt, 整数型, "", "BitBlt", , 
+    .参数 hdcDest, 整数型, , 
+    .参数 nXDest, 整数型, , 
+    .参数 nYDest, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+    .参数 hdcSrc, 整数型, , 
+    .参数 nXSrc, 整数型, , 
+    .参数 nYSrc, 整数型, , 
+    .参数 dwRop, 整数型, , 
+
+.DLL命令 CreateCompatibleDC, 整数型, "", "CreateCompatibleDC", , 
+    .参数 hdc, 整数型, , 
+
+.DLL命令 DeleteObject, 整数型, "", "DeleteObject", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 CopyImage, 整数型, "", "", , 
+    .参数 hImage, 整数型, , 
+    .参数 uType, 整数型, , 
+    .参数 cxDesired, 整数型, , 
+    .参数 cyDesired, 整数型, , 
+    .参数 fuFlags, 整数型, , 
+
+.DLL命令 ReleaseDC, 整数型, "", "ReleaseDC", , 
+    .参数 hWnd, 整数型, , 
+    .参数 hDC, 整数型, , 
+
+.DLL命令 GetWindowRect, 整数型, "user32", "GetWindowRect", , 
+    .参数 句柄, 整数型, , 
+    .参数 lpRect, 未知类型0x410101A4, 传址, 
+
+.DLL命令 IsWindow, 逻辑型, "user32", "IsWindow", , 
+    .参数 句柄, 整数型, , 
+
+.DLL命令 CopyMemory_BITMAPFILEHEADER, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, 未知类型0x410101A5, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 CopyMemory_BITMAPINFO, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, 未知类型0x410101A6, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 GetDIBits, 整数型, "", "GetDIBits", , 
+    .参数 HDC, 整数型, , 
+    .参数 hBitmap, 整数型, , 
+    .参数 nStartScan, 整数型, , 
+    .参数 nNumScans, 整数型, , 
+    .参数 lpBits, 字节集, , 
+    .参数 lpBI, 未知类型0x410101A6, , 
+    .参数 wUsage, 整数型, , 
+
+.DLL命令 GetObject, 整数型, "", "GetObjectA", , 
+    .参数 hgdiobj, 整数型, , 
+    .参数 cbBuffer, 整数型, , 
+    .参数 lpvObject, 未知类型0x410101A7, , 
+
+.DLL命令 GetDIBits_BimapInfo, 整数型, "", "GetDIBits", , 
+    .参数 HDC, 整数型, , 
+    .参数 hBitmap, 整数型, , 
+    .参数 nStartScan, 整数型, , 
+    .参数 nNumScans, 整数型, , 
+    .参数 lpBits, 整数型, , 
+    .参数 lpBI, 未知类型0x410101A6, , 
+    .参数 wUsage, 整数型, , 
+
+.DLL命令 PrintWindow, 逻辑型, "", "", , 
+    .参数 hwnd, 整数型, , 
+    .参数 hdcBlt, 整数型, , 
+    .参数 nFlags, 整数型, , 
+
+.DLL命令 CreateDC, 整数型, "gdi32", "CreateDCA", , 
+    .参数 lpDriverName, 文本型, , 
+    .参数 lpDeviceName, 整数型, , 
+    .参数 lpOutput, 整数型, , 
+    .参数 lpInitData, 整数型, , 
+
+.DLL命令 RtlMoveMemory, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 lstrcpyn, 整数型, "", "lstrcpyn", , 
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 欲取其指针, 字节集, 传址, 
+    .参数 保留, 整数型, , 
+
+.DLL命令 GlobalAlloc, 整数型, "kernel32", "", , 
+    .参数 uFlags, 整数型, , 
+    .参数 dwBytes, 整数型, , 
+
+.DLL命令 GlobalLock, 整数型, "kernel32", "", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 CopyMemory, 空白型, "kernel32", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 字节集, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 GlobalUnlock, 整数型, "kernel32", "", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 CreateStreamOnHGlobal, 整数型, "ole32", "", , 
+    .参数 hGlobal, 整数型, , 
+    .参数 fDeleteOnRelease, 整数型, , 
+    .参数 ppstm, 整数型, 传址, 
+
+.DLL命令 CLSIDFromString, 整数型, "ole32", "", , 
+    .参数 lpsz, 字节集, , 
+    .参数 pclsid, 字节集, 传址, 
+
+.DLL命令 OleLoadPicture, 整数型, "olepro32", "", , 
+    .参数 pStream, 整数型, , 
+    .参数 lSize, 整数型, , 
+    .参数 fRunmode, 整数型, , 
+    .参数 riid, 字节集, 传址, 
+    .参数 ppvObj, 整数型, 传址, 
+
+.DLL命令 GlobalFree, 整数型, "kernel32", "", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 _P_INT32, 整数型, "", "lstrcatA", , 
+    .参数 lpString1, 整数型, 传址, 
+    .参数 lpString2, 整数型, 传址, 
+
+.DLL命令 CallWindowProc, 整数型, "", "CallWindowProcA", , 
+    .参数 动态调用代码, 字节集, , 
+    .参数 子程序, 整数型, , 
+    .参数 参数, 整数型, 数组, 
+    .参数 参数数目, 整数型, , 
+    .参数 是否C调用, 逻辑型, , 
+
+.DLL命令 OpenClipboard, 整数型, "user32", "OpenClipboard", , 
+    .参数 句柄, 整数型, , 
+
+.DLL命令 GetClipboardData, 整数型, "user32", "GetClipboardData", , 
+    .参数 wFormat, 整数型, , 
+
+.DLL命令 CloseClipboard, 整数型, "user32", "CloseClipboard", , 
+
+.DLL命令 EmptyClipboard, 整数型, "user32", "EmptyClipboard", , 
+
+.DLL命令 SetClipboardData, 整数型, "", "SetClipboardData", , 
+    .参数 uFormat, 整数型, , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 RtlMoveMemory_整数, 整数型, "", "RtlMoveMemory", , 
+    .参数 lpvDest, 整数型, 传址, 
+    .参数 lpvSource, 整数型, , 
+    .参数 cbCopy, 整数型, , 
+
+.DLL命令 文本_取长度, 整数型, "kernel32", "lstrlenA", , 
+    .参数 lpString, 文本型, , 
+
+.DLL命令 MultiByteToWideChar, 整数型, "", "MultiByteToWideChar", , 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpWideCharStr, 字节集, , 
+    .参数 cchWideChar, 整数型, , 
+
+.DLL命令 GetObjectPtr, 整数型, "", "lstrcpyn", , 
+    .参数 lpString1, 整数型, 传址, 
+    .参数 lpString2, 整数型, 传址, 
+    .参数 iMaxLength, 整数型, , 
+
+.DLL命令 GdipCreateBitmapFromStream, 整数型, "gdiplus.dll", "GdipCreateBitmapFromStream", , 
+    .参数 stream, 整数型, , 
+    .参数 bitmap, 整数型, 传址, 
+
+.DLL命令 GdipSaveImageToStream_int, 整数型, "gdiplus.dll", "GdipSaveImageToStream", , 
+    .参数 image, 整数型, , 
+    .参数 stream, 整数型, , 
+    .参数 clsidEncoder, 字节集, , 
+    .参数 encoderParams, 整数型, , 
+
+.DLL命令 GetHGlobalFromStream_int, 空白型, "ole32.dll", "GetHGlobalFromStream", , 
+    .参数 pstm, 整数型, , 
+    .参数 phglobal, 整数型, 传址, 
+
+.DLL命令 GlobalSize, 整数型, "", "", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 CopyMemory2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, 整数型, , 
+    .参数 cbCopy, 整数型, , 
+
+.DLL命令 GdipDisposeImage, 整数型, "gdiplus.dll", "GdipDisposeImage", , 
+    .参数 image, 整数型, , 
+
+.DLL命令 GdiplusStartup, 整数型, "gdiplus.dll", "GdiplusStartup", , 
+    .参数 token, 整数型, 传址, 
+    .参数 inputbuf, 未知类型0x410101A8, , 
+    .参数 outputbuf, 整数型, , 
+
+.DLL命令 GdiplusShutdown, 空白型, "gdiplus.dll", "GdiplusShutdown", , 
+    .参数 token, 整数型, , 
+
+.类模块 Gdip画板, , , 
+
+.子程序 创建, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+.参数 字体名称, 文本型, , 
+.参数 字体颜色, 整数型, , 
+.参数 描边颜色, 整数型, , 
+.参数 字体透明度, 整数型, , 
+.参数 高质量, 逻辑型, 可空, 
+
+
+
+.子程序 销毁, 空白型, , 
+
+
+.子程序 清除, 空白型, , 
+.参数 区域, RECT, 可空, 
+
+
+
+.子程序 绘图, 空白型, , 
+.参数 图片对象, Gdip图片对象, , 
+.参数 左边, 小数型, , 
+.参数 顶边, 小数型, , 
+.参数 宽度, 小数型, , 
+.参数 高度, 小数型, , 
+
+
+
+.子程序 绘图Ex, 空白型, , 
+.参数 图片对象, Gdip图片对象, , 
+.参数 目标左边, 小数型, , 
+.参数 目标顶边, 小数型, , 
+.参数 目标宽度, 小数型, , 
+.参数 目标高度, 小数型, , 
+.参数 源左边, 小数型, , 
+.参数 源顶边, 小数型, , 
+.参数 源宽度, 小数型, , 
+.参数 源高度, 小数型, , 
+.参数 透明度, 小数型, 可空, 
+
+
+
+.子程序 绘描边字, 空白型, , 
+.参数 文本, 文本型, , 
+.参数 左边, 小数型, , 
+.参数 顶边, 小数型, , 
+.参数 大小, 整数型, , 
+
+
+
+.子程序 取场景, 整数型, , 
+
+
+.子程序 复制到, 逻辑型, , 
+.参数 目标场景, 整数型, , 
+.参数 左边, 整数型, , 
+.参数 顶边, 整数型, , 
+.参数 宽度, 整数型, , 
+.参数 高度, 整数型, , 
+
+
+
+.子程序 刷新, 空白型, , 
+
+
+.类模块 Gdip图片对象, , , 
+
+.子程序 加载数据, 逻辑型, , 
+.参数 图片数据, 字节集, , 
+
+
+
+.子程序 加载文件, 逻辑型, , 
+.参数 文件路径, 文本型, , 
+
+
+
+.子程序 释放, 空白型, , 
+
+
+.子程序 取句柄, 整数型, , 
+
+
+.子程序 取宽度, 整数型, , 
+
+
+.子程序 取高度, 整数型, , 
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 gdi画板, Gdip画板, , , 
+.程序集变量 gdi图像, Gdip图片对象, , , 
+.子程序 __启动窗口_可否被关闭, 逻辑型, , by.wangzexi
+.局部变量 计次, 整数型, , , 
+.局部变量 透明度, 小数型, , , 
+.局部变量 临时整数, 整数型, , , 
+.局部变量 原宽度, 整数型, , , 
+.局部变量 原高度, 整数型, , , 
+
+赋值 (.)
+赋值 (.)
+
+gdi图像.加载数据 (图像_窗口快照 (_启动窗口.取窗口句柄 (), , )) ' 取得窗口图像
+
+_启动窗口.禁止重画 () ' 自有用处，你可以去掉试试
+_启动窗口.移动 (相减 (_启动窗口., 5), 相减 (_启动窗口., 5), 相加 (_启动窗口., 10), 相加 (_启动窗口., 10)) ' 初始化放大后的大小
+
+gdi画板.创建 (_启动窗口.取窗口句柄 (), _启动窗口., _启动窗口., “宋体”, #黑色, #白色, 255, 真)
+赋值 (透明度, 1)
+.计次循环首 (20, 计次)
+    gdi画板.清除 () ' 清除上一次的，否则效果会累加
+    赋值 (透明度, 相减 (透明度, 0.05))
+    
+    .如果 (小于或等于 (相加 (原宽度, 相乘 (计次, 1.5)), _启动窗口.)) ' 判断应该放大还是缩小
+        gdi画板.绘图Ex (gdi图像, 相减 (5, 相除 (相乘 (计次, 1.5), 2)), 相减 (5, 相除 (相乘 (计次, 1.5), 2)), 相加 (原宽度, 相乘 (计次, 1.5)), 相加 (原高度, 相乘 (计次, 1.5)), 0, 0, 原宽度, 原高度, 透明度)
+        
+    .否则
+        赋值 (临时整数, 相加 (临时整数, 2))
+        gdi画板.绘图Ex (gdi图像, 相除 (临时整数, 2), 相除 (临时整数, 2), 相减 (_启动窗口., 临时整数), 相减 (_启动窗口., 临时整数), 0, 0, 原宽度, 原高度, 透明度)
+    .如果结束
+    
+    gdi画板.刷新 ()
+    处理事件 ()
+    延时 (相减 (10, 计次))
+.计次循环尾 ()
+
+ ' gdi画板.销毁 ()  ' 因为加上这句代码在窗口最后会黑一下，所以去到了
+
+
+.子程序 图像_窗口快照, 字节集, , 能对被其他窗口挡住的未最小化窗口进行截图。
+.参数 窗口句柄, 整数型, 可空, 要截取的窗口的句柄。为空则捕捉全屏。
+.参数 输出宽度, 整数型, 可空, 指定图片的输出宽度。如果小于0，参数值指定的是最终图片输出宽度相对于所取得图片宽度的百分比；如果等于0，则按图片原宽度输出；如果大于0，指定输出图片的绝对宽度。如果本参数被省略，默认值为0。
+.参数 输出高度, 整数型, 可空, 指定图片的输出高度。如果小于0，参数值指定的是最终图片输出高度相对于所取得图片高度的百分比（最小为10%）；如果等于0，则按图片原高度输出；如果大于0，指定输出图片的绝对高度。如果本参数被省略，默认值为0。
+
+.局部变量 hScrDC, 整数型, , , 
+.局部变量 hMemDC, 整数型, , , 
+.局部变量 hScrBitmap, 整数型, , , 
+.局部变量 hOldScrBitmap, 整数型, , , 
+.局部变量 数据, 字节集, , , 
+.局部变量 ret, 整数型, , , 
+.局部变量 RECT, 未知类型0x410101BC, , , 
+.局部变量 图像宽, 整数型, , , 
+.局部变量 图像高, 整数型, , , 
+
+.如果真 (是否为空 (窗口句柄))
+    返回 (未知函数_67174845 (输出宽度, 输出高度))
+.如果真结束
+.如果真 (等于 (未知函数_167838142 (窗口句柄), 假))
+    返回 ({  })
+.如果真结束
+未知函数_167838143 (窗口句柄, RECT)
+赋值 (图像宽, 相减 (RECT., RECT.))
+赋值 (图像高, 相减 (RECT., RECT.))
+赋值 (hScrDC, 未知函数_167838144 (0))
+赋值 (hMemDC, 未知函数_167838145 (hScrDC))
+赋值 (hScrBitmap, 未知函数_167838147 (hScrDC, 图像宽, 图像高))
+赋值 (hOldScrBitmap, 未知函数_167838146 (hMemDC, hScrBitmap))
+.如果真 (未知函数_167838151 (窗口句柄, hMemDC, 0))
+    .如果真 (小于 (输出宽度, 0))
+        赋值 (输出宽度, 相乘 (负 (相除 (输出宽度, 100)), 图像宽))
+    .如果真结束
+    .如果真 (小于 (输出高度, 0))
+        赋值 (输出高度, 相乘 (负 (相除 (输出高度, 100)), 图像高))
+    .如果真结束
+    .如果真 (等于 (输出宽度, 0))
+        赋值 (输出宽度, 图像宽)
+    .如果真结束
+    .如果真 (等于 (输出高度, 0))
+        赋值 (输出高度, 图像高)
+    .如果真结束
+    赋值 (ret, 未知函数_167838152 (hScrBitmap, 0, 输出宽度, 输出高度, 4))
+    赋值 (数据, 未知函数_67174857 (ret))
+.如果真结束
+未知函数_167838146 (hMemDC, hOldScrBitmap)
+未知函数_167838148 (0, hScrDC)
+未知函数_167838149 (hMemDC)
+未知函数_167838150 (ret)
+未知函数_167838150 (hScrBitmap)
+未知函数_167838150 (hOldScrBitmap)
+返回 (数据)
+
+.子程序 图像_快照, 字节集, , 功能与支持库基本相同。
+.参数 窗口句柄, 整数型, 可空, 指定欲捕获其显示内容的窗口。为空则捕捉全屏。
+.参数 输出宽度, 整数型, 可空, 指定图片的输出宽度。如果小于0，参数值指定的是最终图片输出宽度相对于所取得图片宽度的百分比；如果等于0，则按图片原宽度输出；如果大于0，指定输出图片的绝对宽度。如果本参数被省略，默认值为0。
+.参数 输出高度, 整数型, 可空, 指定图片的输出高度。如果小于0，参数值指定的是最终图片输出高度相对于所取得图片高度的百分比；如果等于0，则按图片原高度输出；如果大于0，指定输出图片的绝对高度。如果本参数被省略，默认值为0。
+
+.局部变量 hScrDC, 整数型, , , 
+.局部变量 hMemDC, 整数型, , , 
+.局部变量 hScrBitmap, 整数型, , , 
+.局部变量 hOldScrBitmap, 整数型, , , 
+.局部变量 RECT, 未知类型0x410101DB, , , 
+.局部变量 图像宽, 整数型, , , 
+.局部变量 图像高, 整数型, , , 
+.局部变量 数据, 字节集, , , 
+.局部变量 ret, 整数型, , , 
+
+.如果 (是否为空 (窗口句柄))
+    赋值 (图像宽, 未知函数_67174876 ())
+    赋值 (图像高, 未知函数_67174877 ())
+.否则
+    .如果真 (等于 (未知函数_167838174 (窗口句柄), 假))
+        返回 ({  })
+    .如果真结束
+    未知函数_167838175 (窗口句柄, RECT)
+    赋值 (图像宽, 相减 (RECT., RECT.))
+    赋值 (图像高, 相减 (RECT., RECT.))
+.如果结束
+赋值 (hScrDC, 未知函数_167838176 (选择 (未知函数_167838174 (窗口句柄), 窗口句柄, 0)))
+赋值 (hMemDC, 未知函数_167838177 (hScrDC))
+赋值 (hScrBitmap, 未知函数_167838178 (hScrDC, 图像宽, 图像高))
+赋值 (hOldScrBitmap, 未知函数_167838179 (hMemDC, hScrBitmap))
+未知函数_167838180 (hMemDC, 0, 0, 图像宽, 图像高, hScrDC, 0, 0, 13369376)
+.如果真 (小于 (输出宽度, 0))
+    赋值 (输出宽度, 相乘 (负 (相除 (输出宽度, 100)), 图像宽))
+.如果真结束
+.如果真 (小于 (输出高度, 0))
+    赋值 (输出高度, 相乘 (负 (相除 (输出高度, 100)), 图像高))
+.如果真结束
+.如果真 (等于 (输出宽度, 0))
+    赋值 (输出宽度, 图像宽)
+.如果真结束
+.如果真 (等于 (输出高度, 0))
+    赋值 (输出高度, 图像高)
+.如果真结束
+赋值 (ret, 未知函数_167838181 (hScrBitmap, 0, 输出宽度, 输出高度, 4))
+赋值 (数据, 未知函数_67174886 (ret))
+未知函数_167838179 (hMemDC, hOldScrBitmap)
+未知函数_167838183 (0, hScrDC)
+未知函数_167838184 (hMemDC)
+未知函数_167838185 (ret)
+未知函数_167838185 (hScrBitmap)
+未知函数_167838185 (hOldScrBitmap)
+返回 (数据)
+
+.子程序 图像_图片句柄取图片, 字节集, , 返回的图片格式为位图。
+.参数 hBitmap, 整数型, , 
+
+.局部变量 Bitmap, 未知类型0x410100BF, , , 
+.局部变量 Resource, 字节集, , , 
+.局部变量 BitmapFileHeader, 未知类型0x410100C0, , , 
+.局部变量 bfh, 字节集, , , 
+.局部变量 hMemDC, 整数型, , , 
+.局部变量 BitmapInfo, 未知类型0x410100C1, , , 
+.局部变量 bi, 字节集, , , 
+
+未知函数_167837897 (hBitmap, 24, Bitmap)
+赋值 (hMemDC, 未知函数_167837890 (0))
+赋值 (BitmapInfo.., 44)
+未知函数_167837891 (hMemDC, hBitmap, 0, 0, 0, BitmapInfo, 0)
+赋值 (Resource, 未知函数_67174598 (BitmapInfo..))
+赋值 (BitmapInfo.., 0)
+未知函数_167837893 (hMemDC, hBitmap, 0, Bitmap., Resource, BitmapInfo, 0)
+赋值 (bi, 未知函数_67174598 (BitmapInfo..))
+未知函数_167837892 (bi, BitmapInfo, BitmapInfo..)
+赋值 (BitmapFileHeader., 19778)
+赋值 (BitmapFileHeader., 相加 (14, BitmapInfo..))
+赋值 (BitmapFileHeader., 相加 (BitmapFileHeader., BitmapInfo..))
+连续赋值 (0, BitmapFileHeader., BitmapFileHeader.)
+赋值 (bfh, 未知函数_67174598 (14))
+未知函数_167837895 (bfh, BitmapFileHeader, 14)
+未知函数_167837896 (hMemDC)
+返回 (相加 (bfh, bi, Resource))
+
+.子程序 图像_取屏幕宽度, 整数型, , 单位为像素。
+.局部变量 场景句柄, 整数型, , , 
+.局部变量 屏幕宽度, 整数型, , , 
+
+赋值 (场景句柄, 未知函数_167838196 (“DISPLAY”, 0, 0, 0))
+赋值 (屏幕宽度, 未知函数_167838198 (场景句柄, 8))
+未知函数_167838197 (场景句柄)
+返回 (屏幕宽度)
+
+.子程序 图像_取屏幕高度, 整数型, , 单位为像素。
+.局部变量 场景句柄, 整数型, , , 
+.局部变量 屏幕高度, 整数型, , , 
+
+赋值 (场景句柄, 未知函数_167838196 (“DISPLAY”, 0, 0, 0))
+赋值 (屏幕高度, 未知函数_167838198 (场景句柄, 10))
+未知函数_167838197 (场景句柄)
+返回 (屏幕高度)
+
+.子程序 字节集_取空白, 字节集, , 
+.参数 len, 整数型, , 
+
+.局部变量 address, 整数型, , , 
+.局部变量 ret, 字节集, , , 
+
+.如果真 (小于 (len, 1))
+    返回 ({  })
+.如果真结束
+赋值 (address, 未知函数_167838125 (64, len))
+.如果真 (等于 (address, 0))
+    返回 ({  })
+.如果真结束
+赋值 (ret, 指针到字节集 (address, len))
+未知函数_167838126 (address)
+返回 (ret)
+
+.子程序 _按钮1_被单击, 空白型, , 
+__启动窗口_可否被关闭 ()
+_启动窗口.销毁 ()
+
+
+ ' 不属于任何一个程序集、类模块的函数：

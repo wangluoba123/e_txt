@@ -1,0 +1,689 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.wodesoft.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.wodesoft.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.wodesoft.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 453
+    高度 = 390
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 真
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “RGB_CYMK值互换”
+    帮助文件名 = “”
+
+
+
+.常量 常量1, "“Option   Explicit   
+    
+  Private   R   As   Byte   
+  Private   G   As   Byte   
+  Private   B   As   Byte   
+  Public   Property   Get   cmyC()   As   Byte   
+          cmyC   =   255   -   R   
+  End   Property   
+    
+  Public   Property   Get   cmyM()   As   Byte   
+          cmyM   =   255   -   G   
+  End   Property   
+  Public   Property   Get   cmykK()   As   Integer   
+          cmykK   =   Minimum(255   -   R,   255   -   G,   255   -   B)   /   2.55   
+  End   Property   
+    
+    
+  Public   Property   Get   cmykC()   As   Integer   
+          Dim   MyR   As   Integer,   Div   As   Integer   
+          MyR   =   R   /   2.55   
+            
+          Div   =   (100   -   cmykK)   
+          If   Div   =   0   Then   Div   =   1   
+            
+          cmykC   =   ((100   -   MyR   -   cmykK)   /   Div)   *   100   
+  End   Property   
+    
+  Public   Property   Get   cmykM()   As   Integer   
+          Dim   MyG   As   Integer,   Div   As   Integer   
+          MyG   =   G   /   2.55   
+            
+          Div   =   (100   -   cmykK)   
+          If   Div   =   0   Then   Div   =   1   
+            
+          cmykM   =   ((100   -   MyG   -   cmykK)   /   Div)   *   100   
+  End   Property   
+    
+  Public   Property   Get   cmykY()   As   Integer   
+          Dim   MyB   As   Integer,   Div   As   Integer   
+          MyB   =   B   /   2.55   
+            
+          Div   =   (100   -   cmykK)   
+          If   Div   =   0   Then   Div   =   1   
+            
+          cmykY   =   ((100   -   MyB   -   cmykK)   /   Div)   *   100   
+  End   Property   
+    
+  Public   Property   Get   cmyY()   As   Byte   
+          cmyY   =   255   -   B   
+  End   Property   
+    
+    
+  Public   Property   Get   hlsH()   As   Integer   
+          Dim   MyR   As   Single,   MyG   As   Single,   MyB   As   Single   
+          Dim   Max   As   Single,   Min   As   Single   
+          Dim   Delta   As   Single,   MyVal   As   Single   
+            
+          MyR   =   R   /   255:   MyG   =   G   /   255:   MyB   =   B   /   255   
+            
+          Max   =   Maximum(MyR,   MyG,   MyB)   
+          Min   =   Minimum(MyR,   MyG,   MyB)   
+            
+          If   Max   <>   Min   Then   
+                  Delta   =   Max   -   Min   
+                  Select   Case   Max   
+                          Case   MyR   
+                                  MyVal   =   (MyG   -   MyB)   /   Delta   
+                          Case   MyG   
+                                  MyVal   =   2   +   (MyB   -   MyR)   /   Delta   
+                          Case   MyB   
+                                  MyVal   =   4   +   (MyR   -   MyG)   /   Delta   
+                  End   Select   
+          End   If   
+            
+          MyVal   =   (MyVal   +   1)   *   60   
+          If   MyVal   <   0   Then   MyVal   =   MyVal   +   360   
+            
+          hlsH   =   MyVal   
+          Debug.Print   hlsH   
+  End   Property   
+  Public   Property   Get   hlsL()   As   Integer   
+          hlsL   =   ((Maximum(R,   G,   B)   +   Minimum(R,   G,   B))   /   2)   /   2.55   
+  End   Property   
+  Public   Property   Get   hlsS()   As   Integer   
+          Dim   MyR   As   Single,   MyG   As   Single,   MyB   As   Single   
+          Dim   Max   As   Single,   Min   As   Single,   MyS   As   Single   
+            
+          MyR   =   R   /   255:   MyG   =   G   /   255:   MyB   =   B   /   255   
+            
+          Max   =   Maximum(MyR,   MyG,   MyB)   
+          Min   =   Minimum(MyR,   MyG,   MyB)   
+            
+          If   Max   <>   Min   Then   
+                  If   hlsL   <=   50   Then   
+                          MyS   =   (Max   -   Min)   /   (Max   +   Min)   
+                  Else   
+                          MyS   =   (Max   -   Min)   /   (2   -   Max   -   Min)   
+                  End   If   
+                  hlsS   =   MyS   *   100   
+          End   If   
+  End   Property   
+    
+  Private   Function   Minimum(ParamArray   Vals())   
+          Dim   n   As   Integer,   MinVal   
+            
+          MinVal   =   Vals(0)   
+            
+          For   n   =   0   To   UBound(Vals)   
+                  If   Vals(n)   <   MinVal   Then   MinVal   =   Vals(n)   
+          Next   n   
+    
+          Minimum   =   MinVal   
+  End   Function   
+  Private   Function   Maximum(ParamArray   Vals())   
+          Dim   n   As   Integer,   MaxVal   
+            
+          For   n   =   0   To   UBound(Vals)   
+                  If   Vals(n)   >   MaxVal   Then   MaxVal   =   Vals(n)   
+          Next   n   
+    
+          Maximum   =   MaxVal   
+  End   Function   
+    
+  Public   Property   Let   rgbR(NewVal   As   Byte)   
+          R   =   NewVal   
+  End   Property   
+    
+    
+  Public   Property   Get   rgbR()   As   Byte   
+          rgbR   =   R   
+  End   Property   
+    
+  Public   Property   Get   rgbG()   As   Byte   
+          rgbG   =   G   
+  End   Property   
+    
+  Public   Property   Get   rgbB()   As   Byte   
+          rgbB   =   B   
+  End   Property   
+  Public   Property   Get   ycbcrY()   As   Byte   
+          ycbcrY   =   R   *   0.2989   +   G   *   0.5866   +   B   *   0.1145   
+  End   Property   
+  Public   Property   Get   ycbcrCb()   As   Byte   
+          Dim   MyCb   As   Integer   
+          MyCb   =   -0.1687   *   R   -   0.3313   *   G   +   0.5   *   B   +   128   
+            
+          ycbcrCb   =   IIf(MyCb   <=   255,   MyCb,   255)   
+  End   Property   
+  Public   Property   Get   ycbcrCr()   As   Byte   
+          Dim   MyCr   As   Integer   
+          MyCr   =   0.5   *   R   -   0.4187   *   G   -   0.0813   *   B   +   128   
+            
+          ycbcrCr   =   IIf(MyCr   <=   255,   MyCr,   255)   
+  End   Property   
+    
+  Public   Property   Let   rgbG(NewVal   As   Byte)   
+          G   =   NewVal   
+  End   Property   
+  Public   Property   Let   rgbB(NewVal   As   Byte)   
+          B   =   NewVal   
+  End   Property   
+  Public   Sub   SetCMY(C   As   Integer,   M   As   Integer,   Y   As   Integer)   
+          R   =   255   -   C   
+          G   =   255   -   M   
+          B   =   255   -   Y   
+  End   Sub   
+  Public   Sub   SetHLS(H   As   Integer,   L   As   Integer,   S   As   Integer)   
+          Dim   MyR   As   Single,   MyG   As   Single,   MyB   As   Single   
+          Dim   MyH   As   Single,   MyL   As   Single,   MyS   As   Single   
+          Dim   Min   As   Single,   Max   As   Single,   Delta   As   Single   
+            
+          MyH   =   (H   /   60)   -   1:   MyL   =   L   /   100:   MyS   =   S   /   100   
+          If   MyS   =   0   Then   
+                  MyR   =   MyL:   MyG   =   MyL:   MyB   =   MyL   
+          Else   
+                  If   MyL   <=   0.5   Then   
+                          Min   =   MyL   *   (1   -   MyS)   
+                  Else   
+                          Min   =   MyL   -   MyS   *   (1   -   MyL)   
+                  End   If   
+                  Max   =   2   *   MyL   -   Min   
+                  Delta   =   Max   -   Min   
+                    
+                  Select   Case   MyH   
+                          Case   Is   <   1   
+                                  MyR   =   Max   
+                                  If   MyH   <   0   Then   
+                                          MyG   =   Min   
+                                          MyB   =   MyG   -   MyH   *   Delta   
+                                  Else   
+                                          MyB   =   Min   
+                                          MyG   =   MyH   *   Delta   +   MyB   
+                                  End   If   
+                          Case   Is   <   3   
+                                  MyG   =   Max   
+                                  If   MyH   <   2   Then   
+                                          MyB   =   Min   
+                                          MyR   =   MyB   -   (MyH   -   2)   *   Delta   
+                                  Else   
+                                          MyR   =   Min   
+                                          MyB   =   (MyH   -   2)   *   Delta   +   MyR   
+                                  End   If   
+                          Case   Else   
+                                  MyB   =   Max   
+                                  If   MyH   <   4   Then   
+                                          MyR   =   Min   
+                                          MyG   =   MyR   -   (MyH   -   4)   *   Delta   
+                                  Else   
+                                          MyG   =   Min   
+                                          MyR   =   (MyH   -   4)   *   Delta   +   MyG   
+                                  End   If   
+                  End   Select   
+          End   If   
+            
+          R   =   MyR   *   255:   G   =   MyG   *   255:   B   =   MyB   *   255   
+  End   Sub   
+    
+    
+  Public   Sub   SetCMYK(C   As   Integer,   M   As   Integer,   Y   As   Integer,   K   As   Integer)   
+          Dim   MyC   As   Single,   MyM   As   Single,   MyY   As   Single,   MyK   As   Single   
+            
+          MyC   =   C   /   100:   MyM   =   M   /   100:   MyY   =   Y   /   100:   MyK   =   K   /   100   
+            
+          R   =   (1   -   (MyC   *   (1   -   MyK)   +   MyK))   *   255   
+          G   =   (1   -   (MyM   *   (1   -   MyK)   +   MyK))   *   255   
+          B   =   (1   -   (MyY   *   (1   -   MyK)   +   MyK))   *   255   
+  End   Sub   
+    
+  Public   Sub   SetYCbCr(Y   As   Integer,   Cb   As   Integer,   Cr   As   Integer)   
+          Dim   MyR   As   Integer,   MyG   As   Integer,   MyB   As   Integer   
+            
+          MyR   =   Y   +   1.402   *   (Cr   -   128)   
+          MyG   =   Y   -   0.34414   *   (Cb   -   128)   -   0.71414   *   (Cr   -   128)   
+          MyB   =   Y   +   1.772   *   (Cb   -   128)   
+            
+          If   MyR   >   255   Then   MyR   =   255   
+          If   MyG   >   255   Then   MyG   =   255   
+          If   MyB   >   255   Then   MyB   =   255   
+            
+          If   MyR   <   0   Then   MyR   =   0   
+          If   MyG   <   0   Then   MyG   =   0   
+          If   MyB   <   0   Then   MyB   =   0   
+    
+          R   =   MyR   
+          G   =   MyG   
+          B   =   MyB   
+  End   Sub ”", , 
+.图片 鼠标指针_01, " ' 已保存到：D:\易语言学习\Data\gzsSwtQb.e\鼠标指针_01", , 
+.图片 鼠标指针_02, " ' 已保存到：D:\易语言学习\Data\gzsSwtQb.e\鼠标指针_02", , 
+.图片 鼠标指针_03, " ' 已保存到：D:\易语言学习\Data\gzsSwtQb.e\鼠标指针_03", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' eAPI F7FC1AE45C5C4758AF03EF19F18A395D 3 0 应用接口支持库
+
+
+
+
+数据类型 RGB, , 
+    .成员 R, 空白型, , , 
+    .成员 G, 空白型, , , 
+    .成员 B, 空白型, , , 
+
+数据类型 CMYK, , 
+    .成员 C, 空白型, , , 
+    .成员 M, 空白型, , , 
+    .成员 Y, 空白型, , , 
+    .成员 K, 空白型, , , 
+
+数据类型 HLS, , 
+    .成员 H, 空白型, , , 
+    .成员 L, 空白型, , , 
+    .成员 S, 空白型, , , 
+
+数据类型 点, , 
+    .成员 x, 空白型, , , 
+    .成员 y, 空白型, , , 
+
+
+.DLL命令 取设备句柄, 整数型, "user32.dll", "GetDC", , 
+    .参数 句柄, 整数型, , 
+
+.DLL命令 取鼠标位置, 逻辑型, "user32.dll", "GetCursorPos", , 
+    .参数 光标位置, 点, 传址, 
+
+.DLL命令 取颜色, 整数型, "gdi32.dll", "GetPixel", , 
+    .参数 设备场景的句柄, 整数型, , 
+    .参数 坐标, 整数型, , 
+    .参数 坐标1, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1RGB_被单击, 空白型, , 
+.局部变量 CMYK_局部, CMYK, , , 
+.局部变量 RGB_局部, RGB, , , 
+
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+赋值 (RGB_局部.R, 到数值 (.内容))
+赋值 (RGB_局部.G, 到数值 (.内容))
+赋值 (RGB_局部.B, 到数值 (.内容))
+赋值 (CMYK_局部, RGB转CMYK (RGB_局部))
+ ' 标题 ＝ “C:” ＋ 到文本 (CMYK_局部.C) ＋ “  M:” ＋ 到文本 (CMYK_局部.M) ＋ “  Y:” ＋ 到文本 (CMYK_局部.Y) ＋ “  K:” ＋ 到文本 (CMYK_局部.K)
+赋值 (.画板背景色, 取颜色值 (RGB_局部.R, RGB_局部.G, RGB_局部.B))
+10.置写出位置 (10)
+相加 (“C:”, 到文本 (CMYK_局部.C), “  M:”, 到文本 (CMYK_局部.M), “  Y:”, 到文本 (CMYK_局部.Y), “  K:”, 到文本 (CMYK_局部.K)).写文本行 ()
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 取最小值_, 整数型, , 
+.参数 参数1, 整数型, , 
+.参数 参数2, 整数型, , 
+.参数 参数3, 整数型, , 
+
+.局部变量 变量_局部, 整数型, , "3", 
+
+赋值 (变量_局部 [1], 参数1)
+赋值 (变量_局部 [2], 参数2)
+赋值 (变量_局部 [3], 参数3)
+数组排序 (变量_局部, )
+返回 (变量_局部 [1])
+
+.子程序 _按钮2CMYK_被单击, 空白型, , 
+.局部变量 CMYK_局部, CMYK, , , 
+.局部变量 RGB_局部, RGB, , , 
+
+赋值 (CMYK_局部.C, 到数值 (.内容))
+赋值 (CMYK_局部.M, 到数值 (.内容))
+赋值 (CMYK_局部.Y, 到数值 (.内容))
+赋值 (CMYK_局部.K, 到数值 (.内容))
+赋值 (RGB_局部, CMYK转RGB (CMYK_局部))
+赋值 (.画板背景色, 取颜色值 (RGB_局部.R, RGB_局部.G, RGB_局部.B))
+ ' 标题 ＝ “R:” ＋ 到文本 (RGB_局部.R) ＋ “  G:” ＋ 到文本 (RGB_局部.G) ＋ “  B:” ＋ 到文本 (RGB_局部.B)
+10.置写出位置 (10)
+相加 (“R:”, 到文本 (RGB_局部.R), “  G:”, 到文本 (RGB_局部.G), “  B:”, 到文本 (RGB_局部.B)).写文本行 ()
+
+.子程序 CMYK转RGB, RGB, , 
+.参数 参数_CMYK, CMYK, , 
+
+.局部变量 C_参数, 双精度小数型, , , 
+.局部变量 M_参数, 双精度小数型, , , 
+.局部变量 Y_参数, 双精度小数型, , , 
+.局部变量 K_参数, 双精度小数型, , , 
+.局部变量 返回_RGB, RGB, , , 
+
+ ' Public   Sub   SetCMYK(C   As   Integer,   M   As   Integer,   Y   As   Integer,   K   As   Integer)
+ ' Dim   MyC   As   Single,   MyM   As   Single,   MyY   As   Single,   MyK   As   Single
+ ' MyC   =   C   /   100:   MyM   =   M   /   100:   MyY   =   Y   /   100:   MyK   =   K   /   100
+赋值 (C_参数, 相除 (参数_CMYK.C, 100))
+赋值 (M_参数, 相除 (参数_CMYK.M, 100))
+赋值 (Y_参数, 相除 (参数_CMYK.Y, 100))
+赋值 (K_参数, 相除 (参数_CMYK.K, 100))
+ ' R   =   (1   -   (MyC   *   (1   -   MyK)   +   MyK))   *   255
+赋值 (返回_RGB.R, 相乘 (相减 (1, 相加 (相乘 (C_参数, 相减 (1, K_参数)), K_参数)), 255))
+ ' G   =   (1   -   (MyM   *   (1   -   MyK)   +   MyK))   *   255
+赋值 (返回_RGB.G, 相乘 (相减 (1, 相加 (相乘 (M_参数, 相减 (1, K_参数)), K_参数)), 255))
+ ' B   =   (1   -   (MyY   *   (1   -   MyK)   +   MyK))   *   255
+赋值 (返回_RGB.B, 相乘 (相减 (1, 相加 (相乘 (Y_参数, 相减 (1, K_参数)), K_参数)), 255))
+ ' End   Sub
+返回 (返回_RGB)
+
+.子程序 RGB转CMYK, CMYK, , 
+.参数 参数_RGB, RGB, , 
+
+.局部变量 R_参数, 空白型, , , 
+.局部变量 G_参数, 空白型, , , 
+.局部变量 B_参数, 空白型, , , 
+.局部变量 返回_CMYK, CMYK, , , 
+.局部变量 Div, 整数型, , , 
+
+赋值 (返回_CMYK.K, 相除 (取最小值_ (相减 (255, 参数_RGB.R), 相减 (255, 参数_RGB.G), 相减 (255, 参数_RGB.B)), 2.55))
+赋值 (Div, 相减 (100, 返回_CMYK.K))
+.如果真 (等于 (Div, 0))
+    赋值 (Div, 1)
+.如果真结束
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+赋值 (R_参数, 相除 (参数_RGB.R, 2.55))
+赋值 (返回_CMYK.C, 相乘 (相除 (相减 (100, R_参数, 返回_CMYK.K), Div), 100))
+赋值 (G_参数, 相除 (参数_RGB.G, 2.55))
+赋值 (返回_CMYK.M, 相乘 (相除 (相减 (100, G_参数, 返回_CMYK.K), Div), 100))
+赋值 (B_参数, 相除 (参数_RGB.B, 2.55))
+赋值 (返回_CMYK.Y, 相乘 (相除 (相减 (100, B_参数, 返回_CMYK.K), Div), 100))
+返回 (返回_CMYK)
+
+.子程序 子程序1, 空白型, , 
+ ' 这个算法有点问题：
+ ' 较准确的公式为：
+ ' （1）RGB   ->   CMYK
+ ' K=Min(1-R,1-G,1-B)     //取最小值
+ ' C=(1-R-K)/(1-K)
+ ' M=(1-G-K)/(1-K)
+ ' Y=(1-B-K)/(1-K)
+
+ ' （2）CMYK->RGB
+ ' R=(1-K)*(1-C)
+ ' G=(1-K)*(1-M)
+ ' B=(1-K)*(1-Y)
+
+ ' 说明：
+ ' （1）RGB,CMYK范围：0.0-1.0,不再此范围内时需转化。
+ ' 如RGB范围：0-255，则除以255.0,
+ ' 如：红Red   255,则R=255/255.0,如某色为Red   128,Green   100,Blue   50,则R=128/255.0,G=100/255.0,B=50/255.0
+ ' CMYK范围：0-100，则除以100.0)
+
+ ' （2）经过上面公式计算出来的结果仍与Photoshop有差异（事实上，不同版本的Photoshop的RGB与CMYK之间的转换也有差异），这是由于Photoshop是根据印刷环境（油墨、印刷纸张、印刷工厂的环境等）的不同而作了ICC文件修正的。
+
+ ' 更多细节（参看：http://www.neuro.sfc.keio.ac.jp/~aly/polygon/info/color-space-faq.html）
+ ' 这个网址我可是找了近20小时！
+
+ ' 缘由：
+ ' 我本想在C#环境下开发印刷格式的300DPI   CMYK   TIF图像转化为RGB   72DPI   的JPG格式图像，虽然找到了公式，但仍无法得到满意的答案（主要原因是：CMYK图像读入后转RGB时严重变色，主要是变暗）。
+
+ ' 不知各位有否更好的解决方案？（强烈建议研究成果共享！）
+
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+赋值 (.图片, #鼠标指针_03)
+
+.子程序 _图片框_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+
+赋值 (.时钟周期, 300)
+赋值 (.图片, { 0 })
+赋值 (.鼠标指针, #鼠标指针_01)
+处理事件 ()
+未知支持库函数_72 (取窗口句柄 ())
+
+.子程序 _图片框_鼠标左键被放开, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+未知支持库函数_73 ()
+赋值 (.鼠标指针, 到字节集 (14))
+赋值 (.图片, #鼠标指针_03)
+赋值 (.背景颜色, #默认色)
+赋值 (.时钟周期, 0)
+
+.子程序 _时钟1_周期事件, 空白型, , 
+.局部变量 点, 点, , , 
+.局部变量 颜色值, 整数型, , , 
+.局部变量 RGB_局部, RGB, , , 
+.局部变量 CMYK_局部, CMYK, , , 
+
+取鼠标位置 (点)
+赋值 (颜色值, 取颜色 (取设备句柄 (0), 点.x, 点.y))
+ ' 画板1_RGB.画板背景色 ＝ 颜色值
+ ' 图片框.背景颜色 ＝ 颜色值
+赋值 (RGB_局部.R, 求余数 (颜色值, 65536, 256))
+赋值 (RGB_局部.G, 整除 (求余数 (颜色值, 65536), 256))
+赋值 (RGB_局部.B, 整除 (颜色值, 65536))
+赋值 (.内容, 到文本 (RGB_局部.R))
+赋值 (.内容, 到文本 (RGB_局部.G))
+赋值 (.内容, 到文本 (RGB_局部.B))
+赋值 (CMYK_局部, RGB转CMYK (RGB_局部))
+赋值 (.内容, 到文本 (CMYK_局部.C))
+赋值 (.内容, 到文本 (CMYK_局部.M))
+赋值 (.内容, 到文本 (CMYK_局部.Y))
+赋值 (.内容, 到文本 (CMYK_局部.K))
+_按钮1RGB_被单击 ()
+_按钮2CMYK_被单击 ()
+处理事件 ()
+ ' r ＝ 取颜色值 (14, 207, 63) ％ 65536 ％ 256
+ ' g ＝ (取颜色值 (14, 207, 63) ％ 65536) ＼ 256
+ ' b ＝ 取颜色值 (14, 207, 63) ＼ 65536
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 HLS, HLS, , , 
+.局部变量 rgb, RGB, , , 
+
+赋值 (HLS.H, 到数值 (.内容))
+赋值 (HLS.L, 到数值 (.内容))
+赋值 (HLS.S, 到数值 (.内容))
+赋值 (rgb, HLS转RGB (HLS))
+赋值 (., 相加 (“R:”, 到文本 (rgb.R), “ G:”, 到文本 (rgb.G), “ B:”, 到文本 (rgb.B)))
+
+
+.程序集 程序集1, , , 
+
+.子程序 HLS转RGB, RGB, , 不准~~~~~~~~`
+.参数 参数_HLS, HLS, , 
+
+.局部变量 R_局部, 双精度小数型, , , 
+.局部变量 G_局部, 双精度小数型, , , 
+.局部变量 B_局部, 双精度小数型, , , 
+.局部变量 匿名局部变量_291, 空白型, , , 
+.局部变量 H_局部, 双精度小数型, , , 
+.局部变量 L_局部, 双精度小数型, , , 
+.局部变量 S_局部, 双精度小数型, , , 
+.局部变量 Min, 双精度小数型, , , 
+.局部变量 Max, 双精度小数型, , , 
+.局部变量 Delta, 双精度小数型, , , 
+.局部变量 返回_RGB, RGB, , , 
+
+ ' Public   Sub   SetHLS(H   As   Integer,   L   As   Integer,   S   As   Integer)
+ ' Dim   MyR   As   Single,   MyG   As   Single,   MyB   As   Single
+ ' Dim   MyH   As   Single,   MyL   As   Single,   MyS   As   Single
+ ' Dim   Min   As   Single,   Max   As   Single,   Delta   As   Single
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+ ' MyH   =   (H   /   60)   -   1:   MyL   =   L   /   100:   MyS   =   S   /   100
+赋值 (H_局部, 相减 (相除 (参数_HLS.H, 60), 1))
+赋值 (L_局部, 相除 (参数_HLS.L, 100))
+赋值 (S_局部, 相除 (参数_HLS.S, 100))
+.如果 (等于 (S_局部, 0)) ' If   MyS   =   0   Then
+     ' MyR   =   MyL:   MyG   =   MyL:   MyB   =   MyL
+    赋值 (R_局部, L_局部)
+    赋值 (G_局部, L_局部)
+    赋值 (B_局部, L_局部)
+     ' Else
+.否则
+    .如果 (小于或等于 (L_局部, 0.5)) ' If   MyL   <=   0.5   Then
+        赋值 (Min, 相乘 (L_局部, 相减 (1, S_局部))) ' Min   =   MyL   *   (1   -   MyS)
+         ' Else
+    .否则
+        赋值 (Min, 相减 (L_局部, 相乘 (S_局部, 相减 (1, L_局部)))) ' Min   =   MyL   -   MyS   *   (1   -   MyL)
+         ' End   If
+    .如果结束
+     ' Max   =   2   *   MyL   -   Min
+    赋值 (Max, 相减 (相乘 (2, L_局部), Min))
+     ' Delta   =   Max   -   Min
+    赋值 (Delta, 相减 (Max, Min))
+     ' Select   Case   MyH
+    .判断开始 (小于 (H_局部, 1)) ' Case   Is   <   1
+        赋值 (R_局部, Max) ' MyR   =   Max
+        .如果 (小于 (H_局部, 0)) ' If   MyH   <   0   Then
+            赋值 (G_局部, Min) ' MyG   =   Min
+            赋值 (B_局部, 相减 (G_局部, 相乘 (H_局部, Delta))) ' MyB   =   MyG   -   MyH   *   Delta
+             ' Else
+        .否则
+            赋值 (B_局部, Min) ' MyB   =   Min
+            赋值 (G_局部, 相加 (相乘 (H_局部, Delta), B_局部)) ' MyG   =   MyH   *   Delta   +   MyB
+        .如果结束
+         ' End   If
+    .判断 (小于 (H_局部, 3)) ' Case   Is   <   3
+        赋值 (G_局部, Max) ' MyG   =   Max
+        .如果 (小于 (H_局部, 2)) ' If   MyH   <   2   Then
+            赋值 (B_局部, Min) ' MyB   =   Min
+            赋值 (R_局部, 相减 (B_局部, 相乘 (相减 (H_局部, 2), Delta))) ' MyR   =   MyB   -   (MyH   -   2)   *   Delta
+             ' Else
+        .否则
+            赋值 (R_局部, Min) ' MyR   =   Min
+            赋值 (B_局部, 相加 (相乘 (相减 (H_局部, 2), Delta), R_局部)) ' MyB   =   (MyH   -   2)   *   Delta   +   MyR
+        .如果结束
+         ' End   If
+         ' Case   Else
+    .默认
+        赋值 (B_局部, Max) ' MyB   =   Max
+        .如果 (小于 (H_局部, 4)) ' If   MyH   <   4   Then
+            赋值 (R_局部, Min) ' MyR   =   Min
+            赋值 (G_局部, 相减 (R_局部, 相乘 (相减 (H_局部, 4), Delta))) ' MyG   =   MyR   -   (MyH   -   4)   *   Delta
+             ' Else
+        .否则
+            赋值 (G_局部, Min) ' MyG   =   Min
+            赋值 (R_局部, 相加 (相乘 (相减 (H_局部, 4), Delta), G_局部)) ' MyR   =   (MyH   -   4)   *   Delta   +   MyG
+             ' End   If
+        .如果结束
+         ' End   Select
+    .判断结束
+     ' End   If
+.如果结束
+ ' R   =   MyR   *   255:   G   =   MyG   *   255:   B   =   MyB   *   255
+赋值 (返回_RGB.R, 相乘 (R_局部, 255))
+赋值 (返回_RGB.G, 相乘 (G_局部, 255))
+赋值 (返回_RGB.B, 相乘 (B_局部, 255))
+返回 (返回_RGB)
+ ' End   Sub
+
+.子程序 CMYK转RGB, RGB, , 
+.参数 参数_CMYK, CMYK, , 
+
+.局部变量 C_参数, 双精度小数型, , , 
+.局部变量 M_参数, 双精度小数型, , , 
+.局部变量 Y_参数, 双精度小数型, , , 
+.局部变量 K_参数, 双精度小数型, , , 
+.局部变量 返回_RGB, RGB, , , 
+
+ ' Public   Sub   SetCMYK(C   As   Integer,   M   As   Integer,   Y   As   Integer,   K   As   Integer)
+ ' Dim   MyC   As   Single,   MyM   As   Single,   MyY   As   Single,   MyK   As   Single
+ ' MyC   =   C   /   100:   MyM   =   M   /   100:   MyY   =   Y   /   100:   MyK   =   K   /   100
+赋值 (C_参数, 相除 (参数_CMYK.C, 100))
+赋值 (M_参数, 相除 (参数_CMYK.M, 100))
+赋值 (Y_参数, 相除 (参数_CMYK.Y, 100))
+赋值 (K_参数, 相除 (参数_CMYK.K, 100))
+ ' R   =   (1   -   (MyC   *   (1   -   MyK)   +   MyK))   *   255
+赋值 (返回_RGB.R, 相乘 (相减 (1, 相加 (相乘 (C_参数, 相减 (1, K_参数)), K_参数)), 255))
+ ' G   =   (1   -   (MyM   *   (1   -   MyK)   +   MyK))   *   255
+赋值 (返回_RGB.G, 相乘 (相减 (1, 相加 (相乘 (M_参数, 相减 (1, K_参数)), K_参数)), 255))
+ ' B   =   (1   -   (MyY   *   (1   -   MyK)   +   MyK))   *   255
+赋值 (返回_RGB.B, 相乘 (相减 (1, 相加 (相乘 (Y_参数, 相减 (1, K_参数)), K_参数)), 255))
+ ' End   Sub
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+返回 (返回_RGB)
+
+.子程序 RGB转CMYK, CMYK, , 
+.参数 参数_RGB, RGB, , 
+
+.局部变量 R_参数, 空白型, , , 
+.局部变量 G_参数, 空白型, , , 
+.局部变量 B_参数, 空白型, , , 
+.局部变量 返回_CMYK, CMYK, , , 
+.局部变量 Div, 整数型, , , 
+
+赋值 (返回_CMYK.K, 相除 (取最小值_ (相减 (255, 参数_RGB.R), 相减 (255, 参数_RGB.G), 相减 (255, 参数_RGB.B)), 2.55))
+赋值 (Div, 相减 (100, 返回_CMYK.K))
+.如果真 (等于 (Div, 0))
+    赋值 (Div, 1)
+.如果真结束
+' 本源码来自易语言资源网(www.wodesoft.com)
+赋值 (R_参数, 相除 (参数_RGB.R, 2.55))
+赋值 (返回_CMYK.C, 相乘 (相除 (相减 (100, R_参数, 返回_CMYK.K), Div), 100))
+赋值 (G_参数, 相除 (参数_RGB.G, 2.55))
+赋值 (返回_CMYK.M, 相乘 (相除 (相减 (100, G_参数, 返回_CMYK.K), Div), 100))
+赋值 (B_参数, 相除 (参数_RGB.B, 2.55))
+赋值 (返回_CMYK.Y, 相乘 (相除 (相减 (100, B_参数, 返回_CMYK.K), Div), 100))
+返回 (返回_CMYK)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

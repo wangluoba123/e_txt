@@ -1,0 +1,175 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：Jiesoft
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 477
+    高度 = 222
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “[110424](API)32位程序读取64位注册表”
+    帮助文件名 = “”
+
+
+
+.常量 KEY_QUERY_VALUE, "1", , 
+.常量 KEY_WOW64_64KEY, "256", , 
+.常量 KEY_ALL_WOW64, "257", , 
+.常量 , , , 
+.常量 HKEY_CLASSES_ROOT, "2147483648", , 
+.常量 HKEY_CURRENT_USER, "2147483649", , 
+.常量 HKEY_LOCAL_MACHINE, "2147483650", , 
+.常量 HKEY_USERS, "2147483651", , 
+.常量 HKEY_CURRENT_CONFIG, "2147483653", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' elibpp ECFB3D10541A422b8B73779AF00B4D0C 1 1 ｅＬＩＢ＋＋
+
+
+
+
+
+.DLL命令 API_Wow64DisableWow64FsRedirection, 逻辑型, "kernel32", "Wow64DisableWow64FsRedirection", , 
+    .参数 oldvalue, 整数型, 传址, 
+
+.DLL命令 API_Wow64RevertWow64FsRedirection, 逻辑型, "kernel32", "Wow64RevertWow64FsRedirection", , 
+    .参数 oldvalue, 整数型, , 
+
+.DLL命令 API_RegOpenKeyEx, 整数型, "advapi32.dll", "RegOpenKeyExA", , 打开一个现有的项。在win32下推荐使用这个函数　零（ERROR_SUCCESS）表示成功。其他任何值都代表一个错误代码
+    .参数 hKey, 整数型, , 一个已打开项的句柄，或指定一个标准项名
+    .参数 lpSubKey, 文本型, , 欲打开注册表项的名字
+    .参数 ulOptions, 整数型, , 未用，设为零
+    .参数 samDesired, 整数型, , 带有前缀KEY_??的一个或多个常数。它们的组合描述了允许对这个项进行哪些操作
+    .参数 phkResult, 整数型, , 用于装载打开项的名字的一个变量;
+
+.DLL命令 API_RegQueryValueEx, 整数型, "advapi32.dll", "RegQueryValueExA", , 获取一个项的设置值　零（ERROR_SUCCESS）表示成功。其他任何值都代表一个错误代码
+    .参数 hKey, 整数型, , 一个已打开项的句柄，或者指定一个标准项名
+    .参数 lpValueName, 文本型, , 要获取值的名字
+    .参数 lpReserved, 整数型, , 未用，设为零
+    .参数 lpType, 整数型, , 用于装载取回数据类型的一个变量
+    .参数 lpData, 整数型, , 用于装载指定值的一个缓冲区
+    .参数 lpcbData, 整数型, , 用于装载lpData缓冲区长度的一个变量。一旦返回，它会设为实际装载到缓冲区的字节数;
+
+.DLL命令 API_RegDisableReflectionKey, 整数型, "advapi32.dll", "RegDisableReflectionKey", , 
+    .参数 hBase, 整数型, , 
+
+.DLL命令 API_RegEnableReflectionKey, 整数型, "advapi32.dll", "RegEnableReflectionKey", , 
+    .参数 hBase, 整数型, , 
+
+.DLL命令 API_RegCloseKey, 整数型, "advapi32.dll", "RegCloseKey", , 关闭系统注册表中的一个项（或键）　零（ERROR_SUCCESS）表示成功。其他任何值都代表一个错误代码
+    .参数 hKey, 整数型, , 要关闭的项;
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+赋值 (.内容, 读取32位注册表键值 (“HKEY_LOCAL_MACHINE”, “SOFTWARE\Jiesoft”, “value”))
+赋值 (.内容, 读取64位注册表键值 (“HKEY_LOCAL_MACHINE”, “SOFTWARE\Jiesoft”, “value”))
+
+
+.子程序 读取32位注册表键值, 文本型, , 
+.参数 根键, 文本型, , 
+.参数 子健路径, 文本型, , 
+.参数 键名, 文本型, , 
+
+.局部变量 fkey, 整数型, , , 
+
+.判断开始 (等于 (删首尾空 (到大写 ()), “HKEY_CLASSES_ROOT”))
+    赋值 (fkey, #根类)
+.判断 (等于 (删首尾空 (到大写 ()), “HKEY_CURRENT_USER”))
+    赋值 (fkey, #现行用户)
+.判断 (等于 (删首尾空 (到大写 ()), “HKEY_LOCAL_MACHINE”))
+    赋值 (fkey, #本地机器)
+.判断 (等于 (删首尾空 (到大写 ()), “HKEY_USERS”))
+    赋值 (fkey, #所有用户)
+.判断 (等于 (删首尾空 (到大写 ()), “HKEY_CURRENT_CONFIG”))
+    赋值 (fkey, #现行设置)
+.默认
+    
+.判断结束
+
+返回 (取文本注册项 (fkey, 相加 (子健路径, “\”, 键名), ))
+
+.子程序 读取64位注册表键值, 文本型, , 
+.参数 根键, 文本型, , 
+.参数 子健路径, 文本型, , 
+.参数 键名, 文本型, , 
+
+.局部变量 hkey, 整数型, , , 
+.局部变量 phkey, 整数型, , , 
+.局部变量 oldwow64state, 整数型, , , 
+.局部变量 lptype, 整数型, , , 
+.局部变量 result, 文本型, , , 
+.局部变量 resultsize, 整数型, , , 
+.局部变量 type, 整数型, , , 
+
+.判断开始 (等于 (删首尾空 (到大写 (根键)), “HKEY_CLASSES_ROOT”))
+    赋值 (hkey, #HKEY_CLASSES_ROOT)
+.判断 (等于 (删首尾空 (到大写 (根键)), “HKEY_CURRENT_USER”))
+    赋值 (hkey, #HKEY_CURRENT_USER)
+.判断 (等于 (删首尾空 (到大写 (根键)), “HKEY_LOCAL_MACHINE”))
+    赋值 (hkey, #HKEY_LOCAL_MACHINE)
+.判断 (等于 (删首尾空 (到大写 (根键)), “HKEY_USERS”))
+    赋值 (hkey, #HKEY_USERS)
+.判断 (等于 (删首尾空 (到大写 (根键)), “HKEY_CURRENT_CONFIG”))
+    赋值 (hkey, #HKEY_CURRENT_CONFIG)
+.默认
+    
+.判断结束
+.如果真 (等于 (hkey, 0))
+    返回 (“”)
+.如果真结束
+.如果真 (API_Wow64DisableWow64FsRedirection (oldwow64state)) ' 关闭文件系统转向
+    API_RegOpenKeyEx (hkey, 子健路径, 0, #KEY_ALL_WOW64, 未知支持库函数_2 (phkey))
+    API_RegDisableReflectionKey (phkey) ' 打开注册表转向（禁止特定项的注册表反射）
+    赋值 (lptype, 0)
+    赋值 (result, 取空白文本 (1024))
+    赋值 (resultsize, 1024)
+    API_RegQueryValueEx (phkey, 键名, 0, 未知支持库函数_2 (type), 未知支持库函数_2 (result), 未知支持库函数_2 (resultsize))
+    API_RegQueryValueEx (phkey, 键名, 0, 未知支持库函数_2 (type), 未知支持库函数_2 (result), 未知支持库函数_2 (resultsize))
+    API_RegEnableReflectionKey (phkey) ' 打开注册表转向（开启特定项的注册表反射）
+    API_RegCloseKey (phkey)
+.如果真结束
+API_Wow64RevertWow64FsRedirection (oldwow64state) ' 打开文件系统转向
+返回 (result)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

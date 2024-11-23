@@ -1,0 +1,245 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 731
+    高度 = 421
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+ ' 所需要的模块
+ ' BASS SFX E:\易语言源码\2012.04.08\SFX\MZzeCtJI.ec
+ ' 当前程序句柄 E:\易语言源码\2012.04.08\SFX\NCvFbv0w.ec
+
+
+
+.DLL命令 GetDC, 整数型, "user32", "GetDC", 公开, 获取指定窗口的设备场景  指定窗口的设备场景句柄，出错则为0
+    .参数 句柄, 整数型, , 将获取其设备场景的窗口的句柄。若为0，则要获取整个屏幕的DC;
+
+.DLL命令 BASS_SFX_Init, 逻辑型, "BASS_SFX.dll", "BASS_SFX_Init", 公开, 初始化
+    .参数 进程句柄, 整数型, , 进程句柄
+    .参数 窗口句柄, 整数型, , 应用程序窗口句柄
+
+.DLL命令 BASS_SFX_PluginCreate, 长整数型, "BASS_SFX.dll", "BASS_SFX_PluginCreate", 公开, 创建呈现器
+    .参数 呈现器, 文本型, , 可以是WMP呈现器的CLSID或BBplugin插件或SVP格式插件
+    .参数 窗口句柄, 整数型, , 要呈现的控件句柄
+    .参数 宽度, 整数型, , 控件宽度
+    .参数 高度, 整数型, , 控件高度
+    .参数 flags, 整数型, , 
+
+.DLL命令 BASS_SFX_Free, 整数型, "BASS_SFX.dll", "BASS_SFX_Free", 公开, 释放,退出时调用
+
+.DLL命令 BASS_SFX_PluginRender, 逻辑型, "BASS_SFX.dll", "BASS_SFX_PluginRender", 公开, 开始呈现，放在时钟下
+    .参数 呈现器句柄, 整数型, , 由BASS_SFX_PluginCreate建立的句柄
+    .参数 BASS流, 空白型, , BASS 流句柄
+    .参数 DC句柄, 空白型, , 窗口组件句柄 使用 GetDC 获取
+
+.DLL命令 BASS_SFX_PluginStart, 逻辑型, "BASS_SFX.dll", "BASS_SFX_PluginStart", 公开, 启动
+    .参数 呈现器句柄, 整数型, , 由BASS_SFX_PluginCreate建立的句柄
+
+.DLL命令 BASS_Init, 空白型, "bass.dll", "BASS_Init", , 
+    .参数 设备, 整数型, , 
+    .参数 采样, 整数型, , 
+    .参数 flags, 整数型, , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 CLSID, 空白型, , 
+
+.DLL命令 BASS_StreamCreateFile, 整数型, "bass.dll", "BASS_StreamCreateFile", , 
+    .参数 内存方式, 逻辑型, , 
+    .参数 文件名, 文本型, , 
+    .参数 offset, 整数型, , 
+    .参数 length, 整数型, , 
+    .参数 flag, 整数型, , 
+    .参数 参数, 空白型, , 
+    .参数 参数, 空白型, , 
+
+.DLL命令 BASS_ChannelPlay, 空白型, "bass.dll", "BASS_ChannelPlay", , 
+    .参数 流句柄, 空白型, , 
+    .参数 dsp, 空白型, , 
+
+.DLL命令 BASS_Free, 空白型, "bass.dll", "BASS_Free", , 
+
+.DLL命令 GetDC, 整数型, "user32", "GetDC", 公开, 获取指定窗口的设备场景  指定窗口的设备场景句柄，出错则为0
+    .参数 句柄, 整数型, , 将获取其设备场景的窗口的句柄。若为0，则要获取整个屏幕的DC;
+
+.DLL命令 BASS_SFX_Init, 逻辑型, "BASS_SFX.dll", "BASS_SFX_Init", 公开, 初始化
+    .参数 进程句柄, 整数型, , 进程句柄
+    .参数 窗口句柄, 整数型, , 应用程序窗口句柄
+
+.DLL命令 BASS_SFX_PluginCreate, 长整数型, "BASS_SFX.dll", "BASS_SFX_PluginCreate", 公开, 创建呈现器
+    .参数 呈现器, 文本型, , 可以是WMP呈现器的CLSID或BBplugin插件或SVP格式插件
+    .参数 窗口句柄, 整数型, , 要呈现的控件句柄
+    .参数 宽度, 整数型, , 控件宽度
+    .参数 高度, 整数型, , 控件高度
+    .参数 flags, 整数型, , 
+
+.DLL命令 BASS_SFX_PluginCreateW, 长整数型, "BASS_SFX.dll", "BASS_SFX_PluginCreateW", 公开, 创建呈现器
+    .参数 呈现器, 文本型, , 可以是WMP呈现器的CLSID或BBplugin插件或SVP格式插件
+    .参数 窗口句柄, 整数型, , 要呈现的控件句柄
+    .参数 宽度, 整数型, , 控件宽度
+    .参数 高度, 整数型, , 控件高度
+    .参数 flags, 整数型, , 
+
+.DLL命令 BASS_SFX_Free, 整数型, "BASS_SFX.dll", "BASS_SFX_Free", 公开, 释放,退出时调用
+
+.DLL命令 BASS_SFX_PluginRender, 逻辑型, "BASS_SFX.dll", "BASS_SFX_PluginRender", 公开, 开始呈现，放在时钟下
+    .参数 呈现器句柄, 整数型, , 由BASS_SFX_PluginCreate建立的句柄
+    .参数 BASS流, 整数型, , BASS 流句柄
+    .参数 DC句柄, 整数型, , 窗口组件句柄 使用 GetDC 获取
+
+.DLL命令 BASS_SFX_PluginStart, 逻辑型, "BASS_SFX.dll", "BASS_SFX_PluginStart", 公开, 启动
+    .参数 呈现器句柄, 整数型, , 由BASS_SFX_PluginCreate建立的句柄
+
+.DLL命令 BASS_SFX_WMP_GetPlugin, 逻辑型, "BASS_SFX.dll", "BASS_SFX_WMP_GetPlugin", 公开, 枚举wmp呈现器
+    .参数 index, 整数型, , 0 = first
+    .参数 Info, 未知类型0x410108EE, , 
+
+.DLL命令 BASS_SFX_PluginStop, 逻辑型, "BASS_SFX.dll", "BASS_SFX_PluginStop", 公开, 停止呈现
+    .参数 呈现器句柄, 整数型, , 由BASS_SFX_PluginCreate建立的句柄
+
+.DLL命令 BASS_SFX_ErrorGetCode, 整数型, "BASS_SFX.dll", "BASS_SFX_ErrorGetCode", 公开, 获取错误代码。0:无措 1:内存错误 2:文件打开错误 3:句柄错误 4:读取错误 5:格式错误 6:初始错误 7:GUID错误 -1:位置错误
+
+.DLL命令 BASS_SFX_GetVersion, 整数型, "BASS_SFX.dll", "BASS_SFX_GetVersion", 公开, 0x02040101 (hex), would be version 2.4.1.1
+
+.DLL命令 BASS_SFX_PluginFree, 逻辑型, "BASS_SFX.dll", "BASS_SFX_PluginFree", 公开, 释放呈现器
+    .参数 呈现器句柄, 整数型, , 
+
+.DLL命令 BASS_SFX_PluginGetType, 整数型, "BASS_SFX.dll", "BASS_SFX_PluginGetType", 公开, 取插件类型 0:SONIQUE 1:WINAMP 2:WMP 3:BBP
+    .参数 呈现器句柄, 整数型, , 由BASS_SFX_PluginCreate建立的句柄
+
+.DLL命令 BASS_SFX_PluginFlags, 逻辑型, "BASS_SFX.dll", "BASS_SFX_PluginFlags", 公开, 
+    .参数 呈现器句柄, 整数型, , 由BASS_SFX_PluginCreate建立的句柄
+    .参数 Flags, 整数型, , 1:SONIQUE_OPENGL 2:SONIQUE_OPENGL_DOUBLEBUFFER
+    .参数 Mask, 整数型, , 
+
+.DLL命令 BASS_SFX_PluginConfig, 逻辑型, "BASS_SFX.dll", "BASS_SFX_PluginConfig", 公开, WinAMP的使用
+    .参数 呈现器句柄, 整数型, , 
+
+.DLL命令 BASS_SFX_PluginModuleGetCount, 整数型, "BASS_SFX.dll", "BASS_SFX_PluginModuleGetCount", 公开, 获得可用的模块数，失败返回 -1
+    .参数 呈现器句柄, 整数型, , 由BASS_SFX_PluginCreate建立的句柄
+
+.DLL命令 BASS_SFX_PluginModuleGetName, 文本型, "BASS_SFX.dll", "BASS_SFX_PluginModuleGetName", 公开, 获得模块的名称，失败返回 空
+    .参数 呈现器句柄, 整数型, , 由BASS_SFX_PluginCreate建立的句柄
+    .参数 nModule, 整数型, , 模块索引
+
+.DLL命令 BASS_SFX_PluginModuleGetActive, 空白型, "BASS_SFX.dll", "BASS_SFX_PluginModuleGetActive", 公开, 
+    .参数 呈现器句柄, 整数型, , 由BASS_SFX_PluginCreate建立的句柄
+
+.DLL命令 BASS_SFX_PluginModuleSetActive, 逻辑型, "BASS_SFX.dll", "BASS_SFX_PluginModuleSetActive", 公开, 
+    .参数 呈现器句柄, 整数型, , 由BASS_SFX_PluginCreate建立的句柄
+    .参数 nModule, 整数型, , 
+
+.DLL命令 BASS_SFX_PluginClicked, 逻辑型, "BASS_SFX.dll", "BASS_SFX_PluginClicked", 公开, 
+    .参数 呈现器句柄, 整数型, , 由BASS_SFX_PluginCreate建立的句柄
+    .参数 X, 整数型, , 视觉窗口的左上角X
+    .参数 Y, 整数型, , 视觉窗口的左上角Y
+
+.DLL命令 BASS_SFX_PluginResize, 逻辑型, "BASS_SFX.dll", "BASS_SFX_PluginResize", 公开, 调整视觉插件
+    .参数 呈现器句柄, 整数型, , 由BASS_SFX_PluginCreate建立的句柄
+    .参数 宽度, 整数型, , 
+    .参数 高度, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 A, 整数型, , , 
+.程序集变量 B, 整数型, , , 
+.程序集变量 C, 整数型, , , 
+.程序集变量 D, 整数型, , , 
+.程序集变量 Stream, 整数型, , , 
+.程序集变量 E, 整数型, , , 
+.程序集变量 F, 整数型, , , 
+.程序集变量 DC1, 整数型, , , 
+.程序集变量 DC2, 整数型, , , 
+.程序集变量 DC3, 整数型, , , 
+.程序集变量 DC4, 整数型, , , 
+.程序集变量 DC5, 整数型, , , 
+.程序集变量 DC6, 整数型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+BASS_Init (-1, 44100, 0, 取窗口句柄 (), 0)
+BASS_SFX_Init (未知函数_67176448 (), 取窗口句柄 ())
+赋值 (Stream, BASS_StreamCreateFile (假, “S.H.E - 爱来过.ogg”, 0, 0, 0, 0, 0))
+赋值 (A, BASS_SFX_PluginCreate (“BBplugin\Oscillo.dll”, 取窗口句柄 (), ., ., 0))
+赋值 (B, BASS_SFX_PluginCreate (“plugins\blaze.dll”, 取窗口句柄 (), ., ., 0))
+赋值 (C, BASS_SFX_PluginCreate (“plugins\RabbitHole.svp”, 取窗口句柄 (), ., ., 0))
+赋值 (D, BASS_SFX_PluginCreate (“BBplugin\MagicD.dll”, 取窗口句柄 (), ., ., 0))
+赋值 (E, BASS_SFX_PluginCreate (“plugins\sphere.svp”, 取窗口句柄 (), ., ., 0))
+赋值 (F, BASS_SFX_PluginCreate (“BBplugin\Encounter.dll”, 取窗口句柄 (), ., ., 0))
+BASS_ChannelPlay (Stream, 0)
+BASS_SFX_PluginStart (A)
+BASS_SFX_PluginStart (B)
+BASS_SFX_PluginStart (C)
+BASS_SFX_PluginStart (D)
+BASS_SFX_PluginStart (E)
+BASS_SFX_PluginStart (F)
+赋值 (DC1, GetDC (取窗口句柄 ()))
+赋值 (DC2, GetDC (取窗口句柄 ()))
+赋值 (DC3, GetDC (取窗口句柄 ()))
+赋值 (DC4, GetDC (取窗口句柄 ()))
+赋值 (DC5, GetDC (取窗口句柄 ()))
+赋值 (DC6, GetDC (取窗口句柄 ()))
+赋值 (., 30)
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+
+.子程序 _时钟1_周期事件, 空白型, , 
+BASS_SFX_PluginRender (A, Stream, DC1)
+BASS_SFX_PluginRender (B, Stream, DC2)
+BASS_SFX_PluginRender (C, Stream, DC3)
+BASS_SFX_PluginRender (D, Stream, DC4)
+BASS_SFX_PluginRender (E, Stream, DC5)
+BASS_SFX_PluginRender (F, Stream, DC6)
+ ' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+BASS_Free ()
+BASS_SFX_Free ()
+
+
+.程序集 __HIDDEN_TEMP_MOD__, , , 
+
+.子程序 取当前进程句柄, 整数型, , 
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,153 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 160
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “多次运行本程序，并单击按钮选择一个文件”
+    帮助文件名 = “”
+
+
+
+.常量 Name, "“MMF_Share_Example2”", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 2 系统核心支持库
+
+
+
+
+
+.DLL命令 OpenFileMapping, 整数型, "", "OpenFileMappingA", , 返回句柄
+    .参数 dwDesiredAccess, 整数型, , 打开方式，读&写：6
+    .参数 bInheritHandle, 整数型, , 可否继承
+    .参数 lpName, 文本型, , 此对象的名称
+
+.DLL命令 CreateFileMapping, 整数型, "", "CreateFileMappingA", , 
+    .参数 hFile, 整数型, , 句柄
+    .参数 lpFileMappingAttributes, 整数型, , 安全属性
+    .参数 flProtect, 整数型, , 保护方式。只读：2；读&写：4；写&复制：8
+    .参数 dwMaximumSizeHigh, 整数型, , 对象尺寸的高32位
+    .参数 dwMaximumSizeLow, 整数型, , 对象尺寸的低32位
+    .参数 lpName, 文本型, , 此对象的名称
+
+.DLL命令 MapViewOfFile, 整数型, "", "MapViewOfFile", , 
+    .参数 hFileMappingObject, 整数型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwFileOffsetHigh, 整数型, , 
+    .参数 dwFileOffsetLow, 整数型, , 
+    .参数 dwNumberOfBytesToMap, 整数型, , 
+
+.DLL命令 UnmapViewOfFile, 整数型, "", "UnmapViewOfFile", , 
+    .参数 lpBaseAddress, 整数型, , 映射开始地址
+
+.DLL命令 CloseHandle, 整数型, "", "CloseHandle", , 
+    .参数 Handle, 整数型, , 
+
+.DLL命令 MoveMemory1, 整数型, "", "RtlMoveMemory", , 
+    .参数 dest, 整数型, , 目标地址
+    .参数 Source, 字节集, , 源地址
+    .参数 length, 整数型, , 复制长度
+
+.DLL命令 MoveMemory2, 整数型, "", "RtlMoveMemory", , 
+    .参数 dest, 字节集, , 
+    .参数 Source, 整数型, , 
+    .参数 length, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 hFileMap, 整数型, , , 
+.程序集变量 lpMemory, 整数型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+赋值 (hFileMap, OpenFileMapping (6, 0, #Name))
+暂停 ()
+.如果真 (等于 (hFileMap, 0))
+    赋值 (hFileMap, CreateFileMapping (-1, 0, 4, 0, 20, #Name))
+    .如果真 (等于 (hFileMap, 0))
+        信息框 (“创建内存映射文件失败。”, 16, )
+        销毁 ()
+        返回 ()
+    .如果真结束
+    
+.如果真结束
+赋值 (lpMemory, MapViewOfFile (hFileMap, 6, 0, 0, 0))
+CloseHandle (hFileMap)
+赋值 (., 500)
+暂停 ()
+
+.子程序 __启动窗口_将被销毁, 空白型, , 
+UnmapViewOfFile (lpMemory)
+CloseHandle (hFileMap)
+赋值 (lpMemory, 0)
+赋值 (hFileMap, 0)
+
+.子程序 _时钟1_周期事件, 空白型, , 
+.局部变量 a, 字节集, , , 
+.局部变量 n, 整数型, , , 
+.局部变量 text, 文本型, , , 
+
+赋值 (., “”)
+.如果真 (不等于 (lpMemory, 0))
+    赋值 (a, 取空白字节集 (20))
+    MoveMemory2 (a, lpMemory, 20)
+    .计次循环首 (20, n)
+        赋值 (text, 取十六进制文本 (取字节集数据 (取字节集中间 (a, n, 1), 1)))
+        .如果真 (等于 (取文本长度 (text), 1))
+            赋值 (text, 相加 (“0”, text))
+        .如果真结束
+        相加 (text, “ ”).加入文本 ()
+    .计次循环尾 ()
+.如果真结束
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 a, 整数型, , , 
+
+.如果真 (打开 ())
+    赋值 (a, 打开文件 (., , ))
+    MoveMemory1 (lpMemory, 读入字节集 (a, 20), 20)
+    关闭文件 (a)
+.如果真结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

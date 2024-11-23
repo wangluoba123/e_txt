@@ -1,0 +1,127 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 300
+    高度 = 81
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “我的窗口标题”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 9 系统核心支持库
+
+
+
+
+数据类型 CopyDataStruct, , 
+    .成员 dwData, 整数型, , , 
+    .成员 cbData, 整数型, , , 
+    .成员 lpData, 整数型, , , 
+
+
+.DLL命令 复制内存B, 整数型, "", "RtlMoveMemory", , 
+    .参数 hpvDest, 字节型, 数组, 
+    .参数 hpvSource, 整数型, , 
+    .参数 cbCopy, 整数型, , 
+
+.DLL命令 复制内存, 整数型, "", "RtlMoveMemory", , 
+    .参数 hpvDest, CopyDataStruct, 传址, 
+    .参数 hpvSource, 整数型, 传址, 
+    .参数 cbCopy, 整数型, 传址, 
+
+.DLL命令 CallWindowProc, 整数型, "", "CallWindowProcA", , 
+    .参数 lpPrevWndFunc, 整数型, , 
+    .参数 hwnd, 整数型, , 
+    .参数 Msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lngParam, 整数型, , 
+
+.DLL命令 SetWindowLong, 整数型, "", "SetWindowLongA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+    .参数 dwNewLong, 子程序指针, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 lpPrevWndProc, 整数型, , , 
+.程序集变量 gHW, 整数型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+创建钩子 ()
+
+.子程序 创建钩子, 空白型, , 
+赋值 (lpPrevWndProc, SetWindowLong (取窗口句柄 (), -4, &WindowProc))
+
+.子程序 WindowProc, 整数型, , 
+.参数 hw, 整数型, , 
+.参数 uMsg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lngParam, 整数型, , 
+
+.如果真 (等于 (uMsg, 74))
+    输出调试文本 (到文本 (lngParam))
+    触发接收处理函数 (lngParam)
+.如果真结束
+返回 (CallWindowProc (lpPrevWndProc, hw, uMsg, wParam, lngParam))
+
+.子程序 触发接收处理函数, 整数型, , 
+.参数 lngParam, 整数型, , 
+
+.局部变量 cdCopyData, CopyDataStruct, , , 
+.局部变量 strTemp, 文本型, , , 
+.局部变量 byteBuffer, 字节型, , "255", 
+
+ ' 复制内存 (cdCopyData, lngParam, 0)
+.判断开始 (等于 (cdCopyData.dwData, 3))
+    复制内存B (byteBuffer, cdCopyData.lpData, cdCopyData.cbData)
+    赋值 (strTemp, 到文本 (byteBuffer))
+    输出调试文本 (strTemp)
+.默认
+    
+.判断结束
+返回 (0)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

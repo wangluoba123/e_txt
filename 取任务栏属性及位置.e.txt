@@ -1,0 +1,77 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 ABS_AUTOHIDE, "1", , 
+.常量 ABS_ONTOP, "2", , 
+.常量 ABM_GETSTATE, "4", , 
+.常量 ABM_GETTASKBARPOS, "5", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 3 3 系统核心支持库
+
+
+
+
+数据类型 RECT, , 
+    .成员 Left, 整数型, , , 
+    .成员 Top, 整数型, , , 
+    .成员 Right, 整数型, , , 
+    .成员 Bottom, 整数型, , , 
+
+数据类型 APPBARDATA, , 
+    .成员 cbSize, 空白型, , , 
+    .成员 hwnd, 空白型, , , 
+    .成员 uCallbackMessage, 空白型, , , 
+    .成员 uEdge, 空白型, , , 
+    .成员 rc, RECT, , , 
+    .成员 lParam, 空白型, , , 
+
+
+.DLL命令 SHAppBarMessage, 整数型, "shell32.dll", "SHAppBarMessage", , 
+    .参数 dwMessage, 空白型, , 
+    .参数 pData, APPBARDATA, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 ABD, APPBARDATA, , , 
+.局部变量 Ret, 空白型, , , 
+
+SHAppBarMessage (#ABM_GETTASKBARPOS, ABD)
+赋值 (Ret, SHAppBarMessage (#ABM_GETSTATE, ABD))
+.如果真 (等于 (位与 (Ret, #ABS_AUTOHIDE), #ABS_AUTOHIDE))
+    信息框 (“自动隐藏属性为真”, 0, )
+.如果真结束
+.如果真 (等于 (位与 (Ret, #ABS_ONTOP), #ABS_ONTOP))
+    信息框 (“总在最前属性为真”, 0, )
+    
+.如果真结束
+信息框 (相加 (“任务栏坐标: (”, 删首尾空 (到文本 (ABD.rc.Left)), “,”, 删首尾空 (到文本 (ABD.rc.Top)), “),(”, 删首尾空 (到文本 (ABD.rc.Right)), “,”, 删首尾空 (到文本 (ABD.rc.Bottom)), “)”), 0, )
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,3527 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：换肤库
+ ' 程序描述：换肤库
+ ' 程序作者：李光
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：李光
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 窗口1
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 1
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 真
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “234234234”
+    帮助文件名 = “”
+
+窗口 窗口2
+    左边 = 50
+    顶边 = 50
+    宽度 = 381
+    高度 = 265
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 1
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “234234234234”
+    帮助文件名 = “”
+
+
+
+.常量 DCX_CACHE, "2", 公开, 
+.常量 DT_WORDBREAK, "16", 公开, 
+.常量 WM_DESTROY, "2", 公开, 
+.常量 WM_PAINT, "15", 公开, 
+.常量 WM_MOUSEMOVE, "512", 公开, 
+.常量 WM_LBUTTONDOWN, "513", 公开, 
+.常量 WM_LBUTTONUP, "514", 公开, 
+.常量 WM_LBUTTONDBLCLK, "515", 公开, 
+.常量 WM_RBUTTONDOWN, "516", 公开, 
+.常量 WM_RBUTTONUP, "517", 公开, 
+.常量 DEFAULT_GUI_FONT, "17", 公开, 
+.常量 WM_NCPAINT, "133", 公开, 
+.常量 WM_NOTIFY, "78", 公开, 
+.常量 WM_NCACTIVATE, "134", 公开, 
+.常量 WM_NCHITTEST, "132", 公开, 
+.常量 WM_NCCALCSIZE, "131", 公开, 
+.常量 WM_SYSCOMMAND, "274", 公开, 
+.常量 SC_MINIMIZE, "61472", 公开, 
+.常量 SC_MAXIMIZE, "61488", 公开, 
+.常量 SC_RESTORE, "61728", 公开, 
+.常量 WM_CLOSE, "16", 公开, 
+.常量 SWP_FRAMECHANGED, "32", 公开, 
+.常量 SWP_NOOWNERZORDER, "512", 公开, 
+.常量 SWP_NOMOVE, "2", 公开, 
+.常量 SWP_NOSIZE, "1", 公开, 
+.常量 WM_RBUTTONDBLCLK, "518", 公开, 
+.常量 GWL_WNDPROC, "-4", 公开, 
+.常量 DIB_RGB_COLORS, "0", 公开, 
+.常量 DIB_PAL_COLORS, "1", 公开, 
+.常量 SRCCOPY, "13369376", 公开, 
+.常量 SRCINVERT, "6684742", 公开, 
+.常量 SRCAND, "8913094", 公开, 
+.常量 GMEM_MOVEABLE, "2", 公开, 
+.常量 GMEM_ZEROINIT, "64", 公开, 
+.常量 WM_SYSKEYDOWN, "260", 公开, 
+.常量 WM_NCLBUTTONDOWN, "161", 公开, 
+.常量 NULL_BRUSH, "5", 公开, 
+.常量 TRANSPARENT, "1", 公开, 
+.常量 OPAQUE, "2", 公开, 
+.常量 BI_RGB, "0", 公开, 
+.常量 RDH_RECTANGLES, "1", 公开, 
+.常量 MAXLONG, "2147483647", 公开, 
+.常量 RGN_OR, "2", 公开, 
+.常量 GDI_ERROR, "65535", 公开, 
+.常量 WM_ERASEBKGND, "20", 公开, 
+.常量 HALFTONE, "4", 公开, 
+.常量 SRCPAINT, "15597702", 公开, 
+.常量 DCX_WINDOW, "1", 公开, 
+.常量 DCX_INTERSECTRGN, "128", 公开, 
+.常量 DCX_INTERSECTUPDATE, "512", 公开, 
+.常量 DCX_VALIDATE, "2097152", 公开, 
+.常量 WM_ACTIVATE, "6", 公开, 
+.常量 WA_INACTIVE, "0", 公开, 
+.常量 WA_ACTIVE, "1", 公开, 
+.常量 WA_CLICKACTIVE, "2", 公开, 
+.常量 WM_SIZE, "5", 公开, 
+.常量 SIZE_MAXIMIZED, "2", 公开, 
+.常量 SIZE_MINIMIZED, "1", 公开, 
+.常量 SIZE_RESTORED, "0", 公开, 
+.常量 HTMAXBUTTON, "9", 公开, 
+.常量 HTMINBUTTON, "8", 公开, 
+.常量 HTCLOSE, "20", 公开, 
+.常量 HTHELP, "21", 公开, 
+.常量 WM_NCMOUSEMOVE, "160", 公开, 
+.常量 WM_NCLBUTTONUP, "162", 公开, 
+.常量 WM_NCLBUTTONDBLCLK, "163", 公开, 
+.常量 最小化按钮, "1", , 
+.常量 最大化按钮, "2", , 
+.常量 关闭按钮, "3", , 
+.常量 WM_GETICON, "127", 公开, 
+.常量 ICON_SMALL, "0", 公开, 
+.常量 DI_NORMAL, "3", 公开, 
+.常量 HTSYSMENU, "3", 公开, 
+.常量 WM_SETTEXT, "12", 公开, 
+.常量 SWP_NOZORDER, "4", 公开, 
+.常量 GWL_STYLE, "-16", 公开, 
+.常量 WS_SYSMENU, "524288", 公开, 
+.常量 WS_CAPTION, "12582912", 公开, 
+.常量 WH_CALLWNDPROC, "4", 公开, 
+.常量 GWL_HINSTANCE, "-6", 公开, 
+.常量 WS_MAXIMIZEBOX, "65536", 公开, 
+.常量 WS_MINIMIZEBOX, "131072", 公开, 
+.常量 WTWindow, "“WTWindow”", 公开, 
+.常量 对话框, "“#32770”", 公开, 
+.常量 WM_CTLCOLORSTATIC, "312", 公开, 
+.常量 e标签, "“Afx:10000000:b:10003:1900015:0”", 公开, 
+.常量 按钮, "“Button”", 公开, 
+.常量 系统菜单, "“#32768”", 公开, 
+.常量 BS_AUTOCHECKBOX, "3", 公开, 
+.常量 BS_AUTORADIOBUTTON, "9", 公开, 
+.常量 BS_OWNERDRAW, "11", 公开, 
+.常量 BS_GROUPBOX, "7", 公开, 
+.常量 WS_VISIBLE, "268435456", 公开, 
+.常量 WM_SETFOCUS, "7", 公开, 
+.常量 WM_KILLFOCUS, "8", 公开, 
+.常量 BS_PUSHBUTTON, "0", 公开, 
+.常量 BS_DEFPUSHBUTTON, "1", 公开, 
+.常量 按钮状态_默认, "0", , 
+.常量 按钮状态_点燃, "1", , 
+.常量 按钮状态_热点, "2", , 
+.常量 按钮状态_按下, "3", , 
+.常量 按钮状态_禁止, "4", , 
+.常量 HTCLIENT, "1", 公开, 
+.常量 WM_SETCURSOR, "32", 公开, 
+.常量 WM_COMMAND, "273", 公开, 
+.常量 BM_SETSTATE, "243", 公开, 
+.常量 WM_GETTEXT, "13", 公开, 
+.常量 WM_NCRBUTTONDOWN, "164", 公开, 
+.常量 TPM_LEFTALIGN, "0", 公开, 
+.常量 WM_STYLECHANGING, "124", 公开, 
+.常量 HTCAPTION, "2", 公开, 
+.常量 HTLEFT, "10", 公开, 
+.常量 HTRIGHT, "11", 公开, 
+.常量 HTTOP, "12", 公开, 
+.常量 HTBOTTOM, "15", 公开, 
+.常量 HTTOPLEFT, "13", 公开, 
+.常量 HTTOPRIGHT, "14", 公开, 
+.常量 HTBOTTOMLEFT, "16", 公开, 
+.常量 HTBOTTOMRIGHT, "17", 公开, 
+.常量 DWL_DLGPROC, "4", 公开, 
+.常量 WM_NCRBUTTONUP, "165", 公开, 
+.常量 WM_INITMENUPOPUP, "279", 公开, 
+.常量 WM_INITMENU, "278", 公开, 
+.常量 ICON_BIG, "1", 公开, 
+.常量 WM_MEASUREITEM, "44", 公开, 
+.常量 WM_DRAWITEM, "43", 公开, 
+.常量 WM_PRINT, "791", 公开, 
+.常量 WM_WINDOWPOSCHANGING, "70", 公开, 
+.常量 WM_KEYDOWN, "256", 公开, 
+.常量 WM_SETREDRAW, "11", 公开, 
+.常量 WM_PRINTCLIENT, "792", 公开, 
+.常量 BS_TYPEMASK, "15", 公开, 
+.常量 标签, "“Static”", 公开, 
+.常量 DT_VCENTER, "4", 公开, 
+.常量 SS_TYPEMASK, "31", 公开, 
+.常量 SS_RIGHT, "2", 公开, 
+.常量 SS_ICON, "3", 公开, 
+.常量 STM_GETICON, "369", 公开, 
+.常量 ScrollBar, "“ScrollBar”", 公开, 
+.常量 SBS_HORZ, "0", 公开, 
+.常量 SBS_VERT, "1", 公开, 
+.常量 SBS_BOTTOMALIGN, "4", 公开, 
+.常量 BS_CHECKBOX, "2", 公开, 
+.常量 BS_RADIOBUTTON, "4", 公开, 
+.常量 DT_LEFT, "0", 公开, 
+.常量 DT_BOTTOM, "8", 公开, 
+.常量 DT_SINGLE, "32", 公开, 
+.常量 WM_CREATE, "1", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 皮肤参数, , 
+    .成员 激活, 区域信息, , , 
+    .成员 非激活, 区域信息, , , 
+    .成员 透明色, 整数型, , , 
+
+数据类型 按钮参数, , 
+    .成员 默认, RECT, , , 
+    .成员 点燃, RECT, , , 
+    .成员 按下, RECT, , , 
+    .成员 禁止, RECT, , , 
+    .成员 透明色, 整数型, , , 
+
+数据类型 区域信息, , 
+    .成员 区域, RECT, , , 
+    .成员 九宫, RECT, , , 
+
+数据类型 普通窗口, , 
+    .成员 左边框, 皮肤参数, , , 
+    .成员 上边框, 皮肤参数, , , 
+    .成员 右边框, 皮肤参数, , , 
+    .成员 下边框, 皮肤参数, , , 
+    .成员 最小化按钮, 按钮参数, , , 
+    .成员 最大化按钮, 按钮参数, , , 
+    .成员 关闭按钮, 按钮参数, , , 
+    .成员 还原按钮, 按钮参数, , , 
+    .成员 背景, RECT, , , 
+
+数据类型 皮肤信息, , 
+    .成员 普通窗口, 普通窗口, , , 
+    .成员 文本颜色, 整数型, , , 
+    .成员 普通按钮, 按钮皮肤, , , 
+    .成员 滚动条, 滚动条皮肤, , , 
+    .成员 选择框, 选择框皮肤, , , 
+    .成员 单选框, 选择框皮肤, , , 
+
+数据类型 选择框皮肤, , 
+    .成员 未选, 按钮皮肤, , , 
+    .成员 选中, 按钮皮肤, , , 
+
+数据类型 滚动条皮肤, , 
+    .成员 水平滚动条, 水平滚动条, , , 
+    .成员 垂直滚动条, 垂直滚动条, , , 
+    .成员 尺寸调节框, 尺寸调节框, , , 
+    .成员 透明色, 整数型, , , 
+
+数据类型 尺寸调节框, , 
+    .成员 左下, RECT, , , 
+    .成员 右下, RECT, , , 
+
+数据类型 水平滚动条, , 
+    .成员 左部, 按钮皮肤, , , 
+    .成员 右部, 按钮皮肤, , , 
+    .成员 滑槽, 按钮皮肤, , , 
+    .成员 滑块, 按钮皮肤, , , 
+
+数据类型 垂直滚动条, , 
+    .成员 上部, 按钮皮肤, , , 
+    .成员 下部, 按钮皮肤, , , 
+    .成员 滑槽, 按钮皮肤, , , 
+    .成员 滑块, 按钮皮肤, , , 
+
+数据类型 按钮皮肤, , 
+    .成员 默认, 区域信息, , , 
+    .成员 点燃, 区域信息, , , 
+    .成员 热点, 区域信息, , , 
+    .成员 选中, 区域信息, , , 
+    .成员 禁止, 区域信息, , , 
+    .成员 透明色, 整数型, , , 
+    .成员 文本色, 整数型, , , 
+
+数据类型 坐标, 公开, 
+    .成员 x, 整数型, , , 
+    .成员 y, 整数型, , , 
+
+数据类型 BITMAP, 公开, 
+    .成员 bmType, 整数型, , , 
+    .成员 bmWidth, 整数型, , , 
+    .成员 bmHeight, 整数型, , , 
+    .成员 bmWidthBytes, 整数型, , , 
+    .成员 bmPlanes, 短整数型, , , 
+    .成员 bmBitsPixel, 短整数型, , , 
+    .成员 bmBits, 整数型, , , 
+
+数据类型 RGBQUAD, 公开, 
+    .成员 rgbBlue, 字节型, , , 
+    .成员 rgbGreen, 字节型, , , 
+    .成员 rgbRed, 字节型, , , 
+    .成员 rgbReserved, 字节型, , , 
+
+数据类型 BITMAPINFOHEADER, 公开, 
+    .成员 biSize, 整数型, , , 
+    .成员 biWidth, 整数型, , , 
+    .成员 biHeight, 整数型, , , 
+    .成员 biPlanes, 短整数型, , , 
+    .成员 biBitCount, 短整数型, , , 
+    .成员 biCompression, 整数型, , , 
+    .成员 biSizeImage, 整数型, , , 
+    .成员 biXPelsPerMeter, 整数型, , , 
+    .成员 biYPelsPerMeter, 整数型, , , 
+    .成员 biClrUsed, 整数型, , , 
+    .成员 biClrImportant, 整数型, , , 
+
+数据类型 BITMAPINFO, 公开, 
+    .成员 bmiHeader, BITMAPINFOHEADER, , , 
+    .成员 bmiColors, RGBQUAD, , , 
+
+数据类型 RGNDATA, 公开, 
+    .成员 rdh, RGNDATAHEADER, , , 
+    .成员 Buffer, RECT, , "1000", 
+
+数据类型 RGNDATAHEADER, 公开, 
+    .成员 dwSize, 整数型, , , 
+    .成员 iType, 整数型, , , 
+    .成员 nCount, 整数型, , , 
+    .成员 nRgnSize, 整数型, , , 
+    .成员 rcBound, RECT, , , 
+
+数据类型 PAINTSTRUCT, 公开, 
+    .成员 hdc, 整数型, , , 
+    .成员 fErase, 逻辑型, , , 
+    .成员 rcPaint, RECT, , , 
+    .成员 fRestore, 逻辑型, , , 
+    .成员 fIncUpdate, 逻辑型, , , 
+    .成员 rgbReserved, 字节型, , "32", 
+
+数据类型 RECT, 公开, 
+    .成员 left, 整数型, , , 
+    .成员 top, 整数型, , , 
+    .成员 right, 整数型, , , 
+    .成员 bottom, 整数型, , , 
+
+数据类型 CWPSTRUCT, 公开, 
+    .成员 lParam, 整数型, , , 
+    .成员 wParam, 整数型, , , 
+    .成员 Msg, 整数型, , , 
+    .成员 hWnd, 整数型, , , 
+
+.全局变量 源场景, 整数型, , , 
+.全局变量 皮肤, 皮肤信息, , , 
+.全局变量 主窗口, 整数型, , , 
+.全局变量 默认色, 整数型, , , 
+.全局变量 图标句柄, 整数型, , , 
+.全局变量 皮肤状态, 逻辑型, , , 
+
+.DLL命令 GetDC, 整数型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 GetWindowDC, 整数型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 ReleaseDC, 整数型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 hDC, 整数型, , 
+
+.DLL命令 BeginPaint, 整数型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 lpPaint, PAINTSTRUCT, , 
+
+.DLL命令 EndPaint, 整数型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 lpPaint, PAINTSTRUCT, , 
+
+.DLL命令 GetWindowLong, 整数型, "", "GetWindowLongA", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+
+.DLL命令 SetWindowLong, 整数型, "", "SetWindowLongA", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+    .参数 dwNewLong, 整数型, , 
+
+.DLL命令 CallWindowProc, 整数型, "", "CallWindowProcA", 公开, 
+    .参数 lpPrevWndFunc, 整数型, , 
+    .参数 hWnd, 整数型, , 
+    .参数 Msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 DrawText, 整数型, "", "DrawTextA", 公开, 
+    .参数 hdc, 整数型, , 
+    .参数 lpStr, 文本型, , 
+    .参数 nCount, 整数型, , 
+    .参数 lpRect, RECT, , 
+    .参数 wFormat, 整数型, , 
+
+.DLL命令 SetTextColor, 整数型, "", "", 公开, 
+    .参数 hDC, 整数型, , 
+    .参数 colors, 整数型, , 
+
+.DLL命令 SelectObject, 整数型, "", "", 公开, 
+    .参数 hDC, 整数型, , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 SetBkMode, 整数型, "", "", 公开, 
+    .参数 hDC, 整数型, , 
+    .参数 nBkMode, 整数型, , 
+
+.DLL命令 GetStockObject, 整数型, "", "", 公开, 
+    .参数 nIndex, 整数型, , 
+
+.DLL命令 DefWindowProc, 整数型, "", "DefWindowProcA", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 Msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 GetWindowRect, 整数型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 RECT, RECT, , 
+
+.DLL命令 SendMessage, 整数型, "", "SendMessageA", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 Msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 SetWindowPos, 整数型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 hWndInsertAfter, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 cx, 整数型, , 
+    .参数 cy, 整数型, , 
+    .参数 wFlags, 整数型, , 
+
+.DLL命令 lstrcpyn, 整数型, "", "lstrcpynA", , 
+    .参数 lpString1, 字节集, , 
+    .参数 lpString2, 字节集, , 
+    .参数 iMaxLength, 整数型, , 
+
+.DLL命令 lstrcpyn_Byte_1, 整数型, "", "lstrcpynA", , 
+    .参数 lpString1, 字节集, , 
+    .参数 lpString2, 字节集, , 
+    .参数 iMaxLength, 整数型, , 
+
+.DLL命令 RtlMoveMemory, 空白型, "", "", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 CreateDC, 整数型, "", "CreateDCA", 公开, 
+    .参数 lpDriverName, 文本型, , 
+    .参数 lpDeviceName, 文本型, , 
+    .参数 lpOutput, 文本型, , 
+    .参数 lpInitData, 整数型, , 
+
+.DLL命令 CreateCompatibleDC, 整数型, "", "", 公开, 
+    .参数 hDC, 整数型, , 
+
+.DLL命令 CreateCompatibleBitmap, 整数型, "", "", 公开, 
+    .参数 hDC, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+
+.DLL命令 StretchDIBits, 整数型, "", "", 公开, 
+    .参数 hDC, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 dx, 整数型, , 
+    .参数 dy, 整数型, , 
+    .参数 SrcX, 整数型, , 
+    .参数 SrcY, 整数型, , 
+    .参数 wSrcWidth, 整数型, , 
+    .参数 wSrcHeight, 整数型, , 
+    .参数 lpBits, 整数型, , 
+    .参数 lpBitsInfo, 整数型, , 
+    .参数 wUsage, 整数型, , 
+    .参数 dwRop, 整数型, , 
+
+.DLL命令 DeleteDC, 整数型, "", "", 公开, 
+    .参数 hDC, 整数型, , 
+
+.DLL命令 BitBlt, 逻辑型, "", "", 公开, 
+    .参数 hdcDest, 整数型, , 
+    .参数 nXDest, 整数型, , 
+    .参数 nYDest, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+    .参数 hdcSrc, 整数型, , 
+    .参数 nXSrc, 整数型, , 
+    .参数 nYSrc, 整数型, , 
+    .参数 dwRop, 整数型, , 
+
+.DLL命令 IsWindow, 逻辑型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 GetCursorPos, 整数型, "", "", 公开, 
+    .参数 lpPoint, 坐标, , 
+
+.DLL命令 SendMessage_RECT, 整数型, "", "SendMessageA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 Msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, RECT, , 
+
+.DLL命令 GetObject, 整数型, "", "GetObjectA", 公开, 
+    .参数 hObject, 整数型, , 
+    .参数 nCount, 整数型, , 
+    .参数 lpObject, BITMAP, , 
+
+.DLL命令 RoundRect, 整数型, "", "", 公开, 
+    .参数 hdc, 整数型, , 
+    .参数 nLeftRect, 整数型, , 
+    .参数 nTopRect, 整数型, , 
+    .参数 nRightRect, 整数型, , 
+    .参数 nBottomRect, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+
+.DLL命令 CreatePen, 整数型, "", "", 公开, 
+    .参数 fnPenStyle, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 crColor, 整数型, , 
+
+.DLL命令 CreateSolidBrush, 整数型, "", "", 公开, 
+    .参数 crColor, 整数型, , 
+
+.DLL命令 DeleteObject, 整数型, "", "", 公开, 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 SetBkColor, 整数型, "", "", 公开, 
+    .参数 hdc, 整数型, , 
+    .参数 crColor, 整数型, , 
+
+.DLL命令 InvalidateRect, 整数型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 lpRect, RECT, , 
+    .参数 bErase, 逻辑型, , 
+
+.DLL命令 InvalidateRgn, 空白型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 hRgn, 整数型, , 
+    .参数 bErase, 逻辑型, , 
+
+.DLL命令 UpdateWindow, 整数型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 CreateDIBSection, 整数型, "", "", 公开, 
+    .参数 hDC, 整数型, , 
+    .参数 pbmi, BITMAPINFO, , 
+    .参数 iUsage, 整数型, , 
+    .参数 ppvBits, 整数型, 传址, 
+    .参数 hSection, 整数型, , 
+    .参数 dwOffset, 整数型, , 
+
+.DLL命令 SetRect, 整数型, "", "", 公开, 
+    .参数 lprc, RECT, , 
+    .参数 xLeft, 整数型, , 
+    .参数 yTop, 整数型, , 
+    .参数 xRight, 整数型, , 
+    .参数 yBottom, 整数型, , 
+
+.DLL命令 lstrcpyn_INT, 整数型, "", "lstrcpynA", , 
+    .参数 lpString1, 整数型, 传址, 
+    .参数 lpString2, 整数型, 传址, 
+    .参数 iMaxLength, 整数型, , 
+
+.DLL命令 ExtCreateRegion, 整数型, "", "", 公开, 
+    .参数 lpXform, 整数型, , 
+    .参数 nCount, 整数型, , 
+    .参数 lpRgnData, RGNDATA, , 
+
+.DLL命令 CombineRgn, 整数型, "", "", 公开, 
+    .参数 hDestRgn, 整数型, , 
+    .参数 hSrcRgn1, 整数型, , 
+    .参数 hSrcRgn2, 整数型, , 
+    .参数 nCombineMode, 整数型, , 
+
+.DLL命令 RtlMoveMemory_BYTE, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节型, 数组, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 SetWindowRgn, 整数型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 hRgn, 整数型, , 
+    .参数 bRedraw, 逻辑型, , 
+
+.DLL命令 FillRect, 整数型, "", "", 公开, 
+    .参数 hDC, 整数型, , 
+    .参数 lpRect, RECT, , 
+    .参数 hBrush, 整数型, , 
+
+.DLL命令 GetClientRect, 逻辑型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 lpRect, RECT, , 
+
+.DLL命令 StretchBlt, 整数型, "", "", 公开, 
+    .参数 hdcDest, 整数型, , 
+    .参数 nXOriginDest, 整数型, , 
+    .参数 nYOriginDest, 整数型, , 
+    .参数 nWidthDest, 整数型, , 
+    .参数 nHeightDest, 整数型, , 
+    .参数 hdcSrc, 整数型, , 
+    .参数 nXOriginSrc, 整数型, , 
+    .参数 nYOriginSrc, 整数型, , 
+    .参数 nWidthSrc, 整数型, , 
+    .参数 nHeightSrc, 整数型, , 
+    .参数 dwRop, 整数型, , 
+
+.DLL命令 RtlMoveMemory_RECT_1, 整数型, "", "RtlMoveMemory", 公开, 
+    .参数 Destination, RECT, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_RECT_2, 整数型, "", "RtlMoveMemory", 公开, 
+    .参数 Destination, 整数型, , 
+    .参数 Source, RECT, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 SetStretchBltMode, 整数型, "", "", 公开, 
+    .参数 hDC, 整数型, , 
+    .参数 iStretchMode, 整数型, , 
+
+.DLL命令 CreateBitmap, 整数型, "", "", 公开, 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+    .参数 cPlanes, 整数型, , 
+    .参数 cBitsPerPel, 整数型, , 
+    .参数 lpvBits, 整数型, , 
+
+.DLL命令 GetDCEx, 整数型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 hrgnClip, 整数型, , 
+    .参数 flags, 整数型, , 
+
+.DLL命令 SelectClipRgn, 整数型, "", "", 公开, 
+    .参数 hDC, 整数型, , 
+    .参数 hRgn, 整数型, , 
+
+.DLL命令 CreateRoundRectRgn, 整数型, "", "", 公开, 
+    .参数 nLeftRect, 整数型, , 
+    .参数 nTopRect, 整数型, , 
+    .参数 nRightRect, 整数型, , 
+    .参数 nBottomRect, 整数型, , 
+    .参数 nWidthEllipse, 整数型, , 
+    .参数 nHeightEllipse, 整数型, , 
+
+.DLL命令 SetTimer, 整数型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 nIDEvent, 整数型, , 
+    .参数 uElapse, 整数型, , 
+    .参数 lpTimerFunc, 整数型, , 
+
+.DLL命令 KillTimer, 整数型, "", "", 公开, 
+    .参数 hwnd, 整数型, , 
+    .参数 nIDEvent, 整数型, , 
+
+.DLL命令 SetWindowsHookEx, 整数型, "", "SetWindowsHookExA", 公开, 
+    .参数 idHook, 整数型, , 
+    .参数 lpfn, 整数型, , 
+    .参数 hmod, 整数型, , 
+    .参数 dwThreadId, 整数型, , 
+
+.DLL命令 UnhookWindowsHookEx, 整数型, "", "", 公开, 
+    .参数 hHook, 整数型, , 
+
+.DLL命令 CallNextHookEx, 整数型, "", "", 公开, 
+    .参数 hHook, 整数型, , 
+    .参数 ncode, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 GetCurrentThreadId, 整数型, "", "", 公开, 
+
+.DLL命令 RtlMoveMemory_CWPSTRUCT, 整数型, "", "RtlMoveMemory", 公开, 
+    .参数 Destination, CWPSTRUCT, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 GetModuleHandle, 整数型, "", "GetModuleHandleA", 公开, 
+    .参数 lpModuleName, 整数型, , 
+
+.DLL命令 ExcludeClipRect, 整数型, "", "", 公开, 
+    .参数 hDC, 整数型, , 
+    .参数 nLeftRect, 整数型, , 
+    .参数 nTopRect, 整数型, , 
+    .参数 nRightRect, 整数型, , 
+    .参数 nBottomRect, 整数型, , 
+
+.DLL命令 PostMessage, 整数型, "", "PostMessageA", 公开, 
+    .参数 hwnd, 整数型, , 
+    .参数 msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 GetClassName, 整数型, "", "GetClassNameA", 公开, 
+    .参数 hwnd, 整数型, , 
+    .参数 lpClassName, 文本型, , 
+    .参数 nMaxCount, 整数型, , 
+
+.DLL命令 SetCapture, 整数型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 ReleaseCapture, 整数型, "", "", 公开, 
+
+.DLL命令 PtInRect, 逻辑型, "", "", 公开, 
+    .参数 lprc, RECT, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+
+.DLL命令 DrawIconEx, 整数型, "", "", 公开, 
+    .参数 hdc, 整数型, , 
+    .参数 xLeft, 整数型, , 
+    .参数 yTop, 整数型, , 
+    .参数 hIcon, 整数型, , 
+    .参数 cxWidth, 整数型, , 
+    .参数 cyWidth, 整数型, , 
+    .参数 istepIfAniCur, 整数型, , 
+    .参数 hbrFlickerFreeDraw, 整数型, , 
+    .参数 diFlags, 整数型, , 
+
+.DLL命令 GetWindowText, 整数型, "", "GetWindowTextA", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 lpString, 文本型, , 
+    .参数 nMaxCount, 整数型, , 
+
+.DLL命令 GetPixel, 整数型, "", "", 公开, 
+    .参数 hDC, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+
+.DLL命令 GetBkColor, 整数型, "", "", 公开, 
+    .参数 hDC, 整数型, , 
+
+.DLL命令 GetFocus, 整数型, "", "", 公开, 
+
+.DLL命令 SetFocus, 整数型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 SetWindowText, 整数型, "", "SetWindowTextA", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 lpString, 文本型, , 
+
+.DLL命令 FindWindowEx, 整数型, "", "FindWindowExA", 公开, 
+    .参数 hWnd1, 整数型, , 
+    .参数 hWnd2, 整数型, , 
+    .参数 lpsz1, 整数型, , 
+    .参数 lpsz2, 整数型, , 
+
+.DLL命令 GetWindow, 整数型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 uCmd, 整数型, , 
+
+.DLL命令 GetParent, 整数型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 CreateRectRgn, 整数型, "", "", 公开, 
+    .参数 nLeftRect, 整数型, , 
+    .参数 nTopRect, 整数型, , 
+    .参数 nRightRect, 整数型, , 
+    .参数 nBottomRect, 整数型, , 
+
+.DLL命令 CreateMenu, 整数型, "", "", 公开, 
+
+.DLL命令 DestroyMenu, 整数型, "", "", 公开, 
+    .参数 hMenu, 整数型, , 
+
+.DLL命令 GetSystemMenu, 整数型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+    .参数 bRevert, 逻辑型, , 
+
+.DLL命令 CreatePopupMenu, 整数型, "", "", 公开, 
+
+.DLL命令 TrackPopupMenu, 逻辑型, "", "", 公开, 
+    .参数 hMenu, 整数型, , 
+    .参数 uFlags, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 nReserved, 整数型, , 
+    .参数 hWnd, 整数型, , 
+    .参数 prcRect, 整数型, , 
+
+.DLL命令 IsZoomed, 逻辑型, "", "", , 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 GetProp, 整数型, "", "GetPropA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpString, 文本型, , 
+
+.DLL命令 SetProp, 整数型, "", "SetPropA", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpString, 文本型, , 
+    .参数 hData, 整数型, , 
+
+.DLL命令 GlobalAlloc, 整数型, "", "", , 
+    .参数 wFlags, 整数型, , 
+    .参数 dwBytes, 整数型, , 
+
+.DLL命令 GlobalReAlloc, 整数型, "", "", , 
+    .参数 hMem, 整数型, , 
+    .参数 dwBytes, 整数型, , 
+    .参数 wFlags, 整数型, , 
+
+.DLL命令 GlobalLock, 整数型, "", "", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 GlobalUnlock, 空白型, "", "", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 GlobalFree, 整数型, "", "", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 RtlMoveMemory_Str1, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, , 
+    .参数 Source, 文本型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_Str2, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 文本型, , 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 IsWindowEnabled, 逻辑型, "", "", , 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 lstrlen, 整数型, "", "lstrlenA", 公开, 
+    .参数 lpString, 整数型, , 
+
+.DLL命令 GetDlgCtrlID, 整数型, "", "", 公开, 
+    .参数 hWnd, 整数型, , 
+
+.DLL命令 IsDlgButtonChecked, 逻辑型, "", "", 公开, 
+    .参数 hDlg, 整数型, , 
+    .参数 nIDButton, 整数型, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+载入 (窗口1, , 假)
+
+.程序集 Hook, , , 
+
+.程序集变量 hHook, 整数型, , , 
+.子程序 安装钩子, 空白型, , 
+赋值 (hHook, SetWindowsHookEx (#WH_CALLWNDPROC, 到整数 (&钩子回调函数), GetModuleHandle (0), GetCurrentThreadId ()))
+
+.子程序 卸载钩子, 空白型, , 
+UnhookWindowsHookEx (hHook)
+
+.子程序 钩子回调函数, 整数型, , 
+.参数 ncode, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 返回值, 整数型, , , 
+.局部变量 CWPSTRUCT, CWPSTRUCT, , , 
+
+赋值 (返回值, CallNextHookEx (hHook, ncode, wParam, lParam))
+RtlMoveMemory_CWPSTRUCT (CWPSTRUCT, lParam, 16)
+.如果真 (等于 (CWPSTRUCT.Msg, #WM_CREATE))
+    内部_应用皮肤 (CWPSTRUCT.hWnd)
+    ' 本源码来自易语言资源网(www.wodesoft.com)
+.如果真结束
+返回 (返回值)
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _窗口1_创建完毕, 空白型, , 
+' 本源码来自易语言资源网(www.wodesoft.com)
+应用皮肤 (取窗口句柄 ())
+
+.子程序 _按钮1_被单击, 空白型, , 
+载入 (窗口2, 窗口1, 假)
+
+.子程序 _按钮2_被单击, 空白型, , 
+信息框 (“测试信息框.”, #信息图标, “信息”)
+
+.窗口程序集 窗口程序集2, , , 
+
+.子程序 _窗口2_创建完毕, 空白型, , 
+' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 _按钮1_被单击, 空白型, , 
+打开 ()
+
+.子程序 _按钮2_被单击, 空白型, , 
+赋值 (., “asdasd”)
+
+.程序集 窗口, , , 
+
+.子程序 窗口_应用皮肤, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+
+.局部变量 样式, 整数型, , , 
+.局部变量 RECT, RECT, , , 
+.局部变量 标题, 文本型, , , 
+.局部变量 内存句柄, 整数型, , , 
+.局部变量 标题长度, 整数型, , , 
+.局部变量 内存指针, 整数型, , , 
+.局部变量 图标, 整数型, , , 
+.局部变量 SysMenu, 整数型, , , 
+
+
+赋值 (样式, GetWindowLong (窗口句柄, #GWL_STYLE))
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+.如果 (等于 (位与 (样式, #WS_SYSMENU), 0))
+    SetProp (窗口句柄, “Gsk.关闭按钮”, 3)
+    SetProp (窗口句柄, “Gsk.系统菜单”, 0)
+.否则
+    SetProp (窗口句柄, “Gsk.关闭按钮”, 0)
+    SetProp (窗口句柄, “Gsk.系统菜单”, 1)
+.如果结束
+.如果 (等于 (位与 (样式, #WS_CAPTION), #WS_CAPTION))
+    SetProp (窗口句柄, “Gsk.标题栏”, 1)
+.否则
+    SetProp (窗口句柄, “Gsk.标题栏”, 0)
+.如果结束
+
+.如果 (等于 (位与 (样式, #WS_MAXIMIZEBOX), 0))
+    SetProp (窗口句柄, “Gsk.最大化按钮”, 3)
+.否则
+    SetProp (窗口句柄, “Gsk.最大化按钮”, 0)
+.如果结束
+
+.如果 (等于 (位与 (样式, #WS_MINIMIZEBOX), 0))
+    SetProp (窗口句柄, “Gsk.最小化按钮”, 3)
+.否则
+    SetProp (窗口句柄, “Gsk.最小化按钮”, 0)
+.如果结束
+
+
+赋值 (标题, 取空白文本 (128))
+赋值 (标题长度, GetWindowText (窗口句柄, 标题, 128))
+赋值 (内存句柄, 申请内存 (相加 (标题长度, 1)))
+赋值 (内存指针, 锁定内存 (内存句柄))
+文本到指针 (内存指针, 相加 (标题, 字符 (0)), 相加 (标题长度, 1))
+解锁内存 (内存句柄)
+SetProp (窗口句柄, “Gsk.窗口标题”, 内存句柄)
+
+赋值 (图标, SendMessage (窗口句柄, #WM_GETICON, #ICON_SMALL, 0))
+.如果真 (等于 (图标, 0))
+    赋值 (图标, SendMessage (窗口句柄, #WM_GETICON, #ICON_BIG, 0))
+    .如果真 (等于 (图标, 0))
+        赋值 (图标, 图标句柄)
+    .如果真结束
+    
+.如果真结束
+SetProp (窗口句柄, “Gsk.图标句柄”, 图标)
+
+SetProp (窗口句柄, “Gsk.窗口过程”, GetWindowLong (窗口句柄, #GWL_WNDPROC))
+SetProp (窗口句柄, “Gsk.时钟状态”, 0)
+SetProp (窗口句柄, “Gsk.还原按钮”, 0)
+SetProp (窗口句柄, “Gsk.激活状态”, 0)
+
+GetClientRect (窗口句柄, RECT)
+SetWindowLong (窗口句柄, #GWL_WNDPROC, 到整数 (&窗口_消息处理))
+
+.如果真 (等于 (位与 (样式, #WS_CAPTION), #WS_CAPTION))
+    赋值 (RECT.right, 相加 (RECT.right, 皮肤.普通窗口.左边框.激活.区域.right, 皮肤.普通窗口.右边框.激活.区域.right))
+    赋值 (RECT.bottom, 相加 (RECT.bottom, 皮肤.普通窗口.上边框.激活.区域.bottom, 皮肤.普通窗口.下边框.激活.区域.bottom))
+    SetWindowPos (窗口句柄, 0, RECT.left, RECT.top, 相减 (RECT.right, RECT.left), 相减 (RECT.bottom, RECT.top), 位或 (#SWP_NOZORDER, #SWP_NOMOVE))
+.如果真结束
+
+
+
+.子程序 窗口_TimerProc, 空白型, , 
+.参数 hWnd, 整数型, , 
+.参数 nIDEvent, 整数型, , 
+.参数 uElapse, 整数型, , 
+.参数 lpTimerFunc, 整数型, , 
+
+.局部变量 坐标, 坐标, , , 
+.局部变量 重绘, 逻辑型, , , 
+.局部变量 按钮, 整数型, , , 
+.局部变量 最大化, 整数型, , , 
+.局部变量 最小化, 整数型, , , 
+.局部变量 关闭, 整数型, , , 
+
+
+GetCursorPos (坐标)
+赋值 (按钮, 窗口_取非客户区按钮 (hWnd, 坐标))
+
+.如果真 (等于 (按钮, 0))
+    KillTimer (hWnd, uElapse)
+    SetProp (hWnd, “Gsk.时钟状态”, 0)
+    赋值 (最大化, GetProp (hWnd, “Gsk.最大化按钮”))
+    赋值 (最小化, GetProp (hWnd, “Gsk.最小化按钮”))
+    赋值 (关闭, GetProp (hWnd, “Gsk.关闭按钮”))
+    
+    .如果真 (并且 (不等于 (最小化, 3), 不等于 (最小化, 0)))
+        SetProp (hWnd, “Gsk.最小化按钮”, 0)
+        赋值 (重绘, 真)
+    .如果真结束
+    .如果真 (并且 (不等于 (最大化, 3), 不等于 (最大化, 0)))
+        SetProp (hWnd, “Gsk.最大化按钮”, 0)
+        赋值 (重绘, 真)
+    .如果真结束
+    .如果真 (并且 (不等于 (关闭, 3), 不等于 (关闭, 0)))
+        SetProp (hWnd, “Gsk.关闭按钮”, 0)
+        赋值 (重绘, 真)
+    .如果真结束
+    .如果真 (重绘)
+        窗口_绘制非客户区按钮 (hWnd, 0)
+    .如果真结束
+    
+.如果真结束
+
+
+.子程序 窗口_绘制非客户区, 空白型, , 
+.参数 hDC, 整数型, , 
+.参数 hWnd, 整数型, , 
+
+.局部变量 RECT, RECT, , , 
+.局部变量 目标矩形, RECT, , , 
+.局部变量 源矩形, RECT, , , 
+.局部变量 标题栏, 整数型, , , 
+.局部变量 激活状态, 整数型, , , 
+.局部变量 图标, 整数型, , , 
+.局部变量 系统菜单, 整数型, , , 
+
+赋值 (标题栏, GetProp (hWnd, “Gsk.标题栏”))
+赋值 (激活状态, GetProp (hWnd, “Gsk.激活状态”))
+赋值 (图标, GetProp (hWnd, “Gsk.图标句柄”))
+赋值 (系统菜单, GetProp (hWnd, “Gsk.系统菜单”))
+
+.如果真 (不等于 (标题栏, 0))
+    
+    GetWindowRect (hWnd, RECT)
+    
+    .如果 (不等于 (激活状态, 0))
+         ' 左边框
+        赋值 (目标矩形.left, 0)
+        赋值 (目标矩形.top, 皮肤.普通窗口.上边框.激活.区域.bottom)
+        赋值 (目标矩形.right, 皮肤.普通窗口.左边框.激活.区域.right)
+        赋值 (目标矩形.bottom, 相减 (RECT.bottom, RECT.top, 目标矩形.top))
+        赋值 (源矩形.left, 皮肤.普通窗口.左边框.激活.区域.left)
+        赋值 (源矩形.top, 皮肤.普通窗口.左边框.激活.区域.top)
+        赋值 (源矩形.right, 皮肤.普通窗口.左边框.激活.区域.right)
+        赋值 (源矩形.bottom, 皮肤.普通窗口.左边框.激活.区域.bottom)
+        .如果 (等于 (皮肤.普通窗口.左边框.透明色, 0))
+            绘图 (hDC, 目标矩形, 源矩形)
+        .否则
+            绘图 (hDC, 目标矩形, 源矩形, 皮肤.普通窗口.左边框.透明色)
+        .如果结束
+        
+        
+         ' 上边框
+         ' 左上
+        赋值 (目标矩形.left, 0)
+        赋值 (目标矩形.top, 0)
+        赋值 (目标矩形.right, 皮肤.普通窗口.上边框.激活.九宫.left)
+        赋值 (目标矩形.bottom, 皮肤.普通窗口.上边框.激活.九宫.top)
+        赋值 (源矩形.left, 皮肤.普通窗口.上边框.激活.区域.left)
+        赋值 (源矩形.top, 皮肤.普通窗口.上边框.激活.区域.top)
+        赋值 (源矩形.right, 皮肤.普通窗口.上边框.激活.九宫.left)
+        赋值 (源矩形.bottom, 皮肤.普通窗口.上边框.激活.九宫.top)
+        .如果 (等于 (皮肤.普通窗口.上边框.透明色, 0))
+            绘图 (hDC, 目标矩形, 源矩形)
+        .否则
+            绘图 (hDC, 目标矩形, 源矩形, 皮肤.普通窗口.上边框.透明色)
+        .如果结束
+        
+         ' 左
+        赋值 (目标矩形.left, 0)
+        赋值 (目标矩形.top, 皮肤.普通窗口.上边框.激活.九宫.top)
+        赋值 (目标矩形.right, 皮肤.普通窗口.上边框.激活.九宫.left)
+        赋值 (目标矩形.bottom, 相减 (皮肤.普通窗口.上边框.激活.区域.bottom, 皮肤.普通窗口.上边框.激活.九宫.top))
+        赋值 (源矩形.left, 皮肤.普通窗口.上边框.激活.区域.left)
+        赋值 (源矩形.top, 相加 (皮肤.普通窗口.上边框.激活.区域.top, 皮肤.普通窗口.上边框.激活.九宫.top))
+        赋值 (源矩形.right, 目标矩形.right)
+        赋值 (源矩形.bottom, 目标矩形.bottom)
+        绘图 (hDC, 目标矩形, 源矩形)
+        
+         ' 中上
+        赋值 (目标矩形.left, 皮肤.普通窗口.上边框.激活.九宫.left)
+        赋值 (目标矩形.top, 0)
+        赋值 (目标矩形.right, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.上边框.激活.九宫.right, 皮肤.普通窗口.上边框.激活.九宫.left))
+        赋值 (目标矩形.bottom, 皮肤.普通窗口.上边框.激活.九宫.top)
+        赋值 (源矩形.left, 相加 (皮肤.普通窗口.上边框.激活.区域.left, 皮肤.普通窗口.上边框.激活.九宫.left))
+        赋值 (源矩形.top, 皮肤.普通窗口.上边框.激活.区域.top)
+        赋值 (源矩形.right, 相减 (皮肤.普通窗口.上边框.激活.区域.right, 皮肤.普通窗口.上边框.激活.九宫.right, 皮肤.普通窗口.上边框.激活.九宫.left))
+        赋值 (源矩形.bottom, 目标矩形.bottom)
+        绘图 (hDC, 目标矩形, 源矩形)
+        
+         ' 中
+        赋值 (目标矩形.left, 皮肤.普通窗口.上边框.激活.九宫.left)
+        赋值 (目标矩形.top, 皮肤.普通窗口.上边框.激活.九宫.top)
+        赋值 (目标矩形.right, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.上边框.激活.九宫.right, 皮肤.普通窗口.上边框.激活.九宫.left))
+        赋值 (目标矩形.bottom, 相减 (皮肤.普通窗口.上边框.激活.区域.bottom, 皮肤.普通窗口.上边框.激活.九宫.top))
+        赋值 (源矩形.left, 相加 (皮肤.普通窗口.上边框.激活.区域.left, 皮肤.普通窗口.上边框.激活.九宫.left))
+        赋值 (源矩形.top, 相加 (皮肤.普通窗口.上边框.激活.区域.top, 皮肤.普通窗口.上边框.激活.九宫.top))
+        赋值 (源矩形.right, 相减 (皮肤.普通窗口.上边框.激活.区域.right, 皮肤.普通窗口.上边框.激活.九宫.right, 皮肤.普通窗口.上边框.激活.九宫.left))
+        赋值 (源矩形.bottom, 目标矩形.bottom)
+        绘图 (hDC, 目标矩形, 源矩形)
+        
+         ' 右上
+        赋值 (目标矩形.left, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.上边框.激活.九宫.right))
+        赋值 (目标矩形.top, 0)
+        赋值 (目标矩形.right, 皮肤.普通窗口.上边框.激活.九宫.right)
+        赋值 (目标矩形.bottom, 皮肤.普通窗口.上边框.激活.九宫.top)
+        赋值 (源矩形.left, 相减 (相加 (皮肤.普通窗口.上边框.激活.区域.left, 皮肤.普通窗口.上边框.激活.区域.right), 皮肤.普通窗口.上边框.激活.九宫.right))
+        赋值 (源矩形.top, 皮肤.普通窗口.上边框.激活.区域.top)
+        赋值 (源矩形.right, 目标矩形.right)
+        赋值 (源矩形.bottom, 目标矩形.bottom)
+        .如果 (等于 (皮肤.普通窗口.右边框.透明色, 0))
+            绘图 (hDC, 目标矩形, 源矩形)
+        .否则
+            绘图 (hDC, 目标矩形, 源矩形, 皮肤.普通窗口.右边框.透明色)
+        .如果结束
+        
+         ' 右
+        赋值 (目标矩形.left, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.上边框.激活.九宫.right))
+        赋值 (目标矩形.top, 皮肤.普通窗口.上边框.激活.九宫.top)
+        赋值 (目标矩形.right, 皮肤.普通窗口.上边框.激活.九宫.right)
+        赋值 (目标矩形.bottom, 相减 (皮肤.普通窗口.上边框.激活.区域.bottom, 皮肤.普通窗口.上边框.激活.九宫.top))
+        赋值 (源矩形.left, 相减 (相加 (皮肤.普通窗口.上边框.激活.区域.left, 皮肤.普通窗口.上边框.激活.区域.right), 皮肤.普通窗口.上边框.激活.九宫.right))
+        赋值 (源矩形.top, 相加 (皮肤.普通窗口.上边框.激活.区域.top, 皮肤.普通窗口.上边框.激活.九宫.top))
+        赋值 (源矩形.right, 目标矩形.right)
+        赋值 (源矩形.bottom, 目标矩形.bottom)
+        绘图 (hDC, 目标矩形, 源矩形)
+        
+        
+         ' 右边框
+        赋值 (目标矩形.left, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.右边框.激活.区域.right))
+        赋值 (目标矩形.top, 皮肤.普通窗口.上边框.激活.区域.bottom)
+        赋值 (目标矩形.right, 皮肤.普通窗口.右边框.激活.区域.right)
+        赋值 (目标矩形.bottom, 相减 (RECT.bottom, RECT.top, 目标矩形.top))
+        赋值 (源矩形.left, 皮肤.普通窗口.右边框.激活.区域.left)
+        赋值 (源矩形.top, 皮肤.普通窗口.右边框.激活.区域.top)
+        赋值 (源矩形.right, 皮肤.普通窗口.右边框.激活.区域.right)
+        赋值 (源矩形.bottom, 皮肤.普通窗口.右边框.激活.区域.bottom)
+        .如果 (等于 (皮肤.普通窗口.右边框.透明色, 0))
+            绘图 (hDC, 目标矩形, 源矩形)
+        .否则
+            绘图 (hDC, 目标矩形, 源矩形, 皮肤.普通窗口.右边框.透明色)
+        .如果结束
+        
+        
+         ' 下边框
+         ' 左
+        赋值 (目标矩形.left, 0)
+        赋值 (目标矩形.top, 相减 (RECT.bottom, RECT.top, 皮肤.普通窗口.下边框.激活.区域.bottom))
+        赋值 (目标矩形.right, 皮肤.普通窗口.下边框.激活.九宫.left)
+        赋值 (目标矩形.bottom, 皮肤.普通窗口.下边框.激活.区域.bottom)
+        赋值 (源矩形.left, 皮肤.普通窗口.下边框.激活.区域.left)
+        赋值 (源矩形.top, 皮肤.普通窗口.下边框.激活.区域.top)
+        赋值 (源矩形.right, 目标矩形.right)
+        赋值 (源矩形.bottom, 目标矩形.bottom)
+        .如果 (等于 (皮肤.普通窗口.下边框.透明色, 0))
+            绘图 (hDC, 目标矩形, 源矩形)
+        .否则
+            绘图 (hDC, 目标矩形, 源矩形, 皮肤.普通窗口.下边框.透明色)
+        .如果结束
+        
+         ' 中
+        赋值 (目标矩形.left, 皮肤.普通窗口.下边框.激活.九宫.left)
+        赋值 (目标矩形.top, 相减 (RECT.bottom, RECT.top, 皮肤.普通窗口.下边框.激活.区域.bottom))
+        赋值 (目标矩形.right, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.下边框.激活.九宫.right, 皮肤.普通窗口.下边框.激活.九宫.left))
+        赋值 (目标矩形.bottom, 皮肤.普通窗口.下边框.激活.区域.bottom)
+        赋值 (源矩形.left, 相加 (皮肤.普通窗口.下边框.激活.区域.left, 皮肤.普通窗口.下边框.激活.九宫.left))
+        赋值 (源矩形.top, 皮肤.普通窗口.下边框.激活.区域.top)
+        赋值 (源矩形.right, 相减 (皮肤.普通窗口.下边框.激活.区域.right, 皮肤.普通窗口.下边框.激活.九宫.right, 皮肤.普通窗口.下边框.激活.九宫.left))
+        赋值 (源矩形.bottom, 皮肤.普通窗口.下边框.激活.区域.bottom)
+        绘图 (hDC, 目标矩形, 源矩形)
+        
+         ' 右
+        赋值 (目标矩形.left, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.下边框.激活.九宫.right))
+        赋值 (目标矩形.top, 相减 (RECT.bottom, RECT.top, 皮肤.普通窗口.下边框.激活.区域.bottom))
+        赋值 (目标矩形.right, 皮肤.普通窗口.下边框.激活.九宫.right)
+        赋值 (目标矩形.bottom, 皮肤.普通窗口.下边框.激活.区域.bottom)
+        赋值 (源矩形.left, 相减 (相加 (皮肤.普通窗口.下边框.激活.区域.left, 皮肤.普通窗口.下边框.激活.区域.right), 皮肤.普通窗口.下边框.激活.九宫.right))
+        赋值 (源矩形.top, 皮肤.普通窗口.下边框.激活.区域.top)
+        赋值 (源矩形.right, 目标矩形.right)
+        赋值 (源矩形.bottom, 目标矩形.bottom)
+        .如果 (等于 (皮肤.普通窗口.下边框.透明色, 0))
+            绘图 (hDC, 目标矩形, 源矩形)
+        .否则
+            绘图 (hDC, 目标矩形, 源矩形, 皮肤.普通窗口.下边框.透明色)
+        .如果结束
+        
+        
+        
+    .否则
+         ' 左边框
+        赋值 (目标矩形.left, 0)
+        赋值 (目标矩形.top, 皮肤.普通窗口.上边框.非激活.区域.bottom)
+        赋值 (目标矩形.right, 皮肤.普通窗口.左边框.非激活.区域.right)
+        赋值 (目标矩形.bottom, 相减 (RECT.bottom, RECT.top, 目标矩形.top))
+        赋值 (源矩形.left, 皮肤.普通窗口.左边框.非激活.区域.left)
+        赋值 (源矩形.top, 皮肤.普通窗口.左边框.非激活.区域.top)
+        赋值 (源矩形.right, 皮肤.普通窗口.左边框.非激活.区域.right)
+        赋值 (源矩形.bottom, 皮肤.普通窗口.左边框.非激活.区域.bottom)
+        .如果 (等于 (皮肤.普通窗口.左边框.透明色, 0))
+            绘图 (hDC, 目标矩形, 源矩形)
+        .否则
+            绘图 (hDC, 目标矩形, 源矩形, 皮肤.普通窗口.左边框.透明色)
+        .如果结束
+        
+        
+         ' 上边框
+         ' 左上
+        赋值 (目标矩形.left, 0)
+        赋值 (目标矩形.top, 0)
+        赋值 (目标矩形.right, 皮肤.普通窗口.上边框.非激活.九宫.left)
+        赋值 (目标矩形.bottom, 皮肤.普通窗口.上边框.非激活.九宫.top)
+        赋值 (源矩形.left, 皮肤.普通窗口.上边框.非激活.区域.left)
+        赋值 (源矩形.top, 皮肤.普通窗口.上边框.非激活.区域.top)
+        赋值 (源矩形.right, 皮肤.普通窗口.上边框.非激活.九宫.left)
+        赋值 (源矩形.bottom, 皮肤.普通窗口.上边框.非激活.九宫.top)
+        .如果 (等于 (皮肤.普通窗口.上边框.透明色, 0))
+            绘图 (hDC, 目标矩形, 源矩形)
+        .否则
+            绘图 (hDC, 目标矩形, 源矩形, 皮肤.普通窗口.上边框.透明色)
+        .如果结束
+        
+        
+         ' 左
+        赋值 (目标矩形.left, 0)
+        赋值 (目标矩形.top, 皮肤.普通窗口.上边框.非激活.九宫.top)
+        赋值 (目标矩形.right, 皮肤.普通窗口.上边框.非激活.九宫.left)
+        赋值 (目标矩形.bottom, 相减 (皮肤.普通窗口.上边框.非激活.区域.bottom, 皮肤.普通窗口.上边框.非激活.九宫.top))
+        赋值 (源矩形.left, 皮肤.普通窗口.上边框.非激活.区域.left)
+        赋值 (源矩形.top, 相加 (皮肤.普通窗口.上边框.非激活.区域.top, 皮肤.普通窗口.上边框.非激活.九宫.top))
+        赋值 (源矩形.right, 目标矩形.right)
+        赋值 (源矩形.bottom, 目标矩形.bottom)
+        绘图 (hDC, 目标矩形, 源矩形)
+        
+         ' 中上
+        赋值 (目标矩形.left, 皮肤.普通窗口.上边框.非激活.九宫.left)
+        赋值 (目标矩形.top, 0)
+        赋值 (目标矩形.right, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.上边框.非激活.九宫.right, 皮肤.普通窗口.上边框.非激活.九宫.left))
+        赋值 (目标矩形.bottom, 皮肤.普通窗口.上边框.非激活.九宫.top)
+        赋值 (源矩形.left, 相加 (皮肤.普通窗口.上边框.非激活.区域.left, 皮肤.普通窗口.上边框.非激活.九宫.left))
+        赋值 (源矩形.top, 皮肤.普通窗口.上边框.非激活.区域.top)
+        赋值 (源矩形.right, 相减 (皮肤.普通窗口.上边框.非激活.区域.right, 皮肤.普通窗口.上边框.非激活.九宫.right, 皮肤.普通窗口.上边框.非激活.九宫.left))
+        赋值 (源矩形.bottom, 目标矩形.bottom)
+        绘图 (hDC, 目标矩形, 源矩形)
+        
+         ' 中
+        赋值 (目标矩形.left, 皮肤.普通窗口.上边框.非激活.九宫.left)
+        赋值 (目标矩形.top, 皮肤.普通窗口.上边框.非激活.九宫.top)
+        赋值 (目标矩形.right, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.上边框.非激活.九宫.right, 皮肤.普通窗口.上边框.非激活.九宫.left))
+        赋值 (目标矩形.bottom, 相减 (皮肤.普通窗口.上边框.非激活.区域.bottom, 皮肤.普通窗口.上边框.非激活.九宫.top))
+        赋值 (源矩形.left, 相加 (皮肤.普通窗口.上边框.非激活.区域.left, 皮肤.普通窗口.上边框.非激活.九宫.left))
+        赋值 (源矩形.top, 相加 (皮肤.普通窗口.上边框.非激活.区域.top, 皮肤.普通窗口.上边框.非激活.九宫.top))
+        赋值 (源矩形.right, 相减 (皮肤.普通窗口.上边框.非激活.区域.right, 皮肤.普通窗口.上边框.非激活.九宫.right, 皮肤.普通窗口.上边框.非激活.九宫.left))
+        赋值 (源矩形.bottom, 目标矩形.bottom)
+        绘图 (hDC, 目标矩形, 源矩形)
+        
+         ' 右上
+        赋值 (目标矩形.left, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.上边框.非激活.九宫.right))
+        赋值 (目标矩形.top, 0)
+        赋值 (目标矩形.right, 皮肤.普通窗口.上边框.非激活.九宫.right)
+        赋值 (目标矩形.bottom, 皮肤.普通窗口.上边框.非激活.九宫.top)
+        赋值 (源矩形.left, 相减 (相加 (皮肤.普通窗口.上边框.非激活.区域.left, 皮肤.普通窗口.上边框.非激活.区域.right), 皮肤.普通窗口.上边框.非激活.九宫.right))
+        赋值 (源矩形.top, 皮肤.普通窗口.上边框.非激活.区域.top)
+        赋值 (源矩形.right, 目标矩形.right)
+        赋值 (源矩形.bottom, 目标矩形.bottom)
+        .如果 (等于 (皮肤.普通窗口.右边框.透明色, 0))
+            绘图 (hDC, 目标矩形, 源矩形)
+        .否则
+            绘图 (hDC, 目标矩形, 源矩形, 皮肤.普通窗口.右边框.透明色)
+        .如果结束
+        
+         ' 右
+        赋值 (目标矩形.left, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.上边框.非激活.九宫.right))
+        赋值 (目标矩形.top, 皮肤.普通窗口.上边框.非激活.九宫.top)
+        赋值 (目标矩形.right, 皮肤.普通窗口.上边框.非激活.九宫.right)
+        赋值 (目标矩形.bottom, 相减 (皮肤.普通窗口.上边框.非激活.区域.bottom, 皮肤.普通窗口.上边框.非激活.九宫.top))
+        赋值 (源矩形.left, 相减 (相加 (皮肤.普通窗口.上边框.非激活.区域.left, 皮肤.普通窗口.上边框.非激活.区域.right), 皮肤.普通窗口.上边框.非激活.九宫.right))
+        赋值 (源矩形.top, 相加 (皮肤.普通窗口.上边框.非激活.区域.top, 皮肤.普通窗口.上边框.非激活.九宫.top))
+        赋值 (源矩形.right, 目标矩形.right)
+        赋值 (源矩形.bottom, 目标矩形.bottom)
+        绘图 (hDC, 目标矩形, 源矩形)
+        
+        
+         ' 右边框
+        赋值 (目标矩形.left, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.右边框.非激活.区域.right))
+        赋值 (目标矩形.top, 皮肤.普通窗口.上边框.非激活.区域.bottom)
+        赋值 (目标矩形.right, 皮肤.普通窗口.右边框.非激活.区域.right)
+        赋值 (目标矩形.bottom, 相减 (RECT.bottom, RECT.top, 目标矩形.top))
+        赋值 (源矩形.left, 皮肤.普通窗口.右边框.非激活.区域.left)
+        赋值 (源矩形.top, 皮肤.普通窗口.右边框.非激活.区域.top)
+        赋值 (源矩形.right, 皮肤.普通窗口.右边框.非激活.区域.right)
+        赋值 (源矩形.bottom, 皮肤.普通窗口.右边框.非激活.区域.bottom)
+        .如果 (等于 (皮肤.普通窗口.右边框.透明色, 0))
+            绘图 (hDC, 目标矩形, 源矩形)
+        .否则
+            绘图 (hDC, 目标矩形, 源矩形, 皮肤.普通窗口.右边框.透明色)
+        .如果结束
+        
+        
+         ' 下边框
+         ' 左
+        赋值 (目标矩形.left, 0)
+        赋值 (目标矩形.top, 相减 (RECT.bottom, RECT.top, 皮肤.普通窗口.下边框.非激活.区域.bottom))
+        赋值 (目标矩形.right, 皮肤.普通窗口.下边框.非激活.九宫.left)
+        赋值 (目标矩形.bottom, 皮肤.普通窗口.下边框.非激活.区域.bottom)
+        赋值 (源矩形.left, 皮肤.普通窗口.下边框.非激活.区域.left)
+        赋值 (源矩形.top, 皮肤.普通窗口.下边框.非激活.区域.top)
+        赋值 (源矩形.right, 目标矩形.right)
+        赋值 (源矩形.bottom, 目标矩形.bottom)
+        .如果 (等于 (皮肤.普通窗口.下边框.透明色, 0))
+            绘图 (hDC, 目标矩形, 源矩形)
+        .否则
+            绘图 (hDC, 目标矩形, 源矩形, 皮肤.普通窗口.下边框.透明色)
+        .如果结束
+        
+         ' 中
+        赋值 (目标矩形.left, 皮肤.普通窗口.下边框.非激活.九宫.left)
+        赋值 (目标矩形.top, 相减 (RECT.bottom, RECT.top, 皮肤.普通窗口.下边框.非激活.区域.bottom))
+        赋值 (目标矩形.right, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.下边框.非激活.九宫.right, 皮肤.普通窗口.下边框.非激活.九宫.left))
+        赋值 (目标矩形.bottom, 皮肤.普通窗口.下边框.非激活.区域.bottom)
+        赋值 (源矩形.left, 相加 (皮肤.普通窗口.下边框.非激活.区域.left, 皮肤.普通窗口.下边框.非激活.九宫.left))
+        赋值 (源矩形.top, 皮肤.普通窗口.下边框.非激活.区域.top)
+        赋值 (源矩形.right, 相减 (皮肤.普通窗口.下边框.非激活.区域.right, 皮肤.普通窗口.下边框.非激活.九宫.right, 皮肤.普通窗口.下边框.非激活.九宫.left))
+        赋值 (源矩形.bottom, 皮肤.普通窗口.下边框.非激活.区域.bottom)
+        绘图 (hDC, 目标矩形, 源矩形)
+        
+         ' 右
+        赋值 (目标矩形.left, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.下边框.非激活.九宫.right))
+        赋值 (目标矩形.top, 相减 (RECT.bottom, RECT.top, 皮肤.普通窗口.下边框.非激活.区域.bottom))
+        赋值 (目标矩形.right, 皮肤.普通窗口.下边框.非激活.九宫.right)
+        赋值 (目标矩形.bottom, 皮肤.普通窗口.下边框.非激活.区域.bottom)
+        赋值 (源矩形.left, 相减 (相加 (皮肤.普通窗口.下边框.非激活.区域.left, 皮肤.普通窗口.下边框.非激活.区域.right), 皮肤.普通窗口.下边框.非激活.九宫.right))
+        赋值 (源矩形.top, 皮肤.普通窗口.下边框.非激活.区域.top)
+        赋值 (源矩形.right, 目标矩形.right)
+        赋值 (源矩形.bottom, 目标矩形.bottom)
+        .如果 (等于 (皮肤.普通窗口.下边框.透明色, 0))
+            绘图 (hDC, 目标矩形, 源矩形)
+        .否则
+            绘图 (hDC, 目标矩形, 源矩形, 皮肤.普通窗口.下边框.透明色)
+        .如果结束
+        
+        
+    .如果结束
+    
+    .如果真 (并且 (不等于 (系统菜单, 0), 不等于 (图标, 0)))
+        DrawIconEx (hDC, 8, 相除 (相减 (皮肤.普通窗口.上边框.激活.区域.bottom, 16), 2), 图标, 16, 16, 0, 0, #DI_NORMAL)
+    .如果真结束
+    
+    
+    窗口_绘制非客户区按钮 (hWnd, hDC)
+    窗口_绘制窗口标题 (hWnd, hDC)
+.如果真结束
+
+
+
+.子程序 窗口_绘制非客户区按钮, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 hDC, 整数型, , 
+
+.局部变量 dc, 空白型, , , 
+.局部变量 RECT, RECT, , , 
+.局部变量 目标矩形, RECT, , , 
+.局部变量 系统菜单, 整数型, , , 
+.局部变量 激活状态, 整数型, , , 
+.局部变量 最大化, 整数型, , , 
+.局部变量 最小化, 整数型, , , 
+.局部变量 关闭, 整数型, , , 
+.局部变量 还原按钮, 整数型, , , 
+
+赋值 (系统菜单, GetProp (窗口句柄, “Gsk.系统菜单”))
+赋值 (激活状态, GetProp (窗口句柄, “Gsk.激活状态”))
+赋值 (最大化, GetProp (窗口句柄, “Gsk.最大化按钮”))
+赋值 (最小化, GetProp (窗口句柄, “Gsk.最小化按钮”))
+赋值 (关闭, GetProp (窗口句柄, “Gsk.关闭按钮”))
+赋值 (还原按钮, GetProp (窗口句柄, “Gsk.还原按钮”))
+
+.如果真 (不等于 (系统菜单, 0))
+    .如果真 (等于 (hDC, 0))
+        赋值 (hDC, GetWindowDC (窗口句柄))
+        赋值 (dc, hDC)
+    .如果真结束
+    
+    
+    GetWindowRect (窗口句柄, RECT)
+    
+    
+    .如果 (不等于 (激活状态, 0))
+        
+         ' 最小化按钮
+        .如果 (并且 (不等于 (还原按钮, 0), 取反 (IsZoomed (窗口句柄))))
+            赋值 (目标矩形.top, 0)
+            赋值 (目标矩形.left, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.还原按钮.默认.right, 皮肤.普通窗口.最大化按钮.默认.right, 皮肤.普通窗口.关闭按钮.默认.right, 14))
+            赋值 (目标矩形.right, 皮肤.普通窗口.还原按钮.默认.right)
+            赋值 (目标矩形.bottom, 皮肤.普通窗口.还原按钮.默认.bottom)
+            
+            .判断开始 (等于 (最小化, 1))
+                .如果 (等于 (皮肤.普通窗口.还原按钮.透明色, 0))
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.点燃)
+                .否则
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.点燃, 皮肤.普通窗口.还原按钮.透明色)
+                .如果结束
+                
+            .判断 (等于 (最小化, 2))
+                .如果 (等于 (皮肤.普通窗口.还原按钮.透明色, 0))
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.按下)
+                .否则
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.按下, 皮肤.普通窗口.还原按钮.透明色)
+                .如果结束
+                
+            .判断 (等于 (最小化, 3))
+                .如果真 (不等于 (最大化, 3))
+                    .如果 (等于 (皮肤.普通窗口.还原按钮.透明色, 0))
+                        绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.禁止)
+                    .否则
+                        绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.禁止, 皮肤.普通窗口.还原按钮.透明色)
+                    .如果结束
+                    
+                .如果真结束
+                
+            .默认
+                .如果 (等于 (皮肤.普通窗口.还原按钮.透明色, 0))
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.默认)
+                .否则
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.默认, 皮肤.普通窗口.还原按钮.透明色)
+                .如果结束
+                
+            .判断结束
+            
+        .否则
+            
+            赋值 (目标矩形.top, 0)
+            赋值 (目标矩形.left, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.最小化按钮.默认.right, 皮肤.普通窗口.最大化按钮.默认.right, 皮肤.普通窗口.关闭按钮.默认.right, 14))
+            赋值 (目标矩形.right, 皮肤.普通窗口.最小化按钮.默认.right)
+            赋值 (目标矩形.bottom, 皮肤.普通窗口.最小化按钮.默认.bottom)
+            
+            .判断开始 (等于 (最小化, 1))
+                .如果 (等于 (皮肤.普通窗口.最小化按钮.透明色, 0))
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.最小化按钮.点燃)
+                .否则
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.最小化按钮.点燃, 皮肤.普通窗口.最小化按钮.透明色)
+                .如果结束
+                
+            .判断 (等于 (最小化, 2))
+                .如果 (等于 (皮肤.普通窗口.最小化按钮.透明色, 0))
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.最小化按钮.按下)
+                .否则
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.最小化按钮.按下, 皮肤.普通窗口.最小化按钮.透明色)
+                .如果结束
+                
+            .判断 (等于 (最小化, 3))
+                .如果真 (不等于 (最大化, 3))
+                    .如果 (等于 (皮肤.普通窗口.最小化按钮.透明色, 0))
+                        绘图 (hDC, 目标矩形, 皮肤.普通窗口.最小化按钮.禁止)
+                    .否则
+                        绘图 (hDC, 目标矩形, 皮肤.普通窗口.最小化按钮.禁止, 皮肤.普通窗口.最小化按钮.透明色)
+                    .如果结束
+                    
+                .如果真结束
+                
+            .默认
+                .如果 (等于 (皮肤.普通窗口.最小化按钮.透明色, 0))
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.最小化按钮.默认)
+                .否则
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.最小化按钮.默认, 皮肤.普通窗口.最小化按钮.透明色)
+                .如果结束
+                
+            .判断结束
+            
+        .如果结束
+        
+        
+         ' 最大化按钮
+        .如果 (并且 (不等于 (还原按钮, 0), IsZoomed (窗口句柄)))
+            
+            赋值 (目标矩形.top, 0)
+            赋值 (目标矩形.left, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.还原按钮.默认.right, 皮肤.普通窗口.关闭按钮.默认.right, 14))
+            赋值 (目标矩形.right, 皮肤.普通窗口.还原按钮.默认.right)
+            赋值 (目标矩形.bottom, 皮肤.普通窗口.还原按钮.默认.bottom)
+            .判断开始 (等于 (最大化, 1))
+                .如果 (等于 (皮肤.普通窗口.还原按钮.透明色, 0))
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.点燃)
+                .否则
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.点燃, 皮肤.普通窗口.还原按钮.透明色)
+                .如果结束
+                
+            .判断 (等于 (最大化, 2))
+                .如果 (等于 (皮肤.普通窗口.还原按钮.透明色, 0))
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.按下)
+                .否则
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.按下, 皮肤.普通窗口.还原按钮.透明色)
+                .如果结束
+                
+            .判断 (等于 (最大化, 3))
+                .如果真 (不等于 (最小化, 3))
+                    .如果 (等于 (皮肤.普通窗口.还原按钮.透明色, 0))
+                        绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.禁止)
+                    .否则
+                        绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.禁止, 皮肤.普通窗口.还原按钮.透明色)
+                    .如果结束
+                    
+                .如果真结束
+                
+            .默认
+                .如果 (等于 (皮肤.普通窗口.还原按钮.透明色, 0))
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.默认)
+                .否则
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.默认, 皮肤.普通窗口.还原按钮.透明色)
+                .如果结束
+                
+            .判断结束
+            
+            
+        .否则
+            赋值 (目标矩形.top, 0)
+            赋值 (目标矩形.left, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.最大化按钮.默认.right, 皮肤.普通窗口.关闭按钮.默认.right, 14))
+            赋值 (目标矩形.right, 皮肤.普通窗口.最大化按钮.默认.right)
+            赋值 (目标矩形.bottom, 皮肤.普通窗口.最大化按钮.默认.bottom)
+            .判断开始 (等于 (最大化, 1))
+                .如果 (等于 (皮肤.普通窗口.最大化按钮.透明色, 0))
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.最大化按钮.点燃)
+                .否则
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.最大化按钮.点燃, 皮肤.普通窗口.最大化按钮.透明色)
+                .如果结束
+                
+            .判断 (等于 (最大化, 2))
+                .如果 (等于 (皮肤.普通窗口.最大化按钮.透明色, 0))
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.最大化按钮.按下)
+                .否则
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.最大化按钮.按下, 皮肤.普通窗口.最大化按钮.透明色)
+                .如果结束
+                
+            .判断 (等于 (最大化, 3))
+                .如果真 (不等于 (最小化, 3))
+                    .如果 (等于 (皮肤.普通窗口.最大化按钮.透明色, 0))
+                        绘图 (hDC, 目标矩形, 皮肤.普通窗口.最大化按钮.禁止)
+                    .否则
+                        绘图 (hDC, 目标矩形, 皮肤.普通窗口.最大化按钮.禁止, 皮肤.普通窗口.最大化按钮.透明色)
+                    .如果结束
+                    
+                .如果真结束
+                
+            .默认
+                .如果 (等于 (皮肤.普通窗口.最大化按钮.透明色, 0))
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.最大化按钮.默认)
+                .否则
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.最大化按钮.默认, 皮肤.普通窗口.最大化按钮.透明色)
+                .如果结束
+                
+            .判断结束
+            
+        .如果结束
+        
+         ' 关闭按钮
+        赋值 (目标矩形.top, 0)
+        赋值 (目标矩形.left, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.关闭按钮.默认.right, 14))
+        赋值 (目标矩形.right, 皮肤.普通窗口.关闭按钮.默认.right)
+        赋值 (目标矩形.bottom, 皮肤.普通窗口.关闭按钮.默认.bottom)
+        .判断开始 (等于 (关闭, 1))
+            .如果 (等于 (皮肤.普通窗口.关闭按钮.透明色, 0))
+                绘图 (hDC, 目标矩形, 皮肤.普通窗口.关闭按钮.点燃)
+            .否则
+                绘图 (hDC, 目标矩形, 皮肤.普通窗口.关闭按钮.点燃, 皮肤.普通窗口.关闭按钮.透明色)
+            .如果结束
+            
+        .判断 (等于 (关闭, 2))
+            .如果 (等于 (皮肤.普通窗口.关闭按钮.透明色, 0))
+                绘图 (hDC, 目标矩形, 皮肤.普通窗口.关闭按钮.按下)
+            .否则
+                绘图 (hDC, 目标矩形, 皮肤.普通窗口.关闭按钮.按下, 皮肤.普通窗口.关闭按钮.透明色)
+            .如果结束
+            
+        .判断 (等于 (关闭, 3))
+            .如果 (等于 (皮肤.普通窗口.关闭按钮.透明色, 0))
+                绘图 (hDC, 目标矩形, 皮肤.普通窗口.关闭按钮.禁止)
+            .否则
+                绘图 (hDC, 目标矩形, 皮肤.普通窗口.关闭按钮.禁止, 皮肤.普通窗口.关闭按钮.透明色)
+            .如果结束
+            
+        .默认
+            .如果 (等于 (皮肤.普通窗口.关闭按钮.透明色, 0))
+                绘图 (hDC, 目标矩形, 皮肤.普通窗口.关闭按钮.默认)
+            .否则
+                绘图 (hDC, 目标矩形, 皮肤.普通窗口.关闭按钮.默认, 皮肤.普通窗口.关闭按钮.透明色)
+            .如果结束
+            
+        .判断结束
+        
+        
+    .否则
+         ' 最小化按钮
+        .如果 (并且 (不等于 (还原按钮, 0), 取反 (IsZoomed (窗口句柄))))
+            
+            赋值 (目标矩形.top, 0)
+            赋值 (目标矩形.left, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.还原按钮.禁止.right, 皮肤.普通窗口.最大化按钮.禁止.right, 皮肤.普通窗口.关闭按钮.禁止.right, 14))
+            赋值 (目标矩形.right, 皮肤.普通窗口.还原按钮.禁止.right)
+            赋值 (目标矩形.bottom, 皮肤.普通窗口.还原按钮.禁止.bottom)
+            
+            .如果 (等于 (最大化, 3))
+                .如果真 (不等于 (最小化, 3))
+                    .如果 (等于 (皮肤.普通窗口.还原按钮.透明色, 0))
+                        绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.禁止)
+                    .否则
+                        绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.禁止, 皮肤.普通窗口.还原按钮.透明色)
+                    .如果结束
+                    
+                .如果真结束
+                
+            .否则
+                .如果 (等于 (皮肤.普通窗口.还原按钮.透明色, 0))
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.禁止)
+                .否则
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.禁止, 皮肤.普通窗口.还原按钮.透明色)
+                .如果结束
+                
+            .如果结束
+            
+            
+        .否则
+            赋值 (目标矩形.top, 0)
+            赋值 (目标矩形.left, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.最小化按钮.禁止.right, 皮肤.普通窗口.最大化按钮.禁止.right, 皮肤.普通窗口.关闭按钮.禁止.right, 14))
+            赋值 (目标矩形.right, 皮肤.普通窗口.最小化按钮.禁止.right)
+            赋值 (目标矩形.bottom, 皮肤.普通窗口.最小化按钮.禁止.bottom)
+            
+            .如果 (等于 (最小化, 3))
+                .如果真 (不等于 (最大化, 3))
+                    .如果 (等于 (皮肤.普通窗口.最小化按钮.透明色, 0))
+                        绘图 (hDC, 目标矩形, 皮肤.普通窗口.最小化按钮.禁止)
+                    .否则
+                        绘图 (hDC, 目标矩形, 皮肤.普通窗口.最小化按钮.禁止, 皮肤.普通窗口.最小化按钮.透明色)
+                    .如果结束
+                    
+                .如果真结束
+                
+            .否则
+                .如果 (等于 (皮肤.普通窗口.最小化按钮.透明色, 0))
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.最小化按钮.禁止)
+                .否则
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.最小化按钮.禁止, 皮肤.普通窗口.最小化按钮.透明色)
+                .如果结束
+                
+            .如果结束
+            
+        .如果结束
+        
+        
+        
+        
+         ' 最大化按钮
+        .如果 (并且 (不等于 (还原按钮, 0), IsZoomed (窗口句柄)))
+            赋值 (目标矩形.top, 0)
+            赋值 (目标矩形.left, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.还原按钮.禁止.right, 皮肤.普通窗口.关闭按钮.禁止.right, 14))
+            赋值 (目标矩形.right, 皮肤.普通窗口.还原按钮.禁止.right)
+            赋值 (目标矩形.bottom, 皮肤.普通窗口.还原按钮.禁止.bottom)
+            
+            .如果 (等于 (最大化, 3))
+                .如果真 (不等于 (最小化, 3))
+                    .如果 (等于 (皮肤.普通窗口.还原按钮.透明色, 0))
+                        绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.禁止)
+                    .否则
+                        绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.禁止, 皮肤.普通窗口.还原按钮.透明色)
+                    .如果结束
+                    
+                .如果真结束
+                
+            .否则
+                .如果 (等于 (皮肤.普通窗口.还原按钮.透明色, 0))
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.禁止)
+                .否则
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.还原按钮.禁止, 皮肤.普通窗口.还原按钮.透明色)
+                .如果结束
+                
+            .如果结束
+            
+        .否则
+            赋值 (目标矩形.top, 0)
+            赋值 (目标矩形.left, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.最大化按钮.禁止.right, 皮肤.普通窗口.关闭按钮.禁止.right, 14))
+            赋值 (目标矩形.right, 皮肤.普通窗口.最大化按钮.禁止.right)
+            赋值 (目标矩形.bottom, 皮肤.普通窗口.最大化按钮.禁止.bottom)
+            
+            .如果 (等于 (最大化, 3))
+                .如果真 (不等于 (最小化, 3))
+                    .如果 (等于 (皮肤.普通窗口.最大化按钮.透明色, 0))
+                        绘图 (hDC, 目标矩形, 皮肤.普通窗口.最大化按钮.禁止)
+                    .否则
+                        绘图 (hDC, 目标矩形, 皮肤.普通窗口.最大化按钮.禁止, 皮肤.普通窗口.最大化按钮.透明色)
+                    .如果结束
+                    
+                .如果真结束
+                
+            .否则
+                .如果 (等于 (皮肤.普通窗口.最大化按钮.透明色, 0))
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.最大化按钮.禁止)
+                .否则
+                    绘图 (hDC, 目标矩形, 皮肤.普通窗口.最大化按钮.禁止, 皮肤.普通窗口.最大化按钮.透明色)
+                .如果结束
+                
+            .如果结束
+            
+        .如果结束
+        
+         ' 关闭按钮
+        赋值 (目标矩形.top, 0)
+        赋值 (目标矩形.left, 相减 (RECT.right, RECT.left, 皮肤.普通窗口.关闭按钮.禁止.right, 14))
+        赋值 (目标矩形.right, 皮肤.普通窗口.关闭按钮.禁止.right)
+        赋值 (目标矩形.bottom, 皮肤.普通窗口.关闭按钮.禁止.bottom)
+        .如果 (等于 (皮肤.普通窗口.关闭按钮.透明色, 0))
+            绘图 (hDC, 目标矩形, 皮肤.普通窗口.关闭按钮.禁止)
+        .否则
+            绘图 (hDC, 目标矩形, 皮肤.普通窗口.关闭按钮.禁止, 皮肤.普通窗口.关闭按钮.透明色)
+        .如果结束
+        
+        
+    .如果结束
+    
+    .如果真 (不等于 (dc, 0))
+        ReleaseDC (窗口句柄, dc)
+    .如果真结束
+    
+.如果真结束
+
+
+
+
+
+.子程序 窗口_绘制窗口标题, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 设备场景, 整数型, , 
+
+.局部变量 RECT, RECT, , , 
+.局部变量 标题栏, 整数型, , , 
+.局部变量 最大化, 整数型, , , 
+.局部变量 最小化, 整数型, , , 
+.局部变量 关闭, 整数型, , , 
+.局部变量 系统菜单, 整数型, , , 
+.局部变量 标题, 文本型, , , 
+.局部变量 内存句柄, 整数型, , , 
+.局部变量 内存指针, 整数型, , , 
+.局部变量 图标, 整数型, , , 
+
+赋值 (标题栏, GetProp (窗口句柄, “Gsk.标题栏”))
+赋值 (图标, GetProp (窗口句柄, “Gsk.图标句柄”))
+赋值 (最小化, GetProp (窗口句柄, “Gsk.最小化按钮”))
+赋值 (最大化, GetProp (窗口句柄, “Gsk.最大化按钮”))
+赋值 (关闭, GetProp (窗口句柄, “Gsk.关闭按钮”))
+赋值 (系统菜单, GetProp (窗口句柄, “Gsk.系统菜单”))
+赋值 (内存句柄, GetProp (窗口句柄, “Gsk.窗口标题”))
+赋值 (内存指针, 锁定内存 (内存句柄))
+赋值 (标题, 指针到文本 (内存指针))
+解锁内存 (内存句柄)
+
+.如果真 (不等于 (标题栏, 0))
+    GetWindowRect (窗口句柄, RECT)
+    .如果 (并且 (等于 (最小化, 3), 等于 (最大化, 3)))
+        赋值 (RECT.right, 相减 (RECT.right, RECT.left, 14, 皮肤.普通窗口.关闭按钮.默认.right, 4))
+    .否则
+        赋值 (RECT.right, 相减 (RECT.right, RECT.left, 14, 皮肤.普通窗口.关闭按钮.默认.right, 皮肤.普通窗口.最大化按钮.默认.right, 皮肤.普通窗口.最小化按钮.默认.right, 4))
+    .如果结束
+    
+    
+    .如果 (并且 (不等于 (系统菜单, 0), 不等于 (图标, 0)))
+        赋值 (RECT.left, 相加 (8, 16, 4))
+    .否则
+        赋值 (RECT.left, 8)
+    .如果结束
+    
+    赋值 (RECT.top, 相除 (相减 (皮肤.普通窗口.上边框.激活.区域.bottom, 16), 2))
+    赋值 (RECT.bottom, 相加 (RECT.top, 16))
+    
+    SetTextColor (设备场景, 皮肤.文本颜色)
+    SetBkMode (设备场景, #TRANSPARENT)
+    SelectObject (设备场景, GetStockObject (#DEFAULT_GUI_FONT))
+    
+    DrawText (设备场景, 标题, 取文本长度 (标题), RECT, 52)
+.如果真结束
+
+
+.子程序 窗口_取非客户区按钮, 整数型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 坐标, 坐标, , 
+
+.局部变量 RECT, RECT, , , 
+.局部变量 控制区, RECT, , , 
+.局部变量 按钮, 整数型, , , 
+.局部变量 最大化, 整数型, , , 
+.局部变量 最小化, 整数型, , , 
+.局部变量 关闭, 整数型, , , 
+.局部变量 还原, 整数型, , , 
+
+赋值 (最大化, GetProp (窗口句柄, “Gsk.最大化按钮”))
+赋值 (最小化, GetProp (窗口句柄, “Gsk.最小化按钮”))
+赋值 (关闭, GetProp (窗口句柄, “Gsk.关闭按钮”))
+赋值 (还原, GetProp (窗口句柄, “Gsk.还原按钮”))
+
+GetWindowRect (窗口句柄, RECT)
+.如果 (并且 (等于 (最小化, 3), 等于 (最大化, 3)))
+    赋值 (控制区.left, 相减 (RECT.right, 皮肤.普通窗口.关闭按钮.默认.right, 14))
+    赋值 (控制区.top, RECT.top)
+    赋值 (控制区.right, 相加 (控制区.left, 皮肤.普通窗口.关闭按钮.默认.right))
+    赋值 (控制区.bottom, 相加 (控制区.top, 皮肤.普通窗口.关闭按钮.默认.bottom))
+    
+    .如果真 (PtInRect (控制区, 坐标.x, 坐标.y))
+        赋值 (按钮, #关闭按钮)
+    .如果真结束
+    
+.否则
+    .如果 (并且 (不等于 (还原, 0), 取反 (IsZoomed (窗口句柄))))
+        赋值 (控制区.left, 相减 (RECT.right, 皮肤.普通窗口.还原按钮.默认.right, 皮肤.普通窗口.最大化按钮.默认.right, 皮肤.普通窗口.关闭按钮.默认.right, 14))
+    .否则
+        赋值 (控制区.left, 相减 (RECT.right, 皮肤.普通窗口.最小化按钮.默认.right, 皮肤.普通窗口.最大化按钮.默认.right, 皮肤.普通窗口.关闭按钮.默认.right, 14))
+    .如果结束
+    
+    赋值 (控制区.top, RECT.top)
+    赋值 (控制区.right, 相加 (控制区.left, 皮肤.普通窗口.最小化按钮.默认.right, 皮肤.普通窗口.最大化按钮.默认.right, 皮肤.普通窗口.关闭按钮.默认.right))
+    赋值 (控制区.bottom, 相加 (控制区.top, 皮肤.普通窗口.最小化按钮.默认.bottom))
+    
+    .如果真 (并且 (大于或等于 (坐标.x, 控制区.left), 小于或等于 (坐标.x, 控制区.right), 大于或等于 (坐标.y, 控制区.top), 小于或等于 (坐标.y, 控制区.bottom)))
+        .如果 (并且 (不等于 (还原, 0), 取反 (IsZoomed (窗口句柄))))
+            .如果真 (小于或等于 (坐标.x, 相加 (控制区.left, 皮肤.普通窗口.还原按钮.默认.right)))
+                赋值 (按钮, #最小化按钮)
+            .如果真结束
+            
+        .否则
+            .如果真 (小于或等于 (坐标.x, 相加 (控制区.left, 皮肤.普通窗口.最小化按钮.默认.right)))
+                赋值 (按钮, #最小化按钮)
+            .如果真结束
+            
+        .如果结束
+        
+        .判断开始 (并且 (大于或等于 (坐标.x, 相加 (控制区.left, 皮肤.普通窗口.最小化按钮.默认.right)), 小于或等于 (坐标.x, 相加 (控制区.left, 皮肤.普通窗口.最小化按钮.默认.right, 皮肤.普通窗口.最大化按钮.默认.right))))
+            赋值 (按钮, #最大化按钮)
+        .判断 (并且 (大于或等于 (坐标.x, 相加 (控制区.left, 皮肤.普通窗口.最小化按钮.默认.right, 皮肤.普通窗口.最大化按钮.默认.right)), 小于或等于 (坐标.x, 相加 (控制区.left, 皮肤.普通窗口.最小化按钮.默认.right, 皮肤.普通窗口.最大化按钮.默认.right, 皮肤.普通窗口.关闭按钮.默认.right))))
+            赋值 (按钮, #关闭按钮)
+        .默认
+            
+        .判断结束
+        
+        
+    .如果真结束
+    
+.如果结束
+
+返回 (按钮)
+
+.子程序 窗口_是否在图标区域, 逻辑型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 坐标, 坐标, , 
+
+.局部变量 RECT, RECT, , , 
+.局部变量 图标, 整数型, , , 
+
+赋值 (图标, GetProp (窗口句柄, “Gsk.图标句柄”))
+GetWindowRect (窗口句柄, RECT)
+赋值 (RECT.left, 相加 (RECT.left, 8))
+赋值 (RECT.top, 相加 (RECT.top, 相除 (相减 (皮肤.普通窗口.上边框.激活.区域.bottom, 16), 2)))
+赋值 (RECT.right, 相加 (RECT.left, 16))
+赋值 (RECT.bottom, 相加 (RECT.top, 16))
+
+.如果 (并且 (PtInRect (RECT, 坐标.x, 坐标.y), 不等于 (图标, 0)))
+    返回 (真)
+.否则
+    返回 (假)
+.如果结束
+
+
+.子程序 窗口_消息处理, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+
+.判断开始 (等于 (Msg, #WM_NCPAINT))
+    窗口_On_WM_NCPAINT (hWnd, wParam)
+    返回 (0)
+.判断 (等于 (Msg, #WM_PAINT))
+    返回 (窗口_On_WM_PAINT (hWnd, Msg, wParam, lParam))
+.判断 (等于 (Msg, #WM_ERASEBKGND))
+    返回 (窗口_On_WM_ERASEBKGND (hWnd, Msg, wParam, lParam))
+.判断 (等于 (Msg, #WM_NCCALCSIZE))
+    返回 (窗口_On_WM_NCCALCSIZE (hWnd, Msg, wParam, lParam))
+.判断 (等于 (Msg, #WM_NCACTIVATE))
+    返回 (窗口_On_WM_NCACTIVATE (hWnd, Msg, wParam, lParam))
+.判断 (等于 (Msg, #WM_ACTIVATE))
+    返回 (窗口_On_WM_ACTIVATE (hWnd, Msg, wParam, lParam))
+.判断 (等于 (Msg, #WM_SIZE))
+    返回 (窗口_On_WM_SIZE (hWnd, Msg, wParam, lParam))
+.判断 (等于 (Msg, #WM_NCHITTEST))
+    返回 (窗口_On_WM_NCHITTEST (hWnd, Msg, wParam, lParam))
+.判断 (等于 (Msg, 174))
+    返回 (0)
+.判断 (等于 (Msg, #WM_NCMOUSEMOVE))
+    窗口_On_WM_NCMOUSEMOVE (hWnd, wParam, lParam)
+    返回 (0)
+.判断 (等于 (Msg, #WM_NCLBUTTONDOWN))
+    返回 (窗口_On_WM_NCLBUTTONDOWN (hWnd, Msg, wParam, lParam))
+.判断 (等于 (Msg, #WM_NCLBUTTONUP))
+    窗口_On_WM_NCLBUTTONUP (hWnd, wParam)
+    返回 (0)
+.判断 (等于 (Msg, #WM_NCLBUTTONDBLCLK))
+    窗口_On_WM_NCLBUTTONDBLCLK (hWnd, Msg, wParam, lParam)
+    返回 (0)
+.判断 (等于 (Msg, #WM_DESTROY))
+    窗口_On_WM_DESTROY (hWnd)
+.判断 (等于 (Msg, #WM_SETTEXT))
+    窗口_On_WM_SETTEXT (hWnd, Msg, wParam, lParam)
+    返回 (0)
+.默认
+    
+.判断结束
+
+返回 (CallWinProc (hWnd, Msg, wParam, lParam))
+
+.子程序 窗口_On_WM_NCPAINT, 空白型, , 
+.参数 hWnd, 整数型, , 
+.参数 wParam, 整数型, , 
+
+.局部变量 hDC, 整数型, , , 
+
+
+.如果 (等于 (wParam, 1))
+    赋值 (hDC, GetWindowDC (hWnd))
+.否则
+    赋值 (hDC, GetDCEx (hWnd, wParam, 位或 (#DCX_INTERSECTRGN, #DCX_WINDOW, #DCX_CACHE)))
+    .如果真 (等于 (hDC, 0))
+        赋值 (hDC, GetWindowDC (hWnd))
+    .如果真结束
+    
+.如果结束
+窗口_绘制非客户区 (hDC, hWnd)
+ReleaseDC (hWnd, hDC)
+
+.子程序 窗口_On_WM_PAINT, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 hDC, 整数型, , , 
+.局部变量 PS, PAINTSTRUCT, , , 
+.局部变量 数组索引, 整数型, , , 
+
+赋值 (hDC, BeginPaint (hWnd, PS))
+绘图 (hDC, PS.rcPaint, 皮肤.普通窗口.背景)
+EndPaint (hWnd, PS)
+返回 (0)
+
+.子程序 窗口_On_WM_NCCALCSIZE, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 矩形, RECT, , , 
+
+取矩形 (矩形, lParam)
+赋值 (矩形.left, 相加 (矩形.left, 皮肤.普通窗口.左边框.激活.区域.right))
+赋值 (矩形.top, 相加 (矩形.top, 皮肤.普通窗口.上边框.激活.区域.bottom))
+赋值 (矩形.right, 相减 (矩形.right, 皮肤.普通窗口.右边框.激活.区域.right))
+赋值 (矩形.bottom, 相减 (矩形.bottom, 皮肤.普通窗口.下边框.激活.区域.bottom))
+置矩形 (矩形, lParam)
+返回 (0)
+
+.子程序 窗口_On_WM_NCACTIVATE, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 激活状态, 整数型, , , 
+
+赋值 (激活状态, GetProp (hWnd, “Gsk.激活状态”))
+.如果真 (不等于 (激活状态, wParam))
+    SetProp (hWnd, “Gsk.激活状态”, wParam)
+    窗口_On_WM_NCPAINT (hWnd, 1)
+.如果真结束
+
+.如果 (等于 (wParam, 1))
+    返回 (0)
+.否则
+    ReleaseCapture ()
+    返回 (1)
+.如果结束
+
+
+.子程序 窗口_On_WM_ACTIVATE, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+窗口_On_WM_NCACTIVATE (hWnd, 0, 取低字 (wParam), 0)
+返回 (0)
+
+.子程序 窗口_On_WM_SIZE, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 RECT, RECT, , , 
+.局部变量 标题栏, 整数型, , , 
+
+赋值 (标题栏, GetProp (hWnd, “Gsk.标题栏”))
+
+.如果真 (不等于 (标题栏, 0))
+    圆角化 (hWnd)
+    .如果真 (或者 (等于 (wParam, #SIZE_MAXIMIZED), 等于 (wParam, #SIZE_MINIMIZED)))
+        SetProp (hWnd, “Gsk.还原按钮”, 1)
+    .如果真结束
+    .如果真 (等于 (wParam, #SIZE_RESTORED))
+        SetProp (hWnd, “Gsk.还原按钮”, 0)
+    .如果真结束
+    
+    窗口_绘制非客户区按钮 (hWnd, 0)
+    
+.如果真结束
+
+返回 (CallWinProc (hWnd, Msg, wParam, lParam))
+
+.子程序 窗口_On_WM_NCHITTEST, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 按钮, 整数型, , , 
+.局部变量 坐标, 坐标, , , 
+.局部变量 RECT, RECT, , , 
+.局部变量 系统菜单, 整数型, , , 
+.局部变量 最大化, 整数型, , , 
+.局部变量 最小化, 整数型, , , 
+.局部变量 关闭, 整数型, , , 
+
+
+赋值 (坐标.x, 取低字 (lParam))
+赋值 (坐标.y, 取高字 (lParam))
+赋值 (按钮, 窗口_取非客户区按钮 (hWnd, 坐标))
+GetWindowRect (hWnd, RECT)
+
+.如果真 (等于 (按钮, #关闭按钮))
+    返回 (#HTCLOSE)
+.如果真结束
+.如果真 (等于 (按钮, #最大化按钮))
+    返回 (#HTMAXBUTTON)
+.如果真结束
+.如果真 (等于 (按钮, #最小化按钮))
+    返回 (#HTMINBUTTON)
+.如果真结束
+
+赋值 (系统菜单, GetProp (hWnd, “Gsk.系统菜单”))
+.如果 (不等于 (系统菜单, 0))
+    赋值 (最大化, GetProp (hWnd, “Gsk.最大化按钮”))
+    赋值 (最小化, GetProp (hWnd, “Gsk.最小化按钮”))
+    赋值 (关闭, GetProp (hWnd, “Gsk.关闭按钮”))
+    
+    .如果真 (窗口_是否在图标区域 (hWnd, 坐标))
+        返回 (#HTSYSMENU)
+    .如果真结束
+    
+    .如果 (并且 (等于 (最小化, 3), 等于 (最大化, 3)))
+        赋值 (RECT.right, 相减 (RECT.right, 14, 皮肤.普通窗口.关闭按钮.默认.right, 4))
+    .否则
+        赋值 (RECT.right, 相减 (RECT.right, 14, 皮肤.普通窗口.关闭按钮.默认.right, 皮肤.普通窗口.最大化按钮.默认.right, 皮肤.普通窗口.最小化按钮.默认.right, 4))
+    .如果结束
+    
+    .如果 (不等于 (GetProp (hWnd, “Gsk.图标句柄”), 0))
+        赋值 (RECT.left, 相加 (RECT.left, 8, 16, 4))
+    .否则
+        赋值 (RECT.left, 相加 (RECT.left, 8))
+    .如果结束
+    
+.否则
+    赋值 (RECT.left, 相加 (RECT.left, 8))
+.如果结束
+
+
+赋值 (RECT.top, 相加 (RECT.top, 皮肤.普通窗口.上边框.激活.九宫.top))
+赋值 (RECT.bottom, 相减 (相加 (RECT.top, 皮肤.普通窗口.上边框.激活.区域.bottom), 皮肤.普通窗口.上边框.激活.九宫.top))
+
+
+.如果真 (PtInRect (RECT, 坐标.x, 坐标.y))
+    返回 (#HTCAPTION)
+.如果真结束
+
+
+.如果真 (取反 (IsZoomed (hWnd)))
+    GetWindowRect (hWnd, RECT)
+    
+    .如果真 (并且 (大于或等于 (坐标.x, RECT.left), 小于或等于 (坐标.x, 相加 (RECT.left, 4)), 大于或等于 (坐标.y, 相加 (RECT.top, 10)), 小于或等于 (坐标.y, 相减 (RECT.bottom, 10))))
+        返回 (#HTLEFT)
+    .如果真结束
+    .如果真 (并且 (大于或等于 (坐标.x, 相减 (RECT.right, 4)), 小于或等于 (坐标.x, RECT.right), 大于或等于 (坐标.y, 相加 (RECT.top, 10)), 小于或等于 (坐标.y, 相减 (RECT.bottom, 10))))
+        返回 (#HTRIGHT)
+    .如果真结束
+    .如果真 (并且 (大于或等于 (坐标.x, 相加 (RECT.left, 10)), 小于或等于 (坐标.x, 相减 (RECT.right, 10)), 大于或等于 (坐标.y, RECT.top), 小于或等于 (坐标.y, 相加 (RECT.top, 4))))
+        返回 (#HTTOP)
+    .如果真结束
+    .如果真 (并且 (大于或等于 (坐标.x, 相加 (RECT.left, 10)), 小于或等于 (坐标.x, 相减 (RECT.right, 10)), 大于或等于 (坐标.y, 相减 (RECT.bottom, 4)), 小于或等于 (坐标.y, RECT.bottom)))
+        返回 (#HTBOTTOM)
+    .如果真结束
+    .如果真 (并且 (小于或等于 (坐标.x, 相加 (RECT.left, 10)), 小于或等于 (坐标.y, 相加 (RECT.top, 10))))
+        返回 (#HTTOPLEFT)
+    .如果真结束
+    .如果真 (并且 (大于或等于 (坐标.x, 相减 (RECT.right, 10)), 小于或等于 (坐标.y, 相加 (RECT.top, 10))))
+        返回 (#HTTOPRIGHT)
+    .如果真结束
+    .如果真 (并且 (小于或等于 (坐标.x, 相加 (RECT.left, 10)), 大于或等于 (坐标.y, 相减 (RECT.bottom, 10))))
+        返回 (#HTBOTTOMLEFT)
+    .如果真结束
+    .如果真 (并且 (大于或等于 (坐标.x, 相减 (RECT.right, 10)), 大于或等于 (坐标.y, 相减 (RECT.bottom, 10))))
+        返回 (#HTBOTTOMRIGHT)
+    .如果真结束
+    
+.如果真结束
+
+返回 (#HTCLIENT)
+
+
+.子程序 窗口_On_WM_NCMOUSEMOVE, 空白型, , 
+.参数 hWnd, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 重绘, 逻辑型, , , 
+.局部变量 时钟状态, 整数型, , , 
+.局部变量 最大化, 整数型, , , 
+.局部变量 最小化, 整数型, , , 
+.局部变量 关闭, 整数型, , , 
+
+
+赋值 (时钟状态, GetProp (hWnd, “Gsk.时钟状态”))
+赋值 (最大化, GetProp (hWnd, “Gsk.最大化按钮”))
+赋值 (最小化, GetProp (hWnd, “Gsk.最小化按钮”))
+赋值 (关闭, GetProp (hWnd, “Gsk.关闭按钮”))
+
+.如果 (或者 (等于 (wParam, #HTCLOSE), 等于 (wParam, #HTMINBUTTON), 等于 (wParam, #HTMAXBUTTON)))
+    .如果真 (等于 (时钟状态, 0))
+        SetProp (hWnd, “Gsk.时钟状态”, 1)
+        SetTimer (hWnd, hWnd, 200, 到整数 (&窗口_TimerProc))
+        
+    .如果真结束
+    .判断开始 (等于 (wParam, #HTCLOSE))
+        
+        .如果真 (等于 (关闭, 0))
+            SetProp (hWnd, “Gsk.关闭按钮”, 1)
+            赋值 (重绘, 真)
+        .如果真结束
+        .如果真 (并且 (不等于 (最小化, 3), 不等于 (最小化, 0)))
+            SetProp (hWnd, “Gsk.最小化按钮”, 0)
+            赋值 (重绘, 真)
+        .如果真结束
+        .如果真 (并且 (不等于 (最大化, 3), 不等于 (最大化, 0)))
+            SetProp (hWnd, “Gsk.最大化按钮”, 0)
+            赋值 (重绘, 真)
+        .如果真结束
+        
+    .判断 (等于 (wParam, #HTMINBUTTON))
+        .如果真 (等于 (最小化, 0))
+            SetProp (hWnd, “Gsk.最小化按钮”, 1)
+            赋值 (重绘, 真)
+        .如果真结束
+        .如果真 (并且 (不等于 (最大化, 3), 不等于 (最大化, 0)))
+            SetProp (hWnd, “Gsk.最大化按钮”, 0)
+            赋值 (重绘, 真)
+        .如果真结束
+        .如果真 (并且 (不等于 (关闭, 3), 不等于 (关闭, 0)))
+            SetProp (hWnd, “Gsk.关闭按钮”, 0)
+            赋值 (重绘, 真)
+        .如果真结束
+        
+    .判断 (等于 (wParam, #HTMAXBUTTON))
+        
+        .如果真 (等于 (最大化, 0))
+            SetProp (hWnd, “Gsk.最大化按钮”, 1)
+            赋值 (重绘, 真)
+        .如果真结束
+        .如果真 (并且 (不等于 (最小化, 3), 不等于 (最小化, 0)))
+            SetProp (hWnd, “Gsk.最小化按钮”, 0)
+            赋值 (重绘, 真)
+        .如果真结束
+        .如果真 (并且 (不等于 (关闭, 3), 不等于 (关闭, 0)))
+            SetProp (hWnd, “Gsk.关闭按钮”, 0)
+            赋值 (重绘, 真)
+        .如果真结束
+        
+    .默认
+        
+    .判断结束
+    
+.否则
+    .如果真 (不等于 (时钟状态, 0))
+        KillTimer (hWnd, hWnd)
+        SetProp (hWnd, “Gsk.时钟状态”, 0)
+        .如果真 (并且 (不等于 (最小化, 3), 不等于 (最小化, 0)))
+            SetProp (hWnd, “Gsk.最小化按钮”, 0)
+            赋值 (重绘, 真)
+        .如果真结束
+        .如果真 (并且 (不等于 (最大化, 3), 不等于 (最大化, 0)))
+            SetProp (hWnd, “Gsk.最大化按钮”, 0)
+            赋值 (重绘, 真)
+        .如果真结束
+        .如果真 (并且 (不等于 (关闭, 3), 不等于 (关闭, 0)))
+            SetProp (hWnd, “Gsk.关闭按钮”, 0)
+            赋值 (重绘, 真)
+        .如果真结束
+        
+    .如果真结束
+    
+.如果结束
+.如果真 (重绘)
+    窗口_绘制非客户区按钮 (hWnd, 0)
+.如果真结束
+
+
+
+
+
+
+
+.子程序 窗口_On_WM_NCLBUTTONDOWN, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 最大化, 整数型, , , 
+.局部变量 最小化, 整数型, , , 
+.局部变量 关闭, 整数型, , , 
+
+赋值 (最大化, GetProp (hWnd, “Gsk.最大化按钮”))
+赋值 (最小化, GetProp (hWnd, “Gsk.最小化按钮”))
+赋值 (关闭, GetProp (hWnd, “Gsk.关闭按钮”))
+' 本源码来自易语言资源网(www.wodesoft.com)
+.判断开始 (并且 (等于 (wParam, #HTMINBUTTON), 不等于 (最小化, 3)))
+    SetProp (hWnd, “Gsk.最小化按钮”, 2)
+    
+.判断 (并且 (等于 (wParam, #HTMAXBUTTON), 不等于 (最大化, 3)))
+    SetProp (hWnd, “Gsk.最大化按钮”, 2)
+.判断 (并且 (等于 (wParam, #HTCLOSE), 不等于 (关闭, 3)))
+    SetProp (hWnd, “Gsk.关闭按钮”, 2)
+.默认
+    返回 (DefWindowProc (hWnd, Msg, wParam, lParam))
+.判断结束
+
+窗口_绘制非客户区按钮 (hWnd, 0)
+返回 (0)
+
+.子程序 窗口_On_WM_NCLBUTTONUP, 空白型, , 
+.参数 hWnd, 整数型, , 
+.参数 wParam, 整数型, , 
+
+.局部变量 最大化, 整数型, , , 
+.局部变量 最小化, 整数型, , , 
+.局部变量 关闭, 整数型, , , 
+.局部变量 还原按钮, 整数型, , , 
+
+赋值 (最大化, GetProp (hWnd, “Gsk.最大化按钮”))
+赋值 (最小化, GetProp (hWnd, “Gsk.最小化按钮”))
+赋值 (关闭, GetProp (hWnd, “Gsk.关闭按钮”))
+赋值 (还原按钮, GetProp (hWnd, “Gsk.还原按钮”))
+
+.判断开始 (并且 (等于 (wParam, #HTMINBUTTON), 等于 (最小化, 2)))
+    SetProp (hWnd, “Gsk.最小化按钮”, 1)
+    .如果 (并且 (不等于 (还原按钮, 0), 取反 (IsZoomed (hWnd))))
+        PostMessage (hWnd, #WM_SYSCOMMAND, #SC_RESTORE, 0)
+    .否则
+        PostMessage (hWnd, #WM_SYSCOMMAND, #SC_MINIMIZE, 0)
+    .如果结束
+    
+.判断 (并且 (等于 (wParam, #HTMAXBUTTON), 等于 (最大化, 2)))
+    SetProp (hWnd, “Gsk.最大化按钮”, 1)
+    .如果 (不等于 (还原按钮, 0))
+        .如果 (IsZoomed (hWnd))
+            PostMessage (hWnd, #WM_SYSCOMMAND, #SC_RESTORE, 0)
+        .否则
+            PostMessage (hWnd, #WM_SYSCOMMAND, #SC_MAXIMIZE, 0)
+        .如果结束
+        
+    .否则
+        PostMessage (hWnd, #WM_SYSCOMMAND, #SC_MAXIMIZE, 0)
+    .如果结束
+    
+.判断 (并且 (等于 (wParam, #HTCLOSE), 等于 (关闭, 2)))
+    SetProp (hWnd, “Gsk.关闭按钮”, 1)
+    PostMessage (hWnd, #WM_CLOSE, 0, 0)
+.默认
+    
+.判断结束
+
+窗口_绘制非客户区按钮 (hWnd, 0)
+
+.子程序 窗口_On_WM_NCLBUTTONDBLCLK, 空白型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+窗口_On_WM_NCLBUTTONDOWN (hWnd, Msg, wParam, lParam)
+
+.子程序 窗口_On_WM_ERASEBKGND, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 RECT, RECT, , , 
+
+GetClientRect (hWnd, RECT)
+绘图 (wParam, RECT, 皮肤.普通窗口.背景)
+返回 (1)
+
+.子程序 窗口_On_WM_SETTEXT, 空白型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 hDC, 整数型, , , 
+.局部变量 hRNG, 整数型, , , 
+.局部变量 标题, 文本型, , , 
+.局部变量 标题长度, 整数型, , , 
+.局部变量 内存句柄, 整数型, , , 
+.局部变量 内存指针, 整数型, , , 
+.局部变量 hRGN, 整数型, , , 
+.局部变量 RECT, RECT, , , 
+.局部变量 标题栏, 整数型, , , 
+
+CallWinProc (hWnd, Msg, wParam, lParam)
+
+赋值 (标题栏, GetProp (hWnd, “Gsk.标题栏”))
+
+赋值 (标题, 指针到文本 (lParam))
+赋值 (标题长度, 取文本长度 (标题))
+
+赋值 (内存句柄, GetProp (hWnd, “Gsk.窗口标题”))
+重置内存 (内存句柄, 相加 (标题长度, 1))
+赋值 (内存指针, 锁定内存 (内存句柄))
+文本到指针 (内存指针, 相加 (标题, 字符 (0)), 相加 (标题长度, 1))
+解锁内存 (内存句柄)
+
+.如果真 (不等于 (标题栏, 0))
+    GetWindowRect (hWnd, RECT)
+    
+    赋值 (RECT.left, 0)
+    赋值 (RECT.top, 0)
+    赋值 (RECT.right, 相减 (RECT.right, RECT.left))
+    赋值 (RECT.bottom, 皮肤.普通窗口.上边框.激活.区域.bottom)
+    
+    赋值 (hRGN, CreateRectRgn (RECT.left, RECT.top, RECT.right, RECT.bottom))
+    赋值 (hDC, GetWindowDC (hWnd))
+    SelectObject (hDC, hRGN)
+    窗口_绘制非客户区 (hDC, hWnd)
+    DeleteObject (hRGN)
+    ReleaseDC (hWnd, hDC)
+.如果真结束
+
+
+.子程序 窗口_On_WM_DESTROY, 空白型, , 
+.参数 hWnd, 整数型, , 
+
+.局部变量 数组索引, 整数型, , , 
+.局部变量 内存句柄, 整数型, , , 
+
+.如果真 (等于 (hWnd, 主窗口))
+    卸载钩子 ()
+    DeleteDC (源场景)
+.如果真结束
+
+赋值 (内存句柄, GetProp (hWnd, “窗口标题”))
+释放内存 (内存句柄)
+
+.程序集 按钮, , , 
+
+.子程序 按钮_应用皮肤, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+
+.局部变量 标题长度, 整数型, , , 
+.局部变量 标题, 文本型, , , 
+.局部变量 内存句柄, 整数型, , , 
+.局部变量 内存指针, 整数型, , , 
+
+
+SetProp (窗口句柄, “Gsk.窗口过程”, GetWindowLong (窗口句柄, #GWL_WNDPROC))
+
+赋值 (标题, 取空白文本 (129))
+赋值 (标题长度, GetWindowText (窗口句柄, 标题, 128))
+赋值 (内存句柄, 申请内存 (相加 (标题长度, 1)))
+赋值 (内存指针, 锁定内存 (内存句柄))
+文本到指针 (内存指针, 相加 (标题, 字符 (0)), 相加 (标题长度, 1))
+解锁内存 (内存句柄)
+SetProp (窗口句柄, “Gsk.窗口标题”, 内存句柄)
+.如果 (IsWindowEnabled (窗口句柄))
+    SetProp (窗口句柄, “Gsk.当前状态”, #按钮状态_默认)
+.否则
+    SetProp (窗口句柄, “Gsk.当前状态”, #按钮状态_禁止)
+.如果结束
+
+SetProp (窗口句柄, “Gsk.焦点”, 0)
+SetProp (窗口句柄, “Gsk.鼠标按下”, 0)
+
+SetWindowLong (窗口句柄, #GWL_WNDPROC, 到整数 (&按钮_消息处理))
+
+.如果真 (等于 (位与 (GetWindowLong (窗口句柄, #GWL_STYLE), #BS_DEFPUSHBUTTON), #BS_DEFPUSHBUTTON))
+    SetFocus (窗口句柄)
+.如果真结束
+
+
+
+.子程序 按钮_绘制, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 hDC, 整数型, , 
+
+.局部变量 dc, 整数型, , , 
+.局部变量 RECT, RECT, , , 
+.局部变量 目标矩形, RECT, , , 
+.局部变量 源矩形, RECT, , , 
+.局部变量 按钮, 区域信息, , , 
+.局部变量 当前状态, 整数型, , , 
+.局部变量 标题, 文本型, , , 
+.局部变量 内存句柄, 整数型, , , 
+.局部变量 内存指针, 整数型, , , 
+
+赋值 (当前状态, GetProp (窗口句柄, “Gsk.当前状态”))
+赋值 (内存句柄, GetProp (窗口句柄, “Gsk.窗口标题”))
+赋值 (内存指针, 锁定内存 (内存句柄))
+赋值 (标题, 指针到文本 (内存指针))
+解锁内存 (内存句柄)
+
+.如果真 (等于 (hDC, 0))
+    赋值 (hDC, GetWindowDC (窗口句柄))
+    赋值 (dc, hDC)
+.如果真结束
+
+.判断开始 (等于 (当前状态, #按钮状态_默认))
+    赋值 (按钮, 皮肤.普通按钮.默认)
+.判断 (等于 (当前状态, #按钮状态_点燃))
+    赋值 (按钮, 皮肤.普通按钮.点燃)
+.判断 (等于 (当前状态, #按钮状态_按下))
+    赋值 (按钮, 皮肤.普通按钮.选中)
+.判断 (等于 (当前状态, #按钮状态_禁止))
+    赋值 (按钮, 皮肤.普通按钮.禁止)
+.判断 (等于 (当前状态, #按钮状态_热点))
+    赋值 (按钮, 皮肤.普通按钮.热点)
+.默认
+    
+.判断结束
+
+
+GetWindowRect (窗口句柄, RECT)
+赋值 (RECT.bottom, 相减 (RECT.bottom, RECT.top))
+赋值 (RECT.right, 相减 (RECT.right, RECT.left))
+赋值 (RECT.left, 0)
+赋值 (RECT.top, 0)
+
+ ' 左上
+赋值 (目标矩形.left, 0)
+赋值 (目标矩形.top, 0)
+赋值 (目标矩形.right, 按钮.九宫.left)
+赋值 (目标矩形.bottom, 按钮.九宫.top)
+赋值 (源矩形.left, 按钮.区域.left)
+赋值 (源矩形.top, 按钮.区域.top)
+赋值 (源矩形.right, 按钮.九宫.left)
+赋值 (源矩形.bottom, 按钮.九宫.top)
+绘图 (hDC, 目标矩形, 源矩形, 皮肤.普通按钮.透明色)
+
+ ' 左
+赋值 (目标矩形.left, 0)
+赋值 (目标矩形.top, 按钮.九宫.top)
+赋值 (目标矩形.right, 按钮.九宫.left)
+赋值 (目标矩形.bottom, 相减 (RECT.bottom, 按钮.九宫.top, 按钮.九宫.bottom))
+赋值 (源矩形.left, 按钮.区域.left)
+赋值 (源矩形.top, 相加 (按钮.区域.top, 按钮.九宫.top))
+赋值 (源矩形.right, 按钮.九宫.left)
+赋值 (源矩形.bottom, 相减 (按钮.区域.bottom, 按钮.九宫.top, 按钮.九宫.bottom))
+绘图 (hDC, 目标矩形, 源矩形)
+
+ ' 左下
+赋值 (目标矩形.left, 0)
+赋值 (目标矩形.top, 相减 (RECT.bottom, 按钮.九宫.bottom))
+赋值 (目标矩形.right, 按钮.九宫.left)
+赋值 (目标矩形.bottom, 按钮.九宫.bottom)
+赋值 (源矩形.left, 按钮.区域.left)
+赋值 (源矩形.top, 相减 (相加 (按钮.区域.top, 按钮.区域.bottom), 按钮.九宫.bottom))
+赋值 (源矩形.right, 按钮.九宫.left)
+赋值 (源矩形.bottom, 按钮.九宫.bottom)
+绘图 (hDC, 目标矩形, 源矩形, 皮肤.普通按钮.透明色)
+
+ ' 上
+赋值 (目标矩形.left, 按钮.九宫.left)
+赋值 (目标矩形.top, 0)
+赋值 (目标矩形.right, 相减 (RECT.right, 按钮.九宫.left, 按钮.九宫.right))
+赋值 (目标矩形.bottom, 按钮.九宫.top)
+赋值 (源矩形.left, 相加 (按钮.区域.left, 按钮.九宫.left))
+赋值 (源矩形.top, 按钮.区域.top)
+赋值 (源矩形.right, 相减 (按钮.区域.right, 按钮.九宫.left, 按钮.九宫.right))
+赋值 (源矩形.bottom, 按钮.九宫.top)
+绘图 (hDC, 目标矩形, 源矩形)
+
+ ' 下
+赋值 (目标矩形.left, 按钮.九宫.left)
+赋值 (目标矩形.top, 相减 (RECT.bottom, 按钮.九宫.bottom))
+赋值 (目标矩形.right, 相减 (RECT.right, 按钮.九宫.left, 按钮.九宫.right))
+赋值 (目标矩形.bottom, 按钮.九宫.bottom)
+赋值 (源矩形.left, 相加 (按钮.区域.left, 按钮.九宫.left))
+赋值 (源矩形.top, 相减 (相加 (按钮.区域.top, 按钮.区域.bottom), 按钮.九宫.bottom))
+赋值 (源矩形.right, 相减 (按钮.区域.right, 按钮.九宫.left, 按钮.九宫.right))
+赋值 (源矩形.bottom, 按钮.九宫.bottom)
+绘图 (hDC, 目标矩形, 源矩形)
+
+ ' 右上
+赋值 (目标矩形.left, 相减 (RECT.right, 按钮.九宫.right))
+赋值 (目标矩形.top, 0)
+赋值 (目标矩形.right, 按钮.九宫.right)
+赋值 (目标矩形.bottom, 按钮.九宫.top)
+赋值 (源矩形.left, 相减 (相加 (按钮.区域.left, 按钮.区域.right), 按钮.九宫.right))
+赋值 (源矩形.top, 按钮.区域.top)
+赋值 (源矩形.right, 按钮.九宫.right)
+赋值 (源矩形.bottom, 按钮.九宫.top)
+绘图 (hDC, 目标矩形, 源矩形, 皮肤.普通按钮.透明色)
+
+ ' 右
+赋值 (目标矩形.left, 相减 (RECT.right, 按钮.九宫.right))
+赋值 (目标矩形.top, 按钮.九宫.top)
+赋值 (目标矩形.right, 按钮.九宫.right)
+赋值 (目标矩形.bottom, 相减 (RECT.bottom, 按钮.九宫.top, 按钮.九宫.bottom))
+赋值 (源矩形.left, 相减 (相加 (按钮.区域.left, 按钮.区域.right), 按钮.九宫.right))
+赋值 (源矩形.top, 相加 (按钮.区域.top, 按钮.九宫.top))
+赋值 (源矩形.right, 按钮.九宫.right)
+赋值 (源矩形.bottom, 相减 (按钮.区域.bottom, 按钮.九宫.top, 按钮.九宫.bottom))
+绘图 (hDC, 目标矩形, 源矩形)
+
+ ' 右下
+赋值 (目标矩形.left, 相减 (RECT.right, 按钮.九宫.right))
+赋值 (目标矩形.top, 相减 (RECT.bottom, 按钮.九宫.bottom))
+赋值 (目标矩形.right, 按钮.九宫.right)
+赋值 (目标矩形.bottom, 按钮.九宫.bottom)
+赋值 (源矩形.left, 相减 (相加 (按钮.区域.left, 按钮.区域.right), 按钮.九宫.right))
+赋值 (源矩形.top, 相减 (相加 (按钮.区域.top, 按钮.区域.bottom), 按钮.九宫.bottom))
+赋值 (源矩形.right, 按钮.九宫.right)
+赋值 (源矩形.bottom, 按钮.九宫.bottom)
+绘图 (hDC, 目标矩形, 源矩形, 皮肤.普通按钮.透明色)
+
+ ' 中
+赋值 (目标矩形.left, 按钮.九宫.left)
+赋值 (目标矩形.top, 按钮.九宫.top)
+赋值 (目标矩形.right, 相减 (RECT.right, 按钮.九宫.left, 按钮.九宫.right))
+赋值 (目标矩形.bottom, 相减 (RECT.bottom, 按钮.九宫.top, 按钮.九宫.bottom))
+赋值 (源矩形.left, 相加 (按钮.区域.left, 按钮.九宫.left))
+赋值 (源矩形.top, 相加 (按钮.区域.top, 按钮.九宫.top))
+赋值 (源矩形.right, 相减 (按钮.区域.right, 按钮.九宫.left, 按钮.九宫.right))
+赋值 (源矩形.bottom, 相减 (按钮.区域.bottom, 按钮.九宫.top, 按钮.九宫.bottom))
+绘图 (hDC, 目标矩形, 源矩形)
+
+
+GetClientRect (窗口句柄, 目标矩形)
+.如果真 (等于 (当前状态, #按钮状态_按下))
+    赋值 (目标矩形.top, 相加 (目标矩形.top, 2))
+    赋值 (目标矩形.left, 相加 (目标矩形.left, 2))
+.如果真结束
+
+SetTextColor (hDC, 皮肤.文本颜色)
+SetBkMode (hDC, 1)
+SelectObject (hDC, GetStockObject (#DEFAULT_GUI_FONT))
+
+DrawText (hDC, 标题, 取文本长度 (标题), 目标矩形, 37)
+
+ReleaseDC (窗口句柄, dc)
+
+.子程序 按钮_消息处理, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.判断开始 (等于 (Msg, #WM_PAINT))
+    按钮_On_WM_PAINT (hWnd)
+    返回 (0)
+.判断 (等于 (Msg, #WM_SETTEXT))
+    按钮_On_WM_SETTEXT (hWnd, lParam)
+    返回 (0)
+.判断 (等于 (Msg, #WM_SETFOCUS))
+    按钮_On_WM_SETFOCUS (hWnd)
+    返回 (0)
+.判断 (等于 (Msg, #WM_KILLFOCUS))
+    按钮_On_WM_KILLFOCUS (hWnd)
+    返回 (0)
+.判断 (等于 (Msg, #WM_MOUSEMOVE))
+    按钮_WM_MOUSEMOVE (hWnd)
+.判断 (等于 (Msg, #WM_NCPAINT))
+    按钮_On_WM_NCPAINT (hWnd, wParam)
+    返回 (0)
+.判断 (等于 (Msg, #BM_SETSTATE))
+    按钮_On_BM_SETSTATE (hWnd, 等于 (wParam, 1))
+.判断 (等于 (Msg, #WM_LBUTTONDOWN))
+    按钮_鼠标状态按下 (hWnd, 真)
+.判断 (等于 (Msg, #WM_LBUTTONUP))
+    按钮_鼠标状态按下 (hWnd, 假)
+.判断 (等于 (Msg, #WM_ERASEBKGND))
+    按钮_On_WM_ERASEBKGND (hWnd, wParam)
+    返回 (1)
+.默认
+    
+.判断结束
+
+返回 (CallWinProc (hWnd, Msg, wParam, lParam))
+
+.子程序 按钮_On_WM_PAINT, 空白型, , 
+.参数 hWnd, 整数型, , 
+
+.局部变量 hDC, 整数型, , , 
+.局部变量 PS, PAINTSTRUCT, , , 
+
+赋值 (hDC, BeginPaint (hWnd, PS))
+按钮_绘制 (hWnd, hDC)
+EndPaint (hWnd, PS)
+
+.子程序 按钮_On_WM_NCPAINT, 空白型, , 
+.参数 hWnd, 整数型, , 
+.参数 wParam, 整数型, , 
+
+.局部变量 hDC, 整数型, , , 
+
+
+.如果 (等于 (wParam, 1))
+    赋值 (hDC, GetWindowDC (hWnd))
+.否则
+    赋值 (hDC, GetDCEx (hWnd, wParam, 位或 (#DCX_INTERSECTRGN, #DCX_WINDOW, #DCX_CACHE)))
+    .如果真 (等于 (hDC, 0))
+        赋值 (hDC, GetWindowDC (hWnd))
+    .如果真结束
+    
+.如果结束
+按钮_绘制 (hWnd, hDC)
+ReleaseDC (hWnd, hDC)
+
+.子程序 按钮_On_WM_SETTEXT, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 文本指针, 整数型, , 
+
+.局部变量 标题长度, 整数型, , , 
+.局部变量 标题, 文本型, , , 
+.局部变量 内存句柄, 整数型, , , 
+.局部变量 内存指针, 整数型, , , 
+
+赋值 (标题, 指针到文本 (文本指针))
+赋值 (标题长度, 取文本长度 (标题))
+
+赋值 (内存句柄, GetProp (窗口句柄, “Gsk.窗口标题”))
+重置内存 (内存句柄, 相加 (标题长度, 1))
+赋值 (内存指针, 锁定内存 (内存句柄))
+文本到指针 (内存指针, 相加 (标题, 字符 (0)), 相加 (标题长度, 1))
+解锁内存 (内存句柄)
+
+按钮_绘制 (窗口句柄, 0)
+
+
+.子程序 按钮_On_WM_SETFOCUS, 空白型, , 
+.参数 hWnd, 整数型, , 
+
+.局部变量 当前状态, 整数型, , , 
+
+赋值 (当前状态, GetProp (hWnd, “Gsk.当前状态”))
+SetProp (hWnd, “Gsk.焦点”, 1)
+.如果真 (不等于 (当前状态, #按钮状态_按下))
+    SetProp (hWnd, “Gsk.当前状态”, #按钮状态_热点)
+    按钮_绘制 (hWnd, 0)
+.如果真结束
+
+
+.子程序 按钮_On_WM_KILLFOCUS, 空白型, , 
+.参数 hWnd, 整数型, , 
+
+.局部变量 当前状态, 整数型, , , 
+
+赋值 (当前状态, GetProp (hWnd, “Gsk.当前状态”))
+SetProp (hWnd, “Gsk.焦点”, 0)
+.如果真 (等于 (当前状态, #按钮状态_热点))
+    SetProp (hWnd, “Gsk.当前状态”, #按钮状态_默认)
+    按钮_绘制 (hWnd, 0)
+.如果真结束
+' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 按钮_WM_MOUSEMOVE, 空白型, , 
+.参数 hWnd, 整数型, , 
+
+.局部变量 坐标, 坐标, , , 
+.局部变量 RECT, RECT, , , 
+.局部变量 RECT2, RECT, , , 
+.局部变量 当前状态, 整数型, , , 
+.局部变量 鼠标按下, 整数型, , , 
+.局部变量 焦点, 整数型, , , 
+
+赋值 (当前状态, GetProp (hWnd, “Gsk.当前状态”))
+赋值 (鼠标按下, GetProp (hWnd, “Gsk.鼠标按下”))
+赋值 (焦点, GetProp (hWnd, “Gsk.焦点”))
+
+GetCursorPos (坐标)
+GetWindowRect (hWnd, RECT)
+GetWindowRect (GetParent (hWnd), RECT2)
+
+赋值 (RECT2.left, 相加 (RECT2.left, 皮肤.普通窗口.左边框.激活.区域.right))
+赋值 (RECT2.top, 相加 (RECT2.top, 皮肤.普通窗口.上边框.激活.区域.bottom))
+赋值 (RECT2.right, 相减 (RECT2.right, 皮肤.普通窗口.右边框.激活.区域.right))
+赋值 (RECT2.bottom, 相减 (RECT2.bottom, 皮肤.普通窗口.下边框.激活.区域.bottom))
+
+.如果 (PtInRect (RECT2, 坐标.x, 坐标.y))
+    .如果真 (并且 (不等于 (当前状态, #按钮状态_禁止), 等于 (鼠标按下, 0)))
+        .如果 (PtInRect (RECT, 坐标.x, 坐标.y))
+            .如果真 (不等于 (当前状态, #按钮状态_点燃))
+                SetCapture (hWnd)
+                SetProp (hWnd, “Gsk.当前状态”, #按钮状态_点燃)
+            .如果真结束
+            
+        .否则
+            .如果真 (等于 (鼠标按下, 0))
+                ReleaseCapture ()
+            .如果真结束
+            .如果 (不等于 (焦点, 0))
+                SetProp (hWnd, “Gsk.当前状态”, #按钮状态_热点)
+            .否则
+                SetProp (hWnd, “Gsk.当前状态”, #按钮状态_默认)
+            .如果结束
+            
+        .如果结束
+        
+    .如果真结束
+    
+.否则
+    .如果真 (等于 (鼠标按下, 0))
+        ReleaseCapture ()
+    .如果真结束
+    .如果 (不等于 (焦点, 0))
+        SetProp (hWnd, “Gsk.当前状态”, #按钮状态_热点)
+    .否则
+        SetProp (hWnd, “Gsk.当前状态”, #按钮状态_默认)
+    .如果结束
+    
+.如果结束
+
+
+.子程序 按钮_On_BM_SETSTATE, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 选中, 逻辑型, , 
+
+.局部变量 焦点, 整数型, , , 
+
+
+.如果 (选中)
+    SetProp (窗口句柄, “Gsk.当前状态”, #按钮状态_按下)
+.否则
+    赋值 (焦点, GetProp (窗口句柄, “Gsk.焦点”))
+    .如果 (不等于 (焦点, 0))
+        SetProp (窗口句柄, “Gsk.当前状态”, #按钮状态_热点)
+    .否则
+        SetProp (窗口句柄, “Gsk.当前状态”, #按钮状态_默认)
+    .如果结束
+    
+.如果结束
+
+
+.子程序 按钮_鼠标状态按下, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+.参数 状态, 逻辑型, , 
+
+.如果 (状态)
+    SetProp (窗口句柄, “Gsk.鼠标按下”, 1)
+.否则
+    SetProp (窗口句柄, “Gsk.鼠标按下”, 0)
+.如果结束
+
+
+.子程序 按钮_On_WM_ERASEBKGND, 空白型, , 
+.参数 hWnd, 整数型, , 
+.参数 wParam, 整数型, , 
+
+按钮_绘制 (hWnd, wParam)
+
+.程序集 外部接口, , , 
+
+.子程序 应用皮肤, 空白型, 公开, 
+.参数 窗口句柄, 整数型, , 
+
+.局部变量 位图, 对象, , , 
+.局部变量 子窗口, 整数型, , , 
+
+.如果真 (皮肤状态)
+    返回 ()
+.如果真结束
+赋值 (皮肤状态, 真)
+
+赋值 (主窗口, 窗口句柄)
+赋值 (图标句柄, SendMessage (窗口句柄, #WM_GETICON, #ICON_SMALL, 0))
+.如果真 (等于 (图标句柄, 0))
+    赋值 (图标句柄, SendMessage (窗口句柄, #WM_GETICON, #ICON_BIG, 0))
+.如果真结束
+
+位图.创建图片对象 (读入文件 (“skin.gif”))
+赋值 (源场景, CreateCompatibleDC (0))
+SelectObject (源场景, 位图.读数值属性 (“Handle”, ))
+位图.清除 ()
+
+ ' 皮肤配置信息
+ ' ----------------------------------------------------------
+SetRect (皮肤.普通窗口.左边框.激活.区域, 41, 217, 3, 14)
+SetRect (皮肤.普通窗口.左边框.激活.九宫, 0, 0, 0, 0)
+SetRect (皮肤.普通窗口.左边框.非激活.区域, 213, 0, 3, 15)
+SetRect (皮肤.普通窗口.左边框.非激活.九宫, 0, 0, 0, 0)
+赋值 (皮肤.普通窗口.左边框.透明色, 0)
+
+SetRect (皮肤.普通窗口.上边框.激活.区域, 0, 31, 169, 31)
+SetRect (皮肤.普通窗口.上边框.激活.九宫, 46, 7, 53, 0)
+SetRect (皮肤.普通窗口.上边框.非激活.区域, 0, 0, 169, 31)
+SetRect (皮肤.普通窗口.上边框.非激活.九宫, 42, 7, 46, 0)
+赋值 (皮肤.普通窗口.上边框.透明色, #品红)
+' 本源码来自易语言资源网(www.wodesoft.com)
+SetRect (皮肤.普通窗口.右边框.激活.区域, 215, 81, 3, 14)
+SetRect (皮肤.普通窗口.右边框.激活.九宫, 0, 0, 0, 0)
+SetRect (皮肤.普通窗口.右边框.非激活.区域, 213, 62, 3, 14)
+SetRect (皮肤.普通窗口.右边框.非激活.九宫, 0, 0, 0, 0)
+赋值 (皮肤.普通窗口.右边框.透明色, 0)
+
+SetRect (皮肤.普通窗口.下边框.激活.区域, 193, 26, 24, 5)
+SetRect (皮肤.普通窗口.下边框.激活.九宫, 6, 0, 6, 0)
+SetRect (皮肤.普通窗口.下边框.非激活.区域, 169, 26, 24, 5)
+SetRect (皮肤.普通窗口.下边框.非激活.九宫, 6, 0, 6, 0)
+赋值 (皮肤.普通窗口.下边框.透明色, #品红)
+
+SetRect (皮肤.普通窗口.最小化按钮.默认, 75, 137, 25, 18)
+SetRect (皮肤.普通窗口.最小化按钮.点燃, 50, 137, 25, 18)
+SetRect (皮肤.普通窗口.最小化按钮.按下, 25, 137, 25, 18)
+SetRect (皮肤.普通窗口.最小化按钮.禁止, 0, 137, 25, 18)
+赋值 (皮肤.普通窗口.最小化按钮.透明色, #品红)
+
+SetRect (皮肤.普通窗口.最大化按钮.默认, 170, 102, 26, 18)
+SetRect (皮肤.普通窗口.最大化按钮.点燃, 144, 102, 26, 18)
+SetRect (皮肤.普通窗口.最大化按钮.按下, 118, 102, 26, 18)
+SetRect (皮肤.普通窗口.最大化按钮.禁止, 92, 102, 26, 18)
+赋值 (皮肤.普通窗口.最大化按钮.透明色, 0)
+
+SetRect (皮肤.普通窗口.关闭按钮.默认, 137, 81, 42, 18)
+SetRect (皮肤.普通窗口.关闭按钮.点燃, 95, 81, 42, 18)
+SetRect (皮肤.普通窗口.关闭按钮.按下, 53, 81, 42, 18)
+SetRect (皮肤.普通窗口.关闭按钮.禁止, 169, 31, 42, 18)
+赋值 (皮肤.普通窗口.关闭按钮.透明色, #品红)
+
+SetRect (皮肤.普通窗口.还原按钮.默认, 66, 102, 26, 18)
+SetRect (皮肤.普通窗口.还原按钮.点燃, 40, 102, 26, 18)
+SetRect (皮肤.普通窗口.还原按钮.按下, 14, 102, 26, 18)
+SetRect (皮肤.普通窗口.还原按钮.禁止, 179, 81, 26, 18)
+赋值 (皮肤.普通窗口.还原按钮.透明色, #品红)
+
+SetRect (皮肤.普通窗口.背景, 37, 155, 20, 20)
+
+SetRect (皮肤.普通按钮.默认.区域, 87, 182, 13, 21)
+SetRect (皮肤.普通按钮.默认.九宫, 3, 4, 3, 3)
+SetRect (皮肤.普通按钮.点燃.区域, 28, 182, 16, 21)
+SetRect (皮肤.普通按钮.点燃.九宫, 5, 5, 5, 4)
+SetRect (皮肤.普通按钮.热点.区域, 59, 182, 15, 21)
+SetRect (皮肤.普通按钮.热点.九宫, 4, 4, 4, 4)
+SetRect (皮肤.普通按钮.选中.区域, 44, 182, 15, 21)
+SetRect (皮肤.普通按钮.选中.九宫, 4, 4, 4, 4)
+SetRect (皮肤.普通按钮.禁止.区域, 74, 182, 13, 21)
+SetRect (皮肤.普通按钮.禁止.九宫, 3, 3, 3, 3)
+赋值 (皮肤.普通按钮.透明色, #品红)
+赋值 (皮肤.普通按钮.文本色, #藏青)
+
+SetRect (皮肤.滚动条.水平滚动条.左部.默认.区域, 181, 62, 16, 16)
+SetRect (皮肤.滚动条.水平滚动条.左部.默认.九宫, 3, 3, 4, 3)
+SetRect (皮肤.滚动条.水平滚动条.左部.点燃.区域, 165, 62, 16, 16)
+SetRect (皮肤.滚动条.水平滚动条.左部.点燃.九宫, 3, 3, 3, 3)
+SetRect (皮肤.滚动条.水平滚动条.左部.选中.区域, 149, 62, 16, 16)
+SetRect (皮肤.滚动条.水平滚动条.左部.选中.九宫, 3, 4, 3, 3)
+SetRect (皮肤.滚动条.水平滚动条.左部.禁止.区域, 133, 62, 16, 16)
+SetRect (皮肤.滚动条.水平滚动条.左部.禁止.九宫, 3, 3, 3, 3)
+
+SetRect (皮肤.滚动条.水平滚动条.右部.默认.区域, 181, 62, 16, 16)
+SetRect (皮肤.滚动条.水平滚动条.右部.默认.九宫, 3, 3, 4, 3)
+SetRect (皮肤.滚动条.水平滚动条.右部.点燃.区域, 165, 62, 16, 16)
+SetRect (皮肤.滚动条.水平滚动条.右部.点燃.九宫, 3, 3, 3, 3)
+SetRect (皮肤.滚动条.水平滚动条.右部.选中.区域, 149, 62, 16, 16)
+SetRect (皮肤.滚动条.水平滚动条.右部.选中.九宫, 3, 4, 3, 3)
+SetRect (皮肤.滚动条.水平滚动条.右部.禁止.区域, 133, 62, 16, 16)
+SetRect (皮肤.滚动条.水平滚动条.右部.禁止.九宫, 3, 3, 3, 3)
+
+SetRect (皮肤.滚动条.水平滚动条.滑槽.默认.区域, 31, 217, 10, 18)
+SetRect (皮肤.滚动条.水平滚动条.滑槽.默认.九宫, 0, 2, 0, 2)
+SetRect (皮肤.滚动条.水平滚动条.滑槽.点燃.区域, 31, 217, 10, 18)
+SetRect (皮肤.滚动条.水平滚动条.滑槽.点燃.九宫, 0, 2, 0, 2)
+SetRect (皮肤.滚动条.水平滚动条.滑槽.选中.区域, 31, 217, 10, 18)
+SetRect (皮肤.滚动条.水平滚动条.滑槽.选中.九宫, 0, 2, 0, 2)
+SetRect (皮肤.滚动条.水平滚动条.滑槽.禁止.区域, 205, 81, 10, 18)
+SetRect (皮肤.滚动条.水平滚动条.滑槽.禁止.九宫, 0, 2, 0, 2)
+
+SetRect (皮肤.滚动条.水平滚动条.滑块.默认.区域, 181, 62, 16, 16)
+SetRect (皮肤.滚动条.水平滚动条.滑块.默认.九宫, 3, 3, 4, 3)
+SetRect (皮肤.滚动条.水平滚动条.滑块.点燃.区域, 165, 62, 16, 16)
+SetRect (皮肤.滚动条.水平滚动条.滑块.点燃.九宫, 3, 3, 3, 3)
+SetRect (皮肤.滚动条.水平滚动条.滑块.选中.区域, 149, 62, 16, 16)
+SetRect (皮肤.滚动条.水平滚动条.滑块.选中.九宫, 3, 4, 3, 3)
+SetRect (皮肤.滚动条.水平滚动条.滑块.禁止.区域, 133, 62, 16, 16)
+SetRect (皮肤.滚动条.水平滚动条.滑块.禁止.九宫, 3, 3, 3, 3)
+
+SetRect (皮肤.滚动条.垂直滚动条.上部.默认.区域, 30, 120, 16, 16)
+SetRect (皮肤.滚动条.垂直滚动条.上部.默认.九宫, 2, 2, 2, 2)
+SetRect (皮肤.滚动条.垂直滚动条.上部.点燃.区域, 14, 120, 16, 16)
+SetRect (皮肤.滚动条.垂直滚动条.上部.点燃.九宫, 2, 2, 2, 2)
+SetRect (皮肤.滚动条.垂直滚动条.上部.选中.区域, 196, 102, 16, 16)
+SetRect (皮肤.滚动条.垂直滚动条.上部.选中.九宫, 3, 2, 3, 2)
+SetRect (皮肤.滚动条.垂直滚动条.上部.禁止.区域, 197, 62, 16, 16)
+SetRect (皮肤.滚动条.垂直滚动条.上部.禁止.九宫, 2, 2, 2, 2)
+
+SetRect (皮肤.滚动条.垂直滚动条.下部.默认.区域, 30, 120, 16, 16)
+SetRect (皮肤.滚动条.垂直滚动条.下部.默认.九宫, 2, 2, 2, 2)
+SetRect (皮肤.滚动条.垂直滚动条.下部.点燃.区域, 14, 120, 16, 16)
+SetRect (皮肤.滚动条.垂直滚动条.下部.点燃.九宫, 2, 2, 2, 2)
+SetRect (皮肤.滚动条.垂直滚动条.下部.选中.区域, 196, 102, 16, 16)
+SetRect (皮肤.滚动条.垂直滚动条.下部.选中.九宫, 3, 2, 3, 2)
+SetRect (皮肤.滚动条.垂直滚动条.下部.禁止.区域, 197, 62, 16, 16)
+SetRect (皮肤.滚动条.垂直滚动条.下部.禁止.九宫, 2, 2, 2, 2)
+
+SetRect (皮肤.滚动条.垂直滚动条.滑槽.默认.区域, 83, 120, 18, 10)
+SetRect (皮肤.滚动条.垂直滚动条.滑槽.默认.九宫, 2, 0, 2, 0)
+SetRect (皮肤.滚动条.垂直滚动条.滑槽.点燃.区域, 83, 120, 18, 10)
+SetRect (皮肤.滚动条.垂直滚动条.滑槽.点燃.九宫, 2, 0, 2, 0)
+SetRect (皮肤.滚动条.垂直滚动条.滑槽.选中.区域, 83, 120, 18, 10)
+SetRect (皮肤.滚动条.垂直滚动条.滑槽.选中.九宫, 2, 0, 2, 0)
+SetRect (皮肤.滚动条.垂直滚动条.滑槽.禁止.区域, 65, 120, 18, 10)
+SetRect (皮肤.滚动条.垂直滚动条.滑槽.禁止.九宫, 2, 0, 2, 0)
+
+SetRect (皮肤.滚动条.垂直滚动条.滑块.默认.区域, 30, 120, 16, 16)
+SetRect (皮肤.滚动条.垂直滚动条.滑块.默认.九宫, 2, 2, 2, 2)
+SetRect (皮肤.滚动条.垂直滚动条.滑块.点燃.区域, 14, 120, 16, 16)
+SetRect (皮肤.滚动条.垂直滚动条.滑块.点燃.九宫, 3, 3, 3, 3)
+SetRect (皮肤.滚动条.垂直滚动条.滑块.选中.区域, 196, 102, 16, 16)
+SetRect (皮肤.滚动条.垂直滚动条.滑块.选中.九宫, 3, 2, 3, 2)
+SetRect (皮肤.滚动条.垂直滚动条.滑块.禁止.区域, 197, 62, 16, 16)
+SetRect (皮肤.滚动条.垂直滚动条.滑块.禁止.九宫, 2, 2, 2, 2)
+
+SetRect (皮肤.滚动条.尺寸调节框.右下, 208, 49, 10, 10)
+
+赋值 (皮肤.滚动条.透明色, #品红)
+
+SetRect (皮肤.选择框.未选.默认.区域, 130, 182, 15, 15)
+SetRect (皮肤.选择框.未选.点燃.区域, 115, 182, 15, 15)
+SetRect (皮肤.选择框.未选.热点.区域, 130, 182, 15, 15)
+SetRect (皮肤.选择框.未选.选中.区域, 130, 182, 15, 15)
+SetRect (皮肤.选择框.未选.禁止.区域, 100, 182, 15, 15)
+
+SetRect (皮肤.选择框.选中.默认.区域, 192, 155, 15, 15)
+SetRect (皮肤.选择框.选中.点燃.区域, 177, 155, 15, 15)
+SetRect (皮肤.选择框.选中.热点.区域, 192, 155, 15, 15)
+SetRect (皮肤.选择框.选中.选中.区域, 192, 155, 15, 15)
+SetRect (皮肤.选择框.选中.禁止.区域, 162, 155, 15, 15)
+
+赋值 (皮肤.选择框.未选.透明色, #品红)
+赋值 (皮肤.选择框.选中.透明色, #品红)
+
+SetRect (皮肤.单选框.未选.默认.区域, 175, 137, 15, 15)
+SetRect (皮肤.单选框.未选.点燃.区域, 160, 137, 15, 15)
+SetRect (皮肤.单选框.未选.热点.区域, 175, 137, 15, 15)
+SetRect (皮肤.单选框.未选.选中.区域, 160, 137, 15, 15)
+SetRect (皮肤.单选框.未选.禁止.区域, 145, 137, 15, 15)
+
+SetRect (皮肤.单选框.选中.默认.区域, 130, 137, 15, 15)
+SetRect (皮肤.单选框.选中.点燃.区域, 115, 137, 15, 15)
+SetRect (皮肤.单选框.选中.热点.区域, 130, 137, 15, 15)
+SetRect (皮肤.单选框.选中.选中.区域, 115, 137, 15, 15)
+SetRect (皮肤.单选框.选中.禁止.区域, 100, 137, 15, 15)
+
+赋值 (皮肤.单选框.未选.透明色, #品红)
+赋值 (皮肤.单选框.选中.透明色, #品红)
+
+赋值 (皮肤.文本颜色, #藏青)
+
+ ' ----------------------------------------------------------
+
+
+赋值 (默认色, GetPixel (源场景, 相加 (皮肤.普通窗口.背景.left, 1), 相加 (皮肤.普通窗口.背景.top, 1)))
+
+窗口_应用皮肤 (窗口句柄)
+
+
+赋值 (子窗口, FindWindowEx (窗口句柄, 0, 0, 0))
+.判断循环首 (不等于 (子窗口, 0))
+    内部_应用皮肤 (子窗口)
+    赋值 (子窗口, FindWindowEx (窗口句柄, 子窗口, 0, 0))
+.判断循环尾 ()
+
+安装钩子 ()
+
+.程序集 标签, , , 
+
+.子程序 标签_应用皮肤, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+
+SetProp (窗口句柄, “Gsk.窗口过程”, GetWindowLong (窗口句柄, #GWL_WNDPROC))
+SetWindowLong (窗口句柄, #GWL_WNDPROC, 到整数 (&标签_消息处理))
+
+.子程序 标签_消息处理, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.判断开始 (等于 (Msg, #WM_PAINT))
+    标签_On_WM_PAINT (hWnd)
+    返回 (0)
+.默认
+    
+.判断结束
+返回 (CallWinProc (hWnd, Msg, wParam, lParam))
+
+.子程序 标签_On_WM_PAINT, 空白型, , 
+.参数 hWnd, 整数型, , 
+
+.局部变量 hDC, 整数型, , , 
+.局部变量 PS, PAINTSTRUCT, , , 
+.局部变量 hB, 整数型, , , 
+.局部变量 Str, 文本型, , , 
+.局部变量 style, 整数型, , , 
+.局部变量 hIcon, 整数型, , , 
+
+赋值 (style, GetWindowLong (hWnd, #GWL_STYLE))
+赋值 (hDC, BeginPaint (hWnd, PS))
+.如果真 (小于或等于 (位与 (style, #SS_TYPEMASK), #SS_RIGHT))
+    SelectObject (hDC, GetStockObject (#DEFAULT_GUI_FONT))
+    赋值 (hB, CreateSolidBrush (默认色))
+    FillRect (hDC, PS.rcPaint, hB)
+    DeleteObject (hB)
+    赋值 (Str, 取空白文本 (2048))
+    GetWindowText (hWnd, Str, 2048)
+    GetClientRect (hWnd, PS.rcPaint)
+    SetBkMode (hDC, #TRANSPARENT)
+    SetTextColor (hDC, 皮肤.文本颜色)
+    DrawText (hDC, Str, -1, PS.rcPaint, 位或 (#DT_VCENTER, #DT_WORDBREAK))
+.如果真结束
+.如果真 (等于 (位与 (style, #SS_TYPEMASK), #SS_ICON))
+    赋值 (hIcon, SendMessage (hWnd, #STM_GETICON, 0, 0))
+    GetClientRect (hWnd, PS.rcPaint)
+    DrawIconEx (hDC, 0, 0, hIcon, 相减 (PS.rcPaint.right, PS.rcPaint.left), 相减 (PS.rcPaint.bottom, PS.rcPaint.top), 0, 0, #DI_NORMAL)
+.如果真结束
+' 本源码来自易语言资源网(www.wodesoft.com)
+EndPaint (hWnd, PS)
+
+.程序集 公共程序集, , , 
+
+.子程序 CallWinProc, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 窗口过程, 整数型, , , 
+
+赋值 (窗口过程, GetProp (hWnd, “Gsk.窗口过程”))
+.如果 (等于 (窗口过程, 0))
+    返回 (DefWindowProc (hWnd, Msg, wParam, lParam))
+.否则
+    返回 (CallWindowProc (窗口过程, hWnd, Msg, wParam, lParam))
+.如果结束
+
+
+.子程序 拷贝内存, 空白型, , 
+.参数 目标指针, 整数型, , 
+.参数 源指针, 整数型, , 
+.参数 长度, 整数型, , 
+
+RtlMoveMemory (目标指针, 源指针, 长度)
+
+.子程序 绘图, 空白型, , 
+.参数 目标场景, 整数型, , 
+.参数 目标矩形, RECT, , 
+.参数 源矩形, RECT, , 
+.参数 透明色, 整数型, 可空, 
+
+.局部变量 hImageBMP, 整数型, , , 
+.局部变量 hMaskBMP, 整数型, , , 
+.局部变量 hImageDC, 整数型, , , 
+.局部变量 hMaskDC, 整数型, , , 
+.局部变量 hOldImageBMP, 整数型, , , 
+.局部变量 hOldMaskBMP, 整数型, , , 
+
+
+.如果 (是否为空 (透明色))
+    .如果 (并且 (等于 (目标矩形.right, 源矩形.right), 等于 (目标矩形.bottom, 源矩形.bottom)))
+        BitBlt (目标场景, 目标矩形.left, 目标矩形.top, 目标矩形.right, 目标矩形.bottom, 源场景, 源矩形.left, 源矩形.top, #SRCCOPY)
+    .否则
+        SetStretchBltMode (目标场景, #HALFTONE)
+        StretchBlt (目标场景, 目标矩形.left, 目标矩形.top, 目标矩形.right, 目标矩形.bottom, 源场景, 源矩形.left, 源矩形.top, 源矩形.right, 源矩形.bottom, #SRCCOPY)
+    .如果结束
+    
+.否则
+    赋值 (hImageBMP, CreateCompatibleBitmap (目标场景, 目标矩形.right, 目标矩形.bottom))
+    赋值 (hMaskBMP, CreateBitmap (目标矩形.right, 目标矩形.bottom, 1, 1, 0))
+    赋值 (hImageDC, CreateCompatibleDC (目标场景))
+    赋值 (hMaskDC, CreateCompatibleDC (目标场景))
+    赋值 (hOldImageBMP, SelectObject (hImageDC, hImageBMP))
+    赋值 (hOldMaskBMP, SelectObject (hMaskDC, hMaskBMP))
+    
+    .如果 (并且 (等于 (目标矩形.right, 源矩形.right), 等于 (目标矩形.bottom, 源矩形.bottom)))
+        BitBlt (hImageDC, 0, 0, 目标矩形.right, 目标矩形.bottom, 源场景, 源矩形.left, 源矩形.top, #SRCCOPY)
+    .否则
+        SetStretchBltMode (hImageDC, #HALFTONE)
+        StretchBlt (hImageDC, 0, 0, 目标矩形.right, 目标矩形.bottom, 源场景, 源矩形.left, 源矩形.top, 源矩形.right, 源矩形.bottom, #SRCCOPY)
+    .如果结束
+    
+    SetBkColor (hImageDC, 透明色)
+    BitBlt (hMaskDC, 0, 0, 目标矩形.right, 目标矩形.bottom, hImageDC, 0, 0, #SRCCOPY)
+    SetBkColor (hImageDC, #黑色)
+    SetTextColor (hImageDC, #白色)
+    BitBlt (hImageDC, 0, 0, 目标矩形.right, 目标矩形.bottom, hMaskDC, 0, 0, #SRCAND)
+    
+    SetBkColor (目标场景, #白色)
+    SetTextColor (目标场景, #黑色)
+    BitBlt (目标场景, 目标矩形.left, 目标矩形.top, 目标矩形.right, 目标矩形.bottom, hMaskDC, 0, 0, #SRCAND)
+    BitBlt (目标场景, 目标矩形.left, 目标矩形.top, 目标矩形.right, 目标矩形.bottom, hImageDC, 0, 0, #SRCPAINT)
+    
+    SelectObject (hImageDC, hOldImageBMP)
+    DeleteDC (hImageDC)
+    SelectObject (hMaskDC, hOldMaskBMP)
+    DeleteDC (hMaskDC)
+    DeleteObject (hImageBMP)
+    DeleteObject (hMaskBMP)
+    
+.如果结束
+
+
+
+.子程序 取低字, 整数型, , 
+.参数 数值, 整数型, , 
+
+返回 (位与 (数值, 65535))
+
+.子程序 取高字, 整数型, , 
+.参数 数值, 整数型, , 
+
+返回 (右移 (数值, 16))
+
+.子程序 取矩形, 空白型, , 
+.参数 矩形, RECT, 参考, 
+.参数 指针, 整数型, , 
+
+RtlMoveMemory_RECT_1 (矩形, 指针, 16)
+
+.子程序 取类名, 文本型, , 
+.参数 句柄, 整数型, , 
+
+.局部变量 类名, 文本型, , , 
+
+赋值 (类名, 取空白文本 (128))
+GetClassName (句柄, 类名, 128)
+返回 (类名)
+
+.子程序 置矩形, 空白型, , 
+.参数 矩形, RECT, , 
+.参数 指针, 整数型, , 
+
+RtlMoveMemory_RECT_2 (指针, 矩形, 16)
+
+.子程序 文本到指针, 空白型, , 
+.参数 指针, 整数型, , 
+.参数 文本, 文本型, , 
+.参数 文本长度, 整数型, , 
+
+RtlMoveMemory_Str1 (指针, 文本, 文本长度)
+
+.子程序 申请内存, 整数型, , 
+.参数 长度, 整数型, , 
+
+返回 (GlobalAlloc (位或 (#GMEM_MOVEABLE, #GMEM_ZEROINIT), 长度))
+
+.子程序 释放内存, 空白型, , 
+.参数 内存句柄, 整数型, , 
+
+GlobalFree (内存句柄)
+
+.子程序 重置内存, 空白型, , 
+.参数 内存句柄, 整数型, , 
+.参数 长度, 整数型, , 
+
+GlobalReAlloc (内存句柄, 长度, 位或 (#GMEM_MOVEABLE, #GMEM_ZEROINIT))
+
+.子程序 锁定内存, 整数型, , 
+.参数 内存句柄, 整数型, , 
+
+返回 (GlobalLock (内存句柄))
+
+.子程序 解锁内存, 空白型, , 
+.参数 内存句柄, 整数型, , 
+
+GlobalUnlock (内存句柄)
+
+.子程序 内部_应用皮肤, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+
+.局部变量 类名, 文本型, , , 
+.局部变量 样式, 整数型, , , 
+
+赋值 (类名, 取类名 (窗口句柄))
+' 本源码来自易语言资源网(www.wodesoft.com)
+.判断开始 (或者 (等于 (类名, #WTWindow), 等于 (类名, #对话框)))
+    窗口_应用皮肤 (窗口句柄)
+.判断 (等于 (类名, #标签))
+    标签_应用皮肤 (窗口句柄)
+.判断 (等于 (类名, #按钮))
+    赋值 (样式, GetWindowLong (窗口句柄, #GWL_STYLE))
+    .判断开始 (或者 (等于 (位与 (样式, #BS_TYPEMASK), #BS_PUSHBUTTON), 等于 (位与 (样式, #BS_TYPEMASK), #BS_DEFPUSHBUTTON)))
+        按钮_应用皮肤 (窗口句柄)
+    .判断 (或者 (等于 (位与 (样式, #BS_TYPEMASK), #BS_CHECKBOX), 等于 (位与 (样式, #BS_TYPEMASK), #BS_AUTOCHECKBOX)))
+        选择框_应用皮肤 (窗口句柄)
+    .判断 (或者 (等于 (位与 (样式, #BS_TYPEMASK), #BS_RADIOBUTTON), 等于 (位与 (样式, #BS_TYPEMASK), #BS_AUTORADIOBUTTON)))
+        单选框_应用皮肤 (窗口句柄)
+    .默认
+        
+    .判断结束
+    
+    
+.判断 (等于 (类名, #系统菜单))
+    菜单_应用皮肤 (窗口句柄)
+.判断 (等于 (类名, #ScrollBar))
+    赋值 (样式, GetWindowLong (窗口句柄, #GWL_STYLE))
+    .判断开始 (等于 (位与 (样式, #BS_TYPEMASK), #SBS_HORZ))
+        水平滚动条_应用皮肤 (窗口句柄)
+    .判断 (等于 (位与 (样式, #BS_TYPEMASK), #SBS_VERT))
+        垂直滚动条_应用皮肤 (窗口句柄)
+    .判断 (等于 (位与 (样式, #BS_TYPEMASK), #SBS_BOTTOMALIGN))
+        尺寸调节框_应用皮肤 (窗口句柄)
+    .默认
+        
+    .判断结束
+    
+.判断 (等于 (类名, #ScrollBar))
+    
+.默认
+    
+.判断结束
+
+
+.子程序 圆角化, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+
+.局部变量 hRgn, 整数型, , , 
+.局部变量 矩形, RECT, , , 
+
+GetWindowRect (窗口句柄, 矩形)
+赋值 (hRgn, CreateRoundRectRgn (0, 0, 相加 (相减 (矩形.right, 矩形.left), 1), 相加 (相减 (矩形.bottom, 矩形.top), 1), 8, 9))
+SetWindowRgn (窗口句柄, hRgn, 真)
+DeleteObject (hRgn)
+
+.程序集 菜单, , , 
+
+.子程序 菜单_应用皮肤, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+
+SetProp (窗口句柄, “Gsk.窗口过程”, GetWindowLong (窗口句柄, #GWL_WNDPROC))
+SetWindowLong (窗口句柄, #GWL_WNDPROC, 到整数 (&菜单_消息处理))
+
+.子程序 菜单_消息处理, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+
+.判断开始 (等于 (Msg, #WM_MEASUREITEM))
+    
+.判断 (等于 (Msg, #WM_DRAWITEM))
+    
+.判断 (等于 (Msg, #WM_NCPAINT))
+    ' 本源码来自易语言资源网(www.wodesoft.com)
+.判断 (等于 (Msg, #WM_PRINTCLIENT))
+    
+.判断 (等于 (Msg, #WM_NCCALCSIZE))
+    
+.判断 (等于 (Msg, #WM_WINDOWPOSCHANGING))
+    
+.判断 (等于 (Msg, #WM_KEYDOWN))
+    
+.判断 (等于 (Msg, #WM_ERASEBKGND))
+    
+.判断 (等于 (Msg, #WM_SETREDRAW))
+    
+.判断 (等于 (Msg, 146))
+    
+.判断 (等于 (Msg, #WM_SIZE))
+    圆角化 (hWnd)
+.判断 (等于 (Msg, 175))
+    
+.判断 (等于 (Msg, #WM_PRINT))
+    
+.判断 (等于 (Msg, 485))
+    
+.默认
+    
+.判断结束
+
+返回 (CallWinProc (hWnd, Msg, wParam, lParam))
+
+.程序集 滚动条, , , 
+
+.子程序 水平滚动条_应用皮肤, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+
+
+
+.子程序 垂直滚动条_应用皮肤, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+
+' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 尺寸调节框_应用皮肤, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+
+SetProp (窗口句柄, “Gsk.窗口过程”, GetWindowLong (窗口句柄, #GWL_WNDPROC))
+SetWindowLong (窗口句柄, #GWL_WNDPROC, 到整数 (&尺寸调节框_消息处理))
+
+.子程序 尺寸调节框_消息处理, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.判断开始 (等于 (Msg, #WM_PAINT))
+    尺寸调节框_On_WM_PAINT (hWnd)
+    返回 (0)
+.默认
+    
+.判断结束
+返回 (CallWinProc (hWnd, Msg, wParam, lParam))
+
+.子程序 尺寸调节框_On_WM_PAINT, 空白型, , 
+.参数 hWnd, 整数型, , 
+
+.局部变量 hDC, 整数型, , , 
+.局部变量 PS, PAINTSTRUCT, , , 
+.局部变量 hB, 整数型, , , 
+
+赋值 (hDC, BeginPaint (hWnd, PS))
+赋值 (hB, CreateSolidBrush (默认色))
+FillRect (hDC, PS.rcPaint, hB)
+DeleteObject (hB)
+
+GetClientRect (hWnd, PS.rcPaint)
+赋值 (PS.rcPaint.left, 相减 (PS.rcPaint.right, 皮肤.滚动条.尺寸调节框.右下.right))
+赋值 (PS.rcPaint.top, 相减 (PS.rcPaint.bottom, 皮肤.滚动条.尺寸调节框.右下.bottom))
+赋值 (PS.rcPaint.right, 皮肤.滚动条.尺寸调节框.右下.right)
+赋值 (PS.rcPaint.bottom, 皮肤.滚动条.尺寸调节框.右下.bottom)
+绘图 (hDC, PS.rcPaint, 皮肤.滚动条.尺寸调节框.右下, 皮肤.滚动条.透明色)
+EndPaint (hWnd, PS)
+
+.程序集 选择框, , , 
+
+.子程序 选择框_应用皮肤, 空白型, , 
+.参数 窗口句柄, 整数型, , 
+
+SetProp (窗口句柄, “Gsk.窗口过程”, GetWindowLong (窗口句柄, #GWL_WNDPROC))
+SetWindowLong (窗口句柄, #GWL_WNDPROC, 到整数 (&选择框_消息处理))
+
+
+.子程序 选择框_消息处理, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.判断开始 (等于 (Msg, #WM_PAINT))
+    选择框_On_WM_PAINT (hWnd)
+    返回 (0)
+.默认
+    ' 本源码来自易语言资源网(www.wodesoft.com)
+.判断结束
+返回 (CallWinProc (hWnd, Msg, wParam, lParam))
+
+.子程序 选择框_On_WM_PAINT, 空白型, , 
+.参数 hWnd, 整数型, , 
+
+.局部变量 hDC, 整数型, , , 
+.局部变量 PS, PAINTSTRUCT, , , 
+.局部变量 hB, 整数型, , , 
+.局部变量 Str, 文本型, , , 
+.局部变量 style, 整数型, , , 
+.局部变量 skin, 按钮皮肤, , , 
+
+赋值 (style, GetWindowLong (hWnd, #GWL_STYLE))
+
+赋值 (hDC, BeginPaint (hWnd, PS))
+SelectObject (hDC, GetStockObject (#DEFAULT_GUI_FONT))
+赋值 (hB, CreateSolidBrush (默认色))
+FillRect (hDC, PS.rcPaint, hB)
+DeleteObject (hB)
+
+GetClientRect (hWnd, PS.rcPaint)
+
+.如果 (IsDlgButtonChecked (GetParent (hWnd), GetDlgCtrlID (hWnd)))
+    赋值 (skin, 皮肤.选择框.选中)
+.否则
+    赋值 (skin, 皮肤.选择框.未选)
+.如果结束
+
+赋值 (PS.rcPaint.top, 相除 (相减 (PS.rcPaint.bottom, skin.默认.区域.bottom), 2))
+赋值 (PS.rcPaint.right, skin.默认.区域.right)
+赋值 (PS.rcPaint.bottom, skin.默认.区域.bottom)
+
+绘图 (hDC, PS.rcPaint, skin.默认.区域, skin.透明色)
+GetClientRect (hWnd, PS.rcPaint)
+赋值 (PS.rcPaint.left, 相加 (PS.rcPaint.left, 皮肤.选择框.未选.默认.区域.right, 2))
+赋值 (Str, 取空白文本 (2048))
+GetWindowText (hWnd, Str, 2048)
+SelectObject (hDC, GetStockObject (#DEFAULT_GUI_FONT))
+SetBkMode (hDC, #TRANSPARENT)
+SetTextColor (hDC, 皮肤.文本颜色)
+DrawText (hDC, Str, -1, PS.rcPaint, 位或 (#DT_SINGLE, #DT_VCENTER))
+
+EndPaint (hWnd, PS)
+
+.程序集 单选框, , , 
+
+.子程序 单选框_应用皮肤, 空白型, , 
+.参数 窗口句柄, 空白型, , 
+
+SetProp (窗口句柄, “Gsk.窗口过程”, GetWindowLong (窗口句柄, #GWL_WNDPROC))
+SetWindowLong (窗口句柄, #GWL_WNDPROC, 到整数 (&单选框_消息处理))
+
+
+.子程序 单选框_消息处理, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 Msg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.判断开始 (等于 (Msg, #WM_PAINT))
+    单选框_On_WM_PAINT (hWnd)
+    返回 (0)
+.默认
+    
+.判断结束
+返回 (CallWinProc (hWnd, Msg, wParam, lParam))
+
+.子程序 单选框_On_WM_PAINT, 空白型, , 
+.参数 hWnd, 整数型, , 
+
+.局部变量 hDC, 整数型, , , 
+.局部变量 PS, PAINTSTRUCT, , , 
+.局部变量 hB, 整数型, , , 
+.局部变量 Str, 文本型, , , 
+.局部变量 style, 整数型, , , 
+.局部变量 skin, 按钮皮肤, , , 
+
+
+赋值 (style, GetWindowLong (hWnd, #GWL_STYLE))
+' 本源码来自易语言资源网(www.wodesoft.com)
+赋值 (hDC, BeginPaint (hWnd, PS))
+SelectObject (hDC, GetStockObject (#DEFAULT_GUI_FONT))
+赋值 (hB, CreateSolidBrush (默认色))
+FillRect (hDC, PS.rcPaint, hB)
+DeleteObject (hB)
+
+GetClientRect (hWnd, PS.rcPaint)
+
+.如果 (IsDlgButtonChecked (GetParent (hWnd), GetDlgCtrlID (hWnd)))
+    赋值 (skin, 皮肤.单选框.选中)
+.否则
+    赋值 (skin, 皮肤.单选框.未选)
+.如果结束
+
+赋值 (PS.rcPaint.top, 相除 (相减 (PS.rcPaint.bottom, skin.默认.区域.bottom), 2))
+赋值 (PS.rcPaint.right, skin.默认.区域.right)
+赋值 (PS.rcPaint.bottom, skin.默认.区域.bottom)
+
+绘图 (hDC, PS.rcPaint, skin.默认.区域, skin.透明色)
+GetClientRect (hWnd, PS.rcPaint)
+赋值 (PS.rcPaint.left, 相加 (PS.rcPaint.left, 皮肤.选择框.未选.默认.区域.right, 2))
+赋值 (Str, 取空白文本 (2048))
+GetWindowText (hWnd, Str, 2048)
+SelectObject (hDC, GetStockObject (#DEFAULT_GUI_FONT))
+SetBkMode (hDC, #TRANSPARENT)
+SetTextColor (hDC, 皮肤.文本颜色)
+DrawText (hDC, Str, -1, PS.rcPaint, 位或 (#DT_SINGLE, #DT_VCENTER))
+
+EndPaint (hWnd, PS)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

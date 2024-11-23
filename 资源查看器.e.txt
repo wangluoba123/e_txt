@@ -1,0 +1,566 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 587
+    高度 = 361
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.图片 one, " ' 已保存到：D:\易语言学习\Data\资源查看器.e\one", , 
+.图片 two, " ' 已保存到：D:\易语言学习\Data\资源查看器.e\two", , 
+.图片 disk, " ' 已保存到：D:\易语言学习\Data\资源查看器.e\disk", , 
+.图片 null, " ' 已保存到：D:\易语言学习\Data\资源查看器.e\null", , 
+.常量 TVI_FIRST, "4294901761", , 在列表首部加入
+.常量 TVI_LAST, "4294901762", , 在列表尾部插入
+.常量 TVI_ROOT, "4294901760", , 在根部插入
+.常量 TVI_SORT, "4294901763", , 插入项目时按字母顺序排列
+.常量 , , , 
+.常量 TVIF_CHILDREN, "64", , 是否有子
+.常量 TVIF_DI_SETITEM, "4096", , 置项目
+.常量 TVIF_HANDLE, "16", , 句柄
+.常量 TVIF_IMAGE, "2", , 图象
+.常量 TVIF_INTEGRAL, "128", , 项目的画面高度。 这一个画面高度在标准项目画面高度的增量。
+.常量 TVIF_PARAM, "4", , 项目数值
+.常量 TVIF_SELECTEDIMAGE, "32", , 选择图象
+.常量 TVIF_STATE, "8", , 状态
+.常量 TVIF_TEXT, "1", , 文本
+.常量 TVIF_ALL, "39", , 全部,文本+图象+选择图象+项目数值 1+2+4+32=39
+.常量 , , , 
+.常量 TVM_INSERTITEMA, "4352", , 插入项目A
+.常量 TVM_SETIMAGELIST, "4361", , 设置图象列表
+.常量 TVM_GETNEXTITEM, "4362", , 取下一项目
+.常量 , , , 
+.常量 TVE_COLLAPSE, "1", , 收缩
+.常量 TVE_EXPAND, "2", , 扩展
+.常量 , , , 
+.常量 TVGN_CHILD, "4", , 第一个子项目
+.常量 , , , 
+.常量 TVM_GETITEMA, "4364", , 取项目A，要用结构
+.常量 TVM_DELETEITEM, "4353", , 删除项目
+.常量 TVGN_PARENT, "3", , 父
+.常量 TVGN_CARET, "9", , 当前的项目
+.常量 , , , 
+.常量 , , , 
+.常量 LVM_INSERTITEMA, "4103", , 插入项目
+.常量 LVIF_COLUMNS, "512", , 
+.常量 LVIF_DI_SETITEM, "4096", , 
+.常量 LVIF_GROUPID, "256", , 
+.常量 LVIF_IMAGE, "2", , 
+.常量 LVIF_INDENT, "16", , 
+.常量 LVIF_NORECOMPUTE, "2048", , 
+.常量 LVIF_PARAM, "4", , 
+.常量 LVIF_STATE, "8", , 
+.常量 LVIF_TEXT, "1", , 
+.常量 , , , 
+.常量 LVM_SETIMAGELIST, "4099", , 置图片列表
+.常量 LVM_DELETEITEM, "4104", , 删除一行
+.常量 LVM_DELETEALLITEMS, "4105", , 清空
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' eAPI F7FC1AE45C5C4758AF03EF19F18A395D 1 1 应用接口支持库
+
+
+
+
+数据类型 TVITEM, , 
+    .成员 mask, 整数型, , , 掩码
+    .成员 hItem, 整数型, , , 项目句柄
+    .成员 state, 整数型, , , 状态
+    .成员 stateMask, 整数型, , , 状态掩码
+    .成员 pszText, 整数型, , , 项目文本
+    .成员 cchTextMax, 整数型, , , 最长文本（系统最大允许260个字符）
+    .成员 iImage, 整数型, , , 图象
+    .成员 iSelectedImage, 整数型, , , 选择图象
+    .成员 cChildren, 逻辑型, , , 是否有子
+    .成员 lParam, 整数型, , , 项目数值
+    .成员 iIntegral, 整数型, , , 项目的画面高度。 这一个画面高度在标准项目画面高度的增量。
+
+数据类型 TVINSERTSTRUCT, , 
+    .成员 hParent, 整数型, , , 父
+    .成员 hInsertAfter, 整数型, , , 插入标志
+    .成员 mask, 整数型, , , 掩码
+    .成员 hItem, 整数型, , , 项目句柄
+    .成员 state, 整数型, , , 状态
+    .成员 stateMask, 整数型, , , 状态掩码
+    .成员 pszText, 文本型, 传址, , 项目文本
+    .成员 cchTextMax, 整数型, , , 最长文本（系统最大允许260个字符）
+    .成员 iImage, 整数型, , , 图象
+    .成员 iSelectedImage, 整数型, , , 选择图象
+    .成员 cChildren, 逻辑型, , , 是否有子
+    .成员 lParam, 整数型, , , 项目数值
+    .成员 iIntegral, 整数型, , , 项目的画面高度。 这一个画面高度在标准项目画面高度的增量。
+
+数据类型 NM_TREEVIEW, , 
+    .成员 hwndFrom, 整数型, , , 
+    .成员 idfrom, 整数型, , , 
+    .成员 code, 整数型, , , 
+    .成员 匿名成员228, 空白型, , , 
+    .成员 action, 整数型, , , 
+    .成员 匿名成员229, 空白型, , , 
+    .成员 mask, 整数型, , , 掩码
+    .成员 hItem, 整数型, , , 项目句柄
+    .成员 state, 整数型, , , 状态
+    .成员 stateMask, 整数型, , , 状态掩码
+    .成员 pszText, 整数型, , , 项目文本
+    .成员 cchTextMax, 整数型, , , 最长文本（系统最大允许260个字符）
+    .成员 iImage, 整数型, , , 图象
+    .成员 iSelectedImage, 整数型, , , 选择图象
+    .成员 cChildren, 逻辑型, , , 是否有子
+    .成员 lParam, 整数型, , , 项目数值
+    .成员 iIntegral, 整数型, , , 项目的画面高度。 这一个画面高度在标准项目画面高度的增量。
+    .成员 匿名成员227, 空白型, , , 
+    .成员 mask2, 整数型, , , 掩码
+    .成员 hItem2, 整数型, , , 项目句柄
+    .成员 state2, 整数型, , , 状态
+    .成员 stateMask2, 整数型, , , 状态掩码
+    .成员 pszText2, 整数型, , , 项目文本
+    .成员 cchTextMax2, 整数型, , , 最长文本（系统最大允许260个字符）
+    .成员 iImage2, 整数型, , , 图象
+    .成员 iSelectedImage2, 整数型, , , 选择图象
+    .成员 cChildren2, 逻辑型, , , 是否有子
+    .成员 lParam2, 整数型, , , 项目数值
+    .成员 iIntegral2, 整数型, , , 项目的画面高度。 这一个画面高度在标准项目画面高度的增量。
+
+数据类型 TVITEM2, , 
+    .成员 mask, 整数型, , , 掩码
+    .成员 hItem, 整数型, , , 项目句柄
+    .成员 state, 整数型, , , 状态
+    .成员 stateMask, 整数型, , , 状态掩码
+    .成员 pszText, 文本型, 传址, , 项目文本
+    .成员 cchTextMax, 整数型, , , 最长文本（系统最大允许260个字符）
+    .成员 iImage, 整数型, , , 图象
+    .成员 iSelectedImage, 整数型, , , 选择图象
+    .成员 cChildren, 逻辑型, , , 是否有子
+    .成员 lParam, 整数型, , , 项目数值
+    .成员 iIntegral, 整数型, , , 项目的画面高度。 这一个画面高度在标准项目画面高度的增量。
+
+数据类型 NMHDR, , 
+    .成员 hwndFrom, 整数型, , , 
+    .成员 idfrom, 整数型, , , 
+    .成员 code, 整数型, , , 
+
+数据类型 LVITEM, , 
+    .成员 mask, 整数型, , , 掩码
+    .成员 iItem, 整数型, , , 项目
+    .成员 iSubItem, 整数型, , , 子项目
+    .成员 state, 整数型, , , 状态
+    .成员 stateMask, 整数型, , , 状态掩码
+    .成员 pszText, 文本型, 传址, , 项目文本
+    .成员 cchTextMax, 整数型, , , 项目文本长度
+    .成员 iImage, 整数型, , , 图片索引
+    .成员 lParam, 整数型, , , 项目数值
+    .成员 iIndent, 整数型, , , 缩进
+
+数据类型 SHFILEINFO, , 
+    .成员 hIcon, 空白型, , , 
+
+
+.DLL命令 API_CreateWindowEx, 整数型, "user32", "CreateWindowExA", , 建立窗口
+    .参数 dwExStyle, 整数型, , 
+    .参数 lpClassName, 文本型, , 
+    .参数 lpWindowName, 文本型, , 
+    .参数 dwStyle, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+    .参数 hWndParent, 整数型, , 
+    .参数 hMenu, 整数型, , 
+    .参数 hInstance, 整数型, , 
+    .参数 lpParam, 整数型, , 
+
+.DLL命令 API_GetModuleHandle, 整数型, "kernel32", "GetModuleHandleA", , 获取一个应用程序或动态链接库的模块句柄  如执行成功成功，则返回模块句柄。零表示失败。会设置GetLastError
+    .参数 lpModuleName, 整数型, , 指定模块名，这通常是与模块的文件名相同的一个名字。例如，NOTEPAD.EXE程序的模块文件名就叫作NOTEPAD;
+
+.DLL命令 API_ImageList_Create, 整数型, "comctl32.dll", "ImageList_Create", , 
+    .参数 cx, 整数型, , 
+    .参数 cy, 整数型, , 
+    .参数 flags, 整数型, , 
+    .参数 cInitial, 整数型, , 
+    .参数 cGrow, 整数型, , 
+
+.DLL命令 API_ImageList_Add, 整数型, "comctl32.dll", "ImageList_Add", , 
+    .参数 himl, 整数型, , 
+    .参数 hbmImage, 整数型, , 
+    .参数 hbmMask, 整数型, , 
+
+.DLL命令 API_SendMessage, 整数型, "user32.dll", "SendMessageA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 API_lstrcpyn_TVINSERTSTRUCT, 整数型, "kernel32.dll", "lstrcpyn", , 
+    .参数 目标, TVINSERTSTRUCT, 传址, 
+    .参数 源, TVINSERTSTRUCT, 传址, 
+    .参数 长度, 整数型, , 
+
+.DLL命令 API_SetWindowLong, 整数型, "user32", "SetWindowLongA", , 在窗口结构中为指定的窗口设置信息  指定数据的前一个值
+    .参数 hwnd, 整数型, , 欲为其取得信息的窗口的句柄
+    .参数 nIndex, 整数型, , 请参考GetWindowLong函数的nIndex参数的说明
+    .参数 dwNewLong, 整数型, , 由nIndex指定的窗口信息的新值;
+
+.DLL命令 API_RtlMoveMemory, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 目标地址, 整数型, , Any
+    .参数 源地址, 字节集, , Any
+    .参数 数据长度, 整数型, , 
+
+.DLL命令 API_lstrcpyn_NM_TREEVIEW, 整数型, "kernel32.dll", "lstrcpyn", , 
+    .参数 目标, NM_TREEVIEW, 传址, 
+    .参数 源, NM_TREEVIEW, 传址, 
+    .参数 长度, 整数型, , 
+
+.DLL命令 API_lstrcpyn_NMHDR, 整数型, "kernel32.dll", "lstrcpyn", , 
+    .参数 目标, NMHDR, 传址, 
+    .参数 源, NMHDR, 传址, 
+    .参数 长度, 整数型, , 
+
+.DLL命令 API_lstrcpyn_TVITEM, 整数型, "kernel32.dll", "lstrcpyn", , 
+    .参数 目标, TVITEM, 传址, 
+    .参数 源, TVITEM, 传址, 
+    .参数 长度, 整数型, , 
+
+.DLL命令 API_CallWindowProc, 整数型, "user32", "CallWindowProcA", , 将消息传答窗口函数
+    .参数 lpPrevWndFunc, 整数型, , 
+    .参数 hwnd, 整数型, , 
+    .参数 msg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 API_lstrcpyn_TVITEM2, 整数型, "kernel32.dll", "lstrcpyn", , 
+    .参数 目标, TVITEM2, 传址, 
+    .参数 源, TVITEM2, 传址, 
+    .参数 长度, 整数型, , 
+
+.DLL命令 API_lstrcpyn_LVITEM, 整数型, "kernel32.dll", "lstrcpyn", , 
+    .参数 目标, LVITEM, 传址, 
+    .参数 源, LVITEM, 传址, 
+    .参数 长度, 整数型, , 
+
+.DLL命令 取结构尺寸, 整数型, "ComCtl32.dll", "#74", , 
+    .参数 参数一, NM_TREEVIEW, 传址, 
+
+.DLL命令 SHGetFileInfo, 整数型, "", "SHGetFileInfo", , 
+    .参数 pszPath, 文本型, , 
+    .参数 dwFileAttributes, 整数型, , 
+    .参数 psfi, SHFILEINFO, 传址, 
+    .参数 cbFileInfo, 整数型, , 
+    .参数 uFlags, 整数型, , 
+
+.DLL命令 API_ImageList_AddIcon, 整数型, "comctl32.dll", "ImageList_AddIcon", , 
+    .参数 HIMAGELIST, 整数型, , 
+    .参数 hicon, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 lpPrevWndProc, 空白型, , , 
+.程序集变量 树型框, 我的树型框, , , 
+.程序集变量 列表框, 我的列表框, , , 
+.程序集变量 Null, 空白型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 硬盘, 文本型, , "0", 
+.局部变量 i, 空白型, , , 
+.局部变量 项目句柄, 空白型, , , 
+.局部变量 对象, 对象, , , 
+
+列表框.创建 (335, 430, 150, 0)
+树型框.创建 (335, 150, 0, 0)
+对象.创建图片对象 (#null)
+赋值 (Null, 对象.读数值属性 (“Handle”, ))
+赋值 (lpPrevWndProc, API_SetWindowLong (取窗口句柄 (), -4, 到整数 (&回调函数)))
+赋值 (硬盘, 未知支持库函数_5 (1))
+.计次循环首 (取数组成员数 (硬盘), i)
+    赋值 (项目句柄, 树型框.添加项目 (0, 0, 0, 硬盘 [i]))
+    
+    .如果真 (是否存在子目录 (相加 (硬盘 [i], “\”)))
+        树型框.添加项目 (项目句柄, 1, 2, “”)
+    .如果真结束
+    
+.计次循环尾 ()
+
+
+.子程序 是否存在子目录, 逻辑型, , 
+.参数 测试目录, 文本型, , 
+
+.局部变量 文件, 文本型, , , 
+
+赋值 (文件, 寻找文件 (相加 (测试目录, “*.*”), #子目录))
+.判断循环首 (不等于 (文件, “”))
+    .如果真 (并且 (不等于 (取文本左边 (文件, 1), “.”), 不等于 (取文本右边 (文件, 1), “.”)))
+        返回 (真)
+    .如果真结束
+    赋值 (文件, 寻找文件 (#子目录))
+.判断循环尾 ()
+返回 (假)
+
+.子程序 回调函数, 整数型, , 
+.参数 Hwnd, 空白型, , 
+.参数 uMsg, 空白型, , 
+.参数 wParam, 空白型, , 
+.参数 Param, 空白型, , 
+
+.局部变量 信息头, NMHDR, , , 
+.局部变量 数据, NM_TREEVIEW, , , 
+.局部变量 匿名局部变量_235, 空白型, , , 
+
+.判断开始 (等于 (uMsg, 78))
+    API_RtlMoveMemory (API_lstrcpyn_NMHDR (信息头, 信息头, 0), 指针到字节集 (Param, 12), 12)
+    .判断开始 (并且 (等于 (信息头.hwndFrom, 树型框.取窗口句柄 ()), 等于 (信息头.code, -405)))
+        API_RtlMoveMemory (API_lstrcpyn_NM_TREEVIEW (数据, 数据, 0), 指针到字节集 (Param, 104), 104)
+        .如果真 (等于 (数据.action, #TVE_EXPAND))
+            返回 (树型框即将被扩展 (数据.lParam))
+        .如果真结束
+        
+    .判断 (并且 (等于 (信息头.hwndFrom, 树型框.取窗口句柄 ()), 等于 (信息头.code, -402)))
+        返回 (树型框项目被选择 ())
+    .默认
+        
+    .判断结束
+    
+.默认
+    
+.判断结束
+
+返回 (API_CallWindowProc (lpPrevWndProc, Hwnd, uMsg, wParam, Param))
+
+
+.子程序 树型框即将被扩展, 整数型, , 
+.参数 项目句柄, 整数型, , 
+
+.局部变量 子目录, 文本型, , "0", 
+.局部变量 i, 空白型, , , 
+.局部变量 项目句柄2, 空白型, , , 
+
+置等待鼠标 ()
+.如果真 (等于 (树型框.取项目文本 (树型框.取子项目 (项目句柄)), “”))
+    列举目录 (树型框.取路径 (项目句柄), 子目录)
+    .计次循环首 (取数组成员数 (子目录), i)
+        赋值 (项目句柄2, 树型框.添加项目 (项目句柄, 1, 2, 子目录 [i]))
+        .如果真 (是否存在子目录 (相加 (树型框.取路径 (项目句柄2), “\”)))
+            树型框.添加项目 (项目句柄2, 1, 2, “”)
+        .如果真结束
+        
+    .计次循环尾 ()
+    树型框.删除项目 (树型框.取子项目 (项目句柄))
+.如果真结束
+返回 (0)
+
+.子程序 列举目录, 空白型, , 
+.参数 父目录, 文本型, , 
+.参数 装载目录数组, 文本型, 数组, 
+
+.局部变量 目录, 文本型, , , 
+
+赋值 (目录, 寻找文件 (相加 (父目录, “\*.*”), 16))
+重定义数组 (装载目录数组, 假, 0)
+.判断循环首 (不等于 (目录, “”))
+    .如果真 (并且 (不等于 (目录, “.”), 不等于 (目录, “..”)))
+        加入成员 (装载目录数组, 目录)
+    .如果真结束
+    赋值 (目录, 寻找文件 (16))
+.判断循环尾 ()
+
+
+
+
+.子程序 树型框项目被选择, 整数型, , 
+.局部变量 文件, 文本型, , "0", 
+.局部变量 sInfo, SHFILEINFO, , , 
+.局部变量 i, 空白型, , , 
+
+置等待鼠标 ()
+API_SendMessage (列表框.取窗口句柄 (), #LVM_DELETEALLITEMS, 0, 0)
+列举文件 (树型框.取路径 (树型框.取现行选中项 ()), 文件)
+.计次循环首 (取数组成员数 (文件), i)
+    SHGetFileInfo (相加 (树型框.取路径 (树型框.取现行选中项 ()), “\”, 文件 [i]), 128, sInfo, 4, 256)
+    .判断开始 (等于 (sInfo.hIcon, 0))
+        列表框.添加项目 (文件 [i], 0)
+    .默认
+        列表框.添加项目 (文件 [i], API_ImageList_AddIcon (列表框.取位图句柄 (), sInfo.hIcon))
+    .判断结束
+    
+.计次循环尾 ()
+返回 (0)
+
+.子程序 列举文件, 空白型, , 
+.参数 父目录, 文本型, , 
+.参数 装载目录数组, 文本型, 数组, 
+
+.局部变量 目录, 文本型, , , 
+
+赋值 (目录, 寻找文件 (相加 (父目录, “\*.*”), 相加 (1, 2, 4, 32)))
+重定义数组 (装载目录数组, 假, 0)
+.判断循环首 (不等于 (目录, “”))
+    .如果真 (并且 (不等于 (目录, “.”), 不等于 (目录, “..”)))
+        加入成员 (装载目录数组, 目录)
+    .如果真结束
+    赋值 (目录, 寻找文件 (相加 (1, 2, 4, 32)))
+.判断循环尾 ()
+
+
+
+
+.类模块 我的树型框, , , 
+
+.程序集变量 句柄, 整数型, , , 
+.程序集变量 位图句柄, 空白型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 创建, 空白型, 公开, 
+.参数 高度, 空白型, , 
+.参数 宽度, 空白型, , 
+.参数 x, 空白型, , 
+.参数 y, 空白型, , 
+
+.局部变量 对象, 对象, , , 
+.局部变量 匿名局部变量_118, 空白型, , , 
+
+赋值 (句柄, API_CreateWindowEx (512, “SysTreeView32”, “”, 相加 (7, 1073741824, 268435456, 33554432), x, y, 宽度, 高度, _启动窗口.取窗口句柄 (), 0, API_GetModuleHandle (0), 0))
+赋值 (位图句柄, API_ImageList_Create (16, 16, 33, 3, 0))
+API_SendMessage (句柄, #TVM_SETIMAGELIST, 0, 位图句柄)
+对象.创建图片对象 (#disk)
+API_ImageList_Add (位图句柄, 到整数 (对象.读数值属性 (“Handle”, )), 0)
+对象.创建图片对象 (#one)
+API_ImageList_Add (位图句柄, 到整数 (对象.读数值属性 (“Handle”, )), 0)
+对象.创建图片对象 (#two)
+API_ImageList_Add (位图句柄, 到整数 (对象.读数值属性 (“Handle”, )), 0)
+
+
+
+
+
+.子程序 取窗口句柄, 整数型, , 
+返回 (句柄)
+
+.子程序 添加项目, 整数型, , 
+.参数 父项目, 空白型, , 
+.参数 图像, 空白型, , 
+.参数 选择图像, 空白型, , 
+.参数 文本, 文本型, , 
+
+.局部变量 插入项目, TVINSERTSTRUCT, , , 
+.局部变量 数据地址, 整数型, , , 
+
+赋值 (插入项目.mask, #TVIF_ALL)
+赋值 (数据地址, API_lstrcpyn_TVINSERTSTRUCT (插入项目, 插入项目, 0))
+赋值 (插入项目.iImage, 图像)
+赋值 (插入项目.iSelectedImage, 选择图像)
+赋值 (插入项目.hParent, 父项目)
+赋值 (插入项目.pszText, 文本)
+返回 (API_SendMessage (句柄, #TVM_INSERTITEMA, 0, 数据地址))
+
+
+
+
+.子程序 取项目文本, 文本型, , 
+.参数 项目句柄, 整数型, , 
+
+.局部变量 项目, TVITEM2, , , 
+
+赋值 (项目.pszText, 取空白文本 (260))
+赋值 (项目.mask, #TVIF_TEXT)
+赋值 (项目.hItem, 项目句柄)
+赋值 (项目.cchTextMax, 260)
+API_SendMessage (句柄, #TVM_GETITEMA, 0, API_lstrcpyn_TVITEM2 (项目, 项目, 0))
+返回 (删首尾空 (项目.pszText))
+
+.子程序 取子项目, 整数型, , 
+.参数 项目句柄, 整数型, , 
+
+返回 (API_SendMessage (句柄, #TVM_GETNEXTITEM, #TVGN_CHILD, 项目句柄))
+
+.子程序 删除项目, 空白型, , 
+.参数 项目句柄, 空白型, , 
+
+API_SendMessage (句柄, #TVM_DELETEITEM, 0, 项目句柄)
+
+.子程序 取路径, 文本型, , 
+.参数 项目句柄, 整数型, , 
+
+.局部变量 文本, 文本型, , , 
+.局部变量 句柄2, 空白型, , , 
+
+赋值 (文本, 取项目文本 (项目句柄))
+赋值 (句柄2, API_SendMessage (句柄, #TVM_GETNEXTITEM, #TVGN_PARENT, 项目句柄))
+.判断循环首 (不等于 (句柄2, 0))
+    赋值 (文本, 相加 (取项目文本 (句柄2), “\”, 文本))
+    赋值 (句柄2, API_SendMessage (句柄, #TVM_GETNEXTITEM, #TVGN_PARENT, 句柄2))
+.判断循环尾 ()
+返回 (文本)
+
+
+
+.子程序 取现行选中项, 整数型, , 成功返回现行选中项，失败返回 -1
+返回 (API_SendMessage (句柄, #TVM_GETNEXTITEM, #TVGN_CARET, 0))
+
+.类模块 我的列表框, , , 
+
+.程序集变量 句柄, 空白型, , , 
+.程序集变量 位图句柄, 空白型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 创建, 空白型, , 
+.参数 高度, 空白型, , 
+.参数 宽度, 空白型, , 
+.参数 x, 空白型, , 
+.参数 y, 空白型, , 
+
+.局部变量 对象, 对象, , , 
+
+赋值 (句柄, API_CreateWindowEx (512, “SysListView32”, “”, 相加 (1073741824, 268435456, 4), x, y, 宽度, 高度, _启动窗口.取窗口句柄 (), 0, API_GetModuleHandle (0), 0))
+赋值 (位图句柄, API_ImageList_Create (32, 32, 33, 0, 0))
+对象.创建图片对象 (#null)
+API_ImageList_Add (位图句柄, 对象.读数值属性 (“Handle”, ), 0)
+API_SendMessage (句柄, #LVM_SETIMAGELIST, 0, 位图句柄)
+
+.子程序 取窗口句柄, 整数型, , 
+返回 (句柄)
+
+.子程序 添加项目, 整数型, , 
+.参数 文本, 文本型, , 
+.参数 图像, 整数型, , 
+
+.局部变量 插入项目, LVITEM, , , 
+
+赋值 (插入项目.mask, 相加 (#LVIF_TEXT, #LVIF_IMAGE))
+赋值 (插入项目.pszText, 文本)
+赋值 (插入项目.iImage, 图像)
+返回 (API_SendMessage (句柄, #LVM_INSERTITEMA, 0, API_lstrcpyn_LVITEM (插入项目, 插入项目, 0)))
+
+
+
+
+.子程序 取位图句柄, 整数型, , 
+返回 (位图句柄)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

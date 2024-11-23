@@ -1,0 +1,647 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：操作其它程序中的超级列表框1.5
+ ' 程序描述：super杨
+2003.12.31
+ ' 程序作者：super杨
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：super杨
+2003.12.31
+ ' 版本号：1.5
+ ' 创建号：0.0
+
+窗口 窗口1
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 236
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “”
+    帮助文件名 = “”
+
+
+
+.常量 LVM_FIRST, "4096", , 
+.常量 LVM_GETEXTENDEDLISTVIEWSTYLE, "", , LVM_FIRST + 55
+.常量 LVM_SETEXTENDEDLISTVIEWSTYLE, "", , LVM_FIRST + 54
+.常量 LVM_GETITEMCOUNT, "", , LVM_FIRST + 4
+.常量 LVM_GETITEMTEXTA, "", , LVM_FIRST + 45
+.常量 LVM_INSERTCOLUMNA, "", , LVM_FIRST + 27
+.常量 LVM_INSERTITEMA, "", , LVM_FIRST + 7
+.常量 LVM_SETITEM, "", , LVM_FIRST + 6
+.常量 LVM_DELETEITEM, "", , LVM_FIRST + 8
+.常量 LVM_DELETEALLITEMS, "", , #LVM_FIRST ＋ 9
+.常量 LVM_DELETECOLUMN, "", , LVM_FIRST + 28
+.常量 LVM_GETBKCOLOR, "", , LVM_FIRST + 0
+.常量 LVM_SETINFOTIP, "", , LVM_FIRST + 173
+.常量 LVCF_TEXT, "4", , 
+.常量 LVCF_WIDTH, "2", , 
+.常量 LVCF_FMT, "1", , 
+.常量 LVIF_TEXT, "1", , 
+.常量 LVIF_PARAM, "4", , 
+.常量 LVIF_STATE, "8", , 
+.常量 LVIS_SELECTED, "2", , 
+.常量 LV_SETITEMSTATE, "4139", , 
+.常量 LVS_EX_FULLROWSELECT, "32", , 整行选择
+.常量 LVS_EX_HEADERDRAGDROP, "16", , LVS_REPORT时可以利用drag-and-drop重新排序
+.常量 LVS_EX_TRACKSELECT, "8", , 当鼠标指到某一项时便自动选择该项
+.常量 LVS_EX_CHECKBOXES, "4", , 带检查框
+.常量 LVS_EX_SUBITEMIMAGES, "2", , 允许在子项中显示image
+.常量 LVS_EX_GRIDLINES, "1", , 网格
+.常量 FILE_MAP_ALL_ACCESS, "983071", , 
+.常量 MEM_RELEASE, "32768", , 
+.常量 MEM_COMMIT, "4096", , 
+.常量 PAGE_READWRITE, "4", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 1 2 扩展界面支持库一
+
+
+
+
+数据类型 LVCOLUMN, , 用于定义列表控制的一个表列
+    .成员 mask, 整数型, , , 结构成员有效性屏蔽位
+    .成员 fmt, 整数型, , , 表列对齐方式。fmt可以取如下值：LVCFMT_CENTER 表列居中对齐，LVCFMT_LEFT 表列左对齐
+    .成员 cx, 整数型, , , 表列的象素宽度
+    .成员 pszText, 整数型, , , LPTSTR表列的表头名
+    .成员 cchTextMax, 整数型, , , 表列名的文本长度
+    .成员 iSubItem, 整数型, , , 与表列关联的子表项索引号
+
+数据类型 LVITEM, , 用于定义列表控制的一个表项
+    .成员 mask, 整数型, , , 结构成员屏蔽位
+    .成员 iItem, 整数型, , , 表项索引号
+    .成员 iSubItem, 整数型, , , 子表项索引号
+    .成员 state, 整数型, , , 表项状态
+    .成员 stateMask, 整数型, , , 状态有效性屏蔽位
+    .成员 pszText, 整数型, , , LPTSTR表项名文本
+    .成员 cchTextMax, 整数型, , , 表项名最大长度
+    .成员 iImage, 整数型, , , 表项图标的索引号
+    .成员 lParam, 整数型, , , LPARAM与表项相关的32位数
+
+数据类型 LVSETINFOTIP, , 
+    .成员 cbSize, 整数型, , , LVSETINFOTIP结构大小
+    .成员 dwFlags, 整数型, , , 0
+    .成员 pszText, 文本型, , , 文本
+    .成员 iItem, 整数型, , , 行号
+    .成员 iSubItem, 整数型, , , 列号
+
+
+.DLL命令 SendMessage, 整数型, "", "SendMessageA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 SendMessage1, 整数型, "", "SendMessageA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, LVSETINFOTIP, 传址, 
+
+.DLL命令 SendMessage_Address, 整数型, "", "SendMessageA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, 传址, 
+
+.DLL命令 GetWindowThreadProcessId, 整数型, "", "GetWindowThreadProcessId", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpdwProcessId, 整数型, 传址, 
+
+.DLL命令 OpenProcess, 整数型, "", "OpenProcess", , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 逻辑型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 CloseHandle, 整数型, "", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 VirtualAllocEx, 整数型, "", "VirtualAllocEx", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+    .参数 flProtect, 整数型, , 
+
+.DLL命令 VirtualFreeEx, 整数型, "", "VirtualFreeEx", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+
+.DLL命令 ReadProcessMemory, 整数型, "", "ReadProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 字节集, 传址, 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, , 
+
+.DLL命令 WriteProcessMemory, 整数型, "", "WriteProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 字节集, 传址, 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, , 
+
+.DLL命令 WriteProcessMemory_LVITEM, 整数型, "", "WriteProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, LVITEM, 传址, 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, , 
+
+.DLL命令 WriteProcessMemory_COLUMN, 整数型, "", "WriteProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, LVCOLUMN, 传址, 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, , 
+
+.DLL命令 CreateFileMapping, 整数型, "", "CreateFileMappingA", , 
+    .参数 hFile, 整数型, , 
+    .参数 lpFileMappigAttributes, 整数型, , 
+    .参数 flProtect, 整数型, , 
+    .参数 dwMaximumSizeHigh, 整数型, , 
+    .参数 dwMaximumSizeLow, 整数型, , 
+    .参数 lpName, 整数型, , 
+
+.DLL命令 MapViewOfFile, 整数型, "", "MapViewOfFile", , 
+    .参数 hFileMappingObject, 整数型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwFileOffsetHigh, 整数型, , 
+    .参数 dwFileOffsetLow, 整数型, , 
+    .参数 dwNumberOfBytesToMap, 整数型, , 
+
+.DLL命令 UnmapViewOfFile, 整数型, "", "UnmapViewOfFile", , 
+    .参数 lpBaseAddress, 整数型, , 
+
+.DLL命令 GetThreadLocale, 整数型, "", "GetThreadLocale", , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在模块初始化代码执行完毕后调用模块测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的参数及返回值类型。
+载入 (窗口1, , 真)
+
+.程序集 _接口程序集, , , 在本程序集中定义的子程序可被模块外部程序访问，注意如果不存在本程序集就不能作为易模块编译。
+
+.子程序 取选中项, 整数型, 公开, 取其它程序中超级列表框的现行选中项，成功返回项目索引，从0开始
+.参数 超级列表框句柄, 整数型, , 超级列表框句柄
+
+返回 (SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 12), -1, 1))
+
+.子程序 取行数, 整数型, 公开, 取其它程序中超级列表框的行数，成功返回行数，失败返回0
+.参数 超级列表框句柄, 整数型, , 超级列表框句柄
+
+返回 (SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 4), 0, 0))
+
+.子程序 删除行, 整数型, 公开, 删除超级列表框中的一行，失败返回0
+.参数 超级列表框句柄, 整数型, , 超级列表框句柄
+.参数 行号, 整数型, 可空, 整数型，从0开始；可空，默认为0
+
+返回 (SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 8), 行号, 0))
+
+.子程序 删除所有行, 整数型, 公开, 删除超级列表框中的所有行，失败返回0
+.参数 超级列表框句柄, 整数型, , 超级列表框句柄
+
+返回 (SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 9), 0, 0))
+
+.子程序 删除列, 整数型, 公开, 删除超级列表框中的一列，适用于"报表列表框类型"，失败返回0
+.参数 超级列表框句柄, 整数型, , 超级列表框句柄
+.参数 列号, 整数型, 可空, 整数型，从0开始，可空，默认为0
+
+返回 (SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 28), 列号, 0))
+
+.子程序 取背景色, 整数型, 公开, 取超级列表框的背景颜色，成功返回背景颜色，失败返回0
+.参数 超级列表框句柄, 整数型, , 超级列表框句柄
+
+返回 (SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 0), 0, 0))
+
+.子程序 设置风格, 整数型, 公开, 
+.参数 超级列表框句柄, 整数型, , 超级列表框句柄
+.参数 风格, 整数型, , 1、显示网格，2、允许在子项中显示image，4、带检查框，8、当鼠标指到某一项时便自动选择该项，32、整行选择
+
+.局部变量 s, 整数型, , , 
+
+.如果真 (或者 (等于 (风格, 1), 等于 (风格, 2), 等于 (风格, 4), 等于 (风格, 8), 等于 (风格, 32)))
+    赋值 (s, SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 55), 0, 0))
+    赋值 (s, 位或 (s, 风格))
+    返回 (SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 54), 0, s))
+.如果真结束
+
+
+.子程序 设置提示文本, 整数型, 公开, 
+.参数 超级列表框句柄, 整数型, , 超级列表框句柄
+.参数 行号, 整数型, 可空, 整数型，从0开始；可空，默认为0
+
+SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 173), 0, 0)
+
+.子程序 置选中项, 逻辑型, 公开, 
+.参数 超级列表框句柄, 整数型, , 
+.参数 索引号, 整数型, , 
+
+.局部变量 dwProcessID, 整数型, , , 
+.局部变量 hProcess, 整数型, , , 
+.局部变量 lpListItemRemote, 整数型, , , 
+.局部变量 lvItemLocal, LVITEM, , , 
+.局部变量 tmp1, 整数型, , , 
+
+赋值 (lvItemLocal.iItem, 索引号)
+赋值 (lvItemLocal.iSubItem, 0)
+赋值 (lvItemLocal.mask, #LVIF_STATE)
+赋值 (lvItemLocal.state, #LVIS_SELECTED)
+赋值 (lvItemLocal.stateMask, #LVIS_SELECTED)
+GetWindowThreadProcessId (超级列表框句柄, dwProcessID)
+赋值 (hProcess, OpenProcess (位或 (983040, 1048576, 4095), 假, dwProcessID))
+.如果 (等于 (取操作系统类别 (), 3))
+    赋值 (lpListItemRemote, VirtualAllocEx (hProcess, 0, 36, #MEM_COMMIT, #PAGE_READWRITE))
+    .如果真 (等于 (WriteProcessMemory_LVITEM (hProcess, lpListItemRemote, lvItemLocal, 36, 0), 0))
+        返回 (假)
+    .如果真结束
+    .如果真 (等于 (SendMessage (超级列表框句柄, #LV_SETITEMSTATE, 索引号, lpListItemRemote), 0))
+        返回 (假)
+    .如果真结束
+    VirtualFreeEx (hProcess, lpListItemRemote, 0, #MEM_RELEASE)
+    CloseHandle (hProcess)
+    返回 (真)
+.否则
+    
+    赋值 (tmp1, CreateFileMapping (-1, 0, #PAGE_READWRITE, 0, 36, 0))
+    赋值 (lpListItemRemote, MapViewOfFile (tmp1, #FILE_MAP_ALL_ACCESS, 0, 0, 0))
+    .如果真 (等于 (WriteProcessMemory_LVITEM (hProcess, lpListItemRemote, lvItemLocal, 36, 0), 0))
+        返回 (假)
+    .如果真结束
+    .如果真 (等于 (SendMessage (超级列表框句柄, #LV_SETITEMSTATE, 索引号, lpListItemRemote), 0))
+        返回 (假)
+    .如果真结束
+    UnmapViewOfFile (lpListItemRemote)
+    CloseHandle (tmp1)
+    返回 (真)
+.如果结束
+
+
+.子程序 取行文本, 文本型, 公开, 取其它程序中超级列表框中的文本，失败返回":("
+.参数 超级列表框句柄, 整数型, , 超级列表框句柄
+.参数 行号, 整数型, 可空, 整数型，从0开始；可空，默认为0
+.参数 列号, 整数型, 可空, 整数型，从0开始，适用于"报表列表框类型"；可空，默认为0
+
+.局部变量 szBuf, 字节集, , , 
+.局部变量 dwProcessID, 整数型, , , 
+.局部变量 hProcess, 整数型, , , 
+.局部变量 lpTextRemote, 整数型, , , 
+.局部变量 lpListItemRemote, 整数型, , , 
+.局部变量 lvItemLocal, LVITEM, , , 
+.局部变量 tmp1, 整数型, , , 
+.局部变量 tmp2, 整数型, , , 
+
+赋值 (szBuf, 取空白字节集 (255))
+赋值 (lvItemLocal.iItem, 行号)
+赋值 (lvItemLocal.iSubItem, 列号)
+赋值 (lvItemLocal.mask, #LVCF_TEXT)
+赋值 (lvItemLocal.cchTextMax, 255)
+GetWindowThreadProcessId (超级列表框句柄, dwProcessID)
+赋值 (hProcess, OpenProcess (位或 (983040, 1048576, 4095), 假, dwProcessID))
+.如果 (等于 (取操作系统类别 (), 3))
+    赋值 (lpTextRemote, VirtualAllocEx (hProcess, 0, 255, #MEM_COMMIT, #PAGE_READWRITE))
+    赋值 (lpListItemRemote, VirtualAllocEx (hProcess, 0, 36, #MEM_COMMIT, #PAGE_READWRITE))
+    赋值 (lvItemLocal.pszText, lpTextRemote)
+    .如果真 (等于 (WriteProcessMemory_LVITEM (hProcess, lpListItemRemote, lvItemLocal, 36, 0), 0))
+        返回 (“:(”)
+    .如果真结束
+    .如果真 (等于 (SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 45), 行号, lpListItemRemote), 0))
+        返回 (“:(”)
+    .如果真结束
+    .如果真 (等于 (ReadProcessMemory (hProcess, lpTextRemote, szBuf, 255, 0), 0))
+        返回 (“:(”)
+    .如果真结束
+    VirtualFreeEx (hProcess, lpListItemRemote, 0, #MEM_RELEASE)
+    VirtualFreeEx (hProcess, lpTextRemote, 0, #MEM_RELEASE)
+    CloseHandle (hProcess)
+    返回 (取字节集数据 (szBuf, #文本型))
+    
+.否则
+    
+    赋值 (tmp1, CreateFileMapping (-1, 0, #PAGE_READWRITE, 0, 36, 0))
+    赋值 (tmp2, CreateFileMapping (-1, 0, #PAGE_READWRITE, 0, 255, 0))
+    赋值 (lpListItemRemote, MapViewOfFile (tmp1, #FILE_MAP_ALL_ACCESS, 0, 0, 0))
+    赋值 (lpTextRemote, MapViewOfFile (tmp2, #FILE_MAP_ALL_ACCESS, 0, 0, 0))
+    赋值 (lvItemLocal.pszText, lpTextRemote)
+    .如果真 (等于 (WriteProcessMemory_LVITEM (hProcess, lpListItemRemote, lvItemLocal, 36, 0), 0))
+        返回 (“:(”)
+    .如果真结束
+    .如果真 (等于 (SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 45), 行号, lpListItemRemote), 0))
+        返回 (“:(”)
+    .如果真结束
+    .如果真 (等于 (ReadProcessMemory (hProcess, lpTextRemote, szBuf, 255, 0), 0))
+        返回 (“:(”)
+    .如果真结束
+    UnmapViewOfFile (lpListItemRemote)
+    UnmapViewOfFile (lpTextRemote)
+    CloseHandle (tmp1)
+    CloseHandle (tmp2)
+    返回 (取字节集数据 (szBuf, #文本型))
+.如果结束
+
+
+.子程序 取行位置, 文本型, 公开, 成功返回的文本格式---"x,y"
+.参数 超级列表框句柄, 整数型, , 
+.参数 行号, 整数型, 可空, 
+
+.局部变量 dwProcessID, 整数型, , , 
+.局部变量 hProcess, 整数型, , , 
+.局部变量 lpPOINTAPIRemote, 整数型, , , 
+.局部变量 tmp1, 整数型, , , 
+.局部变量 tmp2, 整数型, , , 
+.局部变量 POINTAPI, 字节集, , , 
+
+赋值 (POINTAPI, 取空白字节集 (8))
+GetWindowThreadProcessId (超级列表框句柄, dwProcessID)
+赋值 (hProcess, OpenProcess (位或 (983040, 1048576, 4095), 假, dwProcessID))
+.如果 (等于 (取操作系统类别 (), 3))
+    赋值 (lpPOINTAPIRemote, VirtualAllocEx (hProcess, 0, 8, #MEM_COMMIT, #PAGE_READWRITE))
+    .如果真 (等于 (SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 16), 行号, lpPOINTAPIRemote), 0))
+        返回 (“”)
+    .如果真结束
+    .如果真 (等于 (ReadProcessMemory (hProcess, lpPOINTAPIRemote, POINTAPI, 8, 0), 0))
+        返回 (“”)
+    .如果真结束
+    VirtualFreeEx (hProcess, lpPOINTAPIRemote, 0, #MEM_RELEASE)
+    CloseHandle (hProcess)
+    赋值 (tmp1, 取字节集数据 (取字节集左边 (POINTAPI, 4), #整数型))
+    赋值 (tmp2, 取字节集数据 (取字节集右边 (POINTAPI, 4), #整数型))
+    返回 (相加 (到文本 (tmp1), “,”, 到文本 (tmp2)))
+    
+.否则
+    
+    赋值 (tmp1, CreateFileMapping (-1, 0, #PAGE_READWRITE, 0, 8, 0))
+    赋值 (lpPOINTAPIRemote, MapViewOfFile (tmp1, #FILE_MAP_ALL_ACCESS, 0, 0, 0))
+    .如果真 (等于 (SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 16), 行号, lpPOINTAPIRemote), 0))
+        返回 (“”)
+    .如果真结束
+    .如果真 (等于 (ReadProcessMemory (hProcess, lpPOINTAPIRemote, POINTAPI, 8, 0), 0))
+        返回 (“”)
+    .如果真结束
+    UnmapViewOfFile (lpPOINTAPIRemote)
+    CloseHandle (tmp1)
+    赋值 (tmp1, 取字节集数据 (取字节集左边 (POINTAPI, 4), #整数型))
+    赋值 (tmp2, 取字节集数据 (取字节集右边 (POINTAPI, 4), #整数型))
+    返回 (相加 (到文本 (tmp1), “,”, 到文本 (tmp2)))
+.如果结束
+
+
+.子程序 插入列, 逻辑型, 公开, 在其它程序中的超级列表框插入一列，适用于"报表列表框类型"，成功返回真，失败返回假
+.参数 超级列表框句柄, 整数型, , 超级列表框句柄
+.参数 插入位置, 整数型, 可空, 整数型，从0开始；可空，默认为0
+.参数 标题文本, 文本型, 可空, 文本型，可空
+.参数 标题文本对齐方式, 整数型, 可空, 整数型，0---表列左对齐，1---表列右对齐，2表列居中对齐；可空，默认为0
+.参数 插入的列宽度, 整数型, 可空, 整数型，从0开始；可空，默认为100
+
+.局部变量 COLUMN, LVCOLUMN, , , 
+.局部变量 项目文本长度, 整数型, , , 
+.局部变量 项目文本_bin, 字节集, , , 
+.局部变量 dwProcessID, 整数型, , , 
+.局部变量 hProcess, 整数型, , , 
+.局部变量 lpTextRemote, 整数型, , , 
+.局部变量 lpListItemRemote, 整数型, , , 
+.局部变量 tmp1, 整数型, , , 
+.局部变量 tmp2, 整数型, , , 
+
+赋值 (项目文本_bin, 到字节集 (标题文本))
+赋值 (项目文本长度, 取字节集长度 (项目文本_bin))
+赋值 (COLUMN.mask, 位或 (#LVCF_TEXT, #LVCF_WIDTH, #LVCF_FMT))
+.如果真 (等于 (插入的列宽度, 0))
+    赋值 (插入的列宽度, 100)
+.如果真结束
+.判断开始 (等于 (标题文本对齐方式, 0))
+    赋值 (COLUMN.fmt, 0)
+.判断 (等于 (标题文本对齐方式, 1))
+    赋值 (COLUMN.fmt, 1)
+.判断 (等于 (标题文本对齐方式, 2))
+    赋值 (COLUMN.fmt, 2)
+.默认
+    
+.判断结束
+赋值 (COLUMN.iSubItem, 插入位置)
+赋值 (COLUMN.cx, 插入的列宽度)
+GetWindowThreadProcessId (超级列表框句柄, dwProcessID)
+赋值 (hProcess, OpenProcess (位或 (983040, 1048576, 4095), 假, dwProcessID))
+.如果 (等于 (取操作系统类别 (), 3))
+    赋值 (lpTextRemote, VirtualAllocEx (hProcess, 0, 项目文本长度, #MEM_COMMIT, #PAGE_READWRITE))
+    赋值 (lpListItemRemote, VirtualAllocEx (hProcess, 0, 24, #MEM_COMMIT, #PAGE_READWRITE))
+    赋值 (COLUMN.pszText, lpTextRemote)
+    .如果真 (等于 (WriteProcessMemory (hProcess, lpTextRemote, 项目文本_bin, 项目文本长度, 0), 0))
+        返回 (假)
+    .如果真结束
+    .如果真 (等于 (WriteProcessMemory_COLUMN (hProcess, lpListItemRemote, COLUMN, 24, 0), 0))
+        返回 (假)
+    .如果真结束
+    .如果真 (等于 (SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 27), 插入位置, lpListItemRemote), 0))
+        返回 (假)
+    .如果真结束
+    VirtualFreeEx (hProcess, lpTextRemote, 0, #MEM_RELEASE)
+    VirtualFreeEx (hProcess, lpListItemRemote, 0, #MEM_RELEASE)
+    CloseHandle (hProcess)
+    返回 (真)
+    
+.否则
+    
+    赋值 (tmp1, CreateFileMapping (-1, 0, #PAGE_READWRITE, 0, 24, 0))
+    赋值 (tmp2, CreateFileMapping (-1, 0, #PAGE_READWRITE, 0, 项目文本长度, 0))
+    赋值 (lpListItemRemote, MapViewOfFile (tmp1, #FILE_MAP_ALL_ACCESS, 0, 0, 0))
+    赋值 (lpTextRemote, MapViewOfFile (tmp2, #FILE_MAP_ALL_ACCESS, 0, 0, 0))
+    赋值 (COLUMN.pszText, lpTextRemote)
+    
+    .如果真 (等于 (WriteProcessMemory_COLUMN (hProcess, lpListItemRemote, COLUMN, 24, 0), 0))
+        返回 (假)
+    .如果真结束
+    .如果真 (等于 (WriteProcessMemory (hProcess, lpTextRemote, 项目文本_bin, 项目文本长度, 0), 0))
+        返回 (假)
+    .如果真结束
+    .如果真 (等于 (SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 27), 插入位置, lpListItemRemote), 0))
+        返回 (假)
+    .如果真结束
+    UnmapViewOfFile (lpListItemRemote)
+    UnmapViewOfFile (lpTextRemote)
+    CloseHandle (tmp1)
+    CloseHandle (tmp2)
+    返回 (真)
+.如果结束
+
+
+.子程序 插入行, 逻辑型, 公开, 适用于"报表列表框类型"，成功返回真，失败返回假
+.参数 超级列表框句柄, 整数型, , 超级列表框句柄
+.参数 行号, 整数型, 可空, 整数型，从0开始；可空，默认为0
+.参数 行首文本, 文本型, 可空, 文本型，要插入的行首文本；可空，默认为“ ”
+.参数 标题数值, 整数型, 可空, 整数型型，要插入的与标题关联的数值
+
+.局部变量 szBuf, 字节集, , , 
+.局部变量 szBufLen, 整数型, , , 
+.局部变量 dwProcessID, 整数型, , , 
+.局部变量 hProcess, 整数型, , , 
+.局部变量 lpTextRemote, 整数型, , , 
+.局部变量 lpListItemRemote, 整数型, , , 
+.局部变量 lvItemLocal, LVITEM, , , 
+.局部变量 tmp1, 整数型, , , 
+.局部变量 tmp2, 整数型, , , 
+
+.如果 (等于 (行首文本, “”))
+    赋值 (szBuf, 取空白字节集 (1))
+.否则
+    赋值 (szBuf, 到字节集 (行首文本))
+.如果结束
+赋值 (szBufLen, 取字节集长度 (szBuf))
+赋值 (lvItemLocal.mask, 位或 (#LVIF_TEXT, #LVIF_PARAM))
+赋值 (lvItemLocal.lParam, 标题数值)
+赋值 (lvItemLocal.iItem, 行号)
+GetWindowThreadProcessId (超级列表框句柄, dwProcessID)
+赋值 (hProcess, OpenProcess (位或 (983040, 1048576, 4095), 假, dwProcessID))
+.如果 (等于 (取操作系统类别 (), 3))
+    赋值 (lpTextRemote, VirtualAllocEx (hProcess, 0, szBufLen, #MEM_COMMIT, #PAGE_READWRITE))
+    赋值 (lpListItemRemote, VirtualAllocEx (hProcess, 0, 36, #MEM_COMMIT, #PAGE_READWRITE))
+    赋值 (lvItemLocal.pszText, lpTextRemote)
+    .如果真 (等于 (WriteProcessMemory (hProcess, lpTextRemote, szBuf, szBufLen, 0), 0))
+        返回 (假)
+    .如果真结束
+    .如果真 (等于 (WriteProcessMemory_LVITEM (hProcess, lpListItemRemote, lvItemLocal, 36, 0), 0))
+        返回 (假)
+    .如果真结束
+    .如果真 (等于 (SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 7), 行号, lpListItemRemote), 0))
+        返回 (假)
+    .如果真结束
+    VirtualFreeEx (hProcess, lpListItemRemote, 0, #MEM_RELEASE)
+    VirtualFreeEx (hProcess, lpTextRemote, 0, #MEM_RELEASE)
+    CloseHandle (hProcess)
+    返回 (真)
+    
+.否则
+    
+    赋值 (tmp1, CreateFileMapping (-1, 0, #PAGE_READWRITE, 0, 36, 0))
+    赋值 (tmp2, CreateFileMapping (-1, 0, #PAGE_READWRITE, 0, szBufLen, 0))
+    赋值 (lpListItemRemote, MapViewOfFile (tmp1, #FILE_MAP_ALL_ACCESS, 0, 0, 0))
+    赋值 (lpTextRemote, MapViewOfFile (tmp2, #FILE_MAP_ALL_ACCESS, 0, 0, 0))
+    赋值 (lvItemLocal.pszText, lpTextRemote)
+    .如果真 (等于 (WriteProcessMemory (hProcess, lpTextRemote, szBuf, szBufLen, 0), 0))
+        返回 (假)
+    .如果真结束
+    .如果真 (等于 (WriteProcessMemory_LVITEM (hProcess, lpListItemRemote, lvItemLocal, 36, 0), 0))
+        返回 (假)
+    .如果真结束
+    .如果真 (等于 (SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 7), 行号, lpListItemRemote), 0))
+        返回 (假)
+    .如果真结束
+    UnmapViewOfFile (lpListItemRemote)
+    UnmapViewOfFile (lpTextRemote)
+    CloseHandle (tmp1)
+    CloseHandle (tmp2)
+    返回 (真)
+.如果结束
+
+
+.子程序 置行文本, 逻辑型, 公开, 适用于"报表列表框类型"，成功返回真，失败返回假
+.参数 超级列表框句柄, 整数型, , 超级列表框句柄
+.参数 行号, 整数型, 可空, 整数型，从0开始；可空，默认为0
+.参数 列号, 整数型, 可空, 整数型，从0开始；可空，默认为0
+.参数 行文本, 文本型, , 文本型，要置入的文本
+
+.局部变量 szBuf, 字节集, , , 
+.局部变量 szBufLen, 整数型, , , 
+.局部变量 dwProcessID, 整数型, , , 
+.局部变量 hProcess, 整数型, , , 
+.局部变量 lpTextRemote, 整数型, , , 
+.局部变量 lpListItemRemote, 整数型, , , 
+.局部变量 lvItemLocal, LVITEM, , , 
+.局部变量 tmp1, 整数型, , , 
+.局部变量 tmp2, 整数型, , , 
+
+赋值 (szBuf, 到字节集 (行文本))
+赋值 (szBufLen, 取字节集长度 (szBuf))
+赋值 (lvItemLocal.mask, #LVIF_TEXT)
+赋值 (lvItemLocal.iItem, 行号)
+赋值 (lvItemLocal.iSubItem, 列号)
+GetWindowThreadProcessId (超级列表框句柄, dwProcessID)
+赋值 (hProcess, OpenProcess (位或 (983040, 1048576, 4095), 假, dwProcessID))
+.如果 (等于 (取操作系统类别 (), 3))
+    赋值 (lpTextRemote, VirtualAllocEx (hProcess, 0, szBufLen, #MEM_COMMIT, #PAGE_READWRITE))
+    赋值 (lpListItemRemote, VirtualAllocEx (hProcess, 0, 36, #MEM_COMMIT, #PAGE_READWRITE))
+    赋值 (lvItemLocal.pszText, lpTextRemote)
+    .如果真 (等于 (WriteProcessMemory (hProcess, lpTextRemote, szBuf, szBufLen, 0), 0))
+        返回 (假)
+    .如果真结束
+    .如果真 (等于 (WriteProcessMemory_LVITEM (hProcess, lpListItemRemote, lvItemLocal, 36, 0), 0))
+        返回 (假)
+    .如果真结束
+    .如果真 (等于 (SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 6), 行号, lpListItemRemote), 0))
+        返回 (假)
+    .如果真结束
+    VirtualFreeEx (hProcess, lpListItemRemote, 0, #MEM_RELEASE)
+    VirtualFreeEx (hProcess, lpTextRemote, 0, #MEM_RELEASE)
+    CloseHandle (hProcess)
+    返回 (真)
+    
+.否则
+    
+    赋值 (tmp1, CreateFileMapping (-1, 0, #PAGE_READWRITE, 0, 36, 0))
+    赋值 (tmp2, CreateFileMapping (-1, 0, #PAGE_READWRITE, 0, szBufLen, 0))
+    赋值 (lpListItemRemote, MapViewOfFile (tmp1, #FILE_MAP_ALL_ACCESS, 0, 0, 0))
+    赋值 (lpTextRemote, MapViewOfFile (tmp2, #FILE_MAP_ALL_ACCESS, 0, 0, 0))
+    赋值 (lvItemLocal.pszText, lpTextRemote)
+    .如果真 (等于 (WriteProcessMemory (hProcess, lpTextRemote, szBuf, szBufLen, 0), 0))
+        返回 (假)
+    .如果真结束
+    .如果真 (等于 (WriteProcessMemory_LVITEM (hProcess, lpListItemRemote, lvItemLocal, 36, 0), 0))
+        返回 (假)
+    .如果真结束
+    .如果真 (等于 (SendMessage (超级列表框句柄, 相加 (#LVM_FIRST, 6), 行号, lpListItemRemote), 0))
+        返回 (假)
+    .如果真结束
+    UnmapViewOfFile (lpListItemRemote)
+    UnmapViewOfFile (lpTextRemote)
+    CloseHandle (tmp1)
+    CloseHandle (tmp2)
+    返回 (真)
+.如果结束
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+置选中项 (到数值 (.内容), 到数值 (.内容))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

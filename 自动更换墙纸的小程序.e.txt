@@ -1,0 +1,175 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：自动更换墙纸的小程序
+ ' 程序描述：
+@备注:
+[原创]月万-跟我学API-自动更换墙纸的小程序
+ ' 程序作者：月万
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 605
+    高度 = 426
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “自动更换墙纸的小程序”
+    帮助文件名 = “”
+
+
+
+.常量 SPI_SETDESKWALLPAPER, "20", , 设置墙纸
+.常量 SPIF_UPDATEINIFILE, "1", , 更新windows ini 文件
+.常量 SPIF_SENDWININICHANGE, "2", , 更新windows ini 文件
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 6 系统核心支持库
+ ' vclbase {6793B367-79D9-43F3-88B7-5EB6CF04B618} 1 0 VCLBase
+
+
+
+
+
+.DLL命令 SystemParametersInfo, 整数型, "user32", "SystemParametersInfoA", , 允许获取和设置数量众多的windows系统参数 返回值Long,非零表示成功,零表示失败?会设置GetLastError 在调用这个函数之前,特别要注意将lpvParam参数定义成正确的数据类型
+    .参数 uAction, 整数型, , Long,指定要设置的参数?参考uAction常数表
+    .参数 uParam, 整数型, , Long,参考uAction常数表
+    .参数 lpvParam, 文本型, , Any,按引用调用的Integer?Long和数据结构?对于String数据,请用SystemParametersInfoByval函数?具体用法参考uAction常数表
+    .参数 fuWinIni, 整数型, , Long,取决于不同的参数及操作系统,随同这个函数设置的用户配置参数保存在win.ini或注册表里,或同时保存在这两个地方?这个参数规定了在设置系统参数的时候,是否应更新用户设置参数?可以是零(禁止更新),或下述任何一个常数: SPIF_UPDATEINIFILE 更新win.ini和(或)注册表中的用户配置文件  SPIF_SENDWININICHANGE  倘若也设置了SPIF_UPDATEINIFILE,将一条WM_WININICHANGE消息发给所有应用程序?否则没有作用?这调消息告诉应用程序已经改变了用户配置设置
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 flag, 逻辑型, , , 
+.程序集变量 bmpfile, 文本型, , , 
+.子程序 _按钮_立即更换_被单击, 空白型, , 
+ ' ' 当"立即更换"按钮被按下时
+ ' Sub CmdNow_Click()
+ ' Dim bmpfile As String
+ ' '如果列表框中没有图片,不做任何操作
+ ' If Listfile.ListCount = 0 Then End
+ ' '否则把选中的图片更换为墙纸
+ ' bmpfile = Listfile.List(Listfile.ListIndex)
+ ' SystemParametersInfo SPI_SETDESKWALLPAPER, 0, bmpfile, SPIF_UPDATEINIFILE
+ ' End Sub
+.如果真 (不等于 (取项目数 (), 0))
+    赋值 (bmpfile, .取项目文本 (.现行选中项))
+    .如果真 (等于 (文件是否存在 (bmpfile), 真))
+        SystemParametersInfo (#SPI_SETDESKWALLPAPER, 0, bmpfile, #SPIF_UPDATEINIFILE)
+    .如果真结束
+    
+.如果真结束
+
+
+.子程序 _按钮_添加墙纸_被单击, 空白型, , 
+ ' ' 当"添加墙纸"按钮被按下时
+ ' Sub CmdAdd_Click()
+ ' '弹出通用对话框(打开文件)
+ ' On Error Resume Next
+ ' ComOpen.CancelError = True
+ ' ComOpen.ShowOpen
+ ' If Err = cdlCancel Then Exit Sub
+ ' '如果选择了墙纸图片则把图片的路径添加到列表框中去
+ ' Listfile.AddItem ComOpen.FileName
+ ' End Sub
+.如果真 (未知支持库函数_34 ())
+    .加入项目 (., )
+.如果真结束
+
+
+.子程序 _按钮_退出_被单击, 空白型, , 
+ ' '当"退出程序"按钮被按下时,退出
+ ' Sub CmdExit_Click()
+ ' Unload Me
+ ' End Sub
+结束 ()
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+ ' '窗体加载时
+ ' Sub Form_Load()
+ ' 'flag为布尔型变量,标示列表框中是否有文件存在
+ ' flag = False
+ ' '设置自动更换墙纸的间隔时间,单位为毫秒,可以改变
+ ' Timer1.Interval = 5000
+ ' End Sub
+赋值 (flag, 假)
+赋值 (.时钟周期, 5000)
+
+.子程序 _时钟1_周期事件, 空白型, , 
+ ' ' 当经历一定间隔时间,定时器TIMER被唤醒,执行指定任务
+ ' Sub Timer1_Timer()
+ ' '如果列表框中没有图片,不进行任何操作
+ ' If Listfile.ListCount = 0 Then
+ ' Exit Sub
+ ' '否则把标示flag置为True
+ ' Else: flag = True
+ ' End If
+
+ ' 'bmpfile为字符串变量,存储图片路径
+ ' Dim bmpfile As String
+ ' '如果flag为真
+ ' If flag Then
+ ' '从列表框中读取一个文件路径并赋值给bmpfile
+ ' bmpfile = Listfile.List(Listfile.ListIndex)
+ ' '把墙纸更换为bmpfile所指图片,并修改INI文件
+ ' SystemParametersInfo SPI_SETDESKWALLPAPER, 0, bmpfile, SPIF_UPDATEINIFILE
+ ' '如果已经是列表框中最后一张图片,把ListIndex设为0即第一张图片
+ ' If Listfile.ListIndex = Listfile.ListCount - 1 Then
+ ' Listfile.ListIndex = 0
+ ' '否则ListIndex加一,指向下一张图片
+ ' Else
+ ' Listfile.ListIndex = Listfile.ListIndex + 1
+ ' End If
+ ' End If
+ ' End Sub
+
+.如果真 (不等于 (取项目数 (), 0))
+    赋值 (flag, 真)
+    赋值 (bmpfile, .取项目文本 (.现行选中项))
+    .如果真 (等于 (文件是否存在 (bmpfile), 真))
+        SystemParametersInfo (#SPI_SETDESKWALLPAPER, 0, bmpfile, #SPIF_UPDATEINIFILE)
+        .如果 (等于 (.现行选中项, 相减 (取项目数 (), 1)))
+            赋值 (.现行选中项, 0)
+        .否则
+            赋值 (.现行选中项, 相加 (.现行选中项, 1))
+        .如果结束
+        
+    .如果真结束
+    
+.如果真结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

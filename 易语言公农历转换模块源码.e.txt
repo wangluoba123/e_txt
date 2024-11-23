@@ -1,0 +1,510 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：公农历互转模块
+ ' 程序描述：已修正易语言“农历日期支持库”中的错误，并做了一些小增强。该模块可以为黑月所用。
+@备注:
+此版本中农历转公历效率极低，等待算法更新。
+ ' 程序作者：本源码来自易语言资源网(www.5A5X.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 GetTrait, "“var lunarInfo=new Array(
+0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,
+0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,
+0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,
+0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,
+0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,
+0x06ca0,0x0b550,0x15355,0x04da0,0x0a5d0,0x14573,0x052d0,0x0a9a8,0x0e950,0x06aa0,
+0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,
+0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b5a0,0x195a6,
+
+0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,
+0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x055c0,0x0ab60,0x096d5,0x092e0,
+0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,
+0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,
+0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,
+0x05aa0,0x076a3,0x096d0,0x04bd7,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,
+0x0b5a0,0x056d0,0x055b2,0x049b0,0x0a577,0x0a4b0,0x0aa50,0x1b255,0x06d20,0x0ada0)
+var Animals=new Array("鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪");
+var Gan=new Array("甲","乙","丙","丁","戊","己","庚","辛","壬","癸");
+var Zhi=new Array("子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥");
+var now = new Date();
+var SY = now.getFullYear(); 
+var SM = now.getMonth();
+var SD = now.getDate();
+ 
+//==== 传入 offset 传回干支, 0=甲子
+function cyclical(num) { return(Gan[num%10]+Zhi[num%12])}
+
+//==== 传回农历 y年的总天数
+function lYearDays(y) {
+   var i, sum = 348
+   for(i=0x8000; i>0x8; i>>=1) sum += (lunarInfo[y-1900] & i)? 1: 0
+   return(sum+leapDays(y))
+}
+
+//==== 传回农历 y年闰月的天数
+function leapDays(y) {
+   if(leapMonth(y))  return((lunarInfo[y-1900] & 0x10000)? 30: 29)
+   else return(0)
+}
+
+//==== 传回农历 y年闰哪个月 1-12 , 没闰传回 0
+function leapMonth(y) { return(lunarInfo[y-1900] & 0xf)}
+
+//====================================== 传回农历 y年m月的总天数
+function monthDays(y,m) { return( (lunarInfo[y-1900] & (0x10000>>m))? 30: 29 )}
+
+//==== 算出农历, 传入日期物件, 传回农历日期物件
+//     该物件属性有 .year .month .day .isLeap .yearCyl .dayCyl .monCyl
+function Lunar(objDate) {
+   var i, leap=0, temp=0
+   var baseDate = new Date(1900,0,31)
+   var offset   = (objDate - baseDate)/86400000
+
+   this.dayCyl = offset + 40
+   this.monCyl = 14
+
+   for(i=1900; i<2050 && offset>0; i++) {
+      temp = lYearDays(i)
+      offset -= temp
+      this.monCyl += 12
+   }
+   if(offset<0) {
+      offset += temp;
+      i--;
+      this.monCyl -= 12
+   }
+
+   this.year = i
+   this.yearCyl = i-1864
+
+   leap = leapMonth(i) //闰哪个月
+   this.isLeap = false
+
+   for(i=1; i<13 && offset>0; i++) {
+      //闰月
+      if(leap>0 && i==(leap+1) && this.isLeap==false)
+         { --i; this.isLeap = true; temp = leapDays(this.year); }
+      else
+         { temp = monthDays(this.year, i); }
+
+      //解除闰月
+      if(this.isLeap==true && i==(leap+1)) this.isLeap = false
+
+      offset -= temp
+      if(this.isLeap == false) this.monCyl ++
+   }
+
+   if(offset==0 && leap>0 && i==leap+1)
+      if(this.isLeap)
+         { this.isLeap = false; }
+      else
+         { this.isLeap = true; --i; --this.monCyl;}
+
+   if(offset<0){ offset += temp; --i; --this.monCyl; }
+
+   this.month = i
+   this.day = offset + 1
+}
+
+ function YYMMDD(){ 
+    return(SY+'年'+(SM+1)+'月'+SD+'日'); 
+ }
+ function weekday(){ 
+    var day = new Array("星期日","星期一","星期二","星期三","星期四","星期五","星期六");
+    return(day[now.getDay()]); 
+ }
+//==== 中文日期
+function cDay(m,d){
+ var nStr1 = new Array('日','一','二','三','四','五','六','七','八','九','十');
+ var nStr2 = new Array('初','十','廿','卅','　');
+ var nStr3 = new Array('正','正','二','三','四','五','六','七','八','九','十');
+ var s;
+ if (m>10){s = '十'+nStr1[m-10]} else {s = nStr3[m]} s += '月'
+ switch (d) {
+  case 10:s += '初十'; break;
+  case 20:s += '二十'; break;
+  case 30:s += '三十'; break;
+  default:s += nStr2[Math.floor(d/10)]; s += nStr1[d%10];
+ }
+ return(s);
+}
+//返回取得的农历日期。自定义添加的函数
+ function ClyYYMMDD(Y,M,D){ 
+    var sDObj = new Date(Y,M-1,D);
+    var lDObj = new Lunar(sDObj);
+    return(lDObj.year+'年'+cDay(lDObj.month,lDObj.day)); 
+ }
+ function solarDay1(Y,M,D){
+    var sDObj = new Date(Y,M,D);
+    var lDObj = new Lunar(sDObj);
+    var tt = cyclical(lDObj.year-1900+36)+'年 '+cyclical(lDObj.monCyl)+'月 '+cyclical(lDObj.dayCyl++)+'日' ;
+    return(tt);
+ }
+ function GetAnimal(Y){
+    return(Animals[(Y-4)%12]);
+ }
+
+ function solarDay2(Y,M,D){
+    var sDObj = new Date(Y,M,D);
+    var lDObj = new Lunar(sDObj);
+    var tt = cyclical(lDObj.year-1900+36)+'年 '+cDay(lDObj.month,lDObj.day);
+    return(tt);
+ }
+//返回农历年干支
+ function GetYearCly(Y,M,D){
+    var sDObj = new Date(Y,M,D);
+    var lDObj = new Lunar(sDObj);
+    var tt = cyclical(lDObj.year-1900+36);
+    return(tt);
+ }
+//返回农历年数字
+ function GetYearClyNum(Y,M,D){
+    var sDObj = new Date(Y,M,D);
+    var lDObj = new Lunar(sDObj);
+    return(lDObj.year);
+ }
+//返回农历月数字
+ function GetMonthClyNum(Y,M,D){
+    var sDObj = new Date(Y,M,D);
+    var lDObj = new Lunar(sDObj);
+    return(lDObj.month);
+ }
+//返回农历日数字
+ function GetDayClyNum(Y,M,D){
+    var sDObj = new Date(Y,M,D);
+    var lDObj = new Lunar(sDObj);
+    return(lDObj.day);
+ }
+//返回农历日期
+ function GetDayCly(Y,M,D){
+    var sDObj = new Date(Y,M,D);
+    var lDObj = new Lunar(sDObj);
+    var tt = cDay(lDObj.month,lDObj.day);
+    return(tt);
+ }
+ function solarDay3(Y,M,D){
+var sTermInfo = new Array(0,21208,42467,63836,85337,107014,128867,150921,173149,195551,218072,240693,263343,285989,308563,331033,353350,375494,397447,419210,440795,462224,483532,504758)
+var solarTerm = new Array("小寒","大寒","立春","雨水","惊蛰","春分","清明","谷雨","立夏","小满","芒种","夏至","小暑","大暑","立秋","处暑","白露","秋分","寒露","霜降","立冬","小雪","大雪","冬至")
+  var sDObj = new Date(Y,M,D);
+  var lDObj = new Lunar(sDObj);
+  var lDPOS = new Array(3)
+  var solarTerms='',tmp1,tmp2;
+  //节气
+  tmp1 = new Date((31556925974.7*(Y-1900)+sTermInfo[M*2+1]*60000)+Date.UTC(1900,0,6,2,5))
+  tmp2 = tmp1.getUTCDate()
+  if (tmp2==D) solarTerms = solarTerm[M*2+1]  
+  tmp1 = new Date((31556925974.7*(Y-1900)+sTermInfo[M*2]*60000)+Date.UTC(1900,0,6,2,5))
+  tmp2= tmp1.getUTCDate()
+  if (tmp2==D) solarTerms = solarTerm[M*2]       
+  return(solarTerms);
+ }”", , 
+.常量 节气文本, "“{"小寒","大寒","立春","雨水","惊蛰","春分","清明","谷雨","立夏","小满","芒种","夏至","小暑","大暑","立秋","处暑","白露","秋分","寒露","霜降","立冬","小雪","大雪","冬至")}”", 公开, 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+ ' CnCalendar {18C0788E-59AE-4112-B452-6BF0C1B727FB} 2 0 农历日期支持库
+
+
+
+
+
+.程序集 公农历转换程序集, , , 
+
+.程序集变量 局_计次, 整数型, , , 
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+.局部变量 局_年, 整数型, , , 
+.局部变量 局_月, 整数型, , , 
+.局部变量 局_日, 整数型, , , 
+.局部变量 局_闰, 逻辑型, , , 
+
+ ' 对比转换效果
+输出调试文本 ()
+
+.子程序 农历转公历_, 日期时间型, 公开, 如不在所支持的时间范围内，将始终返回100年1月1日。本人愚钝，此方法是傻方法，哈哈
+.参数 参_农历年份, 整数型, , 
+.参数 参_农历月份, 整数型, , 
+.参数 参_农历日, 整数型, , 
+.参数 参_是否闰月, 逻辑型, 可空, 请注意，如果没有这个闰月，而此参数又为真，则无正确结果
+
+.局部变量 局_公历日期, 日期时间型, , , 
+.局部变量 局_成功, 逻辑型, , , 
+
+赋值 (局_公历日期, 到时间 (相加 (到文本 (参_农历年份), “年”, 到文本 (参_农历月份), “月”, 到文本 (参_农历日), “日”)))
+.计次循环首 (100, )
+    .如果真 (并且 (等于 (取农历月数字 (局_公历日期), 参_农历月份), 等于 (取农历日数字 (局_公历日期), 参_农历日)))
+        .如果 (参_是否闰月)
+            赋值 (参_是否闰月, 假)
+        .否则
+            赋值 (局_成功, 真)
+            跳出循环 ()
+        .如果结束
+        ' 本源码来自易语言资源网(www.5A5X.com)
+    .如果真结束
+    赋值 (局_公历日期, 增减时间 (局_公历日期, 5, 1))
+.计次循环尾 ()
+.如果真 (等于 (局_成功, 假))
+    赋值 (局_公历日期)
+
+.子程序 公历到农历_, 文本型, 公开, 包含年月日。如"己丑年 十二月十八"。返回的文本中将不会显示“闰”
+.参数 参_公历日期, 日期时间型, 可空, 
+
+.局部变量 VBScript, 对象, , , 
+
+.如果真 (是否为空 (参_公历日期))
+    赋值 (参_公历日期, 取日期 (取现行时间 ()))
+.如果真结束
+VBScript.创建 (“ScriptControl”, )
+VBScript.写属性 (“Language”, “JavaScript”)
+VBScript.数值方法 (“ExecuteStatement”, #GetTrait)
+返回 (VBScript.通用方法 (“Run”, “solarDay2”, 取年份 (参_公历日期), 相减 (取月份 (参_公历日期), 1), 取日 (参_公历日期)).取文本 ())
+' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 取农历年干支, 文本型, 公开, 不包含月、日。如“甲子”
+.参数 参_公历日期, 日期时间型, 可空, 
+
+.局部变量 VBScript, 对象, , , 
+
+.如果真 (是否为空 (参_公历日期))
+    赋值 (参_公历日期, 取日期 (取现行时间 ()))
+.如果真结束
+VBScript.创建 (“ScriptControl”, )
+VBScript.写属性 (“Language”, “JavaScript”)
+VBScript.数值方法 (“ExecuteStatement”, #GetTrait)
+返回 (VBScript.通用方法 (“Run”, “GetYearCly”, 取年份 (参_公历日期), 相减 (取月份 (参_公历日期), 1), 取日 (参_公历日期)).取文本 ())
+
+
+.子程序 取农历年数字, 整数型, 公开, 不包含月、日
+.参数 参_公历日期, 日期时间型, 可空, 
+
+.局部变量 VBScript, 对象, , , 
+
+.如果真 (是否为空 (参_公历日期))
+    赋值 (参_公历日期, 取日期 (取现行时间 ()))
+.如果真结束
+VBScript.创建 (“ScriptControl”, )
+VBScript.写属性 (“Language”, “JavaScript”)
+VBScript.数值方法 (“ExecuteStatement”, #GetTrait)
+返回 (VBScript.通用方法 (“Run”, “GetYearClyNum”, 取年份 (参_公历日期), 相减 (取月份 (参_公历日期), 1), 取日 (参_公历日期)).取数值 ())
+' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 取农历月数字, 整数型, 公开, 1-12，失败返回0
+.参数 参_公历日期, 日期时间型, 可空, 
+
+.局部变量 VBScript, 对象, , , 
+
+.如果真 (是否为空 (参_公历日期))
+    赋值 (参_公历日期, 取日期 (取现行时间 ()))
+.如果真结束
+VBScript.创建 (“ScriptControl”, )
+VBScript.写属性 (“Language”, “JavaScript”)
+VBScript.数值方法 (“ExecuteStatement”, #GetTrait)
+返回 (VBScript.通用方法 (“Run”, “GetMonthClyNum”, 取年份 (参_公历日期), 相减 (取月份 (参_公历日期), 1), 取日 (参_公历日期)).取数值 ())
+
+
+.子程序 取农历日数字, 整数型, 公开, 1-30，失败返回0
+.参数 参_公历日期, 日期时间型, 可空, 
+
+.局部变量 VBScript, 对象, , , 
+
+.如果真 (是否为空 (参_公历日期))
+    赋值 (参_公历日期, 取日期 (取现行时间 ()))
+.如果真结束
+VBScript.创建 (“ScriptControl”, )
+VBScript.写属性 (“Language”, “JavaScript”)
+VBScript.数值方法 (“ExecuteStatement”, #GetTrait)
+' 本源码来自易语言资源网(www.5A5X.com)
+返回 (VBScript.通用方法 (“Run”, “GetDayClyNum”, 取年份 (参_公历日期), 相减 (取月份 (参_公历日期), 1), 取日 (参_公历日期)).取数值 ())
+
+.子程序 取农历日期, 文本型, 公开, XX月XX日。不包括年
+.参数 参_公历日期, 日期时间型, 可空, 
+
+.局部变量 VBScript, 对象, , , 
+
+.如果真 (是否为空 (参_公历日期))
+    赋值 (参_公历日期, 取日期 (取现行时间 ()))
+.如果真结束
+VBScript.创建 (“ScriptControl”, )
+VBScript.写属性 (“Language”, “JavaScript”)
+VBScript.数值方法 (“ExecuteStatement”, #GetTrait)
+返回 (VBScript.通用方法 (“Run”, “GetDayCly”, 取年份 (参_公历日期), 相减 (取月份 (参_公历日期), 1), 取日 (参_公历日期)).取文本 ())
+
+.子程序 取农历全干支, 文本型, 公开, 返回干支年[空格]干支月[空格]干支日，如“己丑年 丁丑月 壬午日”
+.参数 参_公历日期, 日期时间型, 可空, 
+
+.局部变量 VBScript, 对象, , , 
+
+.如果真 (是否为空 (参_公历日期))
+    赋值 (参_公历日期, 取日期 (取现行时间 ()))
+.如果真结束
+VBScript.创建 (“ScriptControl”, )
+VBScript.写属性 (“Language”, “JavaScript”)
+VBScript.数值方法 (“ExecuteStatement”, #GetTrait)
+返回 (VBScript.通用方法 (“Run”, “solarDay1”, 取年份 (参_公历日期), 相减 (取月份 (参_公历日期), 1), 取日 (参_公历日期)).取文本 ())
+' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 取农历年属相, 文本型, 公开, 返回农历年的属相
+.参数 参_农历年份, 整数型, 可空, 如果为空，则自动取当前系统时间的农历年
+
+.局部变量 VBScript, 对象, , , 
+
+.如果真 (是否为空 (参_农历年份))
+    赋值 (参_农历年份, 取农历年数字 ())
+.如果真结束
+VBScript.创建 (“ScriptControl”, )
+VBScript.写属性 (“Language”, “JavaScript”)
+VBScript.数值方法 (“ExecuteStatement”, #GetTrait)
+返回 (VBScript.通用方法 (“Run”, “GetAnimal”, 参_农历年份).取文本 ())
+
+.子程序 取农历闰月_, 整数型, 公开, 取农历某年的闰月。成功返回1-12的整数,没有闰月返回0
+.参数 参_农历年份, 整数型, 可空, 如果为空，则自动取当前系统时间的农历年
+
+.局部变量 VBScript, 对象, , , 
+
+.如果真 (是否为空 (参_农历年份))
+    赋值 (参_农历年份, 取农历年数字 ())
+.如果真结束
+VBScript.创建 (“ScriptControl”, )
+VBScript.写属性 (“Language”, “JavaScript”)
+VBScript.数值方法 (“ExecuteStatement”, #GetTrait)
+返回 (VBScript.通用方法 (“Run”, “leapMonth”, 参_农历年份).取数值 ())
+' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 从公历取节气, 文本型, 公开, 如果指定的日期不是一个节气，则返回空文本
+.参数 参_公历日期, 日期时间型, 可空, 
+
+.局部变量 VBScript, 对象, , , 
+
+.如果真 (是否为空 (参_公历日期))
+    赋值 (参_公历日期, 取日期 (取现行时间 ()))
+.如果真结束
+VBScript.创建 (“ScriptControl”, )
+VBScript.写属性 (“Language”, “JavaScript”)
+VBScript.数值方法 (“ExecuteStatement”, #GetTrait)
+返回 (删首尾空 (VBScript.通用方法 (“Run”, “solarDay3”, 取年份 (参_公历日期), 相减 (取月份 (参_公历日期), 1), 取日 (参_公历日期)).取文本 ()))
+
+.子程序 格式化日期_, 文本型, 公开, 仿“农历日期支持库”中命令(稍微改动加强了一些，这个没有用农历日期支持库哦)。失败返回默认文本
+.参数 参_公历日期, 日期时间型, 可空, 用于描述要显示的农历日期格式。如果为空，则自动取现行日期
+.参数 参_掩码, 文本型, 可空, %Y干支年;%S属相;%M农历月;%D农历日;%y自动公历年，如2010;%yy强制2位公历年，如98;%m自动公历月,如1、12;%mm强制2位公历月,如01、12;%d自动公历日,如1、07、13、30;%dd强制2位公历日,如01、07、13、30。默认为“%Y年(%S)%M%D %yyyy-%mm-%dd”
+.参数 参_处理方式, 逻辑型, 可空, 指定十一月、十二月的处理方式。如果为真，则分别返回“冬月”、“腊月”(与支持库保持一致);否则直接返回“十一月”、“十二月”。另外。个人认为易语言把“二十”写作“廿十”是错误的做法，因为廿本来就是二十的意思，就像卅时三十的意思一样。
+.参数 参_默认文本, 文本型, 可空, 如果命令失败，则默认返回的文本。默认为空文本
+
+.局部变量 农历月, 整数型, , , 
+.局部变量 农历日, 整数型, , , 
+.局部变量 VBScript, 对象, , , 
+.局部变量 模板, 文本型, , "0", 
+.局部变量 农历年, 文本型, , , 
+.局部变量 属相, 文本型, , , 
+.局部变量 农历年数字, 整数型, , , 
+.局部变量 闰月, 逻辑型, , , 
+
+.如果真 (是否为空 (参_公历日期))
+    赋值 (参_公历日期, 取日期 (取现行时间 ()))
+.如果真结束
+VBScript.创建 (“ScriptControl”, )
+VBScript.写属性 (“Language”, “JavaScript”)
+VBScript.数值方法 (“ExecuteStatement”, #GetTrait)
+赋值 (农历日, VBScript.通用方法 (“Run”, “GetDayClyNum”, 取年份 (参_公历日期), 相减 (取月份 (参_公历日期), 1), 取日 (参_公历日期)).取数值 ())
+赋值 (农历月, VBScript.通用方法 (“Run”, “GetMonthClyNum”, 取年份 (参_公历日期), 相减 (取月份 (参_公历日期), 1), 取日 (参_公历日期)).取数值 ())
+赋值 (农历年, VBScript.通用方法 (“Run”, “GetYearCly”, 取年份 (参_公历日期), 相减 (取月份 (参_公历日期), 1), 取日 (参_公历日期)).取文本 ())
+赋值 (农历年数字, VBScript.通用方法 (“Run”, “GetYearClyNum”, 取年份 (参_公历日期), 相减 (取月份 (参_公历日期), 1), 取日 (参_公历日期)).取数值 ())
+.如果真 (或者 (小于 (农历日, 1), 大于 (农历日, 31), 小于 (农历月, 1), 大于 (农历月, 12), 不等于 (取文本长度 (农历年), 4)))
+    返回 (参_默认文本)
+.如果真结束
+赋值 (属相, VBScript.通用方法 (“Run”, “GetAnimal”, 农历年数字).取文本 ())
+ ' 计算是否为闰月
+.判断开始 (不等于 (VBScript.通用方法 (“Run”, “leapMonth”, 农历年数字).取数值 (), 农历月)) ' 如果闰月不与当前月份相等，则不为闰月
+    赋值 (闰月, 假)
+.判断 (等于 (VBScript.通用方法 (“Run”, “GetMonthClyNum”, 取年份 (参_公历日期), 相减 (取月份 (增减时间 (参_公历日期, 5, 相减 (-5, 农历日))), 1), 取日 (增减时间 (参_公历日期, 5, 相减 (0, 农历日, 5)))).取数值 (), 农历月)) ' 如果上个月的农历月份与当前相同，说明当前为闰月。(“-5 － 农历日”的来源：减去农历日，相当于回到农历月初，多减去几天，则回到上个农历月。)
+    赋值 (闰月, 真)
+.默认
+    赋值 (闰月, 假)
+.判断结束
+ ' 本源码来自易语言资源网(www.5A5X.com)
+赋值 (模板, { “初一”, “初二”, “初三”, “初四”, “初五”, “初六”, “初七”, “初八”, “初九”, “初十”, “十一”, “十二”, “十三”, “十四”, “十五”, “十六”, “十七”, “十八”, “十九”, “二十”, “廿一”, “廿二”, “廿三”, “廿四”, “廿五”, “廿六”, “廿七”, “廿八”, “廿九”, “三十”, “卅一”, “正月”, “二月”, “三月”, “四月”, “五月”, “六月”, “七月”, “八月”, “九月”, “十月” })
+.判断开始 (参_处理方式)
+    加入成员 (模板, { “冬月”, “腊月” })
+.默认
+    加入成员 (模板, { “十一月”, “十二月” })
+.判断结束
+.如果真 (是否为空 (参_掩码))
+    赋值 (参_掩码, “%Y年(%S)%M%D %y-%mm-%dd”)
+.如果真结束
+赋值 (参_掩码, 子文本替换 (参_掩码, “%Y”, 农历年, , , 真))
+赋值 (参_掩码, 子文本替换 (参_掩码, “%S”, 属相, , , 真))
+赋值 (参_掩码, 子文本替换 (参_掩码, “%M”, 相加 (选择 (闰月, “闰”, “”), 模板 [相加 (农历月, 31)]), , , 真))
+赋值 (参_掩码, 子文本替换 (参_掩码, “%D”, 模板 [农历日], , , 真))
+赋值 (参_掩码, 子文本替换 (参_掩码, “%yy”, 取文本右边 (到文本 (取年份 (参_公历日期)), 2), , , 真))
+赋值 (参_掩码, 子文本替换 (参_掩码, “%y”, 到文本 (取年份 (参_公历日期)), , , 真))
+赋值 (参_掩码, 子文本替换 (参_掩码, “%mm”, 选择 (小于 (取月份 (参_公历日期), 10), 相加 (“0”, 到文本 (取月份 (参_公历日期))), 到文本 (取月份 (参_公历日期))), , , 真))
+赋值 (参_掩码, 子文本替换 (参_掩码, “%m”, 到文本 (取月份 (参_公历日期)), , , 真))
+赋值 (参_掩码, 子文本替换 (参_掩码, “%dd”, 选择 (小于 (取日 (参_公历日期), 10), 相加 (“0”, 到文本 (取日 (参_公历日期))), 到文本 (取日 (参_公历日期))), , , 真))
+赋值 (参_掩码, 子文本替换 (参_掩码, “%d”, 到文本 (取日 (参_公历日期)), , , 真))
+返回 (参_掩码)
+
+
+.子程序 取农历某月天数, 整数型, 公开, 如参数超出范围或者获取失败，则返回0
+.参数 参_农历年份, 整数型, 可空, 1900-2050
+.参数 参_农历月份, 整数型, 可空, 1-12
+
+.局部变量 VBScript, 对象, , , 
+
+.如果真 (是否为空 (参_农历年份))
+    赋值 (参_农历年份, 取年份 (取现行时间 ()))
+    ' 本源码来自易语言资源网(www.5A5X.com)
+.如果真结束
+VBScript.创建 (“ScriptControl”, )
+VBScript.写属性 (“Language”, “JavaScript”)
+VBScript.数值方法 (“ExecuteStatement”, #GetTrait)
+返回 (VBScript.通用方法 (“Run”, “monthDays”, 参_农历年份, 参_农历月份).取数值 ())
+
+.子程序 取农历年天数, 整数型, 公开, 取农历某年的总天数（当然了，公历年一年为365年，呵呵）。
+.参数 参_农历年份, 整数型, 可空, 
+
+.局部变量 VBScript, 对象, , , 
+
+.如果真 (是否为空 (参_农历年份))
+    赋值 (参_农历年份, 取年份 (取现行时间 ()))
+.如果真结束
+VBScript.创建 (“ScriptControl”, )
+VBScript.写属性 (“Language”, “JavaScript”)
+VBScript.数值方法 (“ExecuteStatement”, #GetTrait)
+返回 (VBScript.通用方法 (“Run”, “lYearDays”, 参_农历年份).取数值 ())
+
+
+.子程序 取农历年闰月天数, 整数型, 公开, 如果该年有闰月，则返回闰月的天数。通常为29或者30。无闰月则返回0
+.参数 参_农历年份, 整数型, 可空, 
+
+.局部变量 VBScript, 对象, , , 
+
+.如果真 (是否为空 (参_农历年份))
+    赋值 (参_农历年份, 取年份 (取现行时间 ()))
+    ' 本源码来自易语言资源网(www.5A5X.com)
+.如果真结束
+VBScript.创建 (“ScriptControl”, )
+VBScript.写属性 (“Language”, “JavaScript”)
+VBScript.数值方法 (“ExecuteStatement”, #GetTrait)
+返回 (VBScript.通用方法 (“Run”, “leapDays”, 参_农历年份).取数值 ())
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

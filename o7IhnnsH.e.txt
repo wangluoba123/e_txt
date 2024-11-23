@@ -1,0 +1,736 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 1
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 真
+    最小化按钮 = 真
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “”
+    帮助文件名 = “”
+
+
+
+.图片 动态调用代码, " ' 已保存到：D:\易语言学习\Data\o7IhnnsH.e\动态调用代码", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' internet 707ca37322474f6ca841f0e224f4b620 1 0 互联网支持库
+
+
+
+
+数据类型 BITMAPINFO, , 
+    .成员 BITMAPINFOHEADER, BITMAPINFOHEADER, , , 
+    .成员 bmiColors, 空白型, , , RGBQUAD          bmiColors[1]; 
+
+数据类型 BITMAPINFOHEADER, , 
+    .成员 biSize, 空白型, , , 
+    .成员 biWidth, 空白型, , , 
+    .成员 biHeight, 空白型, , , 
+    .成员 biPlanes, 短整数型, , , 
+    .成员 biBitCount, 短整数型, , , 
+    .成员 biCompression, 空白型, , , 
+    .成员 biSizeImage, 空白型, , , 
+    .成员 biXPelsPerMeter, 空白型, , , 
+    .成员 biYPelsPerMeter, 空白型, , , 
+    .成员 biClrUsed, 空白型, , , 
+    .成员 biClrImportant, 空白型, , , 
+
+数据类型 BITMAPFILEHEADER, , 
+    .成员 bfType, 短整数型, , , 
+    .成员 bfSize, 空白型, , , 
+    .成员 bfReserved1, 短整数型, , , 
+    .成员 bfReserved2, 短整数型, , , 
+    .成员 bfOffBits, 空白型, , , 
+
+数据类型 BITMAP, , 
+    .成员 bmType, 空白型, , , 
+    .成员 bmWidth, 空白型, , , 
+    .成员 bmHeight, 空白型, , , 
+    .成员 bmWidthBytes, 空白型, , , 
+    .成员 bmPlanes, 短整数型, , , 
+    .成员 bmBitsPixel, 短整数型, , , 
+    .成员 bmBits, 空白型, 传址, , 
+
+数据类型 点, , 
+    .成员 X, 整数型, , , 
+    .成员 Y, 整数型, , , 
+
+数据类型 LOGFONT, , 
+    .成员 lfHeight, 整数型, , , 
+    .成员 lfWidth, 整数型, , , 
+    .成员 lfEscapement, 整数型, , , 
+    .成员 lfOrientation, 整数型, , , 
+    .成员 lfWeight, 整数型, , , '是否粗体 0为粗体 非0为普通
+    .成员 lfItalic, 字节型, , , 斜体
+    .成员 lfUnderline, 字节型, , , 是否下划线 真为加下划线 假为正常
+    .成员 lfStrikeOut, 字节型, , , 
+    .成员 lfCharSet, 字节型, , , 
+    .成员 lfOutPrecision, 字节型, , , 
+    .成员 lfClipPrecision, 字节型, , , 
+    .成员 lfQuality, 字节型, , , 
+    .成员 lfPitchAndFamily, 字节型, , , 
+    .成员 lfFaceName, 字节集, , , LF_FACESIZE
+
+数据类型 LOGFONT111, , 
+    .成员 lfHeight, 整数型, , , 
+    .成员 lfWidth, 整数型, , , 
+    .成员 lfEscapement, 整数型, , , 
+    .成员 lfOrientation, 整数型, , , 
+    .成员 lfWeight, 整数型, , , '是否粗体 0为粗体 非0为普通
+    .成员 lfItalic, 字节型, , , 斜体
+    .成员 lfUnderline, 字节型, , , 是否下划线 真为加下划线 假为正常
+    .成员 lfStrikeOut, 字节型, , , 
+    .成员 lfCharSet, 字节型, , , 
+    .成员 lfOutPrecision, 字节型, , , 
+    .成员 lfClipPrecision, 字节型, , , 
+    .成员 lfQuality, 字节型, , , 
+    .成员 lfPitchAndFamily, 字节型, , , 
+    .成员 lfFaceName, 字节型, , "32", LF_FACESIZE
+
+
+.DLL命令 GetObjectA, 整数型, "", "GetObjectA", , 
+    .参数 hgdiobj, 空白型, , 
+    .参数 cbBuffer, 空白型, , 
+    .参数 lpvObject, BITMAP, , 
+
+.DLL命令 CreateCompatibleDC, 整数型, "", "CreateCompatibleDC", , 
+    .参数 hdc, 整数型, , 
+
+.DLL命令 GetDIBits_BimapInfo, 整数型, "", "GetDIBits", , 
+    .参数 HDC, 空白型, , 
+    .参数 hBitmap, 空白型, , 
+    .参数 nStartScan, 空白型, , 
+    .参数 nNumScans, 空白型, , 
+    .参数 lpBits, 空白型, , 
+    .参数 lpBI, BITMAPINFO, , 
+    .参数 wUsage, 空白型, , 
+
+.DLL命令 GetDIBits, 整数型, "", "GetDIBits", , 
+    .参数 HDC, 空白型, , 
+    .参数 hBitmap, 空白型, , 
+    .参数 nStartScan, 空白型, , 
+    .参数 nNumScans, 空白型, , 
+    .参数 lpBits, 字节集, , 
+    .参数 lpBI, BITMAPINFO, , 
+    .参数 wUsage, 空白型, , 
+
+.DLL命令 CopyMemory_BITMAPINFO, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, BITMAPINFO, , 
+    .参数 Length, 空白型, , 
+
+.DLL命令 CopyMemory_BITMAPFILEHEADER, 整数型, "", "RtlMoveMemory", , 
+    .参数 Destination, 字节集, , 
+    .参数 Source, BITMAPFILEHEADER, , 
+    .参数 Length, 空白型, , 
+
+.DLL命令 DeleteDC, 整数型, "", "DeleteDC", , 
+    .参数 hdc, 空白型, , 
+
+.DLL命令 GetDC, 整数型, "", "GetDC", , 
+    .参数 hwnd, 整数型, , 
+
+.DLL命令 ReleaseDC, 空白型, "", "ReleaseDC", , 
+    .参数 hwnd, 整数型, , 要释放的设备场景相关的窗口句柄
+    .参数 hdc, 整数型, , 要释放的设备场景句柄
+
+.DLL命令 LoadImageA, 整数型, "", "LoadImageA", , 
+    .参数 hInst, 整数型, , 
+    .参数 lpsz, 文本型, , 
+    .参数 un1, 整数型, , 
+    .参数 n1, 整数型, , 
+    .参数 n2, 整数型, , 
+    .参数 un2, 整数型, , 
+
+.DLL命令 SelectObject, 整数型, "", "SelectObject", , 
+    .参数 hdc, 整数型, , 一个设备场景的句柄
+    .参数 hObject, 整数型, , 一个画笔、位图、刷子、字体或区域的句柄
+
+.DLL命令 CreatePatternBrush, 整数型, "", "CreatePatternBrush", , 
+    .参数 hBitmap, 空白型, , 
+
+.DLL命令 FillRect, 空白型, "", "FillRect", , 
+    .参数 hdc, 空白型, , 
+    .参数 lpRect, 点, , 
+    .参数 hBrush, 空白型, , 
+
+.DLL命令 GdipLoadImageFromFile, 整数型, "GdiPlus.dll", "GdipLoadImageFromFile", , 
+    .参数 filename, 字节集, , 
+    .参数 image, 整数型, 传址, 
+
+.DLL命令 GdipDrawImageI, 整数型, "GdiPlus.dll", "GdipDrawImageI", , 
+    .参数 graphics, 整数型, , 
+    .参数 image, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+
+.DLL命令 MultiByteToWideChar, 整数型, "", "MultiByteToWideChar", , 返回 WideChar字符数目,包括结尾0
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpWideCharStr, 字节集, , 
+    .参数 cchWideChar, 整数型, , 
+
+.DLL命令 WideCharToMultiByte, 整数型, "", "WideCharToMultiByte", , 返回 MultiByte字符数目,包括结尾0
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpWideCharStr, 整数型, , 
+    .参数 cchWideChar, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 unknow, 整数型, , 
+    .参数 unknow, 整数型, , 
+
+.DLL命令 ____分割线1开始____, 空白型, "", "", , 
+
+.DLL命令 CoCreateInstance, 整数型, "ole32.dll", "", , 
+    .参数 CLSID, 字节集, , 
+    .参数 pUnkOuter, 空白型, , 
+    .参数 服务器类型, 空白型, , 
+    .参数 接口的IID, 字节集, , 
+    .参数 接口对象, 对象, , 
+
+.DLL命令 动态调用子程序_API, 整数型, "", "CallWindowProcA", , 
+    .参数 动态调用代码, 字节集, , 一定要用本人编写的
+    .参数 子程序, 整数型, , 子程序指针
+    .参数 参数, 整数型, 数组, 为整数数组，参数1为成员1…类推；文本型和字节集型（自定义结构）为指针
+    .参数 参数数目, 整数型, , 一定要和参数数组相符，不然会出错
+    .参数 是否C调用, 逻辑型, , 真为cdecl调用方式，假为stdcall调用方式（即标准WINAPI方式）
+
+.DLL命令 TestLenM2W, 整数型, "", "MultiByteToWideChar", , MultiByteToWideChar (950, 0, pszBig5, -1, wszUnicode,iLen);
+    .参数 a, 空白型, , 
+    .参数 b0, 空白型, , 
+    .参数 pszBig5, 文本型, , 
+    .参数 a_1, 空白型, , 
+    .参数 a0, 空白型, , 
+    .参数 a1, 空白型, , 
+
+.DLL命令 取对象指针_API, 整数型, "", "lstrcpyn", , 
+    .参数 欲取其指针的整数, 对象, 传址, 一定要传址
+    .参数 欲取其指针的整数, 对象, 传址, 一定要传址.重复一次,骗骗Windows:)
+    .参数 保留, 整数型, , 0
+
+.DLL命令 复制整数_API, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 复制尺寸数据_API, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, 点, , 
+    .参数 Source, 字节集, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 取字节集指针_API, 整数型, "", "lstrcpyn", , 
+    .参数 欲取其指针的变量, 字节集, , 
+    .参数 欲取其指针的变量, 字节集, , 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 取整数指针_API, 整数型, "", "lstrcpyn", , 
+    .参数 欲取其指针的变量, 整数型, 传址, 
+    .参数 欲取其指针的变量, 整数型, 传址, 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 ____分割线1结束____, 空白型, "", "", , 
+
+.DLL命令 TextOutA, 空白型, "", "TextOutA", , 
+    .参数 hdc, 空白型, , 
+    .参数 x, 空白型, , 
+    .参数 y, 空白型, , 
+    .参数 lpString, 文本型, , 
+    .参数 nCount, 空白型, , 
+
+.DLL命令 ExtTextOutA, 空白型, "", "ExtTextOutA", , 
+    .参数 hdc, 空白型, , 
+    .参数 x, 空白型, , 
+    .参数 y, 空白型, , 
+    .参数 wOptions, 空白型, , 
+    .参数 lpRect, 空白型, , 
+    .参数 lpString, 文本型, , 
+    .参数 nCount, 空白型, , 
+    .参数 lpDx, 空白型, , 
+
+.DLL命令 SetBkMode, 空白型, "", "SetBkMode", , 
+    .参数 hdc, 空白型, , 
+    .参数 nBkMode, 空白型, , 
+
+.DLL命令 SetTextColor, 空白型, "", "SetTextColor", , 
+    .参数 hdc, 空白型, , 
+    .参数 crColor, 空白型, , 
+
+.DLL命令 CreateFontIndirectA, 整数型, "", "CreateFontIndirectA", , 
+    .参数 lpLogFont, LOGFONT, , 
+
+.DLL命令 DeleteObject, 整数型, "", "DeleteObject", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 DLL命令1, 空白型, "", "", , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+
+
+.子程序 子程序1, 空白型, , 
+.局部变量 HDC, 空白型, , , 
+.局部变量 CDC, 空白型, , , 
+.局部变量 nDC, 空白型, , , 
+.局部变量 iBitmap, 空白型, , , 
+.局部变量 图像高度, 空白型, , , 
+.局部变量 图像宽度, 空白型, , , 
+.局部变量 oldBitmap, 空白型, , , 
+.局部变量 匿名局部变量_119, 空白型, , , 
+.局部变量 shubiao, 点, , , 
+.局部变量 匿名局部变量_121, 空白型, , , 
+.局部变量 AA, 字节集, , , 
+.局部变量 AAA, 空白型, , , 
+.局部变量 AAAA, 文本型, , , 
+.局部变量 匿名局部变量_1558, 空白型, , , 
+.局部变量 匿名局部变量_1559, 空白型, , , 
+.局部变量 匿名局部变量_1603, 空白型, , , 
+.局部变量 匿名局部变量_1615, 空白型, , , 
+.局部变量 ZZ, 字节集, , , 
+.局部变量 匿名局部变量_1648, 空白型, , , 
+.局部变量 字体格式, LOGFONT, , , 
+.局部变量 匿名局部变量_1651, 空白型, , , 
+.局部变量 匿名局部变量_1652, 空白型, , , 
+.局部变量 XX, 空白型, , , 
+.局部变量 CC, 空白型, , , 
+.局部变量 VV, 空白型, , , 
+
+赋值 (HDC, GetDC (0))
+赋值 (CDC, CreateCompatibleDC (HDC))
+ReleaseDC (0, HDC)
+赋值 (iBitmap, LoadImageA (0, 相加 (取运行目录 (), “\1.bmp”), 0, 0, 0, 16))
+输出调试文本 (iBitmap)
+赋值 (oldBitmap, SelectObject (CDC, iBitmap))
+子程序2 (CDC, 相加 (取运行目录 (), “\1.png”), 200, 200)
+赋值 (AAAA, “最近24小时天气预报”)
+赋值 (字体格式.lfHeight, 30)
+赋值 (字体格式.lfWeight, 1000) ' 字体的粗细范围为 0 至 1000。400 为正常值，700 为粗体。此类提供粗细样式的描述性枚举以方便使用。
+ ' 字体格式.lfFaceName ＝ 到字节集 (“黑体”)
+赋值 (XX, CreateFontIndirectA (字体格式))
+赋值 (CC, SelectObject (CDC, XX))
+SetBkMode (CDC, 1)
+SetTextColor (CDC, #灰色)
+TextOutA (CDC, 271, 256, AAAA, 取文本长度 (AAAA))
+SetTextColor (CDC, #品红)
+TextOutA (CDC, 270, 255, AAAA, 取文本长度 (AAAA))
+子程序3 (CDC, 218)
+赋值 (XX, SelectObject (CDC, CC))
+赋值 (iBitmap, SelectObject (CDC, oldBitmap))
+
+赋值 (AA, GetBitsFromBitmapHandle (iBitmap))
+赋值 (.底图, AA)
+赋值 (.标题, 到文本 (取字节集长度 (AA)))
+
+DeleteObject (XX)
+DeleteObject (iBitmap)
+DeleteDC (CDC)
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+子程序1 ()
+
+.子程序 子程序2, 空白型, , 
+.参数 HDC, 空白型, , 
+.参数 文件路径, 文本型, , 
+.参数 x, 空白型, , 
+.参数 y, 空白型, , 
+
+.局部变量 图像类, 图像类, , , 
+.局部变量 图像尺寸, 点, , , 
+.局部变量 N, 空白型, , , 
+.局部变量 状态, 空白型, , , 
+
+
+
+.如果真 (等于 (图像类.Load (文件路径, 0), 假))
+    信息框 (相加 (“载入图片文件:”, 文件路径, “出错”), 0, )
+    返回 ()
+.如果真结束
+.判断循环首 (等于 (N, 0)) ' 注意,接口不能为空,否则永真循环
+    图像类.GetStateInfo (状态, 图像尺寸, 1)
+    .如果真 (等于 (位与 (状态, 2097152), 0)) ' 0x00200000
+        跳出循环 ()
+    .如果真结束
+    延时 (4) ' 搜索相应的图像解码器,所以要等一下
+.判断循环尾 ()
+图像类.GetStateInfo (状态, 图像尺寸, 0)
+
+输出调试文本 (图像尺寸.X, 图像尺寸.Y)
+
+图像类.StretchBlt (HDC, x, y, 图像尺寸.X, 图像尺寸.Y, 0, 0, 图像尺寸.X, 图像尺寸.Y, 13369376)
+
+ ' 图像类.StretchBlt (HDC, 500, 400, 图像尺寸.X, 图像尺寸.Y, 0, 0, 图像尺寸.X, 图像尺寸.Y, 13369376)
+
+ ' 图像类.StretchBlt (HDC, 500, 600, 图像尺寸.X, 图像尺寸.Y, 0, 0, 图像尺寸.X, 图像尺寸.Y, 13369376)
+
+.子程序 子程序3, 空白型, , 
+.参数 CDC, 空白型, , 
+.参数 变_天气所在地代码, 整数型, , 
+
+.局部变量 变_天气原始内容, 文本型, , , 
+.局部变量 地址A处, 空白型, , , 
+.局部变量 地址B处, 空白型, , , 
+.局部变量 地址文本, 文本型, , , 
+.局部变量 变_天气图片字节, 字节集, , , 
+.局部变量 匿名局部变量_1723, 空白型, , , 
+.局部变量 AA, 文本型, , , 
+
+ ' <option selected="selected" value="125">北京</option>
+ ' <option value="292">广州</option>
+ ' <option value="252">上海</option>
+ ' <option value="127">天津</option>
+ ' <option value="212">重庆</option>
+ ' <option value="115">沈阳</option>
+ ' <option value="244">南京</option>
+ ' <option value="211">武汉</option>
+ ' <option value="166">成都</option>
+ ' <option value="186">西安</option>
+ ' <option value="82">石家庄</option>
+ ' <option value="84">太原</option>
+ ' <option value="189">郑州</option>
+ ' <option value="103">长春</option>
+ ' <option value="17">哈尔滨</option>
+ ' <option value="69">呼和浩特</option>
+ ' <option value="140">济南</option>
+ ' <option value="248">合肥</option>
+ ' <option value="255">杭州</option>
+ ' <option value="276">福州</option>
+ ' <option value="287">厦门</option>
+ ' <option value="218">长沙</option>
+ ' <option value="296">深圳</option>
+ ' <option value="295">南宁</option>
+ ' <option value="232">桂林</option>
+ ' <option value="264">南昌</option>
+ ' <option value="227">贵阳</option>
+ ' <option value="1">香港</option>
+ ' <option value="2">澳门</option>
+ ' <option value="179">昆明</option>
+ ' <option value="280">台北</option>
+ ' <option value="150">拉萨</option>
+ ' <option value="303">海口</option>
+ ' <option value="57">兰州</option>
+ ' <option value="78">银川</option>
+ ' <option value="56">西宁</option>
+ ' <option value="28">乌鲁木齐</option>
+
+ ' 判断 (组合框_天气所在地.取项目文本 (组合框_天气所在地.现行选中项) ＝ “北京”)
+ ' 变_天气所在地代码 ＝ “125”
+ ' 判断 (组合框_天气所在地.取项目文本 (组合框_天气所在地.现行选中项) ＝ “广州”)
+ ' 变_天气所在地代码 ＝ “292”
+ ' 判断 (组合框_天气所在地.取项目文本 (组合框_天气所在地.现行选中项) ＝ “上海”)
+ ' 变_天气所在地代码 ＝ “252”
+ ' 判断 (组合框_天气所在地.取项目文本 (组合框_天气所在地.现行选中项) ＝ “重庆”)
+ ' 变_天气所在地代码 ＝ “212”
+ ' 判断 (组合框_天气所在地.取项目文本 (组合框_天气所在地.现行选中项) ＝ “沈阳”)
+ ' 变_天气所在地代码 ＝ “115”
+ ' 判断 (变_天气所在地代码 ＝ “”)
+ ' 变_天气所在地代码 ＝ “115”
+
+
+赋值 (变_天气原始内容, 到文本 (未知支持库函数_7 (相加 (“http://weather.news.qq.com/inc/07_ss”, 到文本 (变_天气所在地代码), “.htm”))))
+ ' 输出调试文本 (变_天气原始内容)
+ ' 输出调试文本 (取文本中间 (变_天气原始内容, 寻找文本_ (变_天气原始内容, “<td class=” ＋ #引号 ＋ “wht3 lk2e” ＋ #引号 ＋ “><img width=” ＋ #引号 ＋ “64” ＋ #引号 ＋ “ height=” ＋ #引号 ＋ “64” ＋ #引号 ＋ “ src=” ＋ #引号 ＋ “”, , 真), 倒找文本_ (变_天气原始内容, #引号 ＋ “></td>+#换行符+</tr>”, , 真)))
+
+赋值 (地址A处, 寻找文本 (变_天气原始内容, 相加 (“<td class=”, #引号, “wht3 lk2e”, #引号, “><img width=”, #引号, “64”, #引号, “ height=”, #引号, “64”, #引号, “ src=”, #引号, “”), , 真))
+
+赋值 (地址B处, 寻找文本 (变_天气原始内容, 相加 (#引号, “></td>”), , 真))
+赋值 (变_天气图片字节, 未知支持库函数_7 (取文本中间 (变_天气原始内容, 相加 (地址A处, 55), 相减 (地址B处, 地址A处, 55))))
+赋值 (AA, 取临时文件名 ())
+写到文件 (AA, 变_天气图片字节)
+ ' 信息框 (取字节集长度 (变_天气图片字节), 0, )
+子程序2 (CDC, AA, 300, 300)
+删除文件 (AA)
+
+赋值 (地址A处, 相加 (寻找文本 (变_天气原始内容, 相加 (“txbd”, #引号), , 真), 6))
+赋值 (地址B处, 寻找文本 (变_天气原始内容, “</td>”, 地址A处, 真))
+
+赋值 (地址文本, 取文本中间 (变_天气原始内容, 地址A处, 相减 (地址B处, 地址A处)))
+赋值 (地址文本, 子文本替换 (地址文本, “</div>”, “    ”, , , 真))
+
+ ' 信息框 (地址文本, 0, )
+
+SetTextColor (CDC, #灰色)
+TextOutA (CDC, 271, 406, 地址文本, 取文本长度 (地址文本))
+
+SetTextColor (CDC, #品红)
+
+TextOutA (CDC, 270, 405, 地址文本, 取文本长度 (地址文本))
+
+.程序集 程序集, , , 
+
+.子程序 GetBitsFromBitmapHandle, 字节集, , 
+.参数 hBitmap, 整数型, , 
+
+.局部变量 Bitmap, BITMAP, , , 
+.局部变量 Resource, 字节集, , , 
+.局部变量 BitmapFileHeader, BITMAPFILEHEADER, , , 
+.局部变量 bfh, 字节集, , , 
+.局部变量 hMemDC, 整数型, , , 
+.局部变量 BitmapInfo, BITMAPINFO, , , 
+.局部变量 bi, 字节集, , , 
+
+GetObjectA (hBitmap, 相加 (相乘 (5, 4), 2, 2), Bitmap)
+赋值 (hMemDC, CreateCompatibleDC (0))
+赋值 (BitmapInfo.BITMAPINFOHEADER.biSize, 相乘 (4, 11))
+GetDIBits_BimapInfo (hMemDC, hBitmap, 0, 0, 0, BitmapInfo, 0)
+赋值 (Resource, 取空白字节集 (BitmapInfo.BITMAPINFOHEADER.biSizeImage))
+赋值 (BitmapInfo.BITMAPINFOHEADER.biCompression, 0)
+GetDIBits (hMemDC, hBitmap, 0, Bitmap.bmHeight, Resource, BitmapInfo, 0)
+ ' 构造位图信息
+赋值 (bi, 取空白字节集 (BitmapInfo.BITMAPINFOHEADER.biSize))
+CopyMemory_BITMAPINFO (bi, BitmapInfo, BitmapInfo.BITMAPINFOHEADER.biSize)
+ ' 构造位图文件头
+赋值 (BitmapFileHeader.bfType, 19778)
+赋值 (BitmapFileHeader.bfOffBits, 相加 (相乘 (2, 4), 相乘 (3, 2), BitmapInfo.BITMAPINFOHEADER.biSize))
+赋值 (BitmapFileHeader.bfSize, 相加 (BitmapFileHeader.bfOffBits, BitmapInfo.BITMAPINFOHEADER.biSizeImage))
+赋值 (BitmapFileHeader.bfReserved1, 0)
+赋值 (BitmapFileHeader.bfReserved2, 0)
+赋值 (bfh, 取空白字节集 (14))
+CopyMemory_BITMAPFILEHEADER (bfh, BitmapFileHeader, 14)
+DeleteDC (hMemDC)
+返回 (相加 (bfh, bi, Resource))
+
+.子程序 A2W, 字节集, 公开, 将Ansi转成Unicode
+.参数 欲转换的文本, 文本型, , 
+
+.局部变量 缓冲区, 字节集, , , 
+.局部变量 字符数目, 整数型, , , 包括结尾0
+
+赋值 (字符数目, MultiByteToWideChar (0, 0, 欲转换的文本, -1, {  }, 0)) ' 返回字符数目
+ ' 输出调试文本 (字符数目)
+赋值 (缓冲区, 取空白字节集 (相乘 (字符数目, 2)))
+MultiByteToWideChar (0, 0, 欲转换的文本, -1, 缓冲区, 字符数目)
+返回 (缓冲区)
+ ' BOOL MByteToWChar(LPCSTR lpcszStr, LPWSTR lpwszStr, DWORD dwSize)
+ ' {
+ ' // Get the required size of the buffer that receives the Unicode' // string.
+ ' DWORD dwMinSize;
+ ' dwMinSize = MultiByteToWideChar (CP_ACP, 0, lpcszStr, -1, NULL, 0);
+
+ ' if(dwSize < dwMinSize)
+ ' {' return FALSE;' }
+
+ ' // Convert headers from ASCII to Unicode.
+ ' MultiByteToWideChar (CP_ACP, 0, lpcszStr, -1, lpwszStr, dwMinSize);
+ ' return TRUE;
+ ' }
+
+
+
+.子程序 W2A, 文本型, 公开, 将Unicode转成Ansi
+.参数 欲转换的文本, 整数型, , Unicode文本内存地址
+
+.局部变量 缓冲区, 文本型, , , 
+.局部变量 字符数目, 整数型, , , 包括结尾0
+
+赋值 (字符数目, WideCharToMultiByte (1, 0, 欲转换的文本, -1, “”, 0, 0, 0))
+ ' 输出调试文本 (字符数目)
+赋值 (缓冲区, 取空白文本 (字符数目))
+WideCharToMultiByte (1, 0, 欲转换的文本, -1, 缓冲区, 字符数目, 0, 0)
+返回 (缓冲区)
+ ' BOOL WCharToMByte(LPCWSTR lpcwszStr, LPSTR lpszStr, DWORD dwSize)
+ ' {
+ ' DWORD dwMinSize;
+ ' dwMinSize = WideCharToMultiByte(CP_OEMCP,NULL,lpcwszStr,-1,NULL,0,NULL,FALSE);
+ ' if(dwSize < dwMinSize)
+ ' {return FALSE;}
+ ' WideCharToMultiByte(CP_OEMCP,NULL,lpcwszStr,-1,lpszStr,dwSize,NULL,FALSE);
+ ' return TRUE;
+ ' }
+
+
+.类模块 图像类, , , 
+
+.程序集变量 方法集指针, 整数型, , , 
+.程序集变量 对象, 对象, , , 
+.程序集变量 this, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 依附, 逻辑型, , 
+.局部变量 指针, 整数型, , , 
+
+赋值 (指针, 取对象指针 (对象)) ' LPUNKNOWN*
+赋值 (this, 取指针指向整数 (指针)) ' LPUNKNOWN
+.如果真 (不等于 (指针, 0))
+    赋值 (方法集指针, 取指针指向整数 (this))
+    返回 (真)
+.如果真结束
+赋值 (方法集指针, 0)
+返回 (假)
+
+.子程序 Load, 逻辑型, 公开, 载入
+.参数 路径, 文本型, 参考, 
+.参数 选项, 整数型, , 
+
+.局部变量 IID_IImgCtx, 字节集, , , 
+.局部变量 CLSID_IImgCtx, 字节集, , , 
+.局部变量 参数, 整数型, , "3", 
+.局部变量 数据, 字节集, , , 
+.局部变量 nRet, 整数型, , , 
+
+.如果真 (等于 (对象.是否为空 (), 假)) ' 已经载入图片
+    Disconnect ()
+    对象.清除 ()
+.如果真结束
+赋值 (IID_IImgCtx, { 215, 243, 80, 48, 181, 152, 207, 17, 187, 130, 0, 170, 0, 189, 206, 11 })
+赋值 (CLSID_IImgCtx, { 214, 243, 80, 48, 181, 152, 207, 17, 187, 130, 0, 170, 0, 189, 206, 11 })
+赋值 (nRet, CoCreateInstance (CLSID_IImgCtx, 0, 1, IID_IImgCtx, 对象))
+.如果真 (不等于 (nRet, 0))
+    信息框 (“创建图像类ImgCtx失败”, 0, )
+    赋值 (_启动窗口..禁止, 真)
+    返回 (假)
+.如果真结束
+依附 ()
+赋值 (参数 [1], this)
+赋值 (数据, 到UNICODE编码 (路径))
+赋值 (参数 [2], 取字节集指针 (数据))
+赋值 (参数 [3], 选项)
+返回 (等于 (调用方法 (方法集指针, 3, 参数), 0))
+
+.子程序 Disconnect, 空白型, 公开, 断开连接,卸载
+.局部变量 参数, 整数型, , "1", 
+.局部变量 数据, 字节集, , , 
+
+赋值 (参数 [1], this)
+调用方法 (方法集指针, 6, 参数)
+
+.子程序 GetStateInfo, 空白型, 公开, 取状态
+.参数 状态, 整数型, 参考, 
+.参数 图像尺寸, 点, , 
+.参数 标志, 整数型, , 
+
+.局部变量 参数, 整数型, , "4", 
+.局部变量 数据, 字节集, , , 
+
+赋值 (参数 [1], this)
+赋值 (参数 [2], 取整数指针 (状态))
+赋值 (数据, 取空白字节集 (8))
+赋值 (参数 [3], 取字节集指针 (数据))
+赋值 (参数 [4], 标志)
+调用方法 (方法集指针, 8, 参数)
+复制尺寸数据_API (图像尺寸, 数据, 8)
+
+.子程序 StretchBlt, 空白型, 公开, 画出
+.参数 场景句柄, 整数型, , 
+.参数 目标左边, 整数型, , 
+.参数 目标顶边, 整数型, , 
+.参数 目标宽度, 整数型, , 
+.参数 目标高度, 整数型, , 
+.参数 源左边, 整数型, , 
+.参数 源顶边, 整数型, , 
+.参数 源宽度, 整数型, , 
+.参数 源高度, 整数型, , 
+.参数 画出方法, 整数型, , 
+
+.局部变量 参数, 整数型, , "11", 
+.局部变量 数据, 字节集, , , 
+.局部变量 i, 整数型, , , 
+
+赋值 (参数 [1], this)
+.计次循环首 (10, i)
+    赋值 (参数 [相加 (i, 1)], 多项选择 (i, 场景句柄, 目标左边, 目标顶边, 目标宽度, 目标高度, 源左边, 源顶边, 源宽度, 源高度, 画出方法))
+.计次循环尾 ()
+调用方法 (方法集指针, 12, 参数)
+
+
+.程序集 PNG程序集, , , 
+
+.子程序 取指针指向整数, 整数型, , 
+.参数 指针, 整数型, , 
+
+.局部变量 数据, 整数型, , , 
+
+复制整数_API (数据, 指针, 4)
+返回 (数据)
+
+.子程序 取对象指针, 整数型, , 对象
+.参数 对象, 对象, 参考, 
+
+返回 (取对象指针_API (对象, 对象, 0))
+
+.子程序 调用方法, 整数型, , 
+.参数 方法集指针, 整数型, , 
+.参数 方法序号, 整数型, , 
+.参数 参数, 整数型, 参考 数组, 
+
+.局部变量 参数数目, 整数型, , , 
+.局部变量 函数地址, 整数型, , , 
+
+赋值 (参数数目, 取数组成员数 (参数))
+赋值 (函数地址, 取指针指向整数 (相加 (方法集指针, 相乘 (方法序号, 4))))
+返回 (动态调用子程序_API (#动态调用代码, 函数地址, 参数, 参数数目, 假))
+
+.子程序 到UNICODE编码, 字节集, , 
+.参数 窄字符, 文本型, , 窄字符ASCII
+
+.局部变量 len, 空白型, , , 
+.局部变量 UNICODE, 字节集, , , 
+.局部变量 区域编码, 整数型, , , 
+
+赋值 (区域编码, 936) ' GB简体是936,BIG5是950
+赋值 (len, TestLenM2W (区域编码, 0, 窄字符, -1, 0, 0))
+赋值 (UNICODE, 取重复字节集 (len, { 0, 0 }))
+MultiByteToWideChar (区域编码, 0, 窄字符, -1, UNICODE, len)
+返回 (UNICODE)
+
+.子程序 取字节集指针, 整数型, , 
+.参数 字节集, 字节集, 参考, 
+
+返回 (取字节集指针_API (字节集, 字节集, 0))
+
+
+.子程序 取整数指针, 整数型, , 
+.参数 整数, 整数型, 参考, 
+
+返回 (取整数指针_API (整数, 整数, 0))
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

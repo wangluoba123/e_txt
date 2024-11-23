@@ -1,0 +1,2358 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 568
+    高度 = 316
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “hongyan8------系统全面管理 V0.1”
+    帮助文件名 = “”
+
+窗口 添加新用户
+    左边 = 50
+    顶边 = 50
+    宽度 = 307
+    高度 = 312
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “添加用户”
+    帮助文件名 = “”
+
+窗口 修改密码
+    左边 = 50
+    顶边 = 50
+    宽度 = 308
+    高度 = 162
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “修改密码”
+    帮助文件名 = “”
+
+窗口 用户信息
+    左边 = 50
+    顶边 = 50
+    宽度 = 346
+    高度 = 359
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “用户信息”
+    帮助文件名 = “”
+
+窗口 新组
+    左边 = 50
+    顶边 = 50
+    宽度 = 355
+    高度 = 128
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “新建组”
+    帮助文件名 = “”
+
+窗口 服务窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 401
+    高度 = 376
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “服务属性”
+    帮助文件名 = “”
+
+
+
+.图片 null, " ' 已保存到：D:\易语言学习\Data\系统管理.e\null", , 
+.常量 SC_MANAGER_ENUMERATE_SERVICE, "4", , 
+.常量 SERVICE_WIN32, "48", , 
+.常量 SERVICE_STATE_ALL, "3", , 
+.常量 , , , 
+.常量 PROCESS_VM_READ, "16", , 
+.常量 PROCESS_VM_OPERATION, "8", , 
+.常量 PROCESS_CREATE_THREAD, "2", , 
+.常量 PROCESS_QUERY_INFORMATION, "1024", , 
+.常量 PROCESS_DUP_HANDLE, "64", , 
+.常量 INFINITE, "-1", , 
+.常量 , , , 
+.常量 WM_GETICON, "127", , 
+.常量 ICON_SMALL, "0", , 
+.常量 , , , 
+.常量 位图是否压缩, "", , 
+.常量 BI_RGB, "0", , 不压缩
+.常量 , , , 
+.常量 CreateDIBSection常量, "", , 
+.常量 DIB_PAL_COLORS, "1", , BITMAPINFO包含了一个16位调色板索引的数组
+.常量 DIB_RGB_COLORS, "0", , BITMAPINFO包含了一个颜色表，其中保存有32位颜色（RGBQUAD）
+.常量 , , , 
+.常量 Bitblt复制常量, "", , 
+.常量 SRCCOPY, "13369376", , 直接复制，不做任何修改。
+.常量 , , , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' iext 27bb20fdd3e145e4bee3db39ddd6e64c 1 2 扩展界面支持库一
+ ' eAPI F7FC1AE45C5C4758AF03EF19F18A395D 1 1 应用接口支持库
+ ' iext3 {B6F7542F-B8FE-46a8-9605-98856A687097} 2 6 扩展界面支持库三
+ ' iext2 AF6AD80AA4244A59AFB3D83ECF5173CC 1 1 扩展界面支持库二
+ ' shell 52F260023059454187AF826A3C07AF2A 1 0 操作系统界面功能支持库
+
+
+
+
+数据类型 User_Info, , 
+    .成员 name, 文本型, , , 
+    .成员 comment, 文本型, , , 
+
+数据类型 LUID, , 进程令牌
+    .成员 LowPart, 整数型, , , 
+    .成员 HighPart, 整数型, , , 
+
+数据类型 模块信息, , 
+    .成员 占用字节, 整数型, , , 本数据类型共用内存长度＝1024
+    .成员 mid, 整数型, , , 
+    .成员 pid, 整数型, , , 
+    .成员 gusage, 整数型, , , 
+    .成员 pusage, 整数型, , , 
+    .成员 起始地址, 整数型, , , 
+    .成员 内存长度, 整数型, , , 
+    .成员 模块句柄, 整数型, , , 
+    .成员 模块名称, 字节型, , "256", 
+    .成员 模块路径, 字节型, , "256", 
+
+数据类型 进程权限, , 
+    .成员 PrivilegeCount, 整数型, , , 
+    .成员 LowPart, 整数型, , , 
+    .成员 HighPart, 整数型, , , 
+    .成员 Attributes, 整数型, , , 
+
+数据类型 OSVERSIONINFO, , 版本信息;
+    .成员 dwOSVersionInfoSize, 整数型, , , 
+    .成员 dwMajorVersion, 整数型, , , 
+    .成员 dwMinorVersion, 整数型, , , 
+    .成员 dwBuildNumber, 整数型, , , 
+    .成员 dwPlatformId, 整数型, , , 
+    .成员 szCSDVersion, 文本型, , "128", 
+
+数据类型 ENUM_SERVICE_STATUS_PROCESS, , 
+    .成员 lpServiceName, 文本型, , , 
+    .成员 lpDisplayName, 文本型, , , 
+    .成员 dwServiceType, 整数型, , , SERVICE_STATUS_PROCESS
+    .成员 dwCurrentState, 整数型, , , 
+    .成员 dwControlsAccepted, 整数型, , , 
+    .成员 dwWin32ExitCode, 整数型, , , 
+    .成员 dwServiceSpecificExitCode, 整数型, , , 
+    .成员 dwCheckPoint, 整数型, , , 
+    .成员 dwWaitHint, 整数型, , , 
+    .成员 dwProcessId, 整数型, , , 
+    .成员 dwServiceFlags, 整数型, , , 
+
+数据类型 UserStruct, , 
+    .成员 ptrName, 字节集, 传址, , 
+    .成员 ptrPassword, 字节集, 传址, , 
+    .成员 dwPasswordAge, 整数型, , , 
+    .成员 dwPriv, 整数型, , , 
+    .成员 ptrHomeDir, 整数型, , , 
+    .成员 ptrComment, 字节集, 传址, , 
+    .成员 dwFlags, 整数型, , , 
+    .成员 ptrScriptPath, 整数型, , , 
+
+数据类型 RECT, 公开, 区域
+    .成员 Left, 整数型, , , 左
+    .成员 Top, 整数型, , , 上
+    .成员 Right, 整数型, , , 右
+    .成员 Bottom, 整数型, , , 下
+
+数据类型 SHFILEINFO, 公开, 
+    .成员 hIcon, 空白型, , , 
+    .成员 iIcon, 空白型, , , 
+    .成员 dwAttributes, 空白型, , , 
+    .成员 szDisplayName, 字节型, , "256", 
+    .成员 szTypeName, 字节型, , "80", 
+
+数据类型 BITMAPFILEHEADER, , 位图文件头
+    .成员 bfType, 短整数型, , , 位图的类型 一般为BM 即 19778
+    .成员 bfSize, 整数型, , , 文件大小
+    .成员 bfReserved1, 短整数型, , , 保留，必须设置为0
+    .成员 bfReserved2, 短整数型, , , 保留，必须设置为0
+    .成员 bfOffBits, 整数型, , , 从文件开始到位图数据开始之间的数据(bitmap data)之间的偏移量,包括颜色表大小
+
+数据类型 BITMAPINFOHEADER, , 位图信息头
+    .成员 biSize, 整数型, , , 指出本数据结构所需要的字节数(一般为40长度)
+    .成员 biWidth, 整数型, , , 以象素为单位，给出BMP图象的宽度
+    .成员 biHeight, 整数型, , , 以象素为单位，给出BMP图象的高度
+    .成员 biPlanes, 短整数型, , , 输出设备的位平面数，必须置为1
+    .成员 biBitCount, 短整数型, , , 给出每个象素的位数
+    .成员 biCompression, 整数型, , , 给出位图的压缩类型
+    .成员 biSizeImage, 整数型, , , 给出图象字节数的多少
+    .成员 biXPelsPerMeter, 整数型, , , 图像的水平分辨率
+    .成员 biYPelsPerMeter, 整数型, , , 图象的垂直分辨率
+    .成员 biClrUsed, 整数型, , , 調色板中图象实际使用的颜色素数
+    .成员 biClrImportant, 整数型, , , 给出重要颜色的索引值
+
+数据类型 SERVICE_STATUS, , 
+    .成员 dwServiceType, 整数型, , , 
+    .成员 dwCurrentState, 整数型, , , 
+    .成员 dwControlsAccepted, 整数型, , , 
+    .成员 dwWin32ExitCode, 整数型, , , 
+    .成员 dwServiceSpecificExitCode, 整数型, , , 
+    .成员 dwCheckPoint, 整数型, , , 
+    .成员 dwWaitHint, 整数型, , , 
+
+.全局变量 服务名, 文本型, , "0", 
+
+.DLL命令 API_NetUserEnum, 整数型, "NETAPI32.DLL", "NetUserEnum", , 
+    .参数 servername, 整数型, , 
+    .参数 level, 整数型, , 
+    .参数 filter, 整数型, , 
+    .参数 bufptr, 整数型, 传址, 
+    .参数 prefmaxlen, 整数型, 传址, 
+    .参数 entriesread, 整数型, 传址, 
+    .参数 totalentries, 整数型, 传址, 
+    .参数 resume_handle, 整数型, 传址, 
+
+.DLL命令 API_RtlMoveMemory, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 API_NetApiBufferFree, 整数型, "NETAPI32.DLL", "NetApiBufferFree", , 
+    .参数 Buffer, 整数型, , 
+
+.DLL命令 API_lstrlen, 整数型, "kernel32", "lstrlenW", , 返回字符串中字符数
+    .参数 lpString, 整数型, , 
+
+.DLL命令 API_NetUserGetInfo, 整数型, "NETAPI32.DLL", "NetUserGetInfo", , 
+    .参数 servername, 整数型, , 
+    .参数 userName, 字节集, 传址, 
+    .参数 level, 整数型, , 
+    .参数 bufptr, 整数型, 传址, 
+
+.DLL命令 API_RtlMoveMemory2, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, ENUM_SERVICE_STATUS_PROCESS, , 
+    .参数 Source, 字节集, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 API_MultiByteToWideChar, 整数型, "kernel32", "MultiByteToWideChar", , 将多媒体字符串映像为通配字符串
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, , 
+    .参数 cchMultiByte, 整数型, , 
+    .参数 lpWideCharStr, 字节集, 传址, 
+    .参数 cchWideChar, 整数型, , 
+
+.DLL命令 API_宽字符到双字节, 空白型, "kernel32.dll", "WideCharToMultiByte", , 
+    .参数 代码页, 整数型, , CodePage
+    .参数 标志, 整数型, , dwFlags
+    .参数 宽字符文本, 字节集, , lpWideCharStr
+    .参数 宽字符文本长度, 整数型, , cchWideChar
+    .参数 双字节文本, 字节集, , lpMultiByteStr
+    .参数 双字节文本长度, 整数型, , cchMultiByte
+    .参数 默认文本, 整数型, , lpDefaultChar
+    .参数 使用默认文本, 逻辑型, , lpUsedDefaultChar
+
+.DLL命令 API_宽字符到双字节1, 整数型, "kernel32.dll", "WideCharToMultiByte", , 
+    .参数 代码页, 整数型, , CodePage
+    .参数 标志, 整数型, , dwFlags
+    .参数 宽字符文本, 字节集, , lpWideCharStr
+    .参数 宽字符文本长度, 整数型, , cchWideChar
+    .参数 双字节文本, 整数型, , lpMultiByteStr
+    .参数 双字节文本长度, 整数型, , cchMultiByte
+    .参数 默认文本, 整数型, , lpDefaultChar
+    .参数 使用默认文本, 逻辑型, , lpUsedDefaultChar
+
+.DLL命令 API_NetGroupEnum, 整数型, "NETAPI32.DLL", "NetLocalGroupEnum", , 
+    .参数 servername, 整数型, , 
+    .参数 level, 整数型, , 
+    .参数 bufptr, 整数型, 传址, 
+    .参数 prefmaxlen, 整数型, , 
+    .参数 entriesread, 整数型, 传址, 
+    .参数 totalentries, 整数型, 传址, 
+    .参数 resume_handle, 整数型, 传址, 
+
+.DLL命令 API_htons, 整数型, "ws2_32.dll", "htons", , 
+    .参数 hostshort, 整数型, , 
+
+.DLL命令 取模块信息, 整数型, "kernel32.dll", "Module32First", , 
+    .参数 进程句柄, 整数型, , 
+    .参数 模块信息, 模块信息, , 
+
+.DLL命令 GetExtendedTcpTable, 整数型, "iphlpapi.dll", "GetExtendedTcpTable", , 
+    .参数 pTcpTable, 字节集, 传址, 
+    .参数 pdwSize, 整数型, 传址, 
+    .参数 bOrder, 逻辑型, , 是否排序
+    .参数 ulAf, 整数型, , AF_INET=2
+    .参数 TableClass, 整数型, , 未知类型：TCP_TABLE_CLASS。TCP_TABLE_OWNER_PID_ALL=5
+    .参数 Reserved, 整数型, , 
+
+.DLL命令 取自进程ID, 整数型, "kernel32.dll", "GetCurrentProcessId", 公开, 
+
+.DLL命令 创建系统快照, 整数型, "kernel32.dll", "CreateToolhelp32Snapshot", , 返回快照后的句柄
+    .参数 快照标志, 整数型, , 进程＝15，线程=4，DLL＝8，堆=
+    .参数 参数, 整数型, , 
+
+.DLL命令 关闭系统快照, 整数型, "kernel32.dll", "CloseHandle", , 
+    .参数 快照句柄, 整数型, , 
+
+.DLL命令 打开进程_, 整数型, "kernel32.dll", "OpenProcess", , 
+    .参数 访问级别, 整数型, , 2035711完全访问
+    .参数 子进程继承, 整数型, , 0为子进程继承
+    .参数 进程ID, 整数型, , 要打开的进程标识
+
+.DLL命令 打开令牌对象, 逻辑型, "advapi32.dll", "OpenProcessToken", , 打开过程令牌对象
+    .参数 进程句柄, 整数型, , 
+    .参数 权限, 整数型, , 
+    .参数 令牌句柄, 整数型, 传址, 
+
+.DLL命令 取权限令牌, 整数型, "advapi32.dll", "LookupPrivilegeValueA", , 返回特权名LUID
+    .参数 系统服务名, 整数型, , lpSystemName
+    .参数 权限名, 文本型, 传址, 
+    .参数 权限结构, LUID, 传址, 
+
+.DLL命令 置进程权限, 逻辑型, "advapi32.dll", "AdjustTokenPrivileges", , 使能/取消令牌特权
+    .参数 令牌句柄, 整数型, , 
+    .参数 DisableAllPrivileges, 逻辑型, , 
+    .参数 NewState, 进程权限, 传址, 
+    .参数 BufferLength, 整数型, , 
+    .参数 PreviousState, 整数型, , 
+    .参数 ReturnLength, 整数型, , 
+
+.DLL命令 关闭对象, 整数型, "kernel32.dll", "CloseHandle", , 
+    .参数 对象句柄, 整数型, , 
+
+.DLL命令 API_取Window和DOS版本扩展, 整数型, "", "GetVersionExA", , 在一个OSVERSIONINFO结构中载入与平台和操作系统有关的版本信息  非零表示成功，零表示失败
+    .参数 版本, OSVERSIONINFO, , OSVERSIONINFO，用于装载版本信息的结构。在正式调用函数之前，必须先将这个结构的dwOSVersionInfoSize字段设为结构的大小（148）;
+
+.DLL命令 API_OpenSCManager, 整数型, "advapi32.dll", "OpenSCManagerA", , 连接服务控件管理器
+    .参数 lpMachineName, 整数型, , 
+    .参数 lpDatabaseName, 整数型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+
+.DLL命令 API_EnumServicesStatusEx, 整数型, "ADVAPI32.DLL", "EnumServicesStatusExA", , 
+    .参数 hSCManager, 整数型, , 
+    .参数 InfoLevel, 整数型, , 
+    .参数 dwServiceType, 整数型, , 
+    .参数 dwServiceState, 整数型, , 
+    .参数 lpServices, 字节集, 传址, 
+    .参数 cbBufSize, 整数型, , 
+    .参数 pcbBytesNeeded, 整数型, 传址, 
+    .参数 lpServicesReturned, 整数型, 传址, 
+    .参数 lpResumeHandle, 整数型, , 
+    .参数 pszGroupName, 整数型, , 
+
+.DLL命令 API_CloseServiceHandle, 整数型, "advapi32.dll", "CloseServiceHandle", , 关闭ServiceControlManager对象
+    .参数 hSCObject, 整数型, , 
+
+.DLL命令 API_GetProcessMemoryInfo, 整数型, "psapi.dll", "GetProcessMemoryInfo", , 
+    .参数 Process, 整数型, , 
+    .参数 ppsmemCounters, 字节集, 传址, 
+    .参数 cb, 整数型, , 
+
+.DLL命令 API_CloseHandle, 整数型, "kernel32", "CloseHandle", , 
+    .参数 hObject, 整数型, , 欲关闭的一个对象的句柄;
+
+.DLL命令 GetModuleHandleA, 整数型, "", "", , 
+    .参数 lpModuleName, 文本型, , 
+
+.DLL命令 GetProcAddress, 整数型, "", "", , 
+    .参数 hModule, 整数型, , 
+    .参数 lpProcName, 文本型, , 
+
+.DLL命令 CreateRemoteThread, 整数型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 整数型, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, , 
+
+.DLL命令 GetExitCodeThread, 逻辑型, "", "GetExitCodeThread", , 
+    .参数 hThread, 空白型, , 
+    .参数 lpExitCode, 空白型, 传址, 
+
+.DLL命令 WaitForSingleObject, 整数型, "", "", , 
+    .参数 hHandle, 整数型, , 
+    .参数 dwMilliseconds, 整数型, , 
+
+.DLL命令 ReadProcessMemory, 逻辑型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 文本型, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesRead, 整数型, 传址, 
+
+.DLL命令 API_NetUserDel, 整数型, "NETAPI32.DLL", "NetUserDel", , 
+    .参数 servername, 整数型, , 
+    .参数 userName, 字节集, , 
+
+.DLL命令 API_NetUserAdd, 整数型, "NETAPI32.DLL", "NetUserAdd", , 
+    .参数 servername, 整数型, , 
+    .参数 level, 整数型, , 
+    .参数 buf, UserStruct, 传址, 
+    .参数 parm_err, 整数型, 传址, 
+
+.DLL命令 API_NetUserSetInfo, 整数型, "NETAPI32.DLL", "NetUserSetInfo", , 
+    .参数 servername, 整数型, , 
+    .参数 userName, 字节集, , 
+    .参数 level, 整数型, , 
+    .参数 buf, 整数型, 传址, 
+    .参数 parm_err, 整数型, , 
+
+.DLL命令 API_lstrcpyn, 整数型, "", "lstrcpyn", , 
+    .参数 欲取其指针的文本, 字节集, 传址, 
+    .参数 欲取其指针的文本, 字节集, 传址, 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 API_lstrcpyn2, 整数型, "", "lstrcpyn", , 
+    .参数 欲取其指针的文本, 整数型, 传址, 
+    .参数 欲取其指针的文本, 整数型, 传址, 
+    .参数 保留, 整数型, , 0
+
+.DLL命令 API_NetUserGetLocalGroups, 整数型, "NETAPI32.DLL", "NetUserGetLocalGroups", , 
+    .参数 servername, 整数型, , 
+    .参数 userName, 字节集, , 
+    .参数 level, 整数型, , 
+    .参数 flags, 整数型, , 
+    .参数 bufptr, 整数型, 传址, 
+    .参数 prefmaxlen, 整数型, 传址, 
+    .参数 entriesread, 整数型, 传址, 
+    .参数 totalentries, 整数型, 传址, 
+
+.DLL命令 API_NetLocalGroupSetInfo, 整数型, "NETAPI32.DLL", "NetLocalGroupSetInfo", , 
+    .参数 servername, 整数型, , 
+    .参数 groupname, 字节集, , 
+    .参数 level, 整数型, , 
+    .参数 buf, 整数型, 传址, 
+    .参数 parm_err, 整数型, , 
+
+.DLL命令 API_NetLocalGroupAdd, 整数型, "NETAPI32.DLL", "NetLocalGroupAdd", , 
+    .参数 servername, 整数型, , 
+    .参数 level, 整数型, , 
+    .参数 buf, 整数型, 传址, 
+    .参数 parm_err, 整数型, , 
+
+.DLL命令 API_NetLocalGroupDel, 整数型, "NETAPI32.DLL", "NetLocalGroupDel", , 
+    .参数 servername, 整数型, , 
+    .参数 groupname, 字节集, , 
+
+.DLL命令 SHGetFileInfo, 整数型, "", "SHGetFileInfo", 公开, 
+    .参数 pszPath, 文本型, , 
+    .参数 dwFileAttributes, 整数型, , 
+    .参数 psfi, SHFILEINFO, , 
+    .参数 cbFileInfo, 整数型, , 
+    .参数 uFlags, 整数型, , 
+
+.DLL命令 GetDC, 整数型, "", "GetDC", 公开, 
+    .参数 hwnd, 空白型, , 
+
+.DLL命令 CreateSolidBrush, 整数型, "gdi32.dll", "CreateSolidBrush", 公开, 
+    .参数 crColor, 整数型, , 
+
+.DLL命令 FillRect, 整数型, "user32.dll", "FillRect", 公开, 
+    .参数 hdc, 整数型, , 
+    .参数 lpRect, RECT, 传址, 
+    .参数 hBrush, 整数型, , 
+
+.DLL命令 DrawIconEx, 整数型, "", "DrawIconEx", 公开, 描绘一个图标或鼠标指针
+    .参数 hdc, 空白型, , 
+    .参数 xLeft, 空白型, , 
+    .参数 yTop, 空白型, , 
+    .参数 hIcon, 空白型, , 
+    .参数 cxWidth, 空白型, , 
+    .参数 cyWidth, 空白型, , 
+    .参数 istepIfAniCur, 空白型, , 
+    .参数 hbrFlickerFreeDraw, 空白型, , 
+    .参数 diFlags, 空白型, , 
+
+.DLL命令 CreateCompatibleBitmap, 整数型, "gdi32.dll", "CreateCompatibleBitmap", 公开, 执行成功返回位图句柄，零表示失败
+    .参数 hdc, 整数型, , 设备场景句柄
+    .参数 nWidth, 整数型, , 位图宽度
+    .参数 nHeight, 整数型, , 位图高度
+
+.DLL命令 CreateCompatibleDC, 整数型, "gdi32.dll", "CreateCompatibleDC", 公开, 新设备场景句柄，若出错则为零
+    .参数 hdc, 整数型, , hdc，源设备场景句柄
+
+.DLL命令 SelectObject, 整数型, "gdi32.dll", "SelectObject", 公开, 每个设备场景都可能有选入其中的图形对象。其中包括位图、刷子、字体、画笔以及区域等等。一次选入设备场景的只能有一个对象。选定的对象会在设备场景的绘图操作中使用。例如，当前选定的画笔决定了在设备场景中描绘的线段颜色及样式,与以前选入设备场景的相同hObject类型的一个对象的句柄，零表示出错。如选定的对象是一个区域（Region），结果就是下列常数之一：SIMPLEREGION， COMPLEXREGION 或 NULLREGION 对区域进行描述， GDI_ERROR 表示出错
+    .参数 hdc, 整数型, , 一个设备场景的句柄
+    .参数 hObject, 整数型, , 一个画笔、位图、刷子、字体或区域的句柄
+
+.DLL命令 ReleaseDC, 逻辑型, "user32.dll", "ReleaseDC", 公开, 
+    .参数 hwnd, 整数型, , 
+    .参数 hDC, 整数型, , 
+
+.DLL命令 DeleteDC, 整数型, "gdi32.dll", "DeleteDC", 公开, 删除专用设备场景或信息场景，释放所有相关窗口资源。不要将它用于GetDC函数取回的设备场景,执行成功则为非零，失败则为零
+    .参数 hdc, 整数型, , 将要删除的设备场景
+
+.DLL命令 DeleteObject, 整数型, "gdi32.dll", "DeleteObject", 公开, 用这个函数删除GDI对象，比如画笔、刷子、字体、位图、区域以及调色板等等。对象使用的所有系统资源都会被释放,非零表示成功，零表示失败
+    .参数 hObject, 整数型, , 一个GDI对象的句柄
+
+.DLL命令 DrawIcon, 整数型, "user32", "DrawIcon", , 
+    .参数 hDC, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 hIcon, 整数型, , 
+
+.DLL命令 GetClassLongA, 整数型, "", "", , 
+    .参数 hwnd, 空白型, , 
+    .参数 m, 空白型, , 
+
+.DLL命令 FindWindowA, 整数型, "", "", , 
+    .参数 类名, 空白型, , 
+    .参数 标题, 文本型, , 
+
+.DLL命令 GetWindow, 整数型, "", "", , 
+    .参数 源窗口, 空白型, , 
+    .参数 关系, 空白型, , 
+
+.DLL命令 GetWindowTextA, 空白型, "", "", , 
+    .参数 hwnd, 空白型, , 
+    .参数 标题, 文本型, 传址, 
+    .参数 long, 空白型, , 
+
+.DLL命令 GetWindowTextLengthA, 整数型, "", "", , 
+    .参数 hwnd, 空白型, , 
+
+.DLL命令 GetDesktopWindow, 整数型, "", "", , 
+
+.DLL命令 IsWindowVisible, 逻辑型, "", "", , 
+    .参数 hwnd, 空白型, , 
+
+.DLL命令 GetCurrentProcess, 整数型, "kernel32.dll", "GetCurrentProcess", , 获取当前进程句柄
+
+.DLL命令 WriteProcessMemory, 整数型, "kernel32.dll", "WriteProcessMemory", , 写内存数据
+    .参数 hProcess, 整数型, , 进程句柄
+    .参数 pBaseAddress, 整数型, , 内存地址
+    .参数 lpBuffer, 字节集, 传址, 数据指针
+    .参数 nSize, 整数型, , 长度
+    .参数 lpNumberOfBytesWritten, 整数型, , 实际写出长度
+
+.DLL命令 memcpy, 空白型, "Kernel32.dll", "RtlMoveMemory", , 复制内存(无返回值)
+    .参数 Destination, 整数型, , 目的指针
+    .参数 Source, 整数型, , 源指针
+    .参数 Length, 整数型, , 复制长度
+
+.DLL命令 CreateDIBSection, 整数型, "gdi32.dll", "CreateDIBSection", , 
+    .参数 hDC, 整数型, , 
+    .参数 pBitmapInfo, 字节集, 传址, 
+    .参数 un, 整数型, , 
+    .参数 lplpVoid, 整数型, 传址, 
+    .参数 handle, 整数型, , 
+    .参数 dw, 整数型, , 
+
+.DLL命令 BitBlt, 整数型, "gdi32.dll", "BitBlt", , 
+    .参数 hDestDC, 整数型, , 
+    .参数 x, 整数型, , 
+    .参数 y, 整数型, , 
+    .参数 nWidth, 整数型, , 
+    .参数 nHeight, 整数型, , 
+    .参数 hSrcDC, 整数型, , 
+    .参数 xSrc, 整数型, , 
+    .参数 ySrc, 整数型, , 
+    .参数 dwRop, 整数型, , 
+
+.DLL命令 GdiFlush, 整数型, "gdi32.dll", "GdiFlush", , 执行任何未决的绘图操作,如所有未决的绘图操作都成功完成，就返回TRUE（非零）。如任何一个操作失败，就返回零值
+
+.DLL命令 SendMessage, 整数型, "user32.dll", "SendMessageA", , 
+    .参数 hwnd, 整数型, , 
+    .参数 wMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 API_QueryServiceStatus, 整数型, "advapi32.dll", "QueryServiceStatus", , 获取服务状态
+    .参数 hService, 整数型, , 
+    .参数 lpServiceStatus, SERVICE_STATUS, 传址, 
+
+.DLL命令 API_OpenService, 整数型, "advapi32.dll", "OpenServiceA", , 打开服务
+    .参数 hSCManager, 整数型, , 
+    .参数 lpServiceName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+
+.DLL命令 API_ControlService, 整数型, "advapi32.dll", "ControlService", , 向服务器发送控件
+    .参数 hService, 整数型, , 
+    .参数 dwControl, 整数型, , 
+    .参数 lpServiceStatus, SERVICE_STATUS, 传址, 
+
+.DLL命令 API_StartService, 整数型, "advapi32.dll", "StartServiceA", , 开始运行服务
+    .参数 hService, 整数型, , 
+    .参数 dwNumServiceArgs, 整数型, , 
+    .参数 lpServiceArgVectors, 整数型, , 
+
+.DLL命令 API_QueryServiceStatusEx, 整数型, "ADVAPI32.DLL", "QueryServiceStatusEx", , 
+    .参数 hService, 整数型, , 
+    .参数 InfoLevel, 整数型, , 
+    .参数 lpBuffer, 字节集, , 
+    .参数 cbBufSize, 整数型, , 
+    .参数 pcbBytesNeeded, 整数型, 传址, 
+
+.窗口程序集 主窗口程序集, , , 
+
+.子程序 获取用户信息, User_Info, , 
+.参数 用户名2, 字节集, , 
+
+.局部变量 地址, 空白型, , , 
+.局部变量 数据地址, 整数型, , "4", 
+.局部变量 数据, 字节集, , , 
+.局部变量 返回信息, User_Info, , , 
+
+API_NetUserGetInfo (0, 用户名2, 10, 地址)
+重定义数组 (数据地址, 假, 4)
+API_RtlMoveMemory (数据地址 [1], 地址, 相乘 (4, 4))
+
+赋值 (数据, 指针到字节集 (数据地址 [2], 相乘 (API_lstrlen (数据地址 [2]), 2)))
+赋值 (返回信息.comment, Unicode转Ansi (数据))
+
+赋值 (数据, 指针到字节集 (数据地址 [4], 相乘 (API_lstrlen (数据地址 [4]), 2)))
+赋值 (返回信息.name, Unicode转Ansi (数据))
+
+API_NetApiBufferFree (地址)
+返回 (返回信息)
+
+.子程序 列举用户, 空白型, , 
+.局部变量 地址, 空白型, , , 
+.局部变量 数目, 空白型, , , 
+.局部变量 i, 空白型, , , 
+.局部变量 数据地址, 整数型, , "0", 
+.局部变量 匿名局部变量_166, 空白型, , , 
+.局部变量 数据, 字节集, , , 
+.局部变量 大小, 空白型, , , 
+.局部变量 ii, 空白型, , , 
+.局部变量 用户, User_Info, , , 
+
+API_NetUserEnum (0, 0, 2, 地址, -1, 数目, 0, 0)
+重定义数组 (数据地址, 假, 数目)
+API_RtlMoveMemory (数据地址 [1], 地址, 相乘 (数目, 4))
+
+.计次循环首 (数目, i)
+    赋值 (大小, 相加 (相乘 (API_lstrlen (数据地址 [i]), 2), 2))
+    赋值 (数据, 指针到字节集 (数据地址 [i], 大小))
+    
+    
+    赋值 (ii, .插入表项 (Unicode转Ansi (数据), , , , ))
+    
+    赋值 (用户, 获取用户信息 (数据))
+    ii.置标题 (1, 用户.name)
+    ii.置标题 (2, 用户.comment)
+    
+.计次循环尾 ()
+API_NetApiBufferFree (地址)
+
+
+.子程序 Unicode转Ansi, 文本型, , 
+.参数 参数_数据, 字节集, , 
+
+.局部变量 局部_计数, 整数型, , , 
+.局部变量 局部_结果数据, 字节集, , , 
+.局部变量 局部_结果文本, 文本型, , , 
+
+赋值 (局部_计数, 相除 (取字节集长度 (参数_数据), 2)) ' 字符数目两个
+赋值 (局部_计数, API_宽字符到双字节1 (936, 512, 参数_数据, 局部_计数, 0, 0, 0, 假)) ' 取转换后的数目
+赋值 (局部_结果数据, 取空白字节集 (局部_计数))
+API_宽字符到双字节 (936, 512, 参数_数据, -1, 局部_结果数据, 局部_计数, 0, 假)
+赋值 (局部_结果文本, 取字节集数据 (局部_结果数据, #文本型, ))
+返回 (局部_结果文本)
+
+.子程序 Ansi转Unicode, 字节集, , 
+.参数 Ansi, 文本型, , 
+
+.局部变量 数据2, 字节集, , , 
+.局部变量 长度, 空白型, , , 
+
+.如果真 (等于 (Ansi, “”))
+    返回 ({ 0, 0 })
+.如果真结束
+赋值 (长度, API_MultiByteToWideChar (0, 0, Ansi, 相加 (取文本长度 (Ansi), 1), 数据2, 0))
+赋值 (数据2, 取空白字节集 (相乘 (长度, 2)))
+API_MultiByteToWideChar (0, 0, Ansi, 相加 (取文本长度 (Ansi), 1), 数据2, 相乘 (长度, 2))
+
+返回 (数据2)
+
+.子程序 _树型框1_项目被选择, 空白型, , 
+.参数 选择方式, 整数型, , 
+
+置等待鼠标 ()
+
+全部删除 ()
+赋值 (., {  })
+赋值 (., 假)
+
+.判断开始 (等于 (.最大化按钮, 1))
+    赋值 (., 真)
+    修改列 (1)
+    列举用户 ()
+.判断 (等于 (.最大化按钮, 2))
+    赋值 (., 真)
+    修改列 (2)
+    列举组 ()
+.判断 (等于 (.最大化按钮, 3))
+    修改列 (3)
+    列举端口 ()
+.判断 (等于 (.最大化按钮, 4))
+    修改列 (4)
+    列举服务 ()
+.判断 (等于 (.最大化按钮, 5))
+    修改列 (5)
+    列举进程 ()
+.默认
+    
+.判断结束
+
+
+
+.子程序 取状态, 文本型, , 
+.参数 参数, 整数型, , 
+
+.判断开始 (等于 (参数, 1))
+    返回 (“已关闭”)
+.判断 (等于 (参数, 2))
+    返回 (“正在监听”)
+.判断 (等于 (参数, 3))
+    返回 (“同步发送”)
+.判断 (等于 (参数, 4))
+    返回 (“同步接收”)
+.判断 (等于 (参数, 5))
+    返回 (“已建立”)
+.判断 (等于 (参数, 6))
+    返回 (“FIN_WAIT1”)
+.判断 (等于 (参数, 7))
+    返回 (“FIN_WAIT2”)
+.判断 (等于 (参数, 8))
+    返回 (“关闭等待”)
+.判断 (等于 (参数, 9))
+    返回 (“正在关闭”)
+.判断 (等于 (参数, 10))
+    返回 (“最后确认”)
+.判断 (等于 (参数, 11))
+    返回 (“延时等待”)
+.判断 (等于 (参数, 12))
+    返回 (“删除”)
+.默认
+    返回 (“未知”)
+.判断结束
+
+
+.子程序 取模块, 文本型, , 返回指定模块的全路径，如返回　"C:\WINDOWS\system32"
+.参数 进程ID, 整数型, , 取指定进程空间内的模块，若空则取当前进程空间内的模块
+
+.局部变量 模块快照句柄, 整数型, , , 
+.局部变量 模块信息指针, 整数型, , , 
+.局部变量 模块信息, 模块信息, , , 
+.局部变量 路径, 文本型, , , 
+
+.如果真 (等于 (0, 进程ID))
+    赋值 (进程ID, 取自进程ID ())
+.如果真结束
+赋值 (模块快照句柄, 创建系统快照 (8, 进程ID))
+.如果真 (等于 (模块快照句柄, -1))
+    返回 (路径)
+.如果真结束
+赋值 (模块信息.占用字节, 1024)
+赋值 (模块信息指针, 取模块信息 (模块快照句柄, 模块信息))
+.如果真 (不等于 (0, 模块信息指针))
+    赋值 (路径, 到文本 (模块信息.模块路径))
+.如果真结束
+关闭系统快照 (模块快照句柄)
+
+返回 (路径)
+
+.子程序 列举组, 空白型, , 
+.局部变量 地址, 空白型, , , 
+.局部变量 数目, 空白型, , , 
+.局部变量 数据地址, 整数型, , "0", 
+.局部变量 i, 空白型, , , 
+.局部变量 数据, 字节集, , , 
+.局部变量 大小, 空白型, , , 
+.局部变量 位置1, 空白型, , , 
+
+API_NetGroupEnum (0, 1, 地址, -1, 数目, 0, 0)
+重定义数组 (数据地址, 假, 相乘 (数目, 2))
+API_RtlMoveMemory (数据地址 [1], 地址, 相乘 (数目, 4, 2))
+赋值 (i, 1)
+.计次循环首 (数目, )
+    赋值 (大小, 相加 (相乘 (API_lstrlen (数据地址 [i]), 2), 2))
+    赋值 (数据, 指针到字节集 (数据地址 [i], 大小))
+    赋值 (位置1, .插入表项 (Unicode转Ansi (数据), , , , ))
+    
+    赋值 (i, 相加 (i, 1))
+    
+    赋值 (大小, 相加 (相乘 (API_lstrlen (数据地址 [i]), 2), 2))
+    赋值 (数据, 指针到字节集 (数据地址 [i], 大小))
+    位置1.置标题 (1, Unicode转Ansi (数据))
+    
+    赋值 (i, 相加 (i, 1))
+.计次循环尾 ()
+
+
+API_NetApiBufferFree (地址)
+
+.子程序 修改列, 空白型, , 
+.参数 索引, 空白型, , 
+
+.计次循环首 (取列数 (), )
+    0.删除列 ()
+.计次循环尾 ()
+
+.判断开始 (等于 (索引, 1))
+    .插入列 (“名称”, 100, , , )
+    .插入列 (“全称”, 150, , , )
+    .插入列 (“描述”, 250, , , )
+.判断 (等于 (索引, 2))
+    .插入列 (“名称”, 120, , , )
+    .插入列 (“描述”, 300, , , )
+.判断 (等于 (索引, 3))
+    .插入列 (“本地IP:端口”, 130, , , )
+    .插入列 (“远程IP:端口”, 130, , , )
+    .插入列 (“状态”, 70, , , )
+    .插入列 (“进程:进程号”, 250, , , )
+.判断 (等于 (索引, 4))
+    .插入列 (“名称”, 100, , , )
+    .插入列 (“描述”, 200, , , )
+    .插入列 (“状态”, 70, , , )
+    .插入列 (“启动类型”, 70, , , )
+    .插入列 (“登陆为”, 70, , , )
+.判断 (等于 (索引, 5))
+    .插入列 (“映像名称”, 100, , , )
+    .插入列 (“PID”, 40, 1, , )
+    .插入列 (“命令行”, 220, , , )
+    .插入列 (“内存占用”, 70, 2, , )
+.默认
+    
+.判断结束
+
+
+.子程序 列举端口, 空白型, , 
+.局部变量 数据, 字节集, , , 
+.局部变量 缓冲区大小, 空白型, , , 
+.局部变量 数量, 空白型, , , 
+.局部变量 位置1, 空白型, , , 
+.局部变量 i, 空白型, , , 
+.局部变量 匿名局部变量_336, 空白型, , , 
+.局部变量 地址, 字节集, , , 
+.局部变量 匿名局部变量_338, 空白型, , , 
+.局部变量 状态, 空白型, , , 
+.局部变量 本地地址, 文本型, , , 
+.局部变量 本地端口, 空白型, , , 
+.局部变量 远程地址, 文本型, , , 
+.局部变量 远程端口, 空白型, , , 
+.局部变量 匿名局部变量_344, 空白型, , , 
+.局部变量 进程号, 整数型, , , 
+.局部变量 sInfo, SHFILEINFO, , , 
+.局部变量 匿名局部变量_346, 空白型, , , 
+.局部变量 图片, 字节集, , , 
+
+GetExtendedTcpTable (数据, 缓冲区大小, 假, 2, 5, 0)
+赋值 (数据, 取空白字节集 (缓冲区大小))
+GetExtendedTcpTable (数据, 缓冲区大小, 假, 2, 5, 0)
+赋值 (数量, 取字节集数据 (取字节集左边 (数据, 4), 3, ))
+赋值 (位置1, 4)
+赋值 (图片, 未知支持库函数_30 (32, 32))
+未知支持库函数_24 (图片, #null, 1)
+.计次循环首 (数量, )
+    赋值 (状态, 取字节集数据 (取字节集中间 (数据, 相加 (位置1, 1), 4), 3, ))
+    赋值 (地址, 取字节集中间 (数据, 相加 (位置1, 5), 4))
+    赋值 (本地端口, API_htons (取字节集数据 (取字节集中间 (数据, 相加 (位置1, 9), 4), 3, )))
+    赋值 (远程端口, API_htons (取字节集数据 (取字节集中间 (数据, 相加 (位置1, 17), 4), 3, )))
+    赋值 (进程号, 取字节集数据 (取字节集中间 (数据, 相加 (位置1, 21), 4), 3, ))
+    
+    赋值 (本地地址, 相加 (到文本 (取字节集数据 (取字节集中间 (地址, 1, 1), 1, )), “.”))
+    赋值 (本地地址, 相加 (本地地址, 到文本 (取字节集数据 (取字节集中间 (地址, 2, 1), 1, )), “.”))
+    赋值 (本地地址, 相加 (本地地址, 到文本 (取字节集数据 (取字节集中间 (地址, 3, 1), 1, )), “.”))
+    赋值 (本地地址, 相加 (本地地址, 到文本 (取字节集数据 (取字节集中间 (地址, 4, 1), 1, ))))
+    
+    赋值 (地址, 取字节集中间 (数据, 相加 (位置1, 13), 4))
+    赋值 (远程地址, 相加 (到文本 (取字节集数据 (取字节集中间 (地址, 1, 1), 1, )), “.”))
+    赋值 (远程地址, 相加 (远程地址, 到文本 (取字节集数据 (取字节集中间 (地址, 2, 1), 1, )), “.”))
+    赋值 (远程地址, 相加 (远程地址, 到文本 (取字节集数据 (取字节集中间 (地址, 3, 1), 1, )), “.”))
+    赋值 (远程地址, 相加 (远程地址, 到文本 (取字节集数据 (取字节集中间 (地址, 4, 1), 1, ))))
+    
+    SHGetFileInfo (取模块 (进程号), 128, sInfo, 348, 256)
+    .判断开始 (或者 (等于 (sInfo.hIcon, 0), 等于 (进程号, 0), 等于 (进程号, 4)))
+        赋值 (i, .插入表项 (相加 (本地地址, “:”, 到文本 (本地端口)), 0, , , ))
+    .默认
+        赋值 (i, .插入表项 (相加 (本地地址, “:”, 到文本 (本地端口)), 未知支持库函数_24 (图片, 通过句柄取图标 (sInfo.hIcon, 32, 32, ), 1), , , ))
+    .判断结束
+    
+    
+    
+    i.置标题 (1, 相加 (远程地址, “:”, 到文本 (远程端口)))
+    i.置标题 (2, 取状态 (状态))
+    .判断开始 (等于 (进程号, 0))
+        i.置标题 (3, “[System Process]”)
+    .判断 (等于 (进程号, 4))
+        i.置标题 (3, “System”)
+    .默认
+        i.置标题 (3, 相加 (取模块 (进程号), “:”, 到文本 (进程号)))
+    .判断结束
+    
+    
+    赋值 (位置1, 相加 (位置1, 24))
+.计次循环尾 ()
+赋值 (., 图片)
+
+
+.子程序 提升进程权限, 逻辑型, , 成功返回真，把一个进程的权限提升到调试级权限
+.局部变量 进程句柄, 整数型, , , 
+.局部变量 令牌句柄, 整数型, , , 
+.局部变量 destLuid, LUID, , , 
+.局部变量 进程权限, 进程权限, , , 
+.局部变量 返回, 逻辑型, , , 
+.局部变量 进程ID, 整数型, , , 
+
+赋值 (进程ID, 取自进程ID ())
+赋值 (进程句柄, 打开进程_ (2035711, 0, 进程ID))
+打开令牌对象 (进程句柄, 983551, 令牌句柄)
+取权限令牌 (0, “SeDebugPrivilege”, destLuid)
+赋值 (进程权限.PrivilegeCount, 1)
+赋值 (进程权限.Attributes, 2)
+赋值 (进程权限.LowPart, destLuid.LowPart)
+赋值 (进程权限.HighPart, destLuid.HighPart)
+赋值 (返回, 置进程权限 (令牌句柄, 假, 进程权限, 0, 0, 0))
+关闭对象 (进程句柄)
+返回 (返回)
+
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 版本信息, OSVERSIONINFO, , , 
+
+赋值 (版本信息.dwOSVersionInfoSize, 148)
+.如果真 (不等于 (API_取Window和DOS版本扩展 (版本信息), 0))
+    .如果真 (小于或等于 (版本信息.dwMajorVersion, 4))
+        信息框 (“您的系统不是Windows 2000/XP 或更新的版本!”, 48, )
+        结束 ()
+    .如果真结束
+    
+    
+.如果真结束
+
+
+.如果真 (等于 (提升进程权限 (), 假))
+    信息框 (“运行本程序必须以管理员的身份运行.”, 48, )
+.如果真结束
+
+
+.子程序 列举服务, 空白型, , 
+.局部变量 Status, 字节集, , , 
+.局部变量 StatusSize, 整数型, , , 
+.局部变量 服务数, 空白型, , , 
+.局部变量 i, 空白型, , , 
+.局部变量 Service, ENUM_SERVICE_STATUS_PROCESS, , , 
+.局部变量 表项索引, 空白型, , , 
+.局部变量 SC句柄, 空白型, , , 
+
+重定义数组 (服务名, 假, 0)
+
+赋值 (SC句柄, API_OpenSCManager (0, 0, #SC_MANAGER_ENUMERATE_SERVICE))
+.如果真 (等于 (SC句柄, 0))
+    信息框 (“查看服务失败。。可能权限不够”, 16, )
+    返回 ()
+.如果真结束
+
+API_EnumServicesStatusEx (SC句柄, 0, #SERVICE_WIN32, #SERVICE_STATE_ALL, Status, 0, StatusSize, 服务数, 0, 0)
+赋值 (Status, 取空白字节集 (StatusSize))
+
+.如果真 (等于 (API_EnumServicesStatusEx (SC句柄, 0, #SERVICE_WIN32, #SERVICE_STATE_ALL, Status, StatusSize, StatusSize, 服务数, 0, 0), 0))
+    信息框 (“查看服务失败”, 48, )
+    返回 ()
+.如果真结束
+
+置等待鼠标 ()
+.计次循环首 (服务数, i)
+    API_RtlMoveMemory2 (Service, 取字节集中间 (Status, 相减 (相乘 (i, 44), 43), 44), 44)
+    赋值 (表项索引, .插入表项 (Service.lpDisplayName, , , , ))
+    
+    表项索引.置标题 (1, 取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\Description”), ))
+    
+    
+    .判断开始 (等于 (取文本注册项 (#本地机器, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\ObjectName”), ), “LocalSystem”))
+        表项索引.置标题 (4, “本地系统”)
+    .判断 (等于 (取文本注册项 (#本地机器, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\ObjectName”), ), “NT AUTHORITY\LocalService”))
+        表项索引.置标题 (4, “本地服务”)
+    .默认
+        表项索引.置标题 (4, “网络服务”)
+    .判断结束
+    
+    表项索引.置标题 (2, 状态 (Service.dwCurrentState))
+    .判断开始 (等于 (取数值注册项 (#本地机器, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\Start”), ), 2))
+        表项索引.置标题 (3, “自动”)
+    .判断 (等于 (取数值注册项 (#本地机器, 相加 (“SYSTEM\CurrentControlSet\Services\”, Service.lpServiceName, “\Start”), ), 3))
+        表项索引.置标题 (3, “手动”)
+    .默认
+        表项索引.置标题 (3, “已禁用”)
+    .判断结束
+    
+    加入成员 (服务名, Service.lpServiceName)
+.计次循环尾 ()
+API_CloseServiceHandle (SC句柄)
+
+.子程序 状态, 文本型, , 
+.参数 N, 整数型, , 
+
+.如果真 (并且 (大于或等于 (N, 1), 小于或等于 (N, 7)))
+    返回 (多项选择 (N, “已停止”, “准备开始”, “准备停止”, “正在运行”, “准备继续”, “准备暂停”, “已暂停”))
+.如果真结束
+返回 (相加 (“未知状态：”, 到文本 (N)))
+
+.子程序 列举进程, 空白型, , 
+.局部变量 进程, 未知类型0x30009, , "0", 
+.局部变量 i, 空白型, , , 
+.局部变量 位置1, 空白型, , , 
+.局部变量 进程句柄, 空白型, , , 
+.局部变量 数据, 字节集, , , 
+.局部变量 命令, CImagePathAndCommandLine, , , 
+.局部变量 命令行, 文本型, , , 
+.局部变量 DLl, 文本型, , "0", 
+.局部变量 sInfo, SHFILEINFO, , , 
+.局部变量 图片, 字节集, , , 
+
+赋值 (进程, 未知支持库函数_10 ())
+赋值 (图片, 未知支持库函数_30 (32, 32))
+未知支持库函数_24 (图片, #null, 1)
+.计次循环首 (取数组成员数 (进程), i)
+    赋值 (DLl, 未知支持库函数_12 (进程 [i], ))
+    .如果 (并且 (大于 (取数组成员数 (DLl), 0), 不等于 (进程 [i], , 0)))
+        赋值 (DLl [1], 子文本替换 (DLl [1], “\??\”, , , 1, 真))
+        .如果真 (等于 (DLl [1], “\SystemRoot\System32\smss.exe”))
+            赋值 (DLl [1], 相加 (未知支持库函数_7 (10), “smss.exe”))
+        .如果真结束
+        
+        SHGetFileInfo (DLl [1], 128, sInfo, 348, 256)
+        .判断开始 (等于 (sInfo.hIcon, 0))
+            赋值 (位置1, .插入表项 (进程 [i], , 0, , , ))
+        .默认
+            赋值 (位置1, .插入表项 (进程 [i], , 未知支持库函数_24 (图片, 通过句柄取图标 (sInfo.hIcon, 32, 32, ), 1), , , ))
+        .判断结束
+        
+    .否则
+        赋值 (位置1, .插入表项 (进程 [i], , 0, , , ))
+    .如果结束
+    
+    
+    
+    赋值 (进程句柄, 打开进程_ (相加 (1024, 16), 0, 进程 [i], ))
+    赋值 (数据, 取空白字节集 (40))
+    API_GetProcessMemoryInfo (进程句柄, 数据, 40)
+    API_CloseHandle (进程句柄)
+    
+    命令.OpenProcess (进程 [i], )
+    命令.GetProcessImagePathAndCommandLine (命令行)
+    
+    
+    位置1.置标题 (3, 相加 (到文本 (相除 (取字节集数据 (取字节集中间 (数据, 13, 4), 3, ), 1024)), “ K”))
+    位置1.置标题 (1, 到文本 (进程 [i], ))
+    命令.Close ()
+    位置1.置标题 (2, 命令行)
+    
+.计次循环尾 ()
+赋值 (., 图片)
+
+.子程序 _超级列表框1_右键单击表项, 空白型, , 
+.局部变量 SC句柄, 空白型, , , 
+.局部变量 Serv, SERVICE_STATUS, , , 
+
+.判断开始 (等于 (.最大化按钮, 1))
+    .如果 (等于 (., -1))
+        赋值 (.禁止, 真)
+        赋值 (.禁止, 真)
+    .否则
+        赋值 (.禁止, 假)
+        赋值 (.禁止, 假)
+    .如果结束
+    弹出菜单 ()
+    
+.判断 (等于 (.最大化按钮, 2))
+    .如果 (等于 (., -1))
+        赋值 (.禁止, 真)
+    .否则
+        赋值 (.禁止, 假)
+    .如果结束
+    
+    弹出菜单 ()
+.判断 (并且 (等于 (.最大化按钮, 3), 不等于 (., -1)))
+    弹出菜单 ()
+.判断 (并且 (等于 (.最大化按钮, 5), 不等于 (., -1)))
+    弹出菜单 ()
+.判断 (等于 (.最大化按钮, 4))
+    .如果 (等于 (., -1))
+        赋值 (.禁止, 真)
+        赋值 (.禁止, 真)
+        赋值 (.禁止, 真)
+    .否则
+        赋值 (.禁止, 假)
+        赋值 (.禁止, 假)
+        赋值 (.禁止, 假)
+    .如果结束
+    赋值 (SC句柄, API_OpenSCManager (0, 0, 4))
+    .如果真 (不等于 (API_QueryServiceStatus (API_OpenService (SC句柄, 服务名 [相加 (., 1)], 4), Serv), 0))
+        .判断开始 (等于 (位或 (1, Serv.dwControlsAccepted), Serv.dwControlsAccepted))
+            赋值 (.禁止, 真)
+            赋值 (.禁止, 假)
+        .默认
+            赋值 (.禁止, 真)
+            赋值 (.禁止, 假)
+        .判断结束
+        弹出菜单 ()
+    .如果真结束
+    
+    
+.默认
+    
+.判断结束
+
+
+.子程序 _删除_被选择, 空白型, , 
+.如果真 (等于 (信息框 (“确认要删除该用户吗?”, 52, “删除用户”), 5))
+    .如果 (等于 (API_NetUserDel (0, Ansi转Unicode (.取标题 (., 0))), 0))
+        .删除表项 (.)
+    .否则
+        信息框 (“删除该用户失败!”, 48, )
+    .如果结束
+    
+.如果真结束
+
+
+.子程序 _新用户_被选择, 空白型, , 
+载入 (添加新用户, , 真)
+
+
+.子程序 _设置密码_被选择, 空白型, , 
+载入 (修改密码, , 真)
+
+.子程序 _超级列表框1_被双击, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.判断开始 (并且 (等于 (.最大化按钮, 1), 不等于 (., -1)))
+    载入 (用户信息, , 真)
+.判断 (并且 (等于 (.最大化按钮, 4), 不等于 (., -1)))
+    载入 (服务窗口, , 真)
+.默认
+    
+.判断结束
+
+
+.子程序 _树型框1_按下某键, 逻辑型, , 
+.参数 键代码, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.如果真 (等于 (键代码, #F5键))
+    _树型框1_项目被选择 (0)
+.如果真结束
+
+
+.子程序 _超级列表框1_按下某键, 逻辑型, , 
+.参数 键代码, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+.如果真 (等于 (键代码, #F5键))
+    _树型框1_项目被选择 (0)
+.如果真结束
+
+
+.子程序 _超级列表框1_结束编辑, 逻辑型, , 
+.参数 表项索引, 整数型, , 
+
+.局部变量 数据, 字节集, , , 
+
+.判断开始 (等于 (.最大化按钮, 1))
+    赋值 (数据, Ansi转Unicode (.))
+    .判断开始 (等于 (API_NetUserSetInfo (0, Ansi转Unicode (表项索引.取标题 (0)), 0, API_lstrcpyn (数据, 数据, 0), 0), 0))
+        返回 (真)
+    .默认
+        信息框 (“修改用户名出错!”, 48, )
+        返回 (假)
+    .判断结束
+    
+.判断 (等于 (.最大化按钮, 2))
+    赋值 (数据, Ansi转Unicode (.))
+    .判断开始 (等于 (API_NetLocalGroupSetInfo (0, Ansi转Unicode (表项索引.取标题 (0)), 0, API_lstrcpyn (数据, 数据, 0), 0), 0))
+        返回 (真)
+    .默认
+        信息框 (“修改组名出错!”, 48, )
+        返回 (假)
+    .判断结束
+    
+.默认
+    
+.判断结束
+
+
+.子程序 _关闭进程2_被选择, 空白型, , 
+
+
+.如果真 (等于 (未知支持库函数_11 (到整数 (取文本右边 (.取标题 (., 3), 相减 (取文本长度 (.取标题 (., 3)), 倒找文本 (.取标题 (., 3), “:”, , 假))))), 假))
+    信息框 (“关闭对应进程失败!”, 48, )
+.如果真结束
+
+_树型框1_项目被选择 (0)
+
+.子程序 _新建组_被选择, 空白型, , 
+载入 (新组, , 真)
+
+.子程序 _删除组_被选择, 空白型, , 
+.判断开始 (等于 (API_NetLocalGroupDel (0, Ansi转Unicode (.取标题 (., 0))), 0))
+    .删除表项 (.)
+.默认
+    信息框 (“删除失败”, 48, )
+.判断结束
+
+
+.子程序 通过句柄取图标, 字节集, , 
+.参数 图标句柄, 整数型, , 
+.参数 图标宽度, 整数型, 可空, 
+.参数 图标高度, 整数型, 可空, 
+.参数 背景颜色, 整数型, 可空, 
+
+.局部变量 sRect, RECT, , , 
+.局部变量 sIco, 字节集, , , 
+.局部变量 位图操作, 位图操作类, , , 
+.局部变量 匿名局部变量_1610, 空白型, , , 
+.局部变量 SrchDC, 整数型, , , 
+.局部变量 newDC, 整数型, , , 
+.局部变量 hwnd, 整数型, , , 
+.局部变量 hBmp, 整数型, , , 
+.局部变量 hBmpPrev, 整数型, , , 
+.局部变量 mBrush, 整数型, , , 
+.局部变量 匿名局部变量_1617, 空白型, , , 
+
+.如果真 (是否为空 (图标宽度))
+    赋值 (图标宽度, 32)
+.如果真结束
+.如果真 (是否为空 (图标高度))
+    赋值 (图标高度, 32)
+.如果真结束
+.如果真 (是否为空 (背景颜色))
+    赋值 (背景颜色, #白色)
+.如果真结束
+赋值 (sRect.Top, 0)
+赋值 (sRect.Left, 0)
+赋值 (sRect.Right, 图标宽度)
+赋值 (sRect.Bottom, 图标高度)
+赋值 (SrchDC, GetDC (取窗口句柄 ()))
+赋值 (newDC, CreateCompatibleDC (SrchDC))
+ ' 验证 (newDC)
+赋值 (hBmp, CreateCompatibleBitmap (SrchDC, 32, 32))
+ ' 验证 (hBmp)
+赋值 (hBmpPrev, SelectObject (newDC, hBmp))
+ ' 验证 (hBmpPrev)
+赋值 (mBrush, CreateSolidBrush (背景颜色))
+FillRect (newDC, sRect, mBrush)
+DrawIconEx (newDC, 0, 0, 图标句柄, 图标宽度, 图标高度, 0, 0, 3)
+位图操作.CaptureDC (newDC, sRect, 32)
+赋值 (sIco, 位图操作.Write ())
+ReleaseDC (hwnd, SrchDC)
+DeleteDC (newDC)
+DeleteObject (hBmpPrev)
+DeleteObject (hBmp)
+DeleteObject (mBrush)
+返回 (sIco)
+
+
+.子程序 _关闭进程_被选择, 空白型, , 
+.如果真 (等于 (未知支持库函数_11 (到整数 (.取标题 (., 1))), 假))
+    信息框 (“关闭进程失败!”, 48, )
+.如果真结束
+
+_树型框1_项目被选择 (0)
+
+
+
+.子程序 _刷新_被选择, 空白型, , 
+_树型框1_项目被选择 (0)
+
+.子程序 _属性_被选择, 空白型, , 
+载入 (服务窗口, , 真)
+
+.子程序 _启动_被选择, 空白型, , 
+.判断开始 (等于 (API_StartService (API_OpenService (API_OpenSCManager (0, 0, 983103), 服务名 [相加 (., 1)], 983551), 0, 0), 0))
+    信息框 (“开始服务失败”, 48, )
+.默认
+    _树型框1_项目被选择 (0)
+.判断结束
+
+
+.子程序 _停止_被选择, 空白型, , 
+.局部变量 临时, SERVICE_STATUS, , , 
+
+.判断开始 (等于 (API_ControlService (API_OpenService (API_OpenSCManager (0, 0, 983103), 服务名 [相加 (., 1)], 983551), 1, 临时), 0))
+    信息框 (“停止服务失败”, 48, )
+.默认
+    _树型框1_项目被选择 (0)
+.判断结束
+
+
+.子程序 _标签1_鼠标左键被按下, 逻辑型, , 
+.参数 横向位置, 整数型, , 
+.参数 纵向位置, 整数型, , 
+.参数 功能键状态, 整数型, , 
+
+运行 (“explorer http://zero-e.3322.org”, 假, )
+
+.类模块 CImagePathAndCommandLine, , , 
+
+.程序集变量 m_hProcess, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 OpenProcess, 逻辑型, , 打开目标进程。成功返回真，失败返回假。备注：若不再操作目标进程，请调用“Close”方法释放资源。
+.参数 dwProcessId, 整数型, , 目标进程ID
+
+赋值 (m_hProcess, 打开进程_ (位或 (#PROCESS_VM_READ, #PROCESS_DUP_HANDLE, #PROCESS_VM_OPERATION, #PROCESS_CREATE_THREAD, #PROCESS_QUERY_INFORMATION), 0, dwProcessId)) ' 打开目标进程
+返回 (不等于 (m_hProcess, 0))
+
+.子程序 Close, 逻辑型, , 关闭已打开的句柄，释放资源。成功返回真，失败返回假。
+.如果真 (不等于 (m_hProcess, 0))
+    .如果真 (不等于 (API_CloseHandle (m_hProcess), 0)) ' 关闭进程句柄
+        赋值 (m_hProcess, 0)
+        返回 (真)
+    .如果真结束
+    
+.如果真结束
+返回 (假)
+
+.子程序 SetHandle, 空白型, , 置入进程句柄，可通过本类的实例操作目标进程。
+.参数 hProcess, 整数型, , 目标进程ID
+.参数 bCloseOldHandle, 逻辑型, 可空, 是否把已打开的句柄释放。建议该参数为真。否则有可能会导致内存泄漏。
+
+.如果真 (bCloseOldHandle)
+    API_CloseHandle (m_hProcess) ' 关于进程句柄
+.如果真结束
+赋值 (m_hProcess, hProcess)
+
+.子程序 GetSaveHandle, 整数型, , 获取已保存的句柄
+返回 (m_hProcess)
+
+.子程序 GetProcessImagePathAndCommandLine, 逻辑型, 公开, 获取目标进程的映像路径及命令行参数。成功返回真，失败返回假。
+.参数 lpstrImagePathAndCommandLine, 文本型, 参考, 用于保存目标进程的映像路径及命令行参数的文本型变量
+
+.局部变量 GetCommandLineA_addr, 整数型, , , GetCommandLineA的地址
+.局部变量 hRemoteThread, 整数型, , , 远程线程句柄
+.局部变量 lptstr, 整数型, , , 远程进程的映像路径及命令行参数的基址
+.局部变量 lstrlenA_addr, 整数型, , , lstrlenA的地址
+.局部变量 strlen, 整数型, , , 长度
+
+赋值 (GetCommandLineA_addr, GetProcAddress (GetModuleHandleA (“Kernel32.dll”), “GetCommandLineA”)) ' 获取 GetCommandLineA 的地址
+赋值 (hRemoteThread, CreateRemoteThread (m_hProcess, 0, 0, GetCommandLineA_addr, 0, 0, 0)) ' 创建远程线程执行 GetCommandLineA 函数，并获取该线程的线程句柄
+.如果 (不等于 (hRemoteThread, 0))
+    WaitForSingleObject (hRemoteThread, #INFINITE) ' 等待线程结束
+    GetExitCodeThread (hRemoteThread, lptstr) ' 获取线程退出代码
+    API_CloseHandle (hRemoteThread) ' 关闭线程句柄
+.否则
+    返回 (假)
+.如果结束
+赋值 (lstrlenA_addr, GetProcAddress (GetModuleHandleA (“Kernel32.dll”), “lstrlenA”)) ' 获取 lstrlenA 的地址
+赋值 (hRemoteThread, CreateRemoteThread (m_hProcess, 0, 0, lstrlenA_addr, lptstr, 0, 0)) ' 创建远程线程执行 lstrlenA 函数，并获取该线程的线程句柄
+.如果 (不等于 (hRemoteThread, 0))
+    WaitForSingleObject (hRemoteThread, #INFINITE) ' 等待线程结束
+    GetExitCodeThread (hRemoteThread, strlen) ' 获取线程退出代码
+    API_CloseHandle (hRemoteThread) ' 关闭线程句柄
+.否则
+    返回 (假)
+.如果结束
+赋值 (lpstrImagePathAndCommandLine, 取空白文本 (strlen)) ' 申请内存空间，用于保存远程进程的映像路径及命令行参数的基址
+.如果真 (ReadProcessMemory (m_hProcess, lptstr, lpstrImagePathAndCommandLine, strlen, 0)) ' 读取远程进程的映像路径及命令行参数
+    返回 (真)
+.如果真结束
+返回 (假)
+
+.窗口程序集 添加用户程序集, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 UserInfo, UserStruct, , , 
+
+.如果真 (不等于 (.内容, .内容))
+    信息框 (“密码未被确认!请确保密码和确认密码完全符合”, 48, )
+    赋值 (.内容, “”)
+    赋值 (.内容, “”)
+.如果真结束
+赋值 (UserInfo.ptrName, Ansi转Unicode (删首尾空 (.内容)))
+赋值 (UserInfo.ptrPassword, Ansi转Unicode (.内容))
+赋值 (UserInfo.dwPasswordAge, 0)
+.如果 (.选中)
+    赋值 (UserInfo.dwFlags, 位或 (512, 1, 2))
+.否则
+    赋值 (UserInfo.dwFlags, 位或 (512, 1))
+.如果结束
+赋值 (UserInfo.dwPriv, 1)
+赋值 (UserInfo.ptrHomeDir, 0)
+赋值 (UserInfo.ptrComment, Ansi转Unicode (.内容))
+
+.判断开始 (等于 (API_NetUserAdd (0, 1, UserInfo, 0), 0))
+    赋值 (.内容, “”)
+    赋值 (.内容, “”)
+    赋值 (.内容, “”)
+    赋值 (.内容, “”)
+.默认
+    信息框 (“添加用户失败!”, 48, )
+    赋值 (.内容, 删首尾空 (.内容))
+.判断结束
+
+
+.子程序 _编辑框1_内容被改变, 空白型, , 
+.如果 (等于 (取文本长度 (删首空 (.内容)), 0))
+    赋值 (.禁止, 真)
+.否则
+    赋值 (.禁止, 假)
+.如果结束
+
+
+
+.子程序 _添加新用户_将被销毁, 空白型, , 
+_树型框1_项目被选择 (0)
+
+.子程序 _添加新用户_创建完毕, 空白型, , 
+获取焦点 ()
+
+.子程序 _按钮2_被单击, 空白型, , 
+销毁 ()
+
+.窗口程序集 修改密码程序集, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 数据, 字节集, , , 
+
+.如果真 (不等于 (.内容, .内容))
+    信息框 (“密码未被确认!请确保密码和确认密码完全符合”, 48, )
+    赋值 (.内容, “”)
+    赋值 (.内容, “”)
+    返回 ()
+.如果真结束
+
+赋值 (数据, Ansi转Unicode (.内容))
+.如果真 (等于 (信息框 (“您确认要修改该用户的密码吗?”, 52, ), 5))
+    .判断开始 (等于 (API_NetUserSetInfo (0, Ansi转Unicode (_启动窗口.取标题 (., _启动窗口.., 0)), 1003, API_lstrcpyn (数据, 数据, 0), 0), 0))
+        信息框 (“密码已设置”, 64, )
+        销毁 ()
+    .默认
+        信息框 (“修改密码失败”, 48, )
+    .判断结束
+    
+    
+.如果真结束
+
+
+.子程序 _修改密码_创建完毕, 空白型, , 
+获取焦点 ()
+
+.子程序 _按钮2_被单击, 空白型, , 
+销毁 ()
+
+.窗口程序集 用户信息程序集, , , 
+
+.子程序 _用户信息_创建完毕, 空白型, , 
+.局部变量 数据, 空白型, , , 
+.局部变量 数据地址, 整数型, , "4", 
+.局部变量 数目, 空白型, , , 
+.局部变量 i, 空白型, , , 
+
+.判断开始 (等于 (API_NetUserGetInfo (0, Ansi转Unicode (_启动窗口.取标题 (., _启动窗口.., 0)), 23, 数据), 0))
+    API_RtlMoveMemory (数据地址 [1], 数据, 相乘 (4, 4))
+    .如果真 (等于 (位或 (数据地址 [4], 2), 数据地址 [4]))
+        赋值 (.选中, 真)
+    .如果真结束
+    .如果真 (等于 (位或 (数据地址 [4], 64), 数据地址 [4]))
+        赋值 (.选中, 真)
+    .如果真结束
+    .如果真 (等于 (位或 (数据地址 [4], 65536), 数据地址 [4]))
+        赋值 (.选中, 真)
+    .如果真结束
+    
+    赋值 (.内容, _启动窗口.取标题 (., _启动窗口.., 0))
+    赋值 (.内容, Unicode转Ansi (指针到字节集 (数据地址 [2], 相乘 (API_lstrlen (数据地址 [2]), 2))))
+    赋值 (.内容, Unicode转Ansi (指针到字节集 (数据地址 [3], 相乘 (API_lstrlen (数据地址 [3]), 2))))
+    API_NetApiBufferFree (数据)
+.默认
+    信息框 (“读取用户信息时出错!”, 48, )
+    销毁 ()
+    返回 ()
+.判断结束
+
+.判断开始 (等于 (API_NetUserGetLocalGroups (0, Ansi转Unicode (.内容), 0, 1, 数据, -1, 数目, 0), 0))
+    重定义数组 (数据地址, 假, 数目)
+    API_RtlMoveMemory (数据地址 [1], 数据, 相乘 (数目, 4))
+    .计次循环首 (数目, i)
+        Unicode转Ansi (指针到字节集 (数据地址 [i], 相乘 (API_lstrlen (数据地址 [i]), 2))).加入项目 ()
+    .计次循环尾 ()
+    
+    
+    API_NetApiBufferFree (数据)
+    
+.默认
+    信息框 (“读取用户信息时出错!”, 48, )
+    销毁 ()
+.判断结束
+
+获取焦点 ()
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+销毁 ()
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 Flags, 整数型, , , 
+.局部变量 数据, 字节集, , , 
+.局部变量 数据2, 字节集, , , 
+
+.判断开始 (.选中)
+    赋值 (Flags, 64)
+.默认
+    
+.判断结束
+.判断开始 (.选中)
+    赋值 (Flags, 相加 (Flags, 65536))
+.默认
+    
+.判断结束
+.判断开始 (.选中)
+    赋值 (Flags, 相加 (Flags, 2))
+.默认
+    
+.判断结束
+
+
+
+.如果真 (不等于 (API_NetUserSetInfo (0, Ansi转Unicode (.内容), 1008, Flags, 0), 0))
+    信息框 (“修改用户信息过程中出现错误1”, 48, )
+    销毁 ()
+    返回 ()
+.如果真结束
+
+
+赋值 (数据, Ansi转Unicode (.内容))
+.如果真 (不等于 (API_NetUserSetInfo (0, Ansi转Unicode (.内容), 1007, API_lstrcpyn (数据, 数据, 0), 0), 0))
+    信息框 (“修改用户信息过程中出现错误2”, 48, )
+    销毁 ()
+    返回 ()
+.如果真结束
+
+
+赋值 (数据, Ansi转Unicode (.内容))
+.如果真 (不等于 (API_NetUserSetInfo (0, Ansi转Unicode (.内容), 1011, API_lstrcpyn (数据, 数据, 0), 0), 0))
+    信息框 (“修改用户信息过程中出现错误3”, 48, )
+    销毁 ()
+    返回 ()
+.如果真结束
+
+
+
+_树型框1_项目被选择 (0)
+销毁 ()
+
+.窗口程序集 添加组程序集, , , 
+
+.子程序 _编辑框1_内容被改变, 空白型, , 
+.如果 (等于 (取文本长度 (删首空 (.内容)), 0))
+    赋值 (.禁止, 真)
+.否则
+    赋值 (.禁止, 假)
+.如果结束
+
+
+.子程序 _按钮3_被单击, 空白型, , 
+.局部变量 数据, 字节集, , , 
+
+赋值 (.内容, 删首尾空 (.内容))
+赋值 (数据, Ansi转Unicode (.内容))
+.判断开始 (等于 (API_NetLocalGroupAdd (0, 0, API_lstrcpyn (数据, 数据, 0), 0), 0))
+    赋值 (.内容, “”)
+.默认
+    信息框 (“创建组失败”, 48, )
+.判断结束
+
+
+.子程序 _按钮4_被单击, 空白型, , 
+销毁 ()
+
+.子程序 _新组_将被销毁, 空白型, , 
+_树型框1_项目被选择 (0)
+
+.类模块 位图操作类, , , 
+
+.程序集变量 颜色表_1位深, 字节集, , , 2色biBitCount=1
+.程序集变量 颜色表_4位深, 字节集, , , 16色biBitCount=4
+.程序集变量 颜色表_8位深, 字节集, , , 256色biBitCount=8
+.程序集变量 m_pDIB, 字节集, , , 位图数据
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+初始化颜色表 ()
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 初始化颜色表, 空白型, , 
+赋值 (颜色表_1位深, {  })
+赋值 (颜色表_1位深, 相加 (颜色表_1位深, { 0, 0, 0, 0 }))
+赋值 (颜色表_1位深, 相加 (颜色表_1位深, { 255, 255, 255, 0 }))
+赋值 (颜色表_4位深, {  })
+赋值 (颜色表_4位深, 相加 (颜色表_4位深, { 0, 0, 0, 0 }))
+赋值 (颜色表_4位深, 相加 (颜色表_4位深, { 0, 0, 128, 0 }))
+赋值 (颜色表_4位深, 相加 (颜色表_4位深, { 0, 128, 0, 0 }))
+赋值 (颜色表_4位深, 相加 (颜色表_4位深, { 0, 128, 128, 0 }))
+赋值 (颜色表_4位深, 相加 (颜色表_4位深, { 128, 0, 0, 0 }))
+赋值 (颜色表_4位深, 相加 (颜色表_4位深, { 128, 0, 128, 0 }))
+赋值 (颜色表_4位深, 相加 (颜色表_4位深, { 128, 128, 0, 0 }))
+赋值 (颜色表_4位深, 相加 (颜色表_4位深, { 128, 128, 128, 0 }))
+赋值 (颜色表_4位深, 相加 (颜色表_4位深, { 192, 192, 192, 0 }))
+赋值 (颜色表_4位深, 相加 (颜色表_4位深, { 0, 0, 255, 0 }))
+赋值 (颜色表_4位深, 相加 (颜色表_4位深, { 0, 255, 0, 0 }))
+赋值 (颜色表_4位深, 相加 (颜色表_4位深, { 0, 255, 255, 0 }))
+赋值 (颜色表_4位深, 相加 (颜色表_4位深, { 255, 0, 0, 0 }))
+赋值 (颜色表_4位深, 相加 (颜色表_4位深, { 255, 0, 255, 0 }))
+赋值 (颜色表_4位深, 相加 (颜色表_4位深, { 255, 255, 0, 0 }))
+赋值 (颜色表_4位深, 相加 (颜色表_4位深, { 255, 255, 255, 0 }))
+赋值 (颜色表_8位深, {  })
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 0, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 0, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 128, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 128, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 0, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 0, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 128, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 192, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 220, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 240, 202, 166, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 32, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 32, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 32, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 32, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 32, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 32, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 64, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 64, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 64, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 64, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 64, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 64, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 64, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 64, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 96, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 96, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 96, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 96, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 96, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 96, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 96, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 96, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 128, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 128, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 128, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 128, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 128, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 128, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 128, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 128, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 160, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 160, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 160, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 160, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 160, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 160, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 160, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 160, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 192, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 192, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 192, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 192, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 192, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 192, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 192, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 192, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 224, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 224, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 224, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 224, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 224, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 224, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 224, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 224, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 0, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 0, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 0, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 0, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 0, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 0, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 0, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 0, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 32, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 32, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 32, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 32, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 32, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 32, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 32, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 32, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 64, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 64, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 64, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 64, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 64, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 64, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 64, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 64, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 96, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 96, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 96, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 96, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 96, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 96, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 96, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 96, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 128, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 128, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 128, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 128, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 128, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 128, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 128, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 128, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 160, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 160, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 160, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 160, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 160, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 160, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 160, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 160, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 192, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 192, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 192, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 192, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 192, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 192, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 192, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 192, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 224, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 224, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 224, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 224, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 224, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 224, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 224, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 64, 224, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 0, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 0, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 0, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 0, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 0, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 0, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 0, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 0, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 32, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 32, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 32, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 32, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 32, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 32, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 32, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 32, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 64, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 64, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 64, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 64, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 64, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 64, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 64, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 64, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 96, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 96, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 96, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 96, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 96, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 96, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 96, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 96, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 128, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 128, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 128, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 128, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 128, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 128, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 128, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 128, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 160, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 160, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 160, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 160, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 160, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 160, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 160, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 160, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 192, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 192, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 192, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 192, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 192, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 192, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 192, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 192, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 224, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 224, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 224, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 224, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 224, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 224, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 224, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 224, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 0, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 0, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 0, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 0, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 0, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 0, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 0, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 0, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 32, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 32, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 32, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 32, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 32, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 32, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 32, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 32, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 64, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 64, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 64, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 64, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 64, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 64, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 64, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 64, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 96, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 96, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 96, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 96, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 96, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 96, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 96, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 96, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 128, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 128, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 128, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 128, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 128, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 128, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 128, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 128, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 160, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 160, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 160, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 160, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 160, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 160, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 160, 192, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 160, 224, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 192, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 192, 32, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 192, 64, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 192, 96, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 192, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 192, 192, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 240, 251, 255, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 164, 160, 160, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 128, 128, 128, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 0, 255, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 255, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 0, 255, 255, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 255, 0, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 255, 0, 255, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 255, 255, 0, 0 }))
+赋值 (颜色表_8位深, 相加 (颜色表_8位深, { 255, 255, 255, 0 }))
+
+
+.子程序 CaptureDC, 逻辑型, , 复制DC上的内容到DIB 即取得DC上的内容,比如抓屏
+.参数 hSrcDC, 整数型, , DC
+.参数 SrcRect, RECT, , 区域
+.参数 nBitCount, 整数型, , 位深1、4、8、16、24、32
+
+.局部变量 nSrcWidth, 整数型, , , 
+.局部变量 nSrcHeithe, 整数型, , , 
+.局部变量 hMemDC, 整数型, , , 
+.局部变量 hDibSect, 整数型, , , 
+.局部变量 hOldBitmap, 整数型, , , 
+.局部变量 pSrcBits, 整数型, , , 
+.局部变量 R, 整数型, , , 
+
+ ' 判断位深是否符合要求
+.如果真 (或者 (等于 (hSrcDC, 0), 并且 (不等于 (nBitCount, 1), 不等于 (nBitCount, 4), 不等于 (nBitCount, 8), 不等于 (nBitCount, 16), 不等于 (nBitCount, 24), 不等于 (nBitCount, 32))))
+    返回 (假)
+.如果真结束
+赋值 (nSrcWidth, 相减 (SrcRect.Right, SrcRect.Left)) ' 算出位图宽度
+赋值 (nSrcHeithe, 相减 (SrcRect.Bottom, SrcRect.Top)) ' 算出位图高度
+ ' 确保该dib的大小,颜色位数符合要求
+.如果真 (或者 (等于 (m_pDIB, {  }), 不等于 (GetBitCount (), nBitCount), 不等于 (GetWidth (), nSrcWidth), 不等于 (GetHeight (), nSrcHeithe)))
+    赋值 (m_pDIB, {  })
+    Create (nSrcWidth, nSrcHeithe, nBitCount, )
+.如果真结束
+ ' 创建DibSection并选进以MemDC
+赋值 (hMemDC, CreateCompatibleDC (hSrcDC))
+赋值 (pSrcBits, 0)
+赋值 (hDibSect, CreateDIBSection (hSrcDC, m_pDIB, #DIB_RGB_COLORS, pSrcBits, 0, 0))
+赋值 (hOldBitmap, SelectObject (hMemDC, hDibSect))
+ ' 复制源dc内容到MemDC即到DibSection
+BitBlt (hMemDC, 0, 0, nSrcWidth, nSrcHeithe, hSrcDC, SrcRect.Left, SrcRect.Top, #SRCCOPY)
+GdiFlush ()
+ ' 复制位图点阵数据到本DIB对象
+memcpy (GetBitsAddress (), pSrcBits, GetBitsSize ())
+ ' 删除相关句柄
+赋值 (R, DeleteObject (SelectObject (hMemDC, hOldBitmap)))
+赋值 (R, DeleteObject (hOldBitmap))
+DeleteDC (hMemDC)
+返回 (真)
+
+.子程序 GetBitsAddress, 整数型, , 颜色点阵地址
+.如果真 (等于 (m_pDIB, {  }))
+    输出调试文本 (“颜色点阵地址失败”)
+.如果真结束
+返回 (相加 (API_lstrcpyn (m_pDIB, m_pDIB, 0), 40, GetColorTableSize ()))
+
+.子程序 GetBitsSize, 整数型, , 颜色点阵大小
+.局部变量 r, 空白型, , , 
+
+.如果真 (等于 (m_pDIB, {  }))
+    输出调试文本 (“取颜色点阵大小失败”)
+.如果真结束
+赋值 (r, BytesPerLine ())
+返回 (相乘 (GetHeight (), BytesPerLine ()))
+
+
+.子程序 BytesPerLine, 整数型, , 
+.如果真 (等于 (m_pDIB, {  }))
+    输出调试文本 (“BytesPerLine失败”)
+.如果真结束
+返回 (WIDTHBYTES (相乘 (取字节集数据 (取字节集中间 (m_pDIB, 5, 4), #整数型, ), 取字节集数据 (取字节集中间 (m_pDIB, 13, 2), #整数型, ), 取字节集数据 (取字节集中间 (m_pDIB, 15, 2), #整数型, ))))
+
+.子程序 Create, 逻辑型, , 创建一幅指定大小的位图
+.参数 iWidth, 整数型, , 宽度
+.参数 iHeight, 整数型, , 高度
+.参数 nBitCount, 整数型, , 位深
+.参数 clrBk, 长整数型, 可空, 默认填充的颜色,4294967295
+
+.局部变量 iColors, 整数型, , , 
+.局部变量 iSize, 整数型, , , 
+.局部变量 pBI, BITMAPINFOHEADER, , , 
+
+.如果真 (等于 (是否为空 (clrBk), 真))
+    赋值 (clrBk, 4294967295)
+.如果真结束
+.如果 (等于 (nBitCount, 1))
+    赋值 (iColors, 2)
+.否则
+    .如果 (等于 (nBitCount, 4))
+        赋值 (iColors, 16)
+    .否则
+        .如果 (等于 (nBitCount, 8))
+            赋值 (iColors, 256)
+        .否则
+            .如果 (或者 (等于 (nBitCount, 16), 等于 (nBitCount, 24), 等于 (nBitCount, 32)))
+                赋值 (iColors, 0)
+            .否则
+                输出调试文本 (“Bmp提供的位深有错误”)
+                返回 (假)
+            .如果结束
+            
+        .如果结束
+        
+    .如果结束
+    
+.如果结束
+赋值 (iSize, 相加 (相乘 (iColors, 4), 相乘 (WIDTHBYTES (相乘 (iWidth, nBitCount)), iHeight)))
+赋值 (m_pDIB, 取空白字节集 (iSize)) ' 分配空间
+ ' 填写BMP文件头
+赋值 (pBI.biSize, 40)
+赋值 (pBI.biWidth, iWidth)
+赋值 (pBI.biHeight, iHeight)
+赋值 (pBI.biPlanes, 1)
+赋值 (pBI.biBitCount, nBitCount)
+赋值 (pBI.biCompression, #BI_RGB)
+赋值 (pBI.biSizeImage, 0)
+赋值 (pBI.biXPelsPerMeter, 0)
+赋值 (pBI.biYPelsPerMeter, 0)
+赋值 (pBI.biClrUsed, 0)
+赋值 (pBI.biClrImportant, 0)
+赋值 (m_pDIB, 相加 (BMP信息头转字节集 (pBI), m_pDIB))
+ ' 初始化颜色表
+.判断开始 (等于 (nBitCount, 1))
+    memcpy (GetColorTableAddress (), API_lstrcpyn (颜色表_1位深, 颜色表_1位深, 0), GetColorTableSize ())
+.判断 (等于 (nBitCount, 4))
+    memcpy (GetColorTableAddress (), API_lstrcpyn (颜色表_4位深, 颜色表_4位深, 0), GetColorTableSize ())
+.默认
+    .如果真 (等于 (nBitCount, 8))
+        memcpy (GetColorTableAddress (), API_lstrcpyn (颜色表_8位深, 颜色表_8位深, 0), GetColorTableSize ())
+    .如果真结束
+    
+.判断结束
+.如果真 (不等于 (clrBk, 4294967295))
+    输出调试文本 (“自定义背景色”)
+.如果真结束
+返回 (真)
+
+.子程序 SetPixelColor, 空白型, , 置某点颜色
+.参数 x, 整数型, , 
+.参数 y, 整数型, , 
+.参数 clrNew, 整数型, , 
+
+
+
+.子程序 GetBitmapInfoAddress, 整数型, , 取BITMAPINFO指针
+返回 (API_lstrcpyn (m_pDIB, m_pDIB, 0))
+
+.子程序 GetWidth, 整数型, , 取图片宽度
+.如果真 (等于 (m_pDIB, {  }))
+    输出调试文本 (“取宽时出错”)
+.如果真结束
+返回 (到整数 (取字节集中间 (m_pDIB, 5, 4)))
+
+.子程序 GetHeight, 整数型, , 取图片高度
+.如果真 (等于 (m_pDIB, {  }))
+    输出调试文本 (“取高时出错”)
+.如果真结束
+返回 (取字节集数据 (取字节集中间 (m_pDIB, 9, 4), #整数型, ))
+
+
+.子程序 WIDTHBYTES, 整数型, , 保图像的扫描行DWORD对齐
+.参数 bits, 整数型, , 
+
+赋值 (bits, 相加 (bits, 31))
+返回 (左移 (右移 (bits, 5), 2))
+
+.子程序 GetColorTableAddress, 整数型, , 取颜色表指针,成功返回内存指针,失败返回0
+.如果真 (等于 (m_pDIB, {  }))
+    输出调试文本 (“取颜色表地址时出错”)
+.如果真结束
+.如果真 (大于或等于 (GetBitCount (), 16)) ' 大于256色的位图不使用颜色表
+    CNoColorTable ()
+    返回 (0)
+.如果真结束
+返回 (相加 (API_lstrcpyn (m_pDIB, m_pDIB, 0), 40))
+
+.子程序 GetBitCount, 整数型, , 取位图颜色位数
+.如果真 (等于 (m_pDIB, {  }))
+    输出调试文本 (“取位图颜色位数出错”)
+.如果真结束
+返回 (到整数 (到短整数 (取字节集中间 (m_pDIB, 15, 2))))
+
+.子程序 BMP文件头转字节集, 字节集, , 
+.参数 欲转成字节集的信息, BITMAPFILEHEADER, , 
+
+.局部变量 返回值, 字节集, , , 
+
+赋值 (返回值, 到字节集 (欲转成字节集的信息.bfType))
+赋值 (返回值, 相加 (返回值, 到字节集 (欲转成字节集的信息.bfSize)))
+赋值 (返回值, 相加 (返回值, 到字节集 (欲转成字节集的信息.bfReserved1)))
+赋值 (返回值, 相加 (返回值, 到字节集 (欲转成字节集的信息.bfReserved2)))
+赋值 (返回值, 相加 (返回值, 到字节集 (欲转成字节集的信息.bfOffBits)))
+返回 (返回值)
+
+.子程序 BMP信息头转字节集, 字节集, , 
+.参数 欲转成字节集的信息, BITMAPINFOHEADER, , 
+
+.局部变量 返回值, 字节集, , , 
+
+赋值 (返回值, 到字节集 (欲转成字节集的信息.biSize))
+赋值 (返回值, 相加 (返回值, 到字节集 (欲转成字节集的信息.biWidth)))
+赋值 (返回值, 相加 (返回值, 到字节集 (欲转成字节集的信息.biHeight)))
+赋值 (返回值, 相加 (返回值, 到字节集 (欲转成字节集的信息.biPlanes)))
+赋值 (返回值, 相加 (返回值, 到字节集 (欲转成字节集的信息.biBitCount)))
+赋值 (返回值, 相加 (返回值, 到字节集 (欲转成字节集的信息.biCompression)))
+赋值 (返回值, 相加 (返回值, 到字节集 (欲转成字节集的信息.biSizeImage)))
+赋值 (返回值, 相加 (返回值, 到字节集 (欲转成字节集的信息.biXPelsPerMeter)))
+赋值 (返回值, 相加 (返回值, 到字节集 (欲转成字节集的信息.biYPelsPerMeter)))
+赋值 (返回值, 相加 (返回值, 到字节集 (欲转成字节集的信息.biClrUsed)))
+赋值 (返回值, 相加 (返回值, 到字节集 (欲转成字节集的信息.biClrImportant)))
+返回 (返回值)
+
+.子程序 CNoColorTable, 空白型, , 当前位图格式不使用颜色表
+输出调试文本 (“当前位图格式不使用颜色表”)
+
+.子程序 GetColorTableSize, 整数型, , 取颜色表大小
+.如果真 (等于 (m_pDIB, {  }))
+    输出调试文本 (“取位图颜色位数出错”)
+.如果真结束
+返回 (相乘 (NumDIBColorEntries (取字节集左边 (m_pDIB, 40)), 4))
+
+.子程序 NumDIBColorEntries, 整数型, , 取颜色表数组颜色个数
+.参数 pBmpInfo, 字节集, , 
+
+.局部变量 iBitCount, 短整数型, , , 
+
+赋值 (iBitCount, 取字节集数据 (取字节集中间 (pBmpInfo, 15, 2), #短整数型, ))
+.判断开始 (等于 (iBitCount, 1))
+    返回 (2)
+.判断 (等于 (iBitCount, 4))
+    返回 (16)
+.判断 (等于 (iBitCount, 8))
+    返回 (256)
+.默认
+    .如果真 (或者 (等于 (iBitCount, 16), 等于 (iBitCount, 24), 等于 (iBitCount, 32)))
+        返回 (0)
+    .如果真结束
+    
+.判断结束
+返回 (-1)
+
+.子程序 Write, 字节集, , 给位图数据加上位图文件头,返回位图文件数据(写到文件后就是.BMP图片)
+返回 (相加 (到字节集 (到短整数 (19778)), 到字节集 (到整数 (相加 (取字节集长度 (m_pDIB), 54))), { 0, 0 }, { 0, 0 }, 到字节集 (到整数 (相加 (54, GetColorTableSize ()))), m_pDIB))
+
+
+.窗口程序集 服务程序集, , , 
+
+.子程序 _服务窗口_创建完毕, 空白型, , 
+.局部变量 服务句柄, 空白型, , , 
+
+
+赋值 (服务句柄, API_OpenService (API_OpenSCManager (0, 0, 4), 服务名 [相加 (_启动窗口.., 1)], 4))
+.如果 (等于 (服务句柄, 0))
+    信息框 (“查询服务信息时出错!”, 48, )
+    销毁 ()
+    返回 ()
+.否则
+    赋值 (.内容, 服务名 [相加 (_启动窗口.., 1)])
+.如果结束
+
+赋值 (.内容, 服务名 [相加 (_启动窗口.., 1)])
+
+赋值 (.内容, 取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, 服务名 [相加 (_启动窗口.., 1)], “\Description”), ))
+.判断开始 (等于 (取数值注册项 (#本地机器, 相加 (“SYSTEM\CurrentControlSet\Services\”, 服务名 [相加 (_启动窗口.., 1)], “\Start”), ), 2))
+    赋值 (.现行选中项, 0)
+    
+.判断 (等于 (取数值注册项 (#本地机器, 相加 (“SYSTEM\CurrentControlSet\Services\”, 服务名 [相加 (_启动窗口.., 1)], “\Start”), ), 3))
+    
+    赋值 (.现行选中项, 1)
+.默认
+    赋值 (.现行选中项, 2)
+    赋值 (., 真)
+    赋值 (., 真)
+    
+.判断结束
+
+赋值 (.内容, 取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, 服务名 [相加 (_启动窗口.., 1)], “\DisplayName”), ))
+
+赋值 (.内容, 取文本注册项 (4, 相加 (“SYSTEM\CurrentControlSet\Services\”, 服务名 [相加 (_启动窗口.., 1)], “\ImagePath”), ))
+
+
+.子程序 _超级按钮5_被单击, 空白型, , 
+销毁 ()
+
+.子程序 _超级按钮6_被单击, 空白型, , 
+销毁 ()
+
+.子程序 _超级按钮1_被单击, 空白型, , 
+.如果真 (等于 (API_StartService (API_OpenService (API_OpenSCManager (0, 0, 983103), 服务名 [相加 (_启动窗口.., 1)], 983551), 0, 0), 0))
+    信息框 (“开始服务失败”, 48, )
+.如果真结束
+
+
+
+
+.子程序 _超级按钮2_被单击, 空白型, , 
+.局部变量 临时, SERVICE_STATUS, , , 
+
+.如果真 (等于 (API_ControlService (API_OpenService (API_OpenSCManager (0, 0, 983103), 服务名 [相加 (_启动窗口.., 1)], 983551), 1, 临时), 0))
+    信息框 (“停止服务失败”, 48, )
+.如果真结束
+
+
+
+
+.子程序 _时钟1_周期事件, 空白型, , 
+.局部变量 服务状态, SERVICE_STATUS, , , 
+.局部变量 服务句柄, 空白型, , , 
+.局部变量 缓冲区, 字节集, , , 
+
+赋值 (服务句柄, API_OpenService (API_OpenSCManager (0, 0, 4), 服务名 [相加 (_启动窗口.., 1)], 4))
+
+API_QueryServiceStatus (服务句柄, 服务状态)
+赋值 (.标题, 状态 (服务状态.dwCurrentState))
+
+.判断开始 (等于 (服务状态.dwCurrentState, 1))
+    赋值 (., 假)
+    赋值 (., 真)
+.判断 (或者 (等于 (服务状态.dwCurrentState, 2), 等于 (服务状态.dwCurrentState, 3)))
+    赋值 (., 真)
+    赋值 (., 真)
+.判断 (等于 (服务状态.dwCurrentState, 4))
+    赋值 (缓冲区, 取空白字节集 (36))
+    API_QueryServiceStatusEx (服务句柄, 0, 缓冲区, 36, 36)
+    赋值 (.标题, 相加 (状态 (服务状态.dwCurrentState), “   PID:”, 到文本 (取字节集数据 (取字节集中间 (缓冲区, 29, 32), 3, ))))
+    
+    赋值 (., 真)
+    赋值 (., 假)
+.判断 (等于 (服务状态.dwCurrentState, 7))
+    赋值 (., 真)
+    赋值 (., 真)
+.默认
+    
+.判断结束
+
+
+
+
+
+
+.子程序 _组合框1_列表项被选择, 空白型, , 
+.如果 (等于 (相加 (.现行选中项, 2), 取数值注册项 (#本地机器, 相加 (“SYSTEM\CurrentControlSet\Services\”, 服务名 [相加 (_启动窗口.., 1)], “\Start”), )))
+    
+.否则
+    .如果真 (等于 (写注册项 (#本地机器, 相加 (“SYSTEM\CurrentControlSet\Services\”, 服务名 [相加 (_启动窗口.., 1)], “\Start”), 相加 (.现行选中项, 2)), 假))
+        信息框 (“拒绝访问！”, 48, )
+        返回 ()
+    .如果真结束
+    
+.如果结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

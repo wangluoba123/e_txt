@@ -1,0 +1,166 @@
+ ' 文件类型：Windows动态链接库
+
+ ' 程序名称：HookDll
+ ' 程序描述：演示了利用windows Hook技术实现DLL注入和窗口消息截获.
+
+ ' 程序作者：袁晓辉(海洋)
+ ' 邮政编码：
+ ' 联系地址：辽宁省大连市中山区人民路55号亚太国际金融中心
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：hyzs@sina.com
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 WH_GETMESSAGE, "3", , 
+.常量 MyMsgSubclass, "32888", , 
+.常量 MyMsgQueryHHook, "32999", , 查询钩子句柄
+.常量 PM_REMOVE, "1", , 
+.常量 GWL_WNDPROC, "-4", , 
+.常量 WM_DESTROY, "2", , 
+.常量 WM_CLOSE, "16", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 MSG, , 
+    .成员 hwnd, 整数型, , , 
+    .成员 message, 整数型, , , 
+    .成员 wParam, 整数型, , , 
+    .成员 lParam, 整数型, , , 
+    .成员 time, 整数型, , , 
+    .成员 ptX, 整数型, , , 
+    .成员 ptY, 整数型, , , 
+
+
+.DLL命令 安装钩子过程, 整数型, "", "SetWindowsHookEx", , 安装钩子过程
+    .参数 idHook, 整数型, , 
+    .参数 lpfn, 子程序指针, , 
+    .参数 nMod, 整数型, , 
+    .参数 dwThreadID, 整数型, , 
+
+.DLL命令 调中链中的下一个挂钩过程, 整数型, "", "CallNextHookEx", , 调中链中的下一个挂钩过程
+    .参数 hhook, 整数型, , 
+    .参数 nCode, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 从钩子链中删除函数, 逻辑型, "", "UnhookWindowsHookEx", , 从钩子链中删除函数
+    .参数 hhook, 整数型, , 
+
+.DLL命令 增加或修改属性列项, 逻辑型, "", "SetPropA", , 增加或修改属性列项
+    .参数 hWnd, 整数型, , 
+    .参数 lpString, 文本型, , 
+    .参数 hData, 整数型, , 
+
+.DLL命令 删除属性列入口, 整数型, "", "RemovePropA", , 删除属性列入口
+    .参数 hWnd, 整数型, , 
+    .参数 lpString, 文本型, , 
+
+.DLL命令 从窗口属性表列中返回数据句柄, 整数型, "", "GetPropA", , 从窗口属性表列中返回数据句柄
+    .参数 hWnd, 整数型, , 
+    .参数 lpString, 文本型, , 
+
+.DLL命令 拷贝内存, 空白型, "CopyMemory_MSG", "RtlMoveMemory", , 拷贝内存
+    .参数 pDest, MSG, , 
+    .参数 pSrc, 整数型, , 缓冲区
+    .参数 nLen, 整数型, , 尺寸
+
+.DLL命令 在窗口结构中为指定的窗口设置信息, 子程序指针, "", "SetWindowLongA", , 在窗口结构中为指定的窗口设置信息
+    .参数 hWnd, 整数型, , 欲为其取得信息的窗口的句柄
+    .参数 nIndex, 整数型, , 属性，欲取回的信息，可以是下述任何一个常数：;GWL_EXSTYLE：扩展窗口样式;GWL_STYLE：窗口样式;GWL_WNDPROC：该窗口的窗口函数的地址;GWL_HINSTANCE：拥有窗口的实例的句柄;GWL_HWNDPARENT：该窗口之父的句柄。不要用SetWindowWord来改变这个值;GWL_ID：对话框中一个子窗口的标识符;GWL_USERDATA：含义由应用程序规定;DWL_DLGPROC：这个窗口的对话框函数地址;DWL_MSGRESULT：在对话框函数中处理的一条消息返回的值;DWL_USER：含义由应用程序规定;
+    .参数 newLong, 子程序指针, , 由nIndex指定的窗口信息的新值
+
+.DLL命令 从指定窗口的结构中取得信息, 子程序指针, "", "GetWindowLongA", , 从指定窗口的结构中取得信息
+    .参数 hWnd, 整数型, , 
+    .参数 nIndex, 整数型, , 
+
+.DLL命令 将消息传答窗口函数, 整数型, "", "CallWindowProcA", , 将消息传答窗口函数
+    .参数 lpOldProc, 子程序指针, , 
+    .参数 hWnd, 整数型, , 
+    .参数 uMsg, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 发送消息, 逻辑型, "", "SendMessageA", , 发送消息
+    .参数 hWnd, 整数型, , 
+    .参数 msg, 整数型, , 
+    .参数 lparam, 整数型, , 
+    .参数 waparam, 整数型, , 
+
+.程序集 DLL程序集, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置动态链接库初始化代码
+_临时子程序 ()
+返回 (0)
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+.程序集 HOOK程序集, , , 
+
+.程序集变量 hhook, 整数型, , , 
+.程序集变量 OldProc, 子程序指针, , , 
+.子程序 GetMsgProc, 整数型, 公开, 
+.参数 code, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+.局部变量 msg, MSG, , , 
+.局部变量 SubClssed, 逻辑型, 静态, , 
+
+.如果真 (小于 (code, 0))
+    返回 (调中链中的下一个挂钩过程 (hhook, code, wParam, lParam))
+.如果真结束
+拷贝内存 (msg, lParam, 28)
+.如果真 (并且 (等于 (msg.message, #MyMsgSubclass), 等于 (wParam, #PM_REMOVE), 取反 (SubClssed)))
+    .判断开始 (等于 (msg.wParam, 1))
+         ' 收到自定义消息，开始子类化指定窗口
+         ' 虽然WH_GETMESSAGE钩子可以截获消，但是它仅仅截获Post的消息，
+         ' 为了截获该窗口的所有消息，必须子类化窗口。
+        赋值 (OldProc, 在窗口结构中为指定的窗口设置信息 (msg.hwnd, #GWL_WNDPROC, &NewWndProc))
+        赋值 (hhook, msg.lParam) ' 保存钩子句柄
+        赋值 (SubClssed, 真) ' 防止重复子类化
+    .默认
+        
+    .判断结束
+    
+.如果真结束
+赋值 (SubClssed, 假)
+返回 (调中链中的下一个挂钩过程 (hhook, code, wParam, lParam))
+
+.子程序 NewWndProc, 整数型, , 
+.参数 hWnd, 整数型, , 
+.参数 uMsg, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+ ' ----------------在这里写您的消息截获代码----------------
+.如果真 (等于 (uMsg, #WM_CLOSE))
+    .如果真 (等于 (信息框 (相加 (“你真的要关闭记事本吗?”, #换行符, “     :)”), 相加 (#询问图标, #是否钮), “易语言程序截获了关闭消息”), #否钮))
+        返回 (1)
+    .如果真结束
+    
+.如果真结束
+ ' ----------------------------------------------------------
+.判断开始 (或者 (等于 (uMsg, #WM_DESTROY), 并且 (等于 (uMsg, #MyMsgSubclass), 等于 (wParam, 0)))) ' 窗口即将销毁或主程序结束截获
+    在窗口结构中为指定的窗口设置信息 (hWnd, #GWL_WNDPROC, OldProc) ' 还原窗口过程
+    从钩子链中删除函数 (hhook) ' 卸载钩子
+.判断 (等于 (uMsg, #MyMsgQueryHHook)) ' 主程序查询钩子句柄
+    返回 (hhook) ' 返回保存的钩子句柄
+.默认
+    
+.判断结束
+返回 (将消息传答窗口函数 (OldProc, hWnd, uMsg, wParam, lParam))
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

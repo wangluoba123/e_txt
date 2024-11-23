@@ -1,0 +1,170 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：模块_HTTP读文件
+ ' 程序描述：模块_HTTP读文件，系统wininet库系列API函数编写。
+ ' 程序作者：hacker0058
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5a5x.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5a5x.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5a5x.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 INTERNET_OPEN_TYPE_PRECONFIG, "0", , 
+.常量 INTERNET_OPEN_TYPE_DIRECT, "1", , 
+.常量 INTERNET_OPEN_TYPE_PROXY, "3", , 
+.常量 HTTP_QUERY_CONTENT_TYPE, "1", , 
+.常量 HTTP_QUERY_CONTENT_LENGTH, "5", , 
+.常量 HTTP_QUERY_EXPIRES, "10", , 
+.常量 HTTP_QUERY_LAST_MODIFIED, "11", , 
+.常量 HTTP_QUERY_PRAGMA, "17", , 
+.常量 HTTP_QUERY_VERSION, "18", , 
+.常量 HTTP_QUERY_STATUS_CODE, "19", , 
+.常量 HTTP_QUERY_STATUS_TEXT, "20", , 
+.常量 HTTP_QUERY_RAW_HEADERS, "21", , 
+.常量 HTTP_QUERY_RAW_HEADERS_CRLF, "22", , 
+.常量 HTTP_QUERY_FORWARDED, "30", , 
+.常量 HTTP_QUERY_SERVER, "37", , 
+.常量 HTTP_QUERY_USER_AGENT, "39", , 
+.常量 HTTP_QUERY_SET_COOKIE, "43", , 
+.常量 HTTP_QUERY_REQUEST_METHOD, "45", , 
+.常量 HTTP_STATUS_DENIED, "401", , 
+.常量 HTTP_STATUS_PROXY_AUTH_REQ, "407", , 
+.常量 HTTP_QUERY_FLAG_REQUEST_HEADERS, "2147483648", , &H80000000
+.常量 HTTP_QUERY_FLAG_NUMBER, "536870912", , &H20000000
+.常量 INTERNET_FLAG_RELOAD, "2147483648", , &H80000000
+.常量 INTERNET_FLAG_TRANSFER_BINARY, "2", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+
+.DLL命令 InternetOpen, 整数型, "wininet.dll", "InternetOpenA", , 初始化一个应用程序，以使用 WinINet 函数，成功：返回一个有效的句柄，该句柄将由应用程序传递给接下来的WinINet函数
+    .参数 sAgent, 文本型, , 应用程序名，可以自定义
+    .参数 lAccessType, 整数型, , 存取类型，INTERNET_OPEN_TYPE_PRECONFIG =0 使用 IE 中的连接设置，2、INTERNET_OPEN_TYPE_DIRECT =1 直接连接到服务器，3、INTERNET_OPEN_TYPE_PROXY =3 通过代理服务器进行连接
+    .参数 sProxyName, 整数型, , 指定了当lAccessType类型为INTERNET_OPEN_TYPE_PROXY时，代理服务器的名字，一般设置为 nill
+    .参数 sProxyBypass, 整数型, , 代理服务器地址
+    .参数 lFlags, 整数型, , dwFlags 标记，一般设置为 0，可以是：1、INTERNET_FLAG_DONT_CACHE 不在缓存中保存取得的内容2、INTERNET_FLAG_OFFLINE 脱机方式
+
+.DLL命令 InternetOpenUrl, 整数型, "wininet.dll", "InternetOpenUrlA", , 
+    .参数 hInet, 整数型, , 由 InternetOpen 返回的句柄
+    .参数 lpszUrl, 文本型, , 文件 Url 地址，以 http：，ftp：打头的 Url 地址；
+    .参数 lpszHeaders, 整数型, , 发送到服务器的数据头
+    .参数 dwHeadersLength, 整数型, , 发送到服务器的数据头长度
+    .参数 dwflags, 整数型, , 标记，可以是1、INTERNET_FLAG_RELOAD 强制重读数2、INTERNET_FLAG_DONT_CACHE 不保存到缓存据3、INTERNET_FLAG_TRANSFER_ASCII 使用文本数据4、INTERNET_FLAG_TRANSFER_BINARY 使用二进制数据
+    .参数 dwcontext, 整数型, , 上下文标记，如果使用回调功能时这个值将传送给回调函数
+
+.DLL命令 HttpQueryInfo, 整数型, "wininet.dll", "HttpQueryInfoA", , 取网络头信息
+    .参数 hHttpRequest, 整数型, , 由 InternetOpenUrl 返回的句柄
+    .参数 dwInfoLevel, 整数型, , 获取类型
+    .参数 lpvBuffer, 长整数型, 传址, 数据缓冲区
+    .参数 lpdwBufferLength, 整数型, 传址, 缓冲大小
+    .参数 lpdwIndex, 整数型, , 读取首地址
+
+.DLL命令 InternetReadFileByte, 整数型, "wininet.dll", "InternetReadFile", , 
+    .参数 hfile, 整数型, , 由 InternetOpenUrl 返回的句柄
+    .参数 lpbuffer, 字节集, , 数据缓冲区
+    .参数 lNumBytesToRead, 整数型, , 要读取数据大小
+    .参数 lNumberOfBytesRead, 整数型, 传址, 实际读取大小
+
+.DLL命令 InternetRead, 整数型, "wininet.dll", "InternetReadFile", , 
+    .参数 hfile, 整数型, , 由 InternetOpenUrl 返回的句柄
+    .参数 lpbuffer, 文本型, , 数据缓冲区
+    .参数 lNumBytesToRead, 整数型, , 要读取数据大小
+    .参数 lNumberOfBytesRead, 整数型, 传址, 实际读取大小
+
+.DLL命令 InternetCloseHandle, 整数型, "wininet.dll", "InternetCloseHandle", , 
+    .参数 Internet句柄, 整数型, , hInet
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+ ' --========  易语言资源网  (www.5a5x.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5a5x.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5a5x.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5a5x.com  ================--
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+.局部变量 temp, 字节集, , , 
+
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+赋值 (temp, 模块_HTTP读文件 (“http://image2.sina.com.cn/dy/weather/images/figure/qing_big.gif”))
+ ' 写到文件 (“c:\qing_big.gif”, temp)
+
+.子程序 模块_HTTP读文件, 字节集, 公开, 
+.参数 HTTP文件地址, 文本型, , 本参数指定欲读取文件在互联网上的HTTP地址（即URL）。
+
+.局部变量 hOpen, 整数型, , , 
+.局部变量 hOpenUrl, 整数型, , , 
+.局部变量 sReadBuffer, 字节集, , , 
+.局部变量 bRet, 整数型, , , 
+.局部变量 lNumberOfBytesRead, 整数型, , , 
+.局部变量 sBuffer, 字节集, , , 
+.局部变量 vBuffer, 长整数型, , , 
+.局部变量 dwSize, 整数型, , , 
+
+赋值 (hOpen, InternetOpen (“HTTPREAD”, #INTERNET_OPEN_TYPE_PRECONFIG, 0, 0, 0)) ' 直接连接服务器
+输出调试文本 (相加 (“hOpen ＝”, 到文本 (hOpen)))
+
+ ' 本源码来自易语言资源网(www.5a5x.com)
+赋值 (hOpenUrl, InternetOpenUrl (hOpen, HTTP文件地址, 0, 0, 相加 (#INTERNET_FLAG_TRANSFER_BINARY, #INTERNET_FLAG_RELOAD), 0))
+输出调试文本 (相加 (“hOpenUrl ＝”, 到文本 (hOpenUrl))) ' 强制重读 + 二进制读取
+
+赋值 (vBuffer, 到长整数 (0))
+赋值 (dwSize, 取数据类型尺寸 (#长整数型))
+HttpQueryInfo (hOpenUrl, 相加 (#HTTP_QUERY_CONTENT_LENGTH, #HTTP_QUERY_FLAG_NUMBER), vBuffer, dwSize, 0) ' 取文件数据大小
+
+.判断开始 (不等于 (vBuffer, 0))
+    赋值 (sReadBuffer, 取空白字节集 (vBuffer))
+    InternetReadFileByte (hOpenUrl, sReadBuffer, vBuffer, lNumberOfBytesRead)
+    赋值 (sBuffer, sReadBuffer)
+    输出调试文本 (相加 (“数据长度=”, 到文本 (vBuffer), “ 字节”))
+.默认
+    输出调试文本 (“网站没有返回长度”)
+    赋值 (sReadBuffer, 取空白字节集 (2048))
+    .循环判断首 ()
+        赋值 (bRet, InternetReadFileByte (hOpenUrl, sReadBuffer, 取字节集长度 (sReadBuffer), lNumberOfBytesRead))
+        赋值 (sBuffer, 相加 (sBuffer, 取字节集左边 (sReadBuffer, lNumberOfBytesRead)))
+    .循环判断尾 (不等于 (lNumberOfBytesRead, 0))
+    ' 本源码来自易语言资源网(www.5a5x.com)
+.判断结束
+.如果真 (不等于 (hOpenUrl, 0))
+    InternetCloseHandle (hOpenUrl)
+.如果真结束
+.如果真 (不等于 (hOpen, 0))
+    InternetCloseHandle (hOpen)
+.如果真结束
+返回 (sBuffer)
+
+
+
+
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

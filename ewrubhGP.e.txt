@@ -1,0 +1,353 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：逍遥侠
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.5A5X.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.5A5X.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 窗口1
+    左边 = 50
+    顶边 = 50
+    宽度 = 190
+    高度 = 94
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    窗口类名 = “”
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “逍遥侠_LCD”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 Coordinate, , 
+    .成员 x, 整数型, , , 
+    .成员 y, 整数型, , , 
+
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+载入 (窗口1, , 真)
+
+.类模块 LCD类, , , 
+
+.程序集变量 BasePoint, Coordinate, , , 
+.程序集变量 SegWidth, 整数型, , , 
+.程序集变量 SegHeight, 整数型, , , 
+.程序集变量 p, 画板, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 DrawSegment, 空白型, , 
+.参数 SegNum, 整数型, , 
+
+.判断开始 (等于 (SegNum, 1))
+    p.画直线 (相加 (BasePoint.x, 1), BasePoint.y, 相减 (相加 (BasePoint.x, SegWidth), 1), BasePoint.y)
+    p.画直线 (相加 (BasePoint.x, 2), 相加 (BasePoint.y, 1), 相减 (相加 (BasePoint.x, SegWidth), 2), 相加 (BasePoint.y, 1))
+    p.画直线 (相加 (BasePoint.x, 3), 相加 (BasePoint.y, 2), 相减 (相加 (BasePoint.x, SegWidth), 3), 相加 (BasePoint.y, 2))
+    
+.默认
+    
+.判断结束
+.判断开始 (等于 (SegNum, 2))
+    p.画直线 (相减 (相加 (BasePoint.x, SegWidth), 1), 相加 (BasePoint.y, 1), 相减 (相加 (BasePoint.x, SegWidth), 1), 相减 (相加 (BasePoint.y, 整除 (SegHeight, 2)), 1))
+    p.画直线 (相减 (相加 (BasePoint.x, SegWidth), 2), 相加 (BasePoint.y, 2), 相减 (相加 (BasePoint.x, SegWidth), 2), 相加 (BasePoint.y, 整除 (SegHeight, 2)))
+    p.画直线 (相减 (相加 (BasePoint.x, SegWidth), 3), 相加 (BasePoint.y, 3), 相减 (相加 (BasePoint.x, SegWidth), 3), 相减 (相加 (BasePoint.y, 整除 (SegHeight, 2)), 1))
+.默认
+    
+.判断结束
+ ' 本源码来自易语言资源网(www.5A5X.com)
+.判断开始 (等于 (SegNum, 3))
+    p.画直线 (相减 (相加 (BasePoint.x, SegWidth), 1), 相加 (BasePoint.y, 整除 (SegHeight, 2), 2), 相减 (相加 (BasePoint.x, SegWidth), 1), 相加 (BasePoint.y, SegHeight))
+    p.画直线 (相减 (相加 (BasePoint.x, SegWidth), 2), 相加 (BasePoint.y, 整除 (SegHeight, 2), 1), 相减 (相加 (BasePoint.x, SegWidth), 2), 相减 (相加 (BasePoint.y, SegHeight), 1))
+    p.画直线 (相减 (相加 (BasePoint.x, SegWidth), 3), 相加 (BasePoint.y, 整除 (SegHeight, 2), 2), 相减 (相加 (BasePoint.x, SegWidth), 3), 相减 (相加 (BasePoint.y, SegHeight), 2))
+.默认
+    
+.判断结束
+
+.判断开始 (等于 (SegNum, 4))
+    p.画直线 (相加 (BasePoint.x, 3), 相减 (相加 (BasePoint.y, SegHeight), 2), 相减 (相加 (BasePoint.x, SegWidth), 3), 相减 (相加 (BasePoint.y, SegHeight), 2))
+    p.画直线 (相加 (BasePoint.x, 2), 相减 (相加 (BasePoint.y, SegHeight), 1), 相减 (相加 (BasePoint.x, SegWidth), 2), 相减 (相加 (BasePoint.y, SegHeight), 1))
+    p.画直线 (相加 (BasePoint.x, 1), 相加 (BasePoint.y, SegHeight), 相减 (相加 (BasePoint.x, SegWidth), 1), 相加 (BasePoint.y, SegHeight))
+.默认
+    
+.判断结束
+
+.判断开始 (等于 (SegNum, 5))
+    p.画直线 (BasePoint.x, 相加 (BasePoint.y, 整除 (SegHeight, 2), 2), BasePoint.x, 相加 (BasePoint.y, SegHeight))
+    p.画直线 (相加 (BasePoint.x, 1), 相加 (BasePoint.y, 整除 (SegHeight, 2), 1), 相加 (BasePoint.x, 1), 相减 (相加 (BasePoint.y, SegHeight), 1))
+    p.画直线 (相加 (BasePoint.x, 2), 相加 (BasePoint.y, 整除 (SegHeight, 2), 2), 相加 (BasePoint.x, 2), 相减 (相加 (BasePoint.y, SegHeight), 2))
+    
+    
+.默认
+    
+.判断结束
+
+.判断开始 (等于 (SegNum, 6))
+    p.画直线 (BasePoint.x, 相加 (BasePoint.y, 1), BasePoint.x, 相减 (相加 (BasePoint.y, 整除 (SegHeight, 2)), 1))
+    p.画直线 (相加 (BasePoint.x, 1), 相加 (BasePoint.y, 2), 相加 (BasePoint.x, 1), 相加 (BasePoint.y, 整除 (SegHeight, 2)))
+    p.画直线 (相加 (BasePoint.x, 2), 相加 (BasePoint.y, 3), 相加 (BasePoint.x, 2), 相减 (相加 (BasePoint.y, 整除 (SegHeight, 2)), 1))
+.默认
+    
+.判断结束
+
+.判断开始 (等于 (SegNum, 7))
+    p.画直线 (相加 (BasePoint.x, 3), 相减 (相加 (BasePoint.y, 整除 (SegHeight, 2)), 1), 相减 (相加 (BasePoint.x, SegWidth), 3), 相减 (相加 (BasePoint.y, 整除 (SegHeight, 2)), 1))
+    p.画直线 (相加 (BasePoint.x, 2), 相加 (BasePoint.y, 整除 (SegHeight, 2)), 相减 (相加 (BasePoint.x, SegWidth), 2), 相加 (BasePoint.y, 整除 (SegHeight, 2)))
+    p.画直线 (相加 (BasePoint.x, 3), 相加 (BasePoint.y, 整除 (SegHeight, 2), 1), 相减 (相加 (BasePoint.x, SegWidth), 3), 相加 (BasePoint.y, 整除 (SegHeight, 2), 1))
+.默认
+    
+.判断结束
+
+
+
+
+
+.子程序 DrawNumber, 空白型, , 
+.参数 Number, 整数型, , 
+
+.判断开始 (等于 (Number, 0))
+    DrawSegment (1)
+    DrawSegment (2)
+    DrawSegment (3)
+    DrawSegment (4)
+    DrawSegment (5)
+    DrawSegment (6)
+    
+.默认
+    ' 本源码来自易语言资源网(www.5A5X.com)
+.判断结束
+.判断开始 (等于 (Number, 1))
+    DrawSegment (2)
+    DrawSegment (3)
+    
+.默认
+    
+.判断结束
+.判断开始 (等于 (Number, 2))
+    DrawSegment (1)
+    DrawSegment (2)
+    DrawSegment (7)
+    DrawSegment (5)
+    DrawSegment (4)
+    
+.默认
+    
+.判断结束
+.判断开始 (等于 (Number, 3))
+    DrawSegment (1)
+    DrawSegment (2)
+    DrawSegment (7)
+    DrawSegment (3)
+    DrawSegment (4)
+    
+.默认
+    
+.判断结束
+.判断开始 (等于 (Number, 4))
+    DrawSegment (2)
+    DrawSegment (3)
+    DrawSegment (7)
+    DrawSegment (6)
+    
+.默认
+    
+.判断结束
+.判断开始 (等于 (Number, 5))
+    DrawSegment (1)
+    DrawSegment (6)
+    DrawSegment (7)
+    DrawSegment (3)
+    DrawSegment (4)
+    
+.默认
+    
+.判断结束
+.判断开始 (等于 (Number, 6))
+    DrawSegment (1)
+    DrawSegment (6)
+    DrawSegment (7)
+    DrawSegment (3)
+    DrawSegment (4)
+    DrawSegment (5)
+    
+.默认
+    
+.判断结束
+.判断开始 (等于 (Number, 7))
+    DrawSegment (1)
+    DrawSegment (2)
+    DrawSegment (3)
+    
+.默认
+    
+.判断结束
+.判断开始 (等于 (Number, 8))
+    DrawSegment (1)
+    DrawSegment (2)
+    DrawSegment (3)
+    DrawSegment (4)
+    DrawSegment (5)
+    DrawSegment (6)
+    DrawSegment (7)
+    
+.默认
+    
+.判断结束
+.判断开始 (等于 (Number, 9))
+    DrawSegment (1)
+    DrawSegment (2)
+    DrawSegment (3)
+    DrawSegment (4)
+    DrawSegment (6)
+    DrawSegment (7)
+    
+.默认
+    
+.判断结束
+
+
+.子程序 BackColor, 空白型, 公开, 
+.参数 Color, 整数型, , 
+
+ ' 本源码来自易语言资源网(www.5A5X.com)
+赋值 (p., Color)
+
+
+.子程序 ForeColor, 空白型, 公开, 
+.参数 Color, 整数型, , 
+
+赋值 (p., Color)
+
+.子程序 Caption, 空白型, 公开, 
+.参数 Value, 文本型, , 
+
+.局部变量 OrigX, 整数型, , , 
+
+赋值 (OrigX, BasePoint.x)
+p.清除 ()
+.判断循环首 (不等于 (Value, “”))
+    .如果 (不等于 (取文本左边 (Value, 1), “:”))
+        DrawNumber (到整数 (取文本左边 (Value, 1)))
+        赋值 (BasePoint.x, 相加 (BasePoint.x, SegWidth, 3))
+    .否则
+        p.画直线 (相减 (相加 (BasePoint.x, 整除 (SegWidth, 2)), 4), 相减 (相加 (BasePoint.y, 整除 (SegHeight, 2)), 6), 相加 (BasePoint.x, 整除 (SegWidth, 2)), 相减 (相加 (BasePoint.y, 整除 (SegHeight, 2)), 3))
+        p.画直线 (相减 (相加 (BasePoint.x, 整除 (SegWidth, 2)), 4), 相加 (BasePoint.y, 整除 (SegHeight, 2), 4), 相加 (BasePoint.x, 整除 (SegWidth, 2)), 相加 (BasePoint.y, 整除 (SegHeight, 2), 7))
+        赋值 (BasePoint.x, 相加 (BasePoint.x, SegWidth))
+    .如果结束
+    赋值 (Value, 取文本右边 (Value, 相减 (取文本长度 (Value), 1)))
+.判断循环尾 ()
+赋值 (BasePoint.x, OrigX)
+' 本源码来自易语言资源网(www.5A5X.com)
+
+.子程序 NewLCD, 空白型, 公开, 
+.参数 PBox, 画板, , 
+
+赋值 (p, PBox)
+赋值 (p., 真)
+赋值 (p., 0)
+赋值 (BasePoint.x, 2)
+赋值 (BasePoint.y, 2)
+赋值 (SegHeight, 相减 (p., 6))
+赋值 (SegWidth, 相加 (整除 (SegHeight, 2), 2))
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 lcd, LCD类, , , 
+.程序集变量 匿名程序集变量_114, 空白型, , , 
+.子程序 _窗口1_创建完毕, 空白型, , 
+ ' --========  易语言资源网  (www.5A5X.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.5A5X.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.5A5X.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.5A5X.com  ================--
+
+lcd.未知函数_67174509 (窗口1.)
+
+lcd.BackColor (#黑色)
+lcd.ForeColor (#黄色)
+
+
+.子程序 _时钟1_周期事件, 空白型, , 
+.局部变量 h, 文本型, , , 
+.局部变量 m, 文本型, , , 
+.局部变量 s, 文本型, , , 
+
+赋值 (h, 到文本 (取小时 (取现行时间 ())))
+.如果真 (小于 (到整数 (h), 10))
+    赋值 (h, 相加 (“0”, h))
+    
+.如果真结束
+赋值 (m, 到文本 (取分钟 (取现行时间 ())))
+.如果真 (小于 (到整数 (m), 10))
+    赋值 (m, 相加 (“0”, m))
+    ' 本源码来自易语言资源网(www.5A5X.com)
+.如果真结束
+赋值 (s, 到文本 (取秒 (取现行时间 ())))
+.如果真 (小于 (到整数 (s), 10))
+    赋值 (s, 相加 (“0”, s))
+    
+.如果真结束
+lcd.Caption (相加 (h, “:”, m, “:”, s))
+
+
+ ' 不属于任何一个程序集、类模块的函数：

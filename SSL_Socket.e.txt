@@ -1,0 +1,1300 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：SSL_Socket
+ ' 程序描述：
+ ' 程序作者：星锋工作室-东灿
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 消息类型_客户连接, "0", 公开, 
+.常量 消息类型_数据达到, "1", 公开, 
+.常量 消息类型_连接断开, "2", 公开, 
+.常量 , , , 
+.常量 SizeOf_sockaddr, "16", , 
+.常量 SizeOf_ServerStruct, "44", , 
+.常量 SizeOf_ClientStruct, "24", , 
+.常量 , , , 
+.常量 协议_IP, "0", , 
+.常量 协议_ICMP, "1", , 
+.常量 协议_IGMP, "2", , 
+.常量 协议_TCP, "6", , 
+.常量 协议_UDP, "17", , 
+.常量 协议_RAW, "255", , 
+.常量 , , , 
+.常量 套接类型_Stream, "1", , 流套接字
+.常量 套接类型_DGRAM, "2", , 数据报
+.常量 套接类型_Raw, "3", , 原始套接字
+.常量 套接类型_RDM, "4", , 
+.常量 套接类型_SEQPacket, "5", , 
+.常量 , , , 
+.常量 AF_INET, "2", , UDP/TCP
+.常量 AF_IMPLINK, "3", , imp
+.常量 AF_IPX, "6", , IPX/SPX
+.常量 , , , 
+.常量 SOCKET_ERROR, "-1", , 
+.常量 SOL_SOCKET, "65535", , 
+.常量 SOMaxConn, "2147483647", , =WORD(-1)
+.常量 SO_Connect_Time, "28684", , 
+.常量 SO_SndTimeO, "4101", , 
+.常量 SO_SndBuf, "4097", , 
+.常量 SO_RcvTimeO, "4102", , 
+.常量 SO_RcvBuf, "4098", , 
+.常量 , , , 
+.常量 SD_BOTH, "2", , 
+.常量 FIONBIO, "2147772030", , 
+.常量 , , , 
+.常量 FD_ACCEPT, "8", , 
+.常量 FD_ACCEPT_BIT, "3", , 
+.常量 FD_CLOSE, "32", , 
+.常量 FD_CLOSE_BIT, "5", , 
+.常量 FD_READ, "1", , 
+.常量 FD_READ_BIT, "0", , 
+.常量 FD_WRITE, "2", , 
+.常量 FD_WRITE_BIT, "1", , 
+.常量 FD_CONNECT, "16", , 
+.常量 FD_CONNECT_BIT, "4", , 
+.常量 , , , 
+.常量 , , , =============================
+.常量 SSL_FILETYPE_PEM, "1", , X509_FILETYPE_PEM
+.常量 SSL_VERIFY_PEER, "1", , 
+.常量 SSL_ERROR, "-1", , 
+.常量 , , , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 sockaddr, , [sockaddr_in]
+    .成员 sin_family, 短整数型, , , 2
+    .成员 sin_port, 短整数型, , , 2
+    .成员 sin_addr, 整数型, , , 4
+    .成员 sin_zero, 字节型, , "8", 8
+
+数据类型 WSADATA, , 
+    .成员 wVersion, 短整数型, , , 
+    .成员 wHighVersion, 短整数型, , , 
+    .成员 szDescription, 字节型, , "257", 
+    .成员 szSystemStatus, 字节型, , "129", 
+    .成员 wMaxSockets, 短整数型, , , 
+    .成员 wMaxUDPDG, 短整数型, , , 
+    .成员 dwVendorInfo, 整数型, , , 
+
+数据类型 t_ClientStruct, , 4*5=20+4=24
+    .成员 hSocket, 空白型, , , 4
+    .成员 hSSL, 空白型, , , 4
+    .成员 NotifyProc, 空白型, , , 4
+    .成员 MsgType, 空白型, , , 4
+    .成员 DataParam, 空白型, , , 4
+
+数据类型 t_ServerStruct, , 4*5+16=36+8=44
+    .成员 hSocket, 空白型, , , 4
+    .成员 hCTX, 空白型, , , 
+    .成员 NotifyProc, 整数型, , , 4
+    .成员 MsgType, 整数型, , , 4
+    .成员 ThisClient, 空白型, , , 4
+    .成员 ThisClientSSL, 空白型, , , 
+    .成员 DataParam, 空白型, , , 4
+    .成员 ThisSockAddr, sockaddr, , , 16
+
+数据类型 _ListInfoClient, , 
+    .成员 hSocket, 空白型, , , 
+    .成员 hSSL, 空白型, , , 
+    .成员 hClient, 空白型, , , 
+    .成员 ThisClientSSL, 空白型, , , 
+    .成员 hEvent, 空白型, , , 
+    .成员 SockAddr, sockaddr, , , 
+    .成员 RecvThread, 空白型, , , 
+    .成员 MsgOfThread, 空白型, , , 
+
+数据类型 RTL_CRITICAL_SECTION, , 
+    .成员 a1, 空白型, , , 
+    .成员 a2, 空白型, , , 
+    .成员 a3, 空白型, , , 
+    .成员 a4, 空白型, , , 
+    .成员 a5, 空白型, , , 
+    .成员 a6, 空白型, , , 
+
+数据类型 timeval, , 
+    .成员 tv_sec, 空白型, , , /* seconds */
+    .成员 tv_usec, 空白型, , , /* and microseconds */
+
+数据类型 fd_set, , 
+    .成员 fd_count, 整数型, , , 
+    .成员 fd_array, 整数型, , , 
+
+数据类型 FILETIME, , 
+    .成员 dwLowDateTime, 整数型, , , 
+    .成员 dwHighDateTime, 整数型, , , 
+
+数据类型 HostEnt, , 
+    .成员 h_name, 整数型, , , 
+    .成员 h_aliases, 整数型, , , 
+    .成员 h_addrtype, 短整数型, , , 
+    .成员 h_length, 短整数型, , , 
+    .成员 h_addr_list, 整数型, , , 
+
+数据类型 WsaNetWorkEvents, , 
+    .成员 lNetworkEvents, 空白型, , , 
+    .成员 iErrorCode, 空白型, , "10", FD_MAX_EVENT
+
+.全局变量 全_新增客户列表, _ListInfoClient, , "0", 
+.全局变量 服务器列表许可区, 类_许可区, , , 
+
+.DLL命令 _accept, 整数型, "ws2_32.dll", "accept", , 
+    .参数 s, 整数型, , 
+    .参数 addr, sockaddr, 传址, 
+    .参数 addrlen, 整数型, 传址, 
+
+.DLL命令 _bind, 整数型, "ws2_32.dll", "bind", , 
+    .参数 s, 整数型, , 
+    .参数 addr, sockaddr, , 
+    .参数 namelen, 整数型, , 
+
+.DLL命令 _closesocket, 整数型, "ws2_32.dll", "closesocket", , 
+    .参数 s, 整数型, , 
+
+.DLL命令 _connect, 整数型, "ws2_32.dll", "connect", , 
+    .参数 s, 整数型, , 
+    .参数 name, sockaddr, , 
+    .参数 namelen, 整数型, , 
+
+.DLL命令 _gethostbyaddr, 空白型, "ws2_32.dll", "gethostbyaddr", , 
+    .参数 addr, 文本型, , 
+    .参数 len, 整数型, , 
+    .参数 type, 整数型, , 
+
+.DLL命令 _gethostname, 整数型, "ws2_32.dll", "gethostname", , 
+    .参数 name, 文本型, , 
+    .参数 namelen, 整数型, , 
+
+.DLL命令 _inet_addr, 整数型, "ws2_32.dll", "inet_addr", , 
+    .参数 cp, 文本型, , 
+
+.DLL命令 _inet_ntoa, 文本型, "ws2_32.dll", "inet_ntoa", , 
+    .参数 lIn, 整数型, , 
+
+.DLL命令 _listen, 整数型, "ws2_32.dll", "listen", , 
+    .参数 s, 整数型, , 
+    .参数 backlog, 整数型, , 
+
+.DLL命令 _recv, 整数型, "ws2_32.dll", "recv", , 
+    .参数 s, 整数型, , 
+    .参数 buf, 整数型, , 
+    .参数 lLen, 整数型, , 
+    .参数 flags, 整数型, , 
+
+.DLL命令 _select, 整数型, "WS2_32.DLL", "select", , 
+    .参数 nfds, 整数型, , 
+    .参数 readfds, fd_set, 传址, 
+    .参数 writefds, fd_set, 传址, 
+    .参数 exceptfds, 整数型, , 
+    .参数 timeout, timeval, 传址, 
+
+.DLL命令 _select_Forever, 整数型, "WS2_32.DLL", "select", , 
+    .参数 nfds, 整数型, , 
+    .参数 readfds, fd_set, 传址, 
+    .参数 writefds, fd_set, 传址, 
+    .参数 exceptfds, 整数型, , 
+    .参数 timeout, 整数型, , 
+
+.DLL命令 _send, 整数型, "ws2_32.dll", "send", , 
+    .参数 s, 整数型, , 
+    .参数 buf, 字节集, , 
+    .参数 lLen, 整数型, , 
+    .参数 flags, 整数型, , 
+
+.DLL命令 _socket, 整数型, "ws2_32.dll", "socket", , 
+    .参数 af, 整数型, , 
+    .参数 lType, 整数型, , 
+    .参数 protocol, 整数型, , 
+
+.DLL命令 _WSACleanup, 整数型, "ws2_32.dll", "WSACleanup", , 
+
+.DLL命令 _WSAGetLastError, 整数型, "ws2_32.dll", "WSAGetLastError", , 
+
+.DLL命令 _WSAStartup, 整数型, "ws2_32.dll", "WSAStartup", , 
+    .参数 wVersionRequired, 短整数型, , 
+    .参数 lpWSAData, WSADATA, , 
+
+.DLL命令 _CreateThread, 整数型, "", "CreateThread", , 
+    .参数 lpThreadAttributes, 空白型, , 
+    .参数 dwStackSize, 空白型, , 
+    .参数 lpStartAddress, 子程序指针, , 
+    .参数 lpParameter, 空白型, , 
+    .参数 dwCreationFlags, 空白型, , 
+    .参数 lpThreadId, 空白型, , 
+
+.DLL命令 _htons, 整数型, "ws2_32.dll", "htons", , 
+    .参数 hostshort, 短整数型, , 
+
+.DLL命令 CopyToServerStruct, 空白型, "", "RtlMoveMemory", , 
+    .参数 pDest, t_ServerStruct, , 
+    .参数 pSrc, 整数型, , 
+    .参数 ByteLen, 整数型, , 
+
+.DLL命令 CopyFromServerStruct, 空白型, "", "RtlMoveMemory", , 
+    .参数 pDest, 整数型, , 
+    .参数 pSrc, t_ServerStruct, , 
+    .参数 ByteLen, 整数型, , 
+
+.DLL命令 CopyToClientStruct, 空白型, "", "RtlMoveMemory", , 
+    .参数 pDest, t_ClientStruct, , 
+    .参数 pSrc, 整数型, , 
+    .参数 ByteLen, 整数型, , 
+
+.DLL命令 CopyFromClientStruct, 空白型, "", "RtlMoveMemory", , 
+    .参数 pDest, 整数型, , 
+    .参数 pSrc, t_ClientStruct, , 
+    .参数 ByteLen, 整数型, , 
+
+.DLL命令 CopyToHostEnt, 空白型, "", "RtlMoveMemory", , 
+    .参数 pDest, HostEnt, , 
+    .参数 pSrc, 整数型, , 
+    .参数 ByteLen, 整数型, , 
+
+.DLL命令 CopyToPtr_FromPtr, 空白型, "", "RtlMoveMemory", , 
+    .参数 pDest, 整数型, , 
+    .参数 pSrc, 整数型, , 
+    .参数 ByteLen, 整数型, , 
+
+.DLL命令 _GlobalAlloc, 整数型, "", "GlobalAlloc", , 
+    .参数 wFlags, 整数型, , 
+    .参数 dwBytes, 整数型, , 
+
+.DLL命令 _GlobalFree, 整数型, "", "GlobalFree", , 
+    .参数 hMem, 整数型, , 
+
+.DLL命令 _GlobalSize, 整数型, "", "GlobalSize", , 
+    .参数 Ptr, 空白型, , 
+
+.DLL命令 _DeleteCriticalSection, 空白型, "", "DeleteCriticalSection", , 
+    .参数 lpCriticalSection, RTL_CRITICAL_SECTION, , 
+
+.DLL命令 _EnterCriticalSection, 空白型, "", "EnterCriticalSection", , 
+    .参数 lpCriticalSection, RTL_CRITICAL_SECTION, , 
+
+.DLL命令 _InitializeCriticalSection, 空白型, "", "InitializeCriticalSection", , 
+    .参数 lpCriticalSection, RTL_CRITICAL_SECTION, , 
+
+.DLL命令 _LeaveCriticalSection, 空白型, "", "LeaveCriticalSection", , 
+    .参数 lpCriticalSection, RTL_CRITICAL_SECTION, , 
+
+.DLL命令 CallWindowProc, 整数型, "", "CallWindowProcA", , 
+    .参数 Proc, 字节集, , 
+    .参数 参数1, 空白型, , 
+    .参数 参数2, 空白型, , 
+    .参数 参数3, 空白型, , 
+    .参数 参数4, 空白型, , 
+
+.DLL命令 _shutdown, 整数型, "ws2_32.dll", "shutdown", , 
+    .参数 s, 整数型, , 
+    .参数 how, 整数型, , 
+
+.DLL命令 inet_ntoa, 文本型, "ws2_32.dll", "inet_ntoa", , 
+    .参数 in, 整数型, , 
+
+.DLL命令 _ntohs, 整数型, "ws2_32.dll", "ntohs", , 
+    .参数 netshort, 短整数型, , 
+
+.DLL命令 _gethostbyname, 整数型, "ws2_32.dll", "gethostbyname", , 
+    .参数 name, 文本型, , 
+
+.DLL命令 _setsockopt, 整数型, "ws2_32.dll", "setsockopt", , 
+    .参数 s, 整数型, , 
+    .参数 level, 整数型, , 
+    .参数 optname, 整数型, , 
+    .参数 optval, 整数型, 传址, 
+    .参数 optlen, 整数型, , 
+
+.DLL命令 _getsockopt, 整数型, "ws2_32.dll", "getsockopt", , 
+    .参数 s, 整数型, , 
+    .参数 level, 整数型, , 
+    .参数 optname, 整数型, , 
+    .参数 optval, 整数型, 传址, 
+    .参数 optlen, 整数型, 传址, 
+
+.DLL命令 _ioctlsocket, 整数型, "ws2_32.dll", "ioctlsocket", , 
+    .参数 s, 整数型, , 
+    .参数 cmd, 整数型, , 
+    .参数 argp, 整数型, 传址, 
+
+.DLL命令 _GetThreadTimes, 逻辑型, "", "GetThreadTimes", , 
+    .参数 hThread, 整数型, , 
+    .参数 lpCreationTime, FILETIME, , 
+    .参数 lpExitTime, FILETIME, , 
+    .参数 lpKernelTime, FILETIME, , 
+    .参数 lpUserTime, FILETIME, , 
+
+.DLL命令 Sleep, 空白型, "", "Sleep", , 
+    .参数 time, 空白型, , 
+
+.DLL命令 _WSACreateEvent, 整数型, "ws2_32.dll", "WSACreateEvent", , 
+
+.DLL命令 _WSAEventSelect, 整数型, "ws2_32.dll", "WSAEventSelect", , 
+    .参数 s, 整数型, , 
+    .参数 hEventObject, 整数型, , 
+    .参数 lNetworkEvents, 整数型, , 
+
+.DLL命令 _WSAWaitForMultipleEvents, 整数型, "ws2_32.dll", "WSAWaitForMultipleEvents", , 
+    .参数 cEvents, 整数型, , 
+    .参数 lphEvents, 整数型, 数组, 
+    .参数 fWaitAll, 逻辑型, , 
+    .参数 dwTimeout, 整数型, , 
+    .参数 fAlertable, 逻辑型, , 
+
+.DLL命令 _WSACloseEvent, 整数型, "ws2_32.dll", "WSACloseEvent", , 
+    .参数 hEvent, 整数型, , 
+
+.DLL命令 _WSAEnumNetworkEvents, 整数型, "ws2_32.dll", "WSAEnumNetworkEvents", , 
+    .参数 s, 整数型, , 
+    .参数 hEventObject, 整数型, , 
+    .参数 lpNetworkEvents, WsaNetWorkEvents, , 
+
+.DLL命令 _WaitForSingleObject, 整数型, "", "WaitForSingleObject", , 
+    .参数 hHandle, 整数型, , 
+    .参数 dwMilliseconds, 整数型, , 
+
+.DLL命令 _getsockname, 整数型, "ws2_32.dll", "getsockname", , 
+    .参数 s, 整数型, , 
+    .参数 name, sockaddr, , 
+    .参数 namelen, 整数型, 传址, 
+
+.DLL命令 _getpeername, 整数型, "ws2_32.dll", "getpeername", , 
+    .参数 s, 整数型, , 
+    .参数 name, sockaddr, , 
+    .参数 namelen, 整数型, 传址, 
+
+.DLL命令 _GetModuleHandle, 整数型, "", "GetModuleHandleA", , 
+    .参数 lpModuleName, 文本型, , 
+
+.DLL命令 _GetProcAddress, 整数型, "", "GetProcAddress", , 
+    .参数 hModule, 整数型, , 
+    .参数 lpProcName, 文本型, , 
+
+.DLL命令 lstrcpynA_Bin, 整数型, "", "lstrcpynA", , 
+    .参数 ptr1, 字节集, , 
+    .参数 ptr2, 字节集, , 
+    .参数 len, 空白型, , 
+
+.DLL命令 lstrcpynA_str, 整数型, "", "lstrcpynA", , 
+    .参数 ptr1, 文本型, , 
+    .参数 ptr2, 文本型, , 
+    .参数 len, 空白型, , 
+
+.DLL命令 SSL_library_init, 整数型, "ssleay32.dll", "SSL_library_init", , 
+
+.DLL命令 TLSv1_client_method, 整数型, "ssleay32.dll", "TLSv1_client_method", , 
+
+.DLL命令 TLSv1_server_method, 整数型, "ssleay32.dll", "TLSv1_server_method", , 
+
+.类模块 类_客户端_SSL, , , 
+
+.程序集变量 hSocket, 空白型, , , 
+.程序集变量 m_ServSockAddr, sockaddr, , , 
+.程序集变量 匿名程序集变量_3340, 空白型, , , 
+.程序集变量 CTX, 空白型, , , 
+.程序集变量 hSSL, 整数型, , , 
+.程序集变量 匿名程序集变量_2892, 空白型, , , 
+.程序集变量 m_ClientCert, 文本型, , , 
+.程序集变量 m_ClientKey, 文本型, , , 
+.程序集变量 匿名程序集变量_3307, 空白型, , , 
+.程序集变量 Bak_ClientStruct, t_ClientStruct, , , 
+.程序集变量 匿名程序集变量_3423, 空白型, , , 
+.子程序 _初始化, 空白型, , 
+设置证书文件 (“ClientCert.pem”, “ClientKey.pem”)
+
+.子程序 _销毁, 空白型, , 
+断开连接 ()
+
+.子程序 设置证书文件, 空白型, 公开, 
+.参数 客户证书, 文本型, , ClientCert.pem
+.参数 客户私钥, 文本型, , ClientKey.pem
+
+赋值 (m_ClientCert, 客户证书)
+赋值 (m_ClientKey, 客户私钥)
+
+.子程序 连接, 逻辑型, 公开, 
+.参数 目标地址, 文本型, , 
+.参数 端口, 短整数型, , 
+.参数 通知函数, 子程序指针, , [必须有1个参数=消息类型]
+.参数 超时时间, 空白型, 可空, 
+.参数 立即SSL连接, 逻辑型, 可空, [默认不用管,代理连接时需要]
+
+.局部变量 fd_read, fd_set, , , 
+.局部变量 fd_write, fd_set, , , 
+.局部变量 返回值, 整数型, , , 
+.局部变量 匿名局部变量_2905, 空白型, , , 
+.局部变量 meth, 整数型, , , 
+
+.如果真 (或者 (等于 (目标地址, “”), 等于 (端口, 0)))
+    返回 (假)
+.如果真结束
+赋值 (meth, TLSv1_client_method ()) ' 放在第一句可以让DLL初始化..
+断开连接 ()
+赋值 (CTX, cdeclCall (ProcAddr (“SSL_CTX_new”), meth))
+.如果真 (等于 (LoadCRTFile (CTX, m_ClientCert, m_ClientKey), 假))
+    断开连接 ()
+    返回 (假)
+.如果真结束
+赋值 (Bak_ClientStruct.NotifyProc, 到数值 (通知函数))
+赋值 (Bak_ClientStruct.hSocket, _socket (#AF_INET, #套接类型_Stream, #协议_TCP))
+.如果真 (等于 (Bak_ClientStruct.hSocket, #SOCKET_ERROR))
+    返回 (假)
+.如果真结束
+_setsockopt (Bak_ClientStruct.hSocket, #SOL_SOCKET, #SO_RcvBuf, 0, 4) ' 设置读取缓存大小为0
+_setsockopt (Bak_ClientStruct.hSocket, #SOL_SOCKET, #SO_SndBuf, 0, 4) ' 设置写入缓存大小为0
+赋值 (m_ServSockAddr.sin_family, #AF_INET)
+赋值 (m_ServSockAddr.sin_port, _ntohs (端口))
+赋值 (m_ServSockAddr.sin_addr, GetNetAddrName (目标地址))
+.如果真 (是否为空 (超时时间))
+    赋值 (超时时间, 3000)
+.如果真结束
+_ioctlsocket (Bak_ClientStruct.hSocket, #FIONBIO, 1)
+_connect (Bak_ClientStruct.hSocket, m_ServSockAddr, #SizeOf_sockaddr)
+赋值 (fd_write.fd_count, 1)
+赋值 (fd_write.fd_array, Bak_ClientStruct.hSocket)
+.如果 (等于 (超时时间, -1))
+    赋值 (返回值, _select_Forever (0, fd_read, fd_write, 0, 0))
+.否则
+    赋值 (返回值, _select (0, fd_read, fd_write, 0, 辅_GetTimeOut (超时时间)))
+.如果结束
+_ioctlsocket (Bak_ClientStruct.hSocket, #FIONBIO, 0)
+.如果真 (小于或等于 (返回值, 0))
+    _closesocket (Bak_ClientStruct.hSocket)
+    返回 (假)
+.如果真结束
+赋值 (hSocket, Bak_ClientStruct.hSocket)
+.如果真 (或者 (等于 (是否为空 (立即SSL连接), 真), 等于 (立即SSL连接, 真)))
+    .如果真 (等于 (建立SSL连接 (), 假))
+        断开连接 ()
+        返回 (假)
+    .如果真结束
+    
+.如果真结束
+返回 (真)
+
+.子程序 取Socket句柄, 整数型, 公开, [使用代理协商时用到]
+返回 (hSocket)
+
+.子程序 建立SSL连接, 逻辑型, 公开, [使用代理之后必须用到]
+.局部变量 ptr, 整数型, , , 
+
+ ' SSl==
+赋值 (Bak_ClientStruct.hSSL, cdeclCall (ProcAddr (“SSL_new”), CTX))
+赋值 (hSSL, Bak_ClientStruct.hSSL)
+.如果真 (等于 (hSSL, 0))
+    返回 (假)
+.如果真结束
+cdeclCall (ProcAddr (“SSL_set_fd”), hSSL, hSocket)
+.如果真 (等于 (cdeclCall (ProcAddr (“SSL_connect”), hSSL), #SSL_ERROR))
+    返回 (假)
+.如果真结束
+ ' ===
+赋值 (ptr, _GlobalAlloc (0, #SizeOf_ClientStruct))
+CopyFromClientStruct (ptr, Bak_ClientStruct, #SizeOf_ClientStruct)
+_CreateThread (0, 0, &线程_客户端_事件获取, ptr, 0, 0)
+返回 (真)
+
+.子程序 断开连接, 空白型, 公开, 
+.如果真 (不等于 (hSSL, 0))
+    cdeclCall (ProcAddr (“SSL_shutdown”), hSSL)
+    cdeclCall (ProcAddr (“SSL_free”), hSSL)
+    赋值 (hSSL, 0)
+.如果真结束
+.如果真 (不等于 (hSocket, 0))
+    _shutdown (hSocket, #SD_BOTH)
+    _closesocket (hSocket)
+    赋值 (hSocket, 0)
+.如果真结束
+.如果真 (不等于 (CTX, 0))
+    cdeclCall (ProcAddr (“SSL_CTX_free”), CTX)
+    赋值 (CTX, 0)
+.如果真结束
+赋值 (m_ServSockAddr.sin_port, 0)
+赋值 (m_ServSockAddr.sin_addr, 0)
+
+.子程序 取服务器IP, 文本型, 公开, 
+返回 (_inet_ntoa (m_ServSockAddr.sin_addr))
+
+.子程序 发送数据, 整数型, 公开, 返回发送成功长度[有些对方的缓存大小是有限制的]
+.参数 数据, 字节集, , 
+
+.局部变量 返回值, 空白型, , , 
+
+.如果真 (等于 (hSSL, 0))
+    返回 (-1)
+.如果真结束
+.如果真 (等于 (数据, {  }))
+    返回 (0)
+.如果真结束
+ ' 返回值 ＝ _send (hSocket, 数据, 取字节集长度 (数据), 0)
+赋值 (返回值, cdeclCall (ProcAddr (“SSL_write”), hSSL, Ptr_Bin (数据), 取字节集长度 (数据), 0))
+返回 (返回值)
+
+.子程序 取回数据, 字节集, 公开, 
+.参数 通知参数值, 空白型, , 
+
+.局部变量 ClientStruct, t_ClientStruct, , , 
+
+.如果真 (等于 (通知参数值, 0))
+    返回 ({  })
+.如果真结束
+CopyToClientStruct (ClientStruct, 通知参数值, #SizeOf_ClientStruct)
+返回 (指针到字节集 (ClientStruct.DataParam, _GlobalSize (ClientStruct.DataParam)))
+
+.子程序 取消息类型, 整数型, 公开, 
+.参数 通知参数值, 空白型, , 
+
+.局部变量 ClientStruct, t_ClientStruct, , , 
+
+.如果真 (等于 (通知参数值, 0))
+    返回 (-1)
+.如果真结束
+CopyToClientStruct (ClientStruct, 通知参数值, #SizeOf_ClientStruct)
+返回 (ClientStruct.MsgType)
+
+
+.子程序 标记参数是否正确, 逻辑型, 公开, [没有类似[取事件组件()]的命令,所以用这个来代替]
+.参数 通知参数值, 空白型, , 
+
+.局部变量 ClientStructStruct, t_ClientStruct, , , 
+
+.如果真 (或者 (等于 (通知参数值, 0), 等于 (hSocket, 0)))
+    返回 (假)
+.如果真结束
+CopyToClientStruct (ClientStructStruct, 通知参数值, #SizeOf_ClientStruct)
+返回 (等于 (ClientStructStruct.hSocket, hSocket))
+
+
+.类模块 类_服务端_SSL, , , 
+
+.程序集变量 hSocket, 空白型, , , 
+.程序集变量 匿名程序集变量_2987, 空白型, , , 
+.程序集变量 CTX, 空白型, , , 
+.程序集变量 匿名程序集变量_2991, 空白型, , , 
+.程序集变量 m_ServerCert, 文本型, , , 
+.程序集变量 m_ServerKey, 文本型, , , 
+.程序集变量 匿名程序集变量_3318, 空白型, , , 
+.子程序 _初始化, 空白型, , 
+设置证书文件 (“ServerCert.pem”, “ServerKey.PEM”)
+
+.子程序 _销毁, 空白型, , 
+关闭服务 ()
+
+.子程序 设置证书文件, 空白型, 公开, 
+.参数 服务证书, 文本型, , ServerCert.pem
+.参数 服务私钥, 文本型, , ServerPriKey.pem
+
+赋值 (m_ServerCert, 服务证书)
+赋值 (m_ServerKey, 服务私钥)
+
+.子程序 启动服务, 逻辑型, 公开, 
+.参数 端口, 短整数型, , 
+.参数 通知函数, 子程序指针, , 
+
+.局部变量 sockaddr, sockaddr, , , 
+.局部变量 匿名局部变量_239, 空白型, , , 
+.局部变量 ServerStruct, t_ServerStruct, , , 
+.局部变量 Ptr, 空白型, , , 
+.局部变量 匿名局部变量_2958, 空白型, , , 
+.局部变量 meth, 空白型, , , 
+
+.如果真 (等于 (端口, 0))
+    返回 (假)
+.如果真结束
+赋值 (meth, TLSv1_server_method ()) ' 放在第一句可以让DLL初始化..
+关闭服务 ()
+赋值 (CTX, cdeclCall (ProcAddr (“SSL_CTX_new”), meth))
+.如果真 (等于 (LoadCRTFile (CTX, m_ServerCert, m_ServerKey), 假))
+    关闭服务 ()
+    返回 (假)
+.如果真结束
+
+赋值 (ServerStruct.NotifyProc, 到数值 (通知函数))
+赋值 (ServerStruct.hSocket, _socket (#AF_INET, #套接类型_Stream, #协议_TCP))
+.如果真 (等于 (ServerStruct.hSocket, #SOCKET_ERROR))
+    返回 (假)
+.如果真结束
+_setsockopt (ServerStruct.hSocket, #SOL_SOCKET, #SO_RcvBuf, 0, 4) ' 设置读取缓存大小为0
+_setsockopt (ServerStruct.hSocket, #SOL_SOCKET, #SO_SndBuf, 0, 4) ' 设置写入缓存大小为0
+赋值 (sockaddr.sin_family, #AF_INET)
+赋值 (sockaddr.sin_port, _htons (端口))
+.如果真 (等于 (_bind (ServerStruct.hSocket, sockaddr, #SizeOf_sockaddr), #SOCKET_ERROR))
+    _closesocket (ServerStruct.hSocket)
+    返回 (假)
+.如果真结束
+.如果真 (等于 (_listen (ServerStruct.hSocket, #SOMaxConn), #SOCKET_ERROR))
+    _closesocket (ServerStruct.hSocket)
+    返回 (假)
+.如果真结束
+赋值 (hSocket, ServerStruct.hSocket)
+赋值 (ServerStruct.hCTX, CTX)
+赋值 (Ptr, _GlobalAlloc (0, #SizeOf_ServerStruct))
+CopyFromServerStruct (Ptr, ServerStruct, #SizeOf_ServerStruct)
+_CreateThread (0, 0, &线程_服务端_监视连接, Ptr, 0, 0)
+赋值 (Ptr, _GlobalAlloc (0, #SizeOf_ServerStruct))
+CopyFromServerStruct (Ptr, ServerStruct, #SizeOf_ServerStruct)
+_CreateThread (0, 0, &线程_服务端_事件获取, Ptr, 0, 0)
+返回 (真)
+
+.子程序 取Socket句柄, 整数型, 公开, 
+返回 (hSocket)
+
+.子程序 关闭服务, 空白型, 公开, 
+.如果真 (不等于 (hSocket, 0))
+    _shutdown (hSocket, #SD_BOTH)
+    _closesocket (hSocket)
+    赋值 (hSocket, 0)
+.如果真结束
+.如果真 (不等于 (CTX, 0))
+    cdeclCall (ProcAddr (“SSL_CTX_free”), CTX)
+    赋值 (CTX, 0)
+.如果真结束
+
+
+.子程序 取消息类型, 整数型, 公开, [0=客户连接;1=收到数据;2=连接断开;0=其他]
+.参数 通知参数值, 空白型, , 
+
+.局部变量 tmp, t_ServerStruct, , , 
+
+.如果真 (等于 (通知参数值, 0))
+    返回 (-1)
+.如果真结束
+CopyToServerStruct (tmp, 通知参数值, #SizeOf_ServerStruct)
+返回 (tmp.MsgType)
+
+.子程序 取客户IP, 文本型, 公开, 
+.参数 通知参数值, 空白型, , 
+
+.局部变量 ServerStruct, t_ServerStruct, , , 
+.局部变量 SockAddr, sockaddr, , , 
+
+.如果真 (等于 (通知参数值, 0))
+    返回 (“”)
+.如果真结束
+CopyToServerStruct (ServerStruct, 通知参数值, #SizeOf_ServerStruct)
+ ' _getpeername (ServerStruct.ThisClient, SockAddr, #SizeOf_sockaddr) ' 断开与连接时经常无效
+赋值 (SockAddr, ServerStruct.ThisSockAddr)
+返回 (_inet_ntoa (SockAddr.sin_addr))
+
+.子程序 取客户端口, 整数型, 公开, 
+.参数 通知参数值, 空白型, , 
+
+.局部变量 ServerStruct, t_ServerStruct, , , 
+.局部变量 SockAddr, sockaddr, , , 
+
+.如果真 (等于 (通知参数值, 0))
+    返回 (0)
+.如果真结束
+CopyToServerStruct (ServerStruct, 通知参数值, #SizeOf_ServerStruct)
+ ' _getpeername (ServerStruct.ThisClient, SockAddr, #SizeOf_sockaddr) ' 断开与连接时经常无效
+赋值 (SockAddr, ServerStruct.ThisSockAddr)
+返回 (_ntohs (SockAddr.sin_port))
+
+.子程序 取客户句柄, 整数型, 公开, 
+.参数 通知参数值, 空白型, , 
+
+.局部变量 ServerStruct, t_ServerStruct, , , 
+
+.如果真 (等于 (通知参数值, 0))
+    返回 (-1)
+.如果真结束
+CopyToServerStruct (ServerStruct, 通知参数值, #SizeOf_ServerStruct)
+返回 (ServerStruct.ThisClientSSL)
+
+.子程序 取回数据, 字节集, 公开, 
+.参数 通知参数值, 空白型, , 
+
+.局部变量 ServerStruct, t_ServerStruct, , , 
+
+.如果真 (等于 (通知参数值, 0))
+    返回 ({  })
+.如果真结束
+CopyToServerStruct (ServerStruct, 通知参数值, #SizeOf_ServerStruct)
+.如果 (等于 (ServerStruct.MsgType, #消息类型_数据达到))
+    返回 (指针到字节集 (ServerStruct.DataParam, _GlobalSize (ServerStruct.DataParam)))
+.否则
+    返回 ({  })
+.如果结束
+
+
+.子程序 发送数据, 整数型, 公开, 返回发送成功长度[有些对方的缓存大小是有限制的]
+.参数 客户句柄, 空白型, , 
+.参数 数据, 字节集, , 
+
+.局部变量 返回值, 空白型, , , 
+
+.如果真 (等于 (客户句柄, 0))
+    返回 (-1)
+.如果真结束
+.如果真 (等于 (数据, {  }))
+    返回 (0)
+.如果真结束
+ ' 返回值 ＝ _send (客户句柄, 数据, 取字节集长度 (数据), 0)
+赋值 (返回值, cdeclCall (ProcAddr (“SSL_write”), 客户句柄, Ptr_Bin (数据), 取字节集长度 (数据), 0))
+返回 (返回值)
+
+.子程序 标记参数是否正确, 逻辑型, 公开, [没有类似[取事件组件()]的命令,所以用这个来代替]
+.参数 通知参数值, 空白型, , 
+
+.局部变量 ServerStruct, t_ServerStruct, , , 
+
+.如果真 (或者 (等于 (通知参数值, 0), 等于 (hSocket, 0)))
+    返回 (假)
+.如果真结束
+CopyToServerStruct (ServerStruct, 通知参数值, #SizeOf_ServerStruct)
+返回 (等于 (ServerStruct.hSocket, hSocket))
+
+
+.程序集 KernelFunc, , , 
+
+.程序集变量 SSLModule, 空白型, , , 
+.子程序 SetCRTPassword, 空白型, , 
+.参数 ThisCTX, 空白型, , 
+.参数 Password, 文本型, , 
+
+cdeclCall (ProcAddr (“SSL_CTX_set_default_passwd_cb_userdata”), ThisCTX, Ptr_Str (Password))
+
+.子程序 LoadCRTFile, 逻辑型, , 
+.参数 ThisCTX, 空白型, , 
+.参数 CertFile, 文本型, , 
+.参数 KeyFile, 文本型, , 
+
+.局部变量 a, 空白型, 静态, , 
+
+.如果真 (等于 (ThisCTX, 0))
+    返回 (假)
+.如果真结束
+ ' .如果真 (不等于 (“”))
+     ' cdcelCall (ProcAddr (“SSL_CTX_load_verify_locations”), ThisCTX, Ptr_Str (RootCert), 0)  ' 若验证,则放置CA证书
+.如果真结束
+
+.如果真 (不等于 (CertFile, “”))
+    .如果真 (小于或等于 (cdeclCall (ProcAddr (“SSL_CTX_use_certificate_file”), ThisCTX, Ptr_Str (CertFile), #SSL_FILETYPE_PEM), 0))
+        返回 (假)
+    .如果真结束
+    
+.如果真结束
+.如果真 (不等于 (KeyFile, “”))
+    .如果真 (小于或等于 (cdeclCall (ProcAddr (“SSL_CTX_use_PrivateKey_file”), ThisCTX, Ptr_Str (KeyFile), #SSL_FILETYPE_PEM), 0))
+        返回 (假)
+    .如果真结束
+    
+.如果真结束
+.如果真 (等于 (cdeclCall (ProcAddr (“SSL_CTX_check_private_key”), ThisCTX), 0))
+    返回 (假)
+.如果真结束
+返回 (真)
+
+.子程序 ProcAddr, 整数型, , 
+.参数 Name, 文本型, , 
+
+.如果真 (等于 (SSLModule, 0))
+    赋值 (SSLModule, _GetModuleHandle (“ssleay32.dll”))
+    .如果真 (等于 (SSLModule, 0))
+        返回 (0)
+    .如果真结束
+    
+.如果真结束
+返回 (_GetProcAddress (SSLModule, Name))
+
+.子程序 Ptr_Str, 整数型, , 
+.参数 Str, 文本型, 参考, 
+
+返回 (lstrcpynA_str (Str, Str, 0))
+
+.子程序 Ptr_Bin, 整数型, , 
+.参数 Bin, 字节集, 参考, 
+
+返回 (lstrcpynA_Bin (Bin, Bin, 0))
+
+.子程序 cdeclCall, 整数型, , 
+.参数 子程序指针, 整数型, , 
+.参数 参数1, 空白型, 可空, 
+.参数 参数2, 空白型, 可空, 
+.参数 参数3, 空白型, 可空, 
+.参数 参数4, 空白型, 可空, 
+
+.局部变量 bin, 字节集, , , 
+.局部变量 Count, 字节型, , , 
+
+.如果真 (等于 (子程序指针, 0))
+    返回 (0)
+.如果真结束
+.如果真 (等于 (是否为空 (参数4), 假))
+    赋值 (Count, 相加 (Count, 1))
+    赋值 (bin, 相加 (bin, { 104 }, 到字节集 (参数4)))
+.如果真结束
+.如果真 (等于 (是否为空 (参数3), 假))
+    赋值 (Count, 相加 (Count, 1))
+    赋值 (bin, 相加 (bin, { 104 }, 到字节集 (参数3)))
+.如果真结束
+.如果真 (等于 (是否为空 (参数2), 假))
+    赋值 (Count, 相加 (Count, 1))
+    赋值 (bin, 相加 (bin, { 104 }, 到字节集 (参数2)))
+.如果真结束
+.如果真 (等于 (是否为空 (参数1), 假))
+    赋值 (Count, 相加 (Count, 1))
+    赋值 (bin, 相加 (bin, { 104 }, 到字节集 (参数1)))
+.如果真结束
+赋值 (Count, 相乘 (Count, 4))
+赋值 (bin, 相加 (bin, { 184 }, 到字节集 (子程序指针)))
+赋值 (bin, 相加 (bin, { 255, 208 }))
+.如果真 (不等于 (Count, 0))
+    赋值 (bin, 相加 (bin, { 131, 196 }, 到字节集 (Count)))
+.如果真结束
+赋值 (bin, 相加 (bin, { 195 }))
+返回 (CallWindowProc (bin, 0, 0, 0, 0))
+
+.子程序 GetNetAddrName, 整数型, , 
+.参数 name, 文本型, , 
+
+.局部变量 ret, 空白型, , , 
+.局部变量 匿名局部变量_2061, 空白型, , , 
+.局部变量 HostEnt, HostEnt, , , 
+
+赋值 (ret, _inet_addr (name))
+.如果真 (等于 (ret, -1))
+    赋值 (ret, _gethostbyname (name))
+    .如果真 (不等于 (ret, 0))
+        CopyToHostEnt (HostEnt, ret, 16)
+        赋值 (ret, 取字节集数据 (指针到字节集 (HostEnt.h_addr_list, 4), #整数型, ))
+        赋值 (ret, 取字节集数据 (指针到字节集 (ret, HostEnt.h_length), #整数型, ))
+    .如果真结束
+    
+.如果真结束
+返回 (ret)
+
+.子程序 辅_线程是否已结束, 逻辑型, , 
+.参数 hThread, 空白型, , 
+
+.局部变量 CreateTime, FILETIME, , , 
+.局部变量 ExitTime, FILETIME, , , 
+.局部变量 KernelTime, FILETIME, , , 
+.局部变量 UserTime, FILETIME, , , 
+
+.如果真 (等于 (_GetThreadTimes (hThread, CreateTime, ExitTime, KernelTime, UserTime), 假))
+    返回 (真)
+.如果真结束
+返回 (取反 (并且 (等于 (ExitTime.dwLowDateTime, 0), 等于 (ExitTime.dwHighDateTime, 0))))
+
+.子程序 辅_GetTimeOut, timeval, , 
+.参数 超时时间, 空白型, , 
+
+.局部变量 TimeOut, timeval, , , 
+
+赋值 (TimeOut.tv_sec, 相除 (超时时间, 1000))
+赋值 (TimeOut.tv_usec, 相减 (超时时间, 相乘 (TimeOut.tv_sec, 1000)))
+返回 (TimeOut)
+
+.子程序 辅_调用子程序, 整数型, , 
+.参数 子程序指针, 整数型, , 
+.参数 参数1, 空白型, 可空, 
+.参数 参数2, 空白型, 可空, 
+.参数 参数3, 空白型, 可空, 
+.参数 参数4, 空白型, 可空, 
+
+.局部变量 bin, 字节集, , , 
+
+.如果真 (等于 (子程序指针, 0))
+    返回 (0)
+.如果真结束
+.如果真 (等于 (是否为空 (参数4), 假))
+    赋值 (bin, 相加 (bin, { 104 }, 到字节集 (参数4)))
+.如果真结束
+.如果真 (等于 (是否为空 (参数3), 假))
+    赋值 (bin, 相加 (bin, { 104 }, 到字节集 (参数3)))
+.如果真结束
+.如果真 (等于 (是否为空 (参数2), 假))
+    赋值 (bin, 相加 (bin, { 104 }, 到字节集 (参数2)))
+.如果真结束
+.如果真 (等于 (是否为空 (参数1), 假))
+    赋值 (bin, 相加 (bin, { 104 }, 到字节集 (参数1)))
+.如果真结束
+赋值 (bin, 相加 (bin, { 184 }, 到字节集 (子程序指针)))
+赋值 (bin, 相加 (bin, { 255, 208 }))
+赋值 (bin, 相加 (bin, { 195 }))
+返回 (CallWindowProc (bin, 0, 0, 0, 0))
+
+.子程序 子程序_取回传输数据, 整数型, , 
+.参数 hSocket, 空白型, , 
+.参数 hSSL, 空白型, , 
+
+.局部变量 fd_read, fd_set, , , 
+.局部变量 fd_write, fd_set, , , 
+.局部变量 返回值, 空白型, , , 
+.局部变量 最终数据, 整数型, , , 
+.局部变量 最终长度, 空白型, , , 
+.局部变量 临时内存, 整数型, , , 
+.局部变量 缓存列表, 整数型, , "0", 
+.局部变量 长度列表, 整数型, , "0", 
+.局部变量 常量_缓存长度, 空白型, , , 
+.局部变量 i, 空白型, , , 
+
+.如果真 (或者 (等于 (hSSL, 0), 等于 (hSocket, 0)))
+    返回 (0)
+.如果真结束
+ ' <SSL>{-
+ ' fd_read.fd_count ＝ 1
+ ' fd_read.fd_array ＝ hSocket
+ ' .如果 (等于 (-1))
+     ' 返回值 ＝ _select_Forever (0, fd_read, fd_write, 0, 0)
+.否则
+     ' 返回值 ＝ _select (0, fd_read, fd_write, 0, 辅_GetTimeOut (超时时间))
+.如果结束
+ ' 如果真 (返回值 ＞ 0)
+ ' <SSL>-}
+赋值 (常量_缓存长度, 相乘 (20, 1024))
+.循环判断首 ()
+    赋值 (临时内存, _GlobalAlloc (0, 常量_缓存长度))
+    赋值 (返回值, cdeclCall (ProcAddr (“SSL_read”), hSSL, 临时内存, 常量_缓存长度)) ' <SSL>
+     ' 返回值 ＝ _recv (hSSL, 临时内存, 常量_缓存长度, 0)
+     ' 直接用相加太慢了.所以弄出个指针列表后面再一次性合并
+    .如果 (大于 (返回值, 0))
+        加入成员 (长度列表, 返回值)
+        加入成员 (缓存列表, 临时内存)
+        赋值 (最终长度, 相加 (最终长度, 返回值))
+    .否则
+        _GlobalFree (临时内存)
+    .如果结束
+    .如果真 (小于或等于 (返回值, 0))
+        跳出循环 ()
+    .如果真结束
+    
+.循环判断尾 (不等于 (cdeclCall (ProcAddr (“SSL_pending”), hSSL), 0)) ' <SSL>
+.如果真 (大于 (最终长度, 0))
+    赋值 (最终数据, _GlobalAlloc (0, 最终长度))
+    赋值 (最终长度, 0)
+    .计次循环首 (取数组成员数 (缓存列表), i)
+        CopyToPtr_FromPtr (相加 (最终数据, 最终长度), 缓存列表 [i], 长度列表 [i])
+        赋值 (最终长度, 相加 (最终长度, 长度列表 [i]))
+        _GlobalFree (缓存列表 [i])
+    .计次循环尾 ()
+.如果真结束
+
+返回 (最终数据)
+
+.类模块 类_许可区, , , 
+
+.程序集变量 struc, RTL_CRITICAL_SECTION, , , 
+.子程序 _销毁, 空白型, , 
+_DeleteCriticalSection (struc)
+
+.子程序 _初始化, 空白型, , 
+_InitializeCriticalSection (struc)
+
+.子程序 进入, 空白型, , 
+_EnterCriticalSection (struc)
+
+.子程序 离开, 空白型, , 
+_LeaveCriticalSection (struc)
+
+.类模块 类_网络环境_SSL, , , 
+
+.子程序 初始化网络环境, 空白型, 公开, 
+.参数 Ver, 空白型, 可空, 
+
+.局部变量 WSAData, WSADATA, , , 
+
+SSL_library_init ()
+.如果真 (是否为空 (Ver))
+    赋值 (Ver, 514)
+.如果真结束
+_WSAStartup (Ver, WSAData)
+
+.子程序 释放网络环境, 空白型, 公开, 
+_WSACleanup ()
+
+.程序集 Func_Server, , , 
+
+.子程序 线程_服务端_监视连接, 空白型, , 
+.参数 参数, 空白型, , 
+
+.局部变量 ServerStruct, t_ServerStruct, , , 
+.局部变量 循环, 逻辑型, , , 
+.局部变量 InfoClient, _ListInfoClient, , , 
+.局部变量 ptr, 空白型, , , 
+
+.如果真 (等于 (参数, 0))
+    返回 ()
+.如果真结束
+CopyToServerStruct (ServerStruct, 参数, #SizeOf_ServerStruct)
+_GlobalFree (参数)
+赋值 (循环, 真)
+赋值 (ServerStruct.DataParam, 0)
+赋值 (InfoClient.hSocket, ServerStruct.hSocket)
+.循环判断首 ()
+    赋值 (InfoClient.hClient, _accept (ServerStruct.hSocket, InfoClient.SockAddr, #SizeOf_sockaddr))
+    .如果真 (等于 (InfoClient.hClient, #SOCKET_ERROR))
+        赋值 (循环, 假)
+        跳出循环 ()
+    .如果真结束
+     ' <SSL>{-
+    赋值 (InfoClient.ThisClientSSL, cdeclCall (ProcAddr (“SSL_new”), ServerStruct.hCTX))
+    .如果真 (等于 (InfoClient.ThisClientSSL, 0))
+        _shutdown (InfoClient.hClient, #SD_BOTH)
+        _closesocket (InfoClient.hClient)
+        到循环尾 ()
+    .如果真结束
+    cdeclCall (ProcAddr (“SSL_set_fd”), InfoClient.ThisClientSSL, InfoClient.hClient)
+    .如果真 (等于 (cdeclCall (ProcAddr (“SSL_accept”), InfoClient.ThisClientSSL), #SSL_ERROR))
+        cdeclCall (ProcAddr (“SSL_shutdown”), InfoClient.ThisClientSSL)
+        cdeclCall (ProcAddr (“SSL_free”), InfoClient.ThisClientSSL)
+        _shutdown (InfoClient.hClient, #SD_BOTH)
+        _closesocket (InfoClient.hClient)
+        到循环尾 ()
+    .如果真结束
+     ' <SSL>-}
+    
+    赋值 (InfoClient.RecvThread, 0)
+    赋值 (InfoClient.MsgOfThread, 0)
+    赋值 (InfoClient.hEvent, _WSACreateEvent ())
+    _WSAEventSelect (InfoClient.hClient, InfoClient.hEvent, 位或 (#FD_READ, #FD_CLOSE))
+    服务器列表许可区.进入 ()
+    加入成员 (全_新增客户列表, InfoClient)
+    服务器列表许可区.离开 ()
+    
+    赋值 (ServerStruct.ThisClient, InfoClient.hClient)
+    赋值 (ServerStruct.ThisSockAddr, InfoClient.SockAddr)
+    赋值 (ServerStruct.ThisClientSSL, InfoClient.ThisClientSSL)
+    赋值 (ServerStruct.MsgType, #FD_ACCEPT)
+    赋值 (ptr, _GlobalAlloc (0, #SizeOf_ServerStruct))
+    CopyFromServerStruct (ptr, ServerStruct, #SizeOf_ServerStruct)
+    _CreateThread (0, 0, &线程_服务端_消息处理_映射, ptr, 0, 0)
+.循环判断尾 (循环)
+赋值 (InfoClient.MsgOfThread, 1)
+服务器列表许可区.进入 ()
+加入成员 (全_新增客户列表, InfoClient)
+服务器列表许可区.离开 ()
+
+.子程序 线程_服务端_消息处理_映射, 空白型, , 
+.参数 参数, 空白型, , 
+
+.局部变量 ServerStruct, t_ServerStruct, , , 
+.局部变量 NotifyMsg, 空白型, , , 
+.局部变量 i, 空白型, , , 
+
+.如果真 (等于 (参数, 0))
+    返回 ()
+.如果真结束
+CopyToServerStruct (ServerStruct, 参数, #SizeOf_ServerStruct)
+_GlobalFree (参数)
+赋值 (NotifyMsg, ServerStruct.MsgType)
+.计次循环首 (3, i)
+    .如果真 (不等于 (位与 (NotifyMsg, 多项选择 (i, #FD_ACCEPT, #FD_READ, #FD_CLOSE)), 0))
+        赋值 (ServerStruct.MsgType, 多项选择 (i, #消息类型_客户连接, #消息类型_数据达到, #消息类型_连接断开))
+        赋值 (ServerStruct.DataParam, 0)
+        子程序_服务端_消息处理 (ServerStruct)
+    .如果真结束
+    
+.计次循环尾 ()
+
+.子程序 子程序_服务端_消息处理, 空白型, , 
+.参数 ServerStruct, t_ServerStruct, , 
+
+.判断开始 (等于 (ServerStruct.MsgType, #消息类型_客户连接))
+    
+.判断 (等于 (ServerStruct.MsgType, #消息类型_数据达到))
+    赋值 (ServerStruct.DataParam, 子程序_取回传输数据 (ServerStruct.ThisClient, ServerStruct.ThisClientSSL)) ' <SSL>
+    .如果真 (等于 (ServerStruct.DataParam, 0))
+        返回 ()
+    .如果真结束
+    
+.判断 (等于 (ServerStruct.MsgType, #消息类型_连接断开))
+    _shutdown (ServerStruct.ThisClient, #SD_BOTH)
+    _closesocket (ServerStruct.ThisClient)
+.默认
+    
+.判断结束
+子程序_服务端_用户消息通知 (ServerStruct) ' 同客户端一样，不再创建线程来执行用户的子程序。
+
+.子程序 子程序_服务端_用户消息通知, 空白型, , 
+.参数 ServerStruct, t_ServerStruct, , 
+
+.局部变量 ptr, 空白型, , , 
+
+赋值 (ptr, _GlobalAlloc (0, #SizeOf_ServerStruct))
+CopyFromServerStruct (ptr, ServerStruct, #SizeOf_ServerStruct)
+辅_调用子程序 (ServerStruct.NotifyProc, ptr)
+_GlobalFree (ServerStruct.DataParam)
+_GlobalFree (ptr)
+
+.子程序 线程_服务端_事件获取, 空白型, , 
+.参数 参数, 空白型, , 
+
+.局部变量 循环, 逻辑型, , , 
+.局部变量 ServerStruct, t_ServerStruct, , , 
+.局部变量 客户列表, _ListInfoClient, , "0", 
+.局部变量 EventInfo, WsaNetWorkEvents, , , 
+.局部变量 ptr, 空白型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 匿名局部变量_2714, 空白型, , , 
+
+.如果真 (等于 (参数, 0))
+    返回 ()
+.如果真结束
+CopyToServerStruct (ServerStruct, 参数, #SizeOf_ServerStruct)
+_GlobalFree (参数)
+赋值 (循环, 真)
+.循环判断首 ()
+    服务器列表许可区.进入 ()
+    赋值 (i, 1)
+    .判断循环首 (小于或等于 (i, 取数组成员数 (全_新增客户列表)))
+        .如果 (等于 (全_新增客户列表 [i], hSocket, ServerStruct.hSocket))
+            .如果真 (等于 (全_新增客户列表 [i], MsgOfThread, 1))
+                赋值 (循环, 假)
+                赋值 (i, 相加 (i, 1))
+                到循环尾 ()
+            .如果真结束
+            加入成员 (客户列表, 全_新增客户列表 [i])
+            删除成员 (全_新增客户列表, i, )
+        .否则
+            赋值 (i, 相加 (i, 1))
+        .如果结束
+        
+    .判断循环尾 ()
+    服务器列表许可区.离开 ()
+    
+    赋值 (i, 1)
+    .判断循环首 (小于或等于 (i, 取数组成员数 (客户列表)))
+        .如果真 (等于 (辅_线程是否已结束 (客户列表 [i], RecvThread), 假))
+            赋值 (i, 相加 (i, 1))
+            到循环尾 ()
+        .如果真结束
+        _WaitForSingleObject (客户列表 [i], hEvent, 0)
+        .如果真 (等于 (_WSAEnumNetworkEvents (客户列表 [i], hClient, 客户列表 [i], hEvent, EventInfo), #SOCKET_ERROR))
+            _WSACloseEvent (客户列表 [i], hEvent)
+            删除成员 (客户列表, i, )
+            到循环尾 ()
+        .如果真结束
+        
+        .如果真 (不等于 (EventInfo.lNetworkEvents, 0))
+            赋值 (ServerStruct.ThisClient, 客户列表 [i], hClient)
+            赋值 (ServerStruct.ThisSockAddr, 客户列表 [i], SockAddr)
+            赋值 (ServerStruct.ThisClientSSL, 客户列表 [i], ThisClientSSL) ' <SSL>
+            赋值 (ServerStruct.MsgType, EventInfo.lNetworkEvents)
+            
+            赋值 (ptr, _GlobalAlloc (0, #SizeOf_ServerStruct))
+            CopyFromServerStruct (ptr, ServerStruct, #SizeOf_ServerStruct)
+            赋值 (客户列表 [i], RecvThread, _CreateThread (0, 0, &线程_服务端_消息处理_映射, ptr, 0, 0))
+        .如果真结束
+        赋值 (i, 相加 (i, 1))
+    .判断循环尾 ()
+    
+    Sleep (1)
+.循环判断尾 (循环)
+ ' <SSL>{-
+.计次循环首 (取数组成员数 (客户列表), i)
+    .如果真 (不等于 (客户列表 [i], ThisClientSSL, 0))
+        cdeclCall (ProcAddr (“SSL_shutdown”), 客户列表 [i], ThisClientSSL)
+        cdeclCall (ProcAddr (“SSL_free”), 客户列表 [i], ThisClientSSL)
+    .如果真结束
+    
+.计次循环尾 ()
+ ' <SSL>-}
+
+.程序集 Func_Client, , , 
+
+.子程序 线程_客户端_事件获取, 空白型, , 
+.参数 参数, 空白型, , 
+
+.局部变量 循环, 逻辑型, , , 
+.局部变量 ClientStruct, t_ClientStruct, , , 
+.局部变量 hEvent, 空白型, , , 
+.局部变量 EventInfo, WsaNetWorkEvents, , , 
+.局部变量 i, 整数型, , , 
+
+.如果真 (等于 (参数, 0))
+    返回 ()
+.如果真结束
+CopyToClientStruct (ClientStruct, 参数, #SizeOf_ClientStruct)
+_GlobalFree (参数)
+赋值 (循环, 真)
+赋值 (hEvent, _WSACreateEvent ())
+_WSAEventSelect (ClientStruct.hSocket, hEvent, 位或 (#FD_READ, #FD_CLOSE))
+.循环判断首 ()
+    _WaitForSingleObject (hEvent, -1)
+    .如果真 (等于 (_WSAEnumNetworkEvents (ClientStruct.hSocket, hEvent, EventInfo), #SOCKET_ERROR))
+        跳出循环 ()
+    .如果真结束
+     ' <SSL>{-
+    .如果真 (等于 (EventInfo.lNetworkEvents, 0))
+        .如果真 (不等于 (cdeclCall (ProcAddr (“SSL_get_shutdown”), ClientStruct.hSSL), 0))
+            赋值 (ClientStruct.MsgType, #消息类型_连接断开)
+            赋值 (ClientStruct.DataParam, 0)
+            子程序_客户端_消息处理 (ClientStruct)
+            跳出循环 ()
+        .如果真结束
+        
+    .如果真结束
+     ' <SSL>-}
+    .计次循环首 (2, i)
+        .如果真 (不等于 (位与 (EventInfo.lNetworkEvents, 多项选择 (i, #FD_READ, #FD_CLOSE)), 0))
+            赋值 (ClientStruct.MsgType, 多项选择 (i, #消息类型_数据达到, #消息类型_连接断开))
+            赋值 (ClientStruct.DataParam, 0)
+            子程序_客户端_消息处理 (ClientStruct)
+        .如果真结束
+        
+    .计次循环尾 ()
+    Sleep (1) ' 以防万一
+.循环判断尾 (循环)
+_WSACloseEvent (hEvent)
+
+.子程序 子程序_客户端_消息处理, 空白型, , 
+.参数 ClientStruct, t_ClientStruct, , 
+
+.判断开始 (等于 (ClientStruct.MsgType, #消息类型_数据达到))
+    赋值 (ClientStruct.DataParam, 子程序_取回传输数据 (ClientStruct.hSocket, ClientStruct.hSSL))
+    .如果真 (等于 (ClientStruct.DataParam, 0))
+        返回 ()
+    .如果真结束
+    
+.判断 (等于 (ClientStruct.MsgType, #消息类型_连接断开))
+    _shutdown (ClientStruct.hSocket, #SD_BOTH)
+    _closesocket (ClientStruct.hSocket)
+.默认
+    
+.判断结束
+子程序_客户端_用户消息通知 (ClientStruct) ' 必须等用户子程序完成后才能继续接收下一条数据
+ ' _CreateThread (0, 0, &线程_客户端_用户消息通知, ptr, 0, 0) '不采用多线程完成用户操作,否则有数据混乱的可能
+
+.子程序 子程序_客户端_用户消息通知, 空白型, , 
+.参数 ClientStruct, t_ClientStruct, , 
+
+.局部变量 ptr, 空白型, , , 
+
+赋值 (ptr, _GlobalAlloc (0, #SizeOf_ClientStruct))
+CopyFromClientStruct (ptr, ClientStruct, #SizeOf_ClientStruct)
+辅_调用子程序 (ClientStruct.NotifyProc, ptr)
+_GlobalFree (ptr)
+_GlobalFree (ClientStruct.DataParam)
+
+.程序集 EcStart, , , 
+
+.子程序 _启动子程序, 整数型, , 
+_临时子程序 ()
+返回 (0)
+
+.子程序 _临时子程序, 空白型, , 
+.局部变量 c, 类_客户端_SSL, , , 
+.局部变量 s, 类_服务端_SSL, , , 
+.局部变量 e, 类_网络环境_SSL, , , 
+
+ ' e.释放网络环境 ()
+ ' c.连接 (“192.168.1.2”, 1080, &_临时子程序)
+ ' s.关闭服务 ()
+
+
+ ' 不属于任何一个程序集、类模块的函数：

@@ -1,0 +1,259 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.wodesoft.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.wodesoft.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.wodesoft.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 321
+    高度 = 155
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “SP2/SP3 修改TCP/IP并发连接数限制”
+    帮助文件名 = “”
+
+
+
+.常量 MAX_PATH, "260", , 
+.常量 CREATE_NEW, "1", , 
+.常量 OPEN_EXISTING, "3", , 
+.常量 GENERIC_READ, "-2147483648", , 
+.常量 GENERIC_WRITE, "1073741824", , 
+.常量 CREATE_ALWAYS, "2", , 
+.常量 FILE_BEGIN, "0", , 
+.常量 FILE_SHARE_READ, "1", , 
+.常量 FILE_SHARE_WRITE, "2", , 
+.常量 INVALID_HANDLE_VALUE, "-1", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 FILETIME, , 
+    .成员 dwLowDateTime, 整数型, , , 
+    .成员 dwHighDateTime, 整数型, , , 
+
+
+.DLL命令 GetSystemDirectory, 整数型, "kernel32.dll", "GetSystemDirectoryA", , 
+    .参数 lpBuffer, 文本型, , 
+    .参数 uSize, 整数型, , 
+
+.DLL命令 GetFileVersionInfo, 整数型, "version.dll", "GetFileVersionInfoA", , 
+    .参数 lptstrFilename, 文本型, , 
+    .参数 dwHandle, 整数型, , 
+    .参数 dwLen, 整数型, , 
+    .参数 lpData, 字节集, 传址, 
+
+.DLL命令 GetFileVersionInfoSize, 整数型, "version.dll", "GetFileVersionInfoSizeA", , 
+    .参数 lptstrFilename, 文本型, , 
+    .参数 lpdwHandle, 整数型, , 
+
+.DLL命令 VerQueryValue, 整数型, "version.dll", "VerQueryValueA", , 
+    .参数 pBlock, 字节集, 传址, 
+    .参数 lpSubBlock, 文本型, 传址, 
+    .参数 lplpBuffer, 整数型, 传址, 
+    .参数 puLen, 整数型, 传址, 
+
+.DLL命令 CopyMemory, 空白型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, 文本型, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 GetWindowsDirectory, 整数型, "kernel32.dll", "GetWindowsDirectoryA", , 
+    .参数 lpBuffer, 文本型, , 
+    .参数 nSize, 整数型, , 
+
+.DLL命令 CreateFile, 整数型, "Kernel32.dll", "CreateFileA", , 
+    .参数 lpFileName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwShareMode, 整数型, , 
+    .参数 lpSecurityAttributes, 整数型, , SECURITY_ATTRIBUTES。
+    .参数 dwCreationDisposition, 整数型, , 
+    .参数 dwFlagsAndAttributes, 整数型, , 
+    .参数 hTemplateFile, 整数型, , 
+
+.DLL命令 WriteFile, 整数型, "kernel32", "", , 
+    .参数 hFile, 整数型, , 
+    .参数 lpBuffer, 整数型, 传址, 
+    .参数 nNumberOfBytesToWrite, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, 传址, 
+    .参数 lpOverlapped, 整数型, , 
+
+.DLL命令 SetFilePointer, 整数型, "kernel32", "", , 
+    .参数 hFile, 整数型, , 
+    .参数 lDistanceToMove, 整数型, , 
+    .参数 lpDistanceToMoveHigh, 整数型, 传址, 
+    .参数 dwMoveMethod, 整数型, , 
+
+.DLL命令 CloseHandle, 逻辑型, "Kernel32.dll", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 SetFileTime, 整数型, "kernel32", "SetFileTime", , 
+    .参数 hFile, 整数型, , 
+    .参数 lpCreationTime, FILETIME, 传址, 
+    .参数 lpLastAccessTime, FILETIME, 传址, 
+    .参数 lpLastWriteTime, FILETIME, 传址, 
+
+.DLL命令 GetFileTime, 整数型, "kernel32", "GetFileTime", , 
+    .参数 hFile, 整数型, , 
+    .参数 lpCreationTime, FILETIME, 传址, 
+    .参数 lpLastAccessTime, FILETIME, 传址, 
+    .参数 lpLastWriteTime, FILETIME, 传址, 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 系统目录, 文本型, , , 
+.程序集变量 文件名, 文本型, , , 
+.程序集变量 版本标记, 整数型, , , 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 版本号信息, 文本型, , , 
+.局部变量 版本信息长度, 整数型, , , 
+.局部变量 版本信息内容, 字节集, , , 
+.局部变量 文本指针, 整数型, , , 
+.局部变量 语言代码, 文本型, , , 
+.局部变量 文件号, 整数型, , , 
+
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+赋值 (系统目录, 取空白文本 (#MAX_PATH))
+GetSystemDirectory (系统目录, #MAX_PATH)
+赋值 (文件名, 相加 (系统目录, “\drivers\tcpip.sys”))
+赋值 (版本信息长度, GetFileVersionInfoSize (文件名, 0))
+赋值 (版本信息内容, 取空白字节集 (版本信息长度)) ' 本源码来自易语言资源网(www.wodesoft.com)
+GetFileVersionInfo (文件名, 0, 版本信息长度, 版本信息内容)
+VerQueryValue (版本信息内容, “\VarFileInfo\Translation”, 文本指针, 版本信息长度)
+赋值 (语言代码, 取文本右边 (相加 (“00000000”, 取十六进制文本 (取字节集数据 (指针到字节集 (文本指针, 版本信息长度), 3, ))), 8))
+赋值 (语言代码, 相加 (取文本右边 (语言代码, 4), 取文本左边 (语言代码, 4)))
+VerQueryValue (版本信息内容, 相加 (“\StringFileInfo\”, 语言代码, “\”, “ProductVersion”), 文本指针, 版本信息长度)
+赋值 (版本号信息, 取空白文本 (版本信息长度))
+CopyMemory (版本号信息, 文本指针, 版本信息长度)
+ ' ---------------------------↑↑ 取得文件版本信息↑↑----------------------------------------------------
+赋值 (文件号, 打开文件 (文件名, #读入, ))
+.判断开始 (等于 (版本号信息, “5.1.2600.5625”)) ' 判断版本号
+    移动读写位置 (文件号, #文件首, 326470)
+    赋值 (., 到文本 (取字节集数据 (读入字节集 (文件号, 4), #整数型, )))
+    赋值 (., 相加 (“当前版本SP3:”, 版本号信息))
+    赋值 (版本标记, 3) ' 本源码来自易语言资源网(www.wodesoft.com)
+.判断 (等于 (版本号信息, “5.1.2600.5512”))
+    移动读写位置 (文件号, #文件首, 326214)
+    赋值 (., 到文本 (取字节集数据 (读入字节集 (文件号, 4), #整数型, )))
+    赋值 (., 相加 (“当前版本SP3:”, 版本号信息))
+    赋值 (版本标记, 2)
+.判断 (等于 (版本号信息, “5.1.2600.2685”))
+    移动读写位置 (文件号, #文件首, 325027)
+    赋值 (., 到文本 (取字节集数据 (读入字节集 (文件号, 4), #整数型, )))
+    赋值 (., 相加 (“当前版本SP2:”, 版本号信息))
+    赋值 (版本标记, 1)
+.默认
+    赋值 (., “未知版本”)
+    赋值 (版本标记, 0)
+.判断结束
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+关闭文件 (文件号)
+ ' 5.1.2600.5625 SP3 7月8日更新
+ ' 5.1.2600.5512 SP3
+ ' 5.1.2600.2685 SP2
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 文件号, 整数型, , , 
+.局部变量 Windir, 文本型, , , 
+.局部变量 hFile, 整数型, , , 
+.局部变量 ret, 整数型, , , 
+.局部变量 lpCreationTime, FILETIME, , , 
+.局部变量 lpLastAccessTime, FILETIME, , , 
+.局部变量 lpLastWriteTime, FILETIME, , , 
+
+ ' 文件号 ＝ 打开文件 (文件名, #读写, )
+复制文件 (文件名, 相加 (文件名, “.kab”)) ' 备个份先
+.判断开始 (等于 (版本标记, 3)) ' 我的系统现在是这个版本 所以仅测试了这一个版本 其他版本 自己找来吧 :)
+    赋值 (hFile, CreateFile (文件名, 位或 (#GENERIC_WRITE, #GENERIC_READ), 位或 (#FILE_SHARE_READ, #FILE_SHARE_WRITE), 0, #OPEN_EXISTING, 0, 0))
+    .如果真 (不等于 (hFile, #INVALID_HANDLE_VALUE))
+        GetFileTime (hFile, lpCreationTime, lpLastAccessTime, lpLastWriteTime)
+        SetFilePointer (hFile, 304, 0, #FILE_BEGIN)
+        WriteFile (hFile, 到整数 (相加 (60769, 到整数 (.))), 2, ret, 0)
+        SetFilePointer (hFile, 326470, 0, #FILE_BEGIN)
+        WriteFile (hFile, 到整数 (.), 2, ret, 0)
+        SetFileTime (hFile, lpCreationTime, lpLastAccessTime, lpLastWriteTime)
+        CloseHandle (hFile)
+    .如果真结束
+     ' 本源码来自易语言资源网(www.wodesoft.com)
+    
+     ' 移动读写位置 (文件号, #文件首, 304)           '莫名其妙 好像有什么错误 改用API先
+     ' 写出字节集 (文件号, 到字节集 (到整数 (60769 ＋ 到整数 (编辑框1.内容))))
+     ' 移动读写位置 (文件号, #文件首, 326470)
+     ' 写出字节集 (文件号, 到字节集 (到整数 (编辑框1.内容)))
+ ' .判断 (等于 (版本标记, 2))
+     ' 移动读写位置 (文件号, #文件首, 326214)
+     ' 写出字节集 (文件号, 到字节集 (到整数 (编辑框1.内容)))
+ ' .判断 (等于 (版本标记, 1))
+     ' 移动读写位置 (文件号, #文件首, 325027)
+     ' 写出字节集 (文件号, 到字节集 (到整数 (编辑框1.内容)))
+.默认
+     ' 关闭文件 (文件号)
+    信息框 (“未知版本,无法修改.”, 0, “错误:”)
+    返回 ()
+.判断结束
+ ' 关闭文件 (文件号)
+
+ ' 复制文件 (文件名, 系统目录 ＋ “\dllcache\tcpip.sys”)  ' 覆盖一下否者系统会用这个恢复回来
+ ' Windir ＝ 取空白文本 (#MAX_PATH)
+ ' GetWindowsDirectory (Windir, #MAX_PATH)
+ ' 复制文件 (文件名, Windir ＋ “\ServicePackFiles\i386\tcpip.sys”)  ' 覆盖一下否者系统会用这个恢复回来,这个是系统最后可以恢复的地方
+信息框 (“修改完成,重启生效!”, 0, )
+' 本源码来自易语言资源网(www.wodesoft.com)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

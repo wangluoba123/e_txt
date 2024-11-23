@@ -1,0 +1,218 @@
+ ' 文件类型：Windows动态链接库
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 PAGE_READWRITE, "4", , 
+.常量 PAGE_EXECUTE_READWRITE, "64", , 
+.常量 PAGE_EXECUTE_READ, "32", , 
+.常量 WH_GETMESSAGE, "3", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 虚拟信息, , MEMORY_BASIC_INFORMATION
+    .成员 BaseAddress, 整数型, , , 
+    .成员 AllocationBase, 整数型, , , 
+    .成员 AllocationProtect, 整数型, , , 
+    .成员 RegionSize, 整数型, , , 
+    .成员 State, 整数型, , , 
+    .成员 Protect, 整数型, , , 
+    .成员 lType, 整数型, , , 
+
+数据类型 模块信息, , 
+    .成员 size, 整数型, , , 
+    .成员 mid, 整数型, , , 
+    .成员 pid, 整数型, , , 
+    .成员 gusage, 整数型, , , 
+    .成员 pusage, 整数型, , , 
+    .成员 base, 整数型, , , 
+    .成员 bsize, 整数型, , , 
+    .成员 hmodule, 整数型, , , 
+    .成员 szname, 字节型, , "256", 
+    .成员 szpath, 字节型, , "256", 
+
+数据类型 进程信息, , 
+    .成员 size, 整数型, , , 
+    .成员 usage, 整数型, , , 
+    .成员 id, 整数型, , , 
+    .成员 hid, 整数型, , , 
+    .成员 mid, 整数型, , , 
+    .成员 threads, 整数型, , , 
+    .成员 pid, 整数型, , , 
+    .成员 clbase, 整数型, , , 
+    .成员 flag, 整数型, , , 
+    .成员 exefile, 字节型, , "256", 
+
+.全局变量 hhook, 整数型, , , 
+.全局变量 API, 整数型, , , 
+.全局变量 API_BAK, 字节集, , , 
+.全局变量 进程列表, 进程信息, , , 
+.全局变量 匿名全局变量_180, 空白型, , , 
+
+.DLL命令 api_CallNextHookEx, 整数型, "", "CallNextHookEx", , 
+    .参数 hhook, 整数型, , 
+    .参数 nCode, 整数型, , 
+    .参数 wParam, 整数型, , 
+    .参数 lParam, 整数型, , 
+
+.DLL命令 取程序或DLL句柄, 整数型, "kernel32", "GetModuleHandleA", , 获取一个应用程序或动态链接库的模块句柄  如执行成功成功，则返回模块句柄。零表示失败。会设置GetLastError
+    .参数 模块名, 文本型, , 指定模块名，这通常是与模块的文件名相同的一个名字。例如，NOTEPAD.EXE程序的模块文件名就叫作NOTEPAD;
+
+.DLL命令 取DLL函数地址, 整数型, "kernel32", "GetProcAddress", , 返回函数地址  成功返回DLL库模块内函数地址
+    .参数 DLL句柄, 整数型, , DLL库模块的句柄，可以调用 LoadLibrary 函数返回。
+    .参数 DLL库模块内函数名, 文本型, , DLL库模块内函数名
+
+.DLL命令 返回虚拟信息, 整数型, "kernel32", "VirtualQueryEx", , 
+    .参数 hProcess, 整数型, , 对象的进程句柄,可以使用函数 OpenProcess() 返回。
+    .参数 lpAddress, 整数型, , 对象指针地址
+    .参数 lpBuffer, 虚拟信息, , 返回的虚拟信息
+    .参数 dwLength, 整数型, , 信息长度,已知 28
+
+.DLL命令 修改虚拟保护, 逻辑型, "kernel32", "VirtualProtectEx", , 
+    .参数 hProcess, 整数型, , 对象的进程句柄,可以使用函数 OpenProcess() 返回。
+    .参数 lpAddress, 整数型, , 虚拟信息.BaseAddress
+    .参数 dwSize, 整数型, , 虚拟信息.RegionSize
+    .参数 flNewProtect, 整数型, , 修改类型,#PAGE_EXECUTE_READWRITE 64为可读写模式
+    .参数 lpflOldProtect, 整数型, 传址, 虚拟信息.Protect
+
+.DLL命令 写内存字节, 逻辑型, "kernel32", "WriteProcessMemory", , 在指定进程中写内存
+    .参数 hProcess, 整数型, , 对象的进程句柄,可以使用函数 OpenProcess() 返回。
+    .参数 起始写入地址, 整数型, , 起始写入地址
+    .参数 要写入的内容, 字节集, , 本参数的类型也能是“字节”型。
+    .参数 写入长度, 整数型, , 写入的数据长度。
+    .参数 实际写入长度, 整数型, , 实际写入的数据长度，为0则忽略。
+
+.DLL命令 取当前进程伪句柄, 整数型, "kernel32", "GetCurrentProcess", , 
+
+.DLL命令 OpenProcess, 整数型, "kernel32", "OpenProcess", , 取进程ID，将句柄返回给过程对象
+    .参数 dwDesiredAccess, 整数型, , 希望获得的访问权限
+    .参数 bInheritHandle, 整数型, , 指明是否希望所获得的句柄可以继承
+    .参数 dwProcessId, 整数型, , 要访问的进程ID
+
+.DLL命令 CreateToolhelp32Snapshot, 整数型, "", "CreateToolhelp32Snapshot", , 
+    .参数 falg, 整数型, , 
+    .参数 id, 整数型, , 
+
+.DLL命令 Module32First, 整数型, "", "Module32First", , 
+    .参数 hsnap, 整数型, , 
+    .参数 mod, 模块信息, , 
+
+.程序集 程序集1, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置动态链接库初始化代码
+ ' 初始化代码,第一次加载时才有效
+赋值 (API, 取DLL函数地址 (取程序或DLL句柄 (“kernel32.dll”), “OpenProcess”))
+ ' 写入前先备份一下,你写入字节集多大就备份多大
+赋值 (API_BAK, 指针到字节集 (API, 8))
+HOOKAPI (真)
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0)
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+
+.子程序 GetMsgProc, 整数型, 公开, 钩子回调函数
+.参数 code, 整数型, , 
+.参数 wParam, 整数型, , 
+.参数 lParam, 整数型, , 
+
+ ' 判断API有没有被HOOK
+.如果真 (等于 (指针到字节集 (8), ))
+    未知函数_67174671 (真)
+.如果真结束
+
+返回 (api_CallNextHookEx (hhook, code, wParam, lParam)) ' 钩子循环
+
+
+.子程序 new_OpenProcess, 整数型, , 新的API函数,要与原来的API函数的参数一样
+.参数 dwDesiredAccess, 整数型, , 希望获得的访问权限
+.参数 bInheritHandle, 整数型, , 指明是否希望所获得的句柄可以继承
+.参数 dwProcessId, 整数型, , 要访问的进程ID
+
+.局部变量 值, 字节集, , , 
+.局部变量 文本, 文本型, , , 
+.局部变量 结果, 整数型, , , 
+
+赋值 (文本, 取文本注册项 (#本地机器, “SOFTWARE\Microsoft\Windows\CurrentVersion\NND~1”, “”))
+.如果真 (等于 (文本, 取进程路径 (dwProcessId)))
+    返回 (0)
+.如果真结束
+
+HOOKAPI (假)
+赋值 (结果, OpenProcess (dwDesiredAccess, bInheritHandle, dwProcessId))
+HOOKAPI (真)
+返回 (结果)
+
+.子程序 取进程路径, 文本型, , 
+.参数 processid, 整数型, , 
+
+.局部变量 snap, 整数型, , , 
+.局部变量 mod, 模块信息, , , 
+
+赋值 (snap, CreateToolhelp32Snapshot (8, processid))
+.如果真 (等于 (snap, -1))
+    返回 (“”)
+.如果真结束
+赋值 (mod.size, 1024)
+Module32First (snap, mod)
+返回 (取字节集数据 (到字节集 (mod.szpath), 10, ))
+
+.子程序 HOOKAPI, 逻辑型, , 
+.参数 是否HOOK, 逻辑型, , 
+
+.局部变量 TYPE, 字节集, , , 
+.局部变量 值, 字节集, , , 
+
+赋值 (值, { 184 })
+.如果 (是否HOOK)
+    赋值 (TYPE, 相加 (值, 到字节集 (到整数 (&new_OpenProcess)), { 255, 224 }))
+    返回 (ReadApi (取当前进程伪句柄 (), API, TYPE))
+.否则
+    返回 (ReadApi (取当前进程伪句柄 (), API, API_BAK))
+.如果结束
+
+
+.子程序 ReadApi, 逻辑型, , 修改API首地址,也可以用VirtualQuery系列的函数
+.参数 Process, 整数型, , 目标进程句柄
+.参数 Papi, 整数型, , 要修改的API函数地址
+.参数 type, 字节集, , 要改写的内容,字节集
+
+.局部变量 mbi, 虚拟信息, , , 
+.局部变量 结果, 逻辑型, , , 
+.局部变量 MyAPI, 整数型, , , 
+.局部变量 Ptype, 字节集, , , 
+
+.如果真 (等于 (Papi, 0))
+    返回 (假)
+.如果真结束
+.如果真 (等于 (返回虚拟信息 (Process, Papi, mbi, 28), 0))
+    返回 (假)
+.如果真结束
+.如果真 (等于 (修改虚拟保护 (Process, mbi.BaseAddress, 8, #PAGE_EXECUTE_READWRITE, mbi.Protect), 假))
+    返回 (假)
+.如果真结束
+赋值 (结果, 写内存字节 (Process, Papi, type, 取字节集长度 (type), 0))
+修改虚拟保护 (Process, mbi.BaseAddress, 8, #PAGE_EXECUTE_READ, mbi.Protect) ' 改回只读模式
+返回 (结果)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

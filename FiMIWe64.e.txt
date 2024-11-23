@@ -1,0 +1,281 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：本源码来自易语言资源网(www.wodesoft.com)
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：             易语言资源网注意事项
+--============   www.wodesoft.com  =============--
+* 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权纠纷本站概不负责！
+* 本站资源未经许可,任何网站不得非法盗链及抄袭本站资源；如引用，请注明来自易语言资源网，谢谢合作！
+--============   www.wodesoft.com  =============--
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 5 0 系统核心支持库
+
+
+
+
+数据类型 TBBUTTON, , 
+    .成员 iBitmap, 整数型, , , 
+    .成员 idCommand, 整数型, , , 
+    .成员 fsState, 字节型, , , 
+    .成员 fsStyle, 字节型, , , 
+    .成员 bReserved, 字节型, , "2", 
+    .成员 dwData, 整数型, , , 
+    .成员 iString, 整数型, , , 
+
+
+.DLL命令 GetWindowThreadProcessId, 整数型, "", "", , 
+    .参数 hWnd, 整数型, , 
+    .参数 lpdwProcessId, 整数型, 传址, 
+
+.DLL命令 FindWindow, 整数型, "", "FindWindowA", , 
+    .参数 lpClassName, 文本型, , 
+    .参数 lpWindowName, 文本型, , 
+
+.DLL命令 FindWindowEx, 整数型, "", "FindWindowExA", , 
+    .参数 hWnd1, 整数型, , 
+    .参数 hWnd2, 整数型, , 
+    .参数 lpsz1, 文本型, , 
+    .参数 lpsz2, 文本型, , 
+
+.DLL命令 OpenProcess, 整数型, "kernel32.dll", "OpenProcess", , , 将句柄返回给过程对象
+    .参数 进程对象, 整数型, , dwDesiredAccess
+    .参数 继承句柄, 逻辑型, , bInheritHandle
+    .参数 进程标识符, 整数型, , dwProcessId
+
+.DLL命令 SendMessageA, 整数型, "", "SendMessageA", , 
+    .参数 窗口句柄, 整数型, , 
+    .参数 信息值, 整数型, , 
+    .参数 wParam, 整数型, , 要隐藏的图标，从0开始
+    .参数 lParam, 整数型, , Any型,根据需要可以设置成不同的类型
+
+.DLL命令 CloseHandle, 逻辑型, "", "CloseHandle", 公开, 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 VirtualAllocEx, 整数型, "", "", 公开, 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+    .参数 flProtect, 整数型, , 
+
+.DLL命令 VirtualFreeEx, 逻辑型, "", "", 公开, 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+
+.DLL命令 ReadProcessMemory, 逻辑型, "", "", 公开, 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 字节集, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, , 
+
+.DLL命令 _To_TB, 空白型, "", "RtlMoveMemory", , 
+    .参数 Destination, TBBUTTON, , 
+    .参数 Source, 字节集, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 WideCharToMultiByte, 整数型, "", "", , 
+    .参数 CodePage, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpWideCharStr, 字节集, , 
+    .参数 cchWideChar, 整数型, , 
+    .参数 lpMultiByteStr, 文本型, 传址, 
+    .参数 cbMultiByte, 整数型, , 
+    .参数 lpDefaultChar, 文本型, , 
+    .参数 lpUsedDefaultChar, 逻辑型, , 
+
+.DLL命令 CreateRemoteThread, 整数型, "", "", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 整数型, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, 传址, 
+
+.DLL命令 WaitForSingleObject, 整数型, "", "", , 
+    .参数 hHandle, 整数型, , 
+    .参数 dwMilliseconds, 整数型, , 
+
+.DLL命令 GetExitCodeThread, 整数型, "", "", , 
+    .参数 hThread, 整数型, , 
+    .参数 lpExitCode, 整数型, 传址, 
+
+.DLL命令 LoadLibraryA, 整数型, "", "", , 
+    .参数 lpFileName, 文本型, , ;
+
+.DLL命令 GetProcAddress, 整数型, "", "", , 
+    .参数 hModule, 整数型, , 
+    .参数 lpProcName, 文本型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 hToolbar, 整数型, , , 
+.局部变量 hProcess, 整数型, , , 
+.局部变量 pid, 整数型, , , 
+.局部变量 num, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 ptb, 整数型, , , 
+.局部变量 tb, TBBUTTON, , , 
+.局部变量 buf, 字节集, , , 
+.局部变量 string, 文本型, , , 
+.局部变量 hWnd, 整数型, , , 
+
+ ' --========  易语言资源网  (www.wodesoft.com)  ======--
+ ' 努力创建完善、持续更新的易语言学习例程源码资源站
+ ' --================   www.wodesoft.com  ===========--
+ ' --==================   易语言资源网注意事项  ================--
+ ' * 易语言资源网为易语言官方站、易语言官方论坛提供辅助资源站；
+ ' 本易语言资源网( www.wodesoft.com)所有软件和资料均为软件作者提
+ ' 供和网友推荐发布而来，其版权归该软件和程序源码的合法拥有者所
+ ' 有，本站易语言资源网整理收集仅供易语言用户学习和易语言技术研
+ ' 究探讨使用，不得用于任何商业用途。如果由于以上原因造成的版权
+ ' 纠纷本站概不负责！
+ ' * 本站资源未经许可，任何网站不得非法盗链及抄袭本站资源；如引用
+ ' 页面，请注明来自易语言资源网，谢谢合作！
+ ' --=====================   www.wodesoft.com  ================--
+
+赋值 (hToolbar, 取托盘区句柄_ (真))
+
+GetWindowThreadProcessId (hToolbar, pid)
+赋值 (hProcess, OpenProcess (1082, 假, pid))
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+赋值 (num, SendMessageA (hToolbar, 1048, 0, 0)) ' 1048 = TB_BUTTONCOUNT
+.计次循环首 (num, i)
+     ' 在远程申请TBBUTTON结构的内存
+    赋值 (ptb, VirtualAllocEx (hProcess, 0, 20, 4096, 64))
+    .如果真 (等于 (ptb, 0))
+        输出调试文本 (“Process allocates memory error!”)
+        到循环尾 ()
+    .如果真结束
+     ' 将远程TBBUTTON结构填充
+    SendMessageA (hToolbar, 1047, 相减 (i, 1), ptb) ' 1047 = TB_GETBUTTON
+     ' 本源码来自易语言资源网(www.wodesoft.com)
+     ' 从远程取出TBBUTTON结构
+    赋值 (buf, 取空白字节集 (20))
+    ReadProcessMemory (hProcess, ptb, buf, 取字节集长度 (buf), 0)
+    _To_TB (tb, buf, 20)
+    
+     ' 取出远程unicode文本的长度
+    赋值 (num, _lstrlenW (hProcess, tb.iString))
+     ' 构造unicode缓冲文本，并从远程取出。
+    赋值 (buf, 取空白字节集 (相加 (相乘 (num, 2), 2)))
+    ReadProcessMemory (hProcess, tb.iString, buf, 取字节集长度 (buf), 0)
+     ' 将unicode文本转换为ansi
+    赋值 (string, W2A (buf))
+    
+    赋值 (buf, 取空白字节集 (4))
+    ReadProcessMemory (hProcess, tb.dwData, buf, 取字节集长度 (buf), 0)
+    赋值 (hWnd, 取字节集数据 (buf, #整数型, ))
+    GetWindowThreadProcessId (hWnd, pid)
+     ' 本源码来自易语言资源网(www.wodesoft.com)
+    输出调试文本 (相加 (“name:”, string))
+    输出调试文本 (相加 (“hwnd:”, 到文本 (hWnd)))
+    输出调试文本 (相加 (“pid:”, 到文本 (pid)))
+    输出调试文本 (“-----------------------”)
+    
+     ' 释放远程TBBUTTON结构内存
+    VirtualFreeEx (hProcess, ptb, 0, 32768)
+    
+.计次循环尾 ()
+CloseHandle (hProcess)
+
+
+.子程序 取托盘区句柄_, 整数型, , 
+.参数 是否托盘, 逻辑型, 可空, 可空为真.托盘区句柄，假.任务栏区句柄。
+
+.局部变量 系统句柄, 整数型, , , SysPager
+.局部变量 句柄, 整数型, , , 
+.局部变量 托盘句柄, 整数型, , , 
+
+.如果真 (是否为空 (是否托盘))
+    赋值 (是否托盘, 真)
+.如果真结束
+.如果真 (等于 (是否托盘, 假))
+    赋值 (句柄, FindWindow (“Shell_TrayWnd”, 字符 (0)))
+    赋值 (句柄, FindWindowEx (句柄, 0, “ReBarWindow32”, 字符 (0)))
+    赋值 (句柄, FindWindowEx (句柄, 0, “MSTaskSwWClass”, 字符 (0)))
+    赋值 (系统句柄, FindWindowEx (句柄, 0, “ToolbarWindow32”, 字符 (0)))
+.如果真结束
+.如果真 (是否托盘)
+    赋值 (句柄, FindWindow (“Shell_TrayWnd”, 字符 (0)))
+    赋值 (句柄, FindWindowEx (句柄, 0, “TrayNotifyWnd”, 字符 (0)))
+    赋值 (系统句柄, FindWindowEx (句柄, 0, “SysPager”, 字符 (0)))
+.如果真结束
+.如果真 (不等于 (系统句柄, 0))
+    赋值 (句柄, 系统句柄)
+.如果真结束
+赋值 (托盘句柄, FindWindowEx (句柄, 0, “ToolbarWindow32”, 字符 (0)))
+.如果真 (等于 (托盘句柄, 0))
+    赋值 (托盘句柄, 句柄)
+.如果真结束
+返回 (托盘句柄)
+
+.子程序 W2A, 文本型, , 
+.参数 CharStr, 字节集, , 
+
+.局部变量 len, 整数型, , , 
+.局部变量 Returned, 文本型, , , 
+
+赋值 (len, WideCharToMultiByte (1, 0, CharStr, -1, 字符 (0), 0, 字符 (0), 假))
+赋值 (Returned, 取空白文本 (len))
+WideCharToMultiByte (1, 0, CharStr, -1, Returned, 取文本长度 (Returned), 字符 (0), 假)
+返回 (Returned)
+ ' 本源码来自易语言资源网(www.wodesoft.com)
+
+.子程序 _lstrlenW, 整数型, , 
+.参数 hProcess, 整数型, , 
+.参数 lpString, 整数型, , 
+
+返回 (CreateProcessThread (hProcess, GetAddress (“kernel32.dll”, “lstrlenW”), lpString))
+
+.子程序 CreateProcessThread, 整数型, , 
+.参数 hProcess, 整数型, , 
+.参数 lpStartAddress, 整数型, , 
+.参数 lpParameter, 整数型, 可空, 
+
+.局部变量 hThread, 整数型, , , 
+.局部变量 lpExitCode, 整数型, , , 
+
+赋值 (hThread, CreateRemoteThread (hProcess, 0, 0, lpStartAddress, lpParameter, 0, 0)) ' 创建远程线程
+WaitForSingleObject (hThread, -1) ' 等待线程执行完毕
+GetExitCodeThread (hThread, lpExitCode) ' 获取返回值
+CloseHandle (hThread) ' 关闭线程内核对象
+返回 (lpExitCode)
+
+.子程序 GetAddress, 整数型, , 
+.参数 lpFileName, 文本型, , ;
+.参数 lpProcName, 文本型, , 
+
+返回 (GetProcAddress (LoadLibraryA (lpFileName), lpProcName))
+' 本源码来自易语言资源网(www.wodesoft.com)
+
+
+ ' 不属于任何一个程序集、类模块的函数：

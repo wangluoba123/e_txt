@@ -1,0 +1,250 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：MyArgMemory
+ ' 程序描述：
+ ' 程序作者：星锋工作室-东灿
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+
+
+.常量 sizeof_int, "4", , 
+.常量 HEAP_ZERO_MEMORY, "8", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 5 系统核心支持库
+ ' spec A512548E76954B6E92C21055517615B0 2 1 特殊功能支持库
+
+
+
+
+
+.DLL命令 _GetProcessHeap, 整数型, "", "GetProcessHeap", , 
+
+.DLL命令 _HeapAlloc, 整数型, "", "HeapAlloc", , 
+    .参数 hHeap, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 dwBytes, 整数型, , 
+
+.DLL命令 _HeapFree, 整数型, "", "HeapFree", , 
+    .参数 hHeap, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMem, 整数型, , 
+
+.DLL命令 _HeapReAlloc, 整数型, "", "HeapReAlloc", , 
+    .参数 hHeap, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpMem, 整数型, , 
+    .参数 dwBytes, 整数型, , 
+
+.DLL命令 _MoveMemory, 空白型, "", "RtlMoveMemory", , 
+    .参数 pDest, 整数型, , 
+    .参数 pSrc, 整数型, , 
+    .参数 ByteLen, 整数型, , 
+
+.程序集 ec, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在初始化代码执行完毕后调用测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的名称、参数及返回值类型。
+
+.程序集 程序集, , , 
+
+.子程序 GetMyHeap, 整数型, , 
+.局部变量 g_heap, 空白型, 静态, , 
+
+.如果真 (等于 (g_heap, 0))
+    赋值 (g_heap, _GetProcessHeap ())
+.如果真结束
+返回 (g_heap)
+
+.子程序 Mem_Alloc, 整数型, , 
+.参数 dwSize, 空白型, , 
+.参数 Zero, 逻辑型, , 
+
+.局部变量 ret, 空白型, , , 
+
+.如果 (Zero)
+    赋值 (ret, _HeapAlloc (GetMyHeap (), #HEAP_ZERO_MEMORY, dwSize))
+.否则
+    赋值 (ret, _HeapAlloc (GetMyHeap (), 0, dwSize))
+.如果结束
+.如果真 (等于 (ret, 0))
+    输出调试文本 (“MemoryHeap Alloc error!”)
+.如果真结束
+返回 (ret)
+
+.子程序 Mem_ReAlloc, 整数型, , 
+.参数 OldPtr, 空白型, , 
+.参数 NewSize, 空白型, , 
+.参数 Zero, 逻辑型, , 
+
+.局部变量 ret, 空白型, , , 
+
+.如果 (Zero)
+    赋值 (ret, _HeapReAlloc (GetMyHeap (), #HEAP_ZERO_MEMORY, OldPtr, NewSize))
+.否则
+    赋值 (ret, _HeapReAlloc (GetMyHeap (), 0, OldPtr, NewSize))
+.如果结束
+.如果真 (等于 (ret, 0))
+    输出调试文本 (“MemoryHeap ReAlloc error!”)
+.如果真结束
+返回 (ret)
+
+.子程序 Mem_Free, 空白型, , 
+.参数 Ptr, 空白型, , 
+
+_HeapFree (GetMyHeap (), 0, Ptr)
+
+.子程序 GetPtrValue_int, 整数型, , 
+.参数 Ptr, 空白型, , 
+
+.局部变量 ret, 空白型, , , 
+
+置入代码 ({ 139, 69, 8, 139, 0, 137, 69, 252 })
+返回 (ret)
+
+.子程序 WritePtr_int, 空白型, , 
+.参数 Ptr, 空白型, , 
+.参数 Value, 空白型, , 
+
+置入代码 ({ 139, 69, 8, 139, 77, 12, 137, 8 })
+
+.子程序 arg_init, 整数型, 公开, 
+.参数 Count, 空白型, 可空, 
+
+.局部变量 pData, 空白型, , , 
+.局部变量 pArg, 空白型, , , 
+
+.如果真 (小于 (Count, 0))
+    赋值 (Count, 0)
+.如果真结束
+赋值 (pArg, Mem_Alloc (相乘 (#sizeof_int, 相加 (2, 1)), 假)) ' reserve item:lock section
+赋值 (pData, Mem_Alloc (相乘 (#sizeof_int, Count), 真))
+WritePtr_int (相加 (pArg, 0), pData)
+WritePtr_int (相加 (pArg, #sizeof_int), Count)
+返回 (pArg)
+
+.子程序 arg_destory, 空白型, , 
+.参数 pArg, 空白型, , 
+
+.局部变量 pData, 空白型, , , 
+
+.如果真 (等于 (pArg, 0))
+    返回 ()
+.如果真结束
+赋值 (pData, GetPtrValue_int (相加 (pArg, 0)))
+Mem_Free (pData)
+Mem_Free (pArg)
+
+.子程序 arg_count, 整数型, , 
+.参数 pArg, 空白型, , 
+
+.局部变量 ret, 空白型, , , 
+
+.如果真 (等于 (pArg, 0))
+    返回 (0)
+.如果真结束
+赋值 (ret, GetPtrValue_int (相加 (pArg, #sizeof_int)))
+返回 (ret)
+
+.子程序 arg_add, 整数型, , 
+.参数 pArg, 空白型, , 
+.参数 Value, 空白型, , 
+
+.局部变量 pData, 空白型, , , 
+.局部变量 NewCount, 空白型, , , 
+
+.如果真 (等于 (pArg, 0))
+    返回 (0)
+.如果真结束
+赋值 (pData, GetPtrValue_int (相加 (pArg, 0)))
+赋值 (NewCount, 相加 (GetPtrValue_int (相加 (pArg, #sizeof_int)), 1))
+赋值 (pData, Mem_ReAlloc (pData, 相乘 (NewCount, #sizeof_int), 真))
+WritePtr_int (相加 (pData, 相乘 (相减 (NewCount, 1), #sizeof_int)), Value)
+WritePtr_int (相加 (pArg, #sizeof_int), NewCount)
+WritePtr_int (相加 (pArg, 0), pData)
+返回 (NewCount)
+
+.子程序 arg_get, 整数型, , 
+.参数 pArg, 空白型, , 
+.参数 Index, 空白型, , 
+
+.局部变量 pData, 空白型, , , 
+.局部变量 NowCount, 空白型, , , 
+.局部变量 ret, 空白型, , , 
+
+.如果真 (等于 (pArg, 0))
+    返回 (0)
+.如果真结束
+赋值 (pData, GetPtrValue_int (相加 (pArg, 0)))
+赋值 (NowCount, GetPtrValue_int (相加 (pArg, #sizeof_int)))
+.如果真 (或者 (小于或等于 (Index, 0), 大于 (Index, NowCount)))
+    输出调试文本 (“over read”)
+    返回 (0)
+.如果真结束
+赋值 (ret, GetPtrValue_int (相加 (pData, 相乘 (相减 (Index, 1), #sizeof_int))))
+返回 (ret)
+
+.子程序 arg_set, 逻辑型, , 
+.参数 pArg, 空白型, , 
+.参数 Index, 空白型, , 
+.参数 Value, 空白型, , 
+
+.局部变量 pData, 空白型, , , 
+.局部变量 NowCount, 空白型, , , 
+.局部变量 ret, 空白型, , , 
+
+.如果真 (等于 (pArg, 0))
+    返回 (假)
+.如果真结束
+赋值 (pData, GetPtrValue_int (相加 (pArg, 0)))
+赋值 (NowCount, GetPtrValue_int (相加 (pArg, #sizeof_int)))
+.如果真 (或者 (小于或等于 (Index, 0), 大于 (Index, NowCount)))
+    输出调试文本 (“over write”)
+    返回 (假)
+.如果真结束
+WritePtr_int (相加 (pData, 相乘 (相减 (Index, 1), #sizeof_int)), Value)
+返回 (真)
+
+.子程序 arg_del, 逻辑型, , 
+.参数 pArg, 空白型, , 
+.参数 Index, 空白型, , 
+.参数 Count, 空白型, 可空, 
+
+.局部变量 pData, 空白型, , , 
+.局部变量 NowCount, 空白型, , , 
+.局部变量 ret, 空白型, , , 
+
+.如果真 (小于或等于 (Count, 0))
+    赋值 (Count, 1)
+.如果真结束
+.如果真 (等于 (pArg, 0))
+    返回 (假)
+.如果真结束
+赋值 (pData, GetPtrValue_int (相加 (pArg, 0)))
+赋值 (NowCount, GetPtrValue_int (相加 (pArg, #sizeof_int)))
+.如果真 (或者 (小于或等于 (Index, 0), 大于 (Index, NowCount)))
+    输出调试文本 (“over del”)
+    返回 (假)
+.如果真结束
+_MoveMemory (相加 (pData, 相乘 (相减 (Index, 1), #sizeof_int)), 相加 (pData, 相乘 (相加 (相减 (Index, 1), Count), #sizeof_int)), 相乘 (相减 (相加 (相减 (NowCount, Index), 1), Count), #sizeof_int))
+赋值 (NowCount, 相减 (NowCount, Count))
+WritePtr_int (相加 (pArg, #sizeof_int), NowCount)
+返回 (真)
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

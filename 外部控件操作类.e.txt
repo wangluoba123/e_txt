@@ -1,0 +1,241 @@
+ ' 文件类型：Windows模块源码
+
+ ' 程序名称：外部控件操作类
+ ' 程序描述：
+ ' 程序作者：大连大有吴涛易语言软件开发公司
+ ' 邮政编码：116001
+ ' 联系地址：
+ ' 联系电话：0411-88995831
+ ' 传真号码：0411-88995834
+ ' 电子信箱：
+ ' 主页地址：www.dywt.com.cn
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+.常量 MEM_RELEASE, "32768", , 
+.常量 MEM_COMMIT, "4096", , 
+.常量 PAGE_READWRITE, "4", , 
+.常量 FILE_MAP_ALL_ACCESS, "983071", , 
+.常量 , , , 
+.常量 , , , 
+.常量 STANDARD_RIGHTS_REQUIRED, "983040", , 
+.常量 SYNCHRONIZE, "1048576", , 
+.常量 PROCESS_ALL_ACCESS, "2035711", , 
+.常量 PROCESS_CREATE_PROCESS, "128", , 
+.常量 PROCESS_CREATE_THREAD, "2", , 
+.常量 PROCESS_DUP_HANDLE, "64", , 
+.常量 PROCESS_HEAP_ENTRY_BUSY, "4", , 
+.常量 PROCESS_HEAP_ENTRY_DDESHARE, "32", , 
+.常量 PROCESS_HEAP_ENTRY_MOVEABLE, "16", , 
+.常量 PROCESS_HEAP_REGION, "1", , 
+.常量 PROCESS_HEAP_UNCOMMITTED_RANGE, "2", , 
+.常量 PROCESS_QUERY_INFORMATION, "1024", , 
+.常量 PROCESS_SET_INFORMATION, "512", , 
+.常量 PROCESS_SET_QUOTA, "256", , 
+.常量 PROCESS_SET_SESSIONID, "4", , 
+.常量 PROCESS_TERMINATE, "1", , 
+.常量 PROCESS_VM_OPERATION, "8", , 
+.常量 PROCESS_VM_READ, "16", , 
+.常量 PROCESS_VM_WRITE, "32", , 
+.常量 PROCESS_XP_HEADER_CACHE, "131072", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 内存映射数据9X, , 
+    .成员 映射文件号, 整数型, , , 
+    .成员 指针, 整数型, , , 
+
+
+.DLL命令 GetWindowThreadProcessId, 整数型, "user32.dll", "GetWindowThreadProcessId", , 
+    .参数 hwnd, 整数型, , 
+    .参数 lpdwProcessId, 整数型, 传址, 
+
+.DLL命令 OpenProcess, 整数型, "kernel32.dll", "OpenProcess", , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 逻辑型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 VirtualAllocEx, 整数型, "kernel32.dll", "VirtualAllocEx", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+    .参数 flProtect, 整数型, , 
+
+.DLL命令 VirtualFreeEx, 整数型, "kernel32.dll", "VirtualFreeEx", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpAddress, 整数型, , 
+    .参数 dwSize, 整数型, , 
+    .参数 flAllocationType, 整数型, , 
+
+.DLL命令 WriteProcessMemory, 整数型, "kernel32.dll", "WriteProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 整数型, , 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, , 
+
+.DLL命令 CloseHandle, 整数型, "kernel32.dll", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 CreateFileMapping, 整数型, "kernel32.dll", "CreateFileMappingA", , 创建一个新的文件映射对象
+    .参数 hFile, 整数型, , 
+    .参数 lpFileMappigAttributes, 整数型, , 
+    .参数 flProtect, 整数型, , 
+    .参数 dwMaximumSizeHigh, 整数型, , 
+    .参数 dwMaximumSizeLow, 整数型, , 
+    .参数 lpName, 整数型, , 
+
+.DLL命令 MapViewOfFile, 整数型, "kernel32.dll", "MapViewOfFile", , 将一个文件映射对象映射到当前应用程序的地址空间
+    .参数 hFileMappingObject, 整数型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwFileOffsetHigh, 整数型, , 
+    .参数 dwFileOffsetLow, 整数型, , 
+    .参数 dwNumberOfBytesToMap, 整数型, , 
+
+.DLL命令 UnmapViewOfFile, 整数型, "kernel32.dll", "UnmapViewOfFile", , 在当前应用程序的内存地址空间解除对一个文件映射对象的映射
+    .参数 lpBaseAddress, 整数型, , 
+
+.DLL命令 ReadProcessMemory, 整数型, "", "ReadProcessMemory", , 
+    .参数 hProcess, 整数型, , 
+    .参数 lpBaseAddress, 整数型, , 
+    .参数 lpBuffer, 字节集, 传址, 
+    .参数 nSize, 整数型, , 
+    .参数 lpNumberOfBytesWritten, 整数型, , 
+
+.类模块 外部控件操作类, , , 
+
+.程序集变量 映射文件, 内存映射数据9X, , "0", 
+.程序集变量 系统类别, 整数型, , , 
+.子程序 _初始化, 空白型, , 当基于本类的对象被创建后，此方法会被自动调用
+赋值 (系统类别, 取操作系统类别 ())
+
+
+.子程序 _销毁, 空白型, , 当基于本类的对象被销毁前，此方法会被自动调用
+
+
+.子程序 打开进程, 整数型, 公开, 成功就返回进程句柄
+.参数 对象句柄, 整数型, , 
+
+.局部变量 进程句柄, 整数型, , , 
+.局部变量 dwProcessID, 整数型, , , 
+
+GetWindowThreadProcessId (对象句柄, dwProcessID) ' 获取与指定窗口关联在一起的一个线程和进程标识符
+赋值 (进程句柄, OpenProcess (#PROCESS_ALL_ACCESS, 假, dwProcessID)) ' 打开一个现有进程的句柄 ' 位或 (#STANDARD_RIGHTS_REQUIRED, #SYNCHRONIZE, 4095)
+ ' .如果 (等于 (系统类别, 3))
+     ' lpListItemRemote ＝ VirtualAllocEx (进程句柄, 0, 数据长度, #MEM_COMMIT, #PAGE_READWRITE)  ' 在目标进程中分配内存空间。
+     ' 如果真 (WriteProcessMemory (进程句柄, lpListItemRemote, 数据地址, 数据长度, 0) ＝ 0)  ' 写进程内存如果真 ()
+     ' 返回 (0)
+     ' ' 如果真 (SendMessage (对象句柄, 消息号, 索引号, lpListItemRemote) ＝ 0)如果真 ()
+     ' ' 返回 (0)
+     ' ' VirtualFreeEx (进程句柄, lpListItemRemote, 0, #MEM_RELEASE)  ' 在目标进程中释放内存空间。
+     ' ' CloseHandle (进程句柄)  ' 关闭一个内核对象。
+     ' ' 返回 (真)
+.否则
+    
+     ' 映射文件 ＝ CreateFileMapping (-1, 0, #PAGE_READWRITE, 0, 数据长度, 0)  ' 创建一个新的文件映射对象
+     ' lpListItemRemote ＝ MapViewOfFile (映射文件, #FILE_MAP_ALL_ACCESS, 0, 0, 0)  ' 将一个文件映射对象映射到当前应用程序的地址空间
+     ' 如果真 (WriteProcessMemory (进程句柄, lpListItemRemote, 数据地址, 数据长度, 0) ＝ 0)  ' 写进程内存如果真 ()
+     ' 返回 (0)
+     ' .如果真 ()
+
+.子程序 写进程内存, 逻辑型, 公开, 
+.参数 进程句柄, 整数型, , 
+.参数 数据指针, 整数型, , 
+.参数 数据地址, 整数型, , 
+.参数 数据长度, 整数型, , 
+
+返回 (不等于 (WriteProcessMemory (进程句柄, 数据指针, 数据地址, 数据长度, 0), 0)) ' 写进程内存
+
+.子程序 结束操作, 空白型, 公开, 
+.参数 进程句柄, 整数型, , 
+
+.如果真 (不等于 (进程句柄, 0))
+    CloseHandle (进程句柄) ' 关闭一个内核对象。
+    清除数组 (映射文件)
+    赋值 (进程句柄, 0)
+.如果真结束
+
+
+.子程序 读外部指针数据, 字节集, 公开, 
+.参数 进程句柄, 整数型, , 
+.参数 外部程序指针, 整数型, , 
+.参数 读取数据大小, 整数型, , 
+
+.局部变量 szBuf, 字节集, , , 
+
+赋值 (szBuf, 取空白字节集 (读取数据大小))
+ReadProcessMemory (进程句柄, 外部程序指针, szBuf, 读取数据大小, 0)
+返回 (szBuf)
+
+
+.子程序 分配外部指针, 整数型, 公开, 
+.参数 进程句柄, 整数型, , 
+.参数 数据长度, 整数型, , 分配的数据长度
+
+.局部变量 TEMP, 内存映射数据9X, , , 
+
+.判断开始 (等于 (系统类别, 3))
+    返回 (VirtualAllocEx (进程句柄, 0, 数据长度, #MEM_COMMIT, #PAGE_READWRITE))
+.默认
+    赋值 (TEMP.映射文件号, CreateFileMapping (-1, 0, #PAGE_READWRITE, 0, 数据长度, 0)) ' 创建一个新的文件映射对象
+    赋值 (TEMP.指针, MapViewOfFile (TEMP.映射文件号, #FILE_MAP_ALL_ACCESS, 0, 0, 0)) ' 将一个文件映射对象映射到当前应用程序的地址空间
+    重定义数组 (映射文件, 真, 相加 (取数组成员数 (映射文件), 1))
+    赋值 (映射文件 [取数组成员数 (映射文件)], TEMP)
+    返回 (TEMP.指针)
+.判断结束
+
+
+.子程序 销毁外部指针, 空白型, 公开, 
+.参数 进程句柄, 整数型, , 
+.参数 外部指针, 整数型, , 
+
+.局部变量 成员数, 整数型, , , 
+.局部变量 I, 整数型, , , 
+
+.判断开始 (等于 (系统类别, 3))
+    VirtualFreeEx (进程句柄, 外部指针, 0, #MEM_RELEASE) ' 在目标进程中释放内存空间。
+.默认
+    赋值 (成员数, 取数组成员数 (映射文件))
+    .变量循环首 (1, 成员数, 1, I)
+        .如果真 (等于 (映射文件 [I], 指针, 外部指针))
+            UnmapViewOfFile (外部指针) ' 在当前应用程序的内存地址空间解除对一个文件映射对象的映射
+            CloseHandle (映射文件 [I], 映射文件号)
+            删除成员 (映射文件, I, )
+            跳出循环 ()
+        .如果真结束
+        
+    .变量循环尾 ()
+.判断结束
+
+
+.程序集 程序集2, , , 
+
+.子程序 _启动子程序, 整数型, , 请在本子程序中放置易模块初始化代码
+
+_临时子程序 () ' 在模块初始化代码执行完毕后调用模块测试代码
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 _临时子程序, 空白型, , 
+ ' 本名称子程序用作测试程序用，仅在开发及调试环境中有效，编译发布程序前将被系统自动清空，请将所有用作测试的临时代码放在本子程序中。 ***注意不要修改本子程序的参数及返回值类型。
+
+
+ ' 不属于任何一个程序集、类模块的函数：

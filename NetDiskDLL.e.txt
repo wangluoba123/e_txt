@@ -1,0 +1,297 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 测试窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 502
+    高度 = 436
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “测试窗口”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+
+.DLL命令 MD5String, 逻辑型, "NetDiskDLL.dll", "MD5String", , 取文本的32位MD5值，成功返回真。
+    .参数 inStr, 文本型, 传址, 被取值文本
+    .参数 inlen, 整数型, , 
+    .参数 outStr, 文本型, 传址, 
+    .参数 outlen, 整数型, , 输出32位数文本
+
+.DLL命令 DES, 逻辑型, "NetDiskDLL.dll", "DES", , 参数Mode为1加密2解密
+    .参数 inStr, 文本型, 传址, 
+    .参数 Key, 文本型, 传址, 
+    .参数 OutStr, 文本型, 传址, 
+    .参数 Mode, 整数型, , 1加密2解密
+
+.DLL命令 GenUniqueID, 逻辑型, "NetDiskDLL.dll", "GenUniqueID", , 
+    .参数 guid, 文本型, 传址, 
+    .参数 random, 逻辑型, , 是否增加随机因素。
+
+.DLL命令 GetDiskSN, 逻辑型, "NetDiskDLL.dll", "GetDiskSN", , 
+    .参数 index, 整数型, , 
+    .参数 sn, 文本型, 传址, 
+
+.DLL命令 GetNetCardIPAdd, 逻辑型, "NetDiskDLL.dll", "GetNetCardIPAdd", , 
+    .参数 index, 整数型, , 
+    .参数 ipstr, 文本型, 传址, 
+    .参数 _f, 逻辑型, , 
+
+.DLL命令 GetNetCardMacAdd, 逻辑型, "NetDiskDLL.dll", "GetNetCardMacAdd", , 取网卡MAC地址
+    .参数 index, 整数型, , 
+    .参数 ipstr, 文本型, 传址, 
+
+.DLL命令 GetNetCardName, 逻辑型, "NetDiskDLL.dll", "GetNetCardName", , 取网卡名称
+    .参数 index, 整数型, , 
+    .参数 ipstr, 文本型, 传址, 
+
+.DLL命令 GetNetCardCount, 整数型, "NetDiskDLL.dll", "GetNetCardCount", , 取网卡总数
+
+.DLL命令 GetComputerID, 逻辑型, "NetDiskDLL.dll", "GetComputerID", , 取计算机ID
+    .参数 id, 文本型, 传址, 
+    .参数 strlen, 整数型, , 
+
+.DLL命令 GetMainBordID, 逻辑型, "NetDiskDLL.dll", "GetMainBordID", , 取主板ID
+    .参数 id, 文本型, 传址, 
+
+.DLL命令 Base64Decode, 文本型, "NetDiskDLL.dll", "Base64Decode", , 从文本解码为二进制，先用WideCharToMultiByte转化一下，然后调用base64decode方法。将输入的一个以 BASE64 方式编码的字符串解码为一个二进制数据块
+    .参数 ipstr, 文本型, 传址, 
+
+.DLL命令 Base64Encode, 文本型, "NetDiskDLL.dll", "Base64Encode", , 从二进制编码为文本。将输入的二进制数据块以 BASE64 方式编码成为一个字符串
+    .参数 inStr, 文本型, 传址, 
+    .参数 int, 整数型, , 
+
+.DLL命令 CRC32, 逻辑型, "NetDiskDLL.dll", "CRC32", , 
+    .参数 index, 整数型, , 
+    .参数 ipstr, 文本型, 传址, 
+
+.DLL命令 CRC32File, 逻辑型, "NetDiskDLL.dll", "CRC32File", , 
+    .参数 index, 整数型, , 
+    .参数 ipstr, 文本型, 传址, 
+
+.DLL命令 CRC32String, 逻辑型, "NetDiskDLL.dll", "CRC32String", , 
+    .参数 ipstr, 文本型, 传址, 
+
+.DLL命令 CRC8, 逻辑型, "NetDiskDLL.dll", "CRC8", , 
+    .参数 index, 整数型, , 
+    .参数 ipstr, 文本型, 传址, 
+
+.DLL命令 CRC8String, 逻辑型, "NetDiskDLL.dll", "CRC8String", , 
+    .参数 index, 整数型, , 
+    .参数 ipstr, 文本型, 传址, 
+
+.DLL命令 MD5File, 逻辑型, "NetDiskDLL.dll", "MD5File", , 取文件的32位MD5值，成功返回真。
+    .参数 FileName, 文本型, 传址, 文件名
+    .参数 OutStr, 文本型, 传址, 文件MD5校验值
+    .参数 outlen, 整数型, , 输出的MD5值长度，为32位
+
+.DLL命令 GetLogicalDriveStrings, 整数型, "kernel32", "GetLogicalDriveStringsA", , 获取逻辑驱动器字串,获取一个字串，其中包含了当前所有逻辑驱动器的根驱动器路径　装载到lpBuffer的字符数量（排除空中止字符）。如缓冲区的长度不够，不能容下路径，则返回值就变成要求的缓冲区大小。零表示失败。会设置GetLastError
+    .参数 nBufferLength, 整数型, , 缓冲器长度，lpBuffer字串的长度
+    .参数 lpBuffer, 文本型, , 缓冲区，用于装载逻辑驱动器名称的字串。每个名字都用一个NULL字符分隔，在最后一个名字后面用两个NULL表示中止（空中止）;
+
+.DLL命令 GetWindowLong, 整数型, "user32", "GetWindowLongA", , 取得窗口信息，从指定窗口的结构中取得信息　由nIndex决定。零表示出错。会设置GetLastError
+    .参数 窗口句柄, 整数型, , 欲为其获取信息的窗口的句柄
+    .参数 属性, 整数型, , 欲取回的信息，可以是下述任何一个常数：;GWL_EXSTYLE：扩展窗口样式;GWL_STYLE：窗口样式;GWL_WNDPROC：该窗口的窗口函数的地址;GWL_HINSTANCE：拥有窗口的实例的句柄;GWL_HWNDPARENT：该窗口之父的句柄。不要用SetWindowWord来改变这个值;GWL_ID：对话框中一个子窗口的标识符;GWL_USERDATA：含义由应用程序规定;DWL_DLGPROC：这个窗口的对话框函数地址;DWL_MSGRESULT：在对话框函数中处理的一条消息返回的值;DWL_USER：含义由应用程序规定;
+
+.DLL命令 SetWindowLong, 整数型, "user32", "SetWindowLongA", , 在窗口结构中为指定的窗口设置信息　指定数据的前一个值
+    .参数 hwnd, 整数型, , 欲为其取得信息的窗口的句柄
+    .参数 nIndex, 整数型, , 请参考GetWindowLong函数的nIndex参数的说明
+    .参数 dwNewLong, 整数型, , 由nIndex指定的窗口信息的新值;
+
+.DLL命令 SetWindowPos, 整数型, "user32", "SetWindowPos", , 这个函数能为窗口指定一个新位置和状态。它也可改变窗口在内部窗口列表中的位置。该函数与DeferWindowPos函数相似，只是它的作用是立即表现出来的（在vb里使用：针对vb窗体，如它们在win32下屏蔽或最小化，则需重设最顶部状态。如有必要，请用一个子类处理模块来重设最顶部状态　非零表示成功，零表示失败。会设置GetLastError
+    .参数 CY, 整数型, , 指定新的窗口高度
+    .参数 hwnd, 整数型, , 欲定位的窗口
+    .参数 hWndInsertAfter, 整数型, , 窗口句柄。在窗口列表中，窗口hwnd会置于这个窗口句柄的后面。也可能选用下述值之一：;HWND_BOTTOM：将窗口置于窗口列表底部;HWND_TOP：将窗口置于Z序列的顶部；Z序列代表在分级结构中，窗口针对一个给定级别的窗口显示的顺序;HWND_TOPMOST：将窗口置于列表顶部，并位于任何最顶部窗口的前面;HWND_NOTOPMOST：将窗口置于列表顶部，并位于任何最顶部窗口的后面
+    .参数 x, 整数型, , 窗口新的x坐标。如hwnd是一个子窗口，则x用父窗口的客户区坐标表示
+    .参数 y, 整数型, , 窗口新的y坐标。如hwnd是一个子窗口，则y用父窗口的客户区坐标表示
+    .参数 cx, 整数型, , 指定新的窗口宽度
+    .参数 cy, 整数型, , 
+    .参数 wFlags, 整数型, , 包含了旗标的一个整数;SWP_DRAWFRAME：围绕窗口画一个框;SWP_HIDEWINDOW：隐藏窗口;SWP_NOACTIVATE：不激活窗口;SWP_NOMOVE：保持当前位置（x和y设定将被忽略）;SWP_NOREDRAW：窗口不自动重画;SWP_NOSIZE：保持当前大小（cx和cy会被忽略）;SWP_NOZORDER：保持窗口在列表的当前位置（hWndInsertAfter将被忽略）;SWP_SHOWWINDOW：显示窗口;SWP_FRAMECHANGED：强迫一条WM_NCCALCSIZE消息进入窗口，即使窗口的大小没有改变;  
+
+.程序集 加解密程序集, , , 
+
+.子程序 _启动子程序, 整数型, , 本子程序在程序启动后最先执行
+载入 (测试窗口, , 假)
+返回 (0) ' 可以根据您的需要返回任意数值
+
+.子程序 测试子程序, 空白型, , 
+.局部变量 boolean, 逻辑型, , , 
+.局部变量 A, 文本型, , , 
+.局部变量 B, 文本型, , , 
+
+赋值 (B, 取空白文本 (32))
+赋值 (A, “362514”)
+赋值 (boolean, MD5String (A, 取文本长度 (A), B, 32))
+ ' 暂停 ()
+输出调试文本 (B)
+赋值 (A, “SA”)
+DES (A, “12345”, B, 1)
+输出调试文本 (B)
+DES (“hRXb4KjUPwQ=”, “12345”, B, 2)
+输出调试文本 (B)
+
+
+.子程序 Base64Encode_子, 空白型, , 
+.局部变量 a, 文本型, , , 
+.局部变量 b, 字节集, , , 
+
+Base64Encode (“adf”, a)
+输出调试文本 (a)
+
+.子程序 获取网卡信息, 空白型, , 
+.局部变量 c, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 name, 文本型, , , 
+.局部变量 匿名局部变量_144, 空白型, , , 
+
+赋值 (name, 取空白文本 (100))
+赋值 (c, GenUniqueID ())
+ ' lb_1.Reset ( )
+.计次循环首 (c, i)
+.计次循环尾 ()
+
+CRC8String (相减 (i, 1), name)
+ ' lb_1.additem(trim(name))
+
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 sn, 文本型, , , 
+
+赋值 (sn, 取空白文本 (100))
+GetDiskSN (0, sn)
+sn.加入文本 ()
+#换行符.加入文本 ()
+赋值 (., -1)
+
+.子程序 _按钮4_被单击, 空白型, , 
+.局部变量 guid, 文本型, , , 
+
+赋值 (guid, 取空白文本 (50))
+GenUniqueID (guid, 假)
+guid.加入文本 ()
+#换行符.加入文本 ()
+赋值 (., -1)
+
+.子程序 _按钮5_被单击, 空白型, , 
+.局部变量 guid, 文本型, , , 
+
+赋值 (guid, 取空白文本 (50))
+GenUniqueID (guid, 真)
+guid.加入文本 ()
+#换行符.加入文本 ()
+赋值 (., -1)
+
+
+.子程序 _按钮7_被单击, 空白型, , 
+.局部变量 str, 文本型, , , 
+.局部变量 bin, 字节集, , , 
+
+
+赋值 (str, 取空白文本 (40))
+赋值 (bin, 到字节集 (“abcd”))
+赋值 (str, Base64Encode (“abcd”, 4))
+
+到文本 (str).加入文本 ()
+#换行符.加入文本 ()
+赋值 (., -1)
+
+
+.子程序 _按钮8_被单击, 空白型, , 
+.局部变量 a, 文本型, , , 
+.局部变量 b, 文本型, , , 
+
+赋值 (b, “123”)
+赋值 (a, 取空白文本 (100))
+MD5String (b, 取文本长度 (b), a, 32)
+a.加入文本 ()
+#换行符.加入文本 ()
+赋值 (., -1)
+
+
+.子程序 _按钮3_被单击, 空白型, , 
+
+
+.子程序 _按钮12_被单击, 空白型, , 
+
+
+.子程序 _按钮2_被单击, 空白型, , 
+.局部变量 c, 整数型, , , 
+.局部变量 i, 整数型, , , 
+.局部变量 name, 文本型, , , 
+
+赋值 (name, 取空白文本 (100))
+赋值 (c, GetNetCardCount ())
+.计次循环首 (c, i)
+    GetNetCardName (相减 (i, 1), name)
+    name.加入文本 ()
+    #换行符.加入文本 ()
+    赋值 (., -1)
+.计次循环尾 ()
+
+
+.子程序 _按钮11_被单击, 空白型, , 
+.局部变量 inStr, 文本型, , , 
+.局部变量 outStr, 文本型, , , 
+.局部变量 key, 文本型, , , 
+
+赋值 (key, “12345678”)
+赋值 (inStr, 删首尾空 (.))
+
+.如果真 (不等于 (inStr, “”))
+    赋值 (outStr, 取空白文本 (512))
+    未知函数_167838098 (1)
+    #换行符.加入文本 ()
+    .加入文本 ()
+    赋值 (., -1)
+.如果真结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

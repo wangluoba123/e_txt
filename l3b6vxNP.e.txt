@@ -1,0 +1,133 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 435
+    高度 = 267
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “[叮咚]将文件设置文件创建,最后访问,最后写时间设置为当前系统时间”
+    帮助文件名 = “”
+
+
+
+.常量 GENERIC_WRITE, "1073741824", , 
+.常量 OPEN_EXISTING, "3", , 
+.常量 FILE_SHARE_READ, "1", , 
+.常量 FILE_SHARE_WRITE, "2", , 
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 FILETIME, , 
+    .成员 dwLowDateTime, 整数型, , , 
+    .成员 dwHighDateTime, 整数型, , , 
+
+数据类型 SYSTEMTIME, , 
+    .成员 wYear, 短整数型, , , 
+    .成员 wMonth, 短整数型, , , 
+    .成员 wDayOfWeek, 短整数型, , , 
+    .成员 wDay, 短整数型, , , 
+    .成员 wHour, 短整数型, , , 
+    .成员 wMinute, 短整数型, , , 
+    .成员 wSecond, 短整数型, , , 
+    .成员 wMilliseconds, 短整数型, , , 
+
+
+.DLL命令 CreateFile, 整数型, "kernel32", "CreateFileA", , 
+    .参数 lpFileName, 文本型, , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 dwShareMode, 整数型, , 
+    .参数 lpSecurityAttributes, 整数型, , 
+    .参数 dwCreationDisposition, 整数型, , 
+    .参数 dwFlagsAndAttributes, 整数型, , 
+    .参数 hTemplateFile, 整数型, , 
+
+.DLL命令 SetFileTime, 整数型, "kernel32", "", , 
+    .参数 hFile, 整数型, , 
+    .参数 lpCreationTime, FILETIME, 传址, 
+    .参数 lpLastAccessTime, FILETIME, 传址, 
+    .参数 lpLastWriteTime, FILETIME, 传址, 
+
+.DLL命令 SystemTimeToFileTime, 整数型, "kernel32", "", , 
+    .参数 lpSystemTime, SYSTEMTIME, 传址, 
+    .参数 lpFileTime, FILETIME, 传址, 
+
+.DLL命令 CloseHandle, 整数型, "kernel32", "", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 LocalFileTimeToFileTime, 整数型, "kernel32", "", , 
+    .参数 lpLocalFileTime, FILETIME, 传址, 
+    .参数 lpFileTime, FILETIME, 传址, 
+
+.DLL命令 GetLocalTime, 空白型, "kernel32", "GetLocalTime", , 
+    .参数 lpSystemTime, SYSTEMTIME, 传址, 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+
+
+.子程序 _按钮1_被单击, 空白型, , 
+.局部变量 lngHandle, 整数型, , , 
+.局部变量 udtSystemTime, SYSTEMTIME, , , 
+.局部变量 udtLocalTime, FILETIME, , , 
+.局部变量 udtFileTime, FILETIME, , , 
+
+.如果真 (打开 ())
+    GetLocalTime (udtSystemTime) ' 取现行时间
+    SystemTimeToFileTime (udtSystemTime, udtLocalTime) ' 将现行时间转换格式
+    LocalFileTimeToFileTime (udtLocalTime, udtFileTime) ' 将本地文件时间转移为UTC文件时间
+    赋值 (lngHandle, CreateFile (., #GENERIC_WRITE, 位或 (#FILE_SHARE_READ, #FILE_SHARE_WRITE), 0, #OPEN_EXISTING, 0, 0)) ' 打开文件返回文件句柄
+    .如果真 (不等于 (lngHandle, -1))
+        未知函数_167837771 () ' 设置文件创建时间，最后访问时间，最后写时间
+        未知函数_167837772 () ' 关闭文件句柄
+        信息框 (相加 (“The date of the file '”, ., “' has been changed to ”, 到文本 (取现行时间 ())), 0, “提示：”)
+    .如果真结束
+    
+.如果真结束
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

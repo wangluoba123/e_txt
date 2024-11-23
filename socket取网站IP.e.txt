@@ -1,0 +1,216 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+    边框 = 2
+    底图方式 = 1
+    底色 = -16777216 '  0xFF000000
+    最大化按钮 = 假
+    最小化按钮 = 假
+    控制按钮 = 真
+    位置 = 1
+    可否移动 = 真
+    背景音乐播放次数 = 0
+    回车下移焦点 = 假
+    Esc键关闭 = 真
+    F1键打开帮助 = 假
+    帮助标志值 = 0
+    在任务栏中显示 = 真
+    随意移动 = 假
+    外形 = 0
+    总在最前 = 假
+    保持标题栏激活 = 假
+    底图 =  ' 空
+    图标 =  ' 空
+    背景音乐 =  ' 空
+    标题 = “[叮咚]取网站IP地址”
+    帮助文件名 = “”
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+
+
+
+
+数据类型 WSADATA, , 
+    .成员 wVersion, 短整数型, , , 
+    .成员 wHighVersion, 短整数型, , , 
+    .成员 szDescription, 字节型, , "257", 
+    .成员 szSystemStatus, 字节型, , "129", 
+    .成员 imaxsockets, 短整数型, , , 
+    .成员 imaxudp, 短整数型, , , 
+    .成员 lpszvenderinfo, 整数型, , , 
+
+数据类型 sockaddr_in, , 
+    .成员 sin_family, 短整数型, , , 
+    .成员 sin_port, 短整数型, , , 
+    .成员 sin_addr, 整数型, , , 
+    .成员 sin_zero, 字节型, , "8", 
+
+数据类型 SYSTEMTIME, , 
+    .成员 wYear, 短整数型, , , 
+    .成员 wMonth, 短整数型, , , 
+    .成员 wDayOfWeek, 短整数型, , , 
+    .成员 wDay, 短整数型, , , 
+    .成员 wHour, 短整数型, , , 
+    .成员 wMinute, 短整数型, , , 
+    .成员 wSecond, 短整数型, , , 
+    .成员 wMilliseconds, 短整数型, , , 
+
+数据类型 HOSTENT, , 
+    .成员 hName, 整数型, , , 
+    .成员 hAliases, 整数型, , , 
+    .成员 hAddrType, 短整数型, , , 
+    .成员 hLen, 短整数型, , , 
+    .成员 hAddrList, 整数型, , , 
+
+
+.DLL命令 gethostbyname, 整数型, "ws2_32.dll", "gethostbyname", , 
+    .参数 name, 文本型, , 
+
+.DLL命令 WSAStartup, 整数型, "wsock32", "", , 
+    .参数 VersionReq, 整数型, , 
+    .参数 WSADataReturn, 未知类型0x41010009, 传址, 
+
+.DLL命令 inet_addr, 整数型, "ws2_32.dll", "inet_addr", , 
+    .参数 IP, 文本型, , 
+
+.DLL命令 socket, 整数型, "ws2_32.dll", "socket", , 
+    .参数 af, 整数型, , 
+    .参数 type, 整数型, , 
+    .参数 protocol, 整数型, , 
+
+.DLL命令 getpeername, 整数型, "ws2_32.dll", "getpeername", , 
+    .参数 s, 整数型, , 
+    .参数 name, 未知类型0x41010053, 传址, 
+    .参数 namelen, 整数型, , 
+
+.DLL命令 Connect, 整数型, "ws2_32.dll", "connect", , 
+    .参数 s, 整数型, , 
+    .参数 addr, 未知类型0x41010053, 传址, 
+    .参数 namelen, 整数型, , 
+
+.DLL命令 GetDateFormat, 整数型, "kernel32", "GetDateFormatA", , 
+    .参数 Locale, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpDate, 未知类型0x41010054, , 
+    .参数 lpFormat, 文本型, , 
+    .参数 lpDateStr, 文本型, , 
+    .参数 cchDate, 整数型, , 
+
+.DLL命令 GetLocalTime, 空白型, "kernel32", "GetLocalTime", , 
+    .参数 lpSystemTime, 未知类型0x41010054, 传址, 
+
+.DLL命令 GetTimeFormat, 整数型, "kernel32", "GetTimeFormatA", , 
+    .参数 Locale, 整数型, , 
+    .参数 dwFlags, 整数型, , 
+    .参数 lpTime, 未知类型0x41010054, , 
+    .参数 lpFormat, 文本型, , 
+    .参数 lpTimeStr, 文本型, , 
+    .参数 cchTime, 整数型, , 
+
+.DLL命令 recv, 整数型, "ws2_32.dll", "recv", , 
+    .参数 s, 整数型, , 
+    .参数 buf, 文本型, 传址, 
+    .参数 lLen, 整数型, , 
+    .参数 flags, 整数型, , 
+
+.DLL命令 closesocket, 整数型, "ws2_32.dll", "closesocket", , 
+    .参数 s, 整数型, , 
+
+.DLL命令 WSACleanup, 整数型, "ws2_32.dll", "WSACleanup", , 
+
+.DLL命令 CreateThread, 整数型, "kernel32", "CreateThread", , 
+    .参数 lpThreadAttributes, 整数型, , 
+    .参数 dwStackSize, 整数型, , 
+    .参数 lpStartAddress, 子程序指针, , 
+    .参数 lpParameter, 整数型, , 
+    .参数 dwCreationFlags, 整数型, , 
+    .参数 lpThreadId, 整数型, 传址, 
+
+.DLL命令 CloseHandle, 整数型, "kernel32", "CloseHandle", , 
+    .参数 hObject, 整数型, , 
+
+.DLL命令 RtlMoveMemory_HOSTENT, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, 未知类型0x4101007F, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_整数, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, 整数型, 传址, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.DLL命令 RtlMoveMemory_字节型, 整数型, "kernel32.dll", "RtlMoveMemory", , 
+    .参数 Destination, 字节型, 传址 数组, 
+    .参数 Source, 整数型, , 
+    .参数 Length, 整数型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.子程序 __启动窗口_创建完毕, 空白型, , 
+
+
+.子程序 取IP地址_, 文本型, 公开, 根据指定的机器名取IP地址。失败返回空。本命令为超级命令。
+.参数 机器名, 文本型, 可空, 要取得IP地址的机器名。
+
+.局部变量 WSAD, 未知类型0x4101006F, , , 
+.局部变量 lpHost, 整数型, , , 
+.局部变量 HOST, 未知类型0x41010070, , , 
+.局部变量 dwIPAddr, 整数型, , , 
+.局部变量 tmpIPAddr, 字节型, , "0", 
+.局部变量 i, 整数型, , , 
+.局部变量 sIPAddr, 文本型, , , 
+
+.如果真 (等于 (WSAStartup (514, WSAD), 0))
+    赋值 (lpHost, 未知函数_167837811 (机器名))
+    .如果真 (不等于 (lpHost, 0))
+        未知函数_167837812 (HOST, lpHost, 16)
+        未知函数_167837814 (dwIPAddr, HOST., 4)
+        重定义数组 (tmpIPAddr, 假, HOST.)
+        未知函数_167837813 (tmpIPAddr, dwIPAddr, HOST.)
+        .计次循环首 (HOST., i)
+            .如果 (等于 (i, HOST.))
+                赋值 (sIPAddr, 相加 (sIPAddr, 到文本 (tmpIPAddr [i])))
+            .否则
+                赋值 (sIPAddr, 相加 (sIPAddr, 到文本 (tmpIPAddr [i]), “.”))
+            .如果结束
+            
+        .计次循环尾 ()
+    .如果真结束
+    
+.如果真结束
+
+WSACleanup ()
+返回 (sIPAddr)
+
+.子程序 _按钮1_被单击, 空白型, , 
+赋值 (., 取IP地址_ (.))
+
+
+
+ ' 不属于任何一个程序集、类模块的函数：

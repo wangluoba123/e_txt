@@ -1,0 +1,102 @@
+ ' 文件类型：Windows窗口程序
+
+ ' 程序名称：
+ ' 程序描述：
+ ' 程序作者：
+ ' 邮政编码：
+ ' 联系地址：
+ ' 联系电话：
+ ' 传真号码：
+ ' 电子信箱：
+ ' 主页地址：
+ ' 版权声明：
+ ' 版本号：1.0
+ ' 创建号：0.0
+
+窗口 _启动窗口 ' 在程序启动后自动调入本窗口
+    左边 = 50
+    顶边 = 50
+    宽度 = 380
+    高度 = 250
+    鼠标指针 = { 0,0,0,0 }
+    标记 = “”
+    可视 = 真
+    禁止 = 假
+
+
+
+
+
+ ' 所需要的支持库：
+ ' krnln d09f2340818511d396f6aaf844c7e325 4 4 系统核心支持库
+ ' EThread 5F99C1642A2F4e03850721B4F5D7C3F8 1 1 多线程支持库
+ ' eAPI F7FC1AE45C5C4758AF03EF19F18A395D 1 1 应用接口支持库
+
+
+
+
+
+.DLL命令 _OpenProcess, 整数型, "", "OpenProcess", , 
+    .参数 dwDesiredAccess, 整数型, , 
+    .参数 bInheritHandle, 整数型, , 
+    .参数 dwProcessId, 整数型, , 
+
+.DLL命令 _WaitForSingleObject, 整数型, "", "WaitForSingleObject", , 
+    .参数 hHandle, 整数型, , 
+    .参数 dwMilliseconds, 整数型, , 
+
+.DLL命令 _CloseHandle, 空白型, "", "CloseHandle", , 
+    .参数 handle, 空白型, , 
+
+.窗口程序集 窗口程序集1, , , 
+
+.程序集变量 g_ProcessOpenList, 空白型, , "0", 
+.子程序 __启动窗口_创建完毕, 空白型, , 
+.局部变量 进程列表, 未知类型0x30009, , "0", 
+.局部变量 i, 空白型, , , 
+
+赋值 (进程列表, 未知支持库函数_10 ())
+.计次循环首 (取数组成员数 (进程列表), i)
+    相加 (“[”, 到文本 (进程列表 [i], ), “]”, 进程列表 [i], ).加入项目 (进程列表 [i], )
+.计次循环尾 ()
+
+.子程序 WaitEndProcess, 空白型, , 
+.参数 ProcessID, 空白型, , 
+
+.局部变量 hProcess, 空白型, , , 
+.局部变量 i, 空白型, , , 
+
+ ' 个人建议先加下进程权限,已便有足够权限监视
+赋值 (hProcess, _OpenProcess (1048576, 0, ProcessID)) ' 00010000 00000000 00000000
+.如果真 (小于或等于 (hProcess, 0))
+    信息框 (相加 (“进程(PID:”, 到文本 (ProcessID), “)打开失败”), #错误图标, )
+    返回 ()
+.如果真结束
+加入成员 (g_ProcessOpenList, hProcess)
+_WaitForSingleObject (hProcess, -1)
+_CloseHandle (hProcess)
+信息框 (相加 (“进程(PID:”, 到文本 (ProcessID), “)被关闭”), #信息图标, )
+.计次循环首 (取数组成员数 (g_ProcessOpenList), i)
+    .如果真 (等于 (g_ProcessOpenList [i], hProcess))
+        删除成员 (g_ProcessOpenList, i, )
+        跳出循环 ()
+    .如果真结束
+    
+.计次循环尾 ()
+
+.子程序 __启动窗口_可否被关闭, 逻辑型, , 
+.局部变量 i, 整数型, , , 
+
+.计次循环首 (取数组成员数 (g_ProcessOpenList), i)
+    _CloseHandle (g_ProcessOpenList [i])
+.计次循环尾 ()
+
+.子程序 _按钮1_被单击, 空白型, , 
+.如果真 (等于 (.现行选中项, -1))
+    信息框 (“请选择一个”, #错误图标, )
+    返回 ()
+.如果真结束
+未知支持库函数_0 (&WaitEndProcess, .取项目数值 (.现行选中项))
+
+
+ ' 不属于任何一个程序集、类模块的函数：
